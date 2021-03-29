@@ -1,0 +1,23 @@
+name: insite
+description: A new Flutter project.
+publish_to: none
+version: 1.0.0+1
+environment:
+    sdk: '>=2.3.0 <3.0.0'
+dependencies:
+    flutter:
+        sdk: flutter
+    cupertino_icons: ^1.0.0
+    stacked: ^2.0.0
+    get_it: ^6.0.0
+    logger: ^1.0.0
+    stacked_services: ^0.7.3
+    responsive_builder: ^0.4.1
+    equatable: ^2.0.0
+
+dev_dependencies:
+    flutter_test:
+        sdk: flutter
+flutter:
+    uses-material-design: true
+

@@ -1,0 +1,10 @@
+{
+    "last_updated": "Sun, 28 Mar 2021 18:57:11 GMT",
+    "routes": [
+        {
+            "file_path": "views/splash/splash_view.dart",
+            "route_name": "splashViewRoute",
+            "view_name": "SplashView"
+        }
+    ]
+}
