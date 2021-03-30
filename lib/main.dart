@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      debugShowCheckedModeBanner: false,
-      initialRoute: splashViewRoute,
+      initialRoute: dashViewRoute,
       theme: ThemeData(backgroundColor: mercury, accentColor: Colors.white),
     );
   }

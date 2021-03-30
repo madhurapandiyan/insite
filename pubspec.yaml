@@ -3,22 +3,47 @@ description: A new Flutter project.
 publish_to: none
 version: 1.0.0+1
 environment:
-    sdk: '>=2.3.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 dependencies:
-    flutter:
-        sdk: flutter
-    cupertino_icons: ^1.0.0
-    stacked: ^2.0.0
-    get_it: ^6.0.0
-    logger: ^1.0.0
-    stacked_services: ^0.7.3
-    responsive_builder: ^0.4.1
-    equatable: ^2.0.0
-    shared_preferences: ^2.0.5
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.0
+  equatable: ^2.0.0
+  flutter_svg: ^0.19.3
+  get_it: ^6.0.0
+  logger: ^1.0.0
+  responsive_builder: ^0.4.1
+  shared_preferences: ^2.0.5
+  stacked: ^2.0.0
+  stacked_services: ^0.7.3
 
 dev_dependencies:
-    flutter_test:
-        sdk: flutter
+  flutter_test:
+    sdk: flutter
 flutter:
-    uses-material-design: true
+  uses-material-design: true
+  
+  assets:
+    - assets/images/menubar.svg
+    - assets/images/searchs.svg
+    - assets/images/clock.svg
+    - assets/images/truck.svg
+    - assets/images/supportmanager.svg
+    - assets/images/assetmanager.svg
+    - assets/images/loca.svg
+    - assets/images/van.svg
+    - assets/images/maint.svg
+    - assets/images/admin.svg
+    - assets/images/plant.svg
+    - assets/images/sub.svg
+    - assets/images/noti.svg
 
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Light.ttf
+
+    
