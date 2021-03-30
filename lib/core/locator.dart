@@ -27,6 +27,6 @@ class LocatorInjector {
     log.d('Registering login  Service');
     locator.registerLazySingleton(() => LoginService());
     log.d('Registering native  Service');
-    locator.registerLazySingleton(() => NativeService());
+    locator.registerLazySingleton(() => NativeService(locator()));
   }
 }
