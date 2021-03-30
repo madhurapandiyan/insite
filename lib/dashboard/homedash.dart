@@ -10,7 +10,7 @@ class HomeDash extends StatefulWidget {
 }
 
 class _HomeDashState extends State<HomeDash> {
-  int selectedcard = 0;
+  int selectedcard = -1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,18 +78,33 @@ class _HomeDashState extends State<HomeDash> {
       onTap: () {
         buttontap(index);
       },
-      child: Card(
-        color: selectedcard == index ? tango : cardcolor,
-        elevation: 10.0,
-        margin: EdgeInsets.all(1.0),
-        shape: new RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Container(
-          width: 118.71,
-          height: 111,
+      child: Container(
+        width: 118.71,
+        height: 111,
+        child: Card(
+          semanticContainer: true,
+          color: selectedcard == index ? tango : cardcolor,
+          elevation: 10.0,
+          margin: EdgeInsets.all(1.0),
+          shape: new RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Column(
-            children: [new Text(category.name)],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset(category.image),
+              SizedBox(height: 8.0),
+              Text(
+                category.name,
+                 
+                style: new TextStyle(fontSize: 12.0,
+                fontFamily: 'Roboto',
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                color: textcolor),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
