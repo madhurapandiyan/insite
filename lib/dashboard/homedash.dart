@@ -24,6 +24,7 @@ class _HomeDashState extends State<HomeDash> {
             print("button is tapped");
           },
         ),
+        title: appLogo,
         actions: [
           new IconButton(
               icon: new SvgPicture.asset("assets/images/searchs.svg"),
@@ -71,6 +72,14 @@ class _HomeDashState extends State<HomeDash> {
       ),
     );
   }
+
+  Image appLogo = new Image(
+      image: new ExactAssetImage("assets/images/hitachi.png"),
+      height: 65.75,
+      width: 33.21,
+      alignment: FractionalOffset.center);
+
+
 
   Widget _buildCategoryItem(BuildContext context, int index) {
     Category category = categories[index];

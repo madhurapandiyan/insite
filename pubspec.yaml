@@ -46,6 +46,11 @@ flutter:
     - assets/images/plant.svg
     - assets/images/sub.svg
     - assets/images/noti.svg
+    - assets/images/arrowdown.svg
+    - assets/images/filter.svg
+    - assets/images/hitachi.png
+
+
 
   fonts:
     - family: Roboto

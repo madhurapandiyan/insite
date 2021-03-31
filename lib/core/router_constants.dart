@@ -2,3 +2,5 @@
 
 const String splashViewRoute = 'splashViewRoute';
 const String dashViewRoute='dashViewRoute';
+const String assetViewRoute='assetViewRoute';
+const String tabViewRoute='tabViewRoute';

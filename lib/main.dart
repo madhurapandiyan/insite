@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      initialRoute: splashViewRoute,
+      initialRoute: assetViewRoute,
       theme: ThemeData(backgroundColor: mercury, accentColor: Colors.white),
     );
   }
