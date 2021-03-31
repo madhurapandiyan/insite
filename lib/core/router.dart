@@ -11,7 +11,7 @@ class Router {
     switch (settings.name) {
       case splashViewRoute:
         return MaterialPageRoute(builder: (_) => view0.SplashView());
-        case dashViewRoute:
+      case dashViewRoute:
         return MaterialPageRoute(builder: (_)=>view0.HomeDash());
       default:
         return MaterialPageRoute(

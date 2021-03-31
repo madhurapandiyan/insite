@@ -1,8 +1,15 @@
 import 'package:flutter/services.dart';
+import 'package:insite/core/services/local_service.dart';
 
 class NativeService {
-  static const platform =
+   final platform =
       const MethodChannel('com.example.insite.flutterchannel');
+  final LocalService localService;
 
-  NativeService();
+  NativeService(this.localService) {
+  }
+
+  Future<String> openLogin() async {
+    return await platform.invokeMethod('open_login');
+  }
 }
