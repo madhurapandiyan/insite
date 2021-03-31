@@ -73,6 +73,23 @@ Map<String, dynamic> _$UserPayLoadToJson(UserPayLoad instance) =>
       'tenantDomain': instance.tenantDomain,
     };
 
+AuthenticationResponse _$AuthenticationResponseFromJson(
+    Map<String, dynamic> json) {
+  return AuthenticationResponse(
+    access_token: json['access_token'] as String,
+    token_type: json['token_type'] as String,
+    expires_in: json['expires_in'] as int,
+  );
+}
+
+Map<String, dynamic> _$AuthenticationResponseToJson(
+        AuthenticationResponse instance) =>
+    <String, dynamic>{
+      'access_token': instance.access_token,
+      'token_type': instance.token_type,
+      'expires_in': instance.expires_in,
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -80,7 +97,7 @@ Map<String, dynamic> _$UserPayLoadToJson(UserPayLoad instance) =>
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://identity.trimble.com';
+    baseUrl ??= 'https://identity-stg.trimble.com';
   }
 
   final Dio _dio;
@@ -107,12 +124,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UserInfo> getUserInfo() async {
+  Future<UserInfo> getUserInfo(payLoad) async {
+    ArgumentError.checkNotNull(payLoad, 'payLoad');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
+    _data.addAll(payLoad?.toJson() ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/userinfo?schema=openid&timestamp=480',
+        '/t/trimble.com/device_reporting_service_dev/1.0/user',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -121,6 +140,26 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = UserInfo.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AuthenticationResponse> authenticate({openId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = {'openId': openId};
+    _data.removeWhere((k, v) => v == null);
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/token?grant_type=client_credentials',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AuthenticationResponse.fromJson(_result.data);
     return value;
   }
 }

@@ -20,7 +20,7 @@ part 'Retrofit.g.dart';
 // Abdul123$
 
 @RestApi(
-  baseUrl: "https://identity.trimble.com",
+  baseUrl: "https://identity-stg.trimble.com",
   //  parser: Parser.DartJsonMapper,
 )
 abstract class RestClient {
@@ -29,8 +29,11 @@ abstract class RestClient {
   @GET("/tasks")
   Future<List<Sample>> getTasks();
 
-  @GET("/userinfo?schema=openid&timestamp=480")
-  Future<UserInfo> getUserInfo();
+  @GET("/t/trimble.com/device_reporting_service_dev/1.0/user")
+  Future<UserInfo> getUserInfo(@Body() UserPayLoad payLoad);
+
+  @POST("/token?grant_type=client_credentials")
+  Future<AuthenticationResponse> authenticate({@Field() String openId});
 }
 
 @JsonSerializable()
@@ -115,4 +118,17 @@ class UserPayLoad {
       _$UserPayLoadFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserPayLoadToJson(this);
+}
+
+@JsonSerializable()
+class AuthenticationResponse {
+  String access_token;
+  String token_type;
+  int expires_in;
+  AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
+
+  factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticationResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
 }

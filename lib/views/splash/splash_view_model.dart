@@ -54,15 +54,15 @@ class SplashViewModel extends BaseViewModel {
       Logger().i("login result %s" + result);
     } else {
       if (!isProcessing) {
-        _nagivationService.navigateTo(dashViewRoute);
+        _nagivationService.navigateTo(customerSelectionViewRoute);
       }
     }
   }
 
-  void getLoggedInUserDetails(arguments) async {
-    UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+  void getLoggedInUserDetails(code) async {
+    UserInfo userInfo = await _loginService.getLoggedInUserInfo(code);
     _localService.saveUserInfo(userInfo);
-    _nagivationService.navigateTo(dashViewRoute);
+    _nagivationService.navigateTo(customerSelectionViewRoute);
     isProcessing = false;
   }
 }

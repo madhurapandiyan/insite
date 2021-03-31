@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
-import 'core/router_constants.dart';
 import 'core/router.dart' as router;
 
 void main() async {
@@ -18,8 +18,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      initialRoute: assetViewRoute,
-      theme: ThemeData(backgroundColor: mercury, accentColor: Colors.white),
+      initialRoute: customerSelectionViewRoute,
+      theme: ThemeData(
+          backgroundColor: cod_grey,
+          appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+          accentColor: Colors.white),
     );
   }
 }
