@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      initialRoute: customerSelectionViewRoute,
+      initialRoute: splashViewRoute,
       theme: ThemeData(
           backgroundColor: cod_grey,
+          fontFamily: 'Roboto',
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           accentColor: Colors.white),
     );

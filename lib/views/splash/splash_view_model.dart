@@ -46,15 +46,18 @@ class SplashViewModel extends BaseViewModel {
   void checkLoggedIn() async {
     bool val = await _localService.getIsloggedIn();
     Logger().d("checkLoggedIn " + val.toString());
-    if (!val) {
+    if (val == null || !val) {
       //use this user name and password
       // nitin_r@gmail.com
       // Welcome@1234
+      // or below one
+      //nithyamahalakshmi_p@trimble.com
+      //OsgTe@m20!9
       String result = await _nativeService.openLogin();
       Logger().i("login result %s" + result);
     } else {
       if (!isProcessing) {
-        _nagivationService.navigateTo(customerSelectionViewRoute);
+        _nagivationService.navigateTo(homeViewRoute);
       }
     }
   }
@@ -62,7 +65,7 @@ class SplashViewModel extends BaseViewModel {
   void getLoggedInUserDetails(code) async {
     UserInfo userInfo = await _loginService.getLoggedInUserInfo(code);
     _localService.saveUserInfo(userInfo);
-    _nagivationService.navigateTo(customerSelectionViewRoute);
+    _nagivationService.navigateTo(homeViewRoute);
     isProcessing = false;
   }
 }

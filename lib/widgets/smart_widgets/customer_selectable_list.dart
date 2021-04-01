@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/account.dart';
 import 'package:insite/theme/colors.dart';
+import 'customer_selection_dropdown.dart';
 
 class CustomerSelectableList extends StatefulWidget {
-  CustomerSelectableList({Key key}) : super(key: key);
+  final Function(SelectedData) onSelected;
+  final SelectionType selectionType;
+
+  CustomerSelectableList({this.onSelected, this.selectionType});
 
   @override
   _CustomerSelectableListState createState() => _CustomerSelectableListState();
@@ -10,6 +15,7 @@ class CustomerSelectableList extends StatefulWidget {
 
 class _CustomerSelectableListState extends State<CustomerSelectableList> {
   int selectedIndex;
+
   @override
   void initState() {
     super.initState();
@@ -18,13 +24,17 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: accountList.length,
       itemBuilder: (context, index) {
+        Account account = accountList[index];
         return GestureDetector(
           onTap: () {
             setState(() {
               selectedIndex = index;
             });
+            widget.onSelected(SelectedData(
+                selectionType: widget.selectionType,
+                value: accountList[index].name));
           },
           child: Container(
             color:
@@ -34,7 +44,7 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "THCM Kharagpur Factory",
+                  account.name,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
