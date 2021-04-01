@@ -21,7 +21,7 @@ class MyApi {
 }
 
 class HttpWrapper {
-  final String _baseUrl = "https://identity.trimble.com";
+  final String _baseUrl = "https://identity-stg.trimble.com";
   final bool SHOW_LOGS = true;
 
   Dio dio = new Dio();

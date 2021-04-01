@@ -49,7 +49,7 @@ flutter:
     - assets/images/arrowdown.svg
     - assets/images/filter.svg
     - assets/images/hitachi.png
-
+    - assets/images/truck.png
 
 
   fonts:

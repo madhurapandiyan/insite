@@ -1,75 +1,114 @@
-class TransportName {
+class Asset {
   final String arrowimage;
   final String title;
+  final String deviceId;
   final String status;
+  final String reportingStatus;
   final String serialno;
-  final String use;
+  final String assetState;
+  final String assetStatus;
 
-  TransportName(
-      this.arrowimage, this.title, this.status, this.serialno, this.use);
-
+  Asset(
+    this.arrowimage,
+    this.title,
+    this.deviceId,
+    this.status,
+    this.reportingStatus,
+    this.serialno,
+    this.assetState,
+    this.assetStatus,
+  );
 }
 
-
-List<TransportName> transportlist = [
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status\nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status  \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use"),
-    TransportName(
-        "assets/images/arrowdown.svg",
-        "TATA HITACHI \nSHINRAI BX80",
-        "Last Known Status \nNot Reporting",
-        "THEWABDOKHOOOOO",
-        "Custom Asset State In Use")
-  ];
+List<Asset> assetList = [
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use"),
+  Asset(
+      "assets/images/truck.png",
+      "TATA HITACHI ",
+      "SHINRAI BX80",
+      "Last Known Status",
+      "Not Reporting",
+      "THEWABDOKHOOOOO",
+      "Custom Asset State",
+      "In Use")
+];

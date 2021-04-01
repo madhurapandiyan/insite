@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/dashboard/model.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/home/home_view.dart';
 
 class HomeDash extends StatefulWidget {
+  final Function(ScreenType) onDashboardItemSelected;
+  HomeDash({this.onDashboardItemSelected});
   @override
   _HomeDashState createState() => _HomeDashState();
 }
@@ -15,22 +18,6 @@ class _HomeDashState extends State<HomeDash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgcolor,
-      appBar: AppBar(
-        toolbarHeight: 64,
-        backgroundColor: appbarcolor,
-        leading: IconButton(
-          icon: new SvgPicture.asset("assets/images/menubar.svg"),
-          onPressed: () {
-            print("button is tapped");
-          },
-        ),
-        title: appLogo,
-        actions: [
-          new IconButton(
-              icon: new SvgPicture.asset("assets/images/searchs.svg"),
-              onPressed: () => ("button is tapped"))
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -79,8 +66,6 @@ class _HomeDashState extends State<HomeDash> {
       width: 33.21,
       alignment: FractionalOffset.center);
 
-
-
   Widget _buildCategoryItem(BuildContext context, int index) {
     Category category = categories[index];
     return GestureDetector(
@@ -105,12 +90,12 @@ class _HomeDashState extends State<HomeDash> {
               SizedBox(height: 8.0),
               Text(
                 category.name,
-                 
-                style: new TextStyle(fontSize: 12.0,
-                fontFamily: 'Roboto',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                color: textcolor),
+                style: new TextStyle(
+                    fontSize: 12.0,
+                    fontFamily: 'Roboto',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold,
+                    color: textcolor),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -139,6 +124,9 @@ class _HomeDashState extends State<HomeDash> {
     if (index == 3) {
       setState(() {
         selectedcard = index;
+      });
+      Future.delayed(Duration(seconds: 1), () {
+        widget.onDashboardItemSelected(ScreenType.ASSETLIST);
       });
     }
     if (index == 4) {

@@ -1,6 +1,5 @@
 // [ This is an auto generated file ]
 
 const String splashViewRoute = 'splashViewRoute';
-const String dashViewRoute='dashViewRoute';
-const String assetViewRoute='assetViewRoute';
-const String tabViewRoute='tabViewRoute';
+const String customerSelectionViewRoute = 'customerSelectionViewRoute';
+const String homeViewRoute = 'homeViewRoute';
