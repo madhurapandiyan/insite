@@ -1,20 +1,34 @@
 
-class Category{
-final int id;
-final String name;
-final String image;
-Category(this.id,this.name,this.image);
+import 'package:insite/views/home/home_view.dart';
+
+class Category {
+  final int id;
+  final String name;
+  final String image;
+  final ScreenType screenType;
+  Category(
+    this.id,
+    this.name,
+    this.image,
+    this.screenType,
+  );
 }
-final List<Category> categories=[
-  Category(1,"DASHBOARD","assets/images/clock.svg"),
-  Category(2,"FLEET","assets/images/truck.svg"),
-  Category(3,"UTILIZATION","assets/images/supportmanager.svg"),
-  Category(4,"ASSET OPERATION","assets/images/assetmanager.svg"),
-  Category(5,"LOCATION","assets/images/loca.svg"),
-  Category(6,"HEALTH","assets/images/van.svg"),
-  Category(7,"MAINTENANCE","assets/images/maint.svg"),
-  Category(8,"ADMINISTRATION","assets/images/admin.svg"),
-  Category(9,"PLANT","assets/images/plant.svg"),
-  Category(10,"SUBSCRIPTION","assets/images/sub.svg"),
-  Category(11,"NOTIFICATION","assets/images/noti.svg")
+
+final List<Category> categories = [
+  Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
+  Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
+  Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+      ScreenType.UTILIZATION),
+  Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+      ScreenType.ASSET_OPERATION),
+  Category(5, "LOCATION", "assets/images/loca.svg", ScreenType.LOCATION),
+  Category(6, "HEALTH", "assets/images/van.svg", ScreenType.MAINTENANCE),
+  Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
+  Category(8, "ADMINISTRATION", "assets/images/admin.svg",
+      ScreenType.ADMINISTRATION),
+  Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
+  Category(
+      10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+  Category(
+      11, "NOTIFICATION", "assets/images/noti.svg", ScreenType.NOTIFICATION)
 ];

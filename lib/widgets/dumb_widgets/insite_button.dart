@@ -7,12 +7,14 @@ class InsiteButton extends StatelessWidget {
   final Color textColor;
   final double width;
   final double height;
+  final Icon icon;
   const InsiteButton(
       {this.title,
       this.width,
       this.onTap,
       this.bgColor,
       this.height,
+      this.icon,
       this.textColor});
 
   @override
@@ -28,10 +30,15 @@ class InsiteButton extends StatelessWidget {
         alignment: Alignment.center,
         height: height != null ? height : null,
         width: width != null ? width : null,
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
+        child: Row(
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
+            ),
+            icon != null ? icon : SizedBox()
+          ],
         ),
       ),
     );

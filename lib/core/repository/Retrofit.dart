@@ -15,7 +15,7 @@ part 'Retrofit.g.dart';
 // flutter build appbundle
 
 // use this user name & password in this application for testing purpose
-// link to the web application equavalent of this mobile app -> https://unifiedfleet.myvisionlink.com
+// link to the samples web application equavalent of this mobile app 1 -> https://unifiedfleet.myvisionlink.com  , 2 -> 
 // abdul_kareem@trimble.com
 // Abdul123$
 
