@@ -3,4 +3,5 @@
 const String splashViewRoute = 'splashViewRoute';
 const String customerSelectionViewRoute = 'customerSelectionViewRoute';
 const String homeViewRoute = 'homeViewRoute';
+const String tabViewRoute='tabViewRoute';
 const String fleetViewRoute = 'fleetViewRoute';

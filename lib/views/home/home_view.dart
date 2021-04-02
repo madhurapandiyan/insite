@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:insite/assetlist/asset_list.dart';
 import 'package:insite/dashboard/homedash.dart';
+import 'package:insite/tab/tabpage.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -70,6 +70,9 @@ class _HomeViewState extends State<HomeView> {
       return Future.value(false);
     } else if (currentScreenType == ScreenType.ACCOUNT) {
       return Future.value(true);
+    } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
+      updateCurrentState(ScreenType.ASSET_OPERATION);
+      return Future.value(false);
     } else {
       updateCurrentState(ScreenType.HOME);
       return Future.value(false);
@@ -77,8 +80,10 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void updateCurrentState(newState) {
-    setState(() {
-      currentScreenType = newState;
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        currentScreenType = newState;
+      });
     });
   }
 
@@ -90,15 +95,21 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
-      return AssetList();
+      return AssetList(
+        onDetailPageSelected: () {
+          updateCurrentState(ScreenType.ASSET_DETAIL);
+        },
+      );
+    } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
+      return TabPage();
     } else if (currentScreenType == ScreenType.FLEET) {
-      return FleetView();
+      return FleetView(        onDetailPageSelected: () {
+          updateCurrentState(ScreenType.ASSET_DETAIL);
+        },);
     } else if (currentScreenType == ScreenType.HOME) {
       return HomeDash(
         onDashboardItemSelected: (newState) {
-          Future.delayed(Duration(seconds: 1), () {
-            updateCurrentState(newState);
-          });
+          updateCurrentState(newState);
         },
       );
     } else {
@@ -114,6 +125,7 @@ enum ScreenType {
   FLEET,
   UTILIZATION,
   ASSET_OPERATION,
+  ASSET_DETAIL,
   LOCATION,
   HEALTH,
   MAINTENANCE,

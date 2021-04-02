@@ -65,7 +65,7 @@ class SplashViewModel extends BaseViewModel {
   void getLoggedInUserDetails(code) async {
     UserInfo userInfo = await _loginService.getLoggedInUserInfo(code);
     _localService.saveUserInfo(userInfo);
-    _nagivationService.navigateTo(homeViewRoute);
+    _nagivationService.replaceWith(homeViewRoute);
     isProcessing = false;
   }
 }

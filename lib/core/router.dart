@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/tab/tabpage.dart' as view3;
 
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/customer_selection/customer_selection_view.dart' as view1;
@@ -17,6 +18,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view1.CustomerSelectionView());
       case homeViewRoute:
         return MaterialPageRoute(builder: (_) => view2.HomeView());
+        case tabViewRoute:
+        return MaterialPageRoute(builder: (_)=>view3.TabPage());
       case fleetViewRoute:
         return MaterialPageRoute(builder: (_) => view3.FleetView());
       default:

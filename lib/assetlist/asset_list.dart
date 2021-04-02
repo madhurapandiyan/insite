@@ -5,6 +5,8 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_item.dart';
 
 class AssetList extends StatefulWidget {
+  final VoidCallback onDetailPageSelected;
+  AssetList({this.onDetailPageSelected});
   @override
   _AssetListState createState() => _AssetListState();
 }
@@ -66,6 +68,9 @@ class _AssetListState extends State<AssetList> {
                       Asset name = assetList[index];
                       return AssetItem(
                         asset: name,
+                        onCallback: () {
+                          widget.onDetailPageSelected();
+                        },
                       );
                     })
               ],
