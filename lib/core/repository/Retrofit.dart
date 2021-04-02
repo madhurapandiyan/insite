@@ -15,13 +15,12 @@ part 'Retrofit.g.dart';
 // flutter build appbundle
 
 // use this user name & password in this application for testing purpose
-// link to the samples web application equavalent of this mobile app 1 -> https://unifiedfleet.myvisionlink.com  , 2 -> 
+// link to the samples web application equavalent of this mobile app 1 -> https://unifiedfleet.myvisionlink.com  , 2 ->
 // abdul_kareem@trimble.com
 // Abdul123$
 
 @RestApi(
   baseUrl: "https://identity-stg.trimble.com",
-  //  parser: Parser.DartJsonMapper,
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
@@ -32,8 +31,8 @@ abstract class RestClient {
   @GET("/t/trimble.com/device_reporting_service_dev/1.0/user")
   Future<UserInfo> getUserInfo(@Body() UserPayLoad payLoad);
 
-  @POST("/token?grant_type=client_credentials")
-  Future<AuthenticationResponse> authenticate({@Field() String openId});
+  @POST("/token?grant_type=client_credentials&amp;scope=openid")
+  Future<AuthenticationResponse> authenticate();
 }
 
 @JsonSerializable()

@@ -144,14 +144,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AuthenticationResponse> authenticate({openId}) async {
+  Future<AuthenticationResponse> authenticate() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _data = {'openId': openId};
-    _data.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/token?grant_type=client_credentials',
+        '/token?grant_type=client_credentials&amp;scope=openid',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',

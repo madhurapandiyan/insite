@@ -1,14 +1,14 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-
+import 'package:insite/core/services/local_service.dart';
+import '../locator.dart';
 import 'Retrofit.dart';
 
 class MyApi {
   MyApi._internal() {
     httpWrapper = HttpWrapper();
   }
-
   static final MyApi _singleton = MyApi._internal();
 
   factory MyApi() => _singleton;
@@ -18,14 +18,23 @@ class MyApi {
   RestClient getClient() {
     return httpWrapper.client;
   }
+
+  RestClient getClientOne() {
+    return httpWrapper.clientOne;
+  }
 }
 
 class HttpWrapper {
   final String _baseUrl = "https://identity-stg.trimble.com";
+  final String _baseUrlOne = "https://api-stg.trimble.com";
+
   final bool SHOW_LOGS = true;
+  final _localService = locator<LocalService>();
 
   Dio dio = new Dio();
+  Dio dioOne = new Dio();
   var client;
+  var clientOne;
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
@@ -34,13 +43,20 @@ class HttpWrapper {
       receiveTimeout: 3000,
     );
     dio = Dio(options);
+    dioOne = Dio(options);
     var cookieJar = CookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
+    dioOne.interceptors.add(CookieManager(cookieJar));
 
     dio.interceptors
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
-          options.headers.addAll({"token": "token", "timezoneoffset": -330});
+          options.headers.addAll({
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization":
+                "basic cjlHeGJ5WDR1Tk1qcEIxeVpnZTZmaVdTR1E0YTo0WGs4b0VGTGZ4dm55aU84MjFKcFFNekhoZjhh",
+            "timezoneoffset": -330
+          });
           return options;
         },
       ))
@@ -49,7 +65,24 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
-    client = RestClient(dio);
+    dioOne.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Bearer " + await _localService.getoken(),
+            "timezoneoffset": -330
+          });
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
+    client = RestClient(dio, baseUrl: _baseUrl);
+    clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

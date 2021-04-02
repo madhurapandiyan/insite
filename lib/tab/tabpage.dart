@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 
 class TabPage extends StatefulWidget {
   final VoidCallback onDetailPageSelected;
@@ -172,7 +173,8 @@ class _TabPageState extends State<TabPage> {
                   ],
                 ),
               ),
-            )
+            ),
+            Expanded(child: EmptyView())
           ],
         ),
       ),

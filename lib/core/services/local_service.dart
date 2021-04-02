@@ -8,9 +8,18 @@ class LocalService extends BaseService {
   final SharedPreferences preferences;
   LocalService(this.preferences);
   static const String USER_INFO = "userInfo";
+  static const String TOKEN = "token";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences.setBool("isLoggedIn", isLoggedIn);
+  }
+
+  Future saveToken(token) async {
+    return await preferences.setString("token", token);
+  }
+
+  Future<String> getoken() async {
+    return preferences.getString("token");
   }
 
   Future<bool> getIsloggedIn() async {

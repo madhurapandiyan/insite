@@ -19,6 +19,7 @@ class SplashViewModel extends BaseViewModel {
   final _loginService = locator<LoginService>();
 
   bool isProcessing = false;
+  bool shouldLoadWebview = false;
 
   SplashViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -53,8 +54,10 @@ class SplashViewModel extends BaseViewModel {
       // or below one
       //nithyamahalakshmi_p@trimble.com
       //OsgTe@m20!9
-      String result = await _nativeService.openLogin();
-      Logger().i("login result %s" + result);
+      // String result = await _nativeService.openLogin();
+      // Logger().i("login result %s" + result);
+      shouldLoadWebview = true;
+      notifyListeners();
     } else {
       if (!isProcessing) {
         _nagivationService.navigateTo(homeViewRoute);
