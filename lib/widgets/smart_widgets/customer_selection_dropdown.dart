@@ -24,7 +24,7 @@ class CustomerSelectionDropDown extends StatefulWidget {
 class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
   bool showList = false;
 
-  SelectedData data = null;
+  SelectedData data;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
         Container(
             decoration: BoxDecoration(
                 color: tuna, borderRadius: BorderRadius.circular(8)),
-            padding: EdgeInsets.only(top: 12),
+            padding: EdgeInsets.only(top: 12, bottom: !showList ? 12 : 0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -11,7 +11,7 @@ class AssetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(6.0),
-      height: 110,
+      height: MediaQuery.of(context).size.height * 0.15,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],

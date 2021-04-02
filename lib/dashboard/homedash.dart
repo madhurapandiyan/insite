@@ -13,48 +13,28 @@ class HomeDash extends StatefulWidget {
 }
 
 class _HomeDashState extends State<HomeDash> {
-  int selectedcard = -1;
+  int selectedIndex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgcolor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Container(
-                margin: EdgeInsets.all(10.0),
-                width: double.maxFinite,
-                height: MediaQuery.of(context).size.height,
-                child: CustomScrollView(
-                    physics: BouncingScrollPhysics(),
-                    slivers: [
-                      SliverPadding(
-                        padding: const EdgeInsets.all(16.0),
-                        sliver: SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount:
-                                        MediaQuery.of(context).size.width > 1000
-                                            ? 7
-                                            : MediaQuery.of(context)
-                                                        .size
-                                                        .width >
-                                                    600
-                                                ? 5
-                                                : 3,
-                                    crossAxisSpacing: 5.0,
-                                    mainAxisSpacing: 5.0),
-                            delegate: SliverChildBuilderDelegate(
-                              _buildCategoryItem,
-                              childCount: categories.length,
-                            )),
-                      )
-                    ]),
-              ),
-            ),
-          ],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: MediaQuery.of(context).size.width > 1000
+                  ? 7
+                  : MediaQuery.of(context).size.width > 600
+                      ? 5
+                      : 3,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0),
+          itemBuilder: (context, index) {
+            Category category = categories[index];
+            return _buildCategoryItem(context, index, category);
+          },
+          itemCount: categories.length,
         ),
       ),
     );
@@ -66,18 +46,20 @@ class _HomeDashState extends State<HomeDash> {
       width: 33.21,
       alignment: FractionalOffset.center);
 
-  Widget _buildCategoryItem(BuildContext context, int index) {
-    Category category = categories[index];
+  Widget _buildCategoryItem(
+      BuildContext context, int index, Category category) {
     return GestureDetector(
       onTap: () {
-        buttontap(index);
+        buttontap(index, category);
       },
       child: Container(
         width: 118.71,
         height: 111,
         child: Card(
           semanticContainer: true,
-          color: selectedcard == index ? tango : cardcolor,
+          color: selectedIndex != null && selectedIndex == index
+              ? tango
+              : cardcolor,
           elevation: 10.0,
           margin: EdgeInsets.all(1.0),
           shape: new RoundedRectangleBorder(
@@ -105,34 +87,10 @@ class _HomeDashState extends State<HomeDash> {
     );
   }
 
-  void buttontap(int index) {
-    if (index == 0) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 1) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 2) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 3) {
-      setState(() {
-        selectedcard = index;
-      });
-      Future.delayed(Duration(seconds: 1), () {
-        widget.onDashboardItemSelected(ScreenType.ASSETLIST);
-      });
-    }
-    if (index == 4) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
+  void buttontap(int index, Category category) {
+    setState(() {
+      selectedIndex = index;
+    });
+    widget.onDashboardItemSelected(category.screenType);
   }
 }
