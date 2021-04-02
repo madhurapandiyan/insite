@@ -34,22 +34,35 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                 ),
                 Container(
                   padding: EdgeInsets.all(16),
-                  child: Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "LOGGED IN AS : ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "LOGGED IN AS : ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
                       ),
-                      Text(
-                        "johndoe@gmail.com",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      )
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Expanded(
+                          child: Text(
+                            "nithyamahalakshmi_p@trimble.com",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

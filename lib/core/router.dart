@@ -7,6 +7,7 @@ import 'package:insite/tab/tabpage.dart' as view3;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/customer_selection/customer_selection_view.dart' as view1;
 import 'package:insite/views/home/home_view.dart' as view2;
+import 'package:insite/views/fleet/fleet_view.dart' as view3;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,6 +20,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view2.HomeView());
         case tabViewRoute:
         return MaterialPageRoute(builder: (_)=>view3.TabPage());
+      case fleetViewRoute:
+        return MaterialPageRoute(builder: (_) => view3.FleetView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
