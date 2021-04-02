@@ -6,6 +6,8 @@ import 'package:stacked/stacked.dart';
 import 'fleet_view_model.dart';
 
 class FleetView extends StatelessWidget {
+  final VoidCallback onDetailPageSelected;
+  FleetView({this.onDetailPageSelected});
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FleetViewModel>.reactive(
@@ -19,6 +21,9 @@ class FleetView extends StatelessWidget {
                   Asset name = assetList[index];
                   return AssetItem(
                     asset: name,
+                    onCallback: () {
+                      onDetailPageSelected();
+                    },
                   );
                 }));
       },

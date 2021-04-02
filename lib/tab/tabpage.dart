@@ -2,43 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 
 class TabPage extends StatefulWidget {
+  final VoidCallback onDetailPageSelected;
+  TabPage({this.onDetailPageSelected});
   @override
   _TabPageState createState() => _TabPageState();
 }
 
 class _TabPageState extends State<TabPage> {
-  int selectedcard=-1;
-
+  int selectedcard = -1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgcolor,
-      appBar: AppBar(
-        backgroundColor: appbarcolor,
-        leading: IconButton(
-          icon: SvgPicture.asset("assets/images/menubar.svg"),
-          onPressed: () => print("button is tapped"),
-        ),
-        title: InsiteImage(
-          height: 65,
-          width: 65,
-          path: "assets/images/hitachi.png",
-        ),
-        actions: [
-          new IconButton(
-            icon: SvgPicture.asset("assets/images/filter.svg"),
-            onPressed: () => print("button is tapped"),
-          ),
-          new IconButton(
-            icon: SvgPicture.asset("assets/images/searchs.svg"),
-            onPressed: () => print("button is tapped"),
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -204,14 +182,14 @@ class _TabPageState extends State<TabPage> {
   Widget _tabcontainer(int index) {
     return GestureDetector(
       onTap: () {
-      buttontap(index);
+        buttontap(index);
       },
       child: Container(
           width: 82,
           height: 87.29,
           child: Card(
             semanticContainer: true,
-            color:selectedcard==index?tango: cardcolor,
+            color: selectedcard == index ? tango : cardcolor,
             elevation: 10.0,
             //margin: EdgeInsets.all(1.0),
             shape: new RoundedRectangleBorder(
@@ -228,14 +206,14 @@ class _TabPageState extends State<TabPage> {
   Widget _cardcontainer(int index) {
     return GestureDetector(
       onTap: () {
-       buttontap(index);
+        buttontap(index);
       },
       child: Container(
           width: 82,
           height: 87.29,
           child: Card(
             semanticContainer: true,
-            color: selectedcard==index?tango: cardcolor,
+            color: selectedcard == index ? tango : cardcolor,
             elevation: 10.0,
             //margin: EdgeInsets.all(1.0),
             shape: new RoundedRectangleBorder(
@@ -253,14 +231,13 @@ class _TabPageState extends State<TabPage> {
     return GestureDetector(
       onTap: () {
         buttontap(index);
-       
       },
       child: Container(
           width: 82,
           height: 87.29,
           child: Card(
             semanticContainer: true,
-            color: selectedcard==index?tango: cardcolor,
+            color: selectedcard == index ? tango : cardcolor,
             elevation: 10.0,
             //margin: EdgeInsets.all(1.0),
             shape: new RoundedRectangleBorder(
@@ -278,14 +255,13 @@ class _TabPageState extends State<TabPage> {
     return GestureDetector(
       onTap: () {
         buttontap(index);
-        
       },
       child: Container(
           width: 82,
           height: 87.29,
           child: Card(
             semanticContainer: true,
-            color: selectedcard==index?tango: cardcolor,
+            color: selectedcard == index ? tango : cardcolor,
             elevation: 10.0,
             //margin: EdgeInsets.all(1.0),
             shape: new RoundedRectangleBorder(
@@ -298,6 +274,7 @@ class _TabPageState extends State<TabPage> {
           )),
     );
   }
+
   void buttontap(int index) {
     if (index == 0) {
       setState(() {
@@ -318,8 +295,6 @@ class _TabPageState extends State<TabPage> {
       setState(() {
         selectedcard = index;
       });
-     
     }
-   
   }
 }
