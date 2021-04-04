@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
-import 'package:intl/intl.dart';
 
-class AssetItem extends StatelessWidget {
-  final Asset asset;
+class FleetItem extends StatelessWidget {
+  final Fleet fleet;
   final VoidCallback onCallback;
-  const AssetItem({this.asset, this.onCallback});
+  const FleetItem({this.fleet, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +46,10 @@ class AssetItem extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         margin:
@@ -69,7 +68,7 @@ class AssetItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              asset != null ? asset.productFamily : "",
+                              fleet.dealerName,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -96,21 +95,18 @@ class AssetItem extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    child: RichText(
-                        text: TextSpan(children: [
-                      TextSpan(text: "Serial No. "),
-                      TextSpan(
-                        text: asset != null ? asset.serialNumber : "",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.bold,
-                            color: tango),
-                      )
-                    ])),
-                  ),
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(text: "Serial No. "),
+                    TextSpan(
+                      text: fleet.assetSerialNumber,
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.bold,
+                          color: tango),
+                    )
+                  ])),
                 ],
               ),
             ),
@@ -125,7 +121,7 @@ class AssetItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Total Duration",
+                        "Last Known Status",
                         style: TextStyle(
                             fontSize: 13.0,
                             fontFamily: 'Roboto',
@@ -134,10 +130,7 @@ class AssetItem extends StatelessWidget {
                             color: textcolor),
                       ),
                       Text(
-                        asset != null && asset.assetLastReceivedEvent != null
-                            ? getLastReportedDate(asset
-                                .assetLastReceivedEvent.lastReceivedEventUTC)
-                            : "",
+                        fleet.status,
                         style: TextStyle(
                             fontSize: 13.0,
                             fontFamily: 'Roboto',
@@ -155,7 +148,7 @@ class AssetItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "Last Known Operator",
+                        "Custom Asset State",
                         style: TextStyle(
                             fontSize: 13.0,
                             fontFamily: 'Roboto',
@@ -164,10 +157,7 @@ class AssetItem extends StatelessWidget {
                             color: textcolor),
                       ),
                       Text(
-                        asset != null && asset.assetLastReceivedEvent != null
-                            ? getLastReportedDate(asset.assetLastReceivedEvent
-                                .lastReceivedEventTimeLocal)
-                            : "",
+                        fleet.customStateDescription,
                         style: TextStyle(
                             fontSize: 13.0,
                             fontFamily: 'Roboto',
@@ -184,23 +174,5 @@ class AssetItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getLastReportedDate(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
-  }
-
-  String getLastDuration(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
   }
 }

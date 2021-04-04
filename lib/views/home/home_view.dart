@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:insite/assetlist/asset_list.dart';
 import 'package:insite/dashboard/homedash.dart';
 import 'package:insite/tab/tabpage.dart';
+import 'package:insite/views/asset/asset_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -95,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
-      return AssetList(
+      return AssetView(
         onDetailPageSelected: () {
           updateCurrentState(ScreenType.ASSET_DETAIL);
         },
@@ -103,9 +103,11 @@ class _HomeViewState extends State<HomeView> {
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
       return TabPage();
     } else if (currentScreenType == ScreenType.FLEET) {
-      return FleetView(        onDetailPageSelected: () {
+      return FleetView(
+        onDetailPageSelected: () {
           updateCurrentState(ScreenType.ASSET_DETAIL);
-        },);
+        },
+      );
     } else if (currentScreenType == ScreenType.HOME) {
       return HomeDash(
         onDashboardItemSelected: (newState) {
@@ -113,7 +115,9 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else {
-      return EmptyView();
+      return EmptyView(
+        title: "Coming soon!",
+      );
     }
   }
 }

@@ -14,3 +14,22 @@ class Pagination {
 
   Map<String, dynamic> toJson() => _$PaginationToJson(this);
 }
+
+@JsonSerializable()
+class AssetPagination {
+  final int assetsWithoutActiveCoreSubscription;
+  final int pageNumber;
+  final int pageSize;
+  final int totalAssets;
+
+  AssetPagination(
+      {this.pageNumber,
+      this.totalAssets,
+      this.pageSize,
+      this.assetsWithoutActiveCoreSubscription});
+
+  factory AssetPagination.fromJson(Map<String, dynamic> json) =>
+      _$AssetPaginationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetPaginationToJson(this);
+}

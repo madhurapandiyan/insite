@@ -20,3 +20,22 @@ Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
       'pageNumber': instance.pageNumber,
       'pageSize': instance.pageSize,
     };
+
+AssetPagination _$AssetPaginationFromJson(Map<String, dynamic> json) {
+  return AssetPagination(
+    pageNumber: json['pageNumber'] as int,
+    totalAssets: json['totalAssets'] as int,
+    pageSize: json['pageSize'] as int,
+    assetsWithoutActiveCoreSubscription:
+        json['assetsWithoutActiveCoreSubscription'] as int,
+  );
+}
+
+Map<String, dynamic> _$AssetPaginationToJson(AssetPagination instance) =>
+    <String, dynamic>{
+      'assetsWithoutActiveCoreSubscription':
+          instance.assetsWithoutActiveCoreSubscription,
+      'pageNumber': instance.pageNumber,
+      'pageSize': instance.pageSize,
+      'totalAssets': instance.totalAssets,
+    };

@@ -52,7 +52,8 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
           options.headers.addAll({
-            "Content-Type": "application/x-www-form-urlencoded",
+            "content-type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + await _localService.getoken(),
             "timezoneoffset": -330
           });
@@ -68,7 +69,8 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
           options.headers.addAll({
-            "Content-Type": "application/x-www-form-urlencoded",
+            "content-type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + await _localService.getoken(),
             "timezoneoffset": -330
           });

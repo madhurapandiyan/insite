@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/dialog.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import 'customer_selection_view_model.dart';
@@ -22,6 +23,9 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
     return ViewModelBuilder<CustomerSelectionViewModel>.reactive(
       builder: (BuildContext context, CustomerSelectionViewModel viewModel,
           Widget _) {
+        if (viewModel.onAccountSelected) {
+          widget.onCustomerSelected();
+        }
         return Scaffold(
           backgroundColor: cod_grey,
           body: SingleChildScrollView(
@@ -91,7 +95,11 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                     child: CustomerSelectionDropDown(
                       selectionType: SelectionType.ACCOUNT,
                       onSelected: (SelectedData value) {
+                        ProgressDialog.show(context);
                         viewModel.setAccountSelected(value.value);
+                        Future.delayed(Duration(seconds: 1), () {
+                          ProgressDialog.dismiss();
+                        });
                       },
                       onReset: () {
                         viewModel.setAccountSelected(null);
@@ -105,21 +113,30 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                       list: viewModel.customers,
                     )),
                 viewModel.accountSelected != null &&
-                        viewModel.subAccountSelected == null
+                        viewModel.subAccountSelected == null &&
+                        viewModel.subCustomers.isNotEmpty
                     ? SizedBox(
                         height: 10,
                       )
                     : SizedBox(),
                 viewModel.accountSelected != null &&
-                        viewModel.subAccountSelected == null
+                            viewModel.subAccountSelected == null &&
+                            viewModel.subCustomers.isNotEmpty ||
+                        viewModel.accountSelected != null &&
+                            viewModel.subAccountSelected != null &&
+                            viewModel.subCustomers.isNotEmpty
                     ? Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: CustomerSelectionDropDown(
                           selectionType: SelectionType.CUSTOMER,
                           onSelected: (value) {
+                            ProgressDialog.show(context);
                             viewModel.setSubAccountSelected(value.value);
-                            widget.onCustomerSelected();
+                            Future.delayed(Duration(seconds: 1), () {
+                              ProgressDialog.dismiss();
+                              widget.onCustomerSelected();
+                            });
                           },
                           onReset: () {
                             viewModel.setAccountSelected(null);

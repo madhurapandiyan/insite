@@ -43,23 +43,20 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                 selectionType: widget.selectionType, value: customer));
           },
           child: Container(
-            color: selected != null
-                ? selected.value.CustomerUID == customer.CustomerUID
-                    ? tango
-                    : tuna
-                : selectedIndex != null && selectedIndex == index
-                    ? tango
-                    : tuna,
+            color: getColor(customer, index),
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  customer.DisplayName,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                Expanded(
+                  child: Text(
+                    customer.DisplayName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
                 ),
                 IconButton(
                     icon: Icon(
@@ -73,5 +70,18 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
         );
       },
     );
+  }
+
+  Color getColor(customer, index) {
+    if (selectedIndex != null && selected != null) {
+      return selectedIndex == index ? tango : tuna;
+    } else {
+      return selectedIndex != null && selectedIndex == index
+          ? tango
+          : selected != null &&
+                  selected.value.CustomerUID == customer.CustomerUID
+              ? tango
+              : tuna;
+    }
   }
 }

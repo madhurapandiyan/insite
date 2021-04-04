@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
 class EmptyView extends StatelessWidget {
-  const EmptyView({Key key}) : super(key: key);
+  final String title;
+  const EmptyView({this.title});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: cod_grey,
       child: Center(
-        child: Text("Coming soon!",
+        child: Text(title,
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

@@ -61,12 +61,12 @@ class _SplashViewState extends State<SplashView> {
         print("URL changed: $url");
         if (url.startsWith(
             "https://unifiedfleet.myvisionlink.com/#access_token")) {
-          _onUrlChanged.cancel();
           print("URL changed with access token: $url");
           try {
             List<String> list = url.split("=");
             print("url split list $list");
             if (list.isNotEmpty) {
+              _onUrlChanged.cancel();
               String accessTokenString = list[1];
               List<String> accessTokenList = accessTokenString.split("&");
               print("accessToken split list $list");

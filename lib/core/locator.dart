@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:insite/core/services/asset_service.dart';
+import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
@@ -28,5 +30,9 @@ class LocatorInjector {
     locator.registerLazySingleton(() => LoginService());
     log.d('Registering native  Service');
     locator.registerLazySingleton(() => NativeService(locator()));
+    log.d('Registering fleet  Service');
+    locator.registerLazySingleton(() => FleetService());
+    log.d('Registering asset  Service');
+    locator.registerLazySingleton(() => AssetService());
   }
 }

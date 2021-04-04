@@ -1,4 +1,6 @@
+import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/fleet.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -41,8 +43,38 @@ abstract class RestClient {
       @Query("targetcustomeruid") String targetcustomeruid);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
-  Future<CustomersResponse> fleetSummary(@Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize, @Query("sort") int sort);
+  Future<FleetSummaryResponse> fleetSummary(
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("sort") String sort,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
+  Future<AssetResponse> assetSummary(
+      @Query("startdate") String startdate,
+      @Query("enddate") String enddate,
+      @Query("pagesize") int pagesize,
+      @Query("pagenumber") int pagenumber,
+      @Query("sort") String sort,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
+  Future<FleetSummaryResponse> fleetSummaryCI(
+      @Query("customerIdentifier") String customerIdentifier,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("sort") String sort,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
+  Future<AssetResponse> assetSummaryCI(
+      @Query("customerUID") String customerUID,
+      @Query("startdate") String startdate,
+      @Query("enddate") String enddate,
+      @Query("pagesize") int pagesize,
+      @Query("pagenumber") int pagenumber,
+      @Query("sort") String sort,
+      @Header("X-VisionLink-CustomerUid") customerId);
 }
 
 @JsonSerializable()

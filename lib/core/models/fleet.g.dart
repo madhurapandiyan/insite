@@ -15,6 +15,7 @@ Fleet _$FleetFromJson(Map<String, dynamic> json) {
     dealerCode: json['dealerCode'] as String,
     dealerCustomerNumber: json['dealerCustomerNumber'] as String,
     dealerCustomerName: json['dealerCustomerName'] as String,
+    customStateDescription: json['customStateDescription'] as String,
     dealerName: json['dealerName'] as String,
     hourMeter: (json['hourMeter'] as num)?.toDouble(),
     lastHourMeterUTC: json['lastHourMeterUTC'] as String,
@@ -52,4 +53,28 @@ Map<String, dynamic> _$FleetToJson(Fleet instance) => <String, dynamic>{
       'universalCustomerName': instance.universalCustomerName,
       'dealerCustomerNumber': instance.dealerCustomerNumber,
       'lastLocationUpdateUTC': instance.lastLocationUpdateUTC,
+      'customStateDescription': instance.customStateDescription,
+    };
+
+FleetSummaryResponse _$FleetSummaryResponseFromJson(Map<String, dynamic> json) {
+  return FleetSummaryResponse(
+    fleetRecords: (json['fleetRecords'] as List)
+        ?.map(
+            (e) => e == null ? null : Fleet.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    links: json['links'] == null
+        ? null
+        : Links.fromJson(json['links'] as Map<String, dynamic>),
+    pagination: json['pagination'] == null
+        ? null
+        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$FleetSummaryResponseToJson(
+        FleetSummaryResponse instance) =>
+    <String, dynamic>{
+      'links': instance.links,
+      'pagination': instance.pagination,
+      'fleetRecords': instance.fleetRecords,
     };

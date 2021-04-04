@@ -182,10 +182,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CustomersResponse> fleetSummary(pageNumber, pageSize, sort) async {
+  Future<FleetSummaryResponse> fleetSummary(
+      pageNumber, pageSize, sort, customerId) async {
     ArgumentError.checkNotNull(pageNumber, 'pageNumber');
     ArgumentError.checkNotNull(pageSize, 'pageSize');
     ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'pageNumber': pageNumber,
@@ -198,11 +200,104 @@ class _RestClient implements RestClient {
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
-            headers: <String, dynamic>{},
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = CustomersResponse.fromJson(_result.data);
+    final value = FleetSummaryResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetResponse> assetSummary(
+      startdate, enddate, pagesize, pagenumber, sort, customerId) async {
+    ArgumentError.checkNotNull(startdate, 'startdate');
+    ArgumentError.checkNotNull(enddate, 'enddate');
+    ArgumentError.checkNotNull(pagesize, 'pagesize');
+    ArgumentError.checkNotNull(pagenumber, 'pagenumber');
+    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startdate': startdate,
+      r'enddate': enddate,
+      r'pagesize': pagesize,
+      r'pagenumber': pagenumber,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<FleetSummaryResponse> fleetSummaryCI(
+      customerIdentifier, pageNumber, pageSize, sort, customerId) async {
+    ArgumentError.checkNotNull(customerIdentifier, 'customerIdentifier');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'customerIdentifier': customerIdentifier,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = FleetSummaryResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetResponse> assetSummaryCI(customerUID, startdate, enddate,
+      pagesize, pagenumber, sort, customerId) async {
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(startdate, 'startdate');
+    ArgumentError.checkNotNull(enddate, 'enddate');
+    ArgumentError.checkNotNull(pagesize, 'pagesize');
+    ArgumentError.checkNotNull(pagenumber, 'pagenumber');
+    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'customerUID': customerUID,
+      r'startdate': startdate,
+      r'enddate': enddate,
+      r'pagesize': pagesize,
+      r'pagenumber': pagenumber,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetResponse.fromJson(_result.data);
     return value;
   }
 }

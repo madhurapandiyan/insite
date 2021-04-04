@@ -1,3 +1,5 @@
+import 'package:insite/core/models/links.dart';
+import 'package:insite/core/models/pagination.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'fleet.g.dart';
 
@@ -23,7 +25,7 @@ class Fleet {
   final String universalCustomerName;
   final String dealerCustomerNumber;
   final String lastLocationUpdateUTC;
-
+  final String customStateDescription;
   Fleet(
       {this.assetIdentifier,
       this.assetId,
@@ -32,6 +34,7 @@ class Fleet {
       this.dealerCode,
       this.dealerCustomerNumber,
       this.dealerCustomerName,
+      this.customStateDescription,
       this.dealerName,
       this.hourMeter,
       this.lastHourMeterUTC,
@@ -48,4 +51,17 @@ class Fleet {
   factory Fleet.fromJson(Map<String, dynamic> json) => _$FleetFromJson(json);
 
   Map<String, dynamic> toJson() => _$FleetToJson(this);
+}
+
+@JsonSerializable()
+class FleetSummaryResponse {
+  final Links links;
+  final Pagination pagination;
+  final List<Fleet> fleetRecords;
+  FleetSummaryResponse({this.fleetRecords, this.links, this.pagination});
+
+  factory FleetSummaryResponse.fromJson(Map<String, dynamic> json) =>
+      _$FleetSummaryResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FleetSummaryResponseToJson(this);
 }

@@ -16,6 +16,12 @@ class CustomerSelectionViewModel extends BaseViewModel {
   String _loggedInUserMail = "";
   String get loggedInUserMail => _loggedInUserMail;
 
+  bool _loading = false;
+  bool get loading => _loading;
+
+  bool _onAccountSelected = false;
+  bool get onAccountSelected => _onAccountSelected;
+
   Customer _accountSelected;
   Customer get accountSelected => _accountSelected;
 
@@ -53,8 +59,17 @@ class CustomerSelectionViewModel extends BaseViewModel {
     List<Customer> result =
         await _loginService.getSubCustomers(_accountSelected.CustomerUID);
     Logger().d("getSubCustomerList " + result.length.toString());
-    _subCustomers = result;
-    notifyListeners();
+    if (result.isEmpty) {
+      _onAccountSelected = true;
+      _localService.saveAccountInfo(accountSelected);
+      _localService.saveCustomerInfo(null);
+      Future.delayed(Duration(seconds: 1), () {
+        notifyListeners();
+      });
+    } else {
+      _subCustomers = result;
+      notifyListeners();
+    }
   }
 
   setAccountSelected(value) {
@@ -67,6 +82,20 @@ class CustomerSelectionViewModel extends BaseViewModel {
 
   setSubAccountSelected(value) {
     _subAccountSelected = value;
+    _localService.saveAccountInfo(accountSelected);
+    _localService.saveCustomerInfo(subAccountSelected);
+    Future.delayed(Duration(seconds: 1), () {
+      notifyListeners();
+    });
+  }
+
+  showLoader() {
+    _loading = true;
+    notifyListeners();
+  }
+
+  hideLoader() {
+    _loading = false;
     notifyListeners();
   }
 }
