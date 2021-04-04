@@ -1,8 +1,13 @@
+import 'package:insite/core/locator.dart';
+import 'package:insite/core/repository/Retrofit.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class CustomerSelectionViewModel extends BaseViewModel {
+  var _localService = locator<LocalService>();
+
   Logger log;
   bool _isAccountSelected = false;
   bool get isAccountSelected => _isAccountSelected;
@@ -10,11 +15,21 @@ class CustomerSelectionViewModel extends BaseViewModel {
   bool _isCustomerSelected = false;
   bool get isCustomerSelected => _isCustomerSelected;
 
+  String _loggedInUserMail = "";
+  String get loggedInUserMail => _loggedInUserMail;
+
   String _accountSelected = "";
   String get accountSelected => _accountSelected;
 
   CustomerSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    getLoggedInUserMail();
+  }
+
+  getLoggedInUserMail() async {
+    UserInfo userInfo = await _localService.getLoggedInUser();
+    _loggedInUserMail = userInfo.email;
+    notifyListeners();
   }
 
   setAccountSelected(value) {

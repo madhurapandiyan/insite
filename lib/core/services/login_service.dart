@@ -10,32 +10,26 @@ class LoginService extends BaseService {
   final _nagivationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
 
-  Future<UserInfo> getLoggedInUserInfo(code) async {
-    var payLoad = UserPayLoad(
-        env: "dev",
-        code: code,
-        client_key: "r9GxbyX4uNMjpB1yZge6fiWSGQ4a",
-        grant_type: "authorization_code",
-        tenantDomain: "trimble.com",
-        client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
-        redirect_uri: "eoltool://mobile");
-    return await MyApi().getClientOne().getUserInfo(payLoad);
+  Future<UserInfo> getLoggedInUserInfo() async {
+    // var payLoad = UserPayLoad(
+    //     env: "dev",
+    //     code: code,
+    //     client_key: "r9GxbyX4uNMjpB1yZge6fiWSGQ4a",
+    //     grant_type: "authorization_code",
+    //     tenantDomain: "trimble.com",
+    //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
+    //     redirect_uri: "eoltool://mobile");
+    return await MyApi().getClientOne().getUserInfo();
   }
 
-  Future<AuthenticationResponse> authenticate() async {
-    return await MyApi().getClient().authenticate();
-  }
-
-  void getToken(code) async {
-    AuthenticationResponse response = await authenticate();
-    if (response != null) {
-      _localService.setIsloggedIn(true);
-      _localService.saveToken(response.access_token);
-    }
+  void getUser(token) async {
+    _localService.setIsloggedIn(true);
+    _localService.saveToken(token);
     try {
-      UserInfo info = await getLoggedInUserInfo(code);
+      UserInfo userInfo = await getLoggedInUserInfo();
       Future.delayed(Duration(seconds: 1), () {
-        if (response != null && info != null) {
+        if (userInfo != null) {
+          _localService.saveUserInfo(userInfo);
           _nagivationService.replaceWith(homeViewRoute);
         }
       });

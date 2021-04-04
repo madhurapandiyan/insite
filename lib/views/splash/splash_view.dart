@@ -6,6 +6,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
 
@@ -16,10 +17,10 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   String loginUrl =
-      "https://identity-stg.trimble.com/i/oauth2/authorize?scope=openid&response_type=code&redirect_uri=" +
-          "eoltool://mobile" +
+      "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
+          "https://unifiedfleet.myvisionlink.com" +
           "&client_id=" +
-          "r9GxbyX4uNMjpB1yZge6fiWSGQ4a";
+          "2JkDsLlgBWwDEdRHkUiaO9TRWMYa";
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   StreamSubscription _onDestroy;
@@ -57,26 +58,33 @@ class _SplashViewState extends State<SplashView> {
     // Add a listener to on url changed
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
-        setState(() {
-          print("URL changed: $url");
-          if (url.startsWith("eoltool://mobile")) {
-            List<String> list = url.split("code=");
-            print("list $list");
+        print("URL changed: $url");
+        if (url.startsWith(
+            "https://unifiedfleet.myvisionlink.com/#access_token")) {
+          _onUrlChanged.cancel();
+          print("URL changed with access token: $url");
+          try {
+            List<String> list = url.split("=");
+            print("url split list $list");
             if (list.isNotEmpty) {
-              saveToken(list[1]);
+              String accessTokenString = list[1];
+              List<String> accessTokenList = accessTokenString.split("&");
+              print("accessToken split list $list");
+              String accessToken = accessTokenList[0];
+              print("accessToken $accessToken");
+              saveToken(accessToken);
             }
-            // saveToken(token);
-            // Navigator.of(context).pushNamedAndRemoveUntil(
-            //     "/home", (Route<dynamic> route) => false);
             flutterWebviewPlugin.close();
+          } catch (e) {
+            Logger().e(e);
           }
-        });
+        }
       }
     });
   }
 
-  saveToken(code) {
-    _loginService.getToken(code);
+  saveToken(token) {
+    _loginService.getUser(token);
   }
 
   @override

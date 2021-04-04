@@ -35,7 +35,7 @@ class SplashViewModel extends BaseViewModel {
       case "OauthCode":
         _localService.setIsloggedIn(true);
         debugPrint(methodCall.arguments);
-        getLoggedInUserDetails(methodCall.arguments);
+        getLoggedInUserDetails();
         return "This data from flutter.....";
         break;
       default:
@@ -65,8 +65,8 @@ class SplashViewModel extends BaseViewModel {
     }
   }
 
-  void getLoggedInUserDetails(code) async {
-    UserInfo userInfo = await _loginService.getLoggedInUserInfo(code);
+  void getLoggedInUserDetails() async {
+    UserInfo userInfo = await _loginService.getLoggedInUserInfo();
     _localService.saveUserInfo(userInfo);
     _nagivationService.replaceWith(homeViewRoute);
     isProcessing = false;

@@ -54,7 +54,7 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                         alignment: Alignment.centerLeft,
                         child: Expanded(
                           child: Text(
-                            "nithyamahalakshmi_p@trimble.com",
+                            viewModel.loggedInUserMail,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: Colors.white,

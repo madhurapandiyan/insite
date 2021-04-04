@@ -97,7 +97,7 @@ Map<String, dynamic> _$AuthenticationResponseToJson(
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://identity-stg.trimble.com';
+    baseUrl ??= 'https://unifiedfleet.myvisionlink.com';
   }
 
   final Dio _dio;
@@ -124,14 +124,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UserInfo> getUserInfo(payLoad) async {
-    ArgumentError.checkNotNull(payLoad, 'payLoad');
+  Future<UserInfo> getUserInfo() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(payLoad?.toJson() ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/device_reporting_service_dev/1.0/user',
+        '/userinfo?schema=openid',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -144,12 +142,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AuthenticationResponse> authenticate() async {
+  Future<CustomersResponse> accounthierarchy() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/token?grant_type=client_credentials&amp;scope=openid',
+        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy?toplevelsonly=true',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -157,7 +155,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AuthenticationResponse.fromJson(_result.data);
+    final value = CustomersResponse.fromJson(_result.data);
     return value;
   }
 }

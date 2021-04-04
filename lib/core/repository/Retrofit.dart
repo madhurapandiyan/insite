@@ -1,3 +1,4 @@
+import 'package:insite/core/models/customer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -20,7 +21,7 @@ part 'Retrofit.g.dart';
 // Abdul123$
 
 @RestApi(
-  baseUrl: "https://identity-stg.trimble.com",
+  baseUrl: "https://unifiedfleet.myvisionlink.com",
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
@@ -28,11 +29,12 @@ abstract class RestClient {
   @GET("/tasks")
   Future<List<Sample>> getTasks();
 
-  @GET("/t/trimble.com/device_reporting_service_dev/1.0/user")
-  Future<UserInfo> getUserInfo(@Body() UserPayLoad payLoad);
+  @GET("/userinfo?schema=openid")
+  Future<UserInfo> getUserInfo();
 
-  @POST("/token?grant_type=client_credentials&amp;scope=openid")
-  Future<AuthenticationResponse> authenticate();
+  @POST(
+      "/t/trimble.com/vss-customerservice/1.0/accounthierarchy?toplevelsonly=true")
+  Future<CustomersResponse> accounthierarchy();
 }
 
 @JsonSerializable()

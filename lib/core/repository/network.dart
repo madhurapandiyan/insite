@@ -25,8 +25,8 @@ class MyApi {
 }
 
 class HttpWrapper {
-  final String _baseUrl = "https://identity-stg.trimble.com";
-  final String _baseUrlOne = "https://api-stg.trimble.com";
+  final String _baseUrl = "https://unifiedfleet.myvisionlink.com";
+  final String _baseUrlOne = "https://identity.trimble.com";
 
   final bool SHOW_LOGS = true;
   final _localService = locator<LocalService>();
@@ -53,8 +53,7 @@ class HttpWrapper {
         onRequest: (Options options) async {
           options.headers.addAll({
             "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization":
-                "basic cjlHeGJ5WDR1Tk1qcEIxeVpnZTZmaVdTR1E0YTo0WGs4b0VGTGZ4dm55aU84MjFKcFFNekhoZjhh",
+            "Authorization": "Bearer " + await _localService.getoken(),
             "timezoneoffset": -330
           });
           return options;

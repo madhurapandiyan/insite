@@ -174,7 +174,14 @@ class _TabPageState extends State<TabPage> {
                 ),
               ),
             ),
-            Expanded(child: EmptyView())
+            Container(
+                height: 100,
+                padding: EdgeInsets.all(16.0),
+                child: Text("Coming soon!",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)))
           ],
         ),
       ),
