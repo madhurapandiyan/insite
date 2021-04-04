@@ -12,8 +12,6 @@ class CustomerSelectionView extends StatefulWidget {
 }
 
 class _CustomerSelectionViewState extends State<CustomerSelectionView> {
-  String accountSelected = "";
-  String customerSelected = "";
   @override
   void initState() {
     super.initState();
@@ -93,38 +91,46 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                     child: CustomerSelectionDropDown(
                       selectionType: SelectionType.ACCOUNT,
                       onSelected: (SelectedData value) {
-                        accountSelected = value.value;
-                        viewModel.setAccountSelected(true);
+                        viewModel.setAccountSelected(value.value);
                       },
                       onReset: () {
-                        viewModel.setAccountSelected(false);
-                        viewModel.setCustomerSelected(false);
+                        viewModel.setAccountSelected(null);
+                        viewModel.setSubAccountSelected(null);
                       },
-                      selected: "(1050) TATA HITACHI CORPORATE",
-                      showList: false,
+                      selected: viewModel.accountSelected != null
+                          ? SelectedData(
+                              selectionType: SelectionType.ACCOUNT,
+                              value: viewModel.accountSelected)
+                          : null,
+                      list: viewModel.customers,
                     )),
-                viewModel.isAccountSelected && !viewModel.isCustomerSelected
+                viewModel.accountSelected != null &&
+                        viewModel.subAccountSelected == null
                     ? SizedBox(
                         height: 10,
                       )
                     : SizedBox(),
-                viewModel.isAccountSelected && !viewModel.isCustomerSelected
+                viewModel.accountSelected != null &&
+                        viewModel.subAccountSelected == null
                     ? Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: CustomerSelectionDropDown(
                           selectionType: SelectionType.CUSTOMER,
                           onSelected: (value) {
-                            customerSelected = value.value;
-                            viewModel.setAccountSelected(true);
+                            viewModel.setSubAccountSelected(value.value);
                             widget.onCustomerSelected();
                           },
                           onReset: () {
-                            viewModel.setAccountSelected(false);
-                            viewModel.setCustomerSelected(false);
+                            viewModel.setAccountSelected(null);
+                            viewModel.setSubAccountSelected(null);
                           },
-                          selected: "CUSTOMERS",
-                          showList: false,
+                          selected: viewModel.subAccountSelected != null
+                              ? SelectedData(
+                                  selectionType: SelectionType.CUSTOMER,
+                                  value: viewModel.subAccountSelected)
+                              : null,
+                          list: viewModel.subCustomers,
                         ),
                       )
                     : SizedBox(),

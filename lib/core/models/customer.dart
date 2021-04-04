@@ -7,7 +7,7 @@ class Customer {
   final String Name;
   final String CustomerType;
   final String DisplayName;
-  final String Children;
+  final List<Customer> Children;
   Customer(
       {this.CustomerUID,
       this.Name,
@@ -27,44 +27,44 @@ List<Customer> customerList = [
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
   Customer(
       CustomerUID: "",
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
   Customer(
       CustomerUID: "",
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
   Customer(
       CustomerUID: "",
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
   Customer(
       CustomerUID: "",
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
   Customer(
       CustomerUID: "",
       Name: "L&T CONSTRUCTION EQUIPMENT LTD",
       CustomerType: "Dealer",
       DisplayName: "L&T CONSTRUCTION EQUIPMENT LTD",
-      Children: ""),
+      Children: []),
 ];
 
 @JsonSerializable()
 class CustomersResponse {
-  final String userId;
-  final List<Customer> customers;
-  CustomersResponse({this.userId, this.customers});
+  final String UserUID;
+  final List<Customer> Customers;
+  CustomersResponse({this.UserUID, this.Customers});
   factory CustomersResponse.fromJson(Map<String, dynamic> json) =>
       _$CustomersResponseFromJson(json);
 

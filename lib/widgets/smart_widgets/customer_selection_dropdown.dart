@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/smart_widgets/customer_selectable_list.dart';
+import 'package:insite/core/models/customer.dart';
+import 'customer_selectable_list.dart';
 
 class CustomerSelectionDropDown extends StatefulWidget {
   final SelectionType selectionType;
-  final String selected;
+  final SelectedData selected;
   final Function(SelectedData) onSelected;
   final VoidCallback onReset;
-  final bool showList;
+  final List<Customer> list;
   CustomerSelectionDropDown(
       {this.selectionType,
       this.selected,
       this.onSelected,
-      this.showList,
+      this.list,
       this.onReset});
 
   @override
@@ -28,6 +29,7 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
 
   @override
   void initState() {
+    data = widget.selected != null ? widget.selected : null;
     super.initState();
   }
 
@@ -60,7 +62,7 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
                       children: [
                         Expanded(
                           child: Text(
-                            widget.selected,
+                            data != null ? data.value.DisplayName : "Select",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: Colors.white,
@@ -91,6 +93,8 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
                             data = value;
                             setState(() {});
                           },
+                          selectedData: data != null ? data : null,
+                          list: widget.list,
                         ),
                       )
                     : SizedBox(),
@@ -146,7 +150,7 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
 
 class SelectedData {
   final SelectionType selectionType;
-  final String value;
+  final Customer value;
   SelectedData({this.selectionType, this.value});
 }
 

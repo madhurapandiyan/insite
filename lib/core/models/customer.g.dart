@@ -11,7 +11,10 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
     CustomerUID: json['CustomerUID'] as String,
     Name: json['Name'] as String,
     CustomerType: json['CustomerType'] as String,
-    Children: json['Children'] as String,
+    Children: (json['Children'] as List)
+        ?.map((e) =>
+            e == null ? null : Customer.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     DisplayName: json['DisplayName'] as String,
   );
 }
@@ -26,8 +29,8 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
 
 CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) {
   return CustomersResponse(
-    userId: json['userId'] as String,
-    customers: (json['customers'] as List)
+    UserUID: json['UserUID'] as String,
+    Customers: (json['Customers'] as List)
         ?.map((e) =>
             e == null ? null : Customer.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -36,6 +39,6 @@ CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$CustomersResponseToJson(CustomersResponse instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
-      'customers': instance.customers,
+      'UserUID': instance.UserUID,
+      'Customers': instance.Customers,
     };

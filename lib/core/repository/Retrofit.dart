@@ -32,9 +32,17 @@ abstract class RestClient {
   @GET("/userinfo?schema=openid")
   Future<UserInfo> getUserInfo();
 
-  @POST(
-      "/t/trimble.com/vss-customerservice/1.0/accounthierarchy?toplevelsonly=true")
-  Future<CustomersResponse> accounthierarchy();
+  @GET("/t/trimble.com/vss-customerservice/1.0/accounthierarchy")
+  Future<CustomersResponse> accountHierarchy(
+      @Query("toplevelsonly") bool toplevelsonly);
+
+  @GET("/t/trimble.com/vss-customerservice/1.0/accounthierarchy")
+  Future<CustomersResponse> accountHierarchyChildren(
+      @Query("targetcustomeruid") String targetcustomeruid);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
+  Future<CustomersResponse> fleetSummary(@Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize, @Query("sort") int sort);
 }
 
 @JsonSerializable()

@@ -142,15 +142,62 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CustomersResponse> accounthierarchy() async {
+  Future<CustomersResponse> accountHierarchy(toplevelsonly) async {
+    ArgumentError.checkNotNull(toplevelsonly, 'toplevelsonly');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'toplevelsonly': toplevelsonly};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy?toplevelsonly=true',
+        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'POST',
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CustomersResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<CustomersResponse> accountHierarchyChildren(targetcustomeruid) async {
+    ArgumentError.checkNotNull(targetcustomeruid, 'targetcustomeruid');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'targetcustomeruid': targetcustomeruid
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CustomersResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<CustomersResponse> fleetSummary(pageNumber, pageSize, sort) async {
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(sort, 'sort');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
             headers: <String, dynamic>{},
             extra: _extra,
             baseUrl: baseUrl),
