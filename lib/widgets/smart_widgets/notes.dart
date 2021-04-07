@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class Notes extends StatelessWidget {
@@ -15,7 +16,7 @@ class Notes extends StatelessWidget {
   Widget build(BuildContext context) {
     final kTextFieldBorder = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.transparent,
+        color: transparent,
       ),
       borderRadius: BorderRadius.all(
         const Radius.circular(10.0),
@@ -26,8 +27,8 @@ class Notes extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.2,
       decoration: new BoxDecoration(
-        color: Color(0xFF303238),
-        border: Border.all(color: Colors.black, width: 0.0),
+        color: tuna,
+        border: Border.all(color: black, width: 0.0),
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: Padding(
@@ -38,7 +39,7 @@ class Notes extends StatelessWidget {
               children: [
                 Icon(
                   Icons.keyboard_arrow_down,
-                  color: Colors.white,
+                  color: white,
                 ),
                 SizedBox(
                   width: 10,
@@ -46,9 +47,7 @@ class Notes extends StatelessWidget {
                 Text(
                   'NOTES',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                      color: white, fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
@@ -82,7 +81,7 @@ class Notes extends StatelessWidget {
                           disabledBorder: kTextFieldBorder,
                           hintText: 'Enter Notes here',
                           isCollapsed: true,
-                          fillColor: Colors.white,
+                          fillColor: white,
                           filled: true,
                           contentPadding: EdgeInsets.symmetric(
                               vertical:
@@ -100,8 +99,8 @@ class Notes extends StatelessWidget {
                       width: 90,
                       height: 40,
                       onTap: onTap,
-                      bgColor: Color(0xFFF37021),
-                      textColor: Colors.white,
+                      bgColor: tango,
+                      textColor: white,
                     ),
                   ),
                 ],
