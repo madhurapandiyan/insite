@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:insite/dashboard/homedash.dart';
-import 'package:insite/tab/tabpage.dart';
 import 'package:insite/views/asset/asset_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/tab_page/tab_page_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:stacked/stacked.dart';
@@ -98,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      return TabPage();
+      return TabPageView();
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView(
         onDetailPageSelected: () {
