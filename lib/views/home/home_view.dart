@@ -17,11 +17,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  ScreenType currentScreenType;
-
   @override
   void initState() {
-    currentScreenType = ScreenType.ACCOUNT;
     super.initState();
   }
 
@@ -30,7 +27,9 @@ class _HomeViewState extends State<HomeView> {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (BuildContext context, HomeViewModel viewModel, Widget _) {
         return WillPopScope(
-          onWillPop: onBackPressed,
+          onWillPop: () {
+            return onBackPressed(viewModel);
+          },
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: appbarcolor,
@@ -38,7 +37,7 @@ class _HomeViewState extends State<HomeView> {
                   icon: SvgPicture.asset("assets/images/menubar.svg"),
                   onPressed: () {
                     print("button is tapped");
-                    updateCurrentState(ScreenType.HOME);
+                    updateCurrentState(ScreenType.HOME, viewModel);
                   }),
               title: InsiteImage(
                 height: 65,
@@ -56,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ],
             ),
-            body: getCurrentScreen(currentScreenType),
+            body: getCurrentScreen(viewModel.currentScreenType, viewModel),
           ),
         );
       },
@@ -64,40 +63,38 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Future<bool> onBackPressed() {
-    if (currentScreenType == ScreenType.HOME) {
-      updateCurrentState(ScreenType.ACCOUNT);
+  Future<bool> onBackPressed(HomeViewModel model) {
+    if (model.currentScreenType == ScreenType.HOME) {
+      updateCurrentState(ScreenType.ACCOUNT, model);
       return Future.value(false);
-    } else if (currentScreenType == ScreenType.ACCOUNT) {
+    } else if (model.currentScreenType == ScreenType.ACCOUNT) {
       return Future.value(true);
-    } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      updateCurrentState(ScreenType.ASSET_OPERATION);
+    } else if (model.currentScreenType == ScreenType.ASSET_DETAIL) {
+      updateCurrentState(ScreenType.ASSET_OPERATION, model);
       return Future.value(false);
     } else {
-      updateCurrentState(ScreenType.HOME);
+      updateCurrentState(ScreenType.HOME, model);
       return Future.value(false);
     }
   }
 
-  void updateCurrentState(newState) {
+  void updateCurrentState(newState, HomeViewModel model) {
     Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        currentScreenType = newState;
-      });
+      model.updateState(newState);
     });
   }
 
-  Widget getCurrentScreen(ScreenType currentScreenType) {
+  Widget getCurrentScreen(ScreenType currentScreenType, HomeViewModel model) {
     if (currentScreenType == ScreenType.ACCOUNT) {
       return CustomerSelectionView(
         onCustomerSelected: () {
-          updateCurrentState(ScreenType.HOME);
+          updateCurrentState(ScreenType.HOME, model);
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
       return AssetView(
         onDetailPageSelected: () {
-          updateCurrentState(ScreenType.ASSET_DETAIL);
+          updateCurrentState(ScreenType.ASSET_DETAIL, model);
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
@@ -105,13 +102,13 @@ class _HomeViewState extends State<HomeView> {
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView(
         onDetailPageSelected: () {
-          updateCurrentState(ScreenType.ASSET_DETAIL);
+          updateCurrentState(ScreenType.ASSET_DETAIL, model);
         },
       );
     } else if (currentScreenType == ScreenType.HOME) {
       return HomeDash(
         onDashboardItemSelected: (newState) {
-          updateCurrentState(newState);
+          updateCurrentState(newState, model);
         },
       );
     } else {

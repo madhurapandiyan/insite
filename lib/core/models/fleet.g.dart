@@ -10,9 +10,23 @@ Fleet _$FleetFromJson(Map<String, dynamic> json) {
   return Fleet(
     assetIdentifier: json['assetIdentifier'] as String,
     assetId: json['assetId'] as String,
+    modelYear: (json['modelYear'] as num)?.toDouble(),
+    lifetimeFuelLiters: (json['lifetimeFuelLiters'] as num)?.toDouble(),
+    lastReportedUTC: json['lastReportedUTC'] as String,
+    lastLifetimeFuelLitersUTC: json['lastLifetimeFuelLitersUTC'] as String,
+    lastPercentFuelRemainingUTC: json['lastPercentFuelRemainingUTC'] as String,
+    lastReportedLocationLatitude:
+        (json['lastReportedLocationLatitude'] as num)?.toDouble(),
+    notifications: (json['notifications'] as num)?.toDouble(),
+    lastOperatorID: json['lastOperatorID'] as String,
+    lastReportedLocation: json['lastReportedLocation'] as String,
     assetIcon: json['assetIcon'] as int,
+    lastOperatorName: json['lastOperatorName'] as String,
+    lastReportedLocationLongitude:
+        (json['lastReportedLocationLongitude'] as num)?.toDouble(),
     assetSerialNumber: json['assetSerialNumber'] as String,
     dealerCode: json['dealerCode'] as String,
+    fuelLevelLastReported: (json['fuelLevelLastReported'] as num)?.toDouble(),
     dealerCustomerNumber: json['dealerCustomerNumber'] as String,
     dealerCustomerName: json['dealerCustomerName'] as String,
     customStateDescription: json['customStateDescription'] as String,
@@ -54,6 +68,18 @@ Map<String, dynamic> _$FleetToJson(Fleet instance) => <String, dynamic>{
       'dealerCustomerNumber': instance.dealerCustomerNumber,
       'lastLocationUpdateUTC': instance.lastLocationUpdateUTC,
       'customStateDescription': instance.customStateDescription,
+      'fuelLevelLastReported': instance.fuelLevelLastReported,
+      'lastReportedLocationLatitude': instance.lastReportedLocationLatitude,
+      'lastReportedLocationLongitude': instance.lastReportedLocationLongitude,
+      'lastReportedLocation': instance.lastReportedLocation,
+      'lastReportedUTC': instance.lastReportedUTC,
+      'lastPercentFuelRemainingUTC': instance.lastPercentFuelRemainingUTC,
+      'lifetimeFuelLiters': instance.lifetimeFuelLiters,
+      'lastLifetimeFuelLitersUTC': instance.lastLifetimeFuelLitersUTC,
+      'notifications': instance.notifications,
+      'lastOperatorName': instance.lastOperatorName,
+      'lastOperatorID': instance.lastOperatorID,
+      'modelYear': instance.modelYear,
     };
 
 FleetSummaryResponse _$FleetSummaryResponseFromJson(Map<String, dynamic> json) {
@@ -77,4 +103,18 @@ Map<String, dynamic> _$FleetSummaryResponseToJson(
       'links': instance.links,
       'pagination': instance.pagination,
       'fleetRecords': instance.fleetRecords,
+    };
+
+Device _$DeviceFromJson(Map<String, dynamic> json) {
+  return Device(
+    deviceType: json['deviceType'] as String,
+    isGpsRollOverAffected: json['isGpsRollOverAffected'] as bool,
+    mainboardSoftwareVersion: json['mainboardSoftwareVersion'] as String,
+  );
+}
+
+Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
+      'deviceType': instance.deviceType,
+      'mainboardSoftwareVersion': instance.mainboardSoftwareVersion,
+      'isGpsRollOverAffected': instance.isGpsRollOverAffected,
     };

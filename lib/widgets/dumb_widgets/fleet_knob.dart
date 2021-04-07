@@ -14,8 +14,9 @@ class FleetKnob extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 120,
+      width: 130,
+      height: 130,
+      margin: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: cardcolor,
         shape: BoxShape.circle,
@@ -72,7 +73,7 @@ class FleetKnob extends StatelessWidget {
                 label.toUpperCase(),
                 style: TextStyle(
                   color: white,
-                  fontSize: 18,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               )

@@ -13,5 +13,6 @@ const Color bgcolor = Color(0xff211F20);
 const Color appbarcolor = Color(0xffFFFFFF);
 const Color cardcolor = Color(0xff303238);
 const Color textcolor = Color(0xffEBEBF2);
+const Color athenGrey = Color(0xFFEBEBF2);
 const Color containercolor = Color(0xffEEEEEE);
 const Color tabpagecolor = Color(0xffC4C4C4);

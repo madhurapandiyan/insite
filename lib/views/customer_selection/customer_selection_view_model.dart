@@ -40,6 +40,17 @@ class CustomerSelectionViewModel extends BaseViewModel {
     getCustomerList();
   }
 
+  getSelectedData() async {
+    Customer account = await _localService.getAccountInfo();
+    if (account != null) {
+      _accountSelected = account;
+    }
+    Customer _subAccount = await _localService.getAccountInfo();
+    if (_subAccount != null) {
+      _subAccountSelected = _subAccount;
+    }
+  }
+
   getLoggedInUserMail() async {
     UserInfo userInfo = await _localService.getLoggedInUser();
     _loggedInUserMail = userInfo.email;
@@ -67,7 +78,13 @@ class CustomerSelectionViewModel extends BaseViewModel {
         notifyListeners();
       });
     } else {
-      _subCustomers = result;
+      _subCustomers.add(Customer(
+          CustomerUID: "",
+          Name: "ALL ACCOUNTS",
+          CustomerType: "ALL",
+          DisplayName: "ALL ACCOUNTS",
+          Children: []));
+      _subCustomers.addAll(result);
       notifyListeners();
     }
   }
@@ -80,10 +97,12 @@ class CustomerSelectionViewModel extends BaseViewModel {
     }
   }
 
-  setSubAccountSelected(value) {
+  setSubAccountSelected(Customer value) {
     _subAccountSelected = value;
     _localService.saveAccountInfo(accountSelected);
-    _localService.saveCustomerInfo(subAccountSelected);
+    if (value.CustomerType != "ALL") {
+      _localService.saveCustomerInfo(subAccountSelected);
+    }
     Future.delayed(Duration(seconds: 1), () {
       notifyListeners();
     });

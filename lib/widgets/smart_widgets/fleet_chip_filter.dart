@@ -5,14 +5,16 @@ class FleetChipFilter extends StatelessWidget {
   const FleetChipFilter({
     Key key,
     @required this.label,
+    this.onClose,
   }) : super(key: key);
 
   final String label;
+  final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.45,
       height: 50,
       decoration: BoxDecoration(
         color: cardcolor,
@@ -26,13 +28,20 @@ class FleetChipFilter extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              label.toUpperCase(),
-              style: TextStyle(color: white, fontSize: 18),
-            ),
-            Icon(
-              Icons.close,
-              color: white,
+            Text(label.toUpperCase(),
+                style: TextStyle(
+                  color: white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                )),
+            InkWell(
+              onTap: () {
+                onClose();
+              },
+              child: Icon(
+                Icons.close,
+                color: white,
+              ),
             )
           ],
         ),
