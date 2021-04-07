@@ -26,12 +26,37 @@ class Fleet {
   final String dealerCustomerNumber;
   final String lastLocationUpdateUTC;
   final String customStateDescription;
+  final double fuelLevelLastReported;
+  final double lastReportedLocationLatitude;
+  final double lastReportedLocationLongitude;
+  final String lastReportedLocation;
+  final String lastReportedUTC;
+  final String lastPercentFuelRemainingUTC;
+  final double lifetimeFuelLiters;
+  final String lastLifetimeFuelLitersUTC;
+  final double notifications;
+  final String lastOperatorName;
+  final String lastOperatorID;
+  final double modelYear;
+
   Fleet(
       {this.assetIdentifier,
       this.assetId,
+      this.modelYear,
+      this.lifetimeFuelLiters,
+      this.lastReportedUTC,
+      this.lastLifetimeFuelLitersUTC,
+      this.lastPercentFuelRemainingUTC,
+      this.lastReportedLocationLatitude,
+      this.notifications,
+      this.lastOperatorID,
+      this.lastReportedLocation,
       this.assetIcon,
+      this.lastOperatorName,
+      this.lastReportedLocationLongitude,
       this.assetSerialNumber,
       this.dealerCode,
+      this.fuelLevelLastReported,
       this.dealerCustomerNumber,
       this.dealerCustomerName,
       this.customStateDescription,
@@ -64,4 +89,18 @@ class FleetSummaryResponse {
       _$FleetSummaryResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$FleetSummaryResponseToJson(this);
+}
+
+@JsonSerializable()
+class Device {
+  final String deviceType;
+  final String mainboardSoftwareVersion;
+  final bool isGpsRollOverAffected;
+  Device(
+      {this.deviceType,
+      this.isGpsRollOverAffected,
+      this.mainboardSoftwareVersion});
+  factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceToJson(this);
 }

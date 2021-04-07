@@ -34,6 +34,11 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -86,17 +91,17 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
                 ),
                 showList
                     ? Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        child: CustomerSelectableList(
-                          selectionType: widget.selectionType,
-                          onSelected: (SelectedData value) {
-                            data = value;
-                            setState(() {});
-                          },
-                          selectedData: data != null ? data : null,
-                          list: widget.list,
-                        ),
-                      )
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: CustomerSelectableList(
+                        selectionType: widget.selectionType,
+                        onSelected: (SelectedData value) {
+                          data = value;
+                          setState(() {});
+                        },
+                        selectedData: data != null ? data : null,
+                        list: widget.list,
+                      ),
+                    )
                     : SizedBox(),
               ],
             )),
