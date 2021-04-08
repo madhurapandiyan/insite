@@ -68,7 +68,10 @@ class LoginService extends BaseService {
     try {
       CustomersResponse response =
           await MyApi().getClient().accountHierarchyChildren(customerId);
-      List<Customer> list = response.Customers[0].Children;
+      List<Customer> list = [];
+      if (response.Customers.isNotEmpty) {
+        list = response.Customers[0].Children;
+      }
       return list;
     } catch (e) {
       Logger().e(e);

@@ -38,16 +38,27 @@ class CustomerSelectionViewModel extends BaseViewModel {
     this.log = getLogger(this.runtimeType.toString());
     getLoggedInUserMail();
     getCustomerList();
+    Future.delayed(Duration(seconds: 3), () {
+      getSelectedData();
+    });
   }
 
   getSelectedData() async {
-    Customer account = await _localService.getAccountInfo();
-    if (account != null) {
-      _accountSelected = account;
-    }
-    Customer _subAccount = await _localService.getAccountInfo();
-    if (_subAccount != null) {
-      _subAccountSelected = _subAccount;
+    Logger().i("getSelectedData");
+    try {
+      Customer account = await _localService.getAccountInfo();
+      if (account != null) {
+        Logger().i("selected account " + account.DisplayName);
+        _accountSelected = account;
+        notifyListeners();
+      }
+      Customer _subAccount = await _localService.getCustomerInfo();
+      if (_subAccount != null) {
+        _subAccountSelected = _subAccount;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e);
     }
   }
 

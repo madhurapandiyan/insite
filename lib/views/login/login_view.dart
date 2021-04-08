@@ -1,39 +1,39 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'splash_view_model.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'login_view_model.dart';
 
-class SplashView extends StatefulWidget {
+class LoginView extends StatefulWidget {
   @override
-  _SplashViewState createState() => _SplashViewState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _LoginViewState extends State<LoginView> {
+  StreamSubscription _onDestroy;
+  StreamSubscription<String> _onUrlChanged;
+  StreamSubscription<WebViewStateChanged> _onStateChanged;
+  String logoutUrl =
+      "https://identity.trimble.com/i/commonauth?commonAuthLogout=true&type=samlsso&sessionDataKey=E294FEF4A64BF7E14940E2964F78E351&commonAuthCallerPath=https://unifiedfleet.myvisionlink.com/";
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
   String loginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedfleet.myvisionlink.com" +
           "&client_id=" +
           "2JkDsLlgBWwDEdRHkUiaO9TRWMYa";
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
-
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
-
+  bool isLoading = false;
+  var _navigationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
   final _loginService = locator<LoginService>();
 
   @override
   void dispose() {
-    Logger().i("dispose state splash view");
     _onDestroy.cancel();
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
@@ -41,27 +41,9 @@ class _SplashViewState extends State<SplashView> {
     super.dispose();
   }
 
-  bool isLoading = false;
-
   @override
   void initState() {
     super.initState();
-    setupListeners();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(SplashView oldWidget) {
-    print("didUpdateWidget called");
-    super.didUpdateWidget(oldWidget);
-  }
-
-  setupListeners() {
-    Logger().i("init state splash view");
     flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
@@ -85,6 +67,15 @@ class _SplashViewState extends State<SplashView> {
       if (mounted) {
         print("URL changed: $url");
         if (url.startsWith(
+            "https://unifiedfleet.myvisionlink.com/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
+          print("URL changed with access token: $url");
+          // Future.delayed(Duration(seconds: 2), () {
+          // flutterWebviewPlugin.launch(loginUrl);
+          flutterWebviewPlugin.cleanCookies();
+          _navigationService.navigateTo(logoutViewRoute);
+          // });
+          // flutterWebviewPlugin.close();
+        } else if (url.startsWith(
             "https://unifiedfleet.myvisionlink.com/#/access_token=")) {
           print("URL changed with access token: $url");
           try {
@@ -120,26 +111,24 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SplashViewModel>.reactive(
-      builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
-        // setupListeners();
+    return ViewModelBuilder<LoginViewModel>.reactive(
+      builder: (BuildContext context, LoginViewModel viewModel, Widget _) {
         return Scaffold(
-          backgroundColor: tango,
           body: SafeArea(
             child: Stack(
               children: [
-                viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: loginUrl)
-                    : SizedBox(),
-                Center(
-                  child: CircularProgressIndicator(),
+                WebviewScaffold(
+                  url: logoutUrl,
                 ),
+                isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : SizedBox()
               ],
             ),
           ),
         );
       },
-      viewModelBuilder: () => SplashViewModel(),
+      viewModelBuilder: () => LoginViewModel(),
     );
   }
 }

@@ -5,17 +5,16 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'splash_view_model.dart';
+import 'logout_view_model.dart';
 
-class SplashView extends StatefulWidget {
+class LogoutView extends StatefulWidget {
   @override
-  _SplashViewState createState() => _SplashViewState();
+  _LogoutViewState createState() => _LogoutViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _LogoutViewState extends State<LogoutView> {
   String loginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedfleet.myvisionlink.com" +
@@ -55,14 +54,14 @@ class _SplashViewState extends State<SplashView> {
   }
 
   @override
-  void didUpdateWidget(SplashView oldWidget) {
+  void didUpdateWidget(LogoutView oldWidget) {
     print("didUpdateWidget called");
     super.didUpdateWidget(oldWidget);
   }
 
   setupListeners() {
-    Logger().i("init state splash view");
-    flutterWebviewPlugin.close();
+    Logger().i("init logout logout view");
+    // flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
     _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
@@ -72,12 +71,12 @@ class _SplashViewState extends State<SplashView> {
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
-      // if (state == WebViewState.finishLoad) {
-      //   isLoading = false;
-      //   setState(() {});
-      // } else if (state == WebViewState.startLoad) {
-      //   isLoading = true;
-      // }
+      if (state == WebViewState.finishLoad) {
+        isLoading = false;
+        setState(() {});
+      } else if (state == WebViewState.startLoad) {
+        isLoading = true;
+      }
     });
 
     // Add a listener to on url changed
@@ -120,26 +119,22 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SplashViewModel>.reactive(
-      builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
-        // setupListeners();
+    return ViewModelBuilder<LogoutViewModel>.reactive(
+      builder: (BuildContext context, LogoutViewModel viewModel, Widget _) {
         return Scaffold(
-          backgroundColor: tango,
           body: SafeArea(
             child: Stack(
               children: [
-                viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: loginUrl)
-                    : SizedBox(),
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
+                WebviewScaffold(url: loginUrl),
+                isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : SizedBox()
               ],
             ),
           ),
         );
       },
-      viewModelBuilder: () => SplashViewModel(),
+      viewModelBuilder: () => LogoutViewModel(),
     );
   }
 }
