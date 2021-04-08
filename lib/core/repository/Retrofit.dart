@@ -1,4 +1,6 @@
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -74,6 +76,14 @@ abstract class RestClient {
       @Query("pagesize") int pagesize,
       @Query("pagenumber") int pagenumber,
       @Query("sort") String sort,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
+  Future<AssetDetail> assetDetail(@Query("assetUID") String assetUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-deviceservice/2.0/asset")
+  Future<AssetDeviceResponse> asset(@Query("assetUID") String assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 }
 

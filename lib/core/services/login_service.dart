@@ -39,14 +39,18 @@ class LoginService extends BaseService {
       Future.delayed(Duration(seconds: 1), () {
         if (userInfo != null) {
           _localService.saveUserInfo(userInfo);
+          Logger().i("launching home from login service");
           _nagivationService.replaceWith(homeViewRoute);
         }
       });
     } catch (e) {
       Logger().e(e);
+      Logger().i("launching home from login service");
       _nagivationService.replaceWith(homeViewRoute);
     }
   }
+
+  void saveExpiryTime(String expiryTime) {}
 
   Future<List<Customer>> getCustomers() async {
     try {
