@@ -26,7 +26,7 @@ class HomeViewModel extends BaseViewModel {
       Customer account = await _localService.getAccountInfo();
       Customer subAccount = await _localService.getCustomerInfo();
       if (account != null) {
-        Logger().i("account selected already");
+        Logger().i("account selected already " + account.DisplayName);
         _currentScreenType = ScreenType.HOME;
         notifyListeners();
       }
@@ -41,7 +41,7 @@ class HomeViewModel extends BaseViewModel {
   void logout() {
     _localService.clearAll();
     Future.delayed(Duration(seconds: 2), () {
-      _navigationService.replaceWith(splashViewRoute);
+      _navigationService.replaceWith(loginViewRoute);
     });
   }
 }

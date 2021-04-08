@@ -22,8 +22,64 @@ class FleetItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(color: cardcolor)),
         child: Container(
-          padding: EdgeInsets.all(8),
           child: ExpansionTile(
+            trailing: SizedBox(),
+            // title: Table(
+            //   border: TableBorder.all(),
+            //   children: [
+            //     TableRow(children: [
+            //       Row(
+            //         children: [
+            //           Container(
+            //             margin:
+            //                 EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            //             decoration: BoxDecoration(
+            //                 color: Colors.white,
+            //                 borderRadius: BorderRadius.all(Radius.circular(4))),
+            //             child: InsiteImage(
+            //               height: 30,
+            //               width: 50,
+            //               path: "assets/images/truck.png",
+            //             ),
+            //           ),
+            //           Text(
+            //             fleet.dealerName,
+            //             maxLines: 2,
+            //             overflow: TextOverflow.ellipsis,
+            //             style: TextStyle(
+            //                 fontSize: 13.0,
+            //                 fontFamily: 'Roboto',
+            //                 fontWeight: FontWeight.w700,
+            //                 fontStyle: FontStyle.normal,
+            //                 color: textcolor),
+            //           ),
+            //         ],
+            //       ),
+            //       InsiteTableRow(
+            //         title: "Last Known Status",
+            //         content: "Not Reporting",
+            //       )
+            //     ]),
+            //     TableRow(children: [
+            //       RichText(
+            //           text: TextSpan(children: [
+            //         TextSpan(text: "Serial No. "),
+            //         TextSpan(
+            //           text: fleet.assetSerialNumber,
+            //           style: TextStyle(
+            //               decoration: TextDecoration.underline,
+            //               fontSize: 13.0,
+            //               fontWeight: FontWeight.bold,
+            //               color: tango),
+            //         )
+            //       ])),
+            //       InsiteTableRow(
+            //         title: "Custom Asset State",
+            //         content: fleet.customStateDescription,
+            //       )
+            //     ])
+            //   ],
+            // ),
             title: Row(
               children: [
                 Column(
@@ -94,6 +150,7 @@ class FleetItem extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
+                        width: 20,
                         height: 10,
                       ),
                       RichText(
@@ -110,6 +167,9 @@ class FleetItem extends StatelessWidget {
                       ])),
                     ],
                   ),
+                ),
+                SizedBox(
+                  width: 10,
                 ),
                 Expanded(
                   flex: 4,

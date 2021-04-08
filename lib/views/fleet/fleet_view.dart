@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/dumb_widgets/fleet_knob.dart';
 import 'package:insite/widgets/smart_widgets/fleet_chip_filter.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';
 import 'package:stacked/stacked.dart';
@@ -42,19 +41,19 @@ class _FleetViewState extends State<FleetView> {
               : viewModel.assets.isNotEmpty
                   ? Column(
                       children: [
-                        FleetFilterView(),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.175,
-                          child: ListView.builder(
-                            padding: EdgeInsets.all(8),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return FleetKnob(
-                                  count: "400", label: filters[index]);
-                            },
-                            itemCount: filters.length,
-                          ),
-                        ),
+                        // FleetFilterView(),
+                        // Container(
+                        //   height: MediaQuery.of(context).size.height * 0.175,
+                        //   child: ListView.builder(
+                        //     padding: EdgeInsets.all(8),
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemBuilder: (context, index) {
+                        //       return FleetKnob(
+                        //           count: "400", label: filters[index]);
+                        //     },
+                        //     itemCount: filters.length,
+                        //   ),
+                        // ),
                         Expanded(
                           child: ListView.builder(
                               itemCount: viewModel.assets.length,
