@@ -46,28 +46,37 @@ class SplashViewModel extends BaseViewModel {
 
   void checkLoggedIn() async {
     bool val = await _localService.getIsloggedIn();
-    Logger().d("checkLoggedIn " + val.toString());
-    if (val == null || !val) {
-      //use this user name and password
-      // nitin_r@gmail.com
-      // Welcome@1234
-      // or below one
-      //nithyamahalakshmi_p@trimble.com
-      //OsgTe@m20!9
-      // String result = await _nativeService.openLogin();
-      // Logger().i("login result %s" + result);
-      shouldLoadWebview = true;
-      notifyListeners();
-    } else {
-      if (!isProcessing) {
-        _nagivationService.navigateTo(homeViewRoute);
+    try {
+      Logger().d("checkLoggedIn " + val.toString());
+      if (val == null || !val) {
+        //use this user name and password
+        // nitin_r@gmail.com
+        // Welcome@1234
+        // or below one
+        //nithyamahalakshmi_p@trimble.com
+        //OsgTe@m20!9
+        // String result = await _nativeService.openLogin();
+        // Logger().i("login result %s" + result);
+        Logger().i("show webview");
+        shouldLoadWebview = true;
+        Future.delayed(Duration(seconds: 2), () {
+          notifyListeners();
+        });
+      } else {
+        if (!isProcessing) {
+          Logger().i("launching home splash view model");
+          _nagivationService.replaceWith(homeViewRoute);
+        }
       }
+    } catch (e) {
+      Logger().e(e);
     }
   }
 
   void getLoggedInUserDetails() async {
     UserInfo userInfo = await _loginService.getLoggedInUserInfo();
     _localService.saveUserInfo(userInfo);
+    Logger().i("launching home get logged in user detail");
     _nagivationService.replaceWith(homeViewRoute);
     isProcessing = false;
   }

@@ -96,10 +96,10 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                       selectionType: SelectionType.ACCOUNT,
                       onSelected: (SelectedData value) {
                         ProgressDialog.show(context);
-                        viewModel.setAccountSelected(value.value);
                         Future.delayed(Duration(seconds: 1), () {
                           ProgressDialog.dismiss();
                         });
+                        viewModel.setAccountSelected(value.value);
                       },
                       onReset: () {
                         viewModel.setAccountSelected(null);

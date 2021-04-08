@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/fleet.dart';
 import 'package:insite/dashboard/homedash.dart';
+import 'package:insite/utils/dialog.dart';
 import 'package:insite/views/asset/asset_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
@@ -21,6 +23,8 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
   }
+
+  Fleet selectedFleet;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +57,23 @@ class _HomeViewState extends State<HomeView> {
                   icon: SvgPicture.asset("assets/images/searchs.svg"),
                   onPressed: () => print("button is tapped"),
                 ),
+                new IconButton(
+                    icon: Icon(
+                      Icons.account_circle_rounded,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      updateCurrentState(ScreenType.ACCOUNT, viewModel);
+                    }),
+                new IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      showLogoutPrompt(viewModel);
+                      // updateCurrentState(ScreenType.ACCOUNT, viewModel);
+                    })
               ],
             ),
             body: getCurrentScreen(viewModel.currentScreenType, viewModel),
@@ -61,6 +82,69 @@ class _HomeViewState extends State<HomeView> {
       },
       viewModelBuilder: () => HomeViewModel(),
     );
+  }
+
+  void showLogoutPrompt(HomeViewModel viewModel) async {
+    bool value = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    "Logout",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    "Are you sure you want to logout?",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                ButtonBar(children: [
+                  FlatButton(
+                    child: Text(
+                      "NO",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context, false);
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'YES',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (value != null && value) {
+      ProgressDialog.show(context);
+      viewModel.logout();
+      Future.delayed(Duration(seconds: 3), () {
+        ProgressDialog.dismiss();
+      });
+    }
   }
 
   Future<bool> onBackPressed(HomeViewModel model) {
@@ -98,10 +182,13 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      return TabPageView();
+      return TabPageView(
+        fleet: selectedFleet,
+      );
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView(
-        onDetailPageSelected: () {
+        onDetailPageSelected: (Fleet fleet) {
+          selectedFleet = fleet;
           updateCurrentState(ScreenType.ASSET_DETAIL, model);
         },
       );

@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'fleet_view_model.dart';
 
 class FleetView extends StatefulWidget {
-  final VoidCallback onDetailPageSelected;
+  final Function(Fleet) onDetailPageSelected;
   FleetView({this.onDetailPageSelected});
 
   @override
@@ -64,7 +64,7 @@ class _FleetViewState extends State<FleetView> {
                                 return FleetItem(
                                   fleet: fleet,
                                   onCallback: () {
-                                    widget.onDetailPageSelected();
+                                    widget.onDetailPageSelected(fleet);
                                   },
                                 );
                               }),

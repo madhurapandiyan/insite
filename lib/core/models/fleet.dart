@@ -91,16 +91,3 @@ class FleetSummaryResponse {
   Map<String, dynamic> toJson() => _$FleetSummaryResponseToJson(this);
 }
 
-@JsonSerializable()
-class Device {
-  final String deviceType;
-  final String mainboardSoftwareVersion;
-  final bool isGpsRollOverAffected;
-  Device(
-      {this.deviceType,
-      this.isGpsRollOverAffected,
-      this.mainboardSoftwareVersion});
-  factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DeviceToJson(this);
-}

@@ -104,17 +104,3 @@ Map<String, dynamic> _$FleetSummaryResponseToJson(
       'pagination': instance.pagination,
       'fleetRecords': instance.fleetRecords,
     };
-
-Device _$DeviceFromJson(Map<String, dynamic> json) {
-  return Device(
-    deviceType: json['deviceType'] as String,
-    isGpsRollOverAffected: json['isGpsRollOverAffected'] as bool,
-    mainboardSoftwareVersion: json['mainboardSoftwareVersion'] as String,
-  );
-}
-
-Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
-      'deviceType': instance.deviceType,
-      'mainboardSoftwareVersion': instance.mainboardSoftwareVersion,
-      'isGpsRollOverAffected': instance.isGpsRollOverAffected,
-    };
