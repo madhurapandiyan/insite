@@ -148,13 +148,17 @@ class _HomeViewState extends State<HomeView> {
 
   Future<bool> onBackPressed(HomeViewModel model) {
     if (model.currentScreenType == ScreenType.HOME) {
-      updateCurrentState(ScreenType.ACCOUNT, model);
-      return Future.value(false);
+      return Future.value(true);
     } else if (model.currentScreenType == ScreenType.ACCOUNT) {
       return Future.value(true);
     } else if (model.currentScreenType == ScreenType.ASSET_DETAIL) {
-      updateCurrentState(ScreenType.ASSET_OPERATION, model);
-      return Future.value(false);
+      if (selectedFleet != null) {
+        updateCurrentState(ScreenType.FLEET, model);
+        return Future.value(false);
+      } else {
+        updateCurrentState(ScreenType.ASSET_OPERATION, model);
+        return Future.value(false);
+      }
     } else {
       updateCurrentState(ScreenType.HOME, model);
       return Future.value(false);
