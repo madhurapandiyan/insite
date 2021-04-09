@@ -17,3 +17,4 @@ const Color athenGrey = Color(0xFFEBEBF2);
 const Color containercolor = Color(0xffEEEEEE);
 const Color tabpagecolor = Color(0xffC4C4C4);
 const Color mediumgrey = Color(0xff414042);
+const Color silver = Color(0xFFCCCCCC);
