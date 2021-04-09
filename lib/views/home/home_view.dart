@@ -49,23 +49,25 @@ class _HomeViewState extends State<HomeView> {
                 path: "assets/images/hitachi.png",
               ),
               actions: [
-                new IconButton(
-                  icon: SvgPicture.asset("assets/images/filter.svg"),
-                  onPressed: () => print("button is tapped"),
-                ),
-                new IconButton(
-                  icon: SvgPicture.asset("assets/images/searchs.svg"),
-                  onPressed: () => print("button is tapped"),
-                ),
-                new IconButton(
-                    icon: Icon(
-                      Icons.account_circle_rounded,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      updateCurrentState(ScreenType.ACCOUNT, viewModel);
-                    }),
-                new IconButton(
+                // new IconButton(
+                //   icon: SvgPicture.asset("assets/images/filter.svg"),
+                //   onPressed: () => print("button is tapped"),
+                // ),
+                // new IconButton(
+                //   icon: SvgPicture.asset("assets/images/searchs.svg"),
+                //   onPressed: () => print("button is tapped"),
+                // ),
+                viewModel.currentScreenType != ScreenType.ACCOUNT
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.account_circle_rounded,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          updateCurrentState(ScreenType.ACCOUNT, viewModel);
+                        })
+                    : SizedBox(),
+                IconButton(
                     icon: Icon(
                       Icons.logout,
                       color: Colors.black,
@@ -141,21 +143,22 @@ class _HomeViewState extends State<HomeView> {
     if (value != null && value) {
       ProgressDialog.show(context);
       viewModel.logout();
-      Future.delayed(Duration(seconds: 3), () {
-        ProgressDialog.dismiss();
-      });
     }
   }
 
   Future<bool> onBackPressed(HomeViewModel model) {
     if (model.currentScreenType == ScreenType.HOME) {
-      updateCurrentState(ScreenType.ACCOUNT, model);
-      return Future.value(false);
+      return Future.value(true);
     } else if (model.currentScreenType == ScreenType.ACCOUNT) {
       return Future.value(true);
     } else if (model.currentScreenType == ScreenType.ASSET_DETAIL) {
-      updateCurrentState(ScreenType.ASSET_OPERATION, model);
-      return Future.value(false);
+      if (selectedFleet != null) {
+        updateCurrentState(ScreenType.FLEET, model);
+        return Future.value(false);
+      } else {
+        updateCurrentState(ScreenType.ASSET_OPERATION, model);
+        return Future.value(false);
+      }
     } else {
       updateCurrentState(ScreenType.HOME, model);
       return Future.value(false);

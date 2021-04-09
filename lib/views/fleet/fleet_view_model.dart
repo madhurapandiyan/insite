@@ -9,6 +9,8 @@ class FleetViewModel extends BaseViewModel {
   var _fleetService = locator<FleetService>();
   Logger log;
 
+  int page = 1;
+
   List<Fleet> _assets = [];
   List<Fleet> get assets => _assets;
 
@@ -21,6 +23,10 @@ class FleetViewModel extends BaseViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getFleetSummaryList();
     });
+  }
+
+  inCreasePage(){
+   page=page+1 ;
   }
 
   getFleetSummaryList() async {

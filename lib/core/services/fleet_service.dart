@@ -30,12 +30,12 @@ class FleetService extends BaseService {
               ? await MyApi().getClient().fleetSummaryCI(
                   customerSelected.CustomerUID,
                   1,
-                  100,
+                  500,
                   "assetid",
                   accountSelected.CustomerUID)
               : await MyApi()
                   .getClient()
-                  .fleetSummary(1, 100, "assetid", accountSelected.CustomerUID);
+                  .fleetSummary(1, 500, "assetid", accountSelected.CustomerUID);
       return fleetSummaryResponse.fleetRecords;
     } catch (e) {
       Logger().e(e);

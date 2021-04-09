@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:logger/logger.dart';
 import 'customer_selectable_list.dart';
 
 class CustomerSelectionDropDown extends StatefulWidget {
@@ -29,8 +30,11 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
 
   @override
   void initState() {
-    data = widget.selected != null ? widget.selected : null;
     super.initState();
+    data = widget.selected != null ? widget.selected : null;
+    if (data != null) {
+      Logger().i(data.value.DisplayName);
+    }
   }
 
   @override
@@ -91,17 +95,17 @@ class _CustomerSelectionDropDownState extends State<CustomerSelectionDropDown> {
                 ),
                 showList
                     ? Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: CustomerSelectableList(
-                        selectionType: widget.selectionType,
-                        onSelected: (SelectedData value) {
-                          data = value;
-                          setState(() {});
-                        },
-                        selectedData: data != null ? data : null,
-                        list: widget.list,
-                      ),
-                    )
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: CustomerSelectableList(
+                          selectionType: widget.selectionType,
+                          onSelected: (SelectedData value) {
+                            data = value;
+                            setState(() {});
+                          },
+                          selectedData: data != null ? data : null,
+                          list: widget.list,
+                        ),
+                      )
                     : SizedBox(),
               ],
             )),
