@@ -3,6 +3,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/search_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -84,6 +85,12 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-deviceservice/2.0/asset")
   Future<AssetDeviceResponse> asset(@Query("assetUID") String assetUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchDetail(
+      @Query("customerUID") String customerUID,
+      @Query("snContains") String snContains,
       @Header("X-VisionLink-CustomerUid") customerId);
 }
 

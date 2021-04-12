@@ -10,6 +10,7 @@ import 'package:insite/views/home/home_view.dart' as view2;
 import 'package:insite/views/fleet/fleet_view.dart' as view3;
 import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
+import 'package:insite/views/global_search/global_search_view.dart' as view6;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,6 +27,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view4.LoginView());
       case logoutViewRoute:
         return MaterialPageRoute(builder: (_) => view5.LogoutView());
+      case globalSearchViewRoute:
+        return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

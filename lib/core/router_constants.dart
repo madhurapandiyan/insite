@@ -6,3 +6,4 @@ const String homeViewRoute = 'homeViewRoute';
 const String fleetViewRoute = 'fleetViewRoute';
 const String loginViewRoute = 'loginViewRoute';
 const String logoutViewRoute = 'logoutViewRoute';
+const String globalSearchViewRoute = 'globalSearchViewRoute';

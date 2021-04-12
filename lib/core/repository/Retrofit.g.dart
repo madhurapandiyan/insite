@@ -340,4 +340,28 @@ class _RestClient implements RestClient {
     final value = AssetDeviceResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<SearchData> searchDetail(customerUID, snContains, customerId) async {
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(snContains, 'snContains');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'customerUID': customerUID,
+      r'snContains': snContains
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
 }
