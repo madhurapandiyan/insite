@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
-
+import 'package:insite/views/dashboard/dashboard_view.dart' as view7;
+import 'package:insite/views/asset/asset_view.dart' as view8;
+import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/customer_selection/customer_selection_view.dart'
     as view1;
@@ -29,6 +31,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => view5.LogoutView());
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
+      case dashboardViewRoute:
+        return MaterialPageRoute(builder: (_) => view7.DashboardView());
+      case assetDetailViewRoute:
+        return MaterialPageRoute(builder: (_) => view9.AssetDetailView());
+      case assetViewRoute:
+        return MaterialPageRoute(builder: (_) => view8.AssetView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

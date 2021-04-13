@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
+import 'package:insite/views/appbar/appvar_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import 'customer_selection_view_model.dart';
 
 class CustomerSelectionView extends StatefulWidget {
-  final VoidCallback onCustomerSelected;
-  CustomerSelectionView({this.onCustomerSelected});
+  CustomerSelectionView();
   @override
   _CustomerSelectionViewState createState() => _CustomerSelectionViewState();
 }
@@ -24,10 +25,14 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
       builder: (BuildContext context, CustomerSelectionViewModel viewModel,
           Widget _) {
         if (viewModel.onAccountSelected) {
-          widget.onCustomerSelected();
+          viewModel.onCustomerSelected();
         }
         return Scaffold(
           backgroundColor: cod_grey,
+          appBar: InsiteAppBar(
+            screenType: ScreenType.ACCOUNT,
+            height: 56,
+          ),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -135,7 +140,7 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                             viewModel.setSubAccountSelected(value.value);
                             Future.delayed(Duration(seconds: 1), () {
                               ProgressDialog.dismiss();
-                              widget.onCustomerSelected();
+                              viewModel.onCustomerSelected();
                             });
                           },
                           onReset: () {

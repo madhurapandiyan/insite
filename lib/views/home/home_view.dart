@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/dashboard/homedash.dart';
 import 'package:insite/utils/dialog.dart';
+import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/asset/asset_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
+import 'package:insite/views/dashboard/dashboard_view.dart';
+import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
-import 'package:insite/views/tab_page/tab_page_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/theme/colors.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -35,48 +33,9 @@ class _HomeViewState extends State<HomeView> {
             return onBackPressed(viewModel);
           },
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: appbarcolor,
-              leading: IconButton(
-                  icon: SvgPicture.asset("assets/images/menubar.svg"),
-                  onPressed: () {
-                    print("button is tapped");
-                    updateCurrentState(ScreenType.HOME, viewModel);
-                  }),
-              title: InsiteImage(
-                height: 65,
-                width: 65,
-                path: "assets/images/hitachi.png",
-              ),
-              actions: [
-                // new IconButton(
-                //   icon: SvgPicture.asset("assets/images/filter.svg"),
-                //   onPressed: () => print("button is tapped"),
-                // ),
-                // new IconButton(
-                //   icon: SvgPicture.asset("assets/images/searchs.svg"),
-                //   onPressed: () => print("button is tapped"),
-                // ),
-                viewModel.currentScreenType != ScreenType.ACCOUNT
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.account_circle_rounded,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          updateCurrentState(ScreenType.ACCOUNT, viewModel);
-                        })
-                    : SizedBox(),
-                IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      showLogoutPrompt(viewModel);
-                      // updateCurrentState(ScreenType.ACCOUNT, viewModel);
-                    })
-              ],
+            appBar: InsiteAppBar(
+              screenType: ScreenType.HOME,
+              height: 56,
             ),
             body: getCurrentScreen(viewModel.currentScreenType, viewModel),
           ),
@@ -112,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 ButtonBar(children: [
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       "NO",
                       style: TextStyle(color: Colors.black),
@@ -124,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     width: 5,
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       'YES',
                       style: TextStyle(color: Colors.black),
@@ -173,11 +132,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget getCurrentScreen(ScreenType currentScreenType, HomeViewModel model) {
     if (currentScreenType == ScreenType.ACCOUNT) {
-      return CustomerSelectionView(
-        onCustomerSelected: () {
-          updateCurrentState(ScreenType.HOME, model);
-        },
-      );
+      return CustomerSelectionView();
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
       return AssetView(
         onDetailPageSelected: () {
@@ -185,7 +140,7 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      return TabPageView(
+      return AssetDetailView(
         fleet: selectedFleet,
       );
     } else if (currentScreenType == ScreenType.FLEET) {
@@ -196,11 +151,11 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     } else if (currentScreenType == ScreenType.HOME) {
-      return HomeDash(
-        onDashboardItemSelected: (newState) {
-          updateCurrentState(newState, model);
-        },
-      );
+      return DashboardView(
+          // onDashboardItemSelected: (newState) {
+          // updateCurrentState(newState, model);
+          // },
+          );
     } else {
       return EmptyView(
         title: "Coming soon!",
