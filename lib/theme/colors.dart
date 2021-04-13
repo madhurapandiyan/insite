@@ -19,3 +19,6 @@ const Color tabpagecolor = Color(0xffC4C4C4);
 const Color mediumgrey = Color(0xff414042);
 const Color silver = Color(0xFFCCCCCC);
 const Color mineShaft = Color(0xFF282828);
+const Color burntSienna = Color(0xFFEB5757);
+const Color mustard = Color(0xFFFDE050);
+const Color shark = Color(0xFF2B2D32);
