@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class TabPageViewModel extends BaseViewModel {
+class AssetDetailViewModel extends BaseViewModel {
   var _assetService = locator<AssetService>();
   Logger log;
   Fleet fleet;
@@ -15,7 +15,7 @@ class TabPageViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  TabPageViewModel(this.fleet) {
+  AssetDetailViewModel(this.fleet) {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setUp();
     Logger().i("asset choosen " + fleet.assetIdentifier);

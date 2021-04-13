@@ -1,12 +1,16 @@
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class FleetViewModel extends BaseViewModel {
   var _fleetService = locator<FleetService>();
+  var _navigationService = locator<NavigationService>();
+
   Logger log;
 
   int page = 1;
@@ -25,8 +29,8 @@ class FleetViewModel extends BaseViewModel {
     });
   }
 
-  inCreasePage(){
-   page=page+1 ;
+  inCreasePage() {
+    page = page + 1;
   }
 
   getFleetSummaryList() async {
@@ -34,5 +38,13 @@ class FleetViewModel extends BaseViewModel {
     _assets = result;
     _loading = false;
     notifyListeners();
+  }
+
+  onDetailPageSelected(Fleet flee) {
+    _navigationService.replaceWith(dashboardViewRoute);
+  }
+
+  onHomeSelected() {
+    _navigationService.replaceWith(dashboardViewRoute);
   }
 }

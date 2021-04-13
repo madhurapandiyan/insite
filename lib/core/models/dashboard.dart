@@ -1,4 +1,3 @@
-
 import 'package:insite/views/home/home_view.dart';
 
 class Category {
