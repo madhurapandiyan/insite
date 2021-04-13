@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:stacked/stacked.dart';
 import 'global_search_view_model.dart';
@@ -22,12 +21,6 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
       color: Colors.transparent,
     ),
   );
-
-  @override
-  void initState() {
-    searchController.text = 'AA';
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
