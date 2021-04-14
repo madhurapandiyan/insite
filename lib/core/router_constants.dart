@@ -10,3 +10,4 @@ const String loginViewRoute = 'loginViewRoute';
 const String logoutViewRoute = 'logoutViewRoute';
 const String globalSearchViewRoute = 'globalSearchViewRoute';
 const String dashboardViewRoute = 'dashboardViewRoute';
+const String testRouterViewRoute = 'testRouterViewRoute';
