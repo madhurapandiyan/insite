@@ -22,3 +22,6 @@ const Color mineShaft = Color(0xFF282828);
 const Color burntSienna = Color(0xFFEB5757);
 const Color mustard = Color(0xFFFDE050);
 const Color shark = Color(0xFF2B2D32);
+const Color greencolor = Color(0xffABEFCA);
+const Color maptextcolor = Color(0xff666666);
+const Color darkhighlight = Color(0xff2B2D32);
