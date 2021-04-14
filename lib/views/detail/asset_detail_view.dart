@@ -2,28 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/appbar/appvar_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:stacked/stacked.dart';
-import 'tab_page_view_model.dart';
+import 'asset_detail_view_model.dart';
 
-class TabPageView extends StatefulWidget {
+class AssetDetailView extends StatefulWidget {
   final Fleet fleet;
   final VoidCallback onDetailPageSelected;
-  TabPageView({this.onDetailPageSelected, this.fleet});
+  AssetDetailView({this.onDetailPageSelected, this.fleet});
 
   @override
   _TabPageState createState() => _TabPageState();
 }
 
-class _TabPageState extends State<TabPageView> {
+class _TabPageState extends State<AssetDetailView> {
   int selectedcard = 0;
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<TabPageViewModel>.reactive(
-      builder: (BuildContext context, TabPageViewModel viewModel, Widget _) {
+    return ViewModelBuilder<AssetDetailViewModel>.reactive(
+      builder:
+          (BuildContext context, AssetDetailViewModel viewModel, Widget _) {
         return Scaffold(
           backgroundColor: bgcolor,
+          appBar: InsiteAppBar(
+            screenType: ScreenType.ASSET_DETAIL,
+            height: 56,
+          ),
           body: viewModel.loading
               ? Center(
                   child: CircularProgressIndicator(),
@@ -218,7 +225,7 @@ class _TabPageState extends State<TabPageView> {
                 ),
         );
       },
-      viewModelBuilder: () => TabPageViewModel(widget.fleet),
+      viewModelBuilder: () => AssetDetailViewModel(widget.fleet),
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -30,12 +31,21 @@ class HomeViewModel extends BaseViewModel {
         _currentScreenType = ScreenType.HOME;
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   void updateState(newState) {
     _currentScreenType = newState;
     notifyListeners();
+  }
+
+  openRespectivePage(ScreenType type) {
+    if (type == ScreenType.FLEET) {
+      _navigationService.navigateWithTransition(FleetView(),
+          transition: "rightToLeft");
+    }
   }
 
   void logout() {
