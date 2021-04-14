@@ -25,3 +25,6 @@ const Color shark = Color(0xFF2B2D32);
 const Color emerald = Color(0xFF48C581);
 const Color creamCan = Color(0xFFF2C94C);
 const Color doveGray = Color(0xFF666666);
+const Color greencolor = Color(0xffABEFCA);
+const Color maptextcolor = Color(0xff666666);
+const Color darkhighlight = Color(0xff2B2D32);

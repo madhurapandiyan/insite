@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
-
+import 'package:insite/views/dashboard/dashboard_view.dart' as view8;
+import 'package:insite/views/asset/asset_view.dart' as view10;
+import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/customer_selection/customer_selection_view.dart'
     as view1;
@@ -11,6 +13,7 @@ import 'package:insite/views/fleet/fleet_view.dart' as view3;
 import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
+import 'package:insite/views/test_router/test_router_view.dart' as view7;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -29,6 +32,15 @@ class Router {
         return MaterialPageRoute(builder: (_) => view5.LogoutView());
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
+      case testRouterViewRoute:
+        return MaterialPageRoute(builder: (_) => view7.TestRouterView());
+      case dashboardViewRoute:
+        return MaterialPageRoute(builder: (_) => view8.DashboardView());
+      case assetDetailViewRoute:
+        return MaterialPageRoute(builder: (_) => view9.AssetDetailView());
+      case assetViewRoute:
+        return MaterialPageRoute(builder: (_) => view10.AssetView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

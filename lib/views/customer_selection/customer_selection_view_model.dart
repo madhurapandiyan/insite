@@ -1,15 +1,18 @@
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/Retrofit.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class CustomerSelectionViewModel extends BaseViewModel {
   var _localService = locator<LocalService>();
   var _loginService = locator<LoginService>();
+  var _navigationService = locator<NavigationService>();
 
   Logger log;
 
@@ -117,6 +120,14 @@ class CustomerSelectionViewModel extends BaseViewModel {
     Future.delayed(Duration(seconds: 1), () {
       notifyListeners();
     });
+  }
+
+  onCustomerSelected() {
+    _navigationService.replaceWith(dashboardViewRoute);
+  }
+
+  onHomeSelected() {
+    _navigationService.replaceWith(dashboardViewRoute);
   }
 
   showLoader() {
