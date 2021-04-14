@@ -22,3 +22,6 @@ const Color mineShaft = Color(0xFF282828);
 const Color burntSienna = Color(0xFFEB5757);
 const Color mustard = Color(0xFFFDE050);
 const Color shark = Color(0xFF2B2D32);
+const Color emerald = Color(0xFF48C581);
+const Color creamCan = Color(0xFFF2C94C);
+const Color doveGray = Color(0xFF666666);
