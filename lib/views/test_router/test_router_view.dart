@@ -39,7 +39,6 @@ class _TestRouterViewState extends State<TestRouterView> {
               margin: EdgeInsets.all(4.0),
               width: 374.04,
               height: 305.44,
-              // color: cardcolor,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],

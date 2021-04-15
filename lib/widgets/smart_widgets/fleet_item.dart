@@ -239,11 +239,11 @@ class FleetItem extends StatelessWidget {
                 children: [
                   TableRow(
                     children: [
-                      InsiteTableRow(
+                      InsiteTableRowItem(
                         title: "Location - Last Reported",
                         content: "-",
                       ),
-                      InsiteTableRow(
+                      InsiteTableRowItem(
                         title: "Last Reported Time      ",
                         content: fleet.lastReportedUTC != null
                             ? Utils.getLastReportedDateFleet(
@@ -253,23 +253,23 @@ class FleetItem extends StatelessWidget {
                     ],
                   ),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Location                 ",
                       content: fleet.lastReportedLocationLatitude.toString() +
                           "/" +
                           fleet.lastReportedLocationLongitude.toString(),
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Signal Strength          ",
                       content: "-",
                     ),
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Fuel - Last Reported     ",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Fuel Level%",
                       content: fleet.fuelLevelLastReported != null
                           ? fleet.fuelLevelLastReported.toString()
@@ -277,33 +277,33 @@ class FleetItem extends StatelessWidget {
                     ),
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Network Provider         ",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Customer Name            ",
                       content: "-",
                     ),
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Asset Commissioning Date  ",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Dealer Name               ",
                       content: "-",
                     ),
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Hr Meter",
                       content: fleet.hourMeter != null
                           ? fleet.hourMeter.toString() + " hrs"
                           : "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "",
                       content: "",
                     ),

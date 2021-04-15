@@ -20,8 +20,8 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.35,
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/Retrofit.dart';
@@ -31,7 +32,7 @@ class LoginService extends BaseService {
     }
   }
 
-  void getUser(token) async {
+  void getUser(token, shouldRemovePreviousRoutes) async {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
@@ -40,13 +41,24 @@ class LoginService extends BaseService {
         if (userInfo != null) {
           _localService.saveUserInfo(userInfo);
           Logger().i("launching home from login service");
-          _nagivationService.replaceWith(homeViewRoute);
+          if (shouldRemovePreviousRoutes) {
+            _nagivationService.pushNamedAndRemoveUntil(
+                customerSelectionViewRoute,
+                predicate: (Route<dynamic> route) => false);
+          } else {
+            _nagivationService.replaceWith(customerSelectionViewRoute);
+          }
         }
       });
     } catch (e) {
       Logger().e(e);
       Logger().i("launching home from login service");
-      _nagivationService.replaceWith(homeViewRoute);
+      if (shouldRemovePreviousRoutes) {
+        _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
+            predicate: (Route<dynamic> route) => false);
+      } else {
+        _nagivationService.replaceWith(customerSelectionViewRoute);
+      }
     }
   }
 
