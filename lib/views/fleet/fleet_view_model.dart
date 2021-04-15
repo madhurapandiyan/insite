@@ -2,6 +2,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
+import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -40,8 +41,9 @@ class FleetViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  onDetailPageSelected(Fleet flee) {
-    _navigationService.replaceWith(dashboardViewRoute);
+  onDetailPageSelected(Fleet fleet) {
+    _navigationService.replaceWith(assetDetailViewRoute,
+        arguments: DetailArguments(fleet: fleet));
   }
 
   onHomeSelected() {

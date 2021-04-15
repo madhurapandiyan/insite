@@ -42,72 +42,72 @@ class AssetDetailWidgt extends StatelessWidget {
                 border: TableBorder.all(),
                 children: [
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Asset Id",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Asset Status",
                       content: detail.status,
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Serial No.",
                       content: detail.assetSerialNumber,
                     )
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Geofences",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Manufacturer",
                       content: detail.manufacturer,
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Product Family",
                       content: detail.productFamily,
                     )
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Model ",
                       content: detail.productFamily,
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Hour Meter",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Year",
                       content:
                           detail.year != null ? detail.year.toString() : "-",
                     )
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Last Reported time",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Groups",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "",
                       content: "",
                     )
                   ]),
                   TableRow(children: [
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Service Plans",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "Location",
                       content: "-",
                     ),
-                    InsiteTableRow(
+                    InsiteTableRowItem(
                       title: "",
                       content: "",
                     )

@@ -37,7 +37,11 @@ class Router {
       case dashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view8.DashboardView());
       case assetDetailViewRoute:
-        return MaterialPageRoute(builder: (_) => view9.AssetDetailView());
+        var fleetArgs = settings.arguments as view9.DetailArguments;
+        return MaterialPageRoute(
+            builder: (_) => view9.AssetDetailView(
+                  fleet: fleetArgs.fleet,
+                ));
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view10.AssetView());
 

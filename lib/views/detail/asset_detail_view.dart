@@ -3,23 +3,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
+import 'package:insite/views/detail/tabs/asset_dashboard.dart';
 import 'package:insite/views/home/home_view.dart';
-import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
 
 class AssetDetailView extends StatefulWidget {
   final Fleet fleet;
-  final VoidCallback onDetailPageSelected;
-  AssetDetailView({this.onDetailPageSelected, this.fleet});
+  AssetDetailView({this.fleet});
 
   @override
   _TabPageState createState() => _TabPageState();
 }
 
+class DetailArguments {
+  final Fleet fleet;
+  DetailArguments({this.fleet});
+}
+
 class _TabPageState extends State<AssetDetailView> {
-  int selectedcard = 0;
+  int selectedTabIndex = 0;
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
@@ -198,28 +202,13 @@ class _TabPageState extends State<AssetDetailView> {
                           ),
                         ),
                       ),
-                      Container(
-                          width: MediaQuery.of(context).size.width - 10,
-                          height: MediaQuery.of(context).size.height,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              new BoxShadow(blurRadius: 1.0, color: mediumgrey)
-                            ],
-                            border: Border.all(width: 2.5, color: mediumgrey),
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: selectedcard == 0
-                              ? Column(
-                                  children: [
-                                    AssetDetailWidgt(
-                                      detail: viewModel.assetDetail,
-                                    )
-                                  ],
-                                )
-                              : EmptyView(
-                                  title: "Coming soon",
-                                )),
+                      selectedTabIndex == 0
+                          ? AssetDashbaord(
+                              detail: viewModel.assetDetail,
+                            )
+                          : EmptyView(
+                              title: "Coming soon",
+                            ),
                     ],
                   ),
                 ),
@@ -232,7 +221,7 @@ class _TabPageState extends State<AssetDetailView> {
   Widget _tabcontainer(int index, iconPath) {
     return GestureDetector(
       onTap: () {
-        buttontap(index);
+        onTap(index);
       },
       child: Stack(
         alignment: Alignment.center,
@@ -241,7 +230,8 @@ class _TabPageState extends State<AssetDetailView> {
             width: 100,
             height: 180,
             child: Card(
-              color: selectedcard == index ? mediumgrey : Colors.transparent,
+              color:
+                  selectedTabIndex == index ? mediumgrey : Colors.transparent,
               semanticContainer: true,
               shape: new RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -255,7 +245,7 @@ class _TabPageState extends State<AssetDetailView> {
               height: 87.29,
               child: Card(
                 semanticContainer: true,
-                color: selectedcard == index ? tango : cardcolor,
+                color: selectedTabIndex == index ? tango : cardcolor,
                 elevation: 10.0,
                 shape: new RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -270,149 +260,9 @@ class _TabPageState extends State<AssetDetailView> {
     );
   }
 
-  Widget _cardcontainer(int index) {
-    return GestureDetector(
-      onTap: () {
-        buttontap(index);
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          new Container(
-            width: 100,
-            height: 180,
-            child: Card(
-              color: selectedcard == index ? mediumgrey : Colors.transparent,
-              semanticContainer: true,
-              shape: new RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          Container(
-              width: 82,
-              height: 87.29,
-              child: Card(
-                semanticContainer: true,
-                color: selectedcard == index ? tango : cardcolor,
-                elevation: 10.0,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/images/supportmanager.svg")
-                  ],
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _assetcontainer(int index) {
-    return GestureDetector(
-      onTap: () {
-        buttontap(index);
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          new Container(
-            width: 100,
-            height: 180,
-            child: Card(
-              color: selectedcard == index ? mediumgrey : Colors.transparent,
-              semanticContainer: true,
-              shape: new RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          Container(
-              width: 82,
-              height: 87.29,
-              child: Card(
-                semanticContainer: true,
-                color: selectedcard == index ? tango : cardcolor,
-                elevation: 10.0,
-                //margin: EdgeInsets.all(1.0),
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/images/assetmanager.svg")
-                  ],
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _locacontainer(int index) {
-    return GestureDetector(
-      onTap: () {
-        buttontap(index);
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          new Container(
-            width: 100,
-            height: 180,
-            child: Card(
-              color: selectedcard == index ? mediumgrey : Colors.transparent,
-              semanticContainer: true,
-              shape: new RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ),
-          Container(
-              width: 82,
-              height: 87.29,
-              child: Card(
-                semanticContainer: true,
-                color: selectedcard == index ? tango : cardcolor,
-                elevation: 10.0,
-                //margin: EdgeInsets.all(1.0),
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [SvgPicture.asset("assets/images/loca.svg")],
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-
-  void buttontap(int index) {
-    if (index == 0) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 1) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 2) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
-    if (index == 3) {
-      setState(() {
-        selectedcard = index;
-      });
-    }
+  void onTap(int index) {
+    setState(() {
+      selectedTabIndex = index;
+    });
   }
 }
