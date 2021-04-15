@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'insite_text.dart';
 
-class InsiteTableRow extends StatelessWidget {
+class InsiteTableRowItem extends StatelessWidget {
   final String title;
   final String content;
-  const InsiteTableRow({this.title, this.content});
+  const InsiteTableRowItem({this.title, this.content});
 
   @override
   Widget build(BuildContext context) {

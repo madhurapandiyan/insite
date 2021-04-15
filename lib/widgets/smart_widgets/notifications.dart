@@ -9,8 +9,8 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.2,
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.22,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),

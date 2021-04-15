@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -45,8 +46,9 @@ class SplashViewModel extends BaseViewModel {
   }
 
   void checkLoggedIn() async {
-    bool val = await _localService.getIsloggedIn();
     try {
+      bool val = await _localService.getIsloggedIn();
+      Customer account = await _localService.getAccountInfo();
       Logger().d("checkLoggedIn " + val.toString());
       if (val == null || !val) {
         //use this user name and password
@@ -64,8 +66,12 @@ class SplashViewModel extends BaseViewModel {
         });
       } else {
         if (!isProcessing) {
-          Logger().i("launching home splash view model");
-          _nagivationService.replaceWith(homeViewRoute);
+          if (account != null) {
+            Logger().i("launching home splash view model");
+            _nagivationService.replaceWith(dashboardViewRoute);
+          } else {
+            _nagivationService.replaceWith(customerSelectionViewRoute);
+          }
         }
       }
     } catch (e) {
@@ -74,10 +80,12 @@ class SplashViewModel extends BaseViewModel {
   }
 
   void getLoggedInUserDetails() async {
-    UserInfo userInfo = await _loginService.getLoggedInUserInfo();
-    _localService.saveUserInfo(userInfo);
-    Logger().i("launching home get logged in user detail");
-    _nagivationService.replaceWith(homeViewRoute);
-    isProcessing = false;
+    try {
+      UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+      _localService.saveUserInfo(userInfo);
+      Logger().i("launching home get logged in user detail");
+      _nagivationService.replaceWith(dashboardViewRoute);
+      isProcessing = false;
+    } catch (e) {}
   }
 }

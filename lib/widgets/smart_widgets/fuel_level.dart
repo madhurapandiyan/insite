@@ -7,6 +7,7 @@ class FuelLevel extends StatelessWidget {
     Key key,
     @required this.liquidColor,
     @required this.title,
+    @required this.value,
     @required this.lifeTimeFuel,
     @required this.percentage,
     @required this.lastReported,
@@ -14,6 +15,7 @@ class FuelLevel extends StatelessWidget {
 
   final Color liquidColor;
   final String title;
+  final double value;
   final String lifeTimeFuel;
   final String percentage;
   final String lastReported;
@@ -21,7 +23,7 @@ class FuelLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: BoxDecoration(
         color: tuna,
@@ -75,7 +77,7 @@ class FuelLevel extends StatelessWidget {
                         style: TextStyle(
                             color: white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                            fontSize: 14),
                       ),
                     ),
                     Padding(
@@ -85,7 +87,7 @@ class FuelLevel extends StatelessWidget {
                         width: 175,
                         child: LiquidCircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation(liquidColor),
-                          value: 0.16,
+                          value: value,
                           center: Text(
                             percentage,
                             style: TextStyle(
@@ -118,7 +120,7 @@ class FuelLevel extends StatelessWidget {
                 child: Text(
                   'Last Reported Time: $lastReported'.toUpperCase(),
                   style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 18),
+                      color: white, fontWeight: FontWeight.bold, fontSize: 14),
                 ),
               ),
             ),

@@ -73,6 +73,8 @@ class _LoginViewState extends State<LoginView> {
           // flutterWebviewPlugin.launch(loginUrl);
           flutterWebviewPlugin.cleanCookies();
           _navigationService.navigateTo(logoutViewRoute);
+          // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
+          //     predicate: (Route<dynamic> route) => false);
           // });
           // flutterWebviewPlugin.close();
         } else if (url.startsWith(
@@ -105,7 +107,7 @@ class _LoginViewState extends State<LoginView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("saveToken from webview");
-    _loginService.getUser(token);
+    _loginService.getUser(token, true);
     _loginService.saveExpiryTime(expiryTime);
   }
 

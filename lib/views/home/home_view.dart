@@ -141,15 +141,9 @@ class _HomeViewState extends State<HomeView> {
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
       return AssetDetailView(
-        fleet: selectedFleet,
       );
     } else if (currentScreenType == ScreenType.FLEET) {
-      return FleetView(
-        onDetailPageSelected: (Fleet fleet) {
-          selectedFleet = fleet;
-          updateCurrentState(ScreenType.ASSET_DETAIL, model);
-        },
-      );
+      return FleetView();
     } else if (currentScreenType == ScreenType.HOME) {
       return DashboardView(
           // onDashboardItemSelected: (newState) {
