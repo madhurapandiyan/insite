@@ -25,9 +25,9 @@ dependencies:
   stacked: ^2.0.0
   stacked_services: ^0.7.3
   google_maps_flutter: ^2.0.3
+  table_calendar: ^3.0.0
 
 dev_dependencies:
-  
   flutter_test:
     sdk: flutter
   build_runner: any
