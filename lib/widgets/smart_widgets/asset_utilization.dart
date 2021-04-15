@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
@@ -10,15 +8,15 @@ class AssetUtilizationWidget extends StatefulWidget {
 
   const AssetUtilizationWidget({
     Key key,
+    @required this.assetUtilization,
   }) : super(key: key);
+
+  final AssetUtilization assetUtilization;
 }
 
 class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   bool isAverageButtonSelected = true;
 
-  // Hardcoded Response. Please change afterwards
-  var assetUtilizationHours = AssetUtilization.fromJson(jsonDecode(
-      '{"totalDay":{"idleHours":27.292,"runtimeHours":674.473234,"workingHours":24.033},"totalWeek":{"idleHours":139.712,"runtimeHours":3697.337071,"workingHours":201.631},"totalMonth":{"idleHours":659.954,"runtimeHours":18108.287383,"workingHours":1016.107},"averageDay":{"idleHours":0.162452381,"runtimeHours":4.014721631,"workingHours":0.1430535714},"averageWeek":{"idleHours":0.2531014493,"runtimeHours":6.698074404,"workingHours":0.3652735507},"averageMonth":{"idleHours":0.2710283368,"runtimeHours":7.4366683298,"workingHours":0.4172924025}}'));
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,17 +72,17 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                     statusWidget(emerald),
                     Text(
                       'Working'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 15),
+                      style: TextStyle(color: white, fontSize: 12),
                     ),
                     statusWidget(burntSienna),
                     Text(
                       'Idle'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 15),
+                      style: TextStyle(color: white, fontSize: 12),
                     ),
                     statusWidget(creamCan),
                     Text(
                       'Running'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 15),
+                      style: TextStyle(color: white, fontSize: 12),
                     ),
                   ],
                 ),
@@ -96,49 +94,53 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                       isAverageButtonSelected
                           ? barChart(
                               'Today',
-                              assetUtilizationHours.averageDay.workingHours /
+                              widget.assetUtilization.averageDay.workingHours /
                                   1000,
-                              assetUtilizationHours.averageDay.idleHours / 1000,
-                              assetUtilizationHours.averageDay.runtimeHours /
+                              widget.assetUtilization.averageDay.idleHours /
+                                  1000,
+                              widget.assetUtilization.averageDay.runtimeHours /
                                   1000)
                           : barChart(
                               'Today',
-                              assetUtilizationHours.totalDay.workingHours /
+                              widget.assetUtilization.totalDay.workingHours /
                                   1000,
-                              assetUtilizationHours.totalDay.idleHours / 1000,
-                              assetUtilizationHours.totalDay.runtimeHours /
+                              widget.assetUtilization.totalDay.idleHours / 1000,
+                              widget.assetUtilization.totalDay.runtimeHours /
                                   1000),
                       isAverageButtonSelected
                           ? barChart(
                               'Current Week',
-                              assetUtilizationHours.averageWeek.workingHours /
+                              widget.assetUtilization.averageWeek.workingHours /
                                   1000,
-                              assetUtilizationHours.averageWeek.idleHours /
+                              widget.assetUtilization.averageWeek.idleHours /
                                   1000,
-                              assetUtilizationHours.averageWeek.runtimeHours /
+                              widget.assetUtilization.averageWeek.runtimeHours /
                                   1000)
                           : barChart(
                               'Current Week',
-                              assetUtilizationHours.totalWeek.workingHours /
+                              widget.assetUtilization.totalWeek.workingHours /
                                   1000,
-                              assetUtilizationHours.totalWeek.idleHours / 1000,
-                              assetUtilizationHours.totalWeek.runtimeHours /
+                              widget.assetUtilization.totalWeek.idleHours /
+                                  1000,
+                              widget.assetUtilization.totalWeek.runtimeHours /
                                   1000),
                       isAverageButtonSelected
                           ? barChart(
                               'Current Month',
-                              assetUtilizationHours.averageMonth.workingHours /
+                              widget.assetUtilization.averageMonth.workingHours /
                                   1000,
-                              assetUtilizationHours.averageMonth.idleHours /
+                              widget.assetUtilization.averageMonth.idleHours /
                                   1000,
-                              assetUtilizationHours.averageMonth.runtimeHours /
+                              widget.assetUtilization.averageMonth
+                                      .runtimeHours /
                                   1000)
                           : barChart(
                               'Current Month',
-                              assetUtilizationHours.totalMonth.workingHours /
+                              widget.assetUtilization.totalMonth.workingHours /
                                   1000,
-                              assetUtilizationHours.totalMonth.idleHours / 1000,
-                              assetUtilizationHours.totalMonth.runtimeHours /
+                              widget.assetUtilization.totalMonth.idleHours /
+                                  1000,
+                              widget.assetUtilization.totalMonth.runtimeHours /
                                   1000),
                     ],
                   ),
@@ -201,7 +203,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                     title.toUpperCase(),
                     style: TextStyle(
                         color: white,
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -278,7 +280,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                       'Average'.toUpperCase(),
                       style: TextStyle(
                         color: isAverageButtonSelected ? white : doveGray,
-                        fontSize: 15,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -305,7 +307,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                       'Total'.toUpperCase(),
                       style: TextStyle(
                         color: isAverageButtonSelected ? doveGray : white,
-                        fontSize: 15,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
