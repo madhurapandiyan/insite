@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
+import 'package:insite/core/models/utilization_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -92,6 +93,14 @@ abstract class RestClient {
       @Query("customerUID") String customerUID,
       @Query("snContains") String snContains,
       @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1")
+  Future<UtilizationSummaryResponse> utilLizationList(
+      @Query("assetUid") String assetUID,
+      @Query("startDate") String startDate,
+      @Query("endDate") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()
