@@ -14,6 +14,7 @@ import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
 import 'package:insite/views/test_router/test_router_view.dart' as view7;
+import 'package:insite/views/utilization/asset_util.dart' as view11;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -44,6 +45,8 @@ class Router {
                 ));
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view10.AssetView());
+      case utilRouterViewRoute:
+        return MaterialPageRoute(builder: (_) => view11.UtilLizationView());
 
       default:
         return MaterialPageRoute(
