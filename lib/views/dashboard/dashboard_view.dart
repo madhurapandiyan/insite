@@ -4,6 +4,7 @@ import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/home/home_view.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'dashboard_view_model.dart';
 
@@ -19,12 +20,8 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
-        return Scaffold(
-          backgroundColor: bgcolor,
-          appBar: InsiteAppBar(
-            screenType: ScreenType.DASHBOARD,
-            height: 56,
-          ),
+        return InsiteScaffold(
+          screenType: ScreenType.DASHBOARD,
           body: Container(
             padding: EdgeInsets.all(16),
             child: GridView.builder(

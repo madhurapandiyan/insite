@@ -7,16 +7,26 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:stacked/stacked.dart';
 
-class InsiteAppBar extends PreferredSize {
+class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ScreenType screenType;
   final double height;
-  const InsiteAppBar({
+  final bool isSearchSelected;
+  final VoidCallback onSearchTap;
+  InsiteAppBar({
     this.screenType,
+    this.isSearchSelected,
+    this.onSearchTap,
     this.height,
   });
-
   @override
   Size get preferredSize => Size.fromHeight(height);
+
+  var searchBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    borderSide: BorderSide(
+      color: Colors.transparent,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +73,19 @@ class InsiteAppBar extends PreferredSize {
                 onPressed: () {
                   showLogoutPrompt(viewModel, context);
                   // onLogoutPressed();
-                })
+                }),
+            Container(
+              color: isSearchSelected ? mediumgrey : appbarcolor,
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  "assets/images/searchs.svg",
+                  color: isSearchSelected ? white : black,
+                ),
+                onPressed: () {
+                  onSearchTap();
+                },
+              ),
+            ),
           ],
         );
       },

@@ -12,7 +12,7 @@ class GlobalSearchViewModel extends BaseViewModel {
   SearchData _searchData;
   SearchData get searchData => _searchData;
 
-  bool _loading = true;
+  bool _loading = false;
   bool get loading => _loading;
 
   String _searchKeyword = '';
@@ -23,9 +23,9 @@ class GlobalSearchViewModel extends BaseViewModel {
   GlobalSearchViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _searchService.setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getSearchResult();
-    });
+    // Future.delayed(Duration(seconds: 1), () {
+    //   getSearchResult();
+    // });
   }
 
   getSearchResult() async {
