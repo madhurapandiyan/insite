@@ -6,6 +6,7 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/fleet_chip_filter.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'fleet_view_model.dart';
 
@@ -33,11 +34,8 @@ class _FleetViewState extends State<FleetView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<FleetViewModel>.reactive(
       builder: (BuildContext context, FleetViewModel viewModel, Widget _) {
-        return Scaffold(
-          appBar: InsiteAppBar(
-            screenType: ScreenType.FLEET,
-            height: 56,
-          ),
+        return InsiteScaffold(
+          screenType: ScreenType.FLEET,
           body: Container(
             color: bgcolor,
             child: viewModel.loading
