@@ -60,6 +60,7 @@ flutter:
     - assets/images/menu.svg
     - assets/images/plus.svg
     - assets/images/minus.svg
+    - assets/images/marker.png
 
   fonts:
     - family: Roboto

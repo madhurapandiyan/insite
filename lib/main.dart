@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
-//import 'package:insite/views/utilization/asset_util.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/router.dart' as router;
@@ -19,8 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      // initialRoute: splashViewRoute,
-      initialRoute: testRouterViewRoute,
+      initialRoute: splashViewRoute,
       theme: ThemeData(
           backgroundColor: cod_grey,
           fontFamily: 'Roboto',
