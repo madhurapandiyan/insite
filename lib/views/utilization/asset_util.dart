@@ -20,10 +20,10 @@ class _UtilLizationViewState extends State<UtilLizationView> {
         builder:
             (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
           return Scaffold(
-            appBar: InsiteAppBar(
-              screenType: ScreenType.FLEET,
-              height: 56,
-            ),
+            // appBar: InsiteAppBar(
+            //   screenType: ScreenType.FLEET,
+            //   height: 56,
+            // ),
             body: Container(
               color: bgcolor,
               child: viewModel.loading
@@ -34,9 +34,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                       ? Column(
                           children: [
                             Expanded(
-                                child: ListView.builder(
-                                    itemCount: viewModel.utilLizationList.length,
-                                    padding: EdgeInsets.all(16),
+                                child: ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return Divider();
+                                    },
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount:
+                                        viewModel.utilLizationList.length,
+                                    padding: EdgeInsets.only(
+                                        top: 30.0, left: 5.0, right: 5.0),
                                     itemBuilder: (context, index) {
                                       UtilizationData utilizationData =
                                           viewModel.utilLizationList[index];

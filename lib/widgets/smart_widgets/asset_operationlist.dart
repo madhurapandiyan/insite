@@ -68,18 +68,15 @@ class AssetOperation extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5.0),
-                                child: new Text(
-                                  data.lastReportedTime,
-                                  style: new TextStyle(
-                                      fontSize: 12.0,
-                                      color: textcolor,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'Roboto',
-                                      decoration: TextDecoration.none),
-                                ),
+                              new Text(
+                                data.lastReportedTime,
+                                style: new TextStyle(
+                                    fontSize: 12.0,
+                                    color: textcolor,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Roboto',
+                                    decoration: TextDecoration.none),
                               ),
                               // new Text(data.date,
                               //     style: new TextStyle(
@@ -99,37 +96,38 @@ class AssetOperation extends StatelessWidget {
                     thickness: 2.0,
                     color: black,
                   ),
-                  Stack(
-                    children: [
-                      new Column(
-                        children: [
-                          SizedBox(height: 8.0),
-                          Expanded(
-                            flex: 2,
-                            child: new Text(
-                              "Runtimeperformance",
-                              style: new TextStyle(
-                                  decoration: TextDecoration.none,
-                                  fontSize: 12.0,
-                                  fontFamily: 'Roboto',
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                  color: textcolor),
+                  Flexible(
+                    child: Stack(
+                      children: [
+                        new Column(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: new Text(
+                                "Runtimeperformance",
+                                style: new TextStyle(
+                                    decoration: TextDecoration.none,
+                                    fontSize: 12.0,
+                                    fontFamily: 'Roboto',
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w700,
+                                    color: textcolor),
+                              ),
                             ),
-                          ),
-                          new Text(
-                            data.targetRuntimePerformance.toString(),
-                            style: new TextStyle(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w400,
-                                color: textcolor,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'Roboto',
-                                decoration: TextDecoration.none),
-                          )
-                        ],
-                      )
-                    ],
+                            new Text(
+                              data.targetRuntimePerformance.toString(),
+                              style: new TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: textcolor,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'Roboto',
+                                  decoration: TextDecoration.none),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
