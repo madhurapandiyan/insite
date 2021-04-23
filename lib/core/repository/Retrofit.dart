@@ -1,6 +1,7 @@
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
+import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
@@ -91,6 +92,13 @@ abstract class RestClient {
   Future<SearchData> searchDetail(
       @Query("customerUID") String customerUID,
       @Query("snContains") String snContains,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/64be6463-d8c1-11e7-80fc-065f15eda309/v2")
+  Future<AssetLocationHistory> assetLocationHistoryDetail(
+      @Query("endTimeLocal") String endTimeLocal,
+      @Query("startTimeLocal") String startTimeLocal,
       @Header("X-VisionLink-CustomerUid") customerId);
 }
 

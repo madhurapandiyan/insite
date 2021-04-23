@@ -54,8 +54,8 @@ class HttpWrapper {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " + await _localService.getToken(),
-            // "Authorization": "Bearer 13bde4e6c059039597692e521329adc0",
+            // "Authorization": "Bearer " + await _localService.getToken(),
+            "Authorization": "Bearer 88dd38f7704f81acbe4141ebc782d8c9",
             "timezoneoffset": -330
           });
           return options;
