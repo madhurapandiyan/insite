@@ -5,7 +5,7 @@ import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/asset_util_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/smart_widgets/asset_operationlist.dart';
+import 'package:insite/widgets/smart_widgets/asset_utilizationlist.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
