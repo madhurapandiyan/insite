@@ -18,7 +18,7 @@ class AssetDetailViewModel extends BaseViewModel {
   AssetDetailViewModel(this.fleet) {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setUp();
-    Logger().i("asset choosen " + fleet.assetIdentifier);
+    Logger().i("asset choosen " + fleet.assetSerialNumber);
     Future.delayed(Duration(seconds: 1), () {
       getAssetDetail();
     });

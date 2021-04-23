@@ -8,6 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   cookie_jar: ^1.0.1
+  build_runner: ^1.10.11
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   dio_cookie_manager: ^1.0.0
@@ -20,7 +21,7 @@ dependencies:
   liquid_progress_indicator: ^0.3.2
   logger: ^1.0.0
   responsive_builder: ^0.4.1
-  retrofit: any
+  retrofit: ^1.2.0
   shared_preferences: ^2.0.5
   stacked: ^2.0.0
   stacked_services: ^0.7.3

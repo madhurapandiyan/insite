@@ -8,15 +8,15 @@ part of 'search_data.dart';
 
 TopMatch _$TopMatchFromJson(Map<String, dynamic> json) {
   return TopMatch(
-    assetId: json['assetId'] as String,
-    assetUid: json['assetUid'] as String,
+    assetID: json['assetID'] as String,
+    assetUID: json['assetUID'] as String,
     serialNumber: json['serialNumber'] as String,
   );
 }
 
 Map<String, dynamic> _$TopMatchToJson(TopMatch instance) => <String, dynamic>{
-      'assetUid': instance.assetUid,
-      'assetId': instance.assetId,
+      'assetUID': instance.assetUID,
+      'assetID': instance.assetID,
       'serialNumber': instance.serialNumber,
     };
 

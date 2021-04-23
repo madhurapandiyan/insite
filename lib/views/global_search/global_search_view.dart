@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/search_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:stacked/stacked.dart';
 import 'global_search_view_model.dart';
 
 class GlobalSearchView extends StatefulWidget {
+  final Function(TopMatch) onSelected;
+  GlobalSearchView({this.onSelected});
   @override
   _GlobalSearchViewState createState() => _GlobalSearchViewState();
-
-  const GlobalSearchView({
-    Key key,
-  }) : super(key: key);
 }
 
 class _GlobalSearchViewState extends State<GlobalSearchView> {
@@ -25,13 +24,19 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: ViewModelBuilder<GlobalSearchViewModel>.reactive(
-        builder:
-            (BuildContext context, GlobalSearchViewModel viewModel, Widget _) {
-          return viewModel.loading
-              ? Center(
-                  child: CircularProgressIndicator(),
+    return ViewModelBuilder<GlobalSearchViewModel>.reactive(
+      builder:
+          (BuildContext context, GlobalSearchViewModel viewModel, Widget _) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: viewModel.loading
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  color: tuna,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 )
               : Container(
                   width: MediaQuery.of(context).size.width,
@@ -88,34 +93,38 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               child: ListView.builder(
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1),
-                                            child: Text(
-                                              viewModel
-                                                  .searchData
-                                                  .topMatches[index]
-                                                  .serialNumber,
-                                              style: TextStyle(
-                                                  color: white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
+                                    TopMatch match =
+                                        viewModel.searchData.topMatches[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        widget.onSelected(match);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.1),
+                                              child: Text(
+                                                match.serialNumber,
+                                                style: TextStyle(
+                                                    color: white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Divider(
-                                          height: 30,
-                                          thickness: 3,
-                                          color: mediumgrey,
-                                        ),
-                                      ],
+                                          Divider(
+                                            height: 30,
+                                            thickness: 3,
+                                            color: mediumgrey,
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   },
                                   itemCount:
@@ -145,10 +154,10 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                             ),
                     ],
                   ),
-                );
-        },
-        viewModelBuilder: () => GlobalSearchViewModel(),
-      ),
+                ),
+        );
+      },
+      viewModelBuilder: () => GlobalSearchViewModel(),
     );
   }
 
