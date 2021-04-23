@@ -5,7 +5,7 @@ import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/asset_util_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/smart_widgets/asset_operationlist.dart';
+import 'package:insite/widgets/smart_widgets/asset_utilizationlist.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
@@ -20,10 +20,10 @@ class _UtilLizationViewState extends State<UtilLizationView> {
         builder:
             (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
           return Scaffold(
-            appBar: InsiteAppBar(
-              screenType: ScreenType.FLEET,
-              height: 56,
-            ),
+            // appBar: InsiteAppBar(
+            //   screenType: ScreenType.FLEET,
+            //   height: 56,
+            // ),
             body: Container(
               color: bgcolor,
               child: viewModel.loading
@@ -34,9 +34,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                       ? Column(
                           children: [
                             Expanded(
-                                child: ListView.builder(
-                                    itemCount: viewModel.utilLizationList.length,
-                                    padding: EdgeInsets.all(16),
+                                child: ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return Divider();
+                                    },
+                                    shrinkWrap: true,
+                                    physics: ClampingScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    itemCount:
+                                        viewModel.utilLizationList.length,
+                                    padding: EdgeInsets.only(
+                                        top: 30.0, left: 5.0, right: 5.0),
                                     itemBuilder: (context, index) {
                                       UtilizationData utilizationData =
                                           viewModel.utilLizationList[index];
