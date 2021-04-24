@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
+import 'package:insite/views/global_search/global_search_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/fleet_chip_filter.dart';
@@ -37,45 +38,52 @@ class _FleetViewState extends State<FleetView> {
         return InsiteScaffold(
           screenType: ScreenType.FLEET,
           body: Container(
-            color: bgcolor,
-            child: viewModel.loading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : viewModel.assets.isNotEmpty
-                    ? Column(
-                        children: [
-                          // FleetFilterView(),
-                          // Container(
-                          //   height: MediaQuery.of(context).size.height * 0.175,
-                          //   child: ListView.builder(
-                          //     padding: EdgeInsets.all(8),
-                          //     scrollDirection: Axis.horizontal,
-                          //     itemBuilder: (context, index) {
-                          //       return FleetKnob(
-                          //           count: "400", label: filters[index]);
-                          //     },
-                          //     itemCount: filters.length,
-                          //   ),
-                          // ),
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: viewModel.assets.length,
-                                padding: EdgeInsets.all(16),
-                                itemBuilder: (context, index) {
-                                  Fleet fleet = viewModel.assets[index];
-                                  return FleetItem(
-                                    fleet: fleet,
-                                    onCallback: () {
-                                      viewModel.onDetailPageSelected(fleet);
-                                    },
-                                  );
-                                }),
-                          ),
-                        ],
-                      )
-                    : EmptyView(title: "No Results"),
-          ),
+              color: bgcolor,
+              child: viewModel.loading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : viewModel.assets.isNotEmpty
+                      ? Column(
+                          children: [
+                            // FleetFilterView(),
+                            // Container(
+                            //   height: MediaQuery.of(context).size.height * 0.175,
+                            //   child: ListView.builder(
+                            //     padding: EdgeInsets.all(8),
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemBuilder: (context, index) {
+                            //       return FleetKnob(
+                            //           count: "400", label: filters[index]);
+                            //     },
+                            //     itemCount: filters.length,
+                            //   ),
+                            // ),
+                            Expanded(
+                              child: ListView.builder(
+                                  itemCount: viewModel.assets.length,
+                                  padding: EdgeInsets.all(16),
+                                  itemBuilder: (context, index) {
+                                    Fleet fleet = viewModel.assets[index];
+                                    return FleetItem(
+                                      fleet: fleet,
+                                      onCallback: () {
+                                        viewModel.onDetailPageSelected(fleet);
+                                      },
+                                    );
+                                  }),
+                            ),
+                          ],
+                        )
+                      // : EmptyView(title: "No Results"),
+                      : ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    GlobalSearchView());
+                          },
+                          child: Text('TEST'))),
         );
       },
       viewModelBuilder: () => FleetViewModel(),

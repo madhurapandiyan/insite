@@ -27,6 +27,8 @@ dependencies:
   stacked_services: ^0.7.3
   google_maps_flutter: ^2.0.3
   table_calendar: ^3.0.0
+  clippy_flutter: ^1.1.1
+  custom_info_window: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,7 @@ flutter:
     - assets/images/menu.svg
     - assets/images/plus.svg
     - assets/images/minus.svg
+    - assets/images/marker.png
 
   fonts:
     - family: Roboto

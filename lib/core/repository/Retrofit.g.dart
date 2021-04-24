@@ -366,6 +366,30 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AssetLocationHistory> assetLocationHistoryDetail(
+      endTimeLocal, startTimeLocal, customerId) async {
+    ArgumentError.checkNotNull(endTimeLocal, 'endTimeLocal');
+    ArgumentError.checkNotNull(startTimeLocal, 'startTimeLocal');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'endTimeLocal': endTimeLocal,
+      r'startTimeLocal': startTimeLocal
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/64be6463-d8c1-11e7-80fc-065f15eda309/v2',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetLocationHistory.fromJson(_result.data);
+    return value;
+  }
+
   Future<UtilizationSummaryResponse> utilLizationList(
       assetUID, startDate, endDate, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
