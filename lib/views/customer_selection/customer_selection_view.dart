@@ -32,6 +32,8 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
           appBar: InsiteAppBar(
             screenType: ScreenType.ACCOUNT,
             height: 56,
+            isSearchSelected: false,
+            onSearchTap: () {},
           ),
           body: SingleChildScrollView(
             child: Column(

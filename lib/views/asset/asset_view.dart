@@ -6,6 +6,7 @@ import 'package:insite/views/asset/asset_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_item.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetView extends StatefulWidget {
@@ -20,12 +21,8 @@ class _AssetViewState extends State<AssetView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
       builder: (BuildContext context, AssetViewModel viewModel, Widget _) {
-        return Scaffold(
-            backgroundColor: bgcolor,
-            appBar: InsiteAppBar(
-              screenType: ScreenType.ASSET_OPERATION,
-              height: 56,
-            ),
+        return InsiteScaffold(
+            screenType: ScreenType.ASSET_OPERATION,
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.all(8),

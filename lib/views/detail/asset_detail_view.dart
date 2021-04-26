@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/appbar/appvar_view.dart';
-import 'package:insite/views/detail/tabs/asset_dashboard.dart';
+import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
+import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
 
@@ -29,12 +31,8 @@ class _TabPageState extends State<AssetDetailView> {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
       builder:
           (BuildContext context, AssetDetailViewModel viewModel, Widget _) {
-        return Scaffold(
-          backgroundColor: bgcolor,
-          appBar: InsiteAppBar(
-            screenType: ScreenType.ASSET_DETAIL,
-            height: 56,
-          ),
+        return InsiteScaffold(
+          screenType: ScreenType.ASSET_DETAIL,
           body: viewModel.loading
               ? Center(
                   child: CircularProgressIndicator(),
@@ -206,9 +204,11 @@ class _TabPageState extends State<AssetDetailView> {
                           ? AssetDashbaord(
                               detail: viewModel.assetDetail,
                             )
-                          : EmptyView(
-                              title: "Coming soon",
-                            ),
+                          : selectedTabIndex == 3
+                              ? AssetLocationView()
+                              : EmptyView(
+                                  title: "Coming soon",
+                                ),
                     ],
                   ),
                 ),
