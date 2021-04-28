@@ -58,6 +58,8 @@ class AssetDetail {
   final String accountName;
   final String universalCustomerIdentifier;
   final String universalCustomerName;
+  final double lastReportedLocationLatitude;
+  final double lastReportedLocationLongitude;
   final List<Device> devices;
   AssetDetail(
     this.assetUid,
@@ -76,6 +78,8 @@ class AssetDetail {
     this.accountName,
     this.universalCustomerIdentifier,
     this.universalCustomerName,
+    this.lastReportedLocationLatitude,
+    this.lastReportedLocationLongitude
   );
   factory AssetDetail.fromJson(Map<String, dynamic> json) =>
       _$AssetDetailFromJson(json);

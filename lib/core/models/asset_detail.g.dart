@@ -27,6 +27,8 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) {
     json['accountName'] as String,
     json['universalCustomerIdentifier'] as String,
     json['universalCustomerName'] as String,
+    (json['lastReportedLocationLatitude'] as num)?.toDouble(),
+    (json['lastReportedLocationLongitude'] as num)?.toDouble(),
   );
 }
 
@@ -47,5 +49,7 @@ Map<String, dynamic> _$AssetDetailToJson(AssetDetail instance) =>
       'accountName': instance.accountName,
       'universalCustomerIdentifier': instance.universalCustomerIdentifier,
       'universalCustomerName': instance.universalCustomerName,
+      'lastReportedLocationLatitude': instance.lastReportedLocationLatitude,
+      'lastReportedLocationLongitude': instance.lastReportedLocationLongitude,
       'devices': instance.devices,
     };

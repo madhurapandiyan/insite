@@ -38,6 +38,7 @@ class _TabPageState extends State<AssetDetailView> {
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
+               
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

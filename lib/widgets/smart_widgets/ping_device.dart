@@ -24,61 +24,61 @@ class PingDevice extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Details'.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-                InsiteButton(
-                  title: 'Ping Device'.toUpperCase(),
-                  onTap: onTap,
-                  bgColor: tango,
-                  textColor: white,
-                ),
-              ],
+            Icon(
+              Icons.keyboard_arrow_down,
+              color: white,
             ),
             SizedBox(
-              height: 20,
+              width: 10,
             ),
-            Table(
-              border: TableBorder.all(),
-              children: [
-                TableRow(children: [
-                  InsiteTableRowItem(
-                    title: "Registered Dealer",
-                    content: "Dharwad - Training Dept",
-                  ),
-                  InsiteTableRowItem(
-                    title: "Device Type",
-                    content: "TAP76",
-                  ),
-                  InsiteTableRowItem(
-                    title: "Serial No.",
-                    content: "NG498917",
-                  ),
-                ])
-              ],
+            Text(
+              'Details'.toUpperCase(),
+              style: TextStyle(
+                  color: white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
             ),
           ],
         ),
+        InsiteButton(
+          title: 'Ping Device'.toUpperCase(),
+          onTap: onTap,
+          bgColor: tango,
+          textColor: white,
+        ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Table(
+                border: TableBorder.all(),
+                children: [
+        TableRow(children: [
+          InsiteTableRowItem(
+            title: "Registered Dealer",
+            content: "Dharwad - Training Dept",
+          ),
+          InsiteTableRowItem(
+            title: "Device Type",
+            content: "TAP76",
+          ),
+          InsiteTableRowItem(
+            title: "Serial No.",
+            content: "NG498917",
+          ),
+        ])
+                ],
+              ),
+            ],
+          ),
       ),
     );
   }
