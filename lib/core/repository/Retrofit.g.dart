@@ -390,6 +390,7 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
   Future<UtilizationSummaryResponse> utilLizationList(
       assetUID, startDate, endDate, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');

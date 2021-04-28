@@ -50,9 +50,14 @@ class AssetService extends BaseService {
 
   Future<AssetDetail> getAssetDetail(assetUID) async {
     try {
+      // AssetDetail assetResponse = await MyApi()
+      //     .getClient()
+      //     .assetDetail(assetUID, accountSelected.CustomerUID);
       AssetDetail assetResponse = await MyApi()
           .getClient()
           .assetDetail(assetUID, accountSelected.CustomerUID);
+      print('data :${assetResponse.lastReportedLocationLatitude}');
+       print('data :${assetResponse.lastReportedLocationLongitude}');
       return assetResponse;
     } catch (e) {
       Logger().e(e);
