@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
+import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
@@ -108,6 +109,14 @@ abstract class RestClient {
       @Query("assetUid") String assetUID,
       @Query("startDate") String startDate,
       @Query("endDate") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1")
+  Future<SingleAssetUtilization> singleAssetUtilization(
+      @Query("assetUid") String assetUID,
+      @Query("endDate") String endDate,
+      @Query("startDate") String startDate,
       @Header("x-visionlink-customeruid") customerId);
 }
 

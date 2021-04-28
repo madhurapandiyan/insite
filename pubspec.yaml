@@ -29,6 +29,7 @@ dependencies:
   table_calendar: ^3.0.0
   clippy_flutter: ^1.1.1
   custom_info_window: ^1.0.1
+  percent_indicator: ^3.0.1
 
 dev_dependencies:
   flutter_test:
