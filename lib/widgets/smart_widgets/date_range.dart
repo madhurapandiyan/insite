@@ -247,30 +247,32 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
             Expanded(
               child: isCalenderVisible
                   ? Container(
-                      child: TableCalendar(
-                        rowHeight: 35,
-                        firstDay: DateTime.utc(2010, 10, 16),
-                        lastDay: DateTime.utc(2030, 3, 14),
-                        focusedDay: DateTime.now(),
-                        selectedDayPredicate: (day) {
-                          return isSameDay(_selectedDay, day);
-                        },
-                        onDaySelected: (selectedDay, focusedDay) {
-                          setState(() {
-                            _selectedDay = selectedDay;
+                      child: Material(
+                        child: TableCalendar(
+                          rowHeight: 35,
+                          firstDay: DateTime.utc(2010, 10, 16),
+                          lastDay: DateTime.utc(2030, 3, 14),
+                          focusedDay: DateTime.now(),
+                          selectedDayPredicate: (day) {
+                            return isSameDay(_selectedDay, day);
+                          },
+                          onDaySelected: (selectedDay, focusedDay) {
+                            setState(() {
+                              _selectedDay = selectedDay;
 
-                            if (currentCustomDatePick ==
-                                CustomDatePick.customFromDate) {
-                              customFromDate = _selectedDay;
-                              fromDate = _selectedDay;
-                            }
-                            if (currentCustomDatePick ==
-                                CustomDatePick.customToDate) {
-                              customToDate = _selectedDay;
-                              toDate = _selectedDay;
-                            }
-                          });
-                        },
+                              if (currentCustomDatePick ==
+                                  CustomDatePick.customFromDate) {
+                                customFromDate = _selectedDay;
+                                fromDate = _selectedDay;
+                              }
+                              if (currentCustomDatePick ==
+                                  CustomDatePick.customToDate) {
+                                customToDate = _selectedDay;
+                                toDate = _selectedDay;
+                              }
+                            });
+                          },
+                        ),
                       ),
                     )
                   : Container(),
@@ -281,7 +283,9 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                   width: 75,
                   height: 40,
                   onTap: () {
-                    if (fromDate != null && toDate != null) {}
+                    if (fromDate != null && toDate != null) {
+                      Navigator.pop(context, [fromDate, toDate]);
+                    }
                   },
                   bgColor: tango,
                   textColor: white,
@@ -293,7 +297,9 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                 InsiteButton(
                   width: 75,
                   height: 40,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   bgColor: ship_grey,
                   textColor: white,
                   title: 'Cancel',
