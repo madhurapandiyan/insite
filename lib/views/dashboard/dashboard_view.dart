@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -20,26 +19,60 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
+        // if (viewModel.youDontHavePermission) {
+        //   showDialog(
+        //     context: context,
+        //     barrierDismissible: false,
+        //     builder: (context) {
+        //       return Container(
+        //         child: Column(
+        //           children: [
+        //             Text(
+        //                 "You do not have access to this application, please contact your Administrator to get access"),
+        //             Row(
+        //               mainAxisAlignment: MainAxisAlignment.end,
+        //               children: [
+        //                 TextButton(onPressed: () {}, child: Text("CLOSE")),
+        //               ],
+        //             )
+        //           ],
+        //         ),
+        //       );
+        //     },
+        //   );
+        // }
         return InsiteScaffold(
           screenType: ScreenType.DASHBOARD,
-          body: Container(
-            padding: EdgeInsets.all(16),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 1000
-                      ? 7
-                      : MediaQuery.of(context).size.width > 600
-                          ? 5
-                          : 3,
-                  crossAxisSpacing: 5.0,
-                  mainAxisSpacing: 5.0),
-              itemBuilder: (context, index) {
-                Category category = categories[index];
-                return _buildCategoryItem(context, index, category, viewModel);
-              },
-              itemCount: categories.length,
-            ),
-          ),
+          body: viewModel.youDontHavePermission
+              ? Center(
+                  child: Text(
+                    "You do not have access to this application, please contact your Administrator to get access",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20),
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.all(16),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: MediaQuery.of(context).size.width > 1000
+                            ? 7
+                            : MediaQuery.of(context).size.width > 600
+                                ? 5
+                                : 3,
+                        crossAxisSpacing: 5.0,
+                        mainAxisSpacing: 5.0),
+                    itemBuilder: (context, index) {
+                      Category category = categories[index];
+                      return _buildCategoryItem(
+                          context, index, category, viewModel);
+                    },
+                    itemCount: categories.length,
+                  ),
+                ),
         );
       },
       viewModelBuilder: () => DashboardViewModel(),

@@ -51,7 +51,6 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
       });
       Logger().i("total list size " + list.length.toString());
       Logger().i("searched list size " + _searchList.length.toString());
-
       setState(() {});
     } else {
       _searchList.clear();

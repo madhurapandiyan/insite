@@ -27,14 +27,39 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
         if (viewModel.onAccountSelected) {
           viewModel.onCustomerSelected();
         }
+        if (viewModel.youDontHavePermission) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) {
+              return Container(
+                child: Column(
+                  children: [
+                    Text(
+                        "You do not have access to this application, please contact your Administrator to get access"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(onPressed: () {}, child: Text("CLOSE")),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        }
         return Scaffold(
           backgroundColor: cod_grey,
           appBar: InsiteAppBar(
-            screenType: ScreenType.ACCOUNT,
-            height: 56,
-            isSearchSelected: false,
-            onSearchTap: () {},
-          ),
+              screenType: ScreenType.ACCOUNT,
+              height: 56,
+              isSearchSelected: false,
+              onSearchTap: () {},
+              shouldShowAccount: false,
+              shouldShowFilter: false,
+              shouldShowLogout: true,
+              shouldShowSearch: false),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -82,6 +107,7 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                 SizedBox(
                   height: 10,
                 ),
+                viewModel.youDontHavePermission ? Container() : SizedBox(),
                 Row(
                   children: [
                     Container(
@@ -96,68 +122,96 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                     ),
                   ],
                 ),
-                Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: CustomerSelectionDropDown(
-                      selectionType: SelectionType.ACCOUNT,
-                      onSelected: (SelectedData value) {
-                        ProgressDialog.show(context);
-                        Future.delayed(Duration(seconds: 1), () {
-                          ProgressDialog.dismiss();
-                        });
-                        viewModel.setAccountSelected(value.value);
-                      },
-                      onReset: () {
-                        viewModel.setAccountSelected(null);
-                        viewModel.setSubAccountSelected(null);
-                      },
-                      selected: viewModel.accountSelected != null
-                          ? SelectedData(
+                Column(
+                  children: [
+                    viewModel.accountSelected != null
+                        ? Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: CustomerSelectionDropDown(
                               selectionType: SelectionType.ACCOUNT,
-                              value: viewModel.accountSelected)
-                          : null,
-                      list: viewModel.customers,
-                    )),
-                viewModel.accountSelected != null &&
-                        viewModel.subAccountSelected == null &&
-                        viewModel.subCustomers.isNotEmpty
-                    ? SizedBox(
-                        height: 10,
-                      )
-                    : SizedBox(),
-                viewModel.accountSelected != null &&
+                              onSelected: (SelectedData value) {
+                                ProgressDialog.show(context);
+                                Future.delayed(Duration(seconds: 1), () {
+                                  ProgressDialog.dismiss();
+                                });
+                                viewModel.setAccountSelected(value.value);
+                              },
+                              onReset: () {
+                                viewModel.setAccountSelected(null);
+                                viewModel.setSubAccountSelected(null);
+                              },
+                              selected: viewModel.accountSelected != null
+                                  ? SelectedData(
+                                      selectionType: SelectionType.ACCOUNT,
+                                      value: viewModel.accountSelected)
+                                  : null,
+                              list: viewModel.customers,
+                            ))
+                        : Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: CustomerSelectionDropDown(
+                              selectionType: SelectionType.ACCOUNT,
+                              onSelected: (SelectedData value) {
+                                ProgressDialog.show(context);
+                                Future.delayed(Duration(seconds: 1), () {
+                                  ProgressDialog.dismiss();
+                                });
+                                viewModel.setAccountSelected(value.value);
+                              },
+                              onReset: () {
+                                viewModel.setAccountSelected(null);
+                                viewModel.setSubAccountSelected(null);
+                              },
+                              selected: viewModel.accountSelected != null
+                                  ? SelectedData(
+                                      selectionType: SelectionType.ACCOUNT,
+                                      value: viewModel.accountSelected)
+                                  : null,
+                              list: viewModel.customers,
+                            )),
+                    viewModel.accountSelected != null &&
                             viewModel.subAccountSelected == null &&
-                            viewModel.subCustomers.isNotEmpty ||
-                        viewModel.accountSelected != null &&
-                            viewModel.subAccountSelected != null &&
                             viewModel.subCustomers.isNotEmpty
-                    ? Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: CustomerSelectionDropDown(
-                          selectionType: SelectionType.CUSTOMER,
-                          onSelected: (value) {
-                            ProgressDialog.show(context);
-                            viewModel.setSubAccountSelected(value.value);
-                            Future.delayed(Duration(seconds: 1), () {
-                              ProgressDialog.dismiss();
-                              viewModel.onCustomerSelected();
-                            });
-                          },
-                          onReset: () {
-                            viewModel.setAccountSelected(null);
-                            viewModel.setSubAccountSelected(null);
-                          },
-                          selected: viewModel.subAccountSelected != null
-                              ? SelectedData(
-                                  selectionType: SelectionType.CUSTOMER,
-                                  value: viewModel.subAccountSelected)
-                              : null,
-                          list: viewModel.subCustomers,
-                        ),
-                      )
-                    : SizedBox(),
+                        ? SizedBox(
+                            height: 10,
+                          )
+                        : SizedBox(),
+                    viewModel.accountSelected != null &&
+                                viewModel.subAccountSelected == null &&
+                                viewModel.subCustomers.isNotEmpty ||
+                            viewModel.accountSelected != null &&
+                                viewModel.subAccountSelected != null &&
+                                viewModel.subCustomers.isNotEmpty
+                        ? Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            child: CustomerSelectionDropDown(
+                              selectionType: SelectionType.CUSTOMER,
+                              onSelected: (value) {
+                                ProgressDialog.show(context);
+                                viewModel.setSubAccountSelected(value.value);
+                                Future.delayed(Duration(seconds: 1), () {
+                                  ProgressDialog.dismiss();
+                                  viewModel.onCustomerSelected();
+                                });
+                              },
+                              onReset: () {
+                                viewModel.setAccountSelected(null);
+                                viewModel.setSubAccountSelected(null);
+                              },
+                              selected: viewModel.subAccountSelected != null
+                                  ? SelectedData(
+                                      selectionType: SelectionType.CUSTOMER,
+                                      value: viewModel.subAccountSelected)
+                                  : null,
+                              list: viewModel.subCustomers,
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
               ],
             ),
           ),

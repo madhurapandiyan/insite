@@ -15,6 +15,7 @@ class LocalService extends BaseService {
   static const String TOKEN = "token";
   static const String EXPIREY_TIME = "expiry_token";
   static const String IS_LOGGEDIN = "isLoggedIn";
+  static const String HAS_PERMISSION = "hasPermission";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -76,6 +77,14 @@ class LocalService extends BaseService {
       return null;
     }
     return Customer.fromJson(json.decode(data));
+  }
+
+  Future setHasPermission(bool hasPermission) async {
+    return await preferences.setBool(HAS_PERMISSION, hasPermission);
+  }
+
+  Future<bool> getHasPermission() async {
+    return preferences.getBool(HAS_PERMISSION);
   }
 
   void clearAll() async {

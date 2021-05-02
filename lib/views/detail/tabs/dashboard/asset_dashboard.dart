@@ -45,11 +45,6 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
         if (viewModel.loading) {
           return Center(child: CircularProgressIndicator());
         } else {
-          double Latitude = viewModel.assetDetail.lastReportedLocationLatitude;
-          print('Lati :$Latitude');
-          double Longitude =
-              viewModel.assetDetail.lastReportedLocationLongitude;
-          print('Longi :$Longitude');
           return SingleChildScrollView(
             child: Container(
               color: mediumgrey,
@@ -57,7 +52,6 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView(
-                  // shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   children: [
@@ -98,12 +92,17 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                        width: 374.04,
-                        height: 305.4,
-                        color: cardcolor,
-                        child: FleetGoogleMap(
-                            Latitude: Latitude, Longitude: Longitude)),
+                    viewModel.assetDetail != null
+                        ? Container(
+                            width: 374.04,
+                            height: 305.4,
+                            color: cardcolor,
+                            child: FleetGoogleMap(
+                                latitude: viewModel
+                                    .assetDetail.lastReportedLocationLatitude,
+                                longitude: viewModel
+                                    .assetDetail.lastReportedLocationLongitude))
+                        : SizedBox(),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -119,7 +118,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
           );
         }
       },
-      viewModelBuilder: () => AssetDashboardViewModel(),
+      viewModelBuilder: () => AssetDashboardViewModel(widget.detail),
     );
   }
 }
