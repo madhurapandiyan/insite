@@ -1,5 +1,6 @@
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -22,6 +23,9 @@ class CustomerSelectionViewModel extends BaseViewModel {
   bool _loading = false;
   bool get loading => _loading;
 
+  bool _youDontHavePermission = false;
+  bool get youDontHavePermission => _youDontHavePermission;
+
   bool _onAccountSelected = false;
   bool get onAccountSelected => _onAccountSelected;
 
@@ -37,13 +41,14 @@ class CustomerSelectionViewModel extends BaseViewModel {
   List<Customer> _subCustomers = [];
   List<Customer> get subCustomers => _subCustomers;
 
+  List<Permission> _permissions = [];
+  List<Permission> get permissions => _permissions;
+
   CustomerSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     getLoggedInUserMail();
+    getSelectedData();
     getCustomerList();
-    Future.delayed(Duration(seconds: 3), () {
-      getSelectedData();
-    });
   }
 
   getSelectedData() async {
@@ -57,6 +62,7 @@ class CustomerSelectionViewModel extends BaseViewModel {
       }
       Customer _subAccount = await _localService.getCustomerInfo();
       if (_subAccount != null) {
+        Logger().i("selected sub account " + _subAccount.DisplayName);
         _subAccountSelected = _subAccount;
         notifyListeners();
       }
@@ -123,11 +129,23 @@ class CustomerSelectionViewModel extends BaseViewModel {
   }
 
   onCustomerSelected() {
-    _navigationService.replaceWith(dashboardViewRoute);
+    _loading = true;
+    checkPermission();
   }
 
   onHomeSelected() {
     _navigationService.replaceWith(dashboardViewRoute);
+  }
+
+  checkPermission() async {
+    List<Permission> list = await _loginService.getPermissions();
+    if (list.isNotEmpty) {
+      _localService.setHasPermission(true);
+      _navigationService.replaceWith(dashboardViewRoute);
+    } else {
+      _youDontHavePermission = true;
+      _localService.setHasPermission(false);
+    }
   }
 
   showLoader() {

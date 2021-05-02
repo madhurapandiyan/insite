@@ -42,7 +42,7 @@ class FleetViewModel extends BaseViewModel {
   }
 
   onDetailPageSelected(Fleet fleet) {
-    _navigationService.replaceWith(assetDetailViewRoute,
+    _navigationService.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(fleet: fleet));
   }
 

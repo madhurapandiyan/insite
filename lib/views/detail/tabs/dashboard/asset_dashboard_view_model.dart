@@ -14,7 +14,8 @@ class AssetDashboardViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  AssetDashboardViewModel() {
+  AssetDashboardViewModel(AssetDetail detail) {
+    this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
     _assetSingleHistoryService.setUp();
     Future.delayed(Duration(seconds: 1), () {
@@ -23,8 +24,8 @@ class AssetDashboardViewModel extends BaseViewModel {
   }
 
   getAssetLocationHistory() async {
-    AssetDetail result = await _assetSingleHistoryService
-        .getAssetDetail("64be6463-d8c1-11e7-80fc-065f15eda309");
+    AssetDetail result =
+        await _assetSingleHistoryService.getAssetDetail(assetDetail.assetUid);
 
     _assetDetail = result;
     print('result:$result');

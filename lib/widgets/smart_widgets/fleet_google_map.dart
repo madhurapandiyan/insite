@@ -8,9 +8,9 @@ import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 
 class FleetGoogleMap extends StatefulWidget {
-  final double Latitude;
-  final double Longitude;
-  FleetGoogleMap({this.Latitude, this.Longitude});
+  final double latitude;
+  final double longitude;
+  FleetGoogleMap({this.latitude, this.longitude});
 
   @override
   _FleetGoogleMapState createState() => _FleetGoogleMapState();
@@ -212,7 +212,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
             zoomControlsEnabled: false,
             markers: _markers,
             initialCameraPosition:
-                CameraPosition(target: LatLng(widget.Latitude, widget.Longitude), zoom: 12),
+                CameraPosition(target: LatLng(widget.latitude, widget.longitude), zoom: 12),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               _onmapcreated(controller);
@@ -301,19 +301,19 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
   Future<void> _minus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(widget.Latitude, widget.Longitude), zoom: zoomVal)));
+        CameraPosition(target: LatLng(widget.latitude, widget.latitude), zoom: zoomVal)));
   }
 
   Future<void> _plus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(widget.Latitude, widget.Longitude), zoom: zoomVal)));
+        CameraPosition(target: LatLng(widget.latitude, widget.latitude), zoom: zoomVal)));
   }
 
   void _onmapcreated(GoogleMapController controller) {
     setState(() {
       _markers.add(Marker(
-          markerId: MarkerId('id-1'), position: LatLng(widget.Latitude, widget.Longitude)));
+          markerId: MarkerId('id-1'), position: LatLng(widget.latitude, widget.latitude)));
     });
   }
 

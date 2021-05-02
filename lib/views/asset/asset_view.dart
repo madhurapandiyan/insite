@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/asset/asset_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';

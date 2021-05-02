@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
@@ -83,6 +84,25 @@ class LoginService extends BaseService {
       List<Customer> list = [];
       if (response.Customers.isNotEmpty) {
         list = response.Customers[0].Children;
+      }
+      return list;
+    } catch (e) {
+      Logger().e(e);
+      return [];
+    }
+  }
+
+  Future<List<Permission>> getPermissions() async {
+    try {
+      Customer customer = await _localService.getAccountInfo();
+      PermissionResponse response = await MyApi().getClient().getPermission(
+          10000,
+          "Prod-VLUnifiedFleet",
+          customer.CustomerUID,
+          customer.CustomerUID);
+      List<Permission> list = [];
+      if (response != null && response.permission_list.isNotEmpty) {
+        list = response.permission_list;
       }
       return list;
     } catch (e) {

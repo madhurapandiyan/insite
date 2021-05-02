@@ -21,6 +21,7 @@ class InsiteScaffold extends StatefulWidget {
 
 class _InsiteScaffoldState extends State<InsiteScaffold> {
   bool _isSearchSelected = false;
+  bool _isFilterSelected = false;
   var _navigationService = locator<NavigationService>();
 
   @override
@@ -32,12 +33,28 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
       child: Scaffold(
         backgroundColor: bgcolor,
         appBar: InsiteAppBar(
-          screenType: ScreenType.FLEET,
+          shouldShowAccount:
+              widget.screenType == ScreenType.DASHBOARD ? true : false,
+          shouldShowFilter:
+              widget.screenType == ScreenType.FLEET ? true : false,
+          shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
+                  widget.screenType == ScreenType.DASHBOARD
+              ? true
+              : false,
+          shouldShowSearch:
+              widget.screenType == ScreenType.ACCOUNT ? false : true,
+          screenType: widget.screenType,
           height: 56,
           isSearchSelected: _isSearchSelected,
+          isFilterSelected: _isFilterSelected,
           onSearchTap: () {
             setState(() {
               _isSearchSelected = !_isSearchSelected;
+            });
+          },
+          onFilterTap: () {
+            setState(() {
+              _isFilterSelected = !_isFilterSelected;
             });
           },
         ),

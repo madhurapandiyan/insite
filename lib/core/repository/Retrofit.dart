@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
@@ -39,6 +40,14 @@ abstract class RestClient {
 
   @GET("/userinfo?schema=openid")
   Future<UserInfo> getUserInfo();
+
+  @GET(
+      "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
+  Future<PermissionResponse> getPermission(
+      @Query("limit") int limit,
+      @Query("provider_id") String provider_id,
+      @Path() String customerId,
+      @Header("X-VisionLink-CustomerUid") xVisonLinkCustomerId);
 
   @GET("/t/trimble.com/vss-customerservice/1.0/accounthierarchy")
   Future<CustomersResponse> accountHierarchy(

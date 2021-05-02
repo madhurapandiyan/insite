@@ -142,6 +142,34 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<PermissionResponse> getPermission(
+      limit, provider_id, customerId, xVisonLinkCustomerId) async {
+    ArgumentError.checkNotNull(limit, 'limit');
+    ArgumentError.checkNotNull(provider_id, 'provider_id');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(xVisonLinkCustomerId, 'xVisonLinkCustomerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'provider_id': provider_id
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/authorization/1.0.0/users/organizations/$customerId/permissions',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'X-VisionLink-CustomerUid': xVisonLinkCustomerId
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = PermissionResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<CustomersResponse> accountHierarchy(toplevelsonly) async {
     ArgumentError.checkNotNull(toplevelsonly, 'toplevelsonly');
     const _extra = <String, dynamic>{};
@@ -419,16 +447,16 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilization(
-      assetUID, startDate, endDate, customerId) async {
+      assetUID, endDate, startDate, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUID,
-      r'endDate': startDate,
-      r'startDate': endDate
+      r'endDate': endDate,
+      r'startDate': startDate
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
