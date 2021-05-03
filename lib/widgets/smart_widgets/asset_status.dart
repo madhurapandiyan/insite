@@ -5,7 +5,6 @@ import 'package:insite/theme/colors.dart';
 import 'dart:math';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
-
 class AssetStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -160,28 +159,30 @@ class AssetStatus extends StatelessWidget {
                           ),
                         ),
                         new Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            assetStatusOff(
-                                "ASSET OFF", "assets/images/arrows.png"),
-                            Container(
-                                width: 127.29,
-                                child:
-                                    Divider(thickness: 1.0, color: athenGrey)),
-                            assetStatusOn(
-                                "ASSET ON", "assets/images/arrows.png"),
-                            Container(
-                                width: 127.29,
-                                child:
-                                    Divider(thickness: 1.0, color: athenGrey)),
-                            assetStatusFirstReport("AWAITING \nFIRST REPORT",
+                            AssetStatusWidget(emerald, "ASSET OFF", silver,
                                 "assets/images/arrows.png"),
                             Container(
                                 width: 127.29,
                                 child:
                                     Divider(thickness: 1.0, color: athenGrey)),
-                            assetStatusNotReport(
-                                "NOT REPORTING", "assets/images/arrows.png"),
+                            AssetStatusWidget(burntSienna, "ASSET ON", silver,
+                                "assets/images/arrows.png"),
+                            Container(
+                                width: 127.29,
+                                child:
+                                    Divider(thickness: 1.0, color: athenGrey)),
+                            AssetStatusWidget(
+                                mustard,
+                                "AWAITING \nFIRST REPORT",
+                                silver,
+                                "assets/images/arrows.png"),
+                            Container(
+                                width: 127.29,
+                                child:
+                                    Divider(thickness: 1.0, color: athenGrey)),
+                            AssetStatusWidget(tabpagecolor, "NOT REPORTING",
+                                silver, "assets/images/arrows.png")
                           ],
                         )
                       ],
