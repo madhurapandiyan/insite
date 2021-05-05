@@ -19,12 +19,14 @@ class SingleAssetUtilizationViewModel extends BaseViewModel {
     this._assetUID = assetUID;
   }
 
-  String _startDate = '';
+  String _startDate =
+      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
   set startDate(String startDate) {
     this._startDate = startDate;
   }
 
-  String _endDate = '';
+  String _endDate =
+      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
   set endDate(String endDate) {
     this._endDate = endDate;
   }
@@ -32,9 +34,13 @@ class SingleAssetUtilizationViewModel extends BaseViewModel {
   SingleAssetUtilizationViewModel() {
     // this.log = getLogger(this.runtimeType.toString());
     _singleAssetUtilizationService.setUp();
+    getSingleAssetUtilization();
   }
 
   getSingleAssetUtilization() async {
+    print('@@@ Start');
+    print('@@@ Start Date: $_startDate');
+    print('@@@ End Date: $_endDate');
     SingleAssetUtilization result =
         await _singleAssetUtilizationService.getSingleAssetUtilizationResult(
             '64be6463-d8c1-11e7-80fc-065f15eda309', _endDate, _startDate);

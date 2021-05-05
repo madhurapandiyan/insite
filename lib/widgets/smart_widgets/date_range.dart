@@ -326,13 +326,13 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
         break;
       case DefaultDateRange.currentWeek:
         return (DateTime.now()
-            .subtract(Duration(days: DateTime.now().weekday)));
+            .subtract(Duration(days: DateTime.now().weekday - 1)));
         break;
       case DefaultDateRange.lastSevenDays:
-        return (DateTime.now().subtract(Duration(days: 7)));
+        return (DateTime.now().subtract(Duration(days: 6)));
         break;
       case DefaultDateRange.lastThirtyDays:
-        return (DateTime.now().subtract(Duration(days: 30)));
+        return (DateTime.now().subtract(Duration(days: 29)));
         break;
       case DefaultDateRange.currentMonth:
         return (DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
@@ -357,12 +357,15 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
 
           if (selectedDateRange == DefaultDateRange.previousWeek) {
             fromDate = DateTime.now()
-                .subtract(Duration(days: DateTime.now().weekday + 7));
+                .subtract(Duration(days: DateTime.now().weekday + 6));
             toDate = fromDate.add(Duration(days: 6));
           } else if (selectedDateRange == DefaultDateRange.previousMonth) {
             fromDate =
                 DateTime.utc(DateTime.now().year, DateTime.now().month - 1, 1);
             toDate = DateTime.utc(DateTime.now().year, DateTime.now().month, 0);
+          } else if (selectedDateRange == DefaultDateRange.yesterday) {
+            fromDate = calcFromDate(defaultDateRange);
+            toDate = calcFromDate(defaultDateRange);
           } else {
             toDate = DateTime.now();
             fromDate = calcFromDate(defaultDateRange);

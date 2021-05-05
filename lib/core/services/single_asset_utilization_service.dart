@@ -36,7 +36,7 @@ class SingleAssetUtilizationService extends BaseService {
         SingleAssetUtilization response = await MyApi()
             .getClient()
             .singleAssetUtilization(assetUID, endDate, startDate,
-                '75ab4554-05f9-e311-8d69-d067e5fd4637');
+                'd7ac4554-05f9-e311-8d69-d067e5fd4637');
 
         print('@@@ RES: ${response.message}');
         return response;
