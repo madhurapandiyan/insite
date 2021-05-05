@@ -21,7 +21,7 @@ SingleAssetUtilization _$SingleAssetUtilizationFromJson(
         ?.map(
             (e) => e == null ? null : Range.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    code: json['code'] as int,
+    code: (json['code'] as num)?.toDouble(),
     message: json['message'] as String,
   );
 }
@@ -85,7 +85,7 @@ Data _$DataFromJson(Map<String, dynamic> json) {
             ?.toList(),
     targetIdlePerformance: (json['targetIdlePerformance'] as num)?.toDouble(),
     targetIdle: (json['targetIdle'] as num)?.toDouble(),
-    targetRuntime: json['targetRuntime'] as int,
+    targetRuntime: (json['targetRuntime'] as num)?.toDouble(),
     targetRuntimePerformance:
         (json['targetRuntimePerformance'] as num)?.toDouble(),
     runtimeHoursCalloutTypes: (json['runtimeHoursCalloutTypes'] as List)
