@@ -53,11 +53,13 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
       Logger().i("searched list size " + _searchList.length.toString());
       setState(() {});
     } else {
-      _searchList.clear();
-      selectedIndex = null;
-      if (_textEditingController != null && text.isEmpty) {
-        setState(() {});
-        return;
+      if (_searchList.isNotEmpty) {
+        _searchList.clear();
+        selectedIndex = null;
+        if (_textEditingController != null && text.isEmpty) {
+          setState(() {});
+          return;
+        }
       }
     }
   }

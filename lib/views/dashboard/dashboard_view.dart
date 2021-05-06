@@ -19,28 +19,6 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
-        // if (viewModel.youDontHavePermission) {
-        //   showDialog(
-        //     context: context,
-        //     barrierDismissible: false,
-        //     builder: (context) {
-        //       return Container(
-        //         child: Column(
-        //           children: [
-        //             Text(
-        //                 "You do not have access to this application, please contact your Administrator to get access"),
-        //             Row(
-        //               mainAxisAlignment: MainAxisAlignment.end,
-        //               children: [
-        //                 TextButton(onPressed: () {}, child: Text("CLOSE")),
-        //               ],
-        //             )
-        //           ],
-        //         ),
-        //       );
-        //     },
-        //   );
-        // }
         return InsiteScaffold(
           screenType: ScreenType.DASHBOARD,
           body: viewModel.youDontHavePermission
@@ -131,6 +109,5 @@ class _DashboardViewState extends State<DashboardView> {
       selectedIndex = index;
     });
     viewModel.openRespectivePage(category.screenType);
-    // widget.onDashboardItemSelected(category.screenType);
   }
 }

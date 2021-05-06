@@ -16,11 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: AssetStatus(),  
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
-      //initialRoute: splashViewRoute,
+      initialRoute: splashViewRoute,
       theme: ThemeData(
           backgroundColor: cod_grey,
           fontFamily: 'Roboto',
