@@ -15,7 +15,7 @@ class SingleAssetUtilization {
   List<Range> daily;
   List<Range> weekly;
   List<Range> monthly;
-  int code;
+  double code;
   String message;
 
   factory SingleAssetUtilization.fromJson(Map<String, dynamic> json) =>
@@ -113,7 +113,7 @@ class Data {
   List<String> targetIdlePerformanceCalloutTypes;
   double targetIdlePerformance;
   double targetIdle;
-  int targetRuntime;
+  double targetRuntime;
   double targetRuntimePerformance;
   List<String> runtimeHoursCalloutTypes;
   List<String> idleHoursCalloutTypes;

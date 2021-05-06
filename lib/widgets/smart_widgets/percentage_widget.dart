@@ -6,12 +6,14 @@ class PercentageWidget extends StatelessWidget {
   final String label;
   final double percentage;
   final Color color;
+  final bool isPercentage;
 
   const PercentageWidget({
     Key key,
     @required this.label,
     @required this.percentage,
     @required this.color,
+    this.isPercentage,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,11 @@ class PercentageWidget extends StatelessWidget {
         percent: percentage == null ? 0 : percentage / 100,
         center: percentage == null
             ? Text('')
-            : Text('${double.parse((percentage).toStringAsFixed(2))}%'),
+            : isPercentage == null
+                ? Text('${double.parse((percentage).toStringAsFixed(2))}%')
+                : isPercentage
+                    ? Text('${double.parse((percentage).toStringAsFixed(2))}%')
+                    : Text('${double.parse((percentage).toStringAsFixed(2))}'),
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,
         backgroundColor: concrete,
