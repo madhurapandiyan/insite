@@ -25,7 +25,7 @@ class SingleAssetUtilizationService extends BaseService {
   }
 
   Future<SingleAssetUtilization> getSingleAssetUtilizationResult(
-      String assetUID, String endDate, String startDate) async {
+      String assetUID, String sort, String endDate, String startDate) async {
     try {
       if (assetUID != null &&
           assetUID.isNotEmpty &&
@@ -35,7 +35,7 @@ class SingleAssetUtilizationService extends BaseService {
           endDate.isNotEmpty) {
         SingleAssetUtilization response = await MyApi()
             .getClient()
-            .singleAssetUtilization(assetUID, endDate, startDate,
+            .singleAssetUtilization(assetUID, sort, endDate, startDate,
                 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
 
         print('@@@ RES: ${response.message}');

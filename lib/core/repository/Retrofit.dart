@@ -124,6 +124,7 @@ abstract class RestClient {
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1")
   Future<SingleAssetUtilization> singleAssetUtilization(
       @Query("assetUid") String assetUID,
+      @Query("sort") String sort,
       @Query("endDate") String endDate,
       @Query("startDate") String startDate,
       @Header("x-visionlink-customeruid") customerId);

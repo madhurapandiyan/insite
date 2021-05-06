@@ -43,7 +43,10 @@ class SingleAssetUtilizationViewModel extends BaseViewModel {
     print('@@@ End Date: $_endDate');
     SingleAssetUtilization result =
         await _singleAssetUtilizationService.getSingleAssetUtilizationResult(
-            '64be6463-d8c1-11e7-80fc-065f15eda309', _endDate, _startDate);
+            '64be6463-d8c1-11e7-80fc-065f15eda309',
+            '-LastReportedUtilizationTime',
+            _endDate,
+            _startDate);
     _singleAssetUtilization = result;
     print('@@@ END RES: ${_singleAssetUtilization.toJson().toString()}');
     _loading = false;

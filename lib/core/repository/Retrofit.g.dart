@@ -447,14 +447,16 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilization(
-      assetUID, endDate, startDate, customerId) async {
+      assetUID, sort, endDate, startDate, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(sort, 'sort');
     ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUID,
+      r'sort': sort,
       r'endDate': endDate,
       r'startDate': startDate
     };
