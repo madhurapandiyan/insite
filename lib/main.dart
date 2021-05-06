@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/router.dart' as router;
