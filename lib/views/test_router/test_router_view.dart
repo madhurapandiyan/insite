@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'test_router_view_model.dart';
