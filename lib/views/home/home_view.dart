@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
-import 'package:insite/views/asset/asset_view.dart';
+import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -134,10 +134,7 @@ class _HomeViewState extends State<HomeView> {
     if (currentScreenType == ScreenType.ACCOUNT) {
       return CustomerSelectionView();
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
-      return AssetView(
-        onDetailPageSelected: () {
-          updateCurrentState(ScreenType.ASSET_DETAIL, model);
-        },
+      return AssetListView(
       );
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
       return AssetDetailView(

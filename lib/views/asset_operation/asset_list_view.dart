@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/asset/asset_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_item.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
+import 'asset_listview_model.dart';
 
-class AssetView extends StatefulWidget {
-  final VoidCallback onDetailPageSelected;
-  AssetView({this.onDetailPageSelected});
+class AssetListView extends StatefulWidget {
+  AssetListView();
   @override
-  _AssetViewState createState() => _AssetViewState();
+  _AssetListViewState createState() => _AssetListViewState();
 }
 
-class _AssetViewState extends State<AssetView> {
+class _AssetListViewState extends State<AssetListView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
-      builder: (BuildContext context, AssetViewModel viewModel, Widget _) {
+      builder: (BuildContext context, AssetListViewModel viewModel, Widget _) {
         return InsiteScaffold(
             screenType: ScreenType.ASSET_OPERATION,
             body: SingleChildScrollView(
@@ -80,7 +79,7 @@ class _AssetViewState extends State<AssetView> {
                                   return AssetItem(
                                     asset: asset,
                                     onCallback: () {
-                                      widget.onDetailPageSelected();
+                                      
                                     },
                                   );
                                 })
@@ -96,7 +95,7 @@ class _AssetViewState extends State<AssetView> {
               ),
             ));
       },
-      viewModelBuilder: () => AssetViewModel(),
+      viewModelBuilder: () => AssetListViewModel(),
     );
   }
 }

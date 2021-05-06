@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/utilization/asset_util_model.dart';
+import 'package:insite/views/home/home_view.dart';
+import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilizationlist.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
@@ -17,11 +19,8 @@ class _UtilLizationViewState extends State<UtilLizationView> {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
         builder:
             (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
-          return Scaffold(
-            // appBar: InsiteAppBar(
-            //   screenType: ScreenType.FLEET,
-            //   height: 56,
-            // ),
+          return InsiteScaffold(
+            screenType: ScreenType.UTILIZATION,
             body: Container(
               color: bgcolor,
               child: viewModel.loading

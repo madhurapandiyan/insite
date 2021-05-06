@@ -4,7 +4,7 @@ import 'package:insite/core/services/asset_service.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
-class AssetViewModel extends BaseViewModel {
+class AssetListViewModel extends BaseViewModel {
   var _assetService = locator<AssetService>();
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
@@ -12,7 +12,7 @@ class AssetViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  AssetViewModel() {
+  AssetListViewModel() {
     _assetService.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetSummaryList();

@@ -2,9 +2,10 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/views/asset/asset_view.dart';
+import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/home/home_view.dart';
+import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -30,7 +31,10 @@ class DashboardViewModel extends BaseViewModel {
       _navigationService.navigateWithTransition(FleetView(),
           transition: "fade");
     } else if (type == ScreenType.ASSET_OPERATION) {
-      _navigationService.navigateWithTransition(AssetView(),
+      _navigationService.navigateWithTransition(AssetListView(),
+          transition: "fade");
+    } else if (type == ScreenType.UTILIZATION) {
+      _navigationService.navigateWithTransition(UtilLizationView(),
           transition: "fade");
     }
   }

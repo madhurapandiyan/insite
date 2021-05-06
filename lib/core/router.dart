@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart' as view8;
-import 'package:insite/views/asset/asset_view.dart' as view10;
 import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/customer_selection/customer_selection_view.dart'
@@ -14,7 +14,7 @@ import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
 import 'package:insite/views/test_router/test_router_view.dart' as view7;
-import 'package:insite/views/utilization/asset_util.dart' as view11;
+import 'package:insite/views/utilization/utilization_view.dart' as view11;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -44,7 +44,7 @@ class Router {
                   fleet: fleetArgs.fleet,
                 ));
       case assetViewRoute:
-        return MaterialPageRoute(builder: (_) => view10.AssetView());
+        return MaterialPageRoute(builder: (_) => AssetListView());
       case utilRouterViewRoute:
         return MaterialPageRoute(builder: (_) => view11.UtilLizationView());
 
