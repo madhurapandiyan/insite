@@ -52,3 +52,4 @@ final Gradient gradient = new LinearGradient(
     1.0,
   ],
 );
+const Color olivine = Color(0xFF8EB685);

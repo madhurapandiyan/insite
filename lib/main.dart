@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/router.dart' as router;
@@ -16,7 +15,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
