@@ -2,123 +2,156 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
 import 'dart:math' as math;
+import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
-class FuelLevel extends StatelessWidget {
+class FuelLevel extends StatefulWidget {
+  @override
+  _FuelLevelState createState() => _FuelLevelState();
+}
+
+class _FuelLevelState extends State<FuelLevel>
+    with SingleTickerProviderStateMixin {
+  Animation<double> animation;
+  AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
+    final curvedAnimation = CurvedAnimation(
+        parent: animationController, curve: Curves.easeInOutCubic);
+    animation = Tween<double>(begin: 0.0, end: 3.14).animate(curvedAnimation)
+      ..addListener(() {
+        setState(() {});
+      });
+    animationController.repeat(reverse: false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgcolor,
       body: Center(
-        child: Container(
-          width: 316.13,
-          height: 201.16,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-            border: Border.all(width: 2.5, color: cardcolor),
-            shape: BoxShape.rectangle,
+          child: Container(
+        width: 345.13,
+        height: 221.16,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
+          border: Border.all(width: 2.5, color: cardcolor),
+          shape: BoxShape.rectangle,
+        ),
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: new Row(
+              children: [
+                SvgPicture.asset("assets/images/arrowdown.svg"),
+                SizedBox(
+                  width: 10,
+                ),
+                new Text(
+                  "FUEL LEVEL",
+                  style: new TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Roboto',
+                      color: textcolor,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 12.0),
+                ),
+                SizedBox(
+                  width: 210,
+                ),
+                GestureDetector(
+                  onTap: () => print("button is tapped"),
+                  child: SvgPicture.asset(
+                    "assets/images/menu.svg",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              ],
+            ),
           ),
-          child: Stack(
+          Divider(
+            thickness: 1.0,
+            color: black,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
+              Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: new Row(
-                      children: [
-                        SvgPicture.asset("assets/images/arrowdown.svg"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        new Text(
-                          "FUEL LEVEL",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
-                        SizedBox(
-                          width: 180,
-                        ),
-                        GestureDetector(
-                          onTap: () => print("button is tapped"),
-                          child: SvgPicture.asset(
-                            "assets/images/menu.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                      ],
-                    ),
+                  CustomPaint(
+                    painter: ProgressArc(null, black, true),
                   ),
-                  Divider(
-                    thickness: 1.0,
-                    color: black,
+                  CustomPaint(
+                    painter: ProgressArc(animation.value, Colors.white, false),
                   ),
-                  Stack(
-                    children: [
-                      new Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15.0, top: 15),
-                            child: new Container(
-                              child: CircularArc(),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )
                 ],
               ),
+              SizedBox(
+                width: 200,
+              ),
+              Column(
+                children: [
+                  AssetStatusWidget(burntSienna, "< 25 % ", silver,
+                      "assets/images/arrows.png"),
+                  Container(
+                      width: 127.29,
+                      child: Divider(thickness: 1.0, color: athenGrey)),
+                  AssetStatusWidget(
+                      lightRose, "< 50 %", silver, "assets/images/arrows.png"),
+                  Container(
+                      width: 127.29,
+                      child: Divider(thickness: 1.0, color: athenGrey)),
+                  AssetStatusWidget(
+                      mustard, "< 75 %", silver, "assets/images/arrows.png"),
+                  Container(
+                      width: 127.29,
+                      child: Divider(thickness: 1.0, color: athenGrey)),
+                  AssetStatusWidget(
+                      emerald, "<= 100 %", silver, "assets/images/arrows.png")
+                ],
+              )
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class CircularArc extends StatefulWidget {
-  @override
-  _CircularArcState createState() => _CircularArcState();
-}
-
-class _CircularArcState extends State<CircularArc> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: CustomPaint(
-        size: Size(50, 50),
-        painter: ProgressArc(60, Colors.white),
-      ),
+        ]),
+      )),
     );
   }
 }
 
 class ProgressArc extends CustomPainter {
+  bool isBackground;
   double arc;
-  final Color color;
+  Color progressColor;
 
-  ProgressArc(this.arc, this.color);
+  ProgressArc(this.arc, this.progressColor, this.isBackground);
+
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTRB(250, 100, 250, 200);
-    final startAngle = math.pi / 2;
+    final rect = Rect.fromLTRB(170 - 90 * 1.3, 40, 165, 163);
+
+    final startAngle = math.pi;
     final sweepAngle = math.pi;
     final useCenter = false;
+
     final paint = Paint()
-      ..color = Colors.black
+      ..color = progressColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 30;
+      ..strokeWidth = 25;
+
+    if (!isBackground) {
+      paint.shader = gradient.createShader(rect);
+    }
+
     canvas.drawArc(rect, startAngle, sweepAngle, useCenter, paint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
-    throw UnimplementedError();
+    return true;
   }
 }
