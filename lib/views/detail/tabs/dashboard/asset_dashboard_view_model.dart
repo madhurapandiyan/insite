@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 
-class AssetDashboardViewModel extends BaseViewModel {
+class AssetDashboardViewModel extends InsiteViewModel {
   Logger log;
   var _assetSingleHistoryService = locator<AssetService>();
   AssetDetail _assetDetail;

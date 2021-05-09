@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 
 class InsiteText extends StatelessWidget {
   final String text;
@@ -15,5 +16,30 @@ class InsiteText extends StatelessWidget {
           fontWeight: fontWeight,
           fontSize: size,
         ));
+  }
+}
+
+class InsiteRichText extends StatelessWidget {
+  final String title;
+  final String content;
+  const InsiteRichText({this.title, this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: RichText(
+          text: TextSpan(children: [
+        TextSpan(text: title),
+        TextSpan(
+          text: content,
+          style: TextStyle(
+              decoration: TextDecoration.underline,
+              fontSize: 13.0,
+              fontWeight: FontWeight.bold,
+              color: tango),
+        )
+      ])),
+    );
   }
 }

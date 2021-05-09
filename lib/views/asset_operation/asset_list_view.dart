@@ -20,6 +20,7 @@ class _AssetListViewState extends State<AssetListView> {
     return ViewModelBuilder.reactive(
       builder: (BuildContext context, AssetListViewModel viewModel, Widget _) {
         return InsiteScaffold(
+            viewModel: viewModel,
             screenType: ScreenType.ASSET_OPERATION,
             body: SingleChildScrollView(
               child: Container(
@@ -78,9 +79,7 @@ class _AssetListViewState extends State<AssetListView> {
                                   Asset asset = viewModel.assets[index];
                                   return AssetItem(
                                     asset: asset,
-                                    onCallback: () {
-                                      
-                                    },
+                                    onCallback: () {},
                                   );
                                 })
                             : Center(

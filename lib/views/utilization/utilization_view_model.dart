@@ -1,3 +1,4 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/utilization.dart';
@@ -6,18 +7,24 @@ import 'package:insite/core/services/asset_utilization_service.dart';
 
 import 'package:insite/core/services/utilization_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 
-class UtilLizationViewModel extends BaseViewModel {
+class UtilLizationViewModel extends InsiteViewModel {
   Logger log;
   var _utilService = locator<AssetUtilService>();
   var _utilizationService = locator<AssetUtilizationService>();
 
   List<UtilizationData> _utilLizationList = [];
   List<UtilizationData> get utilLizationList => _utilLizationList;
-
+  int pageNumber = 1;
+  int pageCount = 50;
   Utilization _utilization;
   Utilization get utilization => _utilization;
+
+  List<AssetResult> _utilLizationListData = [];
+  List<AssetResult> get utilLizationListData => _utilLizationListData;
+
+  bool _isMain = false;
+  bool get isMain => _isMain;
 
   String _startDate =
       '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
@@ -34,7 +41,8 @@ class UtilLizationViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  UtilLizationViewModel() {
+  UtilLizationViewModel(value) {
+    _isMain = value;
     this.log = getLogger(this.runtimeType.toString());
     _utilService.setUp();
     Future.delayed(Duration(seconds: 1), () {
@@ -46,17 +54,13 @@ class UtilLizationViewModel extends BaseViewModel {
   getUtilList() async {
     var result = await _utilService.getUtilizationData();
     _utilLizationList = result;
-
     print('result:$result');
-
-    _loading = false;
-    notifyListeners();
   }
 
   getUtilization() async {
     Utilization result = await _utilizationService.getUtilizationResult(
         _startDate, _endDate, '-RuntimeHours');
-    _utilization = result;
+    _utilLizationListData = result.assetResults;
     _loading = false;
     notifyListeners();
   }

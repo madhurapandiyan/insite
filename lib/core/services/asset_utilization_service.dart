@@ -31,8 +31,8 @@ class AssetUtilizationService extends BaseService {
           startDate.isNotEmpty &&
           endDate != null &&
           endDate.isNotEmpty) {
-        Utilization response = await MyApi().getClient().utilization(
-            startDate, endDate, sort, 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+        Utilization response = await MyApi().getClient().utilization(startDate,
+            endDate, 1, 50, sort, 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
         print('@@@ RES: ${response.message}');
         return response;
       }

@@ -134,6 +134,8 @@ abstract class RestClient {
   Future<Utilization> utilization(
       @Query("startDate") String startDate,
       @Query("endDate") String endDate,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 }

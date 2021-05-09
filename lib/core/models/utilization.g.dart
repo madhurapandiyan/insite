@@ -34,7 +34,7 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) {
     assetIcon: (json['assetIcon'] as num)?.toDouble(),
     assetIdentifier: json['assetIdentifier'] as String,
     assetSerialNumber: json['assetSerialNumber'] as String,
-    date: json['date'],
+    date: json['date'] as String,
     distanceTravelledKilometers:
         (json['distanceTravelledKilometers'] as num)?.toDouble(),
     idleEfficiency: (json['idleEfficiency'] as num)?.toDouble(),

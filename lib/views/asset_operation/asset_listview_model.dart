@@ -1,10 +1,10 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:intl/intl.dart';
-import 'package:stacked/stacked.dart';
 
-class AssetListViewModel extends BaseViewModel {
+class AssetListViewModel extends InsiteViewModel {
   var _assetService = locator<AssetService>();
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;

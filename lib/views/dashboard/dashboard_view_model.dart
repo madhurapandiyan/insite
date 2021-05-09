@@ -1,3 +1,4 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -7,21 +8,18 @@ import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class DashboardViewModel extends BaseViewModel {
+class DashboardViewModel extends InsiteViewModel {
   Logger log;
   var _navigationService = locator<NavigationService>();
   var _loginService = locator<LoginService>();
-  bool _youDontHavePermission = false;
-  bool get youDontHavePermission => _youDontHavePermission;
   var _localService = locator<LocalService>();
 
   DashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 1), () {
       checkPermission();
     });
   }
@@ -45,7 +43,7 @@ class DashboardViewModel extends BaseViewModel {
       if (list.isNotEmpty) {
         _localService.setHasPermission(true);
       } else {
-        _youDontHavePermission = true;
+        youDontHavePermission = true;
         _localService.setHasPermission(false);
         notifyListeners();
       }
