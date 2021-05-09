@@ -115,9 +115,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                             itemCount: viewModel
                                                 .utilLizationListData.length,
                                             padding: EdgeInsets.only(
-                                                top: 30.0,
-                                                left: 5.0,
-                                                right: 5.0),
+                                                left: 8.0, right: 8.0),
                                             itemBuilder: (context, index) {
                                               AssetResult utilizationData =
                                                   viewModel
@@ -126,6 +124,11 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                               return UtilizationListItem(
                                                 data: utilizationData,
                                                 isShowingInDetailPage: false,
+                                                onCallback: () {
+                                                  viewModel
+                                                      .onDetailPageSelected(
+                                                          utilizationData);
+                                                },
                                               );
                                             }))
                                   ],

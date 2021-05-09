@@ -1,17 +1,22 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 
 import 'package:insite/core/services/utilization_service.dart';
+import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class UtilLizationViewModel extends InsiteViewModel {
   Logger log;
   var _utilService = locator<AssetUtilService>();
   var _utilizationService = locator<AssetUtilizationService>();
+  var _navigationService = locator<NavigationService>();
 
   List<UtilizationData> _utilLizationList = [];
   List<UtilizationData> get utilLizationList => _utilLizationList;
@@ -63,5 +68,14 @@ class UtilLizationViewModel extends InsiteViewModel {
     _utilLizationListData = result.assetResults;
     _loading = false;
     notifyListeners();
+  }
+
+  onDetailPageSelected(AssetResult fleet) {
+    _navigationService.navigateTo(assetDetailViewRoute,
+        arguments: DetailArguments(
+            fleet: Fleet(
+                assetSerialNumber: fleet.assetSerialNumber,
+                assetId: fleet.assetIdentifierSqluid,
+                assetIdentifier: fleet.assetIdentifier)));
   }
 }

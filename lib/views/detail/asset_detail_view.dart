@@ -32,12 +32,12 @@ class _TabPageState extends State<AssetDetailView> {
           (BuildContext context, AssetDetailViewModel viewModel, Widget _) {
         return InsiteScaffold(
           screenType: ScreenType.ASSET_DETAIL,
+          viewModel: viewModel,
           body: viewModel.loading
               ? Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
-               
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -103,8 +103,8 @@ class _TabPageState extends State<AssetDetailView> {
                                               child: new RichText(
                                                   text: TextSpan(children: [
                                                 TextSpan(
-                                                  text: widget
-                                                      .fleet.assetSerialNumber,
+                                                  text: viewModel.assetDetail
+                                                      .assetSerialNumber,
                                                   style: TextStyle(
                                                       decoration: TextDecoration
                                                           .underline,
@@ -119,7 +119,7 @@ class _TabPageState extends State<AssetDetailView> {
                                         ),
                                         SizedBox(height: 15.0),
                                         new Text(
-                                          widget.fleet.dealerName,
+                                          viewModel.assetDetail.dealerName,
                                           style: new TextStyle(
                                               fontFamily: 'Roboto',
                                               fontStyle: FontStyle.normal,

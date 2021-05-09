@@ -90,4 +90,3 @@ class FleetSummaryResponse {
 
   Map<String, dynamic> toJson() => _$FleetSummaryResponseToJson(this);
 }
-

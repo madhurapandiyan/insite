@@ -4,6 +4,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class UtilizationListItem extends StatelessWidget {
   final AssetResult data;
@@ -170,15 +171,11 @@ class UtilizationListItem extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ExpansionTile(
-                      trailing: SizedBox(
-                        width: 0,
-                        height: 0,
-                      ),
+                    child: InsiteExpansionTile(
                       title: Table(
                         border: TableBorder.all(),
                         columnWidths: {
-                          0: FlexColumnWidth(6),
+                          0: FlexColumnWidth(5),
                           1: FlexColumnWidth(3),
                         },
                         children: [
