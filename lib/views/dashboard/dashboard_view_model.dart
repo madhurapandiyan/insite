@@ -7,6 +7,7 @@ import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -25,7 +26,9 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   openRespectivePage(ScreenType type) {
-    if (type == ScreenType.FLEET) {
+    if (type == ScreenType.DASHBOARD) {
+      _navigationService.navigateWithTransition(HomeView(), transition: "fade");
+    } else if (type == ScreenType.FLEET) {
       _navigationService.navigateWithTransition(FleetView(),
           transition: "fade");
     } else if (type == ScreenType.ASSET_OPERATION) {

@@ -2,6 +2,7 @@ import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/asset_location_history.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/permission.dart';
@@ -137,6 +138,11 @@ abstract class RestClient {
       @Query("pageNumber") int pageNumber,
       @Query("pageSize") int pageSize,
       @Query("sort") String sort,
+      @Header("x-visionlink-customeruid") customerId);
+
+      
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetStatus> assetStatus(@Query("grouping") String assetstatus,
       @Header("x-visionlink-customeruid") customerId);
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/asset_operation/asset_list_view.dart';
@@ -8,10 +9,14 @@ import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
+import 'package:insite/widgets/smart_widgets/asset_status.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
+  HomeView();
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -32,13 +37,34 @@ class _HomeViewState extends State<HomeView> {
           onWillPop: () {
             return onBackPressed(viewModel);
           },
-          child: Scaffold(
-            appBar: InsiteAppBar(
-              screenType: ScreenType.HOME,
-              height: 56,
-            ),
-            body: getCurrentScreen(viewModel.currentScreenType, viewModel),
-          ),
+          child: InsiteScaffold(
+              viewModel: viewModel,
+              screenType: ScreenType.DASHBOARD,
+              // appBar: InsiteAppBar(
+              //   screenType: ScreenType.HOME,
+              //   height: 56,
+              // ),
+              body: SingleChildScrollView(
+                child: Container(
+                  color: bgcolor,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      AssetStatus(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      FuelLevel(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      AssetStatus()
+                    ],
+                  ),
+                ),
+              )),
         );
       },
       viewModelBuilder: () => HomeViewModel(),
@@ -134,11 +160,9 @@ class _HomeViewState extends State<HomeView> {
     if (currentScreenType == ScreenType.ACCOUNT) {
       return CustomerSelectionView();
     } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
-      return AssetListView(
-      );
+      return AssetListView();
     } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      return AssetDetailView(
-      );
+      return AssetDetailView();
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView();
     } else if (currentScreenType == ScreenType.HOME) {
@@ -146,6 +170,7 @@ class _HomeViewState extends State<HomeView> {
           // onDashboardItemSelected: (newState) {
           // updateCurrentState(newState, model);
           // },
+
           );
     } else {
       return EmptyView(
