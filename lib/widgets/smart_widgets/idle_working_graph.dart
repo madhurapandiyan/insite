@@ -19,7 +19,7 @@ class IdleWorkingGraphWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
-            label,
+            label.length > 10 ? label.substring(0, 7) + '...' : label,
             style: TextStyle(
               color: white,
               fontSize: 12,
