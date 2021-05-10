@@ -64,7 +64,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         body: widget.viewModel.youDontHavePermission
             ? error.ErrorWidget(
                 title: "",
-                onTap: (value) {},
+                onTap: (value) {
+                  onErrorActionClicked(value, widget.viewModel);
+                },
                 path: "",
                 showAction: true,
                 description:
@@ -82,6 +84,12 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               ]),
       ),
     );
+  }
+
+  onErrorActionClicked(error.ErrorAction action, InsiteViewModel viewModel) {
+    if (action == error.ErrorAction.LOGIN) {
+      viewModel.login();
+    } else if (action == error.ErrorAction.LOGIN) {}
   }
 
   onGlobalSearchItemSelected(TopMatch match) {

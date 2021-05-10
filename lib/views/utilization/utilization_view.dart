@@ -27,6 +27,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   bool isCumulative = false;
   bool isIdleWorking = true;
   bool isRuntimeHours = false;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
@@ -109,8 +110,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                             separatorBuilder: (context, index) {
                                               return Divider();
                                             },
+                                            controller:
+                                                viewModel.scrollController,
                                             shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
                                             scrollDirection: Axis.vertical,
                                             itemCount: viewModel
                                                 .utilLizationListData.length,

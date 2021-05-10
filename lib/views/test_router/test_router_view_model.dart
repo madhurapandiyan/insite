@@ -1,15 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class TestRouterViewModel extends BaseViewModel {
+class TestRouterViewModel extends InsiteViewModel {
   Logger log;
 
   var _assetLocationHistoryService = locator<AssetLocationHistoryService>();
@@ -37,7 +36,6 @@ class TestRouterViewModel extends BaseViewModel {
   }
 
   // INFO WINDOW
-
   bool _showInfoWindow;
   bool _tempHidden;
   AssetLocation _assetLocation;

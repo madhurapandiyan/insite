@@ -5,11 +5,17 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 class ErrorWidget extends StatelessWidget {
   final String title;
   final String description;
+  final String actionTitle;
   final String path;
   final bool showAction;
   final Function(ErrorAction) onTap;
   const ErrorWidget(
-      {this.path, this.title, this.description, this.showAction, this.onTap});
+      {this.path,
+      this.title,
+      this.actionTitle,
+      this.description,
+      this.showAction,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class ErrorWidget extends StatelessWidget {
               ? InsiteButton(
                   title: "Login",
                   onTap: () {
-                    onTap(ErrorAction.LOGOUT);
+                    onTap(ErrorAction.LOGIN);
                   },
                   bgColor: tango,
                   textColor: Colors.white,
@@ -52,4 +58,4 @@ class ErrorWidget extends StatelessWidget {
   }
 }
 
-enum ErrorAction { LOGOUT }
+enum ErrorAction { LOGOUT, LOGIN }

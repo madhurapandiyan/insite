@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
@@ -6,7 +7,6 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
-
 import 'package:insite/core/services/utilization_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
@@ -22,6 +22,8 @@ class UtilLizationViewModel extends InsiteViewModel {
   List<UtilizationData> get utilLizationList => _utilLizationList;
   int pageNumber = 1;
   int pageCount = 50;
+  ScrollController scrollController;
+
   Utilization _utilization;
   Utilization get utilization => _utilization;
 
@@ -50,6 +52,13 @@ class UtilLizationViewModel extends InsiteViewModel {
     _isMain = value;
     this.log = getLogger(this.runtimeType.toString());
     _utilService.setUp();
+    scrollController = new ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     Future.delayed(Duration(seconds: 1), () {
       getUtilization();
       getUtilList();
@@ -64,8 +73,8 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   getUtilization() async {
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours');
-    _utilLizationListData = result.assetResults;
+        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+    _utilLizationListData.addAll(result.assetResults);
     _loading = false;
     notifyListeners();
   }
@@ -77,5 +86,11 @@ class UtilLizationViewModel extends InsiteViewModel {
                 assetSerialNumber: fleet.assetSerialNumber,
                 assetId: fleet.assetIdentifierSqluid,
                 assetIdentifier: fleet.assetIdentifier)));
+  }
+
+  _loadMore() {
+    Logger().i("load more called");
+    // pageNumber++;
+    // getUtilization();
   }
 }
