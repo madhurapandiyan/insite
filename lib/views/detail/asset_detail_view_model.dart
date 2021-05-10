@@ -1,12 +1,12 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class AssetDetailViewModel extends BaseViewModel {
+class AssetDetailViewModel extends InsiteViewModel {
   var _assetService = locator<AssetService>();
   Logger log;
   Fleet fleet;

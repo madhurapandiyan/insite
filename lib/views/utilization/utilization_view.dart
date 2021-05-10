@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/utilization_data.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
+import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/smart_widgets/asset_utilizationlist.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
@@ -27,6 +27,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   bool isCumulative = false;
   bool isIdleWorking = true;
   bool isRuntimeHours = false;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
@@ -34,6 +35,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
             (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
           return InsiteScaffold(
             screenType: ScreenType.UTILIZATION,
+            viewModel: viewModel,
             body: Container(
               color: bgcolor,
               child: viewModel.loading
@@ -41,7 +43,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                       child: CircularProgressIndicator(),
                     )
                   // : viewModel.utilLizationList.isNotEmpty
-                  : viewModel.utilization != null
+                  : viewModel.utilLizationListData != null
                       ? Container(
                           decoration: BoxDecoration(
                             color: mediumgrey,
@@ -71,11 +73,13 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                         child:
                                                             DateRangeWidget()),
                                               );
-                                              viewModel.startDate =
-                                                  '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
+                                              if (dateRange.isNotEmpty) {
+                                                viewModel.startDate =
+                                                    '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
 
-                                              viewModel.endDate =
-                                                  '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                                viewModel.endDate =
+                                                    '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                              }
                                             },
                                             child: Container(
                                               width: 90,
@@ -106,21 +110,28 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                             separatorBuilder: (context, index) {
                                               return Divider();
                                             },
+                                            controller:
+                                                viewModel.scrollController,
                                             shrinkWrap: true,
-                                            physics: ClampingScrollPhysics(),
                                             scrollDirection: Axis.vertical,
                                             itemCount: viewModel
-                                                .utilLizationList.length,
+                                                .utilLizationListData.length,
                                             padding: EdgeInsets.only(
-                                                top: 30.0,
-                                                left: 5.0,
-                                                right: 5.0),
+                                                left: 8.0, right: 8.0),
                                             itemBuilder: (context, index) {
-                                              UtilizationData utilizationData =
+                                              AssetResult utilizationData =
                                                   viewModel
-                                                      .utilLizationList[index];
-                                              return AssetOperation(
-                                                  data: utilizationData);
+                                                          .utilLizationListData[
+                                                      index];
+                                              return UtilizationListItem(
+                                                data: utilizationData,
+                                                isShowingInDetailPage: false,
+                                                onCallback: () {
+                                                  viewModel
+                                                      .onDetailPageSelected(
+                                                          utilizationData);
+                                                },
+                                              );
                                             }))
                                   ],
                                 )
@@ -311,7 +322,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                       .assetResults[index]
                                                       .assetSerialNumber,
                                                   value:
-                                                      '${viewModel.utilization.assetResults[index].distanceTravelledKilometers}',
+                                                      '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
                                                   percentage: viewModel
                                                           .utilization
                                                           .assetResults[index]
@@ -332,7 +343,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
             ),
           );
         },
-        viewModelBuilder: () => UtilLizationViewModel());
+        viewModelBuilder: () => UtilLizationViewModel(true));
   }
 
   Container toggleButton() => Container(

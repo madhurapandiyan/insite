@@ -34,6 +34,7 @@ class _FleetViewState extends State<FleetView> {
     return ViewModelBuilder<FleetViewModel>.reactive(
       builder: (BuildContext context, FleetViewModel viewModel, Widget _) {
         return InsiteScaffold(
+          viewModel: viewModel,
           screenType: ScreenType.FLEET,
           body: Container(
             color: bgcolor,

@@ -1,15 +1,15 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'home_view.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends InsiteViewModel {
   var _localService = locator<LocalService>();
   var _navigationService = locator<NavigationService>();
   Logger log;

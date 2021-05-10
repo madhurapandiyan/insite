@@ -23,7 +23,7 @@ dependencies:
   responsive_builder: ^0.4.1
   retrofit: ^1.2.0
   shared_preferences: ^2.0.5
-  stacked: ^2.0.0
+  stacked: ^2.1.1
   stacked_services: ^0.7.3
   google_maps_flutter: ^2.0.3
   table_calendar: ^3.0.0

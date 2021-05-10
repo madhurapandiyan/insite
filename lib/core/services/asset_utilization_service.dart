@@ -24,15 +24,15 @@ class AssetUtilizationService extends BaseService {
     }
   }
 
-  Future<Utilization> getUtilizationResult(
-      String startDate, String endDate, String sort) async {
+  Future<Utilization> getUtilizationResult(String startDate, String endDate,
+      String sort, int pageNo, int pageCount) async {
     try {
       if (startDate != null &&
           startDate.isNotEmpty &&
           endDate != null &&
           endDate.isNotEmpty) {
-        Utilization response = await MyApi().getClient().utilization(
-            startDate, endDate, sort, 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+        Utilization response = await MyApi().getClient().utilization(startDate,
+            endDate, pageNo, pageCount, sort, accountSelected.CustomerUID);
         print('@@@ RES: ${response.message}');
         return response;
       }

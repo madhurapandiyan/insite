@@ -31,6 +31,9 @@ class InsiteButton extends StatelessWidget {
         height: height != null ? height : null,
         width: width != null ? width : null,
         child: Row(
+          mainAxisAlignment: icon != null
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
           children: [
             Text(
               title,

@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class GlobalSearchViewModel extends BaseViewModel {
+class GlobalSearchViewModel extends InsiteViewModel {
   Logger log;
   var _searchService = locator<SearchService>();
 

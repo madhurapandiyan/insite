@@ -475,15 +475,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Utilization> utilization(startDate, endDate, sort, customerId) async {
+  Future<Utilization> utilization(
+      startDate, endDate, pageNumber, pageSize, sort, customerId) async {
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
     ArgumentError.checkNotNull(sort, 'sort');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'startDate': startDate,
       r'endDate': endDate,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
       r'sort': sort
     };
     final _data = <String, dynamic>{};

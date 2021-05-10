@@ -89,7 +89,7 @@ class AssetResult {
   double assetIcon;
   String assetIdentifier;
   String assetSerialNumber;
-  dynamic date;
+  String date;
   double distanceTravelledKilometers;
   double idleEfficiency;
   dynamic idleFuelConsumedLiters;
