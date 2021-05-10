@@ -504,4 +504,24 @@ class _RestClient implements RestClient {
     final value = Utilization.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetStatus> assetStatus(assetstatus, customerId) async {
+    ArgumentError.checkNotNull(assetstatus, 'assetstatus');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'grouping': assetstatus};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetStatus.fromJson(_result.data);
+    return value;
+  }
 }
