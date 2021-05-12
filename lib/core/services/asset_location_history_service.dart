@@ -24,12 +24,13 @@ class AssetLocationHistoryService extends BaseService {
     }
   }
 
-  Future<AssetLocationHistory> getAssetLocationHistory() async {
+  Future<AssetLocationHistory> getAssetLocationHistory(
+      String endTimeLocal, String startTimeLocal) async {
     try {
       AssetLocationHistory locationHistoryResponse = await MyApi()
           .getClient()
-          .assetLocationHistoryDetail('2021-04-21T23:59:59',
-              '2021-04-19T00:00:00', 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+          .assetLocationHistoryDetail(endTimeLocal, startTimeLocal,
+              'd7ac4554-05f9-e311-8d69-d067e5fd4637');
       print('LOC: ${locationHistoryResponse.pagination.totalCount}');
       return locationHistoryResponse;
     } catch (e) {

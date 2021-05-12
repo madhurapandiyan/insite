@@ -21,6 +21,18 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  String _startDate =
+      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
+  set startDate(String startDate) {
+    this._startDate = startDate;
+  }
+
+  String _endDate =
+      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
+  set endDate(String endDate) {
+    this._endDate = endDate;
+  }
+
   AssetLocationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationHistoryService.setUp();
@@ -30,8 +42,8 @@ class AssetLocationViewModel extends InsiteViewModel {
   }
 
   getAssetLocationHistoryResult() async {
-    AssetLocationHistory result =
-        await _assetLocationHistoryService.getAssetLocationHistory();
+    AssetLocationHistory result = await _assetLocationHistoryService
+        .getAssetLocationHistory(_endDate, _startDate);
     _assetLocationHistory = result;
     _loading = false;
     notifyListeners();
