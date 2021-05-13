@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:logger/logger.dart';
@@ -262,8 +263,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ),
                           Text(
                             (dateRange == null || dateRange.isEmpty)
-                                ? '${parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${parseDate(DateTime.now())}'
-                                : '${parseDate(dateRange.first)} - ${parseDate(dateRange.last)}',
+                                ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
+                                : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
                             style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.bold,
@@ -422,10 +423,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
       },
       viewModelBuilder: () => AssetLocationViewModel(),
     );
-  }
-
-  String parseDate(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 
   Future<void> _minus(double zoomVal) async {

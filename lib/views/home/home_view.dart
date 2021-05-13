@@ -8,6 +8,7 @@ import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/location/location_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
@@ -185,6 +186,8 @@ class _HomeViewState extends State<HomeView> {
       return AssetDetailView();
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView();
+    } else if (currentScreenType == ScreenType.LOCATION) {
+      return LocationView();
     } else if (currentScreenType == ScreenType.HOME) {
       return DashboardView(
           // onDashboardItemSelected: (newState) {

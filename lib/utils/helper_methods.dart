@@ -20,11 +20,14 @@ class Utils {
   }
 
   static String getLastReportedDateFleet(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date);
+    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('hh:mm');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
+  }
+
+  static String parseDate(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 }

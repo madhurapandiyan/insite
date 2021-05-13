@@ -12,4 +12,4 @@ const String globalSearchViewRoute = 'globalSearchViewRoute';
 const String dashboardViewRoute = 'dashboardViewRoute';
 const String testRouterViewRoute = 'testRouterViewRoute';
 const String utilRouterViewRoute = 'utilRouterViewRoute';
-
+const String locationViewRoute = 'locationViewRoute';

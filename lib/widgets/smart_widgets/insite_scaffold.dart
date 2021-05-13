@@ -38,8 +38,10 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         appBar: InsiteAppBar(
           shouldShowAccount:
               widget.screenType == ScreenType.DASHBOARD ? true : false,
-          shouldShowFilter:
-              widget.screenType == ScreenType.FLEET ? true : false,
+          shouldShowFilter: widget.screenType == ScreenType.FLEET ||
+                  widget.screenType == ScreenType.LOCATION
+              ? true
+              : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
                   widget.screenType == ScreenType.DASHBOARD
               ? true
