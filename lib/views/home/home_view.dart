@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
-import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
@@ -16,6 +16,7 @@ import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
+  AssetStatusData assetStatus;
   HomeView();
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -44,27 +45,48 @@ class _HomeViewState extends State<HomeView> {
               //   screenType: ScreenType.HOME,
               //   height: 56,
               // ),
-              body: SingleChildScrollView(
-                child: Container(
-                  color: bgcolor,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20.0,
+              body: viewModel.loading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      child: Container(
+                        color: bgcolor,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            AssetStatus(
+                              AssetcountOf: viewModel
+                                  .assetStatusData.countData[0].countOf,
+                              AssetcountOn: viewModel
+                                  .assetStatusData.countData[1].countOf,
+                              AssetAwait: viewModel
+                                  .assetStatusData.countData[2].countOf,
+                              AssetNotReport: viewModel
+                                  .assetStatusData.countData[3].countOf,
+                              AssetOfcount:
+                                  viewModel.assetStatusData.countData[0].count,
+                              AssetOncount:
+                                  viewModel.assetStatusData.countData[1].count,
+                              AssetAwaitCount:
+                                  viewModel.assetStatusData.countData[2].count,
+                              AssetNotReportCount:
+                                  viewModel.assetStatusData.countData[3].count,
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            FuelLevel(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            // AssetStatus()
+                          ],
+                        ),
                       ),
-                      AssetStatus(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      FuelLevel(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      AssetStatus()
-                    ],
-                  ),
-                ),
-              )),
+                    )),
         );
       },
       viewModelBuilder: () => HomeViewModel(),

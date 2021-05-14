@@ -5,6 +5,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/router.dart' as router;
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setUpLocator();

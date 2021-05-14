@@ -140,9 +140,8 @@ abstract class RestClient {
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 
-      
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<AssetStatus> assetStatus(@Query("grouping") String assetstatus,
+  Future<AssetStatusData> assetStatus(@Query("grouping") String grouping,
       @Header("x-visionlink-customeruid") customerId);
 }
 

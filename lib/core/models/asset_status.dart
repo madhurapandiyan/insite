@@ -1,31 +1,27 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'asset_status.g.dart';
 
-
 @JsonSerializable()
-class AssetStatus {
-  AssetStatus({
+class AssetStatusData {
+  List<CountDatum> countData;
+  AssetStatusData({
     this.countData,
   });
 
-  List<CountDatum> countData;
+  factory AssetStatusData.fromJson(Map<String, dynamic> json) =>
+      _$AssetStatusDataFromJson(json);
 
-  factory AssetStatus.fromJson(Map<String, dynamic> json) =>
-      _$AssetStatusFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AssetStatusToJson(this);
+  Map<String, dynamic> toJson() => _$AssetStatusDataToJson(this);
 }
-
 
 @JsonSerializable()
 class CountDatum {
+  String countOf;
+  int count;
   CountDatum({
     this.countOf,
     this.count,
   });
-
-  String countOf;
-  int count;
 
   factory CountDatum.fromJson(Map<String, dynamic> json) =>
       _$CountDatumFromJson(json);

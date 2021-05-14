@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:insite/core/services/asset_service.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -49,5 +50,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => SingleAssetUtilizationService());
     log.d("Registering Asset Utilization Service");
     locator.registerLazySingleton(() => AssetUtilizationService());
+    log.d("Registering Asset Status Service");
+    locator.registerLazySingleton(() => AssetStatusService());
   }
 }

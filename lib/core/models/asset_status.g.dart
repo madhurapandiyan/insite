@@ -6,8 +6,8 @@ part of 'asset_status.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetStatus _$AssetStatusFromJson(Map<String, dynamic> json) {
-  return AssetStatus(
+AssetStatusData _$AssetStatusDataFromJson(Map<String, dynamic> json) {
+  return AssetStatusData(
     countData: (json['countData'] as List)
         ?.map((e) =>
             e == null ? null : CountDatum.fromJson(e as Map<String, dynamic>))
@@ -15,7 +15,7 @@ AssetStatus _$AssetStatusFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AssetStatusToJson(AssetStatus instance) =>
+Map<String, dynamic> _$AssetStatusDataToJson(AssetStatusData instance) =>
     <String, dynamic>{
       'countData': instance.countData,
     };
