@@ -8,7 +8,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -233,9 +235,9 @@ class _LocationViewState extends State<LocationView> {
                 }));
           }
 
-          return Scaffold(
-            appBar: AppBar(),
-            backgroundColor: bgcolor,
+          return InsiteScaffold(
+            viewModel: viewModel,
+            screenType: ScreenType.LOCATION,
             body: Column(
               children: [
                 Padding(
