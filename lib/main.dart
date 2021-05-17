@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
+       
       onGenerateRoute: router.Router.generateRoute,
       initialRoute: splashViewRoute,
       theme: ThemeData(

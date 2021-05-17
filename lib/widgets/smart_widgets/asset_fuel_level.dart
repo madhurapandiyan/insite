@@ -35,86 +35,86 @@ class _FuelLevelState extends State<FuelLevel>
       width: 345.13,
       height: 221.16,
       decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10.0),
-    boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-    border: Border.all(width: 2.5, color: cardcolor),
-    shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
+        border: Border.all(width: 2.5, color: cardcolor),
+        shape: BoxShape.rectangle,
       ),
       child: Column(children: [
-    Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: new Row(
-        children: [
-          SvgPicture.asset("assets/images/arrowdown.svg"),
-          SizedBox(
-            width: 10,
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: new Row(
+            children: [
+              SvgPicture.asset("assets/images/arrowdown.svg"),
+              SizedBox(
+                width: 10,
+              ),
+              new Text(
+                "FUEL LEVEL",
+                style: new TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Roboto',
+                    color: textcolor,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 12.0),
+              ),
+              SizedBox(
+                width: 210,
+              ),
+              GestureDetector(
+                onTap: () => print("button is tapped"),
+                child: SvgPicture.asset(
+                  "assets/images/menu.svg",
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+            ],
           ),
-          new Text(
-            "FUEL LEVEL",
-            style: new TextStyle(
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Roboto',
-                color: textcolor,
-                fontStyle: FontStyle.normal,
-                fontSize: 12.0),
-          ),
-          SizedBox(
-            width: 210,
-          ),
-          GestureDetector(
-            onTap: () => print("button is tapped"),
-            child: SvgPicture.asset(
-              "assets/images/menu.svg",
-              width: 20,
-              height: 20,
-            ),
-          ),
-        ],
-      ),
-    ),
-    Divider(
-      thickness: 1.0,
-      color: black,
-    ),
-    Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
+        ),
+        Divider(
+          thickness: 1.0,
+          color: black,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomPaint(
-              painter: ProgressArc(null, black, true),
+            Stack(
+              children: [
+                CustomPaint(
+                  painter: ProgressArc(null, black, true),
+                ),
+                CustomPaint(
+                  painter: ProgressArc(animation.value, Colors.white, false),
+                ),
+              ],
             ),
-            CustomPaint(
-              painter: ProgressArc(animation.value, Colors.white, false),
+            SizedBox(
+              width: 200,
             ),
+            Column(
+              children: [
+                AssetStatusWidget(
+                    burntSienna, "< 25 % ", silver, "assets/images/arrows.png"),
+                Container(
+                    width: 127.29,
+                    child: Divider(thickness: 1.0, color: athenGrey)),
+                AssetStatusWidget(
+                    lightRose, "< 50 %", silver, "assets/images/arrows.png"),
+                Container(
+                    width: 127.29,
+                    child: Divider(thickness: 1.0, color: athenGrey)),
+                AssetStatusWidget(
+                    mustard, "< 75 %", silver, "assets/images/arrows.png"),
+                Container(
+                    width: 127.29,
+                    child: Divider(thickness: 1.0, color: athenGrey)),
+                AssetStatusWidget(
+                    emerald, "<= 100 %", silver, "assets/images/arrows.png")
+              ],
+            )
           ],
         ),
-        SizedBox(
-          width: 200,
-        ),
-        Column(
-          children: [
-            AssetStatusWidget(
-                burntSienna, "< 25 % ", silver, "assets/images/arrows.png"),
-            Container(
-                width: 127.29,
-                child: Divider(thickness: 1.0, color: athenGrey)),
-            AssetStatusWidget(
-                lightRose, "< 50 %", silver, "assets/images/arrows.png"),
-            Container(
-                width: 127.29,
-                child: Divider(thickness: 1.0, color: athenGrey)),
-            AssetStatusWidget(
-                mustard, "< 75 %", silver, "assets/images/arrows.png"),
-            Container(
-                width: 127.29,
-                child: Divider(thickness: 1.0, color: athenGrey)),
-            AssetStatusWidget(
-                emerald, "<= 100 %", silver, "assets/images/arrows.png")
-          ],
-        )
-      ],
-    ),
       ]),
     );
   }
