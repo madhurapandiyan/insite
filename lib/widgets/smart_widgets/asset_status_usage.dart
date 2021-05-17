@@ -1,36 +1,31 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:insite/theme/colors.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
-class AssetStatus extends StatefulWidget {
-  final String AssetcountOf;
-  final String AssetcountOn;
-  final String AssetAwait;
-  final String AssetNotReport;
+class AssetStatusUsage extends StatefulWidget {
+
   final int AssetOfcount;
   final int AssetOncount;
   final int AssetAwaitCount;
   final int AssetNotReportCount;
-  AssetStatus(
-      {this.AssetcountOf,
+
+  AssetStatusUsage(
+      {
       this.AssetOfcount,
       this.AssetOncount,
-      this.AssetcountOn,
-      this.AssetAwait,
-      this.AssetNotReport,
       this.AssetAwaitCount,
       this.AssetNotReportCount});
-
   @override
-  _AssetStatusState createState() => _AssetStatusState();
+  _AssetStatusUsageState createState() => _AssetStatusUsageState();
 }
 
-class _AssetStatusState extends State<AssetStatus> {
+class _AssetStatusUsageState extends State<AssetStatusUsage> {
   @override
   Widget build(BuildContext context) {
+    print(widget.AssetOfcount.toString());
     return Container(
       width: 335.13,
       height: 231.16,
@@ -53,7 +48,7 @@ class _AssetStatusState extends State<AssetStatus> {
                       width: 10,
                     ),
                     new Text(
-                      "ASSET STATUS",
+                      "ASSET USAGE BY HOURS",
                       style: new TextStyle(
                           fontWeight: FontWeight.w900,
                           fontFamily: 'Roboto',
@@ -64,17 +59,8 @@ class _AssetStatusState extends State<AssetStatus> {
                     SizedBox(
                       width: 60.0,
                     ),
-                    new Text(
-                      'ALL ASSETS',
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
-                    ),
                     SizedBox(
-                      width: 35.0,
+                      width: 65.0,
                     ),
                     GestureDetector(
                       onTap: () => print("button is tapped"),
@@ -113,7 +99,7 @@ class _AssetStatusState extends State<AssetStatus> {
                               decoration: BoxDecoration(),
                               child: Stack(
                                 children: <Widget>[
-                                  Transform.rotate(
+                                   Transform.rotate(
                                     angle: pi / 1.4,
                                     child: CustomPaint(
                                       child: Center(),
@@ -184,40 +170,28 @@ class _AssetStatusState extends State<AssetStatus> {
                     ),
                     new Column(
                       children: [
-                        AssetStatusWidget(
-                            emerald,
-                            widget.AssetcountOf.toString().toUpperCase(),
-                            silver,
+                        AssetStatusWidget(emerald, "30 -40 HRS", silver,
                             "assets/images/arrows.png"),
                         Container(
                             width: 127.29,
                             child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(
-                            burntSienna,
-                            widget.AssetcountOn.toString().toUpperCase(),
-                            silver,
+                        AssetStatusWidget(burntSienna, "20 -30 HRS", silver,
                             "assets/images/arrows.png"),
                         Container(
                             width: 127.29,
                             child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(
-                            mustard,
-                            widget.AssetAwait.toString().toUpperCase(),
-                            silver,
+                        AssetStatusWidget(mustard, "10-20 HRS", silver,
                             "assets/images/arrows.png"),
                         Container(
                             width: 127.29,
                             child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(
-                            tabpagecolor,
-                            widget.AssetNotReport.toString().toUpperCase(),
-                            silver,
+                        AssetStatusWidget(tabpagecolor, "0 -10 HRS", silver,
                             "assets/images/arrows.png")
                       ],
                     )
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ],
@@ -251,7 +225,7 @@ class ProgressRings extends CustomPainter {
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2);
 
-    double arcAngle = 2 * pi * (completedPercentage) / 1.3;
+    double arcAngle = 2 * pi * (completedPercentage)/1.3;
 
     Rect boundingSquare = Rect.fromCircle(center: center, radius: radius);
 

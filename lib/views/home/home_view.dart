@@ -13,6 +13,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
+import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
@@ -46,29 +47,27 @@ class _HomeViewState extends State<HomeView> {
         }
 
         return WillPopScope(
-          onWillPop: () {
-            return onBackPressed(viewModel);
-          },
-          child: InsiteScaffold(
+            onWillPop: () {
+              return onBackPressed(viewModel);
+            },
+            child: InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.DASHBOARD,
               // appBar: InsiteAppBar(
               //   screenType: ScreenType.HOME,
               //   height: 56,
               // ),
-              body: viewModel.loading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SingleChildScrollView(
-                      child: Container(
-                        color: bgcolor,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            AssetStatus(
+              body: SingleChildScrollView(
+                child: Container(
+                  color: bgcolor,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      viewModel.assetStatusData == null
+                          ? CircularProgressIndicator()
+                          : AssetStatus(
                               AssetcountOf: viewModel
                                   .assetStatusData.countData[0].countOf,
                               AssetcountOn: viewModel
@@ -86,43 +85,50 @@ class _HomeViewState extends State<HomeView> {
                               AssetNotReportCount:
                                   viewModel.assetStatusData.countData[3].count,
                             ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-
-                            FuelLevel(),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            viewModel.assetLocation == null
-                                ? CircularProgressIndicator()
-                                : Container(
-                                    width: 374.04,
-                                    height: 305.4,
-                                    color: cardcolor,
-                                    child: FleetGoogleMap(
-                                      latitude: null,
-                                      longitude: null,
-                                      acquiredMarkers: _markers,
-                                      initLocation: LatLng(
-                                          viewModel
-                                              .assetLocation
-                                              .mapRecords
-                                              .first
-                                              .lastReportedLocationLatitude,
-                                          viewModel
-                                              .assetLocation
-                                              .mapRecords
-                                              .first
-                                              .lastReportedLocationLongitude),
-                                    ),
-                                  ),
-                            // AssetStatus()
-                          ],
-                        ),
+                      SizedBox(
+                        height: 20.0,
                       ),
-                    )),
-        );
+                      FuelLevel(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      viewModel.assetLocation == null
+                          ? CircularProgressIndicator()
+                          : Container(
+                              width: 374.04,
+                              height: 305.4,
+                              color: cardcolor,
+                              child: FleetGoogleMap(
+                                latitude: null,
+                                longitude: null,
+                                acquiredMarkers: _markers,
+                                initLocation: LatLng(
+                                    viewModel.assetLocation.mapRecords.first
+                                        .lastReportedLocationLatitude,
+                                    viewModel.assetLocation.mapRecords.first
+                                        .lastReportedLocationLongitude),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      viewModel.assetStatusData == null
+                          ? CircularProgressIndicator()
+                          : AssetStatusUsage(
+                              AssetOfcount:
+                                  viewModel.assetStatusData.countData[0].count,
+                              AssetOncount:
+                                  viewModel.assetStatusData.countData[1].count,
+                              AssetAwaitCount:
+                                  viewModel.assetStatusData.countData[2].count,
+                              AssetNotReportCount:
+                                  viewModel.assetStatusData.countData[3].count,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
+            ));
       },
       viewModelBuilder: () => HomeViewModel(),
     );
@@ -143,7 +149,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     "Logout",
-                    style: TextStyle(color: Colors.black),
+                    // style: TextStyle(color: Colors.black),
                   ),
                 ),
                 Padding(
