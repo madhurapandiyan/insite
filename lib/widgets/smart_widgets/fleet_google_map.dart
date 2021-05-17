@@ -319,9 +319,10 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
   void _onmapcreated(GoogleMapController controller) {
     setState(() {
       _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('id-1'),
-          position: LatLng(widget.latitude, widget.longitude)));
+      if (widget.latitude != null && widget.longitude != null)
+        _markers.add(Marker(
+            markerId: MarkerId('id-1'),
+            position: LatLng(widget.latitude, widget.longitude)));
     });
   }
 

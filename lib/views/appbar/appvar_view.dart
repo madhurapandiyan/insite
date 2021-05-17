@@ -50,7 +50,6 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
           leading: IconButton(
               icon: SvgPicture.asset("assets/images/menubar.svg"),
               onPressed: () {
-                print("button is tapped");
                 viewModel.onHomePressed();
               }),
           title: InsiteImage(

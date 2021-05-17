@@ -31,7 +31,6 @@ class AssetUtilService extends BaseService {
           .getClient()
           .utilLizationList('64be6463-d8c1-11e7-80fc-065f15eda309', "04/19/21",
               "04/21/21", "d7ac4554-05f9-e311-8d69-d067e5fd4637");
-     // print('response:${utilizationData.targetRuntimePerformance}');
       return utilizationSummaryResponse.utilization;
     } catch (e) {
       Logger().e(e);

@@ -354,7 +354,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    print("button is tapped");
                                     zoomVal++;
                                     _plus(zoomVal);
                                   },
@@ -384,7 +383,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                                      print("button is tapped");
                                       zoomVal--;
                                       _minus(zoomVal);
                                     },

@@ -73,8 +73,6 @@ class HomeViewModel extends InsiteViewModel {
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         1, 2500, '-lastlocationupdateutc');
     _assetLocation = result;
-    print(
-        '@@@ Init LATLNG: ${_assetLocation.mapRecords[0].lastReportedLocationLatitude}, ${_assetLocation.mapRecords[0].lastReportedLocationLongitude}');
     _loading = false;
     notifyListeners();
   }
@@ -96,7 +94,6 @@ class HomeViewModel extends InsiteViewModel {
   getAssetStatusData() async {
     AssetStatusData result = await _assetService.getassetStatus();
     _assetStatusData = result;
-    print('result: ${result.countData[0].count}');
     _loading = false;
     notifyListeners();
   }

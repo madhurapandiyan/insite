@@ -575,4 +575,29 @@ class _RestClient implements RestClient {
     final value = FuelLevelData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetUtilization> assetUtilGraphData(
+      assetUID, date, customerId) async {
+    ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(date, 'date');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetUid': assetUID,
+      r'date': date
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetUtilization.fromJson(_result.data);
+    return value;
+  }
 }

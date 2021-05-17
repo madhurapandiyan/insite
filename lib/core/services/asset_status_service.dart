@@ -24,11 +24,9 @@ class AssetStatusService {
 
   Future<AssetStatusData> getassetStatus() async {
     try {
-      AssetStatusData assetStatusResponse =
-          await MyApi().getClient().assetStatus(
-            "assetstatus",
-            accountSelected.CustomerUID);
-      print('data:${assetStatusResponse.countData[0].count}');
+      AssetStatusData assetStatusResponse = await MyApi()
+          .getClient()
+          .assetStatus("assetstatus", accountSelected.CustomerUID);
       return assetStatusResponse;
     } catch (e) {
       Logger().e(e);

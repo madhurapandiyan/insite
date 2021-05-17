@@ -1,5 +1,6 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/repository/network.dart';
@@ -24,6 +25,25 @@ class AssetUtilizationService extends BaseService {
     }
   }
 
+  Future<AssetUtilization> getAssetUtilGraphDate(
+      String assetUID, String date) async {
+    try {
+      if (assetUID != null &&
+          assetUID.isNotEmpty &&
+          date != null &&
+          date.isNotEmpty) {
+        AssetUtilization result = await MyApi()
+            .getClient()
+            .assetUtilGraphData(assetUID, date, accountSelected.CustomerUID);
+        return result;
+      }
+      return null;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
   Future<Utilization> getUtilizationResult(String startDate, String endDate,
       String sort, int pageNo, int pageCount) async {
     try {
@@ -33,7 +53,6 @@ class AssetUtilizationService extends BaseService {
           endDate.isNotEmpty) {
         Utilization response = await MyApi().getClient().utilization(startDate,
             endDate, pageNo, pageCount, sort, accountSelected.CustomerUID);
-        print('@@@ RES: ${response.message}');
         return response;
       }
       return null;

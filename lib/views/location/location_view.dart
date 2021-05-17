@@ -366,7 +366,6 @@ class _LocationViewState extends State<LocationView> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print("button is tapped");
                                 zoomVal++;
                                 _plus(zoomVal);
                               },
@@ -396,7 +395,6 @@ class _LocationViewState extends State<LocationView> {
                             ),
                             GestureDetector(
                                 onTap: () {
-                                  print("button is tapped");
                                   zoomVal--;
                                   _minus(zoomVal);
                                 },

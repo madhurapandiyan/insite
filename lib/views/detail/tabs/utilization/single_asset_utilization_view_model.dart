@@ -38,9 +38,6 @@ class SingleAssetUtilizationViewModel extends InsiteViewModel {
   }
 
   getSingleAssetUtilization() async {
-    print('@@@ Start');
-    print('@@@ Start Date: $_startDate');
-    print('@@@ End Date: $_endDate');
     SingleAssetUtilization result =
         await _singleAssetUtilizationService.getSingleAssetUtilizationResult(
             '64be6463-d8c1-11e7-80fc-065f15eda309',
@@ -48,7 +45,6 @@ class SingleAssetUtilizationViewModel extends InsiteViewModel {
             _endDate,
             _startDate);
     _singleAssetUtilization = result;
-    print('@@@ END RES: ${_singleAssetUtilization.toJson().toString()}');
     _loading = false;
     notifyListeners();
   }
