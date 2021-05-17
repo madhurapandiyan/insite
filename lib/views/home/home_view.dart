@@ -13,6 +13,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
+import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
@@ -46,10 +47,10 @@ class _HomeViewState extends State<HomeView> {
         }
 
         return WillPopScope(
-          onWillPop: () {
-            return onBackPressed(viewModel);
-          },
-          child: InsiteScaffold(
+            onWillPop: () {
+              return onBackPressed(viewModel);
+            },
+            child: InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.DASHBOARD,
               // appBar: InsiteAppBar(
@@ -66,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 20.0,
+                              height: 20,
                             ),
                             AssetStatus(
                               AssetcountOf: viewModel
@@ -118,11 +119,12 @@ class _HomeViewState extends State<HomeView> {
                                     ),
                                   ),
                             // AssetStatus()
+                            AssetStatusUsage(),
                           ],
                         ),
                       ),
-                    )),
-        );
+                    ),
+            ));
       },
       viewModelBuilder: () => HomeViewModel(),
     );
@@ -143,7 +145,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     "Logout",
-                    style: TextStyle(color: Colors.black),
+                    // style: TextStyle(color: Colors.black),
                   ),
                 ),
                 Padding(
