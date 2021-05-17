@@ -6,6 +6,18 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
 class AssetStatusUsage extends StatefulWidget {
+
+  final int AssetOfcount;
+  final int AssetOncount;
+  final int AssetAwaitCount;
+  final int AssetNotReportCount;
+
+  AssetStatusUsage(
+      {
+      this.AssetOfcount,
+      this.AssetOncount,
+      this.AssetAwaitCount,
+      this.AssetNotReportCount});
   @override
   _AssetStatusUsageState createState() => _AssetStatusUsageState();
 }
@@ -13,6 +25,7 @@ class AssetStatusUsage extends StatefulWidget {
 class _AssetStatusUsageState extends State<AssetStatusUsage> {
   @override
   Widget build(BuildContext context) {
+    print(widget.AssetOfcount.toString());
     return Container(
       width: 335.13,
       height: 231.16,
@@ -46,7 +59,6 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                     SizedBox(
                       width: 60.0,
                     ),
-                    
                     SizedBox(
                       width: 65.0,
                     ),
@@ -87,17 +99,19 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                               decoration: BoxDecoration(),
                               child: Stack(
                                 children: <Widget>[
-                                  Transform.rotate(
-                                    angle: pi / 1.3,
+                                   Transform.rotate(
+                                    angle: pi / 1.4,
                                     child: CustomPaint(
                                       child: Center(),
                                       painter: ProgressRings(
-                                        completedPercentage: 0.58,
+                                        completedPercentage:
+                                            widget.AssetNotReportCount / 1000,
                                         circleWidth: 15.0,
-                                        gradient: redGradient,
+                                        gradient: whiteGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 1.3,
+                                        progressStartAngle: 0.2,
+                                        //lengthToRemove: 1
                                       ),
                                     ),
                                   ),
@@ -106,43 +120,45 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                                     child: CustomPaint(
                                       child: Center(),
                                       painter: ProgressRings(
-                                        completedPercentage: 0.40,
+                                        completedPercentage:
+                                            widget.AssetOncount / 10000,
+                                        circleWidth: 15.0,
+                                        gradient: redGradient,
+                                        gradientStartAngle: 0.0,
+                                        gradientEndAngle: pi / 2,
+                                        progressStartAngle: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                  Transform.rotate(
+                                    angle: pi / 1.3,
+                                    child: CustomPaint(
+                                      child: Center(),
+                                      painter: ProgressRings(
+                                        completedPercentage:
+                                            widget.AssetAwaitCount / 100,
                                         circleWidth: 15.0,
                                         gradient: yellowGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 1,
+                                        progressStartAngle: 0.6,
                                         lengthToRemove: 1,
                                       ),
                                     ),
                                   ),
                                   Transform.rotate(
-                                    angle: pi / 2.4,
+                                    angle: pi * 3.4,
                                     child: CustomPaint(
                                       child: Center(),
                                       painter: ProgressRings(
-                                          completedPercentage: 0.45,
+                                          completedPercentage:
+                                              widget.AssetOfcount / 10000,
                                           circleWidth: 15.0,
-                                          gradient: whiteGradient,
+                                          gradient: greenGradient,
                                           gradientStartAngle: 0.0,
                                           gradientEndAngle: pi / 2,
-                                          progressStartAngle: 1,
+                                          progressStartAngle: 2.34,
                                           lengthToRemove: 1),
-                                    ),
-                                  ),
-                                  Transform.rotate(
-                                    angle: pi * 3.2,
-                                    child: CustomPaint(
-                                      child: Center(),
-                                      painter: ProgressRings(
-                                        completedPercentage: 0.70,
-                                        circleWidth: 15.0,
-                                        gradient: greenGradient,
-                                        gradientStartAngle: 0.0,
-                                        gradientEndAngle: pi / 2,
-                                        progressStartAngle: 1.80,
-                                        // lengthToRemove: 1
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -164,8 +180,8 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                         Container(
                             width: 127.29,
                             child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(mustard, "10-20 HRS",
-                            silver, "assets/images/arrows.png"),
+                        AssetStatusWidget(mustard, "10-20 HRS", silver,
+                            "assets/images/arrows.png"),
                         Container(
                             width: 127.29,
                             child: Divider(thickness: 1.0, color: athenGrey)),
@@ -209,7 +225,7 @@ class ProgressRings extends CustomPainter {
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2);
 
-    double arcAngle = 2 * pi * (completedPercentage);
+    double arcAngle = 2 * pi * (completedPercentage)/1.3;
 
     Rect boundingSquare = Rect.fromCircle(center: center, radius: radius);
 

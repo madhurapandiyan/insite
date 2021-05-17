@@ -57,19 +57,17 @@ class _HomeViewState extends State<HomeView> {
               //   screenType: ScreenType.HOME,
               //   height: 56,
               // ),
-              body: viewModel.loading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SingleChildScrollView(
-                      child: Container(
-                        color: bgcolor,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 20,
-                            ),
-                            AssetStatus(
+              body: SingleChildScrollView(
+                child: Container(
+                  color: bgcolor,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      viewModel.assetStatusData == null
+                          ? CircularProgressIndicator()
+                          : AssetStatus(
                               AssetcountOf: viewModel
                                   .assetStatusData.countData[0].countOf,
                               AssetcountOn: viewModel
@@ -87,43 +85,49 @@ class _HomeViewState extends State<HomeView> {
                               AssetNotReportCount:
                                   viewModel.assetStatusData.countData[3].count,
                             ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-
-                            FuelLevel(),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            viewModel.assetLocation == null
-                                ? CircularProgressIndicator()
-                                : Container(
-                                    width: 374.04,
-                                    height: 305.4,
-                                    color: cardcolor,
-                                    child: FleetGoogleMap(
-                                      latitude: null,
-                                      longitude: null,
-                                      acquiredMarkers: _markers,
-                                      initLocation: LatLng(
-                                          viewModel
-                                              .assetLocation
-                                              .mapRecords
-                                              .first
-                                              .lastReportedLocationLatitude,
-                                          viewModel
-                                              .assetLocation
-                                              .mapRecords
-                                              .first
-                                              .lastReportedLocationLongitude),
-                                    ),
-                                  ),
-                            // AssetStatus()
-                            AssetStatusUsage(),
-                          ],
-                        ),
+                      SizedBox(
+                        height: 20.0,
                       ),
-                    ),
+                      FuelLevel(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      viewModel.assetLocation == null
+                          ? CircularProgressIndicator()
+                          : Container(
+                              width: 374.04,
+                              height: 305.4,
+                              color: cardcolor,
+                              child: FleetGoogleMap(
+                                latitude: null,
+                                longitude: null,
+                                acquiredMarkers: _markers,
+                                initLocation: LatLng(
+                                    viewModel.assetLocation.mapRecords.first
+                                        .lastReportedLocationLatitude,
+                                    viewModel.assetLocation.mapRecords.first
+                                        .lastReportedLocationLongitude),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      viewModel.assetStatusData == null
+                          ? CircularProgressIndicator()
+                          : AssetStatusUsage(
+                              AssetOfcount:
+                                  viewModel.assetStatusData.countData[0].count,
+                              AssetOncount:
+                                  viewModel.assetStatusData.countData[1].count,
+                              AssetAwaitCount:
+                                  viewModel.assetStatusData.countData[2].count,
+                              AssetNotReportCount:
+                                  viewModel.assetStatusData.countData[3].count,
+                            ),
+                    ],
+                  ),
+                ),
+              ),
             ));
       },
       viewModelBuilder: () => HomeViewModel(),

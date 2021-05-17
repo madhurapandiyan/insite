@@ -140,7 +140,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                         gradient: redGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 2.0,
+                                        progressStartAngle: 1.5,
                                       ),
                                     ),
                                   ),
