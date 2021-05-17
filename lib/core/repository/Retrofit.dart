@@ -1,11 +1,12 @@
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
+import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
+import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
@@ -143,6 +144,13 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetStatusData> assetStatus(@Query("grouping") String grouping,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+  Future<location.AssetLocationData> assetLocation(
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 }
 

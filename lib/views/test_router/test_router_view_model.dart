@@ -28,9 +28,9 @@ class TestRouterViewModel extends InsiteViewModel {
   }
 
   getAssetLocationHistoryResult() async {
-    AssetLocationHistory result =
-        await _assetLocationHistoryService.getAssetLocationHistory();
-    _assetLocationHistory = result;
+    // AssetLocationHistory result =
+    //     await _assetLocationHistoryService.getAssetLocationHistory();
+    // _assetLocationHistory = result;
     _loading = false;
     notifyListeners();
   }

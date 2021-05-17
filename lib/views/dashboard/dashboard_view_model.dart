@@ -6,8 +6,8 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/home/home_view.dart';
+import 'package:insite/views/location/location_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
-import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -36,6 +36,9 @@ class DashboardViewModel extends InsiteViewModel {
           transition: "fade");
     } else if (type == ScreenType.UTILIZATION) {
       _navigationService.navigateWithTransition(UtilLizationView(),
+          transition: "fade");
+    } else if (type == ScreenType.LOCATION) {
+      _navigationService.navigateWithTransition(LocationView(),
           transition: "fade");
     }
   }

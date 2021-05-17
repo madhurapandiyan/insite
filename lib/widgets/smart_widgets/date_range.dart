@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -46,7 +47,7 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                 Text(
                   (fromDate == null || toDate == null)
                       ? ''
-                      : '${parseDate(fromDate)} - ${parseDate(toDate)}',
+                      : '${Utils.parseDate(fromDate)} - ${Utils.parseDate(toDate)}',
                   style: TextStyle(
                       color: white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
@@ -169,7 +170,8 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                               child: Text(
                                 customFromDate == null
                                     ? 'dd/mm/yy'.toUpperCase()
-                                    : parseDate(customFromDate).toUpperCase(),
+                                    : Utils.parseDate(customFromDate)
+                                        .toUpperCase(),
                                 style: TextStyle(
                                   color: white,
                                   fontSize: 15,
@@ -228,7 +230,8 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                               child: Text(
                                 customToDate == null
                                     ? 'dd/mm/yy'.toUpperCase()
-                                    : parseDate(customToDate).toUpperCase(),
+                                    : Utils.parseDate(customToDate)
+                                        .toUpperCase(),
                                 style: TextStyle(
                                   color: white,
                                   fontSize: 15,
@@ -310,10 +313,6 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
         ),
       ),
     );
-  }
-
-  String parseDate(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 
   DateTime calcFromDate(DefaultDateRange defaultDateRange) {

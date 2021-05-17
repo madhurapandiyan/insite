@@ -9,6 +9,7 @@ import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class UtilLizationView extends StatefulWidget {
   @override
@@ -314,7 +315,48 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                             100,
                                                     color: olivine);
                                             } else if (isRuntimeHours) {
-                                              return Container();
+                                              if (rangeChoice == 1)
+                                                return PercentageWidget(
+                                                    value:
+                                                        '${viewModel.utilization.assetResults[index].runtimeHours}',
+                                                    label: viewModel
+                                                        .utilization
+                                                        .assetResults[index]
+                                                        .assetSerialNumber,
+                                                    percentage: viewModel
+                                                            .utilization
+                                                            .assetResults[index]
+                                                            .runtimeHours /
+                                                        10,
+                                                    color: sandyBrown);
+                                              else if (rangeChoice == 2)
+                                                return PercentageWidget(
+                                                    value:
+                                                        '${viewModel.utilization.assetResults[index].workingHours}',
+                                                    label: viewModel
+                                                        .utilization
+                                                        .assetResults[index]
+                                                        .assetSerialNumber,
+                                                    percentage: viewModel
+                                                            .utilization
+                                                            .assetResults[index]
+                                                            .workingHours /
+                                                        10,
+                                                    color: sandyBrown);
+                                              else
+                                                return PercentageWidget(
+                                                    value:
+                                                        '${viewModel.utilization.assetResults[index].idleHours}',
+                                                    label: viewModel
+                                                        .utilization
+                                                        .assetResults[index]
+                                                        .assetSerialNumber,
+                                                    percentage: viewModel
+                                                            .utilization
+                                                            .assetResults[index]
+                                                            .idleHours /
+                                                        10,
+                                                    color: sandyBrown);
                                             } else if (isDistanceTravelled) {
                                               return PercentageWidget(
                                                   label: viewModel
@@ -330,7 +372,10 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                       10,
                                                   color: creamCan);
                                             } else if (isCumulative) {
-                                              return Container();
+                                              if (rangeChoice == 1)
+                                                return Container();
+                                              else
+                                                return Container();
                                             } else {
                                               return Container();
                                             }

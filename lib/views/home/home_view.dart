@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/asset_status.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -8,9 +8,11 @@ import 'package:insite/views/customer_selection/customer_selection_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/location/location_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
+import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
@@ -27,11 +29,22 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Fleet selectedFleet;
+  Set<Marker> _markers = {};
+  int markerId = 1;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (BuildContext context, HomeViewModel viewModel, Widget _) {
+        if (viewModel.assetLocation != null) {
+          for (var locationData in viewModel.assetLocation.mapRecords) {
+            _markers.add(Marker(
+                markerId: MarkerId('${markerId++}'),
+                position: LatLng(locationData.lastReportedLocationLatitude,
+                    locationData.lastReportedLocationLongitude)));
+          }
+        }
+
         return WillPopScope(
           onWillPop: () {
             return onBackPressed(viewModel);
@@ -76,10 +89,34 @@ class _HomeViewState extends State<HomeView> {
                             SizedBox(
                               height: 20.0,
                             ),
+
                             FuelLevel(),
                             SizedBox(
                               height: 20.0,
                             ),
+                            viewModel.assetLocation == null
+                                ? CircularProgressIndicator()
+                                : Container(
+                                    width: 374.04,
+                                    height: 305.4,
+                                    color: cardcolor,
+                                    child: FleetGoogleMap(
+                                      latitude: null,
+                                      longitude: null,
+                                      acquiredMarkers: _markers,
+                                      initLocation: LatLng(
+                                          viewModel
+                                              .assetLocation
+                                              .mapRecords
+                                              .first
+                                              .lastReportedLocationLatitude,
+                                          viewModel
+                                              .assetLocation
+                                              .mapRecords
+                                              .first
+                                              .lastReportedLocationLongitude),
+                                    ),
+                                  ),
                             // AssetStatus()
                           ],
                         ),
@@ -185,6 +222,8 @@ class _HomeViewState extends State<HomeView> {
       return AssetDetailView();
     } else if (currentScreenType == ScreenType.FLEET) {
       return FleetView();
+    } else if (currentScreenType == ScreenType.LOCATION) {
+      return LocationView();
     } else if (currentScreenType == ScreenType.HOME) {
       return DashboardView(
           // onDashboardItemSelected: (newState) {
