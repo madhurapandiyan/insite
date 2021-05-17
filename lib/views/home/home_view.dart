@@ -16,8 +16,6 @@ import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
-  AssetStatusData assetStatus;
-  HomeView();
   @override
   _HomeViewState createState() => _HomeViewState();
 }
