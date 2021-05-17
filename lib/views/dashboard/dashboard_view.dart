@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
-import 'package:insite/views/error/error_widget.dart' as error;
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'dashboard_view_model.dart';
@@ -47,8 +46,8 @@ class _DashboardViewState extends State<DashboardView> {
     );
   }
 
-  Image appLogo = new Image(
-      image: new ExactAssetImage("assets/images/hitachi.png"),
+  Image appLogo = Image(
+      image: ExactAssetImage("assets/images/hitachi.png"),
       height: 65.75,
       width: 33.21,
       alignment: FractionalOffset.center);
@@ -69,7 +68,7 @@ class _DashboardViewState extends State<DashboardView> {
               : cardcolor,
           elevation: 10.0,
           margin: EdgeInsets.all(1.0),
-          shape: new RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -79,7 +78,7 @@ class _DashboardViewState extends State<DashboardView> {
               SizedBox(height: 8.0),
               Text(
                 category.name,
-                style: new TextStyle(
+                style: TextStyle(
                     fontSize: 12.0,
                     fontFamily: 'Roboto',
                     fontStyle: FontStyle.normal,

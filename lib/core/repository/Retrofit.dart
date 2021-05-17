@@ -7,7 +7,6 @@ import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';

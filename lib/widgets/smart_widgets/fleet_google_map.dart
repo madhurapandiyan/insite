@@ -9,7 +9,13 @@ import 'package:logger/logger.dart';
 class FleetGoogleMap extends StatefulWidget {
   final double latitude;
   final double longitude;
-  FleetGoogleMap({@required this.latitude, @required this.longitude});
+  final Set<Marker> acquiredMarkers;
+  final LatLng initLocation;
+  FleetGoogleMap(
+      {@required this.latitude,
+      @required this.longitude,
+      this.acquiredMarkers,
+      this.initLocation});
 
   @override
   _FleetGoogleMapState createState() => _FleetGoogleMapState();
@@ -26,7 +32,9 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
   @override
   void initState() {
     super.initState();
-    _lastMapPosition = LatLng(widget.latitude, widget.longitude);
+    _lastMapPosition = (widget.latitude == null && widget.longitude == null)
+        ? widget.initLocation
+        : LatLng(widget.latitude, widget.longitude);
   }
 
   @override
@@ -209,9 +217,16 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,
-            markers: _markers,
+            markers: (widget.latitude == null && widget.longitude == null)
+                ? widget.acquiredMarkers
+                : _markers,
             initialCameraPosition: CameraPosition(
-                target: LatLng(widget.latitude, widget.longitude), zoom: 12),
+                target: (widget.latitude == null && widget.longitude == null)
+                    ? widget.initLocation
+                    : LatLng(widget.latitude, widget.longitude),
+                zoom: (widget.latitude == null && widget.longitude == null)
+                    ? 3
+                    : 12),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               _onmapcreated(controller);

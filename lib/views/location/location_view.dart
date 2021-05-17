@@ -49,9 +49,9 @@ class _LocationViewState extends State<LocationView> {
     return ViewModelBuilder<LocationViewModel>.reactive(
       builder: (BuildContext context, LocationViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Scaffold(
-              appBar: AppBar(),
-              backgroundColor: bgcolor,
+          return InsiteScaffold(
+              viewModel: viewModel,
+              screenType: ScreenType.LOCATION,
               body: Center(
                 child: CircularProgressIndicator(),
               ));
