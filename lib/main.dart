@@ -5,6 +5,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/router.dart' as router;
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocatorInjector.setUpLocator();
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: locator<NavigationService>().navigatorKey,
+       
       onGenerateRoute: router.Router.generateRoute,
       initialRoute: splashViewRoute,
       theme: ThemeData(

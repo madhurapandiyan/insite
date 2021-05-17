@@ -506,11 +506,11 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetStatus> assetStatus(assetstatus, customerId) async {
-    ArgumentError.checkNotNull(assetstatus, 'assetstatus');
+  Future<AssetStatusData> assetStatus(grouping, customerId) async {
+    ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'grouping': assetstatus};
+    final queryParameters = <String, dynamic>{r'grouping': grouping};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
@@ -521,7 +521,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetStatus.fromJson(_result.data);
+    final value = AssetStatusData.fromJson(_result.data);
     return value;
   }
 }

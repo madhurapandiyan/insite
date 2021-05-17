@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
@@ -140,9 +141,8 @@ abstract class RestClient {
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 
-      
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<AssetStatus> assetStatus(@Query("grouping") String assetstatus,
+  Future<AssetStatusData> assetStatus(@Query("grouping") String grouping,
       @Header("x-visionlink-customeruid") customerId);
 }
 

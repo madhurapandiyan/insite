@@ -20,20 +20,21 @@ class AssetStatusWidget extends StatelessWidget {
               height: 15,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  new BoxShadow(blurRadius: 1.0, color: firstColor)
-                ],
+                boxShadow: [new BoxShadow(blurRadius: 1.0, color: firstColor)],
                 border: Border.all(width: 2.5, color: firstColor),
                 shape: BoxShape.rectangle,
               )),
-          new Text(
-            text,
-            style: new TextStyle(
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Roboto',
-                color: textcolor,
-                fontStyle: FontStyle.normal,
-                fontSize: 11.0),
+          Flexible(
+            child: new Text(
+              text,
+              textAlign: TextAlign.center,
+              style: new TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
+                  color: textcolor,
+                  fontStyle: FontStyle.normal,
+                  fontSize: 11.0),
+            ),
           ),
           new Container(
             width: 13.96,
@@ -51,4 +52,3 @@ class AssetStatusWidget extends StatelessWidget {
     );
   }
 }
-

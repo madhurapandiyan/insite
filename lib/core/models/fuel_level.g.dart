@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'asset_status.dart';
+part of 'fuel_level.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetStatusData _$AssetStatusDataFromJson(Map<String, dynamic> json) {
-  return AssetStatusData(
+FuelLevelData _$FuelLevelDataFromJson(Map<String, dynamic> json) {
+  return FuelLevelData(
     countData: (json['countData'] as List)
         ?.map((e) =>
             e == null ? null : CountDatum.fromJson(e as Map<String, dynamic>))
@@ -15,7 +15,7 @@ AssetStatusData _$AssetStatusDataFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AssetStatusDataToJson(AssetStatusData instance) =>
+Map<String, dynamic> _$FuelLevelDataToJson(FuelLevelData instance) =>
     <String, dynamic>{
       'countData': instance.countData,
     };
