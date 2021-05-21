@@ -7,6 +7,7 @@ import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
@@ -152,6 +153,14 @@ abstract class RestClient {
       @Query("pageSize") int pageSize,
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<FuelLevelData> fuelLevel(
+    @Query("grouping") String grouping,
+    @Query("thresholds") String thresholds,
+      @Header("x-visionlink-customeruid") customerId
+
+  );
 }
 
 @JsonSerializable()
