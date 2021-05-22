@@ -124,8 +124,8 @@ class _AssetStatusState extends State<AssetStatus> {
                                         gradient: whiteGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 0.2,
-                                        //lengthToRemove: 1
+                                        progressStartAngle: 0.8,
+                                        lengthToRemove: 1
                                       ),
                                     ),
                                   ),
@@ -140,12 +140,12 @@ class _AssetStatusState extends State<AssetStatus> {
                                         gradient: redGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 1.5,
+                                        progressStartAngle: 1.85,
                                       ),
                                     ),
                                   ),
                                   Transform.rotate(
-                                    angle: pi / 1.3,
+                                    angle: pi / 1.4,
                                     child: CustomPaint(
                                       child: Center(),
                                       painter: ProgressRings(
@@ -155,7 +155,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                         gradient: yellowGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
-                                        progressStartAngle: 0.6,
+                                        progressStartAngle: 0.3,
                                         lengthToRemove: 1,
                                       ),
                                     ),
@@ -171,7 +171,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                           gradient: greenGradient,
                                           gradientStartAngle: 0.0,
                                           gradientEndAngle: pi / 2,
-                                          progressStartAngle: 2.34,
+                                          progressStartAngle: 1.75,
                                           lengthToRemove: 1),
                                     ),
                                   ),
@@ -251,7 +251,7 @@ class ProgressRings extends CustomPainter {
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2);
 
-    double arcAngle = 2 * pi * (completedPercentage) / 1.3;
+    double arcAngle = 2 * pi * (completedPercentage) / 1.4;
 
     Rect boundingSquare = Rect.fromCircle(center: center, radius: radius);
 

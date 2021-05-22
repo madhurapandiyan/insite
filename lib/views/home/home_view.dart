@@ -14,6 +14,7 @@ import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
+import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
@@ -61,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
                 child: Container(
                   color: bgcolor,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 20,
@@ -88,7 +90,22 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      FuelLevel(),
+                      viewModel.fuelLevelData == null
+                          ? CircularProgressIndicator()
+                          : FuelLevel(
+                              countOf:
+                                  viewModel.fuelLevelData.countData[0].countOf,
+                              countON:
+                                  viewModel.fuelLevelData.countData[1].countOf,
+                              countAwait:
+                                  viewModel.fuelLevelData.countData[2].countOf,
+                              countNotReport:
+                                  viewModel.fuelLevelData.countData[3].countOf,
+                            ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      IdlingLevel(),
                       SizedBox(
                         height: 20.0,
                       ),

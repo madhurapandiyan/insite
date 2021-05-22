@@ -5,6 +5,12 @@ import 'dart:math' as math;
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
 class FuelLevel extends StatefulWidget {
+  final String countOf;
+  final String countON;
+  final String countAwait;
+  final String countNotReport;
+  FuelLevel({this.countOf, this.countON, this.countAwait, this.countNotReport});
+
   @override
   _FuelLevelState createState() => _FuelLevelState();
 }
@@ -100,23 +106,23 @@ class _FuelLevelState extends State<FuelLevel>
             ),
             Column(
               children: [
-                AssetStatusWidget(
-                    burntSienna, "< 25 % ", silver, "assets/images/arrows.png"),
+                AssetStatusWidget(burntSienna, "<" + widget.countOf + "%",
+                    silver, "assets/images/arrows.png"),
                 Container(
                     width: 127.29,
                     child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(
-                    lightRose, "< 50 %", silver, "assets/images/arrows.png"),
+                AssetStatusWidget(lightRose, "<" + widget.countON + "%", silver,
+                    "assets/images/arrows.png"),
                 Container(
                     width: 127.29,
                     child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(
-                    mustard, "< 75 %", silver, "assets/images/arrows.png"),
+                AssetStatusWidget(mustard, "<" + widget.countAwait + "%",
+                    silver, "assets/images/arrows.png"),
                 Container(
                     width: 127.29,
                     child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(
-                    emerald, "<= 100 %", silver, "assets/images/arrows.png")
+                AssetStatusWidget(emerald, "<=" + widget.countNotReport + "%",
+                    silver, "assets/images/arrows.png")
               ],
             )
           ],
