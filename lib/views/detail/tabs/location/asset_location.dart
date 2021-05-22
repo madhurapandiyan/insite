@@ -355,7 +355,14 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 GestureDetector(
                                   onTap: () {
                                     zoomVal++;
-                                    _plus(zoomVal);
+                                    _plus(
+                                      zoomVal,
+                                      LatLng(
+                                          viewModel.assetLocationHistory
+                                              .assetLocation[0].latitude,
+                                          viewModel.assetLocationHistory
+                                              .assetLocation[0].longitude),
+                                    );
                                   },
                                   child: Container(
                                     width: 27.47,
@@ -384,7 +391,14 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 GestureDetector(
                                     onTap: () {
                                       zoomVal--;
-                                      _minus(zoomVal);
+                                      _minus(
+                                        zoomVal,
+                                        LatLng(
+                                            viewModel.assetLocationHistory
+                                                .assetLocation[0].latitude,
+                                            viewModel.assetLocationHistory
+                                                .assetLocation[0].longitude),
+                                      );
                                     },
                                     child: Container(
                                       width: 27.47,
@@ -423,16 +437,16 @@ class _AssetLocationViewState extends State<AssetLocationView> {
     );
   }
 
-  Future<void> _minus(double zoomVal) async {
+  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(20.5937, 78.9629), zoom: zoomVal)));
+        CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal) async {
+  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(20.5937, 78.9629), zoom: zoomVal)));
+        CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
   MapType _changemap() {
