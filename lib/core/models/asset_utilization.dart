@@ -3,15 +3,25 @@ part 'asset_utilization.g.dart';
 
 @JsonSerializable()
 class AssetUtilization {
-  final Hours totalDay;
-  final Hours totalWeek;
-  final Hours totalMonth;
-  final Hours averageDay;
-  final Hours averageWeek;
-  final Hours averageMonth;
+  AssetUtilization({
+    this.totalDay,
+    this.totalWeek,
+    this.totalMonth,
+    this.targetDay,
+    this.targetWeek,
+    this.targetMonth,
+    this.code,
+    this.message,
+  });
 
-  AssetUtilization(this.totalDay, this.totalWeek, this.totalMonth,
-      this.averageWeek, this.averageMonth, this.averageDay);
+  Hours totalDay;
+  Hours totalWeek;
+  Hours totalMonth;
+  Hours targetDay;
+  Hours targetWeek;
+  Hours targetMonth;
+  int code;
+  String message;
 
   factory AssetUtilization.fromJson(Map<String, dynamic> json) =>
       _$AssetUtilizationFromJson(json);
@@ -21,15 +31,21 @@ class AssetUtilization {
 
 @JsonSerializable()
 class Hours {
-  Hours(
+  Hours({
     this.idleHours,
     this.runtimeHours,
     this.workingHours,
-  );
+    this.idleFuel,
+    this.runtimeFuel,
+    this.workingFuel,
+  });
 
-  final double idleHours;
-  final double runtimeHours;
-  final double workingHours;
+  double idleHours;
+  double runtimeHours;
+  double workingHours;
+  double idleFuel;
+  double runtimeFuel;
+  double workingFuel;
 
   factory Hours.fromJson(Map<String, dynamic> json) => _$HoursFromJson(json);
 

@@ -94,54 +94,105 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                       isAverageButtonSelected
                           ? barChart(
                               'Today',
-                              widget.assetUtilization.averageDay.workingHours /
-                                  1000,
-                              widget.assetUtilization.averageDay.idleHours /
-                                  1000,
-                              widget.assetUtilization.averageDay.runtimeHours /
-                                  1000)
+                              widget.assetUtilization.targetDay.workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetDay.workingHours,
+                              widget.assetUtilization.targetDay.idleHours ==
+                                      null
+                                  ? 0.0
+                                  : widget.assetUtilization.targetDay.idleHours,
+                              widget.assetUtilization.targetDay.runtimeHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetDay.runtimeHours)
                           : barChart(
                               'Today',
-                              widget.assetUtilization.totalDay.workingHours /
-                                  1000,
-                              widget.assetUtilization.totalDay.idleHours / 1000,
-                              widget.assetUtilization.totalDay.runtimeHours /
-                                  1000),
+                              widget.assetUtilization.totalDay.workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalDay.workingHours,
+                              widget.assetUtilization.totalDay.idleHours == null
+                                  ? 0.0
+                                  : widget.assetUtilization.totalDay.idleHours,
+                              widget.assetUtilization.totalDay.runtimeHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalDay.runtimeHours),
                       isAverageButtonSelected
                           ? barChart(
                               'Current Week',
-                              widget.assetUtilization.averageWeek.workingHours /
-                                  1000,
-                              widget.assetUtilization.averageWeek.idleHours /
-                                  1000,
-                              widget.assetUtilization.averageWeek.runtimeHours /
-                                  1000)
+                              widget.assetUtilization.targetWeek.workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetWeek.workingHours,
+                              widget.assetUtilization.targetWeek.idleHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetWeek.idleHours,
+                              widget.assetUtilization.targetWeek == null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetWeek.runtimeHours)
                           : barChart(
                               'Current Week',
-                              widget.assetUtilization.totalWeek.workingHours /
-                                  1000,
-                              widget.assetUtilization.totalWeek.idleHours /
-                                  1000,
-                              widget.assetUtilization.totalWeek.runtimeHours /
-                                  1000),
+                              widget.assetUtilization.totalWeek.workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalWeek.workingHours,
+                              widget.assetUtilization.totalWeek.idleHours ==
+                                      null
+                                  ? 0.0
+                                  : widget.assetUtilization.totalWeek.idleHours,
+                              widget.assetUtilization.totalWeek.runtimeHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalWeek.runtimeHours),
                       isAverageButtonSelected
                           ? barChart(
                               'Current Month',
-                              widget.assetUtilization.averageMonth.workingHours /
-                                  1000,
-                              widget.assetUtilization.averageMonth.idleHours /
-                                  1000,
-                              widget.assetUtilization.averageMonth
-                                      .runtimeHours /
-                                  1000)
+                              widget.assetUtilization.targetMonth
+                                          .workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget.assetUtilization.targetMonth
+                                      .workingHours,
+                              widget.assetUtilization.targetMonth.idleHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.targetMonth.idleHours,
+                              widget.assetUtilization.targetMonth
+                                          .runtimeHours ==
+                                      null
+                                  ? 0.0
+                                  : widget.assetUtilization.targetMonth
+                                      .runtimeHours)
                           : barChart(
                               'Current Month',
-                              widget.assetUtilization.totalMonth.workingHours /
-                                  1000,
-                              widget.assetUtilization.totalMonth.idleHours /
-                                  1000,
-                              widget.assetUtilization.totalMonth.runtimeHours /
-                                  1000),
+                              widget.assetUtilization.totalMonth.workingHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalMonth.workingHours,
+                              widget.assetUtilization.totalMonth.idleHours ==
+                                      null
+                                  ? 0.0
+                                  : widget
+                                      .assetUtilization.totalMonth.idleHours,
+                              widget.assetUtilization.totalMonth.runtimeHours ==
+                                      null
+                                  ? 0.0
+                                  : widget.assetUtilization.totalMonth
+                                      .runtimeHours),
                     ],
                   ),
                 ),
@@ -218,16 +269,13 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   }
 
   Column barWidget(double value, Color color) {
-    print('In 100%: ${MediaQuery.of(context).size.height * 0.12}');
-    print('In Value: ${calculatePercentage(value)}');
-
     double totalBarHeight = MediaQuery.of(context).size.height * 0.12;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
-          '${value.toStringAsFixed(1)} K',
+          '${value.toStringAsFixed(1)}',
           style: TextStyle(
               color: white, fontSize: 12, fontWeight: FontWeight.bold),
         ),
@@ -236,7 +284,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
         ),
         Container(
           width: 15,
-          height: (totalBarHeight / 100) * calculatePercentage(value),
+          height: (totalBarHeight / 100) * calculatePercentage(value / 10),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(

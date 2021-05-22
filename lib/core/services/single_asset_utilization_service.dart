@@ -37,8 +37,6 @@ class SingleAssetUtilizationService extends BaseService {
             .getClient()
             .singleAssetUtilization(assetUID, sort, endDate, startDate,
                 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
-
-        print('@@@ RES: ${response.message}');
         return response;
       }
       return null;

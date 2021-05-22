@@ -26,7 +26,6 @@ class SearchService extends BaseService {
 
   Future<SearchData> getSearchResult(String searchKeyword) async {
     try {
-      print('Passed Search Key: $searchKeyword');
       if (searchKeyword != null && searchKeyword.isNotEmpty) {
         SearchData searchResponse = await MyApi().getClient().searchDetail(
             '05d2a956-d890-11e9-8108-067b2fce18ef',

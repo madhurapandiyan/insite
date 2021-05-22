@@ -71,10 +71,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     SizedBox(
                       height: 20,
                     ),
-                    AssetUtilizationWidget(
-                      assetUtilization: AssetUtilization.fromJson(jsonDecode(
-                          '{"totalDay":{"idleHours":27.292,"runtimeHours":674.473234,"workingHours":24.033},"totalWeek":{"idleHours":139.712,"runtimeHours":3697.337071,"workingHours":201.631},"totalMonth":{"idleHours":659.954,"runtimeHours":18108.287383,"workingHours":1016.107},"averageDay":{"idleHours":0.162452381,"runtimeHours":4.014721631,"workingHours":0.1430535714},"averageWeek":{"idleHours":0.2531014493,"runtimeHours":6.698074404,"workingHours":0.3652735507},"averageMonth":{"idleHours":0.2710283368,"runtimeHours":7.4366683298,"workingHours":0.4172924025}}')),
-                    ),
+                    viewModel.assetUtilization == null
+                        ? CircularProgressIndicator()
+                        : AssetUtilizationWidget(
+                            assetUtilization: viewModel.assetUtilization,
+                          ),
                     SizedBox(
                       height: 20,
                     ),

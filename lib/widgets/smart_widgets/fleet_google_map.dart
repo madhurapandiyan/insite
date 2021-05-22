@@ -307,21 +307,28 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
   Future<void> _minus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(widget.latitude, widget.longitude), zoom: zoomVal)));
+        target: (widget.latitude == null && widget.longitude == null)
+            ? widget.initLocation
+            : LatLng(widget.latitude, widget.longitude),
+        zoom: zoomVal)));
   }
 
   Future<void> _plus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(widget.latitude, widget.longitude), zoom: zoomVal)));
+        target: (widget.latitude == null && widget.longitude == null)
+            ? widget.initLocation
+            : LatLng(widget.latitude, widget.longitude),
+        zoom: zoomVal)));
   }
 
   void _onmapcreated(GoogleMapController controller) {
     setState(() {
       _markers.clear();
-      _markers.add(Marker(
-          markerId: MarkerId('id-1'),
-          position: LatLng(widget.latitude, widget.longitude)));
+      if (widget.latitude != null && widget.longitude != null)
+        _markers.add(Marker(
+            markerId: MarkerId('id-1'),
+            position: LatLng(widget.latitude, widget.longitude)));
     });
   }
 

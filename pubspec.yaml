@@ -31,11 +31,11 @@ dependencies:
   custom_info_window: ^1.0.1
   percent_indicator: ^3.0.1
   charts_flutter: ^0.10.0
+  google_maps_cluster_manager: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: any
   json_serializable: 3.5.1
   retrofit_generator: any
 flutter:

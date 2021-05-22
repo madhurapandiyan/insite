@@ -68,7 +68,6 @@ class UtilLizationViewModel extends InsiteViewModel {
   getUtilList() async {
     var result = await _utilService.getUtilizationData();
     _utilLizationList = result;
-    print('result:$result');
   }
 
   getUtilization() async {

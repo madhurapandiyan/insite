@@ -38,8 +38,6 @@ class LocationViewModel extends InsiteViewModel {
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         1, 2500, '-lastlocationupdateutc');
     _assetLocation = result;
-    print(
-        '@@@ Init LATLNG: ${_assetLocation.mapRecords[0].lastReportedLocationLatitude}, ${_assetLocation.mapRecords[0].lastReportedLocationLongitude}');
     _loading = false;
     notifyListeners();
   }

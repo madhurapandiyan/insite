@@ -31,7 +31,6 @@ class AssetLocationHistoryService extends BaseService {
           .getClient()
           .assetLocationHistoryDetail(endTimeLocal, startTimeLocal,
               'd7ac4554-05f9-e311-8d69-d067e5fd4637');
-      print('LOC: ${locationHistoryResponse.pagination.totalCount}');
       return locationHistoryResponse;
     } catch (e) {
       Logger().e(e);

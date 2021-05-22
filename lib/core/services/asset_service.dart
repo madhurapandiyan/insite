@@ -56,8 +56,6 @@ class AssetService extends BaseService {
       AssetDetail assetResponse = await MyApi()
           .getClient()
           .assetDetail(assetUID, accountSelected.CustomerUID);
-      print('data :${assetResponse.lastReportedLocationLatitude}');
-       print('data :${assetResponse.lastReportedLocationLongitude}');
       return assetResponse;
     } catch (e) {
       Logger().e(e);
