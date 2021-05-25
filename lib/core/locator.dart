@@ -6,6 +6,7 @@ import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
+import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
@@ -58,5 +59,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => AssetLocationService());
     log.d("Registering Fuel Level Service");
     locator.registerLazySingleton(() => FuelLevelService());
+    log.d("Registering Idling Level Service");
+    locator.registerLazySingleton(() => IdlingLevelService());
   }
 }

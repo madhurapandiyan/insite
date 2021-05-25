@@ -4,10 +4,12 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fuel_level.dart';
+import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
+import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:logger/logger.dart';
@@ -21,6 +23,7 @@ class HomeViewModel extends InsiteViewModel {
   var _assetService = locator<AssetStatusService>();
   var _assetLocationService = locator<AssetLocationService>();
   var _fuelLevelService = locator<FuelLevelService>();
+  var _idlingLevelService = locator<IdlingLevelService>();
   Logger log;
   AssetStatusData _assetStatusData;
   AssetStatusData get assetStatusData => _assetStatusData;
@@ -36,6 +39,9 @@ class HomeViewModel extends InsiteViewModel {
   FuelLevelData _fuelLevelData;
   FuelLevelData get fuelLevelData => _fuelLevelData;
 
+  IdlingLevelData _idlingLevelData;
+  IdlingLevelData get idlingLevelData => _idlingLevelData;
+
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setup();
@@ -44,6 +50,7 @@ class HomeViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getAssetStatusData();
       getFuelLevelData();
+      getIdlingLevelData();
     });
     _currentScreenType = ScreenType.ACCOUNT;
     checkAccountSelected();
@@ -102,6 +109,14 @@ class HomeViewModel extends InsiteViewModel {
     FuelLevelData result = await _fuelLevelService.getfuelLevel();
     _fuelLevelData = result;
     print('resul:${result.countData[0].count}');
+    _loading = false;
+    notifyListeners();
+  }
+
+  getIdlingLevelData() async {
+    IdlingLevelData result = await _idlingLevelService.getidlingLevelService();
+    _idlingLevelData = result;
+    print('res:${result.countData[0].countOf}');
     _loading = false;
     notifyListeners();
   }

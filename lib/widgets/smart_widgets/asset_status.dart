@@ -121,7 +121,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                         completedPercentage:
                                             widget.AssetNotReportCount / 1000,
                                         circleWidth: 15.0,
-                                        gradient: whiteGradient,
+                                        gradient: redGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
                                         progressStartAngle: 0.8,
@@ -137,7 +137,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                         completedPercentage:
                                             widget.AssetOncount / 10000,
                                         circleWidth: 15.0,
-                                        gradient: redGradient,
+                                        gradient: yellowGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
                                         progressStartAngle: 1.85,
@@ -152,7 +152,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                         completedPercentage:
                                             widget.AssetAwaitCount / 100,
                                         circleWidth: 15.0,
-                                        gradient: yellowGradient,
+                                        gradient: whiteGradient,
                                         gradientStartAngle: 0.0,
                                         gradientEndAngle: pi / 2,
                                         progressStartAngle: 0.3,

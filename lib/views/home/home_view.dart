@@ -68,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                         height: 20,
                       ),
                       viewModel.assetStatusData == null
-                          ? CircularProgressIndicator()
+                          ? Center(child: CircularProgressIndicator())
                           : AssetStatus(
                               AssetcountOf: viewModel
                                   .assetStatusData.countData[0].countOf,
@@ -91,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
                         height: 20.0,
                       ),
                       viewModel.fuelLevelData == null
-                          ? CircularProgressIndicator()
+                          ? Center(child: CircularProgressIndicator())
                           : FuelLevel(
                               countOf:
                                   viewModel.fuelLevelData.countData[0].countOf,
@@ -105,12 +105,15 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      IdlingLevel(),
+                      viewModel.idlingLevelData==null?Center(child: CircularProgressIndicator()):
+                      IdlingLevel(
+                      data: viewModel.idlingLevelData.countData,
+                      ),
                       SizedBox(
                         height: 20.0,
                       ),
                       viewModel.assetLocation == null
-                          ? CircularProgressIndicator()
+                          ? Center(child: CircularProgressIndicator())
                           : Container(
                               width: 374.04,
                               height: 305.4,
@@ -130,7 +133,7 @@ class _HomeViewState extends State<HomeView> {
                         height: 20.0,
                       ),
                       viewModel.assetStatusData == null
-                          ? CircularProgressIndicator()
+                          ? Center(child: CircularProgressIndicator())
                           : AssetStatusUsage(
                               AssetOfcount:
                                   viewModel.assetStatusData.countData[0].count,
