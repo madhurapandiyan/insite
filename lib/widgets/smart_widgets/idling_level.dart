@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/core/models/idling_level_model.dart';
+import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class IdlingLevel extends StatefulWidget {
+  final List<CountDatum> data;
+  IdlingLevel({this.data});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
@@ -15,15 +17,15 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   void initState() {
-    calendar = '';
+    calendar = 'DAY';
     setState(() {
       var series = [
         charts.Series(
-            domainFn: (IdlingLevelData addcharts, _) => addcharts.percentage,
-            measureFn: (IdlingLevelData addcharts, _) => addcharts.level,
-            colorFn: (IdlingLevelData addcharts, _) => addcharts.color,
+            domainFn: (CountDatum addcharts, _) => addcharts.countOf,
+            measureFn: (CountDatum addcharts, _) => addcharts.count,
+            //colorFn: (CountDatum addcharts, _) => getColor(addcharts.countOf),
             id: 'addcharts',
-            data: data)
+            data: widget.data)
       ];
       chartDisplay = charts.BarChart(series,
           animationDuration: Duration(microseconds: 2000),
@@ -258,5 +260,31 @@ class _IdlingLevelState extends State<IdlingLevel> {
     setState(() {
       calendar = s;
     });
+  }
+
+ charts.Color getColor(String countOf) {
+    switch (countOf) {
+      case 'Extended':
+        return charts.MaterialPalette.blue.shadeDefault;
+        break;
+      case '[0,10]':
+        return charts.Color.fromHex(code: 'EB5757');
+        break;
+      case '[10,15]':
+        return charts.Color.fromHex(code: 'EEEEEE');
+        break;
+      case '[10,15]':
+        return charts.Color.fromHex(code: 'FDE050');
+        break;
+      case '[15,25]':
+        return charts.Color.fromHex(code: '48C581');
+        break;
+      case '[25,]':
+        return charts.Color.fromHex(code: 'ABEFCA');
+        break;
+      default:
+        return charts.Color.fromHex(code: '2B2D32');
+    }
+    
   }
 }

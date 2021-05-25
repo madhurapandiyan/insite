@@ -9,6 +9,7 @@ import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_level.dart';
+import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
@@ -167,6 +168,13 @@ abstract class RestClient {
       @Query("assetUid") String assetUID,
       @Query("date") String date,
       @Header("x-visionlink-customeruid") customerId);
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<IdlingLevelData> idlingLevel(
+    @Query("endDate") String endDate,
+    @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+    @Query("startDate") String startDate,
+    @Header("x-visionlink-customeruid") customerId
+  );
 }
 
 @JsonSerializable()
