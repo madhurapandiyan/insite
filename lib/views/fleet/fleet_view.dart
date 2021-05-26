@@ -62,9 +62,10 @@ class _FleetViewState extends State<FleetView> {
                             child: ListView.builder(
                                 itemCount: viewModel.assets.length,
                                 padding: EdgeInsets.all(16),
+                                controller: viewModel.scrollController,
                                 itemBuilder: (context, index) {
                                   Fleet fleet = viewModel.assets[index];
-                                  return FleetItem(
+                                  return FleetListItem(
                                     fleet: fleet,
                                     onCallback: () {
                                       viewModel.onDetailPageSelected(fleet);
@@ -72,6 +73,11 @@ class _FleetViewState extends State<FleetView> {
                                   );
                                 }),
                           ),
+                          viewModel.loadingMore
+                              ? Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: CircularProgressIndicator())
+                              : SizedBox()
                         ],
                       )
                     : EmptyView(title: "No Results"),

@@ -23,19 +23,21 @@ class FleetService extends BaseService {
     }
   }
 
-  Future<List<Fleet>> getFleetSummaryList() async {
+  Future<List<Fleet>> getFleetSummaryList(
+    pageSize,
+    pageNumber,
+  ) async {
     try {
       FleetSummaryResponse fleetSummaryResponse =
           accountSelected != null && customerSelected != null
               ? await MyApi().getClient().fleetSummaryCI(
                   customerSelected.CustomerUID,
-                  1,
-                  500,
+                  pageNumber,
+                  pageSize,
                   "assetid",
                   accountSelected.CustomerUID)
-              : await MyApi()
-                  .getClient()
-                  .fleetSummary(1, 500, "assetid", accountSelected.CustomerUID);
+              : await MyApi().getClient().fleetSummary(
+                  pageNumber, pageSize, "assetid", accountSelected.CustomerUID);
       return fleetSummaryResponse.fleetRecords;
     } catch (e) {
       Logger().e(e);

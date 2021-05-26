@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
@@ -14,7 +15,9 @@ class FleetViewModel extends InsiteViewModel {
 
   Logger log;
 
-  int page = 1;
+  int pageNumber = 1;
+  int pageSize = 50;
+  ScrollController scrollController;
 
   List<Fleet> _assets = [];
   List<Fleet> get assets => _assets;
@@ -22,23 +25,49 @@ class FleetViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
   FleetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _fleetService.setUp();
+    scrollController = new ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     Future.delayed(Duration(seconds: 1), () {
       getFleetSummaryList();
     });
   }
 
-  inCreasePage() {
-    page = page + 1;
-  }
-
   getFleetSummaryList() async {
-    List<Fleet> result = await _fleetService.getFleetSummaryList();
-    _assets = result;
-    _loading = false;
-    notifyListeners();
+    List<Fleet> result =
+        await _fleetService.getFleetSummaryList(pageSize, pageNumber);
+    if (result != null) {
+      if (result.isNotEmpty) {
+        Logger().i("list of assets " + result.length.toString());
+        _assets.addAll(result);
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      } else {
+        _assets.addAll(result);
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
+      }
+    } else {
+      _loading = false;
+      _loadingMore = false;
+      notifyListeners();
+    }
   }
 
   onDetailPageSelected(Fleet fleet) {
@@ -48,5 +77,19 @@ class FleetViewModel extends InsiteViewModel {
 
   onHomeSelected() {
     _navigationService.replaceWith(dashboardViewRoute);
+  }
+
+  _loadMore() {
+    log.i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      log.i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getFleetSummaryList();
+    }
   }
 }
