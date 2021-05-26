@@ -54,10 +54,12 @@ class InsiteTableRowWithImage extends StatelessWidget {
               path: "assets/images/truck.png",
             ),
           ),
-          InsiteText(
-            text: title,
-            color: athenGrey,
-            fontWeight: FontWeight.bold,
+          Expanded(
+            child: InsiteText(
+              text: title,
+              color: athenGrey,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

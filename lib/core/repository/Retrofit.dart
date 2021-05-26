@@ -90,12 +90,12 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
   Future<AssetResponse> assetSummaryCI(
-      @Query("customerUID") String customerUID,
       @Query("startdate") String startdate,
       @Query("enddate") String enddate,
       @Query("pagesize") int pagesize,
       @Query("pagenumber") int pagenumber,
       @Query("sort") String sort,
+      @Query("customerUID") String customerUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
@@ -180,11 +180,10 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<IdlingLevelData> idlingLevel(
-    @Query("endDate") String endDate,
-    @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-    @Query("startDate") String startDate,
-    @Header("x-visionlink-customeruid") customerId
-  );
+      @Query("endDate") String endDate,
+      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+      @Query("startDate") String startDate,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

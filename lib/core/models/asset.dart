@@ -17,11 +17,13 @@ class Asset {
   final String lastKnownOperator;
   final String capabilities;
   final AssetLastReceivedEvent assetLastReceivedEvent;
+  final List<AssetLocalDate> assetLocalDates;
   Asset(
       this.assetId,
       this.assetUid,
       this.makeCode,
       this.model,
+      this.assetLocalDates,
       this.serialNumber,
       this.productFamily,
       this.assetLastReceivedEvent,
@@ -32,7 +34,6 @@ class Asset {
 
   factory Asset.fromJson(dynamic json) {
     try {
-      Logger().d(json);
       return _$AssetFromJson(json);
     } catch (e) {
       Logger().e(e);
@@ -95,4 +96,37 @@ class AssetResponse {
       _$AssetResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetResponseToJson(this);
+}
+
+@JsonSerializable()
+class AssetLocalDate {
+  final String assetLocalDate;
+  final double totalRuntimeDurationSeconds;
+  final AssetSegmentDuration segmentDuration;
+  AssetLocalDate(
+      {this.assetLocalDate,
+      this.segmentDuration,
+      this.totalRuntimeDurationSeconds});
+
+  factory AssetLocalDate.fromJson(Map<String, dynamic> json) =>
+      _$AssetLocalDateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetLocalDateToJson(this);
+}
+
+@JsonSerializable()
+class AssetSegmentDuration {
+  final double runningDurationSeconds;
+  final double workingDurationSeconds;
+  final double idleDurationSeconds;
+
+  AssetSegmentDuration(
+      {this.runningDurationSeconds,
+      this.workingDurationSeconds,
+      this.idleDurationSeconds});
+
+  factory AssetSegmentDuration.fromJson(Map<String, dynamic> json) =>
+      _$AssetSegmentDurationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetSegmentDurationToJson(this);
 }

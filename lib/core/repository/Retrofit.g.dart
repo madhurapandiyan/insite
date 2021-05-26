@@ -297,23 +297,23 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetResponse> assetSummaryCI(customerUID, startdate, enddate,
-      pagesize, pagenumber, sort, customerId) async {
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
+  Future<AssetResponse> assetSummaryCI(startdate, enddate, pagesize, pagenumber,
+      sort, customerUID, customerId) async {
     ArgumentError.checkNotNull(startdate, 'startdate');
     ArgumentError.checkNotNull(enddate, 'enddate');
     ArgumentError.checkNotNull(pagesize, 'pagesize');
     ArgumentError.checkNotNull(pagenumber, 'pagenumber');
     ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'customerUID': customerUID,
       r'startdate': startdate,
       r'enddate': enddate,
       r'pagesize': pagesize,
       r'pagenumber': pagenumber,
-      r'sort': sort
+      r'sort': sort,
+      r'customerUID': customerUID
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(

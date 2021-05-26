@@ -172,7 +172,6 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                               );
                                               viewModel.startDate =
                                                   '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-
                                               viewModel.endDate =
                                                   '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
                                             },
