@@ -27,20 +27,26 @@ class AssetService extends BaseService {
     }
   }
 
-  Future<List<Asset>> getAssetSummaryList(startDate, endDate) async {
+  Future<List<Asset>> getAssetSummaryList(
+      startDate, endDate, pageSize, pageNumber, menuFilterType) async {
     try {
       AssetResponse assetResponse =
           accountSelected != null && customerSelected != null
               ? await MyApi().getClient().assetSummaryCI(
-                  customerSelected.CustomerUID,
                   startDate,
                   endDate,
-                  50,
-                  1,
-                  "assetid",
+                  pageSize,
+                  pageNumber,
+                  menuFilterType,
+                  customerSelected.CustomerUID,
                   accountSelected.CustomerUID)
-              : await MyApi().getClient().assetSummary(startDate, endDate, 50,
-                  1, "assetid", accountSelected.CustomerUID);
+              : await MyApi().getClient().assetSummary(
+                  startDate,
+                  endDate,
+                  pageSize,
+                  pageNumber,
+                  menuFilterType,
+                  accountSelected.CustomerUID);
       return assetResponse.assetOperations.assets;
     } catch (e) {
       Logger().e(e);

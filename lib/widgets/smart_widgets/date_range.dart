@@ -20,18 +20,19 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
   DateTime _selectedDay;
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
   bool isCalenderVisible = false;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.75,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.95,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Row(
@@ -77,10 +78,14 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
               children: [
                 dateRangeCard(context, DefaultDateRange.currentWeek, 0.35,
                     'Current Week'),
-                SizedBox(
-                  width: 10,
-                ),
-                dateRangeCard(context, DefaultDateRange.previousWeek, 0.3,
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                dateRangeCard(context, DefaultDateRange.previousWeek, 0.35,
                     'Previous Week'),
               ],
             ),
@@ -94,7 +99,7 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                 SizedBox(
                   width: 10,
                 ),
-                dateRangeCard(context, DefaultDateRange.lastThirtyDays, 0.3,
+                dateRangeCard(context, DefaultDateRange.lastThirtyDays, 0.35,
                     'Last 30 days'),
               ],
             ),
@@ -103,17 +108,21 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
             ),
             Row(
               children: [
-                dateRangeCard(context, DefaultDateRange.currentMonth, 0.3,
+                dateRangeCard(context, DefaultDateRange.currentMonth, 0.38,
                     'Current Month'),
-                SizedBox(
-                  width: 10,
-                ),
-                dateRangeCard(context, DefaultDateRange.previousMonth, 0.3,
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                dateRangeCard(context, DefaultDateRange.previousMonth, 0.38,
                     'Previous Month'),
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             Align(
               alignment: Alignment.centerLeft,
@@ -251,8 +260,15 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
               child: isCalenderVisible
                   ? Container(
                       child: Material(
+                          child: SingleChildScrollView(
                         child: TableCalendar(
                           rowHeight: 35,
+                          calendarFormat: _calendarFormat,
+                          onFormatChanged: (format) {
+                            setState(() {
+                              _calendarFormat = format;
+                            });
+                          },
                           firstDay: DateTime.utc(2010, 10, 16),
                           lastDay: DateTime.utc(2030, 3, 14),
                           focusedDay: DateTime.now(),
@@ -262,7 +278,6 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                           onDaySelected: (selectedDay, focusedDay) {
                             setState(() {
                               _selectedDay = selectedDay;
-
                               if (currentCustomDatePick ==
                                   CustomDatePick.customFromDate) {
                                 customFromDate = _selectedDay;
@@ -276,7 +291,7 @@ class _DateRangeWidgetState extends State<DateRangeWidget> {
                             });
                           },
                         ),
-                      ),
+                      )),
                     )
                   : Container(),
             ),

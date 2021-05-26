@@ -39,8 +39,8 @@ class HttpWrapper {
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
       baseUrl: _baseUrl,
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
     );
     dio = Dio(options);
     dioOne = Dio(options);
@@ -55,7 +55,6 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "Bearer " + await _localService.getToken(),
-            "timezoneoffset": -330
           });
           return options;
         },
