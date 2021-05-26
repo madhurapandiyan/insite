@@ -7,14 +7,12 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
-import 'package:insite/core/services/utilization_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class UtilLizationViewModel extends InsiteViewModel {
   Logger log;
-  var _utilService = locator<AssetUtilService>();
   var _utilizationService = locator<AssetUtilizationService>();
   var _navigationService = locator<NavigationService>();
 
@@ -23,9 +21,6 @@ class UtilLizationViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageCount = 50;
   ScrollController scrollController;
-
-  Utilization _utilization;
-  Utilization get utilization => _utilization;
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
@@ -48,10 +43,16 @@ class UtilLizationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
   UtilLizationViewModel(value) {
     _isMain = value;
     this.log = getLogger(this.runtimeType.toString());
-    _utilService.setUp();
+    _utilizationService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -61,21 +62,38 @@ class UtilLizationViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 1), () {
       getUtilization();
-      getUtilList();
+      // getUtilList();
     });
   }
 
   getUtilList() async {
-    var result = await _utilService.getUtilizationData();
+    Logger().d("getUtilList");
+    var result = await _utilizationService.getUtilizationData();
     _utilLizationList = result;
   }
 
   getUtilization() async {
+    Logger().d("getUtilization");
     Utilization result = await _utilizationService.getUtilizationResult(
         _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
-    _utilLizationListData.addAll(result.assetResults);
-    _loading = false;
-    notifyListeners();
+    if (result != null) {
+      if (result.assetResults.isNotEmpty) {
+        _utilLizationListData.addAll(result.assetResults);
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      } else {
+        _utilLizationListData.addAll(result.assetResults);
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
+      }
+    } else {
+      _loading = false;
+      _loadingMore = false;
+      notifyListeners();
+    }
   }
 
   onDetailPageSelected(AssetResult fleet) {
@@ -88,8 +106,16 @@ class UtilLizationViewModel extends InsiteViewModel {
   }
 
   _loadMore() {
-    Logger().i("load more called");
-    // pageNumber++;
-    // getUtilization();
+    Logger().i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      Logger().i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getUtilization();
+    }
   }
 }

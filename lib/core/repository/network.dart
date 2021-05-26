@@ -39,8 +39,8 @@ class HttpWrapper {
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
       baseUrl: _baseUrl,
-      connectTimeout: 8000,
-      receiveTimeout: 5000,
+      connectTimeout: 10000,
+      receiveTimeout: 10000,
     );
     dio = Dio(options);
     dioOne = Dio(options);

@@ -18,6 +18,12 @@ abstract class InsiteViewModel extends BaseViewModel {
     _youDontHavePermission = value;
   }
 
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
   login() {
     Future.delayed(Duration(seconds: 2), () {
       _navigationService.replaceWith(logoutViewRoute);
