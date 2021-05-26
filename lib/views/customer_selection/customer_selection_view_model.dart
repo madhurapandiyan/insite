@@ -46,6 +46,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
 
   CustomerSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _loading = true;
     getLoggedInUserMail();
     getSelectedData();
     getCustomerList();
@@ -82,6 +83,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     List<Customer> result = await _loginService.getCustomers();
     Logger().d("getCustomerList " + result.length.toString());
     _customers = result;
+    _loading = false;
     notifyListeners();
   }
 
@@ -129,7 +131,6 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   }
 
   onCustomerSelected() {
-    _loading = true;
     checkPermission();
   }
 

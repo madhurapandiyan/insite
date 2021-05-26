@@ -9,7 +9,6 @@ import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class UtilLizationView extends StatefulWidget {
   @override
@@ -43,7 +42,6 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  // : viewModel.utilLizationList.isNotEmpty
                   : viewModel.utilLizationListData != null
                       ? Container(
                           decoration: BoxDecoration(
@@ -107,33 +105,46 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                       ),
                                     ),
                                     Expanded(
-                                        child: ListView.separated(
-                                            separatorBuilder: (context, index) {
-                                              return Divider();
-                                            },
-                                            controller:
-                                                viewModel.scrollController,
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: viewModel
-                                                .utilLizationListData.length,
-                                            padding: EdgeInsets.only(
-                                                left: 8.0, right: 8.0),
-                                            itemBuilder: (context, index) {
-                                              AssetResult utilizationData =
-                                                  viewModel
-                                                          .utilLizationListData[
-                                                      index];
-                                              return UtilizationListItem(
-                                                data: utilizationData,
-                                                isShowingInDetailPage: false,
-                                                onCallback: () {
-                                                  viewModel
-                                                      .onDetailPageSelected(
-                                                          utilizationData);
+                                        child: viewModel
+                                                .utilLizationListData.isNotEmpty
+                                            ? ListView.separated(
+                                                separatorBuilder:
+                                                    (context, index) {
+                                                  return Divider();
                                                 },
-                                              );
-                                            }))
+                                                controller:
+                                                    viewModel.scrollController,
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: viewModel
+                                                    .utilLizationListData
+                                                    .length,
+                                                padding: EdgeInsets.only(
+                                                    left: 8.0, right: 8.0),
+                                                itemBuilder: (context, index) {
+                                                  AssetResult utilizationData =
+                                                      viewModel
+                                                              .utilLizationListData[
+                                                          index];
+                                                  return UtilizationListItem(
+                                                    data: utilizationData,
+                                                    isShowingInDetailPage:
+                                                        false,
+                                                    onCallback: () {
+                                                      viewModel
+                                                          .onDetailPageSelected(
+                                                              utilizationData);
+                                                    },
+                                                  );
+                                                })
+                                            : EmptyView(
+                                                title: "No Assets Found",
+                                              )),
+                                    viewModel.loadingMore
+                                        ? Padding(
+                                            padding: EdgeInsets.all(8),
+                                            child: CircularProgressIndicator())
+                                        : SizedBox()
                                   ],
                                 )
                               // GRAPH VIEW
@@ -268,118 +279,120 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                         child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 8.0),
-                                      child: ListView.builder(
-                                          itemCount: viewModel
-                                              .utilization.assetResults.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (isIdleWorking) {
-                                              if (rangeChoice == 1)
-                                                return PercentageWidget(
-                                                    label: viewModel
-                                                        .utilization
-                                                        .assetResults[index]
-                                                        .assetSerialNumber,
-                                                    percentage: viewModel
-                                                                .utilization
-                                                                .assetResults[
+                                      child: viewModel
+                                              .utilLizationListData.isNotEmpty
+                                          ? ListView.builder(
+                                              itemCount: viewModel
+                                                  .utilLizationListData.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                if (isIdleWorking) {
+                                                  if (rangeChoice == 1)
+                                                    return PercentageWidget(
+                                                        label: viewModel
+                                                            .utilLizationListData[
+                                                                index]
+                                                            .assetSerialNumber,
+                                                        percentage: viewModel
+                                                                    .utilLizationListData[
+                                                                        index]
+                                                                    .idleEfficiency ==
+                                                                null
+                                                            ? null
+                                                            : viewModel
+                                                                    .utilLizationListData[
+                                                                        index]
+                                                                    .idleEfficiency *
+                                                                100,
+                                                        color: sandyBrown);
+                                                  else
+                                                    return PercentageWidget(
+                                                        label: viewModel
+                                                            .utilLizationListData[
+                                                                index]
+                                                            .assetSerialNumber,
+                                                        percentage: viewModel
+                                                                    .utilLizationListData[
+                                                                        index]
+                                                                    .workingEfficiency ==
+                                                                null
+                                                            ? null
+                                                            : viewModel
+                                                                    .utilLizationListData[
+                                                                        index]
+                                                                    .workingEfficiency *
+                                                                100,
+                                                        color: olivine);
+                                                } else if (isRuntimeHours) {
+                                                  if (rangeChoice == 1)
+                                                    return PercentageWidget(
+                                                        value:
+                                                            '${viewModel.utilLizationListData[index].runtimeHours}',
+                                                        label: viewModel
+                                                            .utilLizationListData[
+                                                                index]
+                                                            .assetSerialNumber,
+                                                        percentage: viewModel
+                                                                .utilLizationListData[
                                                                     index]
-                                                                .idleEfficiency ==
-                                                            null
-                                                        ? null
-                                                        : viewModel
-                                                                .utilization
-                                                                .assetResults[
+                                                                .runtimeHours /
+                                                            10,
+                                                        color: sandyBrown);
+                                                  else if (rangeChoice == 2)
+                                                    return PercentageWidget(
+                                                        value:
+                                                            '${viewModel.utilLizationListData[index].workingHours}',
+                                                        label: viewModel
+                                                            .utilLizationListData[
+                                                                index]
+                                                            .assetSerialNumber,
+                                                        percentage: viewModel
+                                                                .utilLizationListData[
                                                                     index]
-                                                                .idleEfficiency *
-                                                            100,
-                                                    color: sandyBrown);
-                                              else
-                                                return PercentageWidget(
-                                                    label: viewModel
-                                                        .utilization
-                                                        .assetResults[index]
-                                                        .assetSerialNumber,
-                                                    percentage: viewModel
-                                                                .utilization
-                                                                .assetResults[
+                                                                .workingHours /
+                                                            10,
+                                                        color: sandyBrown);
+                                                  else
+                                                    return PercentageWidget(
+                                                        value:
+                                                            '${viewModel.utilLizationListData[index].idleHours}',
+                                                        label: viewModel
+                                                            .utilLizationListData[
+                                                                index]
+                                                            .assetSerialNumber,
+                                                        percentage: viewModel
+                                                                .utilLizationListData[
                                                                     index]
-                                                                .workingEfficiency ==
-                                                            null
-                                                        ? null
-                                                        : viewModel
-                                                                .utilization
-                                                                .assetResults[
-                                                                    index]
-                                                                .workingEfficiency *
-                                                            100,
-                                                    color: olivine);
-                                            } else if (isRuntimeHours) {
-                                              if (rangeChoice == 1)
-                                                return PercentageWidget(
-                                                    value:
-                                                        '${viewModel.utilization.assetResults[index].runtimeHours}',
-                                                    label: viewModel
-                                                        .utilization
-                                                        .assetResults[index]
-                                                        .assetSerialNumber,
-                                                    percentage: viewModel
-                                                            .utilization
-                                                            .assetResults[index]
-                                                            .runtimeHours /
-                                                        10,
-                                                    color: sandyBrown);
-                                              else if (rangeChoice == 2)
-                                                return PercentageWidget(
-                                                    value:
-                                                        '${viewModel.utilization.assetResults[index].workingHours}',
-                                                    label: viewModel
-                                                        .utilization
-                                                        .assetResults[index]
-                                                        .assetSerialNumber,
-                                                    percentage: viewModel
-                                                            .utilization
-                                                            .assetResults[index]
-                                                            .workingHours /
-                                                        10,
-                                                    color: sandyBrown);
-                                              else
-                                                return PercentageWidget(
-                                                    value:
-                                                        '${viewModel.utilization.assetResults[index].idleHours}',
-                                                    label: viewModel
-                                                        .utilization
-                                                        .assetResults[index]
-                                                        .assetSerialNumber,
-                                                    percentage: viewModel
-                                                            .utilization
-                                                            .assetResults[index]
-                                                            .idleHours /
-                                                        10,
-                                                    color: sandyBrown);
-                                            } else if (isDistanceTravelled) {
-                                              return PercentageWidget(
-                                                  label: viewModel
-                                                      .utilization
-                                                      .assetResults[index]
-                                                      .assetSerialNumber,
-                                                  value:
-                                                      '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
-                                                  percentage: viewModel
-                                                          .utilization
-                                                          .assetResults[index]
-                                                          .distanceTravelledKilometers /
-                                                      10,
-                                                  color: creamCan);
-                                            } else if (isCumulative) {
-                                              if (rangeChoice == 1)
-                                                return Container();
-                                              else
-                                                return Container();
-                                            } else {
-                                              return Container();
-                                            }
-                                          }),
+                                                                .idleHours /
+                                                            10,
+                                                        color: sandyBrown);
+                                                } else if (isDistanceTravelled) {
+                                                  return PercentageWidget(
+                                                      label: viewModel
+                                                          .utilLizationListData[
+                                                              index]
+                                                          .assetSerialNumber,
+                                                      value:
+                                                          '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
+                                                      percentage: viewModel
+                                                              .utilLizationListData[
+                                                                  index]
+                                                              .distanceTravelledKilometers /
+                                                          10,
+                                                      color: creamCan);
+                                                } else if (isCumulative) {
+                                                  if (rangeChoice == 1)
+                                                    return Container();
+                                                  else
+                                                    return Container();
+                                                } else {
+                                                  return Container();
+                                                }
+                                              })
+                                          : EmptyView(
+                                              title: "No Assets Found",
+                                            ),
                                     ))
                                   ],
                                 ),
