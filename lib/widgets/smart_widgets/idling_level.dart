@@ -58,11 +58,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   Widget build(BuildContext context) {
-    double maxheight = .30 * MediaQuery.of(context).size.height;
-    double maxwidth = .65 * MediaQuery.of(context).size.width;
+    double maxheight = .35 * MediaQuery.of(context).size.height;
+    double maxwidth = .58 * MediaQuery.of(context).size.width;
     return Container(
       width: 330.13,
-      height: 261.16,
+      height: 310.16,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],

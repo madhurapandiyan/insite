@@ -32,6 +32,7 @@ dependencies:
   percent_indicator: ^3.0.1
   charts_flutter: ^0.10.0
   google_maps_cluster_manager: ^1.0.0
+  syncfusion_flutter_gauges: ^19.1.65
 
 dev_dependencies:
   flutter_test:

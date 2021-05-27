@@ -1,47 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/theme/colors.dart';
-import 'dart:math' as math;
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class FuelLevel extends StatefulWidget {
-  final String countOf;
-  final String countON;
-  final String countAwait;
-  final String countNotReport;
-  FuelLevel({this.countOf, this.countON, this.countAwait, this.countNotReport});
+class AssetFuelLevel extends StatefulWidget {
+  final List<CountDatum> fuelLevel;
+  AssetFuelLevel({this.fuelLevel});
 
   @override
-  _FuelLevelState createState() => _FuelLevelState();
+  _AssetFuelLevelState createState() => _AssetFuelLevelState();
 }
 
-class _FuelLevelState extends State<FuelLevel>
-    with SingleTickerProviderStateMixin {
-  Animation<double> animation;
-  AnimationController animationController;
-
-  @override
-  void initState() {
-    animationController =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
-    final curvedAnimation = CurvedAnimation(
-        parent: animationController, curve: Curves.easeInOutCubic);
-    animation = Tween<double>(begin: 0.0, end: 3.14).animate(curvedAnimation)
-      ..addListener(() {
-        setState(() {});
-      });
-    animationController.repeat(reverse: false);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
+class _AssetFuelLevelState extends State<AssetFuelLevel> {
   @override
   Widget build(BuildContext context) {
+    int result = (widget.fuelLevel[0].count +
+        widget.fuelLevel[1].count +
+        widget.fuelLevel[2].count +
+        widget.fuelLevel[3].count);
+    print('fuelLevel:$result');
+
+    double gauge1 = ((widget.fuelLevel[0].count / result) * 100).roundToDouble();
+    print('gauge1:$gauge1');
+    double gauge2 =
+        (((widget.fuelLevel[0].count + widget.fuelLevel[1].count) / result) *
+            100).roundToDouble();
+    print('gauge2:$gauge2');
+    double gauge3 = (((widget.fuelLevel[0].count +
+                widget.fuelLevel[1].count +
+                widget.fuelLevel[2].count) /
+            result) *
+        100).roundToDouble();
+    print('gauge3:$gauge3');
+    double gauge4 = (((widget.fuelLevel[0].count +
+                widget.fuelLevel[1].count +
+                widget.fuelLevel[2].count +
+                widget.fuelLevel[3].count) /
+            result) *
+        100).roundToDouble();
+    print('gauge4:$gauge4');
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       width: 345.13,
@@ -91,76 +91,129 @@ class _FuelLevelState extends State<FuelLevel>
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                CustomPaint(
-                  painter: ProgressArc(null, black, true),
-                ),
-                CustomPaint(
-                  painter: ProgressArc(animation.value, Colors.white, false),
-                ),
-              ],
-            ),
+            Container(
+                width: 150,
+                height: 150,
+                child: SfRadialGauge(
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                        showAxisLine: false,
+                        showLabels: false,
+                        showTicks: false,
+                        startAngle: 180,
+                        endAngle: 360,
+                        minimum: 0,
+                        maximum: 100,
+                        canScaleToFit: true,
+                        radiusFactor: 0.95,
+                        pointers: <GaugePointer>[
+                          NeedlePointer(
+                              needleStartWidth: 1,
+                              value: 30,
+                              needleLength: 0.7,
+                              lengthUnit: GaugeSizeUnit.factor,
+                              knobStyle: KnobStyle(
+                                knobRadius: 0.08,
+                                sizeUnit: GaugeSizeUnit.factor,
+                              ))
+                        ],
+                        ranges: <GaugeRange>[
+                          GaugeRange(
+                              startValue: 0,
+                              endValue:
+                                  ((widget.fuelLevel[0].count / result) * 100).roundToDouble(),
+                              sizeUnit: GaugeSizeUnit.factor,
+                              startWidth: 0.30,
+                              endWidth: 0.30,
+                              color: burntSienna),
+                          GaugeRange(
+                              startValue:
+                                  ((widget.fuelLevel[0].count / result) * 100).roundToDouble(),
+                              endValue:
+                               (((widget.fuelLevel[0].count +
+                                          widget.fuelLevel[1].count) /
+                                      result) *
+                                  100).roundToDouble(),
+                              startWidth: 0.30,
+                              sizeUnit: GaugeSizeUnit.factor,
+                              endWidth: 0.30,
+                              color: lightRose),
+                          GaugeRange(
+                              startValue:
+                              (((widget.fuelLevel[0].count +
+                                          widget.fuelLevel[1].count) /
+                                      result) *
+                                  100).roundToDouble(),
+                              endValue:
+                               (((widget.fuelLevel[0].count +
+                                          widget.fuelLevel[1].count +
+                                          widget.fuelLevel[2].count) /
+                                      result) *
+                                  100).roundToDouble(),
+                              startWidth: 0.30,
+                              sizeUnit: GaugeSizeUnit.factor,
+                              endWidth: 0.30,
+                              color: mustard),
+                          GaugeRange(
+                              startValue: 
+                              (((widget.fuelLevel[0].count +
+                                          widget.fuelLevel[1].count +
+                                          widget.fuelLevel[2].count) /
+                                      result) *
+                                  100).roundToDouble(),
+                              endValue: 
+                              (((widget.fuelLevel[0].count +
+                                          widget.fuelLevel[1].count +
+                                          widget.fuelLevel[2].count +
+                                          widget.fuelLevel[3].count) /
+                                      result) *
+                                  100).roundToDouble(),
+                              startWidth: 0.30,
+                              sizeUnit: GaugeSizeUnit.factor,
+                              endWidth: 0.30,
+                              color: emerald),
+                        ]),
+                  ],
+                )),
             SizedBox(
-              width: 200,
+              width: 30,
             ),
             Column(
               children: [
-                AssetStatusWidget(burntSienna, "<" + widget.countOf + "%",
-                    silver, "assets/images/arrows.png"),
-                Container(
-                    width: 127.29,
-                    child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(lightRose, "<" + widget.countON + "%", silver,
+                AssetStatusWidget(
+                    burntSienna,
+                    "<" + widget.fuelLevel[0].countOf + "%",
+                    silver,
                     "assets/images/arrows.png"),
                 Container(
                     width: 127.29,
                     child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(mustard, "<" + widget.countAwait + "%",
-                    silver, "assets/images/arrows.png"),
+                AssetStatusWidget(
+                    lightRose,
+                    "<" + widget.fuelLevel[1].countOf + "%",
+                    silver,
+                    "assets/images/arrows.png"),
                 Container(
                     width: 127.29,
                     child: Divider(thickness: 1.0, color: athenGrey)),
-                AssetStatusWidget(emerald, "<=" + widget.countNotReport + "%",
-                    silver, "assets/images/arrows.png")
+                AssetStatusWidget(
+                    mustard,
+                    "<" + widget.fuelLevel[2].countOf + "%",
+                    silver,
+                    "assets/images/arrows.png"),
+                Container(
+                    width: 127.29,
+                    child: Divider(thickness: 1.0, color: athenGrey)),
+                AssetStatusWidget(
+                    emerald,
+                    "<=" + widget.fuelLevel[3].countOf + "%",
+                    silver,
+                    "assets/images/arrows.png")
               ],
             )
           ],
         ),
       ]),
     );
-  }
-}
-
-class ProgressArc extends CustomPainter {
-  bool isBackground;
-  double arc;
-  Color progressColor;
-
-  ProgressArc(this.arc, this.progressColor, this.isBackground);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTRB(170 - 90 * 1.3, 40, 165, 163);
-
-    final startAngle = math.pi;
-    final sweepAngle = math.pi;
-    final useCenter = false;
-
-    final paint = Paint()
-      ..color = progressColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 25;
-
-    if (!isBackground) {
-      paint.shader = gradient.createShader(rect);
-    }
-
-    canvas.drawArc(rect, startAngle, sweepAngle, useCenter, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }
