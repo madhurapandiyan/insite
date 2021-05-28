@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -9,9 +10,12 @@ import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/location/location_view.dart';
+import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
+import 'package:insite/widgets/smart_widgets/asset_status_two.dart';
+import 'package:insite/widgets/smart_widgets/asset_status_usage_two.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
@@ -70,32 +74,18 @@ class _HomeViewState extends State<HomeView> {
                       viewModel.assetStatusData == null
                           ? Center(child: CircularProgressIndicator())
                           : AssetStatus(
-                              AssetcountOf: viewModel
-                                  .assetStatusData.countData[0].countOf,
-                              AssetcountOn: viewModel
-                                  .assetStatusData.countData[1].countOf,
-                              AssetAwait: viewModel
-                                  .assetStatusData.countData[2].countOf,
-                              AssetNotReport: viewModel
-                                  .assetStatusData.countData[3].countOf,
-                              AssetOfcount:
-                                  viewModel.assetStatusData.countData[0].count,
-                              AssetOncount:
-                                  viewModel.assetStatusData.countData[1].count,
-                              AssetAwaitCount:
-                                  viewModel.assetStatusData.countData[2].count,
-                              AssetNotReportCount:
-                                  viewModel.assetStatusData.countData[3].count,
+                              assetStatus: viewModel.assetStatusData.countData,
                             ),
                       SizedBox(
                         height: 20.0,
                       ),
-                      viewModel.fuelLevelData==null?Center(
-                        child: CircularProgressIndicator(),
-                      ):
-                      AssetFuelLevel(
-                        fuelLevel: viewModel.fuelLevelData.countData,
-                      ),
+                      viewModel.fuelLevelData == null
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : AssetFuelLevel(
+                              fuelLevel: viewModel.fuelLevelData.countData,
+                            ),
                       SizedBox(
                         height: 20.0,
                       ),
@@ -130,14 +120,8 @@ class _HomeViewState extends State<HomeView> {
                       viewModel.assetStatusData == null
                           ? Center(child: CircularProgressIndicator())
                           : AssetStatusUsage(
-                              AssetOfcount:
-                                  viewModel.assetStatusData.countData[0].count,
-                              AssetOncount:
-                                  viewModel.assetStatusData.countData[1].count,
-                              AssetAwaitCount:
-                                  viewModel.assetStatusData.countData[2].count,
-                              AssetNotReportCount:
-                                  viewModel.assetStatusData.countData[3].count,
+                              assetStatusUsage:
+                                  viewModel.assetStatusData.countData,
                             ),
                     ],
                   ),
