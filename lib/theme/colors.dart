@@ -38,18 +38,10 @@ const orangeGradient = [sandyBrown, sandyBrown];
 const yellowGradient = [mustard, mustard];
 const whiteGradient = [textcolor, textcolor];
 const Color periwinkleGrey = Color(0xFFB7BEE3);
-final Gradient gradient = new LinearGradient(
-  colors: <Color>[
-    burntSienna,
-    lightRose,
-    mustard,
-    emerald,
-  ],
-  stops: [
-    0.0,
-    0.4,
-    0.7,
-    1.0,
-  ],
-);
 const Color olivine = Color(0xFF8EB685);
+final kNeumorphicColors = [
+ emerald,
+ concrete,
+ mustard,
+ burntSienna
+];
