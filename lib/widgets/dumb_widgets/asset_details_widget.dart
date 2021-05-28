@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/service_plan.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 
 class AssetDetailWidgt extends StatelessWidget {
   final AssetDetail detail;
@@ -76,7 +79,9 @@ class AssetDetailWidgt extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: "Hour Meter",
-                      content: "-",
+                      content: detail.hourMeter != null
+                          ? detail.hourMeter.toString() + " Hrs"
+                          : "",
                     ),
                     InsiteTableRowItem(
                       title: "Year",
@@ -87,7 +92,10 @@ class AssetDetailWidgt extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: "Last Reported time",
-                      content: "-",
+                      content: detail.lastReportedTimeUTC != null
+                          ? Utils.getLastReportedDateOne(
+                              detail.lastReportedTimeUTC)
+                          : "-",
                     ),
                     InsiteTableRowItem(
                       title: "Groups",
@@ -101,11 +109,16 @@ class AssetDetailWidgt extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: "Service Plans",
-                      content: "-",
+                      content: getServiceNames(),
                     ),
                     InsiteTableRowItem(
                       title: "Location",
-                      content: "-",
+                      content: detail.lastReportedLocationLatitude != null &&
+                              detail.lastReportedLocationLongitude != null
+                          ? detail.lastReportedLocationLatitude.toString() +
+                              "/" +
+                              detail.lastReportedLocationLongitude.toString()
+                          : "-",
                     ),
                     InsiteTableRowItem(
                       title: "",
@@ -119,5 +132,20 @@ class AssetDetailWidgt extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getServiceNames() {
+    Logger().d(detail.devices[0].activeServicePlans);
+    StringBuffer value = StringBuffer();
+    if (detail.devices.isNotEmpty &&
+        detail.devices[0].activeServicePlans != null &&
+        detail.devices[0].activeServicePlans.isNotEmpty) {
+      for (ServicePlan plan in detail.devices[0].activeServicePlans) {
+        value.write(plan.type + "\n");
+      }
+      return value.toString();
+    } else {
+      return "-";
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_slider.dart';
@@ -83,7 +84,8 @@ class AssetListItem extends StatelessWidget {
                           title: "Last Known Operator",
                           content: asset != null &&
                                   asset.assetLastReceivedEvent != null
-                              ? getLastReportedDate(asset.assetLastReceivedEvent
+                              ? Utils.getLastReportedDate(asset
+                                  .assetLastReceivedEvent
                                   .lastReceivedEventTimeLocal)
                               : "-",
                         ),
@@ -103,24 +105,6 @@ class AssetListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getLastReportedDate(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
-  }
-
-  String getLastDuration(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
   }
 
   List<SliderData> getSliderData() {

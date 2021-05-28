@@ -3,6 +3,7 @@ import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/note.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
@@ -56,9 +57,6 @@ class AssetService extends BaseService {
 
   Future<AssetDetail> getAssetDetail(assetUID) async {
     try {
-      // AssetDetail assetResponse = await MyApi()
-      //     .getClient()
-      //     .assetDetail(assetUID, accountSelected.CustomerUID);
       AssetDetail assetResponse = await MyApi()
           .getClient()
           .assetDetail(assetUID, accountSelected.CustomerUID);
@@ -78,6 +76,29 @@ class AssetService extends BaseService {
     } catch (e) {
       Logger().e(e);
       return [];
+    }
+  }
+
+  Future<List<Note>> getAssetNotes(assetUID) async {
+    try {
+      List<Note> notes = await MyApi()
+          .getClient()
+          .getAssetNotes(assetUID, accountSelected.CustomerUID);
+      return notes;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  postNotes(assetUID, note) async {
+    try {
+      await MyApi()
+          .getClient()
+          .postNotes(PostNote(assetUID: assetUID, assetUserNote: note));
+    } catch (e) {
+      Logger().e(e);
+      return null;
     }
   }
 }

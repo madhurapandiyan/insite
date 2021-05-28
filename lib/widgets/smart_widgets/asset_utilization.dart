@@ -25,7 +25,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
         children: [

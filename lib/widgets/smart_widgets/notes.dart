@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/note.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 
 class Notes extends StatelessWidget {
   const Notes({
     Key key,
     @required this.controller,
     @required this.onTap,
+    @required this.isLoading,
+    @required this.notes,
   }) : super(key: key);
 
   final TextEditingController controller;
   final Function onTap;
-
+  final bool isLoading;
+  final List<Note> notes;
   @override
   Widget build(BuildContext context) {
     final kTextFieldBorder = OutlineInputBorder(
@@ -25,7 +31,9 @@ class Notes extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.22,
+      height: notes.isNotEmpty
+          ? MediaQuery.of(context).size.height * 0.32
+          : MediaQuery.of(context).size.height * 0.22,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),
@@ -51,6 +59,33 @@ class Notes extends StatelessWidget {
                 ),
               ],
             ),
+            notes.isNotEmpty
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: SingleChildScrollView(
+                      child: Table(
+                        border: TableBorder.all(),
+                        children: List.generate(
+                            notes.length,
+                            (index) => TableRow(children: [
+                                  InsiteTableRowItem(
+                                    title: "",
+                                    content: notes[index].assetUserNote,
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "",
+                                    content: notes[index].userName,
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "",
+                                    content: Utils.getLastReportedDateOne(
+                                        notes[index].lastModifiedUTC),
+                                  ),
+                                ])),
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Stack(
@@ -94,8 +129,9 @@ class Notes extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: InsiteButton(
+                    child: InsiteButtonWithLoader(
                       title: 'Add',
+                      showLoad: isLoading,
                       width: 90,
                       height: 40,
                       onTap: onTap,

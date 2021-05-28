@@ -10,6 +10,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/idling_level.dart';
+import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
@@ -102,6 +103,26 @@ abstract class RestClient {
   Future<AssetDetail> assetDetail(@Query("assetUID") String assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
+  Future<AssetDetail> assetDetailCI(
+      @Query("assetUID") String assetUID,
+      @Query("customerUID") String customerUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/")
+  Future<List<Note>> getAssetNotes(@Query("assetUID") String assetUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @POST("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1")
+  Future<dynamic> postNotes(@Body() PostNote postnote);
+
+  @POST("/t/trimble.com/vss-deviceservice/1.0/ping")
+  Future<dynamic> ping(@Body() PingPostDeviceData postnote);
+
+  @GET("/t/trimble.com/vss-deviceservice/1.0/ping")
+  Future<PingDeviceData> getPingData(
+      @Query("AssetUID") String assetUID, @Query("DeviceUID") String deviceUID);
+
   @GET("/t/trimble.com/vss-deviceservice/2.0/asset")
   Future<AssetDeviceResponse> asset(@Query("assetUID") String assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
@@ -178,6 +199,7 @@ abstract class RestClient {
       @Query("assetUid") String assetUID,
       @Query("date") String date,
       @Header("x-visionlink-customeruid") customerId);
+
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<IdlingLevelData> idlingLevel(
       @Query("endDate") String endDate,

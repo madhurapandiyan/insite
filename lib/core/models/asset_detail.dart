@@ -38,6 +38,7 @@
 // }
 
 import 'package:insite/core/models/device.dart';
+import 'package:insite/core/models/service_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'asset_detail.g.dart';
 
@@ -54,33 +55,56 @@ class AssetDetail {
   final String status;
   final String customStateDescription;
   final String dealerName;
+  final double hourMeter;
   final String dealerCustomerNumber;
   final String accountName;
   final String universalCustomerIdentifier;
   final String universalCustomerName;
   final double lastReportedLocationLatitude;
   final double lastReportedLocationLongitude;
+  final double fuelLevelLastReported;
+  final String lastPercentFuelRemainingUTC;
+  final String fuelReportedTimeUTC;
+  final double lifetimeFuel;
+  final String lastReportedTimeUTC;
+  final String lastLocationUpdateUTC;
+  final double percentDEFRemaining;
+  final double lifetimeDEFLiters;
+  final String lastLifetimeDEFLitersUTC;
+  final String lastPercentDEFRemainingUTC;
   final List<Device> devices;
+  final List<ServicePlan> activeServicePlans;
   AssetDetail(
-    this.assetUid,
-    this.assetSerialNumber,
-    this.makeCode,
-    this.manufacturer,
-    this.devices,
-    this.model,
-    this.year,
-    this.assetIcon,
-    this.productFamily,
-    this.status,
-    this.customStateDescription,
-    this.dealerName,
-    this.dealerCustomerNumber,
-    this.accountName,
-    this.universalCustomerIdentifier,
-    this.universalCustomerName,
-    this.lastReportedLocationLatitude,
-    this.lastReportedLocationLongitude
-  );
+      this.assetUid,
+      this.assetSerialNumber,
+      this.hourMeter,
+      this.lifetimeFuel,
+      this.activeServicePlans,
+      this.makeCode,
+      this.fuelLevelLastReported,
+      this.lastReportedTimeUTC,
+      this.lastLocationUpdateUTC,
+      this.percentDEFRemaining,
+      this.lifetimeDEFLiters,
+      this.manufacturer,
+      this.devices,
+      this.model,
+      this.lastPercentFuelRemainingUTC,
+      this.lastLifetimeDEFLitersUTC,
+      this.lastPercentDEFRemainingUTC,
+      this.fuelReportedTimeUTC,
+      this.year,
+      this.assetIcon,
+      this.productFamily,
+      this.status,
+      this.customStateDescription,
+      this.dealerName,
+      this.dealerCustomerNumber,
+      this.accountName,
+      this.universalCustomerIdentifier,
+      this.universalCustomerName,
+      this.lastReportedLocationLatitude,
+      this.lastReportedLocationLongitude);
   factory AssetDetail.fromJson(Map<String, dynamic> json) =>
       _$AssetDetailFromJson(json);
 

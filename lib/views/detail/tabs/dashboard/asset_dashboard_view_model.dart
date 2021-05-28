@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/note.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:logger/logger.dart';
@@ -18,32 +19,56 @@ class AssetDashboardViewModel extends InsiteViewModel {
   AssetUtilization _assetUtilization;
   AssetUtilization get assetUtilization => _assetUtilization;
 
+  List<Note> _assetNotes = [];
+  List<Note> get assetNotes => _assetNotes;
+
   bool _loading = true;
   bool get loading => _loading;
+
+  bool _postingNote = false;
+  bool get postingNote => _postingNote;
 
   AssetDashboardViewModel(AssetDetail detail) {
     this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
     _assetSingleHistoryService.setUp();
     Future.delayed(Duration(seconds: 1), () {
-      getAssetLocationHistory();
-      getAssetUtilData();
+      getAssetDetail();
+      getAssetUtilization();
+      getNotes();
     });
   }
 
-  getAssetUtilData() async {
+  getAssetUtilization() async {
     AssetUtilization result = await _assetUtilizationService.getAssetUtilGraphDate(
         assetDetail.assetUid,
         '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
+    _loading = false;
     notifyListeners();
   }
 
-  getAssetLocationHistory() async {
+  getAssetDetail() async {
     AssetDetail result =
         await _assetSingleHistoryService.getAssetDetail(assetDetail.assetUid);
     _assetDetail = result;
     _loading = false;
+    notifyListeners();
+  }
+
+  getNotes() async {
+    List<Note> result =
+        await _assetSingleHistoryService.getAssetNotes(assetDetail.assetUid);
+    _assetNotes = result;
+    _loading = false;
+    notifyListeners();
+  }
+
+  postNotes(note) async {
+    _postingNote = true;
+    notifyListeners();
+    await _assetSingleHistoryService.postNotes(assetDetail.assetUid, note);
+    _postingNote = false;
     notifyListeners();
   }
 }

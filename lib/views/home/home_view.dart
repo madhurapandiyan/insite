@@ -106,6 +106,7 @@ class _HomeViewState extends State<HomeView> {
                               child: FleetGoogleMap(
                                 latitude: null,
                                 longitude: null,
+                                status: "",
                                 acquiredMarkers: _markers,
                                 initLocation: LatLng(
                                     viewModel.assetLocation.mapRecords.first
