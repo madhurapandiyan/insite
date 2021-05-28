@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
@@ -45,73 +43,172 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
         if (viewModel.loading) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return SingleChildScrollView(
-            child: Container(
-              color: mediumgrey,
-              padding: EdgeInsets.all(8),
+          return Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16)),
+                color: mediumgrey),
+            child: SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height,
-                child: ListView(
-                  physics: ClampingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
+                child: Column(
                   children: [
-                    AssetDetailWidgt(
-                      detail: widget.detail,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: AssetDetailWidgt(
+                        detail: widget.detail,
+                      ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    FuelLevel(
-                        liquidColor: mustard,
-                        title: "Fuel Level",
-                        value: 0.16,
-                        lifeTimeFuel: "lifetime fuel :\n 0 liters",
-                        percentage: "16",
-                        lastReported: "04/25/2019, 10:30 AM"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: FuelLevel(
+                          liquidColor: burntSienna,
+                          title: "Fuel Level",
+                          value: widget.detail != null &&
+                                  widget.detail.fuelLevelLastReported != null
+                              ? widget.detail.fuelLevelLastReported
+                                  .roundToDouble()
+                              : null,
+                          lifeTimeFuel: widget.detail.lifetimeFuel != null
+                              ? "lifetime fuel :\n" +
+                                  widget.detail.lifetimeFuel
+                                      .round()
+                                      .toString() +
+                                  " liters"
+                              : "",
+                          percentage: widget.detail != null &&
+                                  widget.detail.fuelLevelLastReported != null
+                              ? widget.detail.fuelLevelLastReported.toString()
+                              : null,
+                          lastReported:
+                              widget.detail.fuelReportedTimeUTC != null
+                                  ? "Last Reported Time: ".toUpperCase() +
+                                      Utils.getLastReportedDateOne(
+                                          widget.detail.fuelReportedTimeUTC)
+                                  : "No Data Receiveed"),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    viewModel.assetUtilization == null
-                        ? CircularProgressIndicator()
-                        : AssetUtilizationWidget(
-                            assetUtilization: viewModel.assetUtilization,
-                          ),
+                    viewModel.assetUtilization != null
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: AssetUtilizationWidget(
+                              assetUtilization: viewModel.assetUtilization,
+                            ),
+                          )
+                        : SizedBox(),
                     SizedBox(
                       height: 20,
                     ),
-                    FuelLevel(
-                        liquidColor: mustard,
-                        value: 0.76,
-                        title: "Diesel Exhaust Fuel Level",
-                        lifeTimeFuel: "lifetime DEF :\n 1574 liters",
-                        percentage: "76",
-                        lastReported: "04/25/2019, 10:30 AM"),
-                    SizedBox(
-                      height: 20,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: FuelLevel(
+                          liquidColor: mustard,
+                          value: widget.detail != null &&
+                                  widget.detail.percentDEFRemaining != null
+                              ? widget.detail.percentDEFRemaining.toDouble()
+                              : null,
+                          title: "Diesel Exhaust Fuel Level",
+                          lifeTimeFuel: widget.detail.lifetimeDEFLiters != null
+                              ? "lifetime fuel :\n" +
+                                  widget.detail.lifetimeDEFLiters
+                                      .round()
+                                      .toString() +
+                                  " liters"
+                              : "",
+                          percentage: widget.detail != null &&
+                                  widget.detail.percentDEFRemaining != null
+                              ? widget.detail.percentDEFRemaining.toString()
+                              : null,
+                          lastReported: widget
+                                      .detail.lastLifetimeDEFLitersUTC !=
+                                  null
+                              ? "Last Reported Time: ".toUpperCase() +
+                                  Utils.getLastReportedDateOne(
+                                      widget.detail.lastLifetimeDEFLitersUTC)
+                              : "No Data Receiveed"),
                     ),
-                    Notes(controller: notesController, onTap: () {}),
                     SizedBox(
                       height: 20,
                     ),
                     viewModel.assetDetail != null
-                        ? Container(
-                            width: 374.04,
-                            height: 305.4,
-                            color: cardcolor,
-                            child: FleetGoogleMap(
-                                latitude: viewModel
-                                    .assetDetail.lastReportedLocationLatitude,
-                                longitude: viewModel
-                                    .assetDetail.lastReportedLocationLongitude))
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Container(
+                                width: 374.04,
+                                height: 305.4,
+                                color: cardcolor,
+                                child: FleetGoogleMap(
+                                    latitude: viewModel.assetDetail
+                                        .lastReportedLocationLatitude,
+                                    status: widget
+                                                .detail.lastLocationUpdateUTC !=
+                                            null
+                                        ? "Last Reported Time: ".toUpperCase() +
+                                            Utils.getLastReportedDateOne(widget
+                                                .detail.lastLocationUpdateUTC)
+                                        : "No Data Receiveed",
+                                    longitude: viewModel.assetDetail
+                                        .lastReportedLocationLongitude)),
+                          )
                         : SizedBox(),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    PingDevice(onTap: () {}),
                     SizedBox(
                       height: 20,
                     ),
-                    Notifications()
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Notes(
+                        controller: notesController,
+                        notes: viewModel.assetNotes,
+                        onTap: () {
+                          if (notesController.text.isNotEmpty) {
+                            viewModel.postNotes(notesController.text);
+                            notesController.text = "";
+                          }
+                        },
+                        isLoading: viewModel.postingNote,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: PingDevice(onTap: () {}),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Notifications(),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
                   ],
                 ),
               ),

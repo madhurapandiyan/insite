@@ -350,6 +350,115 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AssetDetail> assetDetailCI(assetUID, customerUID, customerId) async {
+    ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetUID': assetUID,
+      r'customerUID': customerUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetDetail.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<List<Note>> getAssetNotes(assetUID, customerId) async {
+    ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'assetUID': assetUID};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<List<dynamic>>(
+        '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    var value = _result.data
+        .map((dynamic i) => Note.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<dynamic> postNotes(postnote) async {
+    ArgumentError.checkNotNull(postnote, 'postnote');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(postnote?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request(
+        '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> ping(postnote) async {
+    ArgumentError.checkNotNull(postnote, 'postnote');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(postnote?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request(
+        '/t/trimble.com/vss-deviceservice/1.0/ping',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<PingDeviceData> getPingData(assetUID, deviceUID) async {
+    ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(deviceUID, 'deviceUID');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'AssetUID': assetUID,
+      r'DeviceUID': deviceUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-deviceservice/1.0/ping',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = PingDeviceData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<AssetDeviceResponse> asset(assetUID, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
     ArgumentError.checkNotNull(customerId, 'customerId');

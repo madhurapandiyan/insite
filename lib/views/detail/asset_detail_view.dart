@@ -178,27 +178,14 @@ class _TabPageState extends State<AssetDetailView> {
                         ),
                       ),
                       SizedBox(height: 13.0),
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          height: 110,
-                          child: Container(
-                            width: 82,
-                            height: 87.29,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                _tabcontainer(0, "assets/images/clock.svg"),
-                                _tabcontainer(
-                                    1, "assets/images/supportmanager.svg"),
-                                _tabcontainer(
-                                    2, "assets/images/assetmanager.svg"),
-                                _tabcontainer(3, "assets/images/loca.svg"),
-                              ],
-                            ),
-                          ),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _tabcontainer(0, "assets/images/clock.svg"),
+                          _tabcontainer(1, "assets/images/supportmanager.svg"),
+                          _tabcontainer(2, "assets/images/assetmanager.svg"),
+                          _tabcontainer(3, "assets/images/loca.svg"),
+                        ],
                       ),
                       selectedTabIndex == 0
                           ? AssetDashbaord(
@@ -206,8 +193,10 @@ class _TabPageState extends State<AssetDetailView> {
                             )
                           : selectedTabIndex == 3
                               ? AssetLocationView()
-                              : EmptyView(
-                                  title: "Coming soon",
+                              : Container(
+                                  child: EmptyView(
+                                    title: "Coming soon",
+                                  ),
                                 ),
                     ],
                   ),
@@ -227,8 +216,8 @@ class _TabPageState extends State<AssetDetailView> {
         alignment: Alignment.center,
         children: [
           new Container(
-            width: 100,
-            height: 180,
+            width: 80,
+            height: 80,
             child: Card(
               color:
                   selectedTabIndex == index ? mediumgrey : Colors.transparent,
@@ -241,8 +230,8 @@ class _TabPageState extends State<AssetDetailView> {
             ),
           ),
           Container(
-              width: 82,
-              height: 87.29,
+              width: 60,
+              height: 60,
               child: Card(
                 semanticContainer: true,
                 color: selectedTabIndex == index ? tango : cardcolor,

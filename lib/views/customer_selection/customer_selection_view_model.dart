@@ -124,6 +124,8 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     _localService.saveAccountInfo(accountSelected);
     if (value.CustomerType != "ALL") {
       _localService.saveCustomerInfo(subAccountSelected);
+    } else {
+      _localService.saveCustomerInfo(null);
     }
     Future.delayed(Duration(seconds: 1), () {
       notifyListeners();

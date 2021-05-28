@@ -38,6 +38,7 @@ class FleetService extends BaseService {
                   accountSelected.CustomerUID)
               : await MyApi().getClient().fleetSummary(
                   pageNumber, pageSize, "assetid", accountSelected.CustomerUID);
+      Logger().d(fleetSummaryResponse.toJson());
       return fleetSummaryResponse.fleetRecords;
     } catch (e) {
       Logger().e(e);
