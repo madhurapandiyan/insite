@@ -90,25 +90,20 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      viewModel.fuelLevelData == null
-                          ? Center(child: CircularProgressIndicator())
-                          : FuelLevel(
-                              countOf:
-                                  viewModel.fuelLevelData.countData[0].countOf,
-                              countON:
-                                  viewModel.fuelLevelData.countData[1].countOf,
-                              countAwait:
-                                  viewModel.fuelLevelData.countData[2].countOf,
-                              countNotReport:
-                                  viewModel.fuelLevelData.countData[3].countOf,
-                            ),
+                      viewModel.fuelLevelData==null?Center(
+                        child: CircularProgressIndicator(),
+                      ):
+                      AssetFuelLevel(
+                        fuelLevel: viewModel.fuelLevelData.countData,
+                      ),
                       SizedBox(
                         height: 20.0,
                       ),
-                      viewModel.idlingLevelData==null?Center(child: CircularProgressIndicator()):
-                      IdlingLevel(
-                      data: viewModel.idlingLevelData.countData,
-                      ),
+                      viewModel.idlingLevelData == null
+                          ? Center(child: CircularProgressIndicator())
+                          : IdlingLevel(
+                              data: viewModel.idlingLevelData.countData,
+                            ),
                       SizedBox(
                         height: 20.0,
                       ),

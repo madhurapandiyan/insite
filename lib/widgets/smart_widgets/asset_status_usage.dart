@@ -131,7 +131,8 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                                     ),
                                   ),
                                   Transform.rotate(
-                                    angle: pi / 1.4,
+                                    angle: pi / 1.2
+                                    ,
                                     child: CustomPaint(
                                       child: Center(),
                                       painter: ProgressRings(
