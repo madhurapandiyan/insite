@@ -13,10 +13,11 @@ class AssetStatusWidget extends StatelessWidget {
     return Container(
       width: 130,
       child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-              width: 13.96,
+              width: 15,
               height: 15,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
@@ -24,10 +25,13 @@ class AssetStatusWidget extends StatelessWidget {
                 border: Border.all(width: 2.5, color: firstColor),
                 shape: BoxShape.rectangle,
               )),
-          Flexible(
+          SizedBox(
+            width: 5,
+          ),
+          Expanded(
             child: new Text(
               text,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
               style: new TextStyle(
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',
@@ -36,15 +40,12 @@ class AssetStatusWidget extends StatelessWidget {
                   fontSize: 11.0),
             ),
           ),
+          SizedBox(
+            width: 5,
+          ),
           new Container(
-            width: 13.96,
+            width: 15,
             height: 20,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: [new BoxShadow(blurRadius: 1.0, color: lastColor)],
-              border: Border.all(width: 2.5, color: lastColor),
-              shape: BoxShape.rectangle,
-            ),
             child: Image.asset(imgPath),
           )
         ],

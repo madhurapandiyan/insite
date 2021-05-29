@@ -8,8 +8,9 @@ import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 
 class AssetStatusUsage extends StatefulWidget {
   final List<CountDatum> assetStatusUsage;
+  final bool isLoading;
 
-  AssetStatusUsage({this.assetStatusUsage});
+  AssetStatusUsage({this.assetStatusUsage, this.isLoading});
   @override
   _AssetStatusUsageState createState() => _AssetStatusUsageState();
 }
@@ -17,10 +18,9 @@ class AssetStatusUsage extends StatefulWidget {
 class _AssetStatusUsageState extends State<AssetStatusUsage> {
   @override
   Widget build(BuildContext context) {
-    //print(widget.AssetOfcount.toString());
     return Container(
-      width: 335.13,
       height: 231.16,
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -34,33 +34,39 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
               Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset("assets/images/arrowdown.svg"),
-                    SizedBox(
-                      width: 10,
+                    Row(
+                      children: [
+                        SvgPicture.asset("assets/images/arrowdown.svg"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        new Text(
+                          "ASSET USAGE BY HOURS",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Roboto',
+                              color: textcolor,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.0),
+                        ),
+                      ],
                     ),
-                    new Text(
-                      "ASSET USAGE BY HOURS",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
-                    ),
-                    SizedBox(
-                      width: 60.0,
-                    ),
-                    SizedBox(
-                      width: 65.0,
-                    ),
-                    GestureDetector(
-                      onTap: () => print("button is tapped"),
-                      child: SvgPicture.asset(
-                        "assets/images/menu.svg",
-                        width: 20,
-                        height: 20,
-                      ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 60.0,
+                        ),
+                        GestureDetector(
+                          onTap: () => print("button is tapped"),
+                          child: SvgPicture.asset(
+                            "assets/images/menu.svg",
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -69,60 +75,69 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                 thickness: 1.0,
                 color: black,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: new Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: LayoutBuilder(
-                        builder: (context, constraint) => Container(
-                            width: 160.98,
-                            height: 103.54,
-                            decoration: BoxDecoration(
-                              color: shark,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Stack(children: [
-                              Center(
-                                child: SizedBox(
-                                  width: constraint.maxWidth * 0.6,
-                                  child: CustomPaint(
-                                    child: Center(),
-                                    foregroundPainter: PieChart(
-                                      width: constraint.maxWidth * 0.2,
-                                      assetStatus: widget.assetStatusUsage,
-                                    ),
+              widget.isLoading
+                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: new Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: LayoutBuilder(
+                              builder: (context, constraint) => Container(
+                                  width: 160.98,
+                                  height: 103.54,
+                                  decoration: BoxDecoration(
+                                    color: shark,
+                                    shape: BoxShape.circle,
                                   ),
-                                ),
-                              ),
-                            ])),
+                                  child: Stack(children: [
+                                    Center(
+                                      child: SizedBox(
+                                        width: constraint.maxWidth * 0.6,
+                                        child: CustomPaint(
+                                          child: Center(),
+                                          foregroundPainter: PieChart(
+                                            width: constraint.maxWidth * 0.2,
+                                            assetStatus:
+                                                widget.assetStatusUsage,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ])),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: new Column(
+                              children: [
+                                AssetStatusWidget(emerald, "30 -40 HRS", silver,
+                                    "assets/images/arrows.png"),
+                                Container(
+                                    width: 127.29,
+                                    child: Divider(
+                                        thickness: 1.0, color: athenGrey)),
+                                AssetStatusWidget(burntSienna, "20 -30 HRS",
+                                    silver, "assets/images/arrows.png"),
+                                Container(
+                                    width: 127.29,
+                                    child: Divider(
+                                        thickness: 1.0, color: athenGrey)),
+                                AssetStatusWidget(mustard, "10-20 HRS", silver,
+                                    "assets/images/arrows.png"),
+                                Container(
+                                    width: 127.29,
+                                    child: Divider(
+                                        thickness: 1.0, color: athenGrey)),
+                                AssetStatusWidget(tabpagecolor, "0 -10 HRS",
+                                    silver, "assets/images/arrows.png")
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    new Column(
-                      children: [
-                        AssetStatusWidget(emerald, "30 -40 HRS", silver,
-                            "assets/images/arrows.png"),
-                        Container(
-                            width: 127.29,
-                            child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(burntSienna, "20 -30 HRS", silver,
-                            "assets/images/arrows.png"),
-                        Container(
-                            width: 127.29,
-                            child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(mustard, "10-20 HRS", silver,
-                            "assets/images/arrows.png"),
-                        Container(
-                            width: 127.29,
-                            child: Divider(thickness: 1.0, color: athenGrey)),
-                        AssetStatusWidget(tabpagecolor, "0 -10 HRS", silver,
-                            "assets/images/arrows.png")
-                      ],
                     )
-                  ],
-                ),
-              )
             ],
           ),
         ],

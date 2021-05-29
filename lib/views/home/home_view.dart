@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
-import 'package:insite/views/asset_operation/asset_list_view.dart';
-import 'package:insite/views/customer_selection/customer_selection_view.dart';
-import 'package:insite/views/dashboard/dashboard_view.dart';
-import 'package:insite/views/detail/asset_detail_view.dart';
-import 'package:insite/views/fleet/fleet_view.dart';
-import 'package:insite/views/location/location_view.dart';
-import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
-import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
-import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_two.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_usage_two.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
-import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
@@ -35,100 +25,106 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Fleet selectedFleet;
-  Set<Marker> _markers = {};
-  int markerId = 1;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (BuildContext context, HomeViewModel viewModel, Widget _) {
-        if (viewModel.assetLocation != null) {
-          for (var locationData in viewModel.assetLocation.mapRecords) {
-            _markers.add(Marker(
-                markerId: MarkerId('${markerId++}'),
-                position: LatLng(locationData.lastReportedLocationLatitude,
-                    locationData.lastReportedLocationLongitude)));
-          }
-        }
-
-        return WillPopScope(
-            onWillPop: () {
-              return onBackPressed(viewModel);
-            },
-            child: InsiteScaffold(
-              viewModel: viewModel,
-              screenType: ScreenType.DASHBOARD,
-              // appBar: InsiteAppBar(
-              //   screenType: ScreenType.HOME,
-              //   height: 56,
-              // ),
-              body: SingleChildScrollView(
-                child: Container(
-                  color: bgcolor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      viewModel.assetStatusData == null
-                          ? Center(child: CircularProgressIndicator())
-                          : AssetStatus(
-                              assetStatus: viewModel.assetStatusData.countData,
-                            ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      viewModel.fuelLevelData == null
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : AssetFuelLevel(
-                              fuelLevel: viewModel.fuelLevelData.countData,
-                            ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      viewModel.idlingLevelData == null
-                          ? Center(child: CircularProgressIndicator())
-                          : IdlingLevel(
-                              data: viewModel.idlingLevelData.countData,
-                            ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      viewModel.assetLocation == null
-                          ? Center(child: CircularProgressIndicator())
-                          : Container(
-                              width: 374.04,
-                              height: 305.4,
-                              color: cardcolor,
-                              child: FleetGoogleMap(
-                                latitude: null,
-                                longitude: null,
-                                status: "",
-                                acquiredMarkers: _markers,
-                                initLocation: LatLng(
-                                    viewModel.assetLocation.mapRecords.first
-                                        .lastReportedLocationLatitude,
-                                    viewModel.assetLocation.mapRecords.first
-                                        .lastReportedLocationLongitude),
-                              ),
-                            ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      viewModel.assetStatusData == null
-                          ? Center(child: CircularProgressIndicator())
-                          : AssetStatusUsage(
-                              assetStatusUsage:
-                                  viewModel.assetStatusData.countData,
-                            ),
-                    ],
+        return InsiteScaffold(
+          viewModel: viewModel,
+          screenType: ScreenType.DASHBOARD,
+          body: SingleChildScrollView(
+            child: Container(
+              color: bgcolor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AssetStatus(
+                        assetStatus: viewModel.assetStatusData != null
+                            ? viewModel.assetStatusData.countData
+                            : null,
+                        isLoading: viewModel.assetStatusloading),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AssetFuelLevel(
+                      fuelLevel: viewModel.fuelLevelData != null
+                          ? viewModel.fuelLevelData.countData
+                          : null,
+                      isLoading: viewModel.assetFuelloading,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: IdlingLevel(
+                        data: viewModel.idlingLevelData != null
+                            ? viewModel.idlingLevelData.countData
+                            : null,
+                        isLoading: viewModel.idlingLevelDataloading),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      height: 305,
+                      color: cardcolor,
+                      child: FleetGoogleMap(
+                        latitude: null,
+                        longitude: null,
+                        status: "",
+                        screenType: ScreenType.DASHBOARD,
+                        isLoading: viewModel.assetLocationloading,
+                        acquiredMarkers: viewModel.markers,
+                        initLocation: viewModel.assetLocation != null
+                            ? LatLng(
+                                viewModel.assetLocation.mapRecords.first
+                                    .lastReportedLocationLatitude,
+                                viewModel.assetLocation.mapRecords.first
+                                    .lastReportedLocationLongitude)
+                            : null,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Notifications(),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AssetStatusUsage(
+                      assetStatusUsage: viewModel.assetStatusData != null
+                          ? viewModel.assetStatusData.countData
+                          : null,
+                      isLoading: viewModel.assetStatusloading,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                ],
               ),
-            ));
+            ),
+          ),
+        );
       },
       viewModelBuilder: () => HomeViewModel(),
     );
@@ -191,56 +187,6 @@ class _HomeViewState extends State<HomeView> {
     if (value != null && value) {
       ProgressDialog.show(context);
       viewModel.logout();
-    }
-  }
-
-  Future<bool> onBackPressed(HomeViewModel model) {
-    if (model.currentScreenType == ScreenType.HOME) {
-      return Future.value(true);
-    } else if (model.currentScreenType == ScreenType.ACCOUNT) {
-      return Future.value(true);
-    } else if (model.currentScreenType == ScreenType.ASSET_DETAIL) {
-      if (selectedFleet != null) {
-        updateCurrentState(ScreenType.FLEET, model);
-        return Future.value(false);
-      } else {
-        updateCurrentState(ScreenType.ASSET_OPERATION, model);
-        return Future.value(false);
-      }
-    } else {
-      updateCurrentState(ScreenType.HOME, model);
-      return Future.value(false);
-    }
-  }
-
-  void updateCurrentState(newState, HomeViewModel model) {
-    Future.delayed(Duration(milliseconds: 500), () {
-      model.updateState(newState);
-    });
-  }
-
-  Widget getCurrentScreen(ScreenType currentScreenType, HomeViewModel model) {
-    if (currentScreenType == ScreenType.ACCOUNT) {
-      return CustomerSelectionView();
-    } else if (currentScreenType == ScreenType.ASSET_OPERATION) {
-      return AssetListView();
-    } else if (currentScreenType == ScreenType.ASSET_DETAIL) {
-      return AssetDetailView();
-    } else if (currentScreenType == ScreenType.FLEET) {
-      return FleetView();
-    } else if (currentScreenType == ScreenType.LOCATION) {
-      return LocationView();
-    } else if (currentScreenType == ScreenType.HOME) {
-      return DashboardView(
-          // onDashboardItemSelected: (newState) {
-          // updateCurrentState(newState, model);
-          // },
-
-          );
-    } else {
-      return EmptyView(
-        title: "Coming soon!",
-      );
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
@@ -156,8 +157,10 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                 height: 305.4,
                                 color: cardcolor,
                                 child: FleetGoogleMap(
+                                    isLoading: false,
                                     latitude: viewModel.assetDetail
                                         .lastReportedLocationLatitude,
+                                    screenType: ScreenType.ASSET_DETAIL,
                                     status: widget
                                                 .detail.lastLocationUpdateUTC !=
                                             null
