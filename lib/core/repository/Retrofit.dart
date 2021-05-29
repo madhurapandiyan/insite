@@ -13,6 +13,7 @@ import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
+import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
@@ -205,6 +206,13 @@ abstract class RestClient {
       @Query("endDate") String endDate,
       @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
       @Query("startDate") String startDate,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments")
+  Future<SingleAssetOperation> singleAssetOperation(
+      @Query("startDate") String startDate,
+      @Query("endDate") String endDate,
+      @Query("assetUid") String assetUID,
       @Header("x-visionlink-customeruid") customerId);
 }
 
