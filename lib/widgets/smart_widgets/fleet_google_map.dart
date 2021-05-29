@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 
 class FleetGoogleMap extends StatefulWidget {
@@ -12,11 +13,15 @@ class FleetGoogleMap extends StatefulWidget {
   final Set<Marker> acquiredMarkers;
   final LatLng initLocation;
   final String status;
+  final isLoading;
+  final ScreenType screenType;
   FleetGoogleMap(
       {@required this.latitude,
       @required this.longitude,
       this.acquiredMarkers,
       this.status,
+      this.screenType,
+      this.isLoading,
       this.initLocation});
 
   @override
@@ -55,102 +60,116 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 20, left: 20),
+                padding:
+                    EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset("assets/images/arrowdown.svg"),
-                    SizedBox(
-                      width: 10,
+                    Row(
+                      children: [
+                        SvgPicture.asset("assets/images/arrowdown.svg"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "LOCATION",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Roboto',
+                              color: textcolor,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.0),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "LOCATION",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
-                    ),
-                    SizedBox(
-                      width: 60.0,
-                    ),
-                    Container(
-                      width: 118.23,
-                      height: 35.18,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 1.0,
-                            color: cardcolor,
+                    Row(
+                      children: [
+                        Container(
+                          width: 118.23,
+                          height: 35.18,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 1.0,
+                                color: cardcolor,
+                              ),
+                            ],
+                            border: Border.all(width: 1.0, color: Colors.white),
+                            shape: BoxShape.rectangle,
                           ),
-                        ],
-                        border: Border.all(width: 1.0, color: Colors.white),
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: DropdownButton(
-                              icon: Padding(
-                                padding: EdgeInsets.only(right: 8.0),
-                                child: Container(
-                                  child: SvgPicture.asset(
-                                    "assets/images/arrowdown.svg",
-                                    width: 10,
-                                    height: 10,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 8.0,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: DropdownButton(
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(right: 8.0),
+                                    child: Container(
+                                      child: SvgPicture.asset(
+                                        "assets/images/arrowdown.svg",
+                                        width: 10,
+                                        height: 10,
+                                      ),
+                                    ),
                                   ),
+                                  isExpanded: true,
+                                  hint: Text(
+                                    _currentSelectedItem,
+                                  ),
+                                  items: [
+                                    'MAP',
+                                    'TERRAIN',
+                                    'SATELLITE',
+                                    'HYBRID'
+                                  ]
+                                      .map((map) => DropdownMenuItem(
+                                            value: map,
+                                            child: Text(map,
+                                                style: TextStyle(
+                                                    fontSize: 11.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: textcolor,
+                                                    fontFamily: 'Roboto',
+                                                    fontStyle:
+                                                        FontStyle.normal)),
+                                          ))
+                                      .toList(),
+                                  value: _currentSelectedItem,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _currentSelectedItem = value;
+                                    });
+                                  },
+                                  underline: Container(
+                                      height: 1.0,
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Colors.transparent,
+                                                  width: 0.0)))),
                                 ),
                               ),
-                              isExpanded: true,
-                              hint: Text(
-                                _currentSelectedItem,
-                              ),
-                              items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
-                                  .map((map) => DropdownMenuItem(
-                                        value: map,
-                                        child: Text(map,
-                                            style: TextStyle(
-                                                fontSize: 11.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: textcolor,
-                                                fontFamily: 'Roboto',
-                                                fontStyle: FontStyle.normal)),
-                                      ))
-                                  .toList(),
-                              value: _currentSelectedItem,
-                              onChanged: (value) {
-                                setState(() {
-                                  _currentSelectedItem = value;
-                                });
-                              },
-                              underline: Container(
-                                  height: 1.0,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 0.0)))),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: 40.0,
+                        ),
+                        GestureDetector(
+                          onTap: () => print("button is tapped"),
+                          child: SvgPicture.asset(
+                            "assets/images/menu.svg",
+                            width: 20,
+                            height: 20,
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      width: 40.0,
-                    ),
-                    GestureDetector(
-                      onTap: () => print("button is tapped"),
-                      child: SvgPicture.asset(
-                        "assets/images/menu.svg",
-                        width: 20,
-                        height: 20,
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -174,12 +193,14 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                   ),
                 ),
               ),
-              Flexible(
-                child: Container(
-                    width: 380.9,
-                    height: 450.63,
-                    child: _googleMap(currentType)),
-              ),
+              widget.isLoading
+                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  : Flexible(
+                      child: Container(
+                          width: 380.9,
+                          height: 450.63,
+                          child: _googleMap(currentType)),
+                    ),
               Divider(),
               Padding(
                 padding: EdgeInsets.only(left: 10.0, top: 5.0),

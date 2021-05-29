@@ -206,6 +206,12 @@ abstract class RestClient {
       @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
       @Query("startDate") String startDate,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-notification/1.0/Notification/Count")
+  Future<IdlingLevelData> notificationData(
+    @Query("notificationStatus") int status,
+    @Query("notificationUserStatus") int userStatus,
+  );
 }
 
 @JsonSerializable()

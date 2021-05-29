@@ -1,8 +1,8 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
-import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/router_constants.dart';
@@ -24,14 +24,23 @@ class HomeViewModel extends InsiteViewModel {
   var _assetLocationService = locator<AssetLocationService>();
   var _fuelLevelService = locator<FuelLevelService>();
   var _idlingLevelService = locator<IdlingLevelService>();
+
   Logger log;
+
+  bool _assetStatusloading = true;
+  bool get assetStatusloading => _assetStatusloading;
+
+  bool _assetFuelloading = true;
+  bool get assetFuelloading => _assetFuelloading;
+
+  bool _idlingLevelDataloading = true;
+  bool get idlingLevelDataloading => _idlingLevelDataloading;
+
+  bool _assetLocationloading = true;
+  bool get assetLocationloading => _assetLocationloading;
+
   AssetStatusData _assetStatusData;
   AssetStatusData get assetStatusData => _assetStatusData;
-  bool _loading = true;
-  bool get loading => _loading;
-
-  ScreenType _currentScreenType;
-  ScreenType get currentScreenType => _currentScreenType;
 
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
@@ -42,6 +51,9 @@ class HomeViewModel extends InsiteViewModel {
   IdlingLevelData _idlingLevelData;
   IdlingLevelData get idlingLevelData => _idlingLevelData;
 
+  Set<Marker> markers = {};
+  int markerId = 1;
+
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setup();
@@ -51,28 +63,11 @@ class HomeViewModel extends InsiteViewModel {
       getAssetStatusData();
       getFuelLevelData();
       getIdlingLevelData();
+      getAssetLocation();
     });
-    _currentScreenType = ScreenType.ACCOUNT;
-    checkAccountSelected();
-    getAssetLocation();
-  }
-
-  checkAccountSelected() async {
-    try {
-      Customer account = await _localService.getAccountInfo();
-      Customer subAccount = await _localService.getCustomerInfo();
-      if (account != null) {
-        Logger().i("account selected already " + account.DisplayName);
-        _currentScreenType = ScreenType.HOME;
-        notifyListeners();
-      }
-    } catch (e) {
-      Logger().e(e);
-    }
   }
 
   void updateState(newState) {
-    _currentScreenType = newState;
     notifyListeners();
   }
 
@@ -80,7 +75,13 @@ class HomeViewModel extends InsiteViewModel {
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         1, 2500, '-lastlocationupdateutc');
     _assetLocation = result;
-    _loading = false;
+    for (var locationData in _assetLocation.mapRecords) {
+      markers.add(Marker(
+          markerId: MarkerId('${markerId++}'),
+          position: LatLng(locationData.lastReportedLocationLatitude,
+              locationData.lastReportedLocationLongitude)));
+    }
+    _assetLocationloading = false;
     notifyListeners();
   }
 
@@ -101,23 +102,24 @@ class HomeViewModel extends InsiteViewModel {
   getAssetStatusData() async {
     AssetStatusData result = await _assetService.getassetStatus();
     _assetStatusData = result;
-    _loading = false;
+    print('getAssetStatusData result :${result.countData[0].count}');
+    _assetStatusloading = false;
     notifyListeners();
   }
 
   getFuelLevelData() async {
     FuelLevelData result = await _fuelLevelService.getfuelLevel();
     _fuelLevelData = result;
-    print('resul:${result.countData[0].count}');
-    _loading = false;
+    print('getFuelLevelData result :${result.countData[0].count}');
+    _assetFuelloading = false;
     notifyListeners();
   }
 
   getIdlingLevelData() async {
     IdlingLevelData result = await _idlingLevelService.getidlingLevelService();
     _idlingLevelData = result;
-    print('res:${result.countData[0].countOf}');
-    _loading = false;
+    print('getIdlingLevelData result :${result.countData[0].countOf}');
+    _idlingLevelDataloading = false;
     notifyListeners();
   }
 }

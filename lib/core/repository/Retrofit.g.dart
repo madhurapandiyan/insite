@@ -769,4 +769,27 @@ class _RestClient implements RestClient {
     final value = IdlingLevelData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<IdlingLevelData> notificationData(status, userStatus) async {
+    ArgumentError.checkNotNull(status, 'status');
+    ArgumentError.checkNotNull(userStatus, 'userStatus');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'notificationStatus': status,
+      r'notificationUserStatus': userStatus
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-notification/1.0/Notification/Count',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = IdlingLevelData.fromJson(_result.data);
+    return value;
+  }
 }

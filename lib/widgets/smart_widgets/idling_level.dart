@@ -6,63 +6,26 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 class IdlingLevel extends StatefulWidget {
   final List<CountDatum> data;
-  IdlingLevel({this.data});
+  final bool isLoading;
+  IdlingLevel({this.data, this.isLoading});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
 
 class _IdlingLevelState extends State<IdlingLevel> {
-  var chartDisplay;
   String calendar;
-
   @override
   void initState() {
     calendar = 'DAY';
-    setState(() {
-      var series = [
-        charts.Series(
-            domainFn: (CountDatum addcharts, _) => addcharts.countOf,
-            measureFn: (CountDatum addcharts, _) => addcharts.count,
-            //colorFn: (CountDatum addcharts, _) => getColor(addcharts.countOf),
-            id: 'addcharts',
-            data: widget.data)
-      ];
-      chartDisplay = charts.BarChart(series,
-          animationDuration: Duration(microseconds: 2000),
-          barGroupingType: charts.BarGroupingType.grouped,
-          animate: true,
-          domainAxis: new charts.OrdinalAxisSpec(
-              renderSpec: new charts.SmallTickRendererSpec(
-                  labelStyle: new charts.TextStyleSpec(
-                      fontSize: 9, // size in Pts.
-                      color: charts.MaterialPalette.white,
-                      fontFamily: 'Roboto',
-                      fontWeight: 'bold'),
-                  lineStyle: new charts.LineStyleSpec(
-                      color: charts.MaterialPalette.white))),
-          primaryMeasureAxis: new charts.NumericAxisSpec(
-              renderSpec: new charts.GridlineRendererSpec(
-                  labelStyle: new charts.TextStyleSpec(
-                      fontSize: 9, // size in Pts.
-                      color: charts.MaterialPalette.white,
-                      fontFamily: 'Roboto',
-                      fontWeight: 'bold'),
-                  lineStyle: new charts.LineStyleSpec(
-                      color: charts.MaterialPalette.white))),
-          defaultRenderer: new charts.BarRendererConfig(
-              cornerStrategy: const charts.ConstCornerStrategy(5)));
-    });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double maxheight = .35 * MediaQuery.of(context).size.height;
-    double maxwidth = .58 * MediaQuery.of(context).size.width;
+    double maxheight = MediaQuery.of(context).size.height * 0.35;
     return Container(
-      width: 330.13,
-      height: 310.16,
+      height: 400.16,
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -76,31 +39,40 @@ class _IdlingLevelState extends State<IdlingLevel> {
               Padding(
                 padding: const EdgeInsets.all(14.0),
                 child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset("assets/images/arrowdown.svg"),
-                    SizedBox(
-                      width: 10,
+                    Row(
+                      children: [
+                        SvgPicture.asset("assets/images/arrowdown.svg"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        new Text(
+                          "IDLING LEVEL",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Roboto',
+                              color: textcolor,
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.0),
+                        ),
+                      ],
                     ),
-                    new Text(
-                      "IDLING LEVEL",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
-                    ),
-                    SizedBox(
-                      width: 190.0,
-                    ),
-                    GestureDetector(
-                      onTap: () => print("button is tapped"),
-                      child: SvgPicture.asset(
-                        "assets/images/menu.svg",
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 190.0,
+                        ),
+                        GestureDetector(
+                          onTap: () => print("button is tapped"),
+                          child: SvgPicture.asset(
+                            "assets/images/menu.svg",
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -108,42 +80,80 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 thickness: 1.0,
                 color: black,
               ),
-              Stack(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: maxheight,
-                        width: maxwidth,
-                        child: chartDisplay,
-                      ),
-                      new Container(
-                        width: 75,
-                        height: 170,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            toggelButton(),
-                            SizedBox(
-                              height: 35.0,
+              widget.isLoading
+                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: maxheight,
+                              child: charts.BarChart(getChartData(),
+                                  animationDuration:
+                                      Duration(microseconds: 2000),
+                                  barGroupingType:
+                                      charts.BarGroupingType.grouped,
+                                  animate: true,
+                                  domainAxis: new charts.OrdinalAxisSpec(
+                                      renderSpec:
+                                          new charts.SmallTickRendererSpec(
+                                              labelStyle:
+                                                  new charts.TextStyleSpec(
+                                                      fontSize:
+                                                          9, // size in Pts.
+                                                      color: charts
+                                                          .MaterialPalette.white,
+                                                      fontFamily: 'Roboto',
+                                                      fontWeight: 'bold'),
+                                              lineStyle: new charts.LineStyleSpec(
+                                                  color: charts
+                                                      .MaterialPalette.white))),
+                                  primaryMeasureAxis:
+                                      new charts.NumericAxisSpec(
+                                          renderSpec:
+                                              new charts.GridlineRendererSpec(
+                                                  labelStyle:
+                                                      new charts.TextStyleSpec(
+                                                          fontSize:
+                                                              9, // size in Pts.
+                                                          color: charts
+                                                              .MaterialPalette
+                                                              .white,
+                                                          fontFamily: 'Roboto',
+                                                          fontWeight: 'bold'),
+                                                  lineStyle:
+                                                      new charts.LineStyleSpec(
+                                                          color: charts
+                                                              .MaterialPalette
+                                                              .white))),
+                                  defaultRenderer: new charts.BarRendererConfig(
+                                      cornerStrategy:
+                                          const charts.ConstCornerStrategy(5))),
                             ),
-                            new Text(
-                              "1212\nassets\nexcluded",
-                              style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 9.0,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                  color: textcolor),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              )
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              toggelButton(),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              new Text(
+                                "1212\nassets\nexcluded",
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 9.0,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    color: textcolor),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )
             ],
           ),
         ],
@@ -151,14 +161,25 @@ class _IdlingLevelState extends State<IdlingLevel> {
     );
   }
 
+  List<charts.Series<dynamic, String>> getChartData() {
+    var series;
+    series = [
+      charts.Series(
+          domainFn: (CountDatum addcharts, _) => addcharts.countOf,
+          measureFn: (CountDatum addcharts, _) => addcharts.count,
+          //colorFn: (CountDatum addcharts, _) => getColor(addcharts.countOf),
+          id: 'addcharts',
+          data: widget.data)
+    ];
+    return series;
+  }
+
   Widget toggelButton() {
     return Container(
-      width: 52.5,
-      height: 100,
+      width: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: bgcolor)],
-        border: Border.all(width: 2.5, color: bgcolor),
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -169,20 +190,16 @@ class _IdlingLevelState extends State<IdlingLevel> {
               chooseCalendarType("DAY");
             },
             child: Container(
-              width: 52.5,
-              height: 20.89,
+              width: 55,
+              height: 30,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  new BoxShadow(
-                      blurRadius: 1.0,
-                      color: calendar == 'DAY' ? tango : bgcolor)
-                ],
-                border: Border.all(
-                    width: 2.5, color: calendar == 'DAY' ? tango : bgcolor),
+                color: calendar == 'DAY' ? tango : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("DAY",
+                  textAlign: TextAlign.center,
                   style: new TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w700,
@@ -192,27 +209,23 @@ class _IdlingLevelState extends State<IdlingLevel> {
             ),
           ),
           Container(
-              width: 52.5, child: Divider(thickness: 1.0, color: athenGrey)),
+              width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
               print(" 2 button is tapped ");
               chooseCalendarType('WEEK');
             },
             child: Container(
-              width: 52.5,
-              height: 20.89,
+              width: 55,
+              height: 30,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  new BoxShadow(
-                      blurRadius: 1.0,
-                      color: calendar == "WEEK" ? tango : bgcolor)
-                ],
-                border: Border.all(
-                    width: 2.5, color: calendar == "WEEK" ? tango : bgcolor),
+                color: calendar == 'WEEK' ? tango : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("WEEK",
+                  textAlign: TextAlign.center,
                   style: new TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w700,
@@ -222,27 +235,23 @@ class _IdlingLevelState extends State<IdlingLevel> {
             ),
           ),
           Container(
-              width: 52.5, child: Divider(thickness: 1.0, color: athenGrey)),
+              width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
               print('3 button is tapped ');
               chooseCalendarType('MONTH');
             },
             child: Container(
-              width: 52.5,
-              height: 20.89,
+              width: 55,
+              height: 30,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                boxShadow: [
-                  new BoxShadow(
-                      blurRadius: 1.0,
-                      color: calendar == 'MONTH' ? tango : bgcolor)
-                ],
-                border: Border.all(
-                    width: 2.5, color: calendar == 'MONTH' ? tango : bgcolor),
+                color: calendar == 'MONTH' ? tango : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("MONTH",
+                  textAlign: TextAlign.center,
                   style: new TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w700,
@@ -262,7 +271,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
     });
   }
 
- charts.Color getColor(String countOf) {
+  charts.Color getColor(String countOf) {
     switch (countOf) {
       case 'Extended':
         return charts.MaterialPalette.blue.shadeDefault;
@@ -285,6 +294,5 @@ class _IdlingLevelState extends State<IdlingLevel> {
       default:
         return charts.Color.fromHex(code: '2B2D32');
     }
-    
   }
 }
