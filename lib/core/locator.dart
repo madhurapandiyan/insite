@@ -55,5 +55,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => FuelLevelService());
     log.d("Registering Idling Level Service");
     locator.registerLazySingleton(() => IdlingLevelService());
+    log.d("Registering Single Asset Operation Service");
+    locator.registerLazySingleton(() => SingleAssetOperationService());
   }
 }
