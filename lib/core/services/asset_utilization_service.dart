@@ -2,6 +2,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/repository/network.dart';
@@ -28,19 +29,23 @@ class AssetUtilizationService extends BaseService {
     }
   }
 
-  Future<List<UtilizationData>> getUtilizationData() async {
+  Future<List<AssetResult>> getUtilizationData(
+    String assetUID,
+    String startDate,
+    String endDate,
+  ) async {
     try {
       UtilizationSummaryResponse utilizationSummaryResponse = await MyApi()
           .getClient()
-          .utilLizationList('64be6463-d8c1-11e7-80fc-065f15eda309', "04/19/21",
-              "04/21/21", "d7ac4554-05f9-e311-8d69-d067e5fd4637");
+          .utilLizationList(assetUID, startDate, endDate,
+              '-LastReportedUtilizationTime', accountSelected.CustomerUID);
       return utilizationSummaryResponse.utilization;
     } catch (e) {
       Logger().e(e);
       return [];
     }
   }
-  
+
   Future<AssetUtilization> getAssetUtilGraphDate(
       String assetUID, String date) async {
     try {
@@ -79,6 +84,32 @@ class AssetUtilizationService extends BaseService {
                     accountSelected.CustomerUID)
                 : await MyApi().getClient().utilization(startDate, endDate,
                     pageNo, pageCount, sort, accountSelected.CustomerUID);
+        return response;
+      }
+      return null;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<SingleAssetUtilization> getSingleAssetUtilizationResult(
+    String assetUID,
+    String sort,
+    String startDate,
+    String endDate,
+  ) async {
+    try {
+      if (assetUID != null &&
+          assetUID.isNotEmpty &&
+          startDate != null &&
+          startDate.isNotEmpty &&
+          endDate != null &&
+          endDate.isNotEmpty) {
+        SingleAssetUtilization response = await MyApi()
+            .getClient()
+            .singleAssetUtilization(assetUID, sort, startDate, endDate,
+                accountSelected.CustomerUID);
         return response;
       }
       return null;

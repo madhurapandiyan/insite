@@ -146,6 +146,7 @@ abstract class RestClient {
       @Query("assetUid") String assetUID,
       @Query("startDate") String startDate,
       @Query("endDate") String endDate,
+      @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET(
@@ -153,8 +154,8 @@ abstract class RestClient {
   Future<SingleAssetUtilization> singleAssetUtilization(
       @Query("assetUid") String assetUID,
       @Query("sort") String sort,
-      @Query("endDate") String endDate,
       @Query("startDate") String startDate,
+      @Query("endDate") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization")

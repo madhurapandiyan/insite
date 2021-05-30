@@ -18,6 +18,7 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   List<UtilizationData> _utilLizationList = [];
   List<UtilizationData> get utilLizationList => _utilLizationList;
+  
   int pageNumber = 1;
   int pageCount = 50;
   ScrollController scrollController;
@@ -62,14 +63,7 @@ class UtilLizationViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 1), () {
       getUtilization();
-      // getUtilList();
     });
-  }
-
-  getUtilList() async {
-    Logger().d("getUtilList");
-    var result = await _utilizationService.getUtilizationData();
-    _utilLizationList = result;
   }
 
   getUtilization() async {

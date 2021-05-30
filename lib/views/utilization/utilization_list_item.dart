@@ -1,143 +1,233 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class UtilizationListItem extends StatelessWidget {
-  final AssetResult data;
+  final AssetResult utilizationData;
   final bool isShowingInDetailPage;
   final VoidCallback onCallback;
-  UtilizationListItem({this.data, this.isShowingInDetailPage, this.onCallback});
+  UtilizationListItem(
+      {this.utilizationData, this.isShowingInDetailPage, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
     return isShowingInDetailPage
-        ? Container(
-            width: 387,
-            height: 44,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(10.0),
-                  topRight: const Radius.circular(10.0),
-                  bottomLeft: const Radius.circular(10.0),
-                  bottomRight: const Radius.circular(10.0)),
-              boxShadow: [
-                new BoxShadow(
-                  blurRadius: 1.0,
-                  color: cardcolor,
-                ),
-              ],
-              border: Border.all(color: cardcolor),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                IntrinsicHeight(
-                  child: new Row(
-                    children: [
-                      SvgPicture.asset("assets/images/arrowdown.svg"),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        data.date != null ? data.date : "",
-                        style: new TextStyle(
-                            fontSize: 12.0,
-                            color: textcolor,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto',
-                            decoration: TextDecoration.none),
-                      ),
-                      VerticalDivider(
-                        thickness: 2.0,
-                        color: black,
-                      ),
-                      Stack(
+        ? GestureDetector(
+            onTap: () {
+              onCallback();
+            },
+            child: Card(
+              color: cardcolor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(color: cardcolor)),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InsiteExpansionTile(
+                      title: Table(
+                        border: TableBorder.symmetric(
+                            outside: BorderSide.none,
+                            inside: BorderSide(
+                                style: BorderStyle.solid,
+                                color: Color(0xFF000000),
+                                width: 1)),
+                        columnWidths: {
+                          0: FlexColumnWidth(4),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(3),
+                        },
                         children: [
-                          new Column(
+                          TableRow(
                             children: [
-                              SizedBox(
-                                height: 8.0,
+                              InsiteTableRowIcon(
+                                iconPath: "",
+                                title: "16/02/2021",
                               ),
-                              new Text(
-                                "LastReportedTime",
-                                style: new TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w700,
-                                    color: textcolor),
+                              InsiteTableRowItem(
+                                title: "Last Reported Time ",
+                                content:
+                                    utilizationData.lastReportedTime != null
+                                        ? Utils.getLastReportedDateOne(
+                                            utilizationData.lastReportedTime)
+                                        : "",
                               ),
-                              Row(
-                                children: [
-                                  new Text(
-                                    data.lastReportedTime.toString(),
-                                    style: new TextStyle(
-                                        fontSize: 12.0,
-                                        color: textcolor,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Roboto',
-                                        decoration: TextDecoration.none),
-                                  ),
-                                  // new Text(data.date,
-                                  //     style: new TextStyle(
-                                  //         fontSize: 12.0,
-                                  //         color: textcolor,
-                                  //         fontStyle: FontStyle.normal,
-                                  //         fontWeight: FontWeight.w400,
-                                  //         fontFamily: 'Roboto',
-                                  //         decoration: TextDecoration.none))
-                                ],
-                              )
+                              InsiteTableRowItem(
+                                title: "Runtime performance",
+                                content: utilizationData
+                                            .targetRuntimePerformance !=
+                                        null
+                                    ? utilizationData.targetRuntimePerformance
+                                        .toString()
+                                    : "-",
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
-                      VerticalDivider(
-                        thickness: 2.0,
-                        color: black,
-                      ),
-                      Flexible(
-                        child: Stack(
+                      tilePadding: EdgeInsets.all(0),
+                      childrenPadding: EdgeInsets.all(0),
+                      children: [
+                        Table(
+                          border: TableBorder(
+                              bottom: BorderSide.none,
+                              verticalInside: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Color(0xFF000000),
+                                  width: 1),
+                              top: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Color(0xFF000000),
+                                  width: 1),
+                              horizontalInside: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Color(0xFF000000),
+                                  width: 1),
+                              left: BorderSide.none,
+                              right: BorderSide.none),
+                          columnWidths: {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(3),
+                          },
                           children: [
-                            new Column(
+                            TableRow(
                               children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: new Text(
-                                    "Runtimeperformance",
-                                    style: new TextStyle(
-                                        decoration: TextDecoration.none,
-                                        fontSize: 12.0,
-                                        fontFamily: 'Roboto',
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w700,
-                                        color: textcolor),
-                                  ),
+                                InsiteTableRowItem(
+                                  title: "RunTime",
+                                  content: "-",
                                 ),
-                                new Text(
-                                  data.targetRuntimePerformance.toString(),
-                                  style: new TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: textcolor,
-                                      fontStyle: FontStyle.normal,
-                                      fontFamily: 'Roboto',
-                                      decoration: TextDecoration.none),
-                                )
+                                Table(
+                                  border: TableBorder.all(),
+                                  children: [
+                                    TableRow(children: [
+                                      InsiteTableRowItem(
+                                        title: "Meter",
+                                        content: utilizationData
+                                                    .lastRuntimeHourMeter !=
+                                                null
+                                            ? utilizationData
+                                                .lastRuntimeHourMeter
+                                                .roundToDouble()
+                                                .toString()
+                                            : "",
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Daily",
+                                        content: utilizationData.runtimeHours
+                                            .toString(),
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Target",
+                                        content: utilizationData.targetRuntime
+                                            .toString(),
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Performance",
+                                        content: utilizationData
+                                                    .targetRuntimePerformance !=
+                                                null
+                                            ? (utilizationData
+                                                        .targetRuntimePerformance /
+                                                    100)
+                                                .toString()
+                                            : "",
+                                      ),
+                                    ]),
+                                    TableRow(
+                                      children: [
+                                        InsiteTableRowItem(
+                                          title: "Lifetime Fuel",
+                                          content: "-",
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "Fuel Burned",
+                                          content: utilizationData.idleHours
+                                              .toString(),
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "Burned Rate",
+                                          content: utilizationData.idleHours
+                                              .toString(),
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "",
+                                          content: "",
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
-                            )
+                            ),
+                            TableRow(children: [
+                              InsiteTableRowItem(
+                                title: "Idle",
+                                content: "-",
+                              ),
+                              Table(
+                                border: TableBorder.all(),
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      InsiteTableRowItem(
+                                        title: "Meter",
+                                        content: utilizationData
+                                                    .lastIdleHourMeter !=
+                                                null
+                                            ? utilizationData.lastIdleHourMeter
+                                                .roundToDouble()
+                                                .toString()
+                                            : "",
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Daily",
+                                        content: utilizationData.idleHours
+                                            .toString(),
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Target",
+                                        content: utilizationData.targetIdle
+                                            .toString(),
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Idle%",
+                                        content: utilizationData
+                                                    .targetIdlePerformance !=
+                                                null
+                                            ? (utilizationData
+                                                        .targetIdlePerformance /
+                                                    100)
+                                                .toString()
+                                            : "",
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ]),
+                            TableRow(
+                              children: [
+                                InsiteTableRowItem(
+                                  title: "Working",
+                                  content: "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Daily",
+                                  content: "-",
+                                ),
+                              ],
+                            ),
                           ],
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           )
         : GestureDetector(
@@ -182,12 +272,13 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowWithImage(
-                                title: data.manufacturer,
+                                title: utilizationData.manufacturer,
                                 path: "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Runime Hours",
-                                content: data.runtimeHours.toString(),
+                                content:
+                                    utilizationData.runtimeHours.toString(),
                               ),
                             ],
                           ),
@@ -195,11 +286,12 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteRichText(
                                 title: "Serial No. ",
-                                content: data.assetSerialNumber,
+                                content: utilizationData.assetSerialNumber,
                               ),
                               InsiteTableRowItem(
                                 title: "Working Time Hours",
-                                content: data.workingHours.toString(),
+                                content:
+                                    utilizationData.workingHours.toString(),
                               ),
                             ],
                           ),
@@ -222,7 +314,7 @@ class UtilizationListItem extends StatelessWidget {
                                 ),
                                 InsiteTableRowItem(
                                   title: "Idle Hours",
-                                  content: data.idleHours.toString(),
+                                  content: utilizationData.idleHours.toString(),
                                 ),
                               ],
                             ),

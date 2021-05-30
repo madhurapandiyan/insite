@@ -53,9 +53,7 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) {
         json['lastIdleFuelConsumptionLitersMeter'],
     lastIdleHourMeter: (json['lastIdleHourMeter'] as num)?.toDouble(),
     lastOdometerMeter: (json['lastOdometerMeter'] as num)?.toDouble(),
-    lastReportedTime: json['lastReportedTime'] == null
-        ? null
-        : DateTime.parse(json['lastReportedTime'] as String),
+    lastReportedTime: json['lastReportedTime'] as String,
     lastReportedTimeZoneAbbrev: json['lastReportedTimeZoneAbbrev'] as String,
     lastRuntimeFuelConsumptionLitersMeter:
         json['lastRuntimeFuelConsumptionLitersMeter'],
@@ -164,7 +162,7 @@ Map<String, dynamic> _$AssetResultToJson(AssetResult instance) =>
           instance.lastIdleFuelConsumptionLitersMeter,
       'lastIdleHourMeter': instance.lastIdleHourMeter,
       'lastOdometerMeter': instance.lastOdometerMeter,
-      'lastReportedTime': instance.lastReportedTime?.toIso8601String(),
+      'lastReportedTime': instance.lastReportedTime,
       'lastReportedTimeZoneAbbrev': instance.lastReportedTimeZoneAbbrev,
       'lastRuntimeFuelConsumptionLitersMeter':
           instance.lastRuntimeFuelConsumptionLitersMeter,

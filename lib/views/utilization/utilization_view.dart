@@ -127,7 +127,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                               .utilLizationListData[
                                                           index];
                                                   return UtilizationListItem(
-                                                    data: utilizationData,
+                                                    utilizationData: utilizationData,
                                                     isShowingInDetailPage:
                                                         false,
                                                     onCallback: () {
