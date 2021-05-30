@@ -26,9 +26,8 @@ UtilizationSummaryResponse _$UtilizationSummaryResponseFromJson(
     Map<String, dynamic> json) {
   return UtilizationSummaryResponse(
     utilization: (json['utilization'] as List)
-        ?.map((e) => e == null
-            ? null
-            : UtilizationData.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : AssetResult.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }

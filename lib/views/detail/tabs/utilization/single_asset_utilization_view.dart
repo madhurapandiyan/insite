@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view_model.dart';
+import 'package:insite/views/utilization/utilization_list_item.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
@@ -9,6 +13,9 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class SingleAssetUtilizationView extends StatefulWidget {
+  final AssetDetail detail;
+  SingleAssetUtilizationView({this.detail});
+
   @override
   _SingleAssetUtilizationViewState createState() =>
       _SingleAssetUtilizationViewState();
@@ -21,8 +28,9 @@ class _SingleAssetUtilizationViewState
   int rangeChoice = 1;
   String startDate;
   String endDate;
-  List<DateTime> dateRange;
+  List<DateTime> dateRange = [];
   bool isRangeSelectionVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetUtilizationViewModel>.reactive(
@@ -31,11 +39,8 @@ class _SingleAssetUtilizationViewState
           viewModel.startDate = startDate;
           viewModel.endDate = endDate;
           return viewModel.loading
-              ? Container(
-                  color: tuna,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+              ? Center(
+                  child: CircularProgressIndicator(),
                 )
               : Container(
                   decoration: BoxDecoration(
@@ -55,7 +60,6 @@ class _SingleAssetUtilizationViewState
                                   toggleButton(),
                                   GestureDetector(
                                     onTap: () async {
-                                      dateRange.clear();
                                       dateRange = await showDialog(
                                         context: context,
                                         builder: (BuildContext context) =>
@@ -63,11 +67,13 @@ class _SingleAssetUtilizationViewState
                                                 backgroundColor: transparent,
                                                 child: DateRangeWidget()),
                                       );
-                                      viewModel.startDate =
-                                          '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-
-                                      viewModel.endDate =
-                                          '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                      if (dateRange.isNotEmpty) {
+                                        viewModel.startDate =
+                                            '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
+                                        viewModel.endDate =
+                                            '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                        viewModel.getUtilList();
+                                      }
                                     },
                                     child: Container(
                                       width: 90,
@@ -93,6 +99,30 @@ class _SingleAssetUtilizationViewState
                                 ],
                               ),
                             ),
+                            viewModel.utilLizationList.isNotEmpty
+                                ? ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return Divider();
+                                    },
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount:
+                                        viewModel.utilLizationList.length,
+                                    padding:
+                                        EdgeInsets.only(left: 8.0, right: 8.0),
+                                    itemBuilder: (context, index) {
+                                      AssetResult utilizationData =
+                                          viewModel.utilLizationList[index];
+                                      return UtilizationListItem(
+                                        utilizationData: utilizationData,
+                                        isShowingInDetailPage: true,
+                                        onCallback: () {},
+                                      );
+                                    })
+                                : EmptyView(
+                                    title: "No Assets Found",
+                                  ),
                           ],
                         )
                       : Column(
@@ -113,11 +143,13 @@ class _SingleAssetUtilizationViewState
                                                 backgroundColor: transparent,
                                                 child: DateRangeWidget()),
                                       );
-                                      viewModel.startDate =
-                                          '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-                                      viewModel.endDate =
-                                          '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                                      viewModel.getSingleAssetUtilization();
+                                      if (dateRange.isNotEmpty) {
+                                        viewModel.startDate =
+                                            '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
+                                        viewModel.endDate =
+                                            '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                        viewModel.getSingleAssetUtilization();
+                                      }
                                     },
                                     child: Container(
                                       width: 90,
@@ -144,39 +176,32 @@ class _SingleAssetUtilizationViewState
                               ),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  decoration: BoxDecoration(
-                                    color: cardcolor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
-                                      decoration: BoxDecoration(
-                                        color: cardcolor,
-                                        border: Border.all(
-                                            color: black, width: 0.0),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(16)),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 4.0, horizontal: 16),
-                                        child: Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.8,
-                                            child: dropDownMenu(),
-                                          ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    decoration: BoxDecoration(
+                                      color: cardcolor,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(16)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: cardcolor,
+                                          border: Border.all(
+                                              color: black, width: 0.0),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: dropDownMenu(),
                                         ),
                                       ),
                                     ),
@@ -215,250 +240,248 @@ class _SingleAssetUtilizationViewState
                                     ),
                                   )
                                 : Container(),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.0),
-                                child: ListView.builder(
-                                  itemCount: getCount(
-                                      viewModel.singleAssetUtilization),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (dropdownValue.contains('Idle %')) {
-                                      if (rangeChoice == 1)
-                                        return PercentageWidget(
-                                            color: sandyBrown,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .daily[index]
-                                                        .data
-                                                        .idleEfficiency ==
-                                                    null
-                                                ? null
-                                                : viewModel
-                                                        .singleAssetUtilization
-                                                        .daily[index]
-                                                        .data
-                                                        .idleEfficiency *
-                                                    100);
-                                      else if (rangeChoice == 2)
-                                        return PercentageWidget(
-                                            color: sandyBrown,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .weekly[index]
-                                                        .data
-                                                        .idleEfficiency ==
-                                                    null
-                                                ? null
-                                                : viewModel
-                                                        .singleAssetUtilization
-                                                        .weekly[index]
-                                                        .data
-                                                        .idleEfficiency *
-                                                    100);
-                                      else
-                                        return PercentageWidget(
-                                            color: sandyBrown,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .monthly[index]
-                                                        .data
-                                                        .idleEfficiency ==
-                                                    null
-                                                ? null
-                                                : viewModel
-                                                        .singleAssetUtilization
-                                                        .monthly[index]
-                                                        .data
-                                                        .idleEfficiency *
-                                                    100);
-                                    } else if (dropdownValue
-                                        .contains('Performance %')) {
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    getCount(viewModel.singleAssetUtilization),
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (dropdownValue.contains('Idle %')) {
+                                    if (rangeChoice == 1)
                                       return PercentageWidget(
-                                        color: bermudaGrey,
-                                        label:
-                                            '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}',
-                                        percentage: viewModel
+                                          color: sandyBrown,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .daily[index]
+                                                      .data
+                                                      .idleEfficiency ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                      .singleAssetUtilization
+                                                      .daily[index]
+                                                      .data
+                                                      .idleEfficiency *
+                                                  100);
+                                    else if (rangeChoice == 2)
+                                      return PercentageWidget(
+                                          color: sandyBrown,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .weekly[index]
+                                                      .data
+                                                      .idleEfficiency ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                      .singleAssetUtilization
+                                                      .weekly[index]
+                                                      .data
+                                                      .idleEfficiency *
+                                                  100);
+                                    else
+                                      return PercentageWidget(
+                                          color: sandyBrown,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .monthly[index]
+                                                      .data
+                                                      .idleEfficiency ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                      .singleAssetUtilization
+                                                      .monthly[index]
+                                                      .data
+                                                      .idleEfficiency *
+                                                  100);
+                                  } else if (dropdownValue
+                                      .contains('Performance %')) {
+                                    return PercentageWidget(
+                                      color: bermudaGrey,
+                                      label:
+                                          '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}',
+                                      percentage: viewModel
+                                                  .singleAssetUtilization
+                                                  .daily[index]
+                                                  .data
+                                                  .targetRuntimePerformance ==
+                                              null
+                                          ? null
+                                          : viewModel
+                                                  .singleAssetUtilization
+                                                  .daily[index]
+                                                  .data
+                                                  .targetRuntimePerformance *
+                                              100,
+                                    );
+                                  } else if (dropdownValue.contains('Hours')) {
+                                    // RUNTIME HOURS
+                                    if (rangeChoice == 1)
+                                      return IdleWorkingGraphWidget(
+                                        idleLength: viewModel
                                                     .singleAssetUtilization
                                                     .daily[index]
                                                     .data
-                                                    .targetRuntimePerformance ==
+                                                    .idleHours ==
                                                 null
-                                            ? null
+                                            ? double.infinity
                                             : viewModel
                                                     .singleAssetUtilization
                                                     .daily[index]
                                                     .data
-                                                    .targetRuntimePerformance *
-                                                100,
-                                      );
-                                    } else if (dropdownValue
-                                        .contains('Hours')) {
-                                      // RUNTIME HOURS
-                                      if (rangeChoice == 1)
-                                        return IdleWorkingGraphWidget(
-                                          idleLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .daily[index]
-                                                      .data
-                                                      .idleHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .daily[index]
-                                                      .data
-                                                      .idleHours *
-                                                  1000,
-                                          workingLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .daily[index]
-                                                      .data
-                                                      .workingHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .daily[index]
-                                                      .data
-                                                      .workingHours *
-                                                  1000,
-                                          label:
-                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}   \n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
-                                        );
-                                      else if (rangeChoice == 2)
-                                        return IdleWorkingGraphWidget(
-                                          idleLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .weekly[index]
-                                                      .data
-                                                      .idleHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .weekly[index]
-                                                      .data
-                                                      .idleHours *
-                                                  1500,
-                                          workingLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .weekly[index]
-                                                      .data
-                                                      .workingHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .weekly[index]
-                                                      .data
-                                                      .workingHours *
-                                                  1500,
-                                          label:
-                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
-                                        );
-                                      else
-                                        return IdleWorkingGraphWidget(
-                                          idleLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .monthly[index]
-                                                      .data
-                                                      .idleHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .monthly[index]
-                                                      .data
-                                                      .idleHours *
-                                                  5000,
-                                          workingLength: viewModel
-                                                      .singleAssetUtilization
-                                                      .monthly[index]
-                                                      .data
-                                                      .workingHours ==
-                                                  null
-                                              ? double.infinity
-                                              : viewModel
-                                                      .singleAssetUtilization
-                                                      .monthly[index]
-                                                      .data
-                                                      .workingHours *
-                                                  5000,
-                                          label:
-                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                                        );
-                                    } else {
-                                      if (rangeChoice == 1)
-                                        return PercentageWidget(
-                                            isPercentage: false,
-                                            color: periwinkleGrey,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .daily[index]
-                                                        .data
-                                                        .distanceTravelledKilometers ==
-                                                    null
-                                                ? null
-                                                : viewModel
+                                                    .idleHours *
+                                                1000,
+                                        workingLength: viewModel
                                                     .singleAssetUtilization
                                                     .daily[index]
                                                     .data
-                                                    .distanceTravelledKilometers);
-                                      else if (rangeChoice == 2)
-                                        return PercentageWidget(
-                                            isPercentage: false,
-                                            color: periwinkleGrey,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .weekly[index]
-                                                        .data
-                                                        .distanceTravelledKilometers ==
-                                                    null
-                                                ? null
-                                                : viewModel
+                                                    .workingHours ==
+                                                null
+                                            ? double.infinity
+                                            : viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .workingHours *
+                                                1000,
+                                        label:
+                                            '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}   \n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
+                                      );
+                                    else if (rangeChoice == 2)
+                                      return IdleWorkingGraphWidget(
+                                        idleLength: viewModel
                                                     .singleAssetUtilization
                                                     .weekly[index]
                                                     .data
-                                                    .distanceTravelledKilometers);
-                                      else
-                                        return PercentageWidget(
-                                            isPercentage: false,
-                                            color: periwinkleGrey,
-                                            label:
-                                                '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                                            percentage: viewModel
-                                                        .singleAssetUtilization
-                                                        .monthly[index]
-                                                        .data
-                                                        .distanceTravelledKilometers ==
-                                                    null
-                                                ? null
-                                                : viewModel
+                                                    .idleHours ==
+                                                null
+                                            ? double.infinity
+                                            : viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .idleHours *
+                                                1500,
+                                        workingLength: viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .workingHours ==
+                                                null
+                                            ? double.infinity
+                                            : viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .workingHours *
+                                                1500,
+                                        label:
+                                            '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
+                                      );
+                                    else
+                                      return IdleWorkingGraphWidget(
+                                        idleLength: viewModel
                                                     .singleAssetUtilization
                                                     .monthly[index]
                                                     .data
-                                                    .distanceTravelledKilometers);
-                                    }
-                                  },
-                                ),
+                                                    .idleHours ==
+                                                null
+                                            ? double.infinity
+                                            : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .idleHours *
+                                                5000,
+                                        workingLength: viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .workingHours ==
+                                                null
+                                            ? double.infinity
+                                            : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .workingHours *
+                                                5000,
+                                        label:
+                                            '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                                      );
+                                  } else {
+                                    if (rangeChoice == 1)
+                                      return PercentageWidget(
+                                          isPercentage: false,
+                                          color: periwinkleGrey,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .daily[index]
+                                                      .data
+                                                      .distanceTravelledKilometers ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                  .singleAssetUtilization
+                                                  .daily[index]
+                                                  .data
+                                                  .distanceTravelledKilometers);
+                                    else if (rangeChoice == 2)
+                                      return PercentageWidget(
+                                          isPercentage: false,
+                                          color: periwinkleGrey,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .weekly[index]
+                                                      .data
+                                                      .distanceTravelledKilometers ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                  .singleAssetUtilization
+                                                  .weekly[index]
+                                                  .data
+                                                  .distanceTravelledKilometers);
+                                    else
+                                      return PercentageWidget(
+                                          isPercentage: false,
+                                          color: periwinkleGrey,
+                                          label:
+                                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                                          percentage: viewModel
+                                                      .singleAssetUtilization
+                                                      .monthly[index]
+                                                      .data
+                                                      .distanceTravelledKilometers ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                  .singleAssetUtilization
+                                                  .monthly[index]
+                                                  .data
+                                                  .distanceTravelledKilometers);
+                                  }
+                                },
                               ),
                             ),
                           ],
                         ),
                 );
         },
-        viewModelBuilder: () => SingleAssetUtilizationViewModel());
+        viewModelBuilder: () => SingleAssetUtilizationViewModel(widget.detail));
   }
 
   Widget getGraphWidgetForRuntimePerformance(
@@ -576,8 +599,8 @@ class _SingleAssetUtilizationViewState
 
   Container rangeSelectionWidget() {
     return Container(
-      width: 130,
-      height: 30,
+      width: 140,
+      height: 40,
       decoration: BoxDecoration(
         color: white,
         borderRadius: BorderRadius.all(
@@ -595,6 +618,7 @@ class _SingleAssetUtilizationViewState
                 });
               },
               child: Container(
+                padding: EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: rangeChoice == 1 ? tango : cardcolor,
                   borderRadius: BorderRadius.only(
@@ -623,6 +647,7 @@ class _SingleAssetUtilizationViewState
                 });
               },
               child: Container(
+                padding: EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: rangeChoice == 2 ? tango : cardcolor,
                 ),
@@ -647,6 +672,7 @@ class _SingleAssetUtilizationViewState
                 });
               },
               child: Container(
+                padding: EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: rangeChoice == 3 ? tango : cardcolor,
                   borderRadius: BorderRadius.only(
@@ -689,7 +715,6 @@ class _SingleAssetUtilizationViewState
       onChanged: (String newValue) {
         setState(() {
           dropdownValue = newValue;
-
           if (dropdownValue.contains('Runtime - Performance %'))
             isRangeSelectionVisible = false;
           else
@@ -704,17 +729,8 @@ class _SingleAssetUtilizationViewState
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                value,
-              ),
-              // Icon(
-              //   Icons.check,
-              //   color: white,
-              // )
-            ],
+          child: Text(
+            value,
           ),
         );
       }).toList(),

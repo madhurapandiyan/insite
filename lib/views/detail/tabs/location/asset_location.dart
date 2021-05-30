@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -14,7 +14,9 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetLocationView extends StatefulWidget {
-  AssetLocationView({Key key}) : super(key: key);
+  final AssetDetail detail;
+
+  AssetLocationView({this.detail});
 
   @override
   _AssetLocationViewState createState() => _AssetLocationViewState();
@@ -31,13 +33,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   GoogleMapController mapController;
   BitmapDescriptor mapMarker;
 
-  Set<Marker> _markers = Set();
-  CustomInfoWindowController _customInfoWindowController =
-      CustomInfoWindowController();
-
   @override
   void dispose() {
-    _customInfoWindowController.dispose();
     super.dispose();
   }
 
@@ -51,174 +48,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
             child: CircularProgressIndicator(),
           );
         } else {
-          int index = 1;
-          List<AssetLocation> assetLocationList =
-              viewModel.assetLocationHistory.assetLocation;
-
-          for (var assetLocation in assetLocationList) {
-            _markers.add(Marker(
-                markerId: MarkerId('${index++}'),
-                position:
-                    LatLng(assetLocation.latitude, assetLocation.longitude),
-                onTap: () {
-                  _customInfoWindowController.addInfoWindow(
-                    Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: tuna,
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(4),
-                                        topRight: Radius.circular(4)),
-                                    color: tuna,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Location Reported Time",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 10.0),
-                                      ),
-                                      Text(
-                                        assetLocation.locationEventLocalTime
-                                                .toString()
-                                                .split('T')
-                                                .first
-                                                .split('-')[2]
-                                                .split(' ')
-                                                .first +
-                                            '/' +
-                                            assetLocation.locationEventLocalTime
-                                                .toString()
-                                                .split('T')
-                                                .first
-                                                .split('-')[1] +
-                                            '/' +
-                                            assetLocation.locationEventLocalTime
-                                                .toString()
-                                                .split('T')
-                                                .first
-                                                .split('-')[0] +
-                                            ' ' +
-                                            assetLocation.locationEventLocalTime
-                                                .toString()
-                                                .split('T')
-                                                .last
-                                                .split(':')[0]
-                                                .split(' ')
-                                                .last +
-                                            ':' +
-                                            assetLocation.locationEventLocalTime
-                                                .toString()
-                                                .split('T')
-                                                .last
-                                                .split(':')[1] +
-                                            ' ' +
-                                            assetLocation
-                                                .locationEventLocalTimeZoneAbbrev,
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 8.0),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: shark,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Location",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 10.0),
-                                      ),
-                                      Text(
-                                        assetLocation.address.streetAddress +
-                                            ',' +
-                                            assetLocation.address.city +
-                                            ',' +
-                                            assetLocation.address.county +
-                                            ',' +
-                                            assetLocation.address.state +
-                                            ' ' +
-                                            assetLocation.address.zip,
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 8.0),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(4),
-                                        bottomRight: Radius.circular(4)),
-                                    color: tuna,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "Hours: ${assetLocation.hourmeter} Hrs",
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 8.0),
-                                      ),
-                                      Text(
-                                        "Odometer: ${assetLocation.odometer} Hrs",
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            color: textcolor,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 8.0),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            width: 100,
-                            height: 100,
-                          ),
-                        ),
-                        Triangle.isosceles(
-                          edge: Edge.BOTTOM,
-                          child: Container(
-                            color: tuna,
-                            width: 20.0,
-                            height: 10.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    LatLng(assetLocation.latitude, assetLocation.longitude),
-                  );
-                }));
-          }
-
           return Container(
             child: Center(
               child: Container(
@@ -261,6 +90,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Text(
                             (dateRange == null || dateRange.isEmpty)
                                 ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
@@ -268,7 +100,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                                fontSize: 12),
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -278,15 +110,16 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                     backgroundColor: transparent,
                                     child: DateRangeWidget()),
                               );
-                              setState(() {
-                                dateRange = dateRange;
+                              if (dateRange.isNotEmpty) {
+                                setState(() {
+                                  dateRange = dateRange;
+                                });
                                 viewModel.startDate =
                                     '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-
                                 viewModel.endDate =
                                     '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
                                 viewModel.getAssetLocationHistoryResult();
-                              });
+                              }
                             },
                             child: Container(
                               width: 90,
@@ -317,20 +150,22 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         children: [
                           GoogleMap(
                             onTap: (position) {
-                              _customInfoWindowController.hideInfoWindow();
+                              viewModel.customInfoWindowController
+                                  .hideInfoWindow();
                             },
                             onCameraMove: (position) {
-                              _customInfoWindowController.onCameraMove();
+                              viewModel.customInfoWindowController
+                                  .onCameraMove();
                             },
-                            onMapCreated:
-                                (GoogleMapController controller) async {
-                              _customInfoWindowController.googleMapController =
-                                  controller;
+                            onMapCreated: (GoogleMapController controller) {
+                              _controller.complete(controller);
+                              viewModel.customInfoWindowController
+                                  .googleMapController = controller;
                             },
                             mapType: _changemap(),
                             compassEnabled: true,
                             zoomControlsEnabled: false,
-                            markers: _markers,
+                            markers: viewModel.markers,
                             initialCameraPosition: CameraPosition(
                                 target: LatLng(
                                     viewModel.assetLocationHistory
@@ -340,7 +175,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 zoom: 18),
                           ),
                           CustomInfoWindow(
-                            controller: _customInfoWindowController,
+                            controller: viewModel.customInfoWindowController,
                             height: 75,
                             width: 150,
                             offset: 50,
@@ -438,12 +273,14 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   }
 
   Future<void> _minus(double zoomVal, LatLng targetPosition) async {
+    Logger().d("zoom minus value " + zoomVal.toString());
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
   Future<void> _plus(double zoomVal, LatLng targetPosition) async {
+    Logger().d("zoom plus value " + zoomVal.toString());
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));

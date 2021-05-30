@@ -1,3 +1,4 @@
+import 'package:insite/core/models/utilization.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'utilization_data.g.dart';
 
@@ -16,7 +17,7 @@ class UtilizationData {
 
 @JsonSerializable()
 class UtilizationSummaryResponse {
-  final List<UtilizationData> utilization;
+  final List<AssetResult> utilization;
   UtilizationSummaryResponse({this.utilization});
   factory UtilizationSummaryResponse.fromJson(Map<String, dynamic> json) =>
       _$UtilizationSummaryResponseFromJson(json);

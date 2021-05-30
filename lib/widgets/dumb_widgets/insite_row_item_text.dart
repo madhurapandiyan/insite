@@ -66,3 +66,33 @@ class InsiteTableRowWithImage extends StatelessWidget {
     );
   }
 }
+
+class InsiteTableRowIcon extends StatelessWidget {
+  final String title;
+  final String iconPath;
+  const InsiteTableRowIcon({this.title, this.iconPath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.arrow_drop_down,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          InsiteText(
+            text: title,
+            fontWeight: FontWeight.normal,
+            color: textcolor,
+          )
+        ],
+      ),
+    );
+  }
+}

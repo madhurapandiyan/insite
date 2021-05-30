@@ -101,7 +101,7 @@ class AssetResult {
   dynamic lastIdleFuelConsumptionLitersMeter;
   double lastIdleHourMeter;
   double lastOdometerMeter;
-  DateTime lastReportedTime;
+  String lastReportedTime;
   String lastReportedTimeZoneAbbrev;
   dynamic lastRuntimeFuelConsumptionLitersMeter;
   double lastRuntimeHourMeter;

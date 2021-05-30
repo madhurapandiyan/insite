@@ -529,16 +529,18 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummaryResponse> utilLizationList(
-      assetUID, startDate, endDate, customerId) async {
+      assetUID, startDate, endDate, sort, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(sort, 'sort');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUID,
       r'startDate': startDate,
-      r'endDate': endDate
+      r'endDate': endDate,
+      r'sort': sort
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
@@ -556,18 +558,18 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilization(
-      assetUID, sort, endDate, startDate, customerId) async {
+      assetUID, sort, startDate, endDate, customerId) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
     ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUID,
       r'sort': sort,
-      r'endDate': endDate,
-      r'startDate': startDate
+      r'startDate': startDate,
+      r'endDate': endDate
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(

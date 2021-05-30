@@ -29,8 +29,8 @@ class AssetLocationHistoryService extends BaseService {
     try {
       AssetLocationHistory locationHistoryResponse = await MyApi()
           .getClient()
-          .assetLocationHistoryDetail(endTimeLocal, startTimeLocal,
-              'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+          .assetLocationHistoryDetail(
+              endTimeLocal, startTimeLocal, accountSelected.CustomerUID);
       return locationHistoryResponse;
     } catch (e) {
       Logger().e(e);

@@ -1,50 +1,74 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
-import 'package:insite/core/services/single_asset_utilization_service.dart';
+import 'package:insite/core/models/utilization.dart';
+import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetUtilizationViewModel extends InsiteViewModel {
   Logger log;
-  var _singleAssetUtilizationService = locator<SingleAssetUtilizationService>();
+  var _assetUtilizationService = locator<AssetUtilizationService>();
+
+  AssetDetail _assetDetail;
+  AssetDetail get assetDetail => _assetDetail;
 
   SingleAssetUtilization _singleAssetUtilization;
   SingleAssetUtilization get singleAssetUtilization => _singleAssetUtilization;
 
+  List<AssetResult> _utilLizationList = [];
+  List<AssetResult> get utilLizationList => _utilLizationList;
+
   bool _loading = true;
   bool get loading => _loading;
 
-  String _assetUID = '';
-  set assetUID(String assetUID) {
-    this._assetUID = assetUID;
-  }
-
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
+  // String _startDate =
+  //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
+  String _startDate = DateFormat('yyyy-MM-dd')
+      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
   set startDate(String startDate) {
     this._startDate = startDate;
   }
 
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
+  String get startDate => _startDate;
+
+  // String _endDate =
+  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+  String _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDate(String endDate) {
     this._endDate = endDate;
   }
 
-  SingleAssetUtilizationViewModel() {
-    // this.log = getLogger(this.runtimeType.toString());
-    _singleAssetUtilizationService.setUp();
+  SingleAssetUtilizationViewModel(AssetDetail detail) {
+    this._assetDetail = detail;
+    _assetUtilizationService.setUp();
     getSingleAssetUtilization();
+    getUtilList();
   }
 
   getSingleAssetUtilization() async {
+    Logger().d("getSingleAssetUtilization");
     SingleAssetUtilization result =
-        await _singleAssetUtilizationService.getSingleAssetUtilizationResult(
-            '64be6463-d8c1-11e7-80fc-065f15eda309',
-            '-LastReportedUtilizationTime',
-            _endDate,
-            _startDate);
+        await _assetUtilizationService.getSingleAssetUtilizationResult(
+      assetDetail.assetUid,
+      '-LastReportedUtilizationTime',
+      _startDate,
+      _endDate,
+    );
     _singleAssetUtilization = result;
+    _loading = false;
+    notifyListeners();
+  }
+
+  getUtilList() async {
+    Logger().d("getUtilList");
+    var result = await _assetUtilizationService.getUtilizationData(
+      assetDetail.assetUid,
+      _startDate,
+      _endDate,
+    );
+    _utilLizationList = result;
     _loading = false;
     notifyListeners();
   }
