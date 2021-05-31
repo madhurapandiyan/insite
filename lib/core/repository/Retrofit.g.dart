@@ -479,15 +479,135 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SearchData> searchDetail(customerUID, snContains, customerId) async {
+  Future<SearchData> searchByAllWithCI(
+      snContains, assetIDContains, customerUID, customerId) async {
+    ArgumentError.checkNotNull(snContains, 'snContains');
+    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
     ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'snContains': snContains,
+      r'assetIDContains': assetIDContains,
+      r'customerUID': customerUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SearchData> searchByIDWithCI(
+      assetIDContains, customerUID, customerId) async {
+    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetIDContains': assetIDContains,
+      r'customerUID': customerUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SearchData> searchBySNWithCI(
+      snContains, customerUID, customerId) async {
+    ArgumentError.checkNotNull(snContains, 'snContains');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'snContains': snContains,
+      r'customerUID': customerUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SearchData> searchByAll(
+      assetIDContains, snContains, customerId) async {
+    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
     ArgumentError.checkNotNull(snContains, 'snContains');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'customerUID': customerUID,
+      r'assetIDContains': assetIDContains,
       r'snContains': snContains
     };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SearchData> searchByID(assetIDContains, customerId) async {
+    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetIDContains': assetIDContains
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SearchData> searchBySN(snContains, customerId) async {
+    ArgumentError.checkNotNull(snContains, 'snContains');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'snContains': snContains};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1',

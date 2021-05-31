@@ -128,9 +128,37 @@ abstract class RestClient {
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
-  Future<SearchData> searchDetail(
-      @Query("customerUID") String customerUID,
+  Future<SearchData> searchByAllWithCI(
       @Query("snContains") String snContains,
+      @Query("assetIDContains") String assetIDContains,
+      @Query("customerUID") String customerUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchByIDWithCI(
+      @Query("assetIDContains") String assetIDContains,
+      @Query("customerUID") String customerUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchBySNWithCI(
+      @Query("snContains") String snContains,
+      @Query("customerUID") String customerUID,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchByAll(
+      @Query("assetIDContains") String assetIDContains,
+      @Query("snContains") String snContains,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchByID(
+      @Query("assetIDContains") String assetIDContains,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1")
+  Future<SearchData> searchBySN(@Query("snContains") String snContains,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET(

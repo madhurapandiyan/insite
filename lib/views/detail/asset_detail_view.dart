@@ -92,43 +92,47 @@ class _TabPageState extends State<AssetDetailView> {
                                       ),
                                     ),
                                     SizedBox(width: 15.0),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 38.0),
-                                              child: new RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                  text: viewModel.assetDetail
-                                                      .assetSerialNumber,
-                                                  style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      fontSize: 13.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: tango),
-                                                )
-                                              ])),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 15.0),
-                                        new Text(
-                                          viewModel.assetDetail.dealerName,
-                                          style: new TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                              color: textcolor,
-                                              fontSize: 12.0),
-                                        )
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 38.0),
+                                                child: new RichText(
+                                                    text: TextSpan(children: [
+                                                  TextSpan(
+                                                    text: viewModel.assetDetail
+                                                        .assetSerialNumber,
+                                                    style: TextStyle(
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline,
+                                                        fontSize: 13.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: tango),
+                                                  )
+                                                ])),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 15.0),
+                                          Text(
+                                            viewModel.assetDetail.dealerName,
+                                            maxLines: 2,
+                                            style: new TextStyle(
+                                                fontFamily: 'Roboto',
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w700,
+                                                color: textcolor,
+                                                fontSize: 12.0),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ]),
                                 ],
