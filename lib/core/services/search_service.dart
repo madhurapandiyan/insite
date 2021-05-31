@@ -24,14 +24,55 @@ class SearchService extends BaseService {
     }
   }
 
-  Future<SearchData> getSearchResult(String searchKeyword) async {
+  Future<SearchData> getSearchResult(String searchKeyword, String type) async {
     try {
-      if (searchKeyword != null && searchKeyword.isNotEmpty) {
-        SearchData searchResponse = await MyApi().getClient().searchDetail(
-            '05d2a956-d890-11e9-8108-067b2fce18ef',
-            searchKeyword,
-            '75ab4554-05f9-e311-8d69-d067e5fd4637');
-        return searchResponse;
+      if (searchKeyword != null &&
+          searchKeyword.isNotEmpty &&
+          accountSelected != null &&
+          customerSelected != null) {
+        if (type == "ID") {
+          Logger().i("searchByIDWithCI");
+          SearchData searchResponse = await MyApi()
+              .getClient()
+              .searchByIDWithCI(searchKeyword, customerSelected.CustomerUID,
+                  accountSelected.CustomerUID);
+          return searchResponse;
+        } else if (type == "S/N") {
+          Logger().i("searchBySNWithCI");
+          SearchData searchResponse = await MyApi()
+              .getClient()
+              .searchBySNWithCI(searchKeyword, customerSelected.CustomerUID,
+                  accountSelected.CustomerUID);
+          return searchResponse;
+        } else {
+          Logger().i("searchByAllWithCI");
+          SearchData searchResponse = await MyApi()
+              .getClient()
+              .searchByAllWithCI(searchKeyword, searchKeyword,
+                  customerSelected.CustomerUID, accountSelected.CustomerUID);
+          return searchResponse;
+        }
+      } else if (searchKeyword != null &&
+          searchKeyword.isNotEmpty &&
+          accountSelected != null) {
+        if (type == "ID") {
+          Logger().i("searchByID");
+          SearchData searchResponse = await MyApi()
+              .getClient()
+              .searchByID(searchKeyword, accountSelected.CustomerUID);
+          return searchResponse;
+        } else if (type == "S/N") {
+          Logger().i("searchBySN");
+          SearchData searchResponse = await MyApi()
+              .getClient()
+              .searchBySN(searchKeyword, accountSelected.CustomerUID);
+          return searchResponse;
+        } else {
+          Logger().i("searchByAll");
+          SearchData searchResponse = await MyApi().getClient().searchByAll(
+              searchKeyword, searchKeyword, accountSelected.CustomerUID);
+          return searchResponse;
+        }
       }
       return null;
     } catch (e) {

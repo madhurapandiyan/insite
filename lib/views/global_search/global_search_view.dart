@@ -51,8 +51,10 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                           controller: searchController,
                           style: TextStyle(color: mediumgrey),
                           onChanged: (searchText) {
-                            viewModel.searchKeyword = searchText;
-                            viewModel.getSearchResult();
+                            if (searchText.isNotEmpty) {
+                              viewModel.searchKeyword = searchText;
+                              viewModel.getSearchResult(dropdownValue);
+                            }
                           },
                           decoration: InputDecoration(
                             filled: true,
@@ -97,6 +99,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                         viewModel.searchData.topMatches[index];
                                     return GestureDetector(
                                       onTap: () {
+                                        viewModel.onDetailPageSelected(match);
                                         widget.onSelected(match);
                                       },
                                       child: Column(
@@ -137,7 +140,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               children: [
                                 Text(
                                   'Showing ${viewModel.searchData.totalCount} out of ${viewModel.searchData.totalCount} Assets',
-                                  style: TextStyle(color: white, fontSize: 18),
+                                  style: TextStyle(color: white, fontSize: 12),
                                 ),
                                 TextButton(
                                   onPressed: () {},
@@ -145,7 +148,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                     'Show list',
                                     style: TextStyle(
                                       color: white,
-                                      fontSize: 18,
+                                      fontSize: 12,
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
