@@ -22,7 +22,8 @@ class InsiteText extends StatelessWidget {
 class InsiteRichText extends StatelessWidget {
   final String title;
   final String content;
-  const InsiteRichText({this.title, this.content});
+  final Color textColor;
+  const InsiteRichText({this.title, this.content, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class InsiteRichText extends StatelessWidget {
               decoration: TextDecoration.underline,
               fontSize: 13.0,
               fontWeight: FontWeight.bold,
-              color: tango),
+              color: textColor != null ? textColor : tango),
         )
       ])),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 
 class InsiteButton extends StatelessWidget {
   final String title;
@@ -25,7 +26,7 @@ class InsiteButton extends StatelessWidget {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: bgColor,
+          color: bgColor != null ? bgColor : tango,
         ),
         alignment: Alignment.center,
         height: height != null ? height : null,
@@ -38,7 +39,9 @@ class InsiteButton extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  color: textColor != null ? textColor : Colors.white,
+                  fontWeight: FontWeight.w700),
             ),
             icon != null ? icon : SizedBox()
           ],

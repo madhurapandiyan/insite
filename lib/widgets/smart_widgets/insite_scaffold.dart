@@ -7,6 +7,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,7 +17,9 @@ class InsiteScaffold extends StatefulWidget {
   final ScreenType screenType;
   final Widget body;
   final InsiteViewModel viewModel;
-  InsiteScaffold({this.screenType, this.body, this.viewModel});
+  final VoidCallback onFilterApplied;
+  InsiteScaffold(
+      {this.screenType, this.body, this.viewModel, this.onFilterApplied});
 
   @override
   _InsiteScaffoldState createState() => _InsiteScaffoldState();
@@ -54,11 +57,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           isFilterSelected: _isFilterSelected,
           onSearchTap: () {
             setState(() {
+              _isFilterSelected = false;
               _isSearchSelected = !_isSearchSelected;
             });
           },
           onFilterTap: () {
             setState(() {
+              _isSearchSelected = false;
               _isFilterSelected = !_isFilterSelected;
             });
           },
@@ -82,7 +87,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                           onGlobalSearchItemSelected(value);
                         },
                       )
-                    : SizedBox()
+                    : SizedBox(),
+                _isFilterSelected ? FilterView() : SizedBox()
               ]),
       ),
     );
@@ -110,6 +116,10 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     if (_isSearchSelected) {
       setState(() {
         _isSearchSelected = !_isSearchSelected;
+      });
+    } else if (_isFilterSelected) {
+      setState(() {
+        _isFilterSelected = !_isFilterSelected;
       });
     } else {
       return Future.value(true);

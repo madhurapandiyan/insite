@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
+import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/theme/colors.dart';
+import 'package:insite/views/filter/filter_item.dart';
+import 'package:insite/views/filter/filter_view_model.dart';
+import 'package:stacked/stacked.dart';
 
 class FilterView extends StatefulWidget {
   FilterView({Key key}) : super(key: key);
@@ -11,75 +15,115 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 16,
+    return ViewModelBuilder<FilterViewModel>.reactive(
+      builder: (BuildContext context, FilterViewModel viewModel, Widget _) {
+        return Container(
+          child: SingleChildScrollView(
+            child: Container(
+              color: tuna,
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.ALL_ASSETS,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.PRODUCT_FAMILY,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.MAKE,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.MODEL,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.MODEL_YEAR,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.LOCATION_SEARCH,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.APPLICATION,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.ASSET_COMMISION_DATE,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.SUBSCRIPTION_DATE,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  FilterItem(
+                    filterType: FilterType.DEVICE_TYPE,
+                    data: [],
+                    onApply: () {},
+                    onClear: () {},
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
               ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              CustomerSelectionDropDown(
-                selectionType: SelectionType.ACCOUNT,
-                onSelected: (SelectedData value) {},
-                onReset: () {},
-                selected: null,
-                list: [],
-              )
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
+      viewModelBuilder: () => FilterViewModel(),
     );
   }
 }
