@@ -33,7 +33,7 @@ dependencies:
   charts_flutter: ^0.10.0
   google_maps_cluster_manager: ^1.0.0
   syncfusion_flutter_gauges: ^19.1.65
-  syncfusion_flutter_charts: ^19.1.66+1
+  syncfusion_flutter_charts: ^19.1.65
 
 dev_dependencies:
   flutter_test:

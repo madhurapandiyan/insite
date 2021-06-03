@@ -912,8 +912,10 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = IdlingLevelData.fromJson(_result.data);
+    return value;
   }
 
+  @override
   Future<SingleAssetOperation> singleAssetOperation(
       startDate, endDate, assetUID, customerId) async {
     ArgumentError.checkNotNull(startDate, 'startDate');

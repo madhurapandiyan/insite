@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
+import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'single_asset_operation_view_model.dart';
 
 class SingleAssetOperationView extends StatefulWidget {
@@ -116,7 +118,20 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                   ),
                 ),
                 assetOperationTable(viewModel.singleAssetOperation),
-                Container(),
+                SfCartesianChart(
+                  series: getDefaultData(viewModel.singleAssetOperation),
+                  backgroundColor: ship_grey,
+                  plotAreaBorderColor: black,
+                  plotAreaBorderWidth: 3.0,
+                  primaryXAxis: DateTimeAxis(
+                      opposedPosition: true,
+                      dateFormat: DateFormat("hh:mm:ss")),
+                  primaryYAxis: DateTimeAxis(dateFormat: DateFormat("MMM dd")),
+                  legend: Legend(isVisible: false),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  zoomPanBehavior: ZoomPanBehavior(
+                      enablePinching: true, enablePanning: true),
+                ),
               ],
             ),
           );
@@ -182,5 +197,40 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
         ),
       ],
     );
+  }
+
+  // TODO: Modify Asset Operation Data and Customise Graph
+
+  static List<ScatterSeries<SingleAssetOperationChartData, DateTime>>
+      getDefaultData(SingleAssetOperation assetOperation) {
+    final List<SingleAssetOperationChartData> chartData =
+        <SingleAssetOperationChartData>[];
+
+    List<SingleAssetOperationChartData> markers = [];
+
+    markers.add(SingleAssetOperationChartData(
+        assetOperation.assetOperations.assets[0].assetLastReceivedEvent
+            .lastReceivedEventTimeLocal,
+        assetOperation.assetOperations.assets[0].assetLastReceivedEvent
+            .lastReceivedEventTimeLocal));
+
+    return <ScatterSeries<SingleAssetOperationChartData, DateTime>>[
+      ScatterSeries<SingleAssetOperationChartData, DateTime>(
+        enableTooltip: true,
+        color: tango,
+        dataSource: chartData,
+        borderWidth: 5,
+        xValueMapper: (SingleAssetOperationChartData data, _) => data.xaxis,
+        // TODO: Change the axis data
+        // yValueMapper: (SingleAssetOperationChartData data, _) => data.yaxis,
+        markerSettings: MarkerSettings(
+          isVisible: true,
+          height: 10,
+          width: 10,
+          shape: DataMarkerType.rectangle,
+          borderWidth: 3,
+        ),
+      ),
+    ];
   }
 }
