@@ -5,12 +5,12 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
-import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
 import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
+import 'package:insite/widgets/smart_widgets/single_asset_utilization.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetDashbaord extends StatefulWidget {
@@ -106,7 +106,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: AssetUtilizationWidget(
+                            child: SingleAssetUtilizationWidget(
                               assetUtilization: viewModel.assetUtilization,
                             ),
                           )

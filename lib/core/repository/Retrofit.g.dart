@@ -914,4 +914,31 @@ class _RestClient implements RestClient {
     final value = IdlingLevelData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<SingleAssetOperation> singleAssetOperation(
+      startDate, endDate, assetUID, customerId) async {
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(assetUID, 'assetUID');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startDate': startDate,
+      r'endDate': endDate,
+      r'assetUid': assetUID
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SingleAssetOperation.fromJson(_result.data);
+    return value;
+  }
 }

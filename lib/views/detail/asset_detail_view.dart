@@ -4,6 +4,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/location/asset_location.dart';
+import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -200,15 +201,17 @@ class _TabPageState extends State<AssetDetailView> {
                               ? SingleAssetUtilizationView(
                                   detail: viewModel.assetDetail,
                                 )
-                              : selectedTabIndex == 3
-                                  ? AssetLocationView(
-                                      detail: viewModel.assetDetail,
-                                    )
-                                  : Container(
-                                      child: EmptyView(
-                                        title: "Coming soon",
-                                      ),
-                                    ),
+                              : selectedTabIndex == 2
+                                  ? SingleAssetOperationView()
+                                  : selectedTabIndex == 3
+                                      ? AssetLocationView(
+                                          detail: viewModel.assetDetail,
+                                        )
+                                      : Container(
+                                          child: EmptyView(
+                                            title: "Coming soon",
+                                          ),
+                                        ),
                     ],
                   ),
                 ),
