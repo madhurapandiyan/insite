@@ -4,8 +4,8 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
-import 'package:insite/widgets/smart_widgets/asset_status_two.dart';
-import 'package:insite/widgets/smart_widgets/asset_status_usage_two.dart';
+import 'package:insite/widgets/smart_widgets/asset_status.dart';
+import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -45,9 +45,8 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetStatus(
-                        assetStatus: viewModel.assetStatusData != null
-                            ? viewModel.assetStatusData.countData
-                            : null,
+                        statusChartData: viewModel.statusChartData!=null?
+                        viewModel.statusChartData:null,
                         isLoading: viewModel.assetStatusloading),
                   ),
                   SizedBox(
@@ -56,8 +55,8 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetFuelLevel(
-                      fuelLevel: viewModel.fuelLevelData != null
-                          ? viewModel.fuelLevelData.countData
+                      fuelData: viewModel.fuelChartData != null
+                          ? viewModel.fuelChartData
                           : null,
                       isLoading: viewModel.assetFuelloading,
                     ),
@@ -111,9 +110,8 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetStatusUsage(
-                      assetStatusUsage: viewModel.assetStatusData != null
-                          ? viewModel.assetStatusData.countData
-                          : null,
+                      statusChartData: viewModel.statusChartData!=null?
+                        viewModel.statusChartData:null,
                       isLoading: viewModel.assetStatusloading,
                     ),
                   ),
