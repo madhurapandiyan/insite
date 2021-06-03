@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/core/models/fuel_level.dart';
+import 'package:insite/core/models/asset_fuel_level.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetFuelLevel extends StatefulWidget {
-  final List<CountDatum> fuelLevel;
+  final List<FuelSampleData> fuelData;
   final bool isLoading;
-  AssetFuelLevel({this.fuelLevel, this.isLoading});
+  AssetFuelLevel({this.fuelData, this.isLoading});
 
   @override
   _AssetFuelLevelState createState() => _AssetFuelLevelState();
@@ -81,7 +81,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
             widget.isLoading
                 ? Expanded(child: Center(child: CircularProgressIndicator()))
                 : Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 3),
                     child: Row(
                       children: [
                         Expanded(
@@ -89,60 +89,11 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                           child: Container(
                               width: 150,
                               height: 150,
-                              child: SfRadialGauge(
-                                axes: <RadialAxis>[
-                                  RadialAxis(
-                                      showAxisLine: false,
-                                      showLabels: false,
-                                      showTicks: false,
-                                      startAngle: 180,
-                                      endAngle: 360,
-                                      minimum: 0,
-                                      maximum: 100,
-                                      canScaleToFit: true,
-                                      radiusFactor: 0.95,
-                                      pointers: <GaugePointer>[
-                                        NeedlePointer(
-                                            needleStartWidth: 1,
-                                            value: 30,
-                                            needleLength: 0.7,
-                                            lengthUnit: GaugeSizeUnit.factor,
-                                            knobStyle: KnobStyle(
-                                              knobRadius: 0.08,
-                                              sizeUnit: GaugeSizeUnit.factor,
-                                            ))
-                                      ],
-                                      ranges: <GaugeRange>[
-                                        GaugeRange(
-                                            startValue: 0,
-                                            endValue: gaugeValue(0),
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            startWidth: 0.30,
-                                            endWidth: 0.30,
-                                            color: burntSienna),
-                                        GaugeRange(
-                                            startValue: gaugeValue(0),
-                                            endValue: gaugeValue(1),
-                                            startWidth: 0.30,
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            endWidth: 0.30,
-                                            color: lightRose),
-                                        GaugeRange(
-                                            startValue: gaugeValue(1),
-                                            endValue: gaugeValue(2),
-                                            startWidth: 0.30,
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            endWidth: 0.30,
-                                            color: mustard),
-                                        GaugeRange(
-                                            startValue: gaugeValue(2),
-                                            endValue: gaugeValue(3),
-                                            startWidth: 0.30,
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            endWidth: 0.30,
-                                            color: emerald),
-                                      ]),
-                                ],
+                              child: SfCircularChart(
+                                legend: Legend(isVisible: false),
+                                centerY: '70%',
+                                series: _getSemiDoughnutSeries(),
+                                tooltipBehavior: TooltipBehavior(enable: true),
                               )),
                         ),
                         Expanded(
@@ -151,7 +102,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             children: [
                               AssetStatusWidget(
                                   burntSienna,
-                                  "<" + widget.fuelLevel[0].countOf + "%",
+                                  "<" + widget.fuelData[0].x + "%",
                                   silver,
                                   "assets/images/arrows.png"),
                               Container(
@@ -160,7 +111,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                       thickness: 1.0, color: athenGrey)),
                               AssetStatusWidget(
                                   lightRose,
-                                  "<" + widget.fuelLevel[1].countOf + "%",
+                                  "<" + widget.fuelData[1].x + "%",
                                   silver,
                                   "assets/images/arrows.png"),
                               Container(
@@ -169,7 +120,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                       thickness: 1.0, color: athenGrey)),
                               AssetStatusWidget(
                                   mustard,
-                                  "<" + widget.fuelLevel[2].countOf + "%",
+                                  "<" + widget.fuelData[2].x + "%",
                                   silver,
                                   "assets/images/arrows.png"),
                               Container(
@@ -178,7 +129,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                       thickness: 1.0, color: athenGrey)),
                               AssetStatusWidget(
                                   emerald,
-                                  "<=" + widget.fuelLevel[3].countOf + "%",
+                                  "<=" + widget.fuelData[3].x + "%",
                                   silver,
                                   "assets/images/arrows.png")
                             ],
@@ -193,38 +144,28 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
     );
   }
 
-  double gaugeValue(index) {
-    double value = 0;
-    int result;
-    result = (widget.fuelLevel[0].count +
-        widget.fuelLevel[1].count +
-        widget.fuelLevel[2].count +
-        widget.fuelLevel[3].count);
-    print('gauge total :$result');
-    if (index == 0) {
-      value = ((widget.fuelLevel[0].count / result) * 100).roundToDouble();
-    } else if (index == 1) {
-      value =
-          (((widget.fuelLevel[0].count + widget.fuelLevel[1].count) / result) *
-                  100)
-              .roundToDouble();
-    } else if (index == 2) {
-      value = (((widget.fuelLevel[0].count +
-                      widget.fuelLevel[1].count +
-                      widget.fuelLevel[2].count) /
-                  result) *
-              100)
-          .roundToDouble();
-    } else if (index == 3) {
-      value = (((widget.fuelLevel[0].count +
-                      widget.fuelLevel[1].count +
-                      widget.fuelLevel[2].count +
-                      widget.fuelLevel[3].count) /
-                  result) *
-              100)
-          .roundToDouble();
-    }
-    print('gauge  $index return :$value');
-    return value;
+  _getSemiDoughnutSeries() {
+    return <DoughnutSeries<FuelSampleData, String>>[
+      DoughnutSeries<FuelSampleData, String>(
+          dataSource: widget.fuelData,
+          radius: '85%',
+          startAngle: 270,
+          endAngle: 90,
+          xValueMapper: (FuelSampleData data, _) => data.x,
+          yValueMapper: (FuelSampleData data, _) => data.y,
+          dataLabelSettings: DataLabelSettings(
+              connectorLineSettings:
+                  ConnectorLineSettings(width: 1.5, length: "10%"),
+              color: cardcolor,
+              textStyle: new TextStyle(
+                  color: textcolor,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal),
+              isVisible: true,
+              labelPosition: ChartDataLabelPosition.outside,
+              labelIntersectAction: LabelIntersectAction.none))
+    ];
   }
 }

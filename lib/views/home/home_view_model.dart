@@ -1,8 +1,10 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_fuel_level.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/router_constants.dart';
@@ -53,6 +55,8 @@ class HomeViewModel extends InsiteViewModel {
 
   Set<Marker> markers = {};
   int markerId = 1;
+  List<ChartSampleData> statusChartData = [];
+  List<FuelSampleData> fuelChartData = [];
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -102,7 +106,10 @@ class HomeViewModel extends InsiteViewModel {
   getAssetStatusData() async {
     AssetStatusData result = await _assetService.getassetStatus();
     _assetStatusData = result;
-    print('getAssetStatusData result :${result.countData[0].count}');
+    for (var stausData in _assetStatusData.countData) {
+      statusChartData.add(ChartSampleData(
+          x: stausData.countOf, y: stausData.count.roundToDouble()));
+    }
     _assetStatusloading = false;
     notifyListeners();
   }
@@ -110,7 +117,10 @@ class HomeViewModel extends InsiteViewModel {
   getFuelLevelData() async {
     FuelLevelData result = await _fuelLevelService.getfuelLevel();
     _fuelLevelData = result;
-    print('getFuelLevelData result :${result.countData[0].count}');
+    for (var fuelData in _fuelLevelData.countData) {
+      fuelChartData.add(FuelSampleData(
+          x: fuelData.countOf, y: fuelData.count.roundToDouble()));
+    }
     _assetFuelloading = false;
     notifyListeners();
   }
