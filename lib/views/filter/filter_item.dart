@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 class FilterItem extends StatefulWidget {
   final List<FilterData> data;
   final FilterType filterType;
-  final Function onApply;
+  final Function(List<FilterData>) onApply;
   final Function onClear;
   FilterItem({this.data, this.onApply, this.onClear, this.filterType});
 
@@ -60,84 +60,115 @@ class _FilterItemState extends State<FilterItem> {
     super.dispose();
   }
 
+  clearFilter() {
+    for (var i = 0; i < list.length; i++) {
+      list[i].isSelected = false;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(getTitle(widget.filterType)),
+      title: Text(
+        getTitle(widget.filterType),
+        style: TextStyle(color: Colors.white),
+      ),
       children: [
-        Column(
-          children: [
-            SearchBox(
-              controller: _textEditingController,
-              hint: "Search",
-              onTextChanged: onSearchTextChanged,
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InsiteRichText(
-                  title: "",
-                  content: "CLEAR FILTERS",
-                  textColor: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            color: bgcolor,
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SearchBox(
+                  controller: _textEditingController,
+                  hint: "Search",
+                  onTextChanged: onSearchTextChanged,
                 ),
-                InsiteButton(
-                  onTap: () {},
-                  width: 100,
-                  height: 40,
-                  title: "APPLY",
-                )
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            ListView.builder(
-              itemCount: list.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                FilterData data = list[index];
-                return GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    color: data.isSelected ? tango : tuna,
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          data.count + " ",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        Expanded(
-                          child: Text(
-                            data.title,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InsiteRichText(
+                      title: "",
+                      content: "CLEAR FILTERS",
+                      textColor: Colors.white,
+                      onTap: () {
+                        Logger().d("clear filter");
+                        clearFilter();
+                      },
+                    ),
+                    InsiteButton(
+                      onTap: () {
+                        widget.onApply(list);
+                      },
+                      width: 100,
+                      height: 40,
+                      title: "APPLY",
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              ListView.builder(
+                itemCount: list.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  FilterData data = list[index];
+                  return GestureDetector(
+                    onTap: () {
+                      list[index].isSelected = !data.isSelected;
+                      setState(() {});
+                    },
+                    child: Container(
+                      color: data.isSelected ? tango : bgcolor,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "(" + data.count + ") ",
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
-                        ),
-                        IconButton(
-                            icon: Icon(
-                              Icons.check,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              data.title,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
                             ),
-                            onPressed: () {})
-                      ],
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {})
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            )
-          ],
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ],
     );

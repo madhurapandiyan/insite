@@ -4,6 +4,7 @@ import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
@@ -58,5 +59,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => IdlingLevelService());
     log.d("Registering Single Asset Operation Service");
     locator.registerLazySingleton(() => SingleAssetOperationService());
+    log.d("Registering Filter Service");
+    locator.registerLazySingleton(() => FilterService());
   }
 }

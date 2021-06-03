@@ -26,7 +26,7 @@ class AssetStatusService {
     try {
       AssetStatusData assetStatusResponse = await MyApi()
           .getClient()
-          .assetStatus("assetstatus", accountSelected.CustomerUID);
+          .assetCount("assetstatus", accountSelected.CustomerUID);
       return assetStatusResponse;
     } catch (e) {
       Logger().e(e);

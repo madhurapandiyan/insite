@@ -1,8 +1,9 @@
 class FilterData {
   final String title;
   final String count;
-  final bool isSelected;
-  FilterData({this.count, this.title, this.isSelected});
+  final FilterType type;
+  bool isSelected;
+  FilterData({this.count, this.title, this.isSelected, this.type});
 }
 
 enum FilterType {

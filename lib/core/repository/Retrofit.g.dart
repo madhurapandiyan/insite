@@ -770,7 +770,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetStatusData> assetStatus(grouping, customerId) async {
+  Future<AssetStatusData> assetCount(grouping, customerId) async {
     ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
