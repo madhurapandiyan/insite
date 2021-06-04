@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
@@ -22,7 +23,9 @@ class InsiteText extends StatelessWidget {
 class InsiteRichText extends StatelessWidget {
   final String title;
   final String content;
-  const InsiteRichText({this.title, this.content});
+  final Color textColor;
+  final VoidCallback onTap;
+  const InsiteRichText({this.title, this.content, this.textColor, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +36,15 @@ class InsiteRichText extends StatelessWidget {
         TextSpan(text: title),
         TextSpan(
           text: content,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              onTap();
+            },
           style: TextStyle(
               decoration: TextDecoration.underline,
               fontSize: 13.0,
               fontWeight: FontWeight.bold,
-              color: tango),
+              color: textColor != null ? textColor : tango),
         )
       ])),
     );

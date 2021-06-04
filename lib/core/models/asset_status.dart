@@ -3,7 +3,7 @@ part 'asset_status.g.dart';
 
 @JsonSerializable()
 class AssetStatusData {
-  List<CountDatum> countData;
+  List<CountData> countData;
   AssetStatusData({
     this.countData,
   });
@@ -15,16 +15,16 @@ class AssetStatusData {
 }
 
 @JsonSerializable()
-class CountDatum {
+class CountData {
   String countOf;
   int count;
-  CountDatum({
+  CountData({
     this.countOf,
     this.count,
   });
 
-  factory CountDatum.fromJson(Map<String, dynamic> json) =>
-      _$CountDatumFromJson(json);
+  factory CountData.fromJson(Map<String, dynamic> json) =>
+      _$CountDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CountDatumToJson(this);
+  Map<String, dynamic> toJson() => _$CountDataToJson(this);
 }

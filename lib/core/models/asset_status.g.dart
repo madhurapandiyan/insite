@@ -10,7 +10,7 @@ AssetStatusData _$AssetStatusDataFromJson(Map<String, dynamic> json) {
   return AssetStatusData(
     countData: (json['countData'] as List)
         ?.map((e) =>
-            e == null ? null : CountDatum.fromJson(e as Map<String, dynamic>))
+            e == null ? null : CountData.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
@@ -20,15 +20,14 @@ Map<String, dynamic> _$AssetStatusDataToJson(AssetStatusData instance) =>
       'countData': instance.countData,
     };
 
-CountDatum _$CountDatumFromJson(Map<String, dynamic> json) {
-  return CountDatum(
+CountData _$CountDataFromJson(Map<String, dynamic> json) {
+  return CountData(
     countOf: json['countOf'] as String,
     count: json['count'] as int,
   );
 }
 
-Map<String, dynamic> _$CountDatumToJson(CountDatum instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CountDataToJson(CountData instance) => <String, dynamic>{
       'countOf': instance.countOf,
       'count': instance.count,
     };
