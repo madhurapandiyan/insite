@@ -15,7 +15,10 @@ class CumulativeChart extends StatelessWidget {
     return Container(
       child: SfCartesianChart(
         plotAreaBorderWidth: 0,
-        title: ChartTitle(text: 'Quarterly wise sales of products'),
+        title: ChartTitle(
+            text: runTimeCumulative == null
+                ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned} Liters'
+                : 'Daily average: ${runTimeCumulative.cumulatives.averageHours} Hours'),
         legend:
             Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
         primaryXAxis: CategoryAxis(

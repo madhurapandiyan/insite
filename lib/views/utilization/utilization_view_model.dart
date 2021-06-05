@@ -4,6 +4,10 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/fuel_burn_rate_trend.dart';
+import 'package:insite/core/models/idle_percent_trend.dart';
+import 'package:insite/core/models/total_fuel_burned.dart';
+import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/router_constants.dart';
@@ -27,6 +31,18 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   FuelBurnedCumulative _fuelBurnedCumulative;
   FuelBurnedCumulative get fuelBurnedCumulative => _fuelBurnedCumulative;
+
+  TotalHours _totalHours;
+  TotalHours get totalHours => _totalHours;
+
+  TotalFuelBurned _totalFuelBurned;
+  TotalFuelBurned get totalFuelBurned => _totalFuelBurned;
+
+  IdlePercentTrend _idlePercentTrend;
+  IdlePercentTrend get idlePercentTrend => _idlePercentTrend;
+
+  FuelBurnRateTrend _fuelBurnRateTrend;
+  FuelBurnRateTrend get fuelBurnRateTrend => _fuelBurnRateTrend;
 
   int pageNumber = 1;
   int pageCount = 50;
@@ -73,6 +89,12 @@ class UtilLizationViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getUtilization();
     });
+    getRunTimeCumulative();
+    getFuelBurnedCumulative();
+    getTotalHours();
+    getTotalFuelBurned();
+    getIdlePercentTrend();
+    getFuelBurnRateTrend();
   }
 
   getUtilization() async {
@@ -110,6 +132,34 @@ class UtilLizationViewModel extends InsiteViewModel {
     FuelBurnedCumulative result = await _utilizationGraphService
         .getFuelBurnedCumulative(_startDate, _endDate);
     _fuelBurnedCumulative = result;
+    notifyListeners();
+  }
+
+  getTotalHours() async {
+    TotalHours result = await _utilizationGraphService.getTotalHours(
+        'daily', _startDate, _endDate, 1, 25, true);
+    _totalHours = result;
+    notifyListeners();
+  }
+
+  getTotalFuelBurned() async {
+    TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
+        'daily', _startDate, _endDate, 1, 25, true);
+    _totalFuelBurned = result;
+    notifyListeners();
+  }
+
+  getIdlePercentTrend() async {
+    IdlePercentTrend result = await _utilizationGraphService
+        .getIdlePercentTrend('daily', _startDate, _endDate, 1, 25, true);
+    _idlePercentTrend = result;
+    notifyListeners();
+  }
+
+  getFuelBurnRateTrend() async {
+    FuelBurnRateTrend result = await _utilizationGraphService
+        .getFuelBurnRateTrend('daily', _startDate, _endDate, 1, 25, true);
+    _fuelBurnRateTrend = result;
     notifyListeners();
   }
 

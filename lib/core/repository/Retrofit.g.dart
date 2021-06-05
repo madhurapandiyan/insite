@@ -991,4 +991,136 @@ class _RestClient implements RestClient {
     final value = FuelBurnedCumulative.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<TotalHours> getTotalHours(interval, startDate, endDate, pageNumber,
+      pageSize, includepagination, customerId) async {
+    ArgumentError.checkNotNull(interval, 'interval');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(includepagination, 'includepagination');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'interval': interval,
+      r'startdatelocal': startDate,
+      r'enddatelocal': endDate,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'includepagination': includepagination
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = TotalHours.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<TotalFuelBurned> getTotalFuelBurned(interval, startDate, endDate,
+      pageNumber, pageSize, includepagination, customerId) async {
+    ArgumentError.checkNotNull(interval, 'interval');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(includepagination, 'includepagination');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'interval': interval,
+      r'startdatelocal': startDate,
+      r'enddatelocal': endDate,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'includepagination': includepagination
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = TotalFuelBurned.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<IdlePercentTrend> getIdlePercentTrend(interval, startDate, endDate,
+      pageNumber, pageSize, includepagination, customerId) async {
+    ArgumentError.checkNotNull(interval, 'interval');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(includepagination, 'includepagination');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'interval': interval,
+      r'startdatelocal': startDate,
+      r'enddatelocal': endDate,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'includepagination': includepagination
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = IdlePercentTrend.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<FuelBurnRateTrend> getFuelBurnRateTrend(interval, startDate, endDate,
+      pageNumber, pageSize, includepagination, customerId) async {
+    ArgumentError.checkNotNull(interval, 'interval');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(includepagination, 'includepagination');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'interval': interval,
+      r'startdatelocal': startDate,
+      r'enddatelocal': endDate,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'includepagination': includepagination
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = FuelBurnRateTrend.fromJson(_result.data);
+    return value;
+  }
 }

@@ -9,13 +9,17 @@ import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/fuel_level.dart';
+import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
+import 'package:insite/core/models/total_fuel_burned.dart';
+import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -262,6 +266,50 @@ abstract class RestClient {
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
       @Query("startdatelocal") String startDate,
       @Query("enddatelocal") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals")
+  Future<TotalHours> getTotalHours(
+      @Query("interval") String interval,
+      @Query("startdatelocal") String startDate,
+      @Query("enddatelocal") String endDate,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("includepagination") bool includepagination,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals")
+  Future<TotalFuelBurned> getTotalFuelBurned(
+      @Query("interval") String interval,
+      @Query("startdatelocal") String startDate,
+      @Query("enddatelocal") String endDate,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("includepagination") bool includepagination,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent")
+  Future<IdlePercentTrend> getIdlePercentTrend(
+      @Query("interval") String interval,
+      @Query("startdatelocal") String startDate,
+      @Query("enddatelocal") String endDate,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("includepagination") bool includepagination,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate")
+  Future<FuelBurnRateTrend> getFuelBurnRateTrend(
+      @Query("interval") String interval,
+      @Query("startdatelocal") String startDate,
+      @Query("enddatelocal") String endDate,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 }
 
