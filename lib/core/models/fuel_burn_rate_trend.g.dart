@@ -91,7 +91,7 @@ Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
 
 Burnrates _$BurnratesFromJson(Map<String, dynamic> json) {
   return Burnrates(
-    runtimeFuelBurnRate: json['runtimeFuelBurnRate'] as int,
+    runtimeFuelBurnRate: json['runtimeFuelBurnRate'] as double,
     idleFuelBurnRate: (json['idleFuelBurnRate'] as num)?.toDouble(),
     workingFuelBurnRate: (json['workingFuelBurnRate'] as num)?.toDouble(),
   );

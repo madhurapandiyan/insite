@@ -958,7 +958,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -983,7 +983,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -1016,7 +1016,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -1049,7 +1049,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -1082,7 +1082,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -1115,7 +1115,7 @@ class _RestClient implements RestClient {
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),

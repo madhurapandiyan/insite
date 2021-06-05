@@ -123,8 +123,8 @@ class FuelBurnedTotals {
     this.runtimeFuelBurned,
   });
 
-  int idleFuelBurned;
-  int workingFuelBurned;
+  double idleFuelBurned;
+  double workingFuelBurned;
   double runtimeFuelBurned;
 
   factory FuelBurnedTotals.fromJson(Map<String, dynamic> json) =>

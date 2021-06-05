@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/cumulative.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CumulativeChart extends StatelessWidget {
@@ -14,53 +15,86 @@ class CumulativeChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: SfCartesianChart(
-        plotAreaBorderWidth: 0,
         title: ChartTitle(
+            textStyle: TextStyle(color: white),
             text: runTimeCumulative == null
-                ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned} Liters'
-                : 'Daily average: ${runTimeCumulative.cumulatives.averageHours} Hours'),
-        legend:
-            Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+                ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
+                : 'Daily average: ${runTimeCumulative.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
         primaryXAxis: CategoryAxis(
-          majorGridLines: MajorGridLines(width: 0),
+          title: AxisTitle(
+              text: runTimeCumulative == null
+                  ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
+                  : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
+              textStyle: TextStyle(color: white)),
         ),
-        series: _getStackedColumnSeries(),
+        series: runTimeCumulative == null
+            ? _getStackedColumnSeries(fuelBurnedCumulative)
+            : _getStackedColumnSeries(runTimeCumulative),
         primaryYAxis: NumericAxis(
-            axisLine: AxisLine(width: 0),
-            labelFormat: '{value}K',
-            maximum: 300,
-            majorTickLines: MajorTickLines(size: 0)),
+          title: AxisTitle(
+              text: runTimeCumulative == null
+                  ? 'Cumulative Fuel Burned (Liters)'
+                  : 'Cumulative Runtime (Hours)',
+              textStyle: TextStyle(color: white)),
+          axisLine: AxisLine(width: 1),
+          labelStyle: TextStyle(color: white),
+        ),
         tooltipBehavior: TooltipBehavior(),
       ),
     );
   }
 
-  List<StackedColumnSeries<ChartSampleData, String>> _getStackedColumnSeries() {
-    final List<ChartSampleData> chartData = <ChartSampleData>[
-      ChartSampleData('Q1', 50, 55, 72, 65),
-    ];
-    return <StackedColumnSeries<ChartSampleData, String>>[
-      StackedColumnSeries<ChartSampleData, String>(
-          dataSource: chartData,
-          xValueMapper: (ChartSampleData sales, _) => sales.x,
-          yValueMapper: (ChartSampleData sales, _) => sales.y,
-          name: 'Product A'),
-      StackedColumnSeries<ChartSampleData, String>(
-          dataSource: chartData,
-          xValueMapper: (ChartSampleData sales, _) => sales.x,
-          yValueMapper: (ChartSampleData sales, _) => sales.yValue,
-          name: 'Product B'),
+  List<StackedColumnSeries<CumulativeChartData, String>>
+      _getStackedColumnSeries(dynamic data) {
+    final List<CumulativeChartData> chartData = <CumulativeChartData>[];
+
+    if (data.runtimeType == RunTimeCumulative) {
+      chartData.add(CumulativeChartData(
+          '',
+          data.cumulatives.totals.runtimeHours,
+          data.cumulatives.totals.workingHours,
+          data.cumulatives.totals.idleHours));
+    }
+
+    if (data.runtimeType == FuelBurnedCumulative) {
+      chartData.add(CumulativeChartData(
+          '',
+          data.cumulatives.totals.runtimeFuelBurned,
+          data.cumulatives.totals.workingFuelBurned,
+          data.cumulatives.totals.idleFuelBurned));
+    }
+
+    return <StackedColumnSeries<CumulativeChartData, String>>[
+      StackedColumnSeries<CumulativeChartData, String>(
+        dataSource: chartData,
+        color: emerald,
+        width: 0.2,
+        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.working,
+      ),
+      StackedColumnSeries<CumulativeChartData, String>(
+        dataSource: chartData,
+        color: burntSienna,
+        width: 0.2,
+        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.idle,
+      ),
+      StackedColumnSeries<CumulativeChartData, String>(
+        dataSource: chartData,
+        color: persianIndigo,
+        width: 0.2,
+        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.runtime,
+      ),
     ];
   }
 }
 
-class ChartSampleData {
+class CumulativeChartData {
   final String x;
-  final int y;
-  final int yValue;
-  final int secondSeriesYValue;
-  final int thirdSeriesYValue;
+  final double runtime;
+  final double working;
+  final double idle;
 
-  ChartSampleData(this.x, this.y, this.yValue, this.secondSeriesYValue,
-      this.thirdSeriesYValue);
+  CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }

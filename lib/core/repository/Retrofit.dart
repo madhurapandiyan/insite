@@ -254,21 +254,21 @@ abstract class RestClient {
       @Query("assetUid") String assetUID,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives")
   Future<RunTimeCumulative> runtimeCumulative(
       @Query("startdatelocal") String startDate,
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives")
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
       @Query("startdatelocal") String startDate,
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals")
   Future<TotalHours> getTotalHours(
       @Query("interval") String interval,
@@ -279,7 +279,7 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals")
   Future<TotalFuelBurned> getTotalFuelBurned(
       @Query("interval") String interval,
@@ -290,7 +290,7 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent")
   Future<IdlePercentTrend> getIdlePercentTrend(
       @Query("interval") String interval,
@@ -301,7 +301,7 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET(
+  @POST(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate")
   Future<FuelBurnRateTrend> getFuelBurnRateTrend(
       @Query("interval") String interval,

@@ -126,8 +126,8 @@ Map<String, dynamic> _$FuelBurnedCumulativesToJson(
 
 FuelBurnedTotals _$FuelBurnedTotalsFromJson(Map<String, dynamic> json) {
   return FuelBurnedTotals(
-    idleFuelBurned: json['idleFuelBurned'] as int,
-    workingFuelBurned: json['workingFuelBurned'] as int,
+    idleFuelBurned: json['idleFuelBurned'] as double,
+    workingFuelBurned: json['workingFuelBurned'] as double,
     runtimeFuelBurned: (json['runtimeFuelBurned'] as num)?.toDouble(),
   );
 }

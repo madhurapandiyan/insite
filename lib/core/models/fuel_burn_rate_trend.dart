@@ -84,7 +84,7 @@ class Burnrates {
     this.workingFuelBurnRate,
   });
 
-  int runtimeFuelBurnRate;
+  double runtimeFuelBurnRate;
   double idleFuelBurnRate;
   double workingFuelBurnRate;
 
