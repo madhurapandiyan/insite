@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -15,10 +17,17 @@ class UtilLizationViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationService = locator<AssetUtilizationService>();
   var _navigationService = locator<NavigationService>();
+  var _utilizationGraphService = locator<UtilizationGraphsService>();
 
   List<UtilizationData> _utilLizationList = [];
   List<UtilizationData> get utilLizationList => _utilLizationList;
-  
+
+  RunTimeCumulative _runTimeCumulative;
+  RunTimeCumulative get runTimeCumulative => _runTimeCumulative;
+
+  FuelBurnedCumulative _fuelBurnedCumulative;
+  FuelBurnedCumulative get fuelBurnedCumulative => _fuelBurnedCumulative;
+
   int pageNumber = 1;
   int pageCount = 50;
   ScrollController scrollController;
@@ -88,6 +97,20 @@ class UtilLizationViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+  }
+
+  getRunTimeCumulative() async {
+    RunTimeCumulative result = await _utilizationGraphService
+        .getRunTimeCumulative(_startDate, _endDate);
+    _runTimeCumulative = result;
+    notifyListeners();
+  }
+
+  getFuelBurnedCumulative() async {
+    FuelBurnedCumulative result = await _utilizationGraphService
+        .getFuelBurnedCumulative(_startDate, _endDate);
+    _fuelBurnedCumulative = result;
+    notifyListeners();
   }
 
   onDetailPageSelected(AssetResult fleet) {

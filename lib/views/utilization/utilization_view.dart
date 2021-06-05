@@ -5,10 +5,12 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UtilLizationView extends StatefulWidget {
   @override
@@ -127,7 +129,8 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                               .utilLizationListData[
                                                           index];
                                                   return UtilizationListItem(
-                                                    utilizationData: utilizationData,
+                                                    utilizationData:
+                                                        utilizationData,
                                                     isShowingInDetailPage:
                                                         false,
                                                     onCallback: () {
@@ -281,8 +284,11 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                       child: viewModel
                                               .utilLizationListData.isNotEmpty
                                           ? ListView.builder(
-                                              itemCount: viewModel
-                                                  .utilLizationListData.length,
+                                              itemCount: isCumulative
+                                                  ? 1
+                                                  : viewModel
+                                                      .utilLizationListData
+                                                      .length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
@@ -372,19 +378,35 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                           .utilLizationListData[
                                                               index]
                                                           .assetSerialNumber,
-                                                      value:
-                                                          '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
+                                                      value: viewModel
+                                                                  .utilLizationListData[
+                                                                      index]
+                                                                  .distanceTravelledKilometers ==
+                                                              null
+                                                          ? 'NA'
+                                                          : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
                                                       percentage: viewModel
-                                                              .utilLizationListData[
-                                                                  index]
-                                                              .distanceTravelledKilometers /
-                                                          10,
+                                                                  .utilLizationListData[
+                                                                      index]
+                                                                  .distanceTravelledKilometers ==
+                                                              null
+                                                          ? 0
+                                                          : viewModel
+                                                                  .utilLizationListData[
+                                                                      index]
+                                                                  .distanceTravelledKilometers /
+                                                              10,
                                                       color: creamCan);
                                                 } else if (isCumulative) {
                                                   if (rangeChoice == 1)
-                                                    return Container();
+                                                    return CumulativeChart(
+                                                        runTimeCumulative: viewModel
+                                                            .runTimeCumulative);
                                                   else
-                                                    return Container();
+                                                    return CumulativeChart(
+                                                        fuelBurnedCumulative:
+                                                            viewModel
+                                                                .fuelBurnedCumulative);
                                                 } else {
                                                   return Container();
                                                 }
