@@ -91,6 +91,15 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                 viewModel.endDate =
                                                     '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
 
+                                                if (rangeChoice == 1)
+                                                  viewModel.range = 'daily';
+
+                                                if (rangeChoice == 2)
+                                                  viewModel.range = 'weekly';
+
+                                                if (rangeChoice == 3)
+                                                  viewModel.range = 'monthly';
+
                                                 viewModel
                                                     .getRunTimeCumulative();
                                                 viewModel
@@ -495,18 +504,26 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                         .TOTALHOURS) {
                                                   if (rangeChoice == 1) {
                                                     viewModel.range = 'daily';
+                                                    viewModel.getTotalHours();
+
                                                     return TotalHoursChart(
                                                         rangeSelection:
                                                             rangeChoice,
                                                         totalHours: viewModel
                                                             .totalHours);
                                                   } else if (rangeChoice == 2) {
+                                                    viewModel.range = 'weekly';
+                                                    viewModel.getTotalHours();
+
                                                     return TotalHoursChart(
                                                         rangeSelection:
                                                             rangeChoice,
                                                         totalHours: viewModel
                                                             .totalHours);
                                                   } else {
+                                                    viewModel.range = 'monthly';
+                                                    viewModel.getTotalHours();
+
                                                     return TotalHoursChart(
                                                         rangeSelection:
                                                             rangeChoice,
@@ -516,27 +533,106 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                 } else if (graphType ==
                                                     UtilizationGraphType
                                                         .TOTALFUELBURNED) {
-                                                  return TotalFuelBurnedGraph(
-                                                      rangeSelection:
-                                                          rangeChoice,
-                                                      totalFuelBurned: viewModel
-                                                          .totalFuelBurned);
+                                                  if (rangeChoice == 1) {
+                                                    viewModel.range = 'daily';
+                                                    viewModel
+                                                        .getTotalFuelBurned();
+
+                                                    return TotalFuelBurnedGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        totalFuelBurned: viewModel
+                                                            .totalFuelBurned);
+                                                  }
+                                                  if (rangeChoice == 2) {
+                                                    viewModel.range = 'weekly';
+                                                    viewModel
+                                                        .getTotalFuelBurned();
+
+                                                    return TotalFuelBurnedGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        totalFuelBurned: viewModel
+                                                            .totalFuelBurned);
+                                                  } else {
+                                                    viewModel.range = 'monthly';
+                                                    viewModel
+                                                        .getTotalFuelBurned();
+
+                                                    return TotalFuelBurnedGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        totalFuelBurned: viewModel
+                                                            .totalFuelBurned);
+                                                  }
                                                 } else if (graphType ==
                                                     UtilizationGraphType
                                                         .IDLETREND) {
-                                                  return IdleTrendGraph(
-                                                      rangeSelection:
-                                                          rangeChoice,
-                                                      idlePercentTrend: viewModel
-                                                          .idlePercentTrend);
+                                                  if (rangeChoice == 1) {
+                                                    viewModel.range = 'daily';
+                                                    viewModel
+                                                        .getIdlePercentTrend();
+
+                                                    return IdleTrendGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        idlePercentTrend: viewModel
+                                                            .idlePercentTrend);
+                                                  } else if (rangeChoice == 2) {
+                                                    viewModel.range = 'weekly';
+                                                    viewModel
+                                                        .getIdlePercentTrend();
+
+                                                    return IdleTrendGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        idlePercentTrend: viewModel
+                                                            .idlePercentTrend);
+                                                  } else {
+                                                    viewModel.range = 'monthly';
+                                                    viewModel
+                                                        .getIdlePercentTrend();
+
+                                                    return IdleTrendGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        idlePercentTrend: viewModel
+                                                            .idlePercentTrend);
+                                                  }
                                                 } else if (graphType ==
                                                     UtilizationGraphType
                                                         .FUELBURNRATETREND) {
-                                                  return FuelBurnRateGraph(
-                                                      rangeSelection:
-                                                          rangeChoice,
-                                                      fuelBurnRateTrend: viewModel
-                                                          .fuelBurnRateTrend);
+                                                  if (rangeChoice == 1) {
+                                                    viewModel.range = 'daily';
+                                                    viewModel
+                                                        .getFuelBurnRateTrend();
+
+                                                    return FuelBurnRateGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        fuelBurnRateTrend: viewModel
+                                                            .fuelBurnRateTrend);
+                                                  } else if (rangeChoice == 2) {
+                                                    viewModel.range = 'weekly';
+                                                    viewModel
+                                                        .getFuelBurnRateTrend();
+
+                                                    return FuelBurnRateGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        fuelBurnRateTrend: viewModel
+                                                            .fuelBurnRateTrend);
+                                                  } else {
+                                                    viewModel.range = 'monthly';
+                                                    viewModel
+                                                        .getFuelBurnRateTrend();
+
+                                                    return FuelBurnRateGraph(
+                                                        rangeSelection:
+                                                            rangeChoice,
+                                                        fuelBurnRateTrend: viewModel
+                                                            .fuelBurnRateTrend);
+                                                  }
                                                 } else {
                                                   return Container();
                                                 }

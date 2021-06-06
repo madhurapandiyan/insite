@@ -20,8 +20,8 @@ class TotalFuelBurnedGraph extends StatelessWidget {
             text: rangeSelection == 1
                 ? 'Daily average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
                 : rangeSelection == 2
-                    ? 'Weekly average: Liters'
-                    : 'Monthly average: Liters'),
+                    ? 'Weekly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
+                    : 'Monthly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'),
         primaryXAxis: CategoryAxis(
           title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
           labelStyle: TextStyle(color: white),

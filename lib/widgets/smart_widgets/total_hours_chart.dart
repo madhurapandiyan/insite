@@ -20,8 +20,8 @@ class TotalHoursChart extends StatelessWidget {
             text: rangeSelection == 1
                 ? 'Daily average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
                 : rangeSelection == 2
-                    ? 'Weekly average: Hours'
-                    : 'Monthly average: Hours'),
+                    ? 'Weekly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
+                    : 'Monthly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
         primaryXAxis: CategoryAxis(
           title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
           labelStyle: TextStyle(color: white),
