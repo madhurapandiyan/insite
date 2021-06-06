@@ -8,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/widgets/smart_widgets/idle_trend_graph.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/total_fuel_burned_graph.dart';
@@ -339,19 +340,23 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                       child: viewModel
                                               .utilLizationListData.isNotEmpty
                                           ? ListView.builder(
-                                              itemCount: (graphType ==
-                                                          UtilizationGraphType
-                                                              .CUMULATIVE ||
-                                                      graphType ==
-                                                          UtilizationGraphType
-                                                              .TOTALHOURS ||
-                                                      graphType ==
-                                                          UtilizationGraphType
-                                                              .TOTALFUELBURNED)
-                                                  ? 1
-                                                  : viewModel
-                                                      .utilLizationListData
-                                                      .length,
+                                              itemCount:
+                                                  (graphType ==
+                                                              UtilizationGraphType
+                                                                  .CUMULATIVE ||
+                                                          graphType ==
+                                                              UtilizationGraphType
+                                                                  .TOTALHOURS ||
+                                                          graphType ==
+                                                              UtilizationGraphType
+                                                                  .TOTALFUELBURNED ||
+                                                          graphType ==
+                                                              UtilizationGraphType
+                                                                  .IDLETREND)
+                                                      ? 1
+                                                      : viewModel
+                                                          .utilLizationListData
+                                                          .length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
@@ -509,6 +514,14 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                           rangeChoice,
                                                       totalFuelBurned: viewModel
                                                           .totalFuelBurned);
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .IDLETREND) {
+                                                  return IdleTrendGraph(
+                                                      rangeSelection:
+                                                          rangeChoice,
+                                                      idlePercentTrend: viewModel
+                                                          .idlePercentTrend);
                                                 } else {
                                                   return Container();
                                                 }
@@ -642,6 +655,12 @@ class _UtilLizationViewState extends State<UtilLizationView> {
 
           if (dropdownValue.contains('Total Fuel Burned (Liters)'))
             graphType = UtilizationGraphType.TOTALFUELBURNED;
+
+          if (dropdownValue.contains('Idle % Trend'))
+            graphType = UtilizationGraphType.IDLETREND;
+
+          if (dropdownValue.contains('Fuel Burn Rate Trend'))
+            graphType = UtilizationGraphType.FUELBURNRATETREND;
         });
       },
       items: <String>[
