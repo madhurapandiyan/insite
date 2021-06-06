@@ -51,6 +51,12 @@ class UtilLizationViewModel extends InsiteViewModel {
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
 
+  String _range = 'daily';
+  String get range => _range;
+  set range(String range) {
+    this._range = range;
+  }
+
   bool _isMain = false;
   bool get isMain => _isMain;
 
@@ -68,6 +74,9 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+  set loading(bool loading) {
+    this._loading = loading;
+  }
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -137,8 +146,9 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   getTotalHours() async {
     TotalHours result = await _utilizationGraphService.getTotalHours(
-        'daily', _startDate, _endDate, 1, 25, true);
+        'weekly', _startDate, _endDate, 1, 25, true);
     _totalHours = result;
+    _loading = false;
     notifyListeners();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CumulativeChart extends StatelessWidget {
@@ -26,6 +27,7 @@ class CumulativeChart extends StatelessWidget {
                   ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
                   : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
               textStyle: TextStyle(color: white)),
+          majorGridLines: MajorGridLines(width: 0),
         ),
         series: runTimeCumulative == null
             ? _getStackedColumnSeries(fuelBurnedCumulative)
@@ -38,8 +40,11 @@ class CumulativeChart extends StatelessWidget {
               textStyle: TextStyle(color: white)),
           axisLine: AxisLine(width: 1),
           labelStyle: TextStyle(color: white),
+          numberFormat: NumberFormat.compact(),
+          majorGridLines: MajorGridLines(width: 0),
         ),
         tooltipBehavior: TooltipBehavior(),
+        plotAreaBorderWidth: 0,
       ),
     );
   }
@@ -81,7 +86,7 @@ class CumulativeChart extends StatelessWidget {
       ),
       StackedColumnSeries<CumulativeChartData, String>(
         dataSource: chartData,
-        color: persianIndigo,
+        color: creamCan,
         width: 0.2,
         xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
         yValueMapper: (CumulativeChartData chartDate, _) => chartDate.runtime,

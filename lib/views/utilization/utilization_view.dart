@@ -5,12 +5,13 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
+import 'package:insite/widgets/smart_widgets/total_hours_chart.dart';
 import 'package:stacked/stacked.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class UtilLizationView extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   bool isCumulative = false;
   bool isIdleWorking = true;
   bool isRuntimeHours = false;
+  bool isTotalHours = false;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
 
                                                 viewModel.endDate =
                                                     '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+
+                                                viewModel
+                                                    .getRunTimeCumulative();
+                                                viewModel
+                                                    .getFuelBurnRateTrend();
+                                                viewModel
+                                                    .getFuelBurnedCumulative();
+                                                viewModel.getIdlePercentTrend();
+                                                viewModel.getTotalFuelBurned();
+                                                viewModel.getTotalHours();
+                                                viewModel.getUtilization();
                                               }
                                             },
                                             child: Container(
@@ -253,27 +266,49 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.all(16.0),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: isRuntimeHours
-                                            ? rangeSelectionWidget('Runtime',
-                                                'Working', 'idle', true)
-                                            : isRangeSelectionVisible
-                                                ? rangeSelectionWidget('Day',
-                                                    'Week', 'month', true)
-                                                : isIdleWorking
+                                      child: Row(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: isRuntimeHours
+                                                ? rangeSelectionWidget(
+                                                    'Runtime',
+                                                    'Working',
+                                                    'idle',
+                                                    true)
+                                                : isRangeSelectionVisible
                                                     ? rangeSelectionWidget(
-                                                        'Idle',
-                                                        'Working',
-                                                        '',
-                                                        false)
-                                                    : isCumulative
+                                                        'Day',
+                                                        'Week',
+                                                        'month',
+                                                        true)
+                                                    : isIdleWorking
                                                         ? rangeSelectionWidget(
-                                                            'Runtime',
-                                                            'Fuel Burned',
+                                                            'Idle',
+                                                            'Working',
                                                             '',
                                                             false)
-                                                        : Container(),
+                                                        : isCumulative
+                                                            ? rangeSelectionWidget(
+                                                                'Runtime',
+                                                                'Fuel Burned',
+                                                                '',
+                                                                false)
+                                                            : Container(),
+                                          ),
+                                          (isCumulative || isTotalHours)
+                                              ? Expanded(
+                                                  child: UtilizationLegends(
+                                                    label1: 'Working',
+                                                    label2: 'Idle',
+                                                    label3: 'Runtime',
+                                                    color1: emerald,
+                                                    color2: burntSienna,
+                                                    color3: creamCan,
+                                                  ),
+                                                )
+                                              : Container()
+                                        ],
                                       ),
                                     ),
                                     // GRAPH LIST WIDGET
@@ -284,11 +319,12 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                       child: viewModel
                                               .utilLizationListData.isNotEmpty
                                           ? ListView.builder(
-                                              itemCount: isCumulative
-                                                  ? 1
-                                                  : viewModel
-                                                      .utilLizationListData
-                                                      .length,
+                                              itemCount:
+                                                  (isCumulative || isTotalHours)
+                                                      ? 1
+                                                      : viewModel
+                                                          .utilLizationListData
+                                                          .length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
@@ -407,6 +443,24 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                         fuelBurnedCumulative:
                                                             viewModel
                                                                 .fuelBurnedCumulative);
+                                                } else if (isTotalHours) {
+                                                  if (rangeChoice == 1) {
+                                                    viewModel.range = 'daily';
+                                                    return TotalHoursChart(
+                                                        rangeSelection: 1,
+                                                        totalHours: viewModel
+                                                            .totalHours);
+                                                  } else if (rangeChoice == 2) {
+                                                    return TotalHoursChart(
+                                                        rangeSelection: 2,
+                                                        totalHours: viewModel
+                                                            .totalHours);
+                                                  } else {
+                                                    return TotalHoursChart(
+                                                        rangeSelection: 3,
+                                                        totalHours: viewModel
+                                                            .totalHours);
+                                                  }
                                                 } else {
                                                   return Container();
                                                 }
@@ -523,21 +577,25 @@ class _UtilLizationViewState extends State<UtilLizationView> {
               ? isRangeSelectionVisible = true
               : isRangeSelectionVisible = false;
 
-          (dropdownValue.contains('Runtime Hours'))
+          dropdownValue.contains('Runtime Hours')
               ? isRuntimeHours = true
               : isRuntimeHours = false;
 
-          (dropdownValue.contains('Distance Traveled (Kilometers)'))
+          dropdownValue.contains('Distance Traveled (Kilometers)')
               ? isDistanceTravelled = true
               : isDistanceTravelled = false;
 
-          (dropdownValue.contains('Idle % / Working %'))
+          dropdownValue.contains('Idle % / Working %')
               ? isIdleWorking = true
               : isIdleWorking = false;
 
-          (dropdownValue.contains('Cumulative'))
+          dropdownValue.contains('Cumulative')
               ? isCumulative = true
               : isCumulative = false;
+
+          dropdownValue.contains('Total Hours')
+              ? isTotalHours = true
+              : isTotalHours = false;
         });
       },
       items: <String>[
