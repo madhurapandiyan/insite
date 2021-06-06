@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdlingLevel extends StatefulWidget {
   final List<CountDatum> data;
   final bool isLoading;
+
   IdlingLevel({this.data, this.isLoading});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
@@ -14,6 +15,7 @@ class IdlingLevel extends StatefulWidget {
 
 class _IdlingLevelState extends State<IdlingLevel> {
   String calendar;
+
   @override
   void initState() {
     calendar = 'DAY';
@@ -24,7 +26,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
   Widget build(BuildContext context) {
     double maxheight = MediaQuery.of(context).size.height * 0.35;
     return Container(
-      height: 400.16,
+      height: 360.16,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -89,49 +91,17 @@ class _IdlingLevelState extends State<IdlingLevel> {
                         children: [
                           Expanded(
                             child: Container(
-                              height: maxheight,
-                              child: charts.BarChart(getChartData(),
-                                  animationDuration:
-                                      Duration(microseconds: 2000),
-                                  barGroupingType:
-                                      charts.BarGroupingType.grouped,
-                                  animate: true,
-                                  domainAxis: new charts.OrdinalAxisSpec(
-                                      renderSpec:
-                                          new charts.SmallTickRendererSpec(
-                                              labelStyle:
-                                                  new charts.TextStyleSpec(
-                                                      fontSize:
-                                                          9, // size in Pts.
-                                                      color: charts
-                                                          .MaterialPalette.white,
-                                                      fontFamily: 'Roboto',
-                                                      fontWeight: 'bold'),
-                                              lineStyle: new charts.LineStyleSpec(
-                                                  color: charts
-                                                      .MaterialPalette.white))),
-                                  primaryMeasureAxis:
-                                      new charts.NumericAxisSpec(
-                                          renderSpec:
-                                              new charts.GridlineRendererSpec(
-                                                  labelStyle:
-                                                      new charts.TextStyleSpec(
-                                                          fontSize:
-                                                              9, // size in Pts.
-                                                          color: charts
-                                                              .MaterialPalette
-                                                              .white,
-                                                          fontFamily: 'Roboto',
-                                                          fontWeight: 'bold'),
-                                                  lineStyle:
-                                                      new charts.LineStyleSpec(
-                                                          color: charts
-                                                              .MaterialPalette
-                                                              .white))),
-                                  defaultRenderer: new charts.BarRendererConfig(
-                                      cornerStrategy:
-                                          const charts.ConstCornerStrategy(5))),
-                            ),
+                                height: maxheight,
+                                child: SfCartesianChart(
+                                    isTransposed: true,
+                                    plotAreaBorderWidth: 0,
+                                    primaryXAxis: CategoryAxis(
+                                      majorGridLines: MajorGridLines(width: 0),
+                                    ),
+                                    primaryYAxis: NumericAxis(
+                                      majorGridLines: MajorGridLines(width: 0),
+                                    ),
+                                    series: _getDefaultBarSeries())),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -141,7 +111,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 height: 10.0,
                               ),
                               new Text(
-                                "1212\nassets\nexcluded",
+                                widget.data[0].count.toString() +
+                                    "\n" +
+                                    "assets" +
+                                    "\n" +
+                                    "excluded",
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 9.0,
@@ -159,19 +133,6 @@ class _IdlingLevelState extends State<IdlingLevel> {
         ],
       ),
     );
-  }
-
-  List<charts.Series<dynamic, String>> getChartData() {
-    var series;
-    series = [
-      charts.Series(
-          domainFn: (CountDatum addcharts, _) => addcharts.countOf,
-          measureFn: (CountDatum addcharts, _) => addcharts.count,
-          //colorFn: (CountDatum addcharts, _) => getColor(addcharts.countOf),
-          id: 'addcharts',
-          data: widget.data)
-    ];
-    return series;
   }
 
   Widget toggelButton() {
@@ -271,28 +232,37 @@ class _IdlingLevelState extends State<IdlingLevel> {
     });
   }
 
-  charts.Color getColor(String countOf) {
-    switch (countOf) {
-      case 'Extended':
-        return charts.MaterialPalette.blue.shadeDefault;
-        break;
-      case '[0,10]':
-        return charts.Color.fromHex(code: 'EB5757');
-        break;
-      case '[10,15]':
-        return charts.Color.fromHex(code: 'EEEEEE');
-        break;
-      case '[10,15]':
-        return charts.Color.fromHex(code: 'FDE050');
-        break;
-      case '[15,25]':
-        return charts.Color.fromHex(code: '48C581');
-        break;
-      case '[25,]':
-        return charts.Color.fromHex(code: 'ABEFCA');
-        break;
-      default:
-        return charts.Color.fromHex(code: '2B2D32');
-    }
+  // charts.Color getColor(String countOf) {
+  //   switch (countOf) {
+  //     case 'Extended':
+  //       return charts.MaterialPalette.blue.shadeDefault;
+  //       break;
+  //     case '[0,10]':
+  //       return charts.Color.fromHex(code: 'EB5757');
+  //       break;
+  //     case '[10,15]':
+  //       return charts.Color.fromHex(code: 'EEEEEE');
+  //       break;
+  //     case '[10,15]':
+  //       return charts.Color.fromHex(code: 'FDE050');
+  //       break;
+  //     case '[15,25]':
+  //       return charts.Color.fromHex(code: '48C581');
+  //       break;
+  //     case '[25,]':
+  //       return charts.Color.fromHex(code: 'ABEFCA');
+  //       break;
+  //     default:
+  //       return charts.Color.fromHex(code: '2B2D32');
+  //   }
+  // }
+
+  List<BarSeries<CountDatum, String>> _getDefaultBarSeries() {
+    return <BarSeries<CountDatum, String>>[
+      BarSeries<CountDatum, String>(
+          dataSource: widget.data.sublist(1),
+          xValueMapper: (CountDatum charts, _) => charts.countOf,
+          yValueMapper: (CountDatum charts, _) => charts.count)
+    ];
   }
 }

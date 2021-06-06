@@ -128,7 +128,6 @@ class HomeViewModel extends InsiteViewModel {
   getIdlingLevelData() async {
     IdlingLevelData result = await _idlingLevelService.getidlingLevelService();
     _idlingLevelData = result;
-    print('getIdlingLevelData result :${result.countData[0].countOf}');
     _idlingLevelDataloading = false;
     notifyListeners();
   }
