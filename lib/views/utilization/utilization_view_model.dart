@@ -52,7 +52,6 @@ class UtilLizationViewModel extends InsiteViewModel {
   List<AssetResult> get utilLizationListData => _utilLizationListData;
 
   String _range = 'daily';
-  String get range => _range;
   set range(String range) {
     this._range = range;
   }
@@ -146,29 +145,28 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   getTotalHours() async {
     TotalHours result = await _utilizationGraphService.getTotalHours(
-        'weekly', _startDate, _endDate, 1, 25, true);
+        _range, _startDate, _endDate, 1, 25, true);
     _totalHours = result;
-    _loading = false;
     notifyListeners();
   }
 
   getTotalFuelBurned() async {
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
-        'daily', _startDate, _endDate, 1, 25, true);
+        _range, _startDate, _endDate, 1, 25, true);
     _totalFuelBurned = result;
     notifyListeners();
   }
 
   getIdlePercentTrend() async {
     IdlePercentTrend result = await _utilizationGraphService
-        .getIdlePercentTrend('daily', _startDate, _endDate, 1, 25, true);
+        .getIdlePercentTrend(_range, _startDate, _endDate, 1, 25, true);
     _idlePercentTrend = result;
     notifyListeners();
   }
 
   getFuelBurnRateTrend() async {
     FuelBurnRateTrend result = await _utilizationGraphService
-        .getFuelBurnRateTrend('daily', _startDate, _endDate, 1, 25, true);
+        .getFuelBurnRateTrend(_range, _startDate, _endDate, 1, 25, true);
     _fuelBurnRateTrend = result;
     notifyListeners();
   }

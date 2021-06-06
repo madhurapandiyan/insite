@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/total_hours.dart';
+import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class TotalHoursChart extends StatelessWidget {
+class TotalFuelBurnedGraph extends StatelessWidget {
   final int rangeSelection;
-  final TotalHours totalHours;
-  const TotalHoursChart(
-      {Key key, @required this.rangeSelection, @required this.totalHours})
+  final TotalFuelBurned totalFuelBurned;
+  const TotalFuelBurnedGraph(
+      {Key key, @required this.rangeSelection, @required this.totalFuelBurned})
       : super(key: key);
 
   @override
@@ -18,10 +18,10 @@ class TotalHoursChart extends StatelessWidget {
         title: ChartTitle(
             textStyle: TextStyle(color: white),
             text: rangeSelection == 1
-                ? 'Daily average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
+                ? 'Daily average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
                 : rangeSelection == 2
-                    ? 'Weekly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
-                    : 'Monthly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
+                    ? 'Weekly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
+                    : 'Monthly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'),
         primaryXAxis: CategoryAxis(
           title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
           labelStyle: TextStyle(color: white),
@@ -46,13 +46,13 @@ class TotalHoursChart extends StatelessWidget {
       _getStackedColumnSeries() {
     final List<CumulativeChartData> chartData = <CumulativeChartData>[];
 
-    for (var item in totalHours.intervals) {
+    for (var item in totalFuelBurned.intervals) {
       chartData.add(CumulativeChartData(
           DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),
-          item.totalHours,
-          item.totals.runtimeHours,
-          item.totals.workingHours,
-          item.totals.idleHours));
+          item.totalFuelBurned,
+          item.totals.runtimeFuelBurned,
+          item.totals.workingFuelBurned,
+          item.totals.idleFuelBurned));
     }
 
     return <StackedColumnSeries<CumulativeChartData, String>>[
@@ -83,11 +83,11 @@ class TotalHoursChart extends StatelessWidget {
 
 class CumulativeChartData {
   final String x;
-  final double totalHours;
+  final double totalFuelBurned;
   final double runtime;
   final double working;
   final double idle;
 
   CumulativeChartData(
-      this.x, this.totalHours, this.runtime, this.working, this.idle);
+      this.x, this.totalFuelBurned, this.runtime, this.working, this.idle);
 }
