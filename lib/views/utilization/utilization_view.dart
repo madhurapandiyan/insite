@@ -476,7 +476,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                                   .utilLizationListData[
                                                                       index]
                                                                   .distanceTravelledKilometers /
-                                                              10,
+                                                              1000,
                                                       color: creamCan);
                                                 } else if (graphType ==
                                                     UtilizationGraphType
