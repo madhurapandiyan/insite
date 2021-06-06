@@ -39,9 +39,5 @@ const yellowGradient = [mustard, mustard];
 const whiteGradient = [textcolor, textcolor];
 const Color periwinkleGrey = Color(0xFFB7BEE3);
 const Color olivine = Color(0xFF8EB685);
-final kNeumorphicColors = [
- emerald,
- concrete,
- mustard,
- burntSienna
-];
+const Color persianIndigo = Color(0xFF53168F);
+final kNeumorphicColors = [emerald, concrete, mustard, burntSienna];

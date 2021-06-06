@@ -13,6 +13,7 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
+import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -61,5 +62,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => SingleAssetOperationService());
     log.d("Registering Filter Service");
     locator.registerLazySingleton(() => FilterService());
+    log.d("Registering Utilization Graphs Service");
+    locator.registerLazySingleton(() => UtilizationGraphsService());
   }
 }

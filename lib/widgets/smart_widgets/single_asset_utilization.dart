@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
   @override
@@ -65,25 +66,13 @@ class _SingleAssetUtilizationWidgetState
                     thickness: 2,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    statusWidget(emerald),
-                    Text(
-                      'Working'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                    statusWidget(burntSienna),
-                    Text(
-                      'Idle'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                    statusWidget(creamCan),
-                    Text(
-                      'Running'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                  ],
+                UtilizationLegends(
+                  label1: 'Working',
+                  label2: 'Idle',
+                  label3: 'Running',
+                  color1: emerald,
+                  color2: burntSienna,
+                  color3: creamCan,
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
@@ -228,13 +217,4 @@ class _SingleAssetUtilizationWidgetState
       ],
     );
   }
-
-  Container statusWidget(Color color) => Container(
-        width: 10.0,
-        height: 10.0,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
-      );
 }

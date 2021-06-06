@@ -75,7 +75,7 @@ class PercentageWidget extends StatelessWidget {
         percent: percentage == null ? 0 : percentage / 100,
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,
-        backgroundColor: Colors.transparent,
+        backgroundColor: concrete,
       ),
     );
   }
