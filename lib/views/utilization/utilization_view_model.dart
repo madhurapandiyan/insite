@@ -146,7 +146,7 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   getTotalHours() async {
     TotalHours result = await _utilizationGraphService.getTotalHours(
-        'weekly', _startDate, _endDate, 1, 25, true);
+        'daily', _startDate, _endDate, 1, 25, true);
     _totalHours = result;
     _loading = false;
     notifyListeners();

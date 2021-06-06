@@ -10,6 +10,7 @@ import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
+import 'package:insite/widgets/smart_widgets/total_fuel_burned_graph.dart';
 import 'package:insite/widgets/smart_widgets/total_hours_chart.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,12 +26,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   String startDate;
   String endDate;
   List<DateTime> dateRange = [];
+
+  UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
+
   bool isRangeSelectionVisible = false;
-  bool isDistanceTravelled = false;
-  bool isCumulative = false;
-  bool isIdleWorking = true;
-  bool isRuntimeHours = false;
-  bool isTotalHours = false;
+
+  // bool isDistanceTravelled = false;
+  // bool isCumulative = false;
+  // bool isIdleWorking = true;
+  // bool isRuntimeHours = false;
+  // bool isTotalHours = false;
+  // bool isTotalFuelBurned = false;
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +276,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                         children: [
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: isRuntimeHours
+                                            child: graphType ==
+                                                    UtilizationGraphType
+                                                        .RUNTIMEHOURS
                                                 ? rangeSelectionWidget(
                                                     'Runtime',
                                                     'Working',
@@ -282,13 +290,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                         'Week',
                                                         'month',
                                                         true)
-                                                    : isIdleWorking
+                                                    : graphType ==
+                                                            UtilizationGraphType
+                                                                .IDLEORWORKING
                                                         ? rangeSelectionWidget(
                                                             'Idle',
                                                             'Working',
                                                             '',
                                                             false)
-                                                        : isCumulative
+                                                        : graphType ==
+                                                                UtilizationGraphType
+                                                                    .CUMULATIVE
                                                             ? rangeSelectionWidget(
                                                                 'Runtime',
                                                                 'Fuel Burned',
@@ -296,7 +308,15 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                                 false)
                                                             : Container(),
                                           ),
-                                          (isCumulative || isTotalHours)
+                                          (graphType ==
+                                                      UtilizationGraphType
+                                                          .CUMULATIVE ||
+                                                  graphType ==
+                                                      UtilizationGraphType
+                                                          .TOTALHOURS ||
+                                                  graphType ==
+                                                      UtilizationGraphType
+                                                          .TOTALFUELBURNED)
                                               ? Expanded(
                                                   child: UtilizationLegends(
                                                     label1: 'Working',
@@ -319,16 +339,25 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                       child: viewModel
                                               .utilLizationListData.isNotEmpty
                                           ? ListView.builder(
-                                              itemCount:
-                                                  (isCumulative || isTotalHours)
-                                                      ? 1
-                                                      : viewModel
-                                                          .utilLizationListData
-                                                          .length,
+                                              itemCount: (graphType ==
+                                                          UtilizationGraphType
+                                                              .CUMULATIVE ||
+                                                      graphType ==
+                                                          UtilizationGraphType
+                                                              .TOTALHOURS ||
+                                                      graphType ==
+                                                          UtilizationGraphType
+                                                              .TOTALFUELBURNED)
+                                                  ? 1
+                                                  : viewModel
+                                                      .utilLizationListData
+                                                      .length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                if (isIdleWorking) {
+                                                if (graphType ==
+                                                    UtilizationGraphType
+                                                        .IDLEORWORKING) {
                                                   if (rangeChoice == 1)
                                                     return PercentageWidget(
                                                         label: viewModel
@@ -365,7 +394,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                                     .workingEfficiency *
                                                                 100,
                                                         color: olivine);
-                                                } else if (isRuntimeHours) {
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .RUNTIMEHOURS) {
                                                   if (rangeChoice == 1)
                                                     return PercentageWidget(
                                                         value:
@@ -408,7 +439,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                                 .idleHours /
                                                             10,
                                                         color: sandyBrown);
-                                                } else if (isDistanceTravelled) {
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .DISTANCETRAVELLED) {
                                                   return PercentageWidget(
                                                       label: viewModel
                                                           .utilLizationListData[
@@ -433,7 +466,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                                   .distanceTravelledKilometers /
                                                               10,
                                                       color: creamCan);
-                                                } else if (isCumulative) {
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .CUMULATIVE) {
                                                   if (rangeChoice == 1)
                                                     return CumulativeChart(
                                                         runTimeCumulative: viewModel
@@ -443,24 +478,37 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                                         fuelBurnedCumulative:
                                                             viewModel
                                                                 .fuelBurnedCumulative);
-                                                } else if (isTotalHours) {
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .TOTALHOURS) {
                                                   if (rangeChoice == 1) {
                                                     viewModel.range = 'daily';
                                                     return TotalHoursChart(
-                                                        rangeSelection: 1,
+                                                        rangeSelection:
+                                                            rangeChoice,
                                                         totalHours: viewModel
                                                             .totalHours);
                                                   } else if (rangeChoice == 2) {
                                                     return TotalHoursChart(
-                                                        rangeSelection: 2,
+                                                        rangeSelection:
+                                                            rangeChoice,
                                                         totalHours: viewModel
                                                             .totalHours);
                                                   } else {
                                                     return TotalHoursChart(
-                                                        rangeSelection: 3,
+                                                        rangeSelection:
+                                                            rangeChoice,
                                                         totalHours: viewModel
                                                             .totalHours);
                                                   }
+                                                } else if (graphType ==
+                                                    UtilizationGraphType
+                                                        .TOTALFUELBURNED) {
+                                                  return TotalFuelBurnedGraph(
+                                                      rangeSelection:
+                                                          rangeChoice,
+                                                      totalFuelBurned: viewModel
+                                                          .totalFuelBurned);
                                                 } else {
                                                   return Container();
                                                 }
@@ -577,25 +625,23 @@ class _UtilLizationViewState extends State<UtilLizationView> {
               ? isRangeSelectionVisible = true
               : isRangeSelectionVisible = false;
 
-          dropdownValue.contains('Runtime Hours')
-              ? isRuntimeHours = true
-              : isRuntimeHours = false;
+          if (dropdownValue.contains('Runtime Hours'))
+            graphType = UtilizationGraphType.RUNTIMEHOURS;
 
-          dropdownValue.contains('Distance Traveled (Kilometers)')
-              ? isDistanceTravelled = true
-              : isDistanceTravelled = false;
+          if (dropdownValue.contains('Distance Traveled (Kilometers)'))
+            graphType = UtilizationGraphType.DISTANCETRAVELLED;
 
-          dropdownValue.contains('Idle % / Working %')
-              ? isIdleWorking = true
-              : isIdleWorking = false;
+          if (dropdownValue.contains('Idle % / Working %'))
+            graphType = UtilizationGraphType.IDLEORWORKING;
 
-          dropdownValue.contains('Cumulative')
-              ? isCumulative = true
-              : isCumulative = false;
+          if (dropdownValue.contains('Cumulative'))
+            graphType = UtilizationGraphType.CUMULATIVE;
 
-          dropdownValue.contains('Total Hours')
-              ? isTotalHours = true
-              : isTotalHours = false;
+          if (dropdownValue.contains('Total Hours'))
+            graphType = UtilizationGraphType.TOTALHOURS;
+
+          if (dropdownValue.contains('Total Fuel Burned (Liters)'))
+            graphType = UtilizationGraphType.TOTALFUELBURNED;
         });
       },
       items: <String>[
@@ -733,4 +779,15 @@ class _UtilLizationViewState extends State<UtilLizationView> {
       ),
     );
   }
+}
+
+enum UtilizationGraphType {
+  IDLEORWORKING,
+  RUNTIMEHOURS,
+  DISTANCETRAVELLED,
+  CUMULATIVE,
+  TOTALHOURS,
+  TOTALFUELBURNED,
+  IDLETREND,
+  FUELBURNRATETREND
 }
