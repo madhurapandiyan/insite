@@ -24,9 +24,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   Widget build(BuildContext context) {
-    double maxheight = MediaQuery.of(context).size.height * 0.35;
+    double maxheight = MediaQuery.of(context).size.height * 0.32;
+
     return Container(
-      height: 360.16,
+      height: 333.00,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -85,7 +86,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
               widget.isLoading
                   ? Expanded(child: Center(child: CircularProgressIndicator()))
                   : Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -96,11 +97,24 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                     isTransposed: true,
                                     plotAreaBorderWidth: 0,
                                     primaryXAxis: CategoryAxis(
-                                      majorGridLines: MajorGridLines(width: 0),
+                                      labelStyle: TextStyle(
+                                          color: textcolor,
+                                          fontSize: 10.0,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: 'Roboto',
+                                          fontStyle: FontStyle.normal),
+                                      majorGridLines: MajorGridLines(
+                                          width: 0, color: silver),
                                     ),
                                     primaryYAxis: NumericAxis(
-                                      majorGridLines: MajorGridLines(width: 0),
-                                    ),
+                                        majorGridLines: MajorGridLines(
+                                            width: 2, color: silver),
+                                        labelStyle: TextStyle(
+                                            color: textcolor,
+                                            fontSize: 10.0,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: 'Roboto',
+                                            fontStyle: FontStyle.normal)),
                                     series: _getDefaultBarSeries())),
                           ),
                           Column(
@@ -232,37 +246,67 @@ class _IdlingLevelState extends State<IdlingLevel> {
     });
   }
 
-  // charts.Color getColor(String countOf) {
-  //   switch (countOf) {
-  //     case 'Extended':
-  //       return charts.MaterialPalette.blue.shadeDefault;
-  //       break;
-  //     case '[0,10]':
-  //       return charts.Color.fromHex(code: 'EB5757');
-  //       break;
-  //     case '[10,15]':
-  //       return charts.Color.fromHex(code: 'EEEEEE');
-  //       break;
-  //     case '[10,15]':
-  //       return charts.Color.fromHex(code: 'FDE050');
-  //       break;
-  //     case '[15,25]':
-  //       return charts.Color.fromHex(code: '48C581');
-  //       break;
-  //     case '[25,]':
-  //       return charts.Color.fromHex(code: 'ABEFCA');
-  //       break;
-  //     default:
-  //       return charts.Color.fromHex(code: '2B2D32');
-  //   }
+  // // Color getColor(String countOf) {
+  // //   switch (countOf) {
+  // //     case '[0,10]':
+  // //       return burntSienna;
+  // //       break;
+  // //     case '[10,15]':
+  // //       return silver;
+  // //       break;
+  // //     case '[15,25]':
+  // //       return mustard;
+  // //       break;
+  // //     case '[25,]':
+  // //       return emerald;
+  // //       break;
+  // //     default:
+  // //       return Colors.lightBlueAccent;
+  // //   }
   // }
 
-  List<BarSeries<CountDatum, String>> _getDefaultBarSeries() {
-    return <BarSeries<CountDatum, String>>[
-      BarSeries<CountDatum, String>(
-          dataSource: widget.data.sublist(1),
-          xValueMapper: (CountDatum charts, _) => charts.countOf,
-          yValueMapper: (CountDatum charts, _) => charts.count)
+  List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
+    List<IdlingLevelSampleData> chartData = [];
+
+    chartData.add(
+      IdlingLevelSampleData(
+          x: widget.data[1].countOf,
+          y: widget.data[1].count,
+          color: burntSienna),
+    );
+    chartData.add(IdlingLevelSampleData(
+        x: widget.data[2].countOf, y: widget.data[2].count, color: silver));
+    chartData.add(
+      IdlingLevelSampleData(
+          x: widget.data[3].countOf, y: widget.data[3].count, color: mustard),
+    );
+    chartData.add(
+      IdlingLevelSampleData(
+          x: widget.data[4].countOf, y: widget.data[4].count, color: emerald),
+    );
+
+    return <BarSeries<IdlingLevelSampleData, String>>[
+      BarSeries<IdlingLevelSampleData, String>(
+          dataSource: chartData,
+          dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              textStyle: new TextStyle(
+                  color: textcolor,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
+                  fontStyle: FontStyle.normal),
+              labelPosition: ChartDataLabelPosition.outside),
+          pointColorMapper: (IdlingLevelSampleData charts, _) => charts.color,
+          xValueMapper: (IdlingLevelSampleData charts, _) => charts.x,
+          yValueMapper: (IdlingLevelSampleData charts, _) => charts.y),
     ];
   }
+}
+
+class IdlingLevelSampleData {
+  final String x;
+  final int y;
+  final Color color;
+  IdlingLevelSampleData({this.x, this.y, this.color});
 }

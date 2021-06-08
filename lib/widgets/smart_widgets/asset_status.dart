@@ -99,6 +99,16 @@ class _AssetStatusState extends State<AssetStatus> {
                                 width: 150,
                                 height: 150,
                                 child: SfCircularChart(
+                                  palette: <Color>[
+                                    emerald,
+                                    burntSienna,
+                                    mustard,
+                                    textcolor,
+                                    lightRose,
+                                    persianIndigo,
+                                    maptextcolor,
+                                    sandyBrown
+                                  ],
                                   legend: Legend(
                                       isVisible: false,
                                       overflowMode:
@@ -177,9 +187,8 @@ class _AssetStatusState extends State<AssetStatus> {
           endAngle: 90,
           radius: '85%',
           dataLabelSettings: DataLabelSettings(
-                connectorLineSettings:
+              connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
-              color: cardcolor,
               textStyle: new TextStyle(
                   color: textcolor,
                   fontSize: 10.0,

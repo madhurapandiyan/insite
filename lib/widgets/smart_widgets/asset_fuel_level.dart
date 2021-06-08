@@ -90,6 +90,12 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                               width: 150,
                               height: 150,
                               child: SfCircularChart(
+                                palette: <Color>[
+                                  burntSienna,
+                                  lightRose,
+                                  mustard,
+                                  emerald
+                                ],
                                 legend: Legend(isVisible: false),
                                 centerY: '70%',
                                 series: _getSemiDoughnutSeries(),
