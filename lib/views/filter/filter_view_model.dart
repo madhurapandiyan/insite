@@ -3,7 +3,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/filter_service.dart';
-import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   var _searchService = locator<FilterService>();
@@ -15,6 +14,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataSubscription = [];
   List<FilterData> filterDataModelYear = [];
   List<FilterData> filterDataProductFamily = [];
+  List<FilterData> filterDataAllAssets = [];
+  List<FilterData> filteredData = [];
 
   FilterViewModel() {
     _searchService.setUp();
@@ -42,6 +43,14 @@ class FilterViewModel extends InsiteViewModel {
         await _searchService.getAssetCount("productfamily");
     addData(filterDataProductFamily, resultProductfamily, FilterType.MAKE);
 
+    AssetStatusData resultAllAssets =
+        await _searchService.getAssetCount("assetstatus");
+    addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
+
+    // AssetStatusData resultFuleLevel =
+    //     await _searchService.getAssetCount("fuellevel");
+    // addData(filterDataProductFamily, resultProductfamily, FilterType.MAKE);
+
     _loading = false;
     notifyListeners();
   }
@@ -61,7 +70,5 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  onFilterSelected(List<FilterData> list, FilterType type) {
-    
-  }
+  onFilterSelected(List<FilterData> list, FilterType type) {}
 }

@@ -60,6 +60,7 @@ class _LocationViewState extends State<LocationView> {
           return InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.LOCATION,
+              onFilterApplied: () {},
               body: Center(
                 child: CircularProgressIndicator(),
               ));

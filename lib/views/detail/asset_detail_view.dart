@@ -35,6 +35,7 @@ class _TabPageState extends State<AssetDetailView> {
         return InsiteScaffold(
           screenType: ScreenType.ASSET_DETAIL,
           viewModel: viewModel,
+          onFilterApplied: () {},
           body: viewModel.loading
               ? Center(
                   child: CircularProgressIndicator(),
