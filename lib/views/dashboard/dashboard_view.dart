@@ -21,6 +21,7 @@ class _DashboardViewState extends State<DashboardView> {
       builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
         return InsiteScaffold(
           screenType: ScreenType.DASHBOARD,
+          onFilterApplied: () {},
           viewModel: viewModel,
           body: Container(
             padding: EdgeInsets.all(16),

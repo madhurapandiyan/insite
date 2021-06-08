@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
-class FleetChipFilter extends StatelessWidget {
-  const FleetChipFilter({
+class FilterChipItem extends StatelessWidget {
+  const FilterChipItem({
     Key key,
     @required this.label,
     this.onClose,

@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 
 class FleetKnob extends StatelessWidget {
-  const FleetKnob({
-    Key key,
-    @required this.count,
-    @required this.label,
-  }) : super(key: key);
+  const FleetKnob({this.filterData});
 
-  final String count;
-  final String label;
+  final FilterData filterData;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 130,
       height: 130,
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
         color: cardcolor,
         shape: BoxShape.circle,
@@ -57,12 +53,13 @@ class FleetKnob extends StatelessWidget {
               )),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                count,
+                filterData.count,
                 style: TextStyle(
                   color: white,
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -70,7 +67,8 @@ class FleetKnob extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                label.toUpperCase(),
+                filterData.title.toUpperCase(),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: white,
                   fontSize: 12,

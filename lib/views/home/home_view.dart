@@ -33,6 +33,7 @@ class _HomeViewState extends State<HomeView> {
         return InsiteScaffold(
           viewModel: viewModel,
           screenType: ScreenType.DASHBOARD,
+          onFilterApplied: () {},
           body: SingleChildScrollView(
             child: Container(
               color: bgcolor,
@@ -45,8 +46,9 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetStatus(
-                        statusChartData: viewModel.statusChartData!=null?
-                        viewModel.statusChartData:null,
+                        statusChartData: viewModel.statusChartData != null
+                            ? viewModel.statusChartData
+                            : null,
                         isLoading: viewModel.assetStatusloading),
                   ),
                   SizedBox(
@@ -110,8 +112,9 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetStatusUsage(
-                      statusChartData: viewModel.statusChartData!=null?
-                        viewModel.statusChartData:null,
+                      statusChartData: viewModel.statusChartData != null
+                          ? viewModel.statusChartData
+                          : null,
                       isLoading: viewModel.assetStatusloading,
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -29,4 +30,27 @@ abstract class InsiteViewModel extends BaseViewModel {
       _navigationService.replaceWith(logoutViewRoute);
     });
   }
+
+  List<FilterData> appliedFilters = [
+    FilterData(
+        count: "24668",
+        isSelected: false,
+        title: "BACKHOE LOADERS",
+        type: FilterType.PRODUCT_FAMILY),
+    FilterData(
+        count: "3234",
+        isSelected: false,
+        title: "WHEEL LOADER",
+        type: FilterType.PRODUCT_FAMILY),
+    FilterData(
+        count: "34353",
+        isSelected: false,
+        title: "EXCAVATOR",
+        type: FilterType.PRODUCT_FAMILY),
+    FilterData(
+        count: "7864",
+        isSelected: false,
+        title: "UNASSIGNED",
+        type: FilterType.PRODUCT_FAMILY),
+  ];
 }

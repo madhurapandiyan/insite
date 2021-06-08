@@ -88,7 +88,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                         },
                       )
                     : SizedBox(),
-                _isFilterSelected ? FilterView() : SizedBox()
+                _isFilterSelected
+                    ? FilterView(
+                        onFilterApplied: () {
+                          widget.onFilterApplied();
+                        },
+                      )
+                    : SizedBox()
               ]),
       ),
     );
@@ -98,6 +104,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     if (action == error.ErrorAction.LOGIN) {
       viewModel.login();
     } else if (action == error.ErrorAction.LOGIN) {}
+  }
+
+  onFilterApplied() {
+    setState(() {
+      _isFilterSelected = !_isFilterSelected;
+    });
+    widget.onFilterApplied();
   }
 
   onGlobalSearchItemSelected(TopMatch match) {
