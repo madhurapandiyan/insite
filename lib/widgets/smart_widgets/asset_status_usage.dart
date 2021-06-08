@@ -87,6 +87,16 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                               width: 150,
                               height: 150,
                               child: SfCircularChart(
+                                palette: <Color>[
+                                  emerald,
+                                  burntSienna,
+                                  mustard,
+                                  textcolor,
+                                  lightRose,
+                                  persianIndigo,
+                                  maptextcolor,
+                                  sandyBrown
+                                ],
                                 legend: Legend(
                                     isVisible: false,
                                     overflowMode: LegendItemOverflowMode.wrap),
@@ -152,9 +162,9 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
           endAngle: 90,
           radius: '85%',
           dataLabelSettings: DataLabelSettings(
-                connectorLineSettings:
+              connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
-              color: cardcolor,
+            
               textStyle: new TextStyle(
                   color: textcolor,
                   fontSize: 10.0,
