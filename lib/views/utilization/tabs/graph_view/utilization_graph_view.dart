@@ -56,7 +56,9 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: UtilGraphDropdownWidget(
                           graphType: (UtilizationGraphType selectedGraph) {
-                            graphType = selectedGraph;
+                            setState(() {
+                              graphType = selectedGraph;
+                            });
                           },
                         ),
                       ),
@@ -77,16 +79,25 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                             label2: 'Working',
                             label3: 'idle',
                             rangeChoice: (int choice) {
-                              rangeChoice = choice;
+                              setState(() {
+                                rangeChoice = choice;
+                              });
                             },
                           )
-                        : isRangeSelectionVisible
+                        : (graphType == UtilizationGraphType.TOTALHOURS ||
+                                graphType ==
+                                    UtilizationGraphType.TOTALFUELBURNED ||
+                                graphType == UtilizationGraphType.IDLETREND ||
+                                graphType ==
+                                    UtilizationGraphType.FUELBURNRATETREND)
                             ? RangeSelectionWidget(
                                 label1: 'Day',
                                 label2: 'Week',
                                 label3: 'month',
                                 rangeChoice: (int choice) {
-                                  rangeChoice = choice;
+                                  setState(() {
+                                    rangeChoice = choice;
+                                  });
                                 },
                               )
                             : graphType == UtilizationGraphType.IDLEORWORKING
@@ -95,7 +106,9 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                                     label2: 'Working',
                                     label3: null,
                                     rangeChoice: (int choice) {
-                                      rangeChoice = choice;
+                                      setState(() {
+                                        rangeChoice = choice;
+                                      });
                                     },
                                   )
                                 : graphType == UtilizationGraphType.CUMULATIVE
@@ -104,7 +117,9 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                                         label2: 'Fuel Burned',
                                         label3: null,
                                         rangeChoice: (int choice) {
-                                          rangeChoice = choice;
+                                          setState(() {
+                                            rangeChoice = choice;
+                                          });
                                         },
                                       )
                                     : Container(),

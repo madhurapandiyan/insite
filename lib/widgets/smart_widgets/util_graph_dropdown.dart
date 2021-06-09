@@ -13,7 +13,7 @@ class UtilGraphDropdownWidget extends StatefulWidget {
 }
 
 class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
-  String dropdownValue;
+  String dropdownValue = 'Idle % / Working %';
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
