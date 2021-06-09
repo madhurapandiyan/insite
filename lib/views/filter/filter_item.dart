@@ -25,14 +25,14 @@ class _FilterItemState extends State<FilterItem> {
     if (text != null && text.trim().isNotEmpty) {
       list.forEach((item) {
         if (item.title.contains(text) || item.title.contains(text))
-          _searchList.add(item);
+          _displayList.add(item);
       });
       Logger().i("total list size " + list.length.toString());
-      Logger().i("searched list size " + _searchList.length.toString());
+      Logger().i("searched list size " + _displayList.length.toString());
       setState(() {});
     } else {
-      if (_searchList.isNotEmpty) {
-        _searchList.clear();
+      if (_displayList.isNotEmpty) {
+        _displayList.clear();
         if (_textEditingController != null && text.isEmpty) {
           setState(() {});
           return;
@@ -42,12 +42,12 @@ class _FilterItemState extends State<FilterItem> {
   }
 
   List<FilterData> list;
-  List<FilterData> _searchList;
+  List<FilterData> _displayList;
 
   @override
   void initState() {
     list = widget.data;
-    _searchList = list;
+    _displayList = list;
     _textEditingController.addListener(() {
       onSearchTextChanged(_textEditingController.text);
     });
@@ -90,32 +90,37 @@ class _FilterItemState extends State<FilterItem> {
                   onTextChanged: onSearchTextChanged,
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InsiteRichText(
-                      title: "",
-                      content: "CLEAR FILTERS",
-                      textColor: Colors.white,
-                      onTap: () {
-                        Logger().d("clear filter");
-                        clearFilter();
-                      },
-                    ),
-                    InsiteButton(
-                      onTap: () {
-                        widget.onApply(list);
-                      },
-                      width: 100,
-                      height: 40,
-                      title: "APPLY",
+              list.where((element) => element.isSelected).length > 0
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InsiteRichText(
+                            title: "",
+                            content: "CLEAR FILTERS",
+                            textColor: Colors.white,
+                            onTap: () {
+                              Logger().d("clear filter");
+                              clearFilter();
+                              widget.onClear();
+                            },
+                          ),
+                          InsiteButton(
+                            onTap: () {
+                              widget.onApply(list
+                                  .where((element) => element.isSelected)
+                                  .toList());
+                            },
+                            width: 100,
+                            height: 40,
+                            title: "APPLY",
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              ),
+                  : SizedBox(),
               SizedBox(
                 height: 8,
               ),

@@ -5,7 +5,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/filter_service.dart';
 
 class FilterViewModel extends InsiteViewModel {
-  var _searchService = locator<FilterService>();
+  var _filterService = locator<FilterService>();
   bool _loading = true;
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
@@ -18,33 +18,36 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filteredData = [];
 
   FilterViewModel() {
-    _searchService.setUp();
-    getFilterData();
+    _filterService.setUp();
+    Future.delayed(Duration(seconds: 1), () {
+      getFilterData();
+    });
   }
 
   getFilterData() async {
-    AssetStatusData resultModel = await _searchService.getAssetCount("model");
+    AssetStatusData resultModel = await _filterService.getAssetCount("model");
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
     AssetStatusData resultDeviceType =
-        await _searchService.getAssetCount("deviceType");
+        await _filterService.getAssetCount("deviceType");
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     AssetStatusData resultSubscriptiontype =
-        await _searchService.getAssetCount("subscriptiontype");
+        await _filterService.getAssetCount("subscriptiontype");
     addData(filterDataSubscription, resultSubscriptiontype,
         FilterType.SUBSCRIPTION_DATE);
 
     AssetStatusData resultManufacturer =
-        await _searchService.getAssetCount("manufacturer");
+        await _filterService.getAssetCount("manufacturer");
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
     AssetStatusData resultProductfamily =
-        await _searchService.getAssetCount("productfamily");
-    addData(filterDataProductFamily, resultProductfamily, FilterType.MAKE);
+        await _filterService.getAssetCount("productfamily");
+    addData(filterDataProductFamily, resultProductfamily,
+        FilterType.PRODUCT_FAMILY);
 
     AssetStatusData resultAllAssets =
-        await _searchService.getAssetCount("assetstatus");
+        await _filterService.getAssetCount("assetstatus");
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     // AssetStatusData resultFuleLevel =
@@ -70,5 +73,17 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  onFilterSelected(List<FilterData> list, FilterType type) {}
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  onFilterSelected(List<FilterData> list, FilterType type) {
+    _filterService.updateFilterInDb(type, list);
+    getSelectedFilterData();
+  }
+
+  onFilterCleared(FilterType type) {
+    _filterService.clearFilterInDb(type);
+  }
 }

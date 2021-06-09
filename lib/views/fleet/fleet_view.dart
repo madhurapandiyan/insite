@@ -30,7 +30,9 @@ class _FleetViewState extends State<FleetView> {
         return InsiteScaffold(
           viewModel: viewModel,
           screenType: ScreenType.FLEET,
-          onFilterApplied: () {},
+          onFilterApplied: () {
+            viewModel.getSelectedFilterData();
+          },
           body: Container(
             color: bgcolor,
             child: viewModel.loading
@@ -42,7 +44,8 @@ class _FleetViewState extends State<FleetView> {
                         children: [
                           viewModel.appliedFilters.isNotEmpty
                               ? FilterChipView(
-                                  data: viewModel.appliedFilters,
+                                  filters: viewModel.appliedFilters,
+                                  onClosed: (value) {},
                                 )
                               : SizedBox(),
                           viewModel.appliedFilters.isNotEmpty
