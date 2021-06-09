@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/utilization/graphs/cumulative/cumulative_view.dart';
+import 'package:insite/views/utilization/graphs/distance_travelled/distance_travelled_view.dart';
+import 'package:insite/views/utilization/graphs/fuel_burn_rate_trend/fuel_burn_rate_trend_view.dart';
+import 'package:insite/views/utilization/graphs/idle_percent_trend/idle_percent_trend_view.dart';
+import 'package:insite/views/utilization/graphs/idle_percent_working_percent/idle_percent_working_percent_view.dart';
+import 'package:insite/views/utilization/graphs/runtime_hours/runtime_hours_view.dart';
+import 'package:insite/views/utilization/graphs/total_fuel_burned/total_fuel_burned_view.dart';
+import 'package:insite/views/utilization/graphs/total_hours/total_hours_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
@@ -142,215 +150,83 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                 ],
               ),
             ),
-            // GRAPH LIST WIDGET
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: viewModel.utilLizationListData.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: (graphType ==
-                                  UtilizationGraphType.CUMULATIVE ||
-                              graphType == UtilizationGraphType.TOTALHOURS ||
-                              graphType ==
-                                  UtilizationGraphType.TOTALFUELBURNED ||
-                              graphType == UtilizationGraphType.IDLETREND ||
-                              graphType ==
-                                  UtilizationGraphType.FUELBURNRATETREND)
-                          ? 1
-                          : viewModel.utilLizationListData.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (graphType == UtilizationGraphType.IDLEORWORKING) {
-                          if (rangeChoice == 1)
-                            return PercentageWidget(
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: viewModel
-                                            .utilLizationListData[index]
-                                            .idleEfficiency ==
-                                        null
-                                    ? null
-                                    : viewModel.utilLizationListData[index]
-                                            .idleEfficiency *
-                                        100,
-                                color: sandyBrown);
-                          else
-                            return PercentageWidget(
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: viewModel
-                                            .utilLizationListData[index]
-                                            .workingEfficiency ==
-                                        null
-                                    ? null
-                                    : viewModel.utilLizationListData[index]
-                                            .workingEfficiency *
-                                        100,
-                                color: olivine);
-                        } else if (graphType ==
-                            UtilizationGraphType.RUNTIMEHOURS) {
-                          if (rangeChoice == 1)
-                            return PercentageWidget(
-                                value:
-                                    '${viewModel.utilLizationListData[index].runtimeHours}',
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: viewModel
-                                        .utilLizationListData[index]
-                                        .runtimeHours /
-                                    10,
-                                color: sandyBrown);
-                          else if (rangeChoice == 2)
-                            return PercentageWidget(
-                                value:
-                                    '${viewModel.utilLizationListData[index].workingHours}',
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: viewModel
-                                        .utilLizationListData[index]
-                                        .workingHours /
-                                    10,
-                                color: sandyBrown);
-                          else
-                            return PercentageWidget(
-                                value:
-                                    '${viewModel.utilLizationListData[index].idleHours}',
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: viewModel
-                                        .utilLizationListData[index].idleHours /
-                                    10,
-                                color: sandyBrown);
-                        } else if (graphType ==
-                            UtilizationGraphType.DISTANCETRAVELLED) {
-                          return PercentageWidget(
-                              label: viewModel.utilLizationListData[index]
-                                  .assetSerialNumber,
-                              value: viewModel.utilLizationListData[index]
-                                          .distanceTravelledKilometers ==
-                                      null
-                                  ? 'NA'
-                                  : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
-                              percentage: viewModel.utilLizationListData[index]
-                                          .distanceTravelledKilometers ==
-                                      null
-                                  ? 0
-                                  : viewModel.utilLizationListData[index]
-                                          .distanceTravelledKilometers /
-                                      1000,
-                              color: creamCan);
-                        } else if (graphType ==
-                            UtilizationGraphType.CUMULATIVE) {
-                          if (rangeChoice == 1)
-                            return CumulativeChart(
-                                runTimeCumulative: viewModel.runTimeCumulative);
-                          else
-                            return CumulativeChart(
-                                fuelBurnedCumulative:
-                                    viewModel.fuelBurnedCumulative);
-                        } else if (graphType ==
-                            UtilizationGraphType.TOTALHOURS) {
-                          if (rangeChoice == 1) {
-                            viewModel.range = 'daily';
-                            viewModel.getTotalHours();
-
-                            return TotalHoursChart(
-                                rangeSelection: rangeChoice,
-                                totalHours: viewModel.totalHours);
-                          } else if (rangeChoice == 2) {
-                            viewModel.range = 'weekly';
-                            viewModel.getTotalHours();
-
-                            return TotalHoursChart(
-                                rangeSelection: rangeChoice,
-                                totalHours: viewModel.totalHours);
-                          } else {
-                            viewModel.range = 'monthly';
-                            viewModel.getTotalHours();
-
-                            return TotalHoursChart(
-                                rangeSelection: rangeChoice,
-                                totalHours: viewModel.totalHours);
-                          }
-                        } else if (graphType ==
-                            UtilizationGraphType.TOTALFUELBURNED) {
-                          if (rangeChoice == 1) {
-                            viewModel.range = 'daily';
-                            viewModel.getTotalFuelBurned();
-
-                            return TotalFuelBurnedGraph(
-                                rangeSelection: rangeChoice,
-                                totalFuelBurned: viewModel.totalFuelBurned);
-                          }
-                          if (rangeChoice == 2) {
-                            viewModel.range = 'weekly';
-                            viewModel.getTotalFuelBurned();
-
-                            return TotalFuelBurnedGraph(
-                                rangeSelection: rangeChoice,
-                                totalFuelBurned: viewModel.totalFuelBurned);
-                          } else {
-                            viewModel.range = 'monthly';
-                            viewModel.getTotalFuelBurned();
-
-                            return TotalFuelBurnedGraph(
-                                rangeSelection: rangeChoice,
-                                totalFuelBurned: viewModel.totalFuelBurned);
-                          }
-                        } else if (graphType ==
-                            UtilizationGraphType.IDLETREND) {
-                          if (rangeChoice == 1) {
-                            viewModel.range = 'daily';
-                            viewModel.getIdlePercentTrend();
-
-                            return IdleTrendGraph(
-                                rangeSelection: rangeChoice,
-                                idlePercentTrend: viewModel.idlePercentTrend);
-                          } else if (rangeChoice == 2) {
-                            viewModel.range = 'weekly';
-                            viewModel.getIdlePercentTrend();
-
-                            return IdleTrendGraph(
-                                rangeSelection: rangeChoice,
-                                idlePercentTrend: viewModel.idlePercentTrend);
-                          } else {
-                            viewModel.range = 'monthly';
-                            viewModel.getIdlePercentTrend();
-
-                            return IdleTrendGraph(
-                                rangeSelection: rangeChoice,
-                                idlePercentTrend: viewModel.idlePercentTrend);
-                          }
-                        } else if (graphType ==
-                            UtilizationGraphType.FUELBURNRATETREND) {
-                          if (rangeChoice == 1) {
-                            viewModel.range = 'daily';
-                            viewModel.getFuelBurnRateTrend();
-
-                            return FuelBurnRateGraph(
-                                rangeSelection: rangeChoice,
-                                fuelBurnRateTrend: viewModel.fuelBurnRateTrend);
-                          } else if (rangeChoice == 2) {
-                            viewModel.range = 'weekly';
-                            viewModel.getFuelBurnRateTrend();
-
-                            return FuelBurnRateGraph(
-                                rangeSelection: rangeChoice,
-                                fuelBurnRateTrend: viewModel.fuelBurnRateTrend);
-                          } else {
-                            viewModel.range = 'monthly';
-                            viewModel.getFuelBurnRateTrend();
-
-                            return FuelBurnRateGraph(
-                                rangeSelection: rangeChoice,
-                                fuelBurnRateTrend: viewModel.fuelBurnRateTrend);
-                          }
-                        } else {
-                          return Container();
-                        }
-                      })
-                  : EmptyView(
-                      title: "No Assets Found",
-                    ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: graphType == UtilizationGraphType.IDLEORWORKING
+                    ? IdlePercentWorkingPercentView(
+                        rangeChoice: rangeChoice,
+                      )
+                    : graphType == UtilizationGraphType.RUNTIMEHOURS
+                        ? RuntimeHoursView(
+                            rangeChoice: rangeChoice,
+                          )
+                        : graphType == UtilizationGraphType.DISTANCETRAVELLED
+                            ? DistanceTravelledView()
+                            : graphType == UtilizationGraphType.CUMULATIVE
+                                ? CumulativeView(
+                                    rangeChoice: rangeChoice,
+                                  )
+                                : graphType == UtilizationGraphType.TOTALHOURS
+                                    ? TotalHoursView(
+                                        rangeChoice: rangeChoice,
+                                      )
+                                    : graphType ==
+                                            UtilizationGraphType.TOTALFUELBURNED
+                                        ? TotalFuelBurnedView(
+                                            rangeChoice: rangeChoice,
+                                          )
+                                        : graphType ==
+                                                UtilizationGraphType.IDLETREND
+                                            ? IdlePercentTrendView(
+                                                rangeChoice: rangeChoice,
+                                              )
+                                            : graphType ==
+                                                    UtilizationGraphType
+                                                        .FUELBURNRATETREND
+                                                ? FuelBurnRateTrendView(
+                                                    rangeChoice: rangeChoice,
+                                                  )
+                                                : Container(),
+              ),
             ),
+            // GRAPH LIST WIDGET
+            // Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 8.0),
+            //   child: viewModel.utilLizationListData.isNotEmpty
+            //       ? ListView.builder(
+            //           itemCount:
+            //                viewModel.utilLizationListData.length,
+            //           itemBuilder: (BuildContext context, int index) {
+            //              if (graphType ==
+            //                 UtilizationGraphType.RUNTIMEHOURS) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.DISTANCETRAVELLED) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.CUMULATIVE) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.TOTALHOURS) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.TOTALFUELBURNED) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.IDLETREND) {
+            //
+            //             } else if (graphType ==
+            //                 UtilizationGraphType.FUELBURNRATETREND) {
+            //
+            //             } else {
+            //               return Container();
+            //             }
+            //           })
+            //       : EmptyView(
+            //           title: "No Assets Found",
+            //         ),
+            // ),
           ],
         );
       },

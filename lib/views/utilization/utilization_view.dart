@@ -124,9 +124,13 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                         ),
                       ),
                     ),
+
+                    // TODO: change to tab view
                     isListSelected
                         ? UtilizationListView(dateRange: dateRange)
-                        : UtilizationGraphView(dateRange: dateRange),
+                        : Expanded(
+                            child: UtilizationGraphView(dateRange: dateRange),
+                          ),
                   ],
                 ),
               ),

@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:insite/widgets/smart_widgets/total_hours_chart.dart';
 import 'package:stacked/stacked.dart';
 import 'total_hours_view_model.dart';
-          
-class TotalHoursView extends StatelessWidget {
+
+class TotalHoursView extends StatefulWidget {
+  final int rangeChoice;
+  const TotalHoursView({Key key, this.rangeChoice}) : super(key: key);
+
+  @override
+  _TotalHoursViewState createState() => _TotalHoursViewState();
+}
+
+class _TotalHoursViewState extends State<TotalHoursView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalHoursViewModel>.reactive(
       builder: (BuildContext context, TotalHoursViewModel viewModel, Widget _) {
-        return Scaffold(
-          appBar: AppBar(),
-          body: Center(
-            child: Text('TotalHours View'),
-          ),
-        );
+        if (viewModel.loading) return CircularProgressIndicator();
+        if (widget.rangeChoice == 1) {
+          viewModel.range = 'daily';
+          viewModel.getTotalHours();
+
+          return TotalHoursChart(
+              rangeSelection: widget.rangeChoice,
+              totalHours: viewModel.totalHours);
+        } else if (widget.rangeChoice == 2) {
+          viewModel.range = 'weekly';
+          viewModel.getTotalHours();
+
+          return TotalHoursChart(
+              rangeSelection: widget.rangeChoice,
+              totalHours: viewModel.totalHours);
+        } else {
+          viewModel.range = 'monthly';
+          viewModel.getTotalHours();
+
+          return TotalHoursChart(
+              rangeSelection: widget.rangeChoice,
+              totalHours: viewModel.totalHours);
+        }
       },
       viewModelBuilder: () => TotalHoursViewModel(),
     );
