@@ -6,7 +6,11 @@ import 'runtime_hours_view_model.dart';
 
 class RuntimeHoursView extends StatefulWidget {
   final int rangeChoice;
-  const RuntimeHoursView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const RuntimeHoursView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _RuntimeHoursViewState createState() => _RuntimeHoursViewState();
@@ -52,7 +56,8 @@ class _RuntimeHoursViewState extends State<RuntimeHoursView> {
                     color: sandyBrown);
             });
       },
-      viewModelBuilder: () => RuntimeHoursViewModel(),
+      viewModelBuilder: () =>
+          RuntimeHoursViewModel(widget.startDate, widget.endDate),
     );
   }
 }

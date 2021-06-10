@@ -6,8 +6,10 @@ import 'idle_percent_working_percent_view_model.dart';
 
 class IdlePercentWorkingPercentView extends StatefulWidget {
   final int rangeChoice;
-
-  const IdlePercentWorkingPercentView({Key key, this.rangeChoice})
+  final String startDate;
+  final String endDate;
+  const IdlePercentWorkingPercentView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
       : super(key: key);
 
   @override
@@ -52,7 +54,8 @@ class _IdlePercentWorkingPercentViewState
               }
             });
       },
-      viewModelBuilder: () => IdlePercentWorkingPercentViewModel(),
+      viewModelBuilder: () =>
+          IdlePercentWorkingPercentViewModel(widget.startDate, widget.endDate),
     );
   }
 }

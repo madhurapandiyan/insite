@@ -7,6 +7,7 @@ import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
@@ -17,8 +18,9 @@ class UtilLizationView extends StatefulWidget {
 class _UtilLizationViewState extends State<UtilLizationView> {
   bool isListSelected = true;
   int rangeChoice = 1;
-  String startDate;
-  String endDate;
+  String startDate = DateFormat('MM/dd/yyyy')
+      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
+  String endDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
   List<DateTime> dateRange = [];
 
   UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
@@ -59,35 +61,26 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                           GestureDetector(
                             onTap: () async {
                               dateRange = [];
+
                               dateRange = await showDialog(
                                 context: context,
                                 builder: (BuildContext context) => Dialog(
                                     backgroundColor: transparent,
                                     child: DateRangeWidget()),
                               );
-                              if (dateRange.isNotEmpty) {
-                                // viewModel.startDate =
-                                //     '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
 
-                                // viewModel.endDate =
-                                //     '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                              setState(() {
+                                if (dateRange.isNotEmpty) {
+                                  startDate = DateFormat('MM/dd/yyyy')
+                                      .format(dateRange.first);
 
-                                // if (rangeChoice == 1) viewModel.range = 'daily';
+                                  endDate = DateFormat('MM/dd/yyyy')
+                                      .format(dateRange.last);
+                                }
+                              });
 
-                                // if (rangeChoice == 2)
-                                //   viewModel.range = 'weekly';
-
-                                // if (rangeChoice == 3)
-                                //   viewModel.range = 'monthly';
-
-                                // viewModel.getRunTimeCumulative();
-                                // viewModel.getFuelBurnRateTrend();
-                                // viewModel.getFuelBurnedCumulative();
-                                // viewModel.getIdlePercentTrend();
-                                // viewModel.getTotalFuelBurned();
-                                // viewModel.getTotalHours();
-                                // viewModel.getUtilization();
-                              }
+                              print('@@@ After start date: $startDate');
+                              print('@@@ After end date: $endDate');
                             },
                             child: Container(
                               width: 90,
@@ -124,12 +117,13 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                         ),
                       ),
                     ),
-
-                    // TODO: change to tab view
                     isListSelected
                         ? UtilizationListView(dateRange: dateRange)
                         : Expanded(
-                            child: UtilizationGraphView(dateRange: dateRange),
+                            child: UtilizationGraphView(
+                              startDate: startDate,
+                              endDate: endDate,
+                            ),
                           ),
                   ],
                 ),

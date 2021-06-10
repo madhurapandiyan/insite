@@ -5,7 +5,11 @@ import 'total_hours_view_model.dart';
 
 class TotalHoursView extends StatefulWidget {
   final int rangeChoice;
-  const TotalHoursView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const TotalHoursView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _TotalHoursViewState createState() => _TotalHoursViewState();
@@ -40,7 +44,8 @@ class _TotalHoursViewState extends State<TotalHoursView> {
               totalHours: viewModel.totalHours);
         }
       },
-      viewModelBuilder: () => TotalHoursViewModel(),
+      viewModelBuilder: () =>
+          TotalHoursViewModel(widget.startDate, widget.endDate),
     );
   }
 }

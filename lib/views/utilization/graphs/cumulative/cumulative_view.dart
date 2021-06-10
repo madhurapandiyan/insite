@@ -5,7 +5,11 @@ import 'cumulative_view_model.dart';
 
 class CumulativeView extends StatefulWidget {
   final int rangeChoice;
-  const CumulativeView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const CumulativeView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _CumulativeViewState createState() => _CumulativeViewState();
@@ -24,7 +28,8 @@ class _CumulativeViewState extends State<CumulativeView> {
           return CumulativeChart(
               fuelBurnedCumulative: viewModel.fuelBurnedCumulative);
       },
-      viewModelBuilder: () => CumulativeViewModel(),
+      viewModelBuilder: () =>
+          CumulativeViewModel(widget.startDate, widget.endDate),
     );
   }
 }

@@ -18,20 +18,13 @@ class DistanceTravelledViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
+  String _startDate;
+  String _endDate;
 
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
-  DistanceTravelledViewModel() {
+  DistanceTravelledViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
+    _startDate = startDate;
+    _endDate = endDate;
     getUtilization();
   }
 

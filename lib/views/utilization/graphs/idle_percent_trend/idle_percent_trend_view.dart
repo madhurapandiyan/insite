@@ -5,7 +5,11 @@ import 'idle_percent_trend_view_model.dart';
 
 class IdlePercentTrendView extends StatefulWidget {
   final int rangeChoice;
-  const IdlePercentTrendView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const IdlePercentTrendView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _IdlePercentTrendViewState createState() => _IdlePercentTrendViewState();
@@ -41,7 +45,8 @@ class _IdlePercentTrendViewState extends State<IdlePercentTrendView> {
               idlePercentTrend: viewModel.idlePercentTrend);
         }
       },
-      viewModelBuilder: () => IdlePercentTrendViewModel(),
+      viewModelBuilder: () =>
+          IdlePercentTrendViewModel(widget.startDate, widget.endDate),
     );
   }
 }

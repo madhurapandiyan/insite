@@ -5,7 +5,11 @@ import 'total_fuel_burned_view_model.dart';
 
 class TotalFuelBurnedView extends StatefulWidget {
   final int rangeChoice;
-  const TotalFuelBurnedView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const TotalFuelBurnedView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _TotalFuelBurnedViewState createState() => _TotalFuelBurnedViewState();
@@ -42,7 +46,8 @@ class _TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
               totalFuelBurned: viewModel.totalFuelBurned);
         }
       },
-      viewModelBuilder: () => TotalFuelBurnedViewModel(),
+      viewModelBuilder: () =>
+          TotalFuelBurnedViewModel(widget.startDate, widget.endDate),
     );
   }
 }

@@ -14,8 +14,13 @@ import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:insite/widgets/smart_widgets/util_graph_dropdown.dart';
 
 class UtilizationGraphView extends StatefulWidget {
-  final List<DateTime> dateRange;
-  const UtilizationGraphView({Key key, this.dateRange}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const UtilizationGraphView({
+    Key key,
+    this.startDate,
+    this.endDate,
+  }) : super(key: key);
 
   @override
   _UtilizationGraphViewState createState() => _UtilizationGraphViewState();
@@ -25,6 +30,14 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
   UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
   int rangeChoice = 1;
   bool isRangeSelectionVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    print('@@@ Start date in graph view: ${widget.startDate}');
+    print('@@@ End date in graph view: ${widget.endDate}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -146,44 +159,63 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
   }
 
   Widget getGraphView(
-      int rangeChoice, UtilizationGraphType utilizationGraphType) {
+    int rangeChoice,
+    UtilizationGraphType utilizationGraphType,
+  ) {
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.RUNTIMEHOURS:
         return RuntimeHoursView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.DISTANCETRAVELLED:
-        return DistanceTravelledView();
+        return DistanceTravelledView(
+          startDate: widget.startDate,
+          endDate: widget.endDate,
+        );
         break;
       case UtilizationGraphType.CUMULATIVE:
         return CumulativeView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.TOTALHOURS:
         return TotalHoursView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.TOTALFUELBURNED:
         return TotalFuelBurnedView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.IDLETREND:
         return IdlePercentTrendView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       case UtilizationGraphType.FUELBURNRATETREND:
         return FuelBurnRateTrendView(
           rangeChoice: rangeChoice,
+          startDate: widget.startDate,
+          endDate: widget.endDate,
         );
         break;
       default:

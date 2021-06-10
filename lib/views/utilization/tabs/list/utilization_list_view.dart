@@ -19,9 +19,8 @@ class _UtilizationListViewState extends State<UtilizationListView> {
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
       builder:
           (BuildContext context, UtilizationListViewModel viewModel, Widget _) {
+        if (viewModel.loading) return CircularProgressIndicator();
         return viewModel.utilLizationListData != null
-            // ? Column(
-            //     children: [
             ? Expanded(
                 child: viewModel.utilLizationListData.isNotEmpty
                     ? ListView.separated(
@@ -48,13 +47,6 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                         title: "No Assets Found",
                       ),
               )
-            //     viewModel.loadingMore
-            //         ? Padding(
-            //             padding: EdgeInsets.all(8),
-            //             child: CircularProgressIndicator())
-            //         : SizedBox()
-            //   ],
-            // )
             : EmptyView(title: "No Results");
       },
       viewModelBuilder: () => UtilizationListViewModel(),

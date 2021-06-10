@@ -5,7 +5,10 @@ import 'package:stacked/stacked.dart';
 import 'distance_travelled_view_model.dart';
 
 class DistanceTravelledView extends StatefulWidget {
-  const DistanceTravelledView({Key key}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const DistanceTravelledView({Key key, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _DistanceTravelledViewState createState() => _DistanceTravelledViewState();
@@ -39,7 +42,8 @@ class _DistanceTravelledViewState extends State<DistanceTravelledView> {
                   color: creamCan);
             });
       },
-      viewModelBuilder: () => DistanceTravelledViewModel(),
+      viewModelBuilder: () =>
+          DistanceTravelledViewModel(widget.startDate, widget.endDate),
     );
   }
 }

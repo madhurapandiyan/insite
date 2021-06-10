@@ -5,7 +5,11 @@ import 'fuel_burn_rate_trend_view_model.dart';
 
 class FuelBurnRateTrendView extends StatefulWidget {
   final int rangeChoice;
-  const FuelBurnRateTrendView({Key key, this.rangeChoice}) : super(key: key);
+  final String startDate;
+  final String endDate;
+  const FuelBurnRateTrendView(
+      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      : super(key: key);
 
   @override
   _FuelBurnRateTrendViewState createState() => _FuelBurnRateTrendViewState();
@@ -41,7 +45,8 @@ class _FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
               fuelBurnRateTrend: viewModel.fuelBurnRateTrend);
         }
       },
-      viewModelBuilder: () => FuelBurnRateTrendViewModel(),
+      viewModelBuilder: () =>
+          FuelBurnRateTrendViewModel(widget.startDate, widget.endDate),
     );
   }
 }
