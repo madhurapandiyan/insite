@@ -108,7 +108,9 @@ class HomeViewModel extends InsiteViewModel {
     _assetStatusData = result;
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
-          x: stausData.countOf, y: stausData.count.roundToDouble()));
+          x: stausData.countOf, y: stausData.count.roundToDouble(),
+           
+          ));
     }
     _assetStatusloading = false;
     notifyListeners();

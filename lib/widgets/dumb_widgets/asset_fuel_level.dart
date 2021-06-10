@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/assetstatus_model.dart';
+import 'package:insite/core/models/asset_fuel_level.dart';
+
+
 import 'package:insite/theme/colors.dart';
 
-class AssetStatusWidget extends StatefulWidget {
-  final ChartSampleData assetStatusData;
+class AssetFuelLevelWidget extends StatefulWidget {
+  final FuelSampleData chartData;
   final Color chartColor;
 
-  AssetStatusWidget({this.assetStatusData, this.chartColor});
+  AssetFuelLevelWidget({this.chartData, this.chartColor});
   @override
-  _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
+  _AssetStatusFuelLevelWidgetState createState() => _AssetStatusFuelLevelWidgetState();
 }
 
-class _AssetStatusWidgetState extends State<AssetStatusWidget> {
+class _AssetStatusFuelLevelWidgetState extends State<AssetFuelLevelWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +38,7 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
           ),
           Expanded(
             child: new Text(
-              widget.assetStatusData.x.toUpperCase(),
+              widget.chartData.x.toUpperCase(),
               textAlign: TextAlign.start,
               style: new TextStyle(
                   fontWeight: FontWeight.w700,

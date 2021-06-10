@@ -27,7 +27,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
     double maxheight = MediaQuery.of(context).size.height * 0.32;
 
     return Container(
-      height: 333.00,
+      height: 348.00,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),

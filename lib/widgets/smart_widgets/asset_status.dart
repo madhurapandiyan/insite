@@ -9,6 +9,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class AssetStatus extends StatefulWidget {
   final List<ChartSampleData> statusChartData;
   final bool isLoading;
+
   AssetStatus({this.statusChartData, this.isLoading});
 
   @override
@@ -16,6 +17,16 @@ class AssetStatus extends StatefulWidget {
 }
 
 class _AssetStatusState extends State<AssetStatus> {
+  var colors = [
+    emerald,
+    burntSienna,
+    mustard,
+    textcolor,
+    lightRose,
+    persianIndigo,
+    maptextcolor,
+    sandyBrown
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,141 +40,131 @@ class _AssetStatusState extends State<AssetStatus> {
       ),
       child: Stack(
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/images/arrowdown.svg"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        new Text(
-                          "ASSET STATUS",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
-                        SizedBox(
-                          width: 60.0,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        new Text(
-                          'ALL ASSETS',
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
-                        SizedBox(
-                          width: 35.0,
-                        ),
-                        GestureDetector(
-                          onTap: () => print("button is tapped"),
-                          child: SvgPicture.asset(
-                            "assets/images/menu.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: black,
-              ),
-              widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: new Row(
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Expanded(
-                              flex: 1,
-                              child: Container(
-                                width: 150,
-                                height: 150,
-                                child: SfCircularChart(
-                                  palette: <Color>[
-                                    emerald,
-                                    burntSienna,
-                                    mustard,
-                                    textcolor,
-                                    lightRose,
-                                    persianIndigo,
-                                    maptextcolor,
-                                    sandyBrown
-                                  ],
-                                  legend: Legend(
-                                      isVisible: false,
-                                      overflowMode:
-                                          LegendItemOverflowMode.wrap),
-                                  series: _getLegendDefaultSeries(),
-                                  centerX:
-                                      (MediaQuery.of(context).size.width * 0.18)
-                                          .toStringAsFixed(0),
-                                  tooltipBehavior:
-                                      TooltipBehavior(enable: true),
-                                ),
-                              )),
-                          Expanded(
-                            flex: 1,
-                            child: new Column(
-                              children: [
-                                AssetStatusWidget(
-                                    emerald,
-                                    widget.statusChartData[0].x.toUpperCase(),
-                                    silver,
-                                    "assets/images/arrows.png"),
-                                Container(
-                                    width: 127.29,
-                                    child: Divider(
-                                        thickness: 1.0, color: athenGrey)),
-                                AssetStatusWidget(
-                                    burntSienna,
-                                    widget.statusChartData[1].x.toUpperCase(),
-                                    silver,
-                                    "assets/images/arrows.png"),
-                                Container(
-                                    width: 127.29,
-                                    child: Divider(
-                                        thickness: 1.0, color: athenGrey)),
-                                AssetStatusWidget(
-                                    mustard,
-                                    widget.statusChartData[2].x.toUpperCase(),
-                                    silver,
-                                    "assets/images/arrows.png"),
-                                Container(
-                                    width: 127.29,
-                                    child: Divider(
-                                        thickness: 1.0, color: athenGrey)),
-                                AssetStatusWidget(
-                                    tabpagecolor,
-                                    widget.statusChartData[3].x.toUpperCase(),
-                                    silver,
-                                    "assets/images/arrows.png")
-                              ],
+                          SvgPicture.asset("assets/images/arrowdown.svg"),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          new Text(
+                            "ASSET STATUS",
+                            style: new TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Roboto',
+                                color: textcolor,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 12.0),
+                          ),
+                          SizedBox(
+                            width: 60.0,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          new Text(
+                            'ALL ASSETS',
+                            style: new TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Roboto',
+                                color: textcolor,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 12.0),
+                          ),
+                          SizedBox(
+                            width: 35.0,
+                          ),
+                          GestureDetector(
+                            onTap: () => print("button is tapped"),
+                            child: SvgPicture.asset(
+                              "assets/images/menu.svg",
+                              width: 20,
+                              height: 20,
                             ),
                           ),
                         ],
                       ),
-                    ),
-            ],
+                    ],
+                  ),
+                ),
+                Divider(
+                  thickness: 1.0,
+                  color: black,
+                ),
+                widget.isLoading
+                    ? Expanded(
+                        child: Center(child: CircularProgressIndicator()))
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: new Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  child: SfCircularChart(
+                                    palette: <Color>[
+                                      emerald,
+                                      burntSienna,
+                                      mustard,
+                                      textcolor,
+                                      lightRose,
+                                      persianIndigo,
+                                      maptextcolor,
+                                      sandyBrown
+                                    ],
+                                    legend: Legend(
+                                        isVisible: false,
+                                        overflowMode:
+                                            LegendItemOverflowMode.wrap),
+                                    series: _getLegendDefaultSeries(),
+                                    centerX:
+                                        (MediaQuery.of(context).size.width *
+                                                0.18)
+                                            .toStringAsFixed(0),
+                                    tooltipBehavior:
+                                        TooltipBehavior(enable: true),
+                                  ),
+                                )),
+                            Expanded(
+                              flex: 1,
+                              child: ListView.separated(
+                                  separatorBuilder: (context, index) {
+                                    return Container(
+                                        width: 127.29,
+                                        child: Divider(
+                                            thickness: 1.0,
+                                            color: athenGrey));
+                                  },
+                                  itemCount: widget.statusChartData.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  physics: ClampingScrollPhysics(),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.0),
+                                  itemBuilder: (context, index) {
+                                    ChartSampleData assetStatusData =
+                                        widget.statusChartData[index];
+                                    return AssetStatusWidget(
+                                      chartColor: colors[index],
+                                      assetStatusData: assetStatusData,
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+              ],
+            ),
           ),
         ],
       ),
