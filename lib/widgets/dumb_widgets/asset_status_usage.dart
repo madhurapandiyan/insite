@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/theme/colors.dart';
 
-class AssetStatusWidget extends StatefulWidget {
+class AssetStatusUsageWidget extends StatefulWidget {
   final ChartSampleData assetStatusData;
   final Color chartColor;
+  final String chartHrsData;
 
-  AssetStatusWidget({this.assetStatusData, this.chartColor});
+  AssetStatusUsageWidget({this.assetStatusData, this.chartColor,this.chartHrsData});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
 }
 
-class _AssetStatusWidgetState extends State<AssetStatusWidget> {
+class _AssetStatusWidgetState extends State<AssetStatusUsageWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +37,7 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
           ),
           Expanded(
             child: new Text(
-              widget.assetStatusData.x.toUpperCase(),
+              widget.chartHrsData.toUpperCase(),
               textAlign: TextAlign.start,
               style: new TextStyle(
                   fontWeight: FontWeight.w700,

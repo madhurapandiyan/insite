@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_fuel_level.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
+import 'package:insite/widgets/dumb_widgets/asset_fuel_level.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetFuelLevel extends StatefulWidget {
@@ -22,6 +22,12 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
 
   @override
   Widget build(BuildContext context) {
+    var color = [
+      burntSienna,
+      lightRose,
+      mustard,
+      emerald
+    ];
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       height: 230,
@@ -102,45 +108,68 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                 tooltipBehavior: TooltipBehavior(enable: true),
                               )),
                         ),
+
                         Expanded(
                           flex: 1,
                           child: Column(
                             children: [
-                              AssetStatusWidget(
-                                  burntSienna,
-                                  "<" + widget.fuelData[0].x + "%",
-                                  silver,
-                                  "assets/images/arrows.png"),
-                              Container(
-                                  width: 127.29,
-                                  child: Divider(
-                                      thickness: 1.0, color: athenGrey)),
-                              AssetStatusWidget(
-                                  lightRose,
-                                  "<" + widget.fuelData[1].x + "%",
-                                  silver,
-                                  "assets/images/arrows.png"),
-                              Container(
-                                  width: 127.29,
-                                  child: Divider(
-                                      thickness: 1.0, color: athenGrey)),
-                              AssetStatusWidget(
-                                  mustard,
-                                  "<" + widget.fuelData[2].x + "%",
-                                  silver,
-                                  "assets/images/arrows.png"),
-                              Container(
-                                  width: 127.29,
-                                  child: Divider(
-                                      thickness: 1.0, color: athenGrey)),
-                              AssetStatusWidget(
-                                  emerald,
-                                  "<=" + widget.fuelData[3].x + "%",
-                                  silver,
-                                  "assets/images/arrows.png")
+                              // AssetStatusWidget(
+                              //     burntSienna,
+                              //     "<" + widget.fuelData[0].x + "%",
+                              //     silver,
+                              //     "assets/images/arrows.png"),
+                              // Container(
+                              //     width: 127.29,
+                              //     child: Divider(
+                              //         thickness: 1.0, color: athenGrey)),
+                              // AssetStatusWidget(
+                              //     lightRose,
+                              //     "<" + widget.fuelData[1].x + "%",
+                              //     silver,
+                              //     "assets/images/arrows.png"),
+                              // Container(
+                              //     width: 127.29,
+                              //     child: Divider(
+                              //         thickness: 1.0, color: athenGrey)),
+                              // AssetStatusWidget(
+                              //     mustard,
+                              //     "<" + widget.fuelData[2].x + "%",
+                              //     silver,
+                              //     "assets/images/arrows.png"),
+                              // Container(
+                              //     width: 127.29,
+                              //     child: Divider(
+                              //         thickness: 1.0, color: athenGrey)),
+                              // AssetStatusWidget(
+                              //     emerald,
+                              //     "<=" + widget.fuelData[3].x + "%",
+                              //     silver,
+                              //     "assets/images/arrows.png")
                             ],
                           ),
                         )
+
+                        // Expanded(
+                        //   flex: 1,
+                        //   child: ListView.separated(
+                        //       separatorBuilder: (context, index) {
+                        //         return Container(
+                        //             width: 127.29,
+                        //             child: Divider(
+                        //                 thickness: 1.0, color: athenGrey));
+                        //       },
+                        //       itemCount: widget.fuelData.length,
+                        //       shrinkWrap: true,
+                        //       padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        //       itemBuilder: (context, index) {
+                        //         FuelSampleData fuelSampleData =
+                        //             widget.fuelData[index];
+                        //         return AssetFuelLevelWidget(
+                        //           chartColor: color[index],
+                        //           chartData: fuelSampleData,
+                        //         );
+                        //       }),
+                        // ),
                       ],
                     ),
                   ),
