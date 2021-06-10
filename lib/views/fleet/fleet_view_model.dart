@@ -33,6 +33,7 @@ class FleetViewModel extends InsiteViewModel {
 
   FleetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    setup();
     _fleetService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -42,6 +43,9 @@ class FleetViewModel extends InsiteViewModel {
       }
     });
     Future.delayed(Duration(seconds: 1), () {
+      getSelectedFilterData();
+    });
+    Future.delayed(Duration(seconds: 2), () {
       getFleetSummaryList();
     });
   }

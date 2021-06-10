@@ -38,44 +38,50 @@ class _FilterViewState extends State<FilterView> {
                         ),
                         viewModel.appliedFilters.isNotEmpty
                             ? FilterChipView(
-                                data: viewModel.appliedFilters,
+                                filters: viewModel.appliedFilters,
                               )
                             : SizedBox(),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InsiteButton(
-                              bgColor: tango,
-                              textColor: ship_grey,
-                              onTap: () {
-                                widget.onFilterApplied();
-                              },
-                              width: 100,
-                              height: 40,
-                              title: "APPLY",
-                            ),
-                            SizedBox(
-                              height: 20,
-                              width: 20,
-                            ),
-                            InsiteButton(
-                              bgColor: Colors.white,
-                              textColor: ship_grey,
-                              onTap: () {
-                                widget.onFilterApplied();
-                              },
-                              width: 100,
-                              height: 40,
-                              title: "CANCEL",
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
+                        viewModel.appliedFilters.isNotEmpty
+                            ? SizedBox(
+                                height: 8,
+                              )
+                            : SizedBox(),
+                        viewModel.appliedFilters.isNotEmpty
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  InsiteButton(
+                                    bgColor: tango,
+                                    textColor: ship_grey,
+                                    onTap: () {
+                                      widget.onFilterApplied();
+                                    },
+                                    width: 100,
+                                    height: 40,
+                                    title: "APPLY",
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  InsiteButton(
+                                    bgColor: Colors.white,
+                                    textColor: ship_grey,
+                                    onTap: () {
+                                      widget.onFilterApplied();
+                                    },
+                                    width: 100,
+                                    height: 40,
+                                    title: "CANCEL",
+                                  ),
+                                ],
+                              )
+                            : SizedBox(),
+                        viewModel.appliedFilters.isNotEmpty
+                            ? SizedBox(
+                                height: 8,
+                              )
+                            : SizedBox(),
                         FilterItem(
                           filterType: FilterType.ALL_ASSETS,
                           data: viewModel.filterDataAllAssets,
@@ -83,7 +89,9 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.ALL_ASSETS);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.ALL_ASSETS);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -95,7 +103,10 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.PRODUCT_FAMILY);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel
+                                .onFilterCleared(FilterType.PRODUCT_FAMILY);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -106,7 +117,9 @@ class _FilterViewState extends State<FilterView> {
                           onApply: (List<FilterData> list) {
                             viewModel.onFilterSelected(list, FilterType.MAKE);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.MAKE);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -117,7 +130,9 @@ class _FilterViewState extends State<FilterView> {
                           onApply: (List<FilterData> list) {
                             viewModel.onFilterSelected(list, FilterType.MODEL);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.MODEL);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -129,7 +144,9 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.MODEL_YEAR);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.MODEL_YEAR);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -141,7 +158,10 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.LOCATION_SEARCH);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel
+                                .onFilterCleared(FilterType.LOCATION_SEARCH);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -153,7 +173,9 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.APPLICATION);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.APPLICATION);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -165,7 +187,10 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.ASSET_COMMISION_DATE);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(
+                                FilterType.ASSET_COMMISION_DATE);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -177,7 +202,10 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.SUBSCRIPTION_DATE);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel
+                                .onFilterCleared(FilterType.SUBSCRIPTION_DATE);
+                          },
                         ),
                         SizedBox(
                           height: 8,
@@ -189,7 +217,9 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.DEVICE_TYPE);
                           },
-                          onClear: () {},
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.DEVICE_TYPE);
+                          },
                         ),
                         SizedBox(
                           height: 8,

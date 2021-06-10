@@ -34,12 +34,16 @@ dependencies:
   google_maps_cluster_manager: ^1.0.0
   syncfusion_flutter_gauges: ^19.1.65
   syncfusion_flutter_charts: ^19.1.65
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  json_serializable: 3.5.1
+  json_serializable: ^3.5.1
   retrofit_generator: any
+  hive_generator: ^0.8.2
+
 flutter:
   uses-material-design: true
 

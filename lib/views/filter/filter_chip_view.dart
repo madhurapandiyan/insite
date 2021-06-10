@@ -3,8 +3,9 @@ import 'package:insite/core/models/filter_data.dart';
 import 'filter_chip_item.dart';
 
 class FilterChipView extends StatelessWidget {
-  final List<FilterData> data;
-  const FilterChipView({this.data});
+  final List<FilterData> filters;
+  final Function(FilterData) onClosed;
+  const FilterChipView({this.filters, this.onClosed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,24 +14,18 @@ class FilterChipView extends StatelessWidget {
       child: Wrap(
         runSpacing: 4,
         spacing: 4,
-        children: [
-          FilterChipItem(
-            label: "BACKHOE LOADERS",
-            onClose: () {},
-          ),
-          FilterChipItem(
-            label: "WHEEL LOADER",
-            onClose: () {},
-          ),
-          FilterChipItem(
-            label: "EXCAVATOR",
-            onClose: () {},
-          ),
-          FilterChipItem(
-            label: "UNASSIGNED",
-            onClose: () {},
-          ),
-        ],
+        children: List.generate(
+          filters.length,
+          (index) {
+            FilterData data = filters[index];
+            return FilterChipItem(
+              label: data.title,
+              onClose: () {
+                onClosed(data);
+              },
+            );
+          },
+        ),
       ),
     );
   }
