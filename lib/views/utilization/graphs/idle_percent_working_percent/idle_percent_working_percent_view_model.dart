@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
@@ -12,11 +13,19 @@ class IdlePercentWorkingPercentViewModel extends BaseViewModel {
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
 
+  ScrollController scrollController;
+
   int pageNumber = 1;
   int pageCount = 50;
 
   bool _loading = true;
   bool get loading => _loading;
+
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
 
   String _startDate;
 
@@ -26,8 +35,28 @@ class IdlePercentWorkingPercentViewModel extends BaseViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _startDate = startDate;
     _endDate = endDate;
-
+    scrollController = new ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     getUtilization();
+  }
+
+  _loadMore() {
+    Logger().i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      Logger().i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getUtilization();
+    }
   }
 
   getUtilization() async {
@@ -39,17 +68,18 @@ class IdlePercentWorkingPercentViewModel extends BaseViewModel {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
         notifyListeners();
       } else {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
+        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
       _loading = false;
-
+      _loadingMore = false;
       notifyListeners();
     }
   }

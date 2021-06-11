@@ -27,6 +27,9 @@ class _IdlePercentWorkingPercentViewState
         if (viewModel.loading) return CircularProgressIndicator();
         return ListView.builder(
             itemCount: viewModel.utilLizationListData.length,
+            controller: viewModel.scrollController,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               if (widget.rangeChoice == 1) {
                 return PercentageWidget(
