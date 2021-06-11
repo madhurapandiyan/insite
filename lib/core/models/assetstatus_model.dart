@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:insite/theme/colors.dart';
 
 class ChartSampleData {
   final String x;

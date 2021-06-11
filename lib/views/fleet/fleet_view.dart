@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/filter/filter_chip_view.dart';
@@ -45,7 +46,9 @@ class _FleetViewState extends State<FleetView> {
                           viewModel.appliedFilters.isNotEmpty
                               ? FilterChipView(
                                   filters: viewModel.appliedFilters,
-                                  onClosed: (value) {},
+                                  onClosed: (value) {
+                                    viewModel.removeFilter(value);
+                                  },
                                 )
                               : SizedBox(),
                           viewModel.appliedFilters.isNotEmpty
@@ -53,7 +56,11 @@ class _FleetViewState extends State<FleetView> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.15,
                                   child: FleetKnobView(
-                                    data: viewModel.appliedFilters,
+                                    data: viewModel.appliedFilters
+                                        .where((element) =>
+                                            element.type ==
+                                            FilterType.PRODUCT_FAMILY)
+                                        .toList(),
                                   ),
                                 )
                               : SizedBox(),

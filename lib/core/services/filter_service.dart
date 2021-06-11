@@ -80,4 +80,16 @@ class FilterService extends BaseService {
       return [];
     }
   }
+
+  removeFilter(value) async {
+    int size = box.values.length;
+    for (var i = 0; i < size; i++) {
+      FilterData data = box.get(i);
+      print("current filter type " + data.type.toString());
+      if (data.type == value.type) {
+        await box.deleteAt(i);
+        return;
+      }
+    }
+  }
 }

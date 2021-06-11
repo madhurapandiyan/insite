@@ -28,7 +28,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  setup() {
+  setUp() {
     _filterService.setUp();
   }
 
@@ -40,6 +40,11 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   getSelectedFilterData() async {
     appliedFilters = await _filterService.getSelectedFilters();
+    Logger().d(appliedFilters.toString());
+  }
+
+  removeFilter(value) async {
+    await _filterService.removeFilter(value);
   }
 
   List<FilterData> appliedFilters = [];

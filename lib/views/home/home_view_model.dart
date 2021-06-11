@@ -75,9 +75,13 @@ class HomeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  int pageNumber = 1;
+  int pageSize = 2500;
+
   getAssetLocation() async {
-    AssetLocationData result = await _assetLocationService.getAssetLocation(
-        1, 2500, '-lastlocationupdateutc');
+    AssetLocationData result =
+        await _assetLocationService.getAssetLocationWithoutFilter(
+            pageNumber, pageSize, '-lastlocationupdateutc');
     _assetLocation = result;
     for (var locationData in _assetLocation.mapRecords) {
       markers.add(Marker(
@@ -108,9 +112,9 @@ class HomeViewModel extends InsiteViewModel {
     _assetStatusData = result;
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
-          x: stausData.countOf, y: stausData.count.roundToDouble(),
-           
-          ));
+        x: stausData.countOf,
+        y: stausData.count.roundToDouble(),
+      ));
     }
     _assetStatusloading = false;
     notifyListeners();
