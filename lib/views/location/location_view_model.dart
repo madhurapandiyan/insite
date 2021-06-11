@@ -28,6 +28,9 @@ class LocationViewModel extends InsiteViewModel {
     this._endDate = endDate;
   }
 
+  int pageNumber = 1;
+  int pageSize = 2500;
+
   LocationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
@@ -36,7 +39,7 @@ class LocationViewModel extends InsiteViewModel {
 
   getAssetLocation() async {
     AssetLocationData result = await _assetLocationService.getAssetLocation(
-        1, 2500, '-lastlocationupdateutc');
+        pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
     _assetLocation = result;
     _loading = false;
     notifyListeners();

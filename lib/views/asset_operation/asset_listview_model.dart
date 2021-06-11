@@ -71,6 +71,7 @@ class AssetListViewModel extends InsiteViewModel {
   AssetListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setUp();
+    setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -80,6 +81,9 @@ class AssetListViewModel extends InsiteViewModel {
     });
     updateDateRangeList();
     Future.delayed(Duration(seconds: 1), () {
+      getSelectedFilterData();
+    });
+    Future.delayed(Duration(seconds: 2), () {
       getAssetSummaryList();
     });
   }
@@ -91,7 +95,7 @@ class AssetListViewModel extends InsiteViewModel {
     Logger().d("start date " + _startDate);
     Logger().d("end date " + _endDate);
     List<Asset> result = await _assetService.getAssetSummaryList(
-        _startDate, _endDate, pageSize, pageNumber, _menuItem);
+        _startDate, _endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
       _assets.clear();
       _assets.addAll(result);
@@ -105,7 +109,7 @@ class AssetListViewModel extends InsiteViewModel {
     Logger().d("start date " + _startDate);
     Logger().d("end date " + _endDate);
     List<Asset> result = await _assetService.getAssetSummaryList(
-        _startDate, _endDate, pageSize, pageNumber, _menuItem);
+        _startDate, _endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
       if (result.isNotEmpty) {
         Logger().i("list of assets " + result.length.toString());

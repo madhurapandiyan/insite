@@ -33,8 +33,8 @@ class FleetViewModel extends InsiteViewModel {
 
   FleetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    setup();
     _fleetService.setUp();
+    setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -51,8 +51,8 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   getFleetSummaryList() async {
-    List<Fleet> result =
-        await _fleetService.getFleetSummaryList(pageSize, pageNumber);
+    List<Fleet> result = await _fleetService.getFleetSummaryList(
+        pageSize, pageNumber, appliedFilters);
     if (result != null) {
       if (result.isNotEmpty) {
         Logger().i("list of assets " + result.length.toString());

@@ -73,37 +73,18 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
   Future<FleetSummaryResponse> fleetSummary(
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("sort") String sort,
+      @Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
   Future<AssetResponse> assetSummary(
-      @Query("startdate") String startdate,
-      @Query("enddate") String enddate,
-      @Query("pagesize") int pagesize,
-      @Query("pagenumber") int pagenumber,
-      @Query("sort") String sort,
+      @Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
 
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
-  Future<FleetSummaryResponse> fleetSummaryCI(
-      @Query("customerIdentifier") String customerIdentifier,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("sort") String sort,
-      @Header("X-VisionLink-CustomerUid") customerId);
-
-  @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
-  Future<AssetResponse> assetSummaryCI(
-      @Query("startdate") String startdate,
-      @Query("enddate") String enddate,
-      @Query("pagesize") int pagesize,
-      @Query("pagenumber") int pagenumber,
-      @Query("sort") String sort,
-      @Query("customerUID") String customerUID,
-      @Header("X-VisionLink-CustomerUid") customerId);
+  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+  Future<location.AssetLocationData> assetLocation(
+      @Queries() Map<String, dynamic> queries,
+      @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
   Future<AssetDetail> assetDetail(@Query("assetUID") String assetUID,
@@ -216,7 +197,7 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
-  Future<location.AssetLocationData> assetLocation(
+  Future<location.AssetLocationData> assetLocationWithOutFilter(
       @Query("pageNumber") int pageNumber,
       @Query("pageSize") int pageSize,
       @Query("sort") String sort,
