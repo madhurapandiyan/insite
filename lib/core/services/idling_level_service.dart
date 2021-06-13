@@ -1,8 +1,10 @@
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:logger/logger.dart';
 
 class IdlingLevelService {
@@ -21,11 +23,11 @@ class IdlingLevelService {
     }
   }
 
-  Future<IdlingLevelData> getidlingLevelService() async {
+  Future<AssetCountData> getIdlingLevel(startDate, endDate) async {
     try {
-      IdlingLevelData idlingLevelDataResponse = await MyApi()
+      AssetCountData idlingLevelDataResponse = await MyApi()
           .getClient()
-          .idlingLevel("05/24/21", "[0,10][10,15][15,25][25,]", "05/24/21",
+          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
               accountSelected.CustomerUID);
       print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
       return idlingLevelDataResponse;

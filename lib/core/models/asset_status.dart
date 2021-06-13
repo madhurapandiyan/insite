@@ -2,16 +2,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'asset_status.g.dart';
 
 @JsonSerializable()
-class AssetStatusData {
+class AssetCountData {
   List<CountData> countData;
-  AssetStatusData({
+  AssetCountData({
     this.countData,
   });
 
-  factory AssetStatusData.fromJson(Map<String, dynamic> json) =>
-      _$AssetStatusDataFromJson(json);
+  factory AssetCountData.fromJson(Map<String, dynamic> json) =>
+      _$AssetCountDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AssetStatusDataToJson(this);
+  Map<String, dynamic> toJson() => _$AssetCountDataToJson(this);
 }
 
 @JsonSerializable()

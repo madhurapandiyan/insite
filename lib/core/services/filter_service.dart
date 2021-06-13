@@ -24,9 +24,9 @@ class FilterService extends BaseService {
     }
   }
 
-  Future<AssetStatusData> getAssetCount(type) async {
+  Future<AssetCountData> getAssetCount(type) async {
     try {
-      AssetStatusData assetStatusResponse = await MyApi()
+      AssetCountData assetStatusResponse = await MyApi()
           .getClient()
           .assetCount(type, accountSelected.CustomerUID);
       return assetStatusResponse;
@@ -36,9 +36,35 @@ class FilterService extends BaseService {
     }
   }
 
-  void clearFromSelectedFilter() {}
+  Future<AssetCountData> getFuellevel(type) async {
+    try {
+      AssetCountData fuelLevelDatarespone = await MyApi()
+          .getClient()
+          .fuelLevel(type, "25-50-75-100", accountSelected.CustomerUID);
+      print('data:${fuelLevelDatarespone.countData[0].countOf}');
+      return fuelLevelDatarespone;
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
 
-  void clearFilterInDb(FilterType type) async {
+  Future<AssetCountData> getIdlingLevelData(startDate, endDate) async {
+    try {
+      AssetCountData idlingLevelDataResponse = await MyApi()
+          .getClient()
+          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+              accountSelected.CustomerUID);
+      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+      return idlingLevelDataResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  clearFromSelectedFilter() {}
+
+  //removes filters of particular type
+  clearFilterInDb(FilterType type) async {
     try {
       int size = box.values.length;
       print("filter size before clear");
@@ -58,10 +84,10 @@ class FilterService extends BaseService {
     }
   }
 
-  void updateFilterInDb(FilterType type, List<FilterData> list) {
+  updateFilterInDb(FilterType type, List<FilterData> list) {
     try {
       for (FilterData data in list) {
-        box.add(data);
+        addFilter(data);
       }
       print("filter size after update");
       print(box.values.length);
@@ -81,14 +107,35 @@ class FilterService extends BaseService {
     }
   }
 
+  //removes a particular filter
   removeFilter(value) async {
     int size = box.values.length;
     for (var i = 0; i < size; i++) {
       FilterData data = box.get(i);
-      print("current filter type " + data.type.toString());
-      if (data.type == value.type) {
+      print("current filter title " + data.title.toString());
+      if (data.title == value.title) {
         await box.deleteAt(i);
         return;
+      }
+    }
+  }
+
+  addFilter(value) async {
+    int size = box.values.length;
+    if (size == 0) {
+      box.add(value);
+    } else {
+      bool shouldAdd = true;
+      for (var i = 0; i < size; i++) {
+        FilterData data = box.get(i);
+        print("current filter type " + data.type.toString());
+        if (data.title == value.title) {
+          shouldAdd = false;
+          return;
+        }
+      }
+      if (shouldAdd) {
+        box.add(value);
       }
     }
   }

@@ -33,6 +33,10 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.SUBSCRIPTION_DATE;
       case 9:
         return FilterType.DEVICE_TYPE;
+      case 10:
+        return FilterType.FUEL_LEVEL;
+      case 11:
+        return FilterType.IDLING_LEVEL;
       default:
         return null;
     }
@@ -70,6 +74,12 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.DEVICE_TYPE:
         writer.writeByte(9);
+        break;
+      case FilterType.FUEL_LEVEL:
+        writer.writeByte(10);
+        break;
+      case FilterType.IDLING_LEVEL:
+        writer.writeByte(11);
         break;
     }
   }

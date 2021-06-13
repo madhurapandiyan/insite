@@ -212,6 +212,12 @@ class _FilterItemState extends State<FilterItem> {
       case FilterType.ALL_ASSETS:
         title = "ALL ASSETS";
         break;
+      case FilterType.FUEL_LEVEL:
+        title = "FUEL LEVEL";
+        break;
+      case FilterType.IDLING_LEVEL:
+        title = "IDLING LEVEL";
+        break;
       default:
     }
     return title;

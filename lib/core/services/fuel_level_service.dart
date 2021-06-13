@@ -1,4 +1,5 @@
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/repository/network.dart';
@@ -11,9 +12,9 @@ class FuelLevelService {
   Customer accountSelected;
 
   FuelLevelService() {
-    setup();
+    setUp();
   }
-  setup() async {
+  setUp() async {
     try {
       accountSelected = await _localService.getAccountInfo();
     } catch (e) {
@@ -21,9 +22,9 @@ class FuelLevelService {
     }
   }
 
-  Future<FuelLevelData> getfuelLevel() async {
+  Future<AssetCountData> getFuellevel() async {
     try {
-      FuelLevelData fuelLevelDatarespone = await MyApi()
+      AssetCountData fuelLevelDatarespone = await MyApi()
           .getClient()
           .fuelLevel("fuellevel", "25-50-75-100", accountSelected.CustomerUID);
       print('data:${fuelLevelDatarespone.countData[0].countOf}');

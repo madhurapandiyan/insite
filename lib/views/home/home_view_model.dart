@@ -1,11 +1,10 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/models/asset_fuel_level.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
-import 'package:insite/core/models/fuel_level.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -14,6 +13,7 @@ import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -41,28 +41,48 @@ class HomeViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
-  AssetStatusData _assetStatusData;
-  AssetStatusData get assetStatusData => _assetStatusData;
+  AssetCountData _assetStatusData;
+  AssetCountData get assetStatusData => _assetStatusData;
 
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
 
-  FuelLevelData _fuelLevelData;
-  FuelLevelData get fuelLevelData => _fuelLevelData;
+  AssetCountData _fuelLevelData;
+  AssetCountData get fuelLevelData => _fuelLevelData;
 
-  IdlingLevelData _idlingLevelData;
-  IdlingLevelData get idlingLevelData => _idlingLevelData;
+  AssetCountData _idlingLevelData;
+  AssetCountData get idlingLevelData => _idlingLevelData;
 
   Set<Marker> markers = {};
   int markerId = 1;
   List<ChartSampleData> statusChartData = [];
-  List<FuelSampleData> fuelChartData = [];
+  List<ChartSampleData> fuelChartData = [];
+
+  // String _startDate =
+  //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
+  String _startDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  set startDate(String startDate) {
+    this._startDate = startDate;
+  }
+
+  String get startDate => _startDate;
+
+  // String _endDate =
+  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
+  String _endDate = DateFormat('yyyy-MM-dd')
+      .format(DateTime.now().add(Duration(days: DateTime.now().weekday)));
+  set endDate(String endDate) {
+    this._endDate = endDate;
+  }
+
+  String get endDate => _endDate;
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _assetService.setup();
+    _assetService.setUp();
     _assetLocationService.setUp();
-    _fuelLevelService.setup();
+    _fuelLevelService.setUp();
+    setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetStatusData();
       getFuelLevelData();
@@ -108,7 +128,7 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getAssetStatusData() async {
-    AssetStatusData result = await _assetService.getassetStatus();
+    AssetCountData result = await _assetService.getAssetStatus();
     _assetStatusData = result;
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
@@ -121,20 +141,30 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getFuelLevelData() async {
-    FuelLevelData result = await _fuelLevelService.getfuelLevel();
+    AssetCountData result = await _fuelLevelService.getFuellevel();
     _fuelLevelData = result;
     for (var fuelData in _fuelLevelData.countData) {
-      fuelChartData.add(FuelSampleData(
-          x: fuelData.countOf, y: fuelData.count.roundToDouble()));
+      if (fuelData.countOf != "Not Reporting") {
+        fuelChartData.add(ChartSampleData(
+            x: fuelData.countOf, y: fuelData.count.roundToDouble()));
+      }
     }
     _assetFuelloading = false;
     notifyListeners();
   }
 
   getIdlingLevelData() async {
-    IdlingLevelData result = await _idlingLevelService.getidlingLevelService();
+    AssetCountData result =
+        await _idlingLevelService.getIdlingLevel(startDate, endDate);
     _idlingLevelData = result;
     _idlingLevelDataloading = false;
     notifyListeners();
+  }
+
+  onFilterSelected(FilterData data) {
+    Logger().d("onFilterSelected " + data.count);
+    addFilter(data);
+    _navigationService.navigateWithTransition(FleetView(),
+        transition: "rightToLeft");
   }
 }

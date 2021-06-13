@@ -11,10 +11,10 @@ class AssetStatusService {
   Customer accountSelected;
 
   AssetStatusService() {
-    setup();
+    setUp();
   }
 
-  setup() async {
+  setUp() async {
     try {
       accountSelected = await _localService.getAccountInfo();
     } catch (e) {
@@ -22,9 +22,9 @@ class AssetStatusService {
     }
   }
 
-  Future<AssetStatusData> getassetStatus() async {
+  Future<AssetCountData> getAssetStatus() async {
     try {
-      AssetStatusData assetStatusResponse = await MyApi()
+      AssetCountData assetStatusResponse = await MyApi()
           .getClient()
           .assetCount("assetstatus", accountSelected.CustomerUID);
       return assetStatusResponse;

@@ -47,5 +47,9 @@ abstract class InsiteViewModel extends BaseViewModel {
     await _filterService.removeFilter(value);
   }
 
+  addFilter(FilterData data) {
+    _filterService.addFilter(data);
+  }
+
   List<FilterData> appliedFilters = [];
 }
