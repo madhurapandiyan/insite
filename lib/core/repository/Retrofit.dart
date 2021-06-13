@@ -10,7 +10,6 @@ import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
-import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/note.dart';
@@ -77,8 +76,7 @@ abstract class RestClient {
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
-  Future<AssetResponse> assetSummary(
-      @Queries() Map<String, dynamic> queries,
+  Future<AssetResponse> assetSummary(@Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
@@ -193,7 +191,7 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<AssetStatusData> assetCount(@Query("grouping") String grouping,
+  Future<AssetCountData> assetCount(@Query("grouping") String grouping,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
@@ -204,7 +202,7 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<FuelLevelData> fuelLevel(
+  Future<AssetCountData> fuelLevel(
       @Query("grouping") String grouping,
       @Query("thresholds") String thresholds,
       @Header("x-visionlink-customeruid") customerId);
@@ -217,10 +215,10 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<IdlingLevelData> idlingLevel(
-      @Query("endDate") String endDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+  Future<AssetCountData> idlingLevel(
       @Query("startDate") String startDate,
+      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+      @Query("endDate") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-notification/1.0/Notification/Count")
@@ -228,6 +226,7 @@ abstract class RestClient {
     @Query("notificationStatus") int status,
     @Query("notificationUserStatus") int userStatus,
   );
+  
   @GET("/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments")
   Future<SingleAssetOperation> singleAssetOperation(
       @Query("startDate") String startDate,

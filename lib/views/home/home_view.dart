@@ -49,6 +49,9 @@ class _HomeViewState extends State<HomeView> {
                         statusChartData: viewModel.statusChartData != null
                             ? viewModel.statusChartData
                             : null,
+                        onFilterSelected: (value) {
+                          viewModel.onFilterSelected(value);
+                        },
                         isLoading: viewModel.assetStatusloading),
                   ),
                   SizedBox(
@@ -57,9 +60,12 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: AssetFuelLevel(
-                      fuelData: viewModel.fuelChartData != null
+                      chartData: viewModel.fuelChartData != null
                           ? viewModel.fuelChartData
                           : null,
+                      onFilterSelected: (value) {
+                        viewModel.onFilterSelected(value);
+                      },
                       isLoading: viewModel.assetFuelloading,
                     ),
                   ),
@@ -69,10 +75,14 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: IdlingLevel(
-                        data: viewModel.idlingLevelData != null
-                            ? viewModel.idlingLevelData.countData
-                            : null,
-                        isLoading: viewModel.idlingLevelDataloading),
+                      data: viewModel.idlingLevelData != null
+                          ? viewModel.idlingLevelData.countData
+                          : null,
+                      isLoading: viewModel.idlingLevelDataloading,
+                      onFilterSelected: (value) {
+                        viewModel.onFilterSelected(value);
+                      },
+                    ),
                   ),
                   SizedBox(
                     height: 20.0,

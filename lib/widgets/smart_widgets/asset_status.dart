@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -9,8 +10,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class AssetStatus extends StatefulWidget {
   final List<ChartSampleData> statusChartData;
   final bool isLoading;
-
-  AssetStatus({this.statusChartData, this.isLoading});
+  final Function(FilterData) onFilterSelected;
+  AssetStatus({this.statusChartData, this.isLoading, this.onFilterSelected});
 
   @override
   _AssetStatusState createState() => _AssetStatusState();
@@ -142,8 +143,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                     return Container(
                                         width: 127.29,
                                         child: Divider(
-                                            thickness: 1.0,
-                                            color: athenGrey));
+                                            thickness: 1.0, color: athenGrey));
                                   },
                                   itemCount: widget.statusChartData.length,
                                   shrinkWrap: true,
@@ -156,7 +156,14 @@ class _AssetStatusState extends State<AssetStatus> {
                                         widget.statusChartData[index];
                                     return AssetStatusWidget(
                                       chartColor: colors[index],
-                                      assetStatusData: assetStatusData,
+                                      chartData: assetStatusData,
+                                      callBack: (value) {
+                                        widget.onFilterSelected(FilterData(
+                                            isSelected: true,
+                                            count: value.y.toString(),
+                                            title: value.x,
+                                            type: FilterType.ALL_ASSETS));
+                                      },
                                     );
                                   }),
                             ),

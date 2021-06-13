@@ -5,7 +5,6 @@ import 'package:insite/views/filter/filter_item.dart';
 import 'package:insite/views/filter/filter_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:stacked/stacked.dart';
-
 import 'filter_chip_view.dart';
 
 class FilterView extends StatefulWidget {
@@ -219,6 +218,34 @@ class _FilterViewState extends State<FilterView> {
                           },
                           onClear: () {
                             viewModel.onFilterCleared(FilterType.DEVICE_TYPE);
+                          },
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        FilterItem(
+                          filterType: FilterType.FUEL_LEVEL,
+                          data: viewModel.filterDataFuelLevel,
+                          onApply: (List<FilterData> list) {
+                            viewModel.onFilterSelected(
+                                list, FilterType.FUEL_LEVEL);
+                          },
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.FUEL_LEVEL);
+                          },
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        FilterItem(
+                          filterType: FilterType.IDLING_LEVEL,
+                          data: viewModel.filterDataIdlingLevel,
+                          onApply: (List<FilterData> list) {
+                            viewModel.onFilterSelected(
+                                list, FilterType.IDLING_LEVEL);
+                          },
+                          onClear: () {
+                            viewModel.onFilterCleared(FilterType.IDLING_LEVEL);
                           },
                         ),
                         SizedBox(

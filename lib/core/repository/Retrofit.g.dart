@@ -713,7 +713,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetStatusData> assetCount(grouping, customerId) async {
+  Future<AssetCountData> assetCount(grouping, customerId) async {
     ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
@@ -728,7 +728,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetStatusData.fromJson(_result.data);
+    final value = AssetCountData.fromJson(_result.data);
     return value;
   }
 
@@ -760,7 +760,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<FuelLevelData> fuelLevel(grouping, thresholds, customerId) async {
+  Future<AssetCountData> fuelLevel(grouping, thresholds, customerId) async {
     ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(thresholds, 'thresholds');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -779,7 +779,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = FuelLevelData.fromJson(_result.data);
+    final value = AssetCountData.fromJson(_result.data);
     return value;
   }
 
@@ -809,17 +809,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<IdlingLevelData> idlingLevel(
-      endDate, idleEfficiencyRanges, startDate, customerId) async {
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
+  Future<AssetCountData> idlingLevel(
+      startDate, idleEfficiencyRanges, endDate, customerId) async {
     ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
+    ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'endDate': endDate,
+      r'startDate': startDate,
       r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'startDate': startDate
+      r'endDate': endDate
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
@@ -831,7 +831,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = IdlingLevelData.fromJson(_result.data);
+    final value = AssetCountData.fromJson(_result.data);
     return value;
   }
 

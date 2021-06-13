@@ -35,5 +35,9 @@ enum FilterType {
   @HiveField(8)
   SUBSCRIPTION_DATE,
   @HiveField(9)
-  DEVICE_TYPE
+  DEVICE_TYPE,
+  @HiveField(10)
+  FUEL_LEVEL,
+  @HiveField(11)
+  IDLING_LEVEL
 }

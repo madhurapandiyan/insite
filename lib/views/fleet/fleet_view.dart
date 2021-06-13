@@ -51,7 +51,11 @@ class _FleetViewState extends State<FleetView> {
                                   },
                                 )
                               : SizedBox(),
-                          viewModel.appliedFilters.isNotEmpty
+                          viewModel.appliedFilters
+                                  .where((element) =>
+                                      element.type == FilterType.PRODUCT_FAMILY)
+                                  .toList()
+                                  .isNotEmpty
                               ? Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.15,

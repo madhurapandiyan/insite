@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdlingLevel extends StatefulWidget {
-  final List<CountDatum> data;
+  final List<CountData> data;
   final bool isLoading;
+  final Function(FilterData) onFilterSelected;
 
-  IdlingLevel({this.data, this.isLoading});
+  IdlingLevel({this.data, this.isLoading, this.onFilterSelected});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
@@ -106,6 +110,35 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                       majorGridLines: MajorGridLines(
                                           width: 0, color: silver),
                                     ),
+                                    onAxisLabelTapped: (axisLabelTapArgs) {
+                                      Logger().d("onAxisLabelTapped " +
+                                          axisLabelTapArgs.toString());
+                                    },
+                                    onDataLabelTapped: (onTapArgs) {
+                                      Logger().d("onDataLabelTapped " +
+                                          onTapArgs.toString());
+                                    },
+                                    onLegendTapped: (legendTapArgs) {
+                                      Logger().d("onLegendTapped " +
+                                          legendTapArgs.toString());
+                                    },
+                                    onPointTapped: (pointTapArgs) {
+                                      Logger().d("onPointTapped " +
+                                          pointTapArgs.pointIndex.toString() +
+                                          " " +
+                                          pointTapArgs.seriesIndex.toString() +
+                                          " " +
+                                          pointTapArgs.viewportPointIndex
+                                              .toString());
+                                      CountData countDatum =
+                                          widget.data[pointTapArgs.pointIndex];
+                                      FilterData data = FilterData(
+                                          isSelected: true,
+                                          count: countDatum.count.toString(),
+                                          title: countDatum.countOf,
+                                          type: FilterType.IDLING_LEVEL);
+                                      widget.onFilterSelected(data);
+                                    },
                                     primaryYAxis: NumericAxis(
                                         majorGridLines: MajorGridLines(
                                             width: 2, color: silver),

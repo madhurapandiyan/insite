@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_fuel_level.dart';
-
-
 import 'package:insite/theme/colors.dart';
 
 class AssetFuelLevelWidget extends StatefulWidget {
