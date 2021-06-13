@@ -71,6 +71,12 @@ class _IdlePercentWorkingPercentViewState
                         color: rangeChoice == 1 ? sandyBrown : olivine);
                   }),
             ),
+            viewModel.loadingMore
+                ? Padding(
+                    padding: EdgeInsets.all(8),
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox(),
           ],
         );
       },

@@ -118,7 +118,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                       ),
                     ),
                     isListSelected
-                        ? UtilizationListView(dateRange: dateRange)
+                        ? Flexible(
+                            child: UtilizationListView(dateRange: dateRange),
+                          )
                         : Expanded(
                             child: UtilizationGraphView(
                               startDate: startDate,

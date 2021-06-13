@@ -70,6 +70,12 @@ class _RuntimeHoursViewState extends State<RuntimeHoursView> {
                         color: sandyBrown);
                   }),
             ),
+            viewModel.loadingMore
+                ? Padding(
+                    padding: EdgeInsets.all(8),
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox(),
           ],
         );
       },

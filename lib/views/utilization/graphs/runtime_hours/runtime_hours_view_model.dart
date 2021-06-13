@@ -36,7 +36,7 @@ class RuntimeHoursViewModel extends BaseViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _startDate = startDate;
     _endDate = endDate;
-    scrollController = new ScrollController();
+    scrollController = ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {

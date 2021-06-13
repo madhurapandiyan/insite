@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
@@ -21,11 +22,40 @@ class DistanceTravelledViewModel extends BaseViewModel {
   String _startDate;
   String _endDate;
 
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
+  ScrollController scrollController;
+
   DistanceTravelledViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
     _startDate = startDate;
     _endDate = endDate;
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     getUtilization();
+  }
+
+  _loadMore() {
+    Logger().i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      Logger().i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getUtilization();
+    }
   }
 
   getUtilization() async {
@@ -37,17 +67,18 @@ class DistanceTravelledViewModel extends BaseViewModel {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
         notifyListeners();
       } else {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
+        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
       _loading = false;
-
+      _loadingMore = false;
       notifyListeners();
     }
   }
