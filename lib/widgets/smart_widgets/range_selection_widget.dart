@@ -20,7 +20,7 @@ class RangeSelectionWidget extends StatefulWidget {
 }
 
 class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
-  int rangeChoice;
+  int rangeChoice = 1;
   @override
   Widget build(BuildContext context) {
     return Container(

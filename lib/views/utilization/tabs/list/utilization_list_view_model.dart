@@ -36,9 +36,6 @@ class UtilizationListViewModel extends BaseViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
-  set loading(bool loading) {
-    this._loading = loading;
-  }
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;

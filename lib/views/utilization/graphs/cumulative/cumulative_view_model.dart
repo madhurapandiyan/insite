@@ -18,25 +18,20 @@ class CumulativeViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  CumulativeViewModel() {
+  CumulativeViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
+    _startDate = startDate;
+    _endDate = endDate;
     getRunTimeCumulative();
     getFuelBurnedCumulative();
   }
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
+  String _startDate;
 
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
+  String _endDate;
 
   getRunTimeCumulative() async {
+    _loading = true;
     RunTimeCumulative result = await _utilizationGraphService
         .getRunTimeCumulative(_startDate, _endDate);
     _runTimeCumulative = result;
@@ -45,6 +40,7 @@ class CumulativeViewModel extends BaseViewModel {
   }
 
   getFuelBurnedCumulative() async {
+    _loading = true;
     FuelBurnedCumulative result = await _utilizationGraphService
         .getFuelBurnedCumulative(_startDate, _endDate);
     _fuelBurnedCumulative = result;

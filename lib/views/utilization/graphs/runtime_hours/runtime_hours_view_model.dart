@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
@@ -16,24 +17,47 @@ class RuntimeHoursViewModel extends BaseViewModel {
   int pageNumber = 1;
   int pageCount = 50;
 
+  ScrollController scrollController;
+
   bool _loading = true;
   bool get loading => _loading;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
 
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
 
-  RuntimeHoursViewModel() {
+  String _startDate;
+
+  String _endDate;
+
+  RuntimeHoursViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
+    _startDate = startDate;
+    _endDate = endDate;
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     getUtilization();
+  }
+
+  _loadMore() {
+    Logger().i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      Logger().i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getUtilization();
+    }
   }
 
   getUtilization() async {
@@ -45,17 +69,18 @@ class RuntimeHoursViewModel extends BaseViewModel {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
         notifyListeners();
       } else {
         _utilLizationListData.addAll(result.assetResults);
         _loading = false;
-
+        _loadingMore = false;
+        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
       _loading = false;
-
+      _loadingMore = false;
       notifyListeners();
     }
   }
