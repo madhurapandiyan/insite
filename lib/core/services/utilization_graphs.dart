@@ -37,8 +37,7 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         RunTimeCumulative response = await MyApi()
             .getClient()
-            .runtimeCumulative(
-                startDate, endDate, 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            .runtimeCumulative(startDate, endDate, accountSelected.CustomerUID);
         return response;
       }
       return null;
@@ -58,7 +57,7 @@ class UtilizationGraphsService extends BaseService {
         FuelBurnedCumulative response = await MyApi()
             .getClient()
             .fuelBurnedCumulative(
-                startDate, endDate, 'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+                startDate, endDate, accountSelected.CustomerUID);
         return response;
       }
       return null;
@@ -88,7 +87,7 @@ class UtilizationGraphsService extends BaseService {
             pageNumber,
             pageSize,
             includepagination,
-            'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            accountSelected.CustomerUID);
         return response;
       }
       return null;
@@ -118,7 +117,7 @@ class UtilizationGraphsService extends BaseService {
             pageNumber,
             pageSize,
             includepagination,
-            'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            accountSelected.CustomerUID);
         return response;
       }
       return null;
@@ -143,14 +142,8 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         IdlePercentTrend response = await MyApi()
             .getClient()
-            .getIdlePercentTrend(
-                interval,
-                startDate,
-                endDate,
-                pageNumber,
-                pageSize,
-                includepagination,
-                'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            .getIdlePercentTrend(interval, startDate, endDate, pageNumber,
+                pageSize, includepagination, accountSelected.CustomerUID);
         return response;
       }
       return null;
@@ -175,14 +168,8 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         FuelBurnRateTrend response = await MyApi()
             .getClient()
-            .getFuelBurnRateTrend(
-                interval,
-                startDate,
-                endDate,
-                pageNumber,
-                pageSize,
-                includepagination,
-                'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            .getFuelBurnRateTrend(interval, startDate, endDate, pageNumber,
+                pageSize, includepagination, accountSelected.CustomerUID);
         return response;
       }
       return null;

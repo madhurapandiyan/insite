@@ -35,8 +35,8 @@ class SingleAssetOperationService extends BaseService {
           endDate.isNotEmpty) {
         SingleAssetOperation response = await MyApi()
             .getClient()
-            .singleAssetOperation(startDate, endDate, assetUID,
-                'd7ac4554-05f9-e311-8d69-d067e5fd4637');
+            .singleAssetOperation(
+                startDate, endDate, assetUID, accountSelected.CustomerUID);
         return response;
       }
       return null;
