@@ -33,6 +33,7 @@ class SingleAssetOperationService extends BaseService {
           startDate.isNotEmpty &&
           endDate != null &&
           endDate.isNotEmpty) {
+        Logger().d("single asset operation");
         SingleAssetOperation response = await MyApi()
             .getClient()
             .singleAssetOperation(

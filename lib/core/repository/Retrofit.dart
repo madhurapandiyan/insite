@@ -226,7 +226,7 @@ abstract class RestClient {
     @Query("notificationStatus") int status,
     @Query("notificationUserStatus") int userStatus,
   );
-  
+
   @GET("/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments")
   Future<SingleAssetOperation> singleAssetOperation(
       @Query("startDate") String startDate,

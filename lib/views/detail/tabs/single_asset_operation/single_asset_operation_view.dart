@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/theme/colors.dart';
@@ -11,7 +12,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'single_asset_operation_view_model.dart';
 
 class SingleAssetOperationView extends StatefulWidget {
-  SingleAssetOperationView({Key key}) : super(key: key);
+  final AssetDetail detail;
+  SingleAssetOperationView({this.detail});
 
   @override
   _SingleAssetOperationViewState createState() =>
@@ -117,27 +119,32 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                     ],
                   ),
                 ),
-                assetOperationTable(viewModel.singleAssetOperation),
-                SfCartesianChart(
-                  series: getDefaultData(viewModel.singleAssetOperation),
-                  backgroundColor: ship_grey,
-                  plotAreaBorderColor: black,
-                  plotAreaBorderWidth: 3.0,
-                  primaryXAxis: DateTimeAxis(
-                      opposedPosition: true,
-                      dateFormat: DateFormat("hh:mm:ss")),
-                  primaryYAxis: DateTimeAxis(dateFormat: DateFormat("MMM dd")),
-                  legend: Legend(isVisible: false),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  zoomPanBehavior: ZoomPanBehavior(
-                      enablePinching: true, enablePanning: true),
-                ),
+                viewModel.singleAssetOperation != null
+                    ? assetOperationTable(viewModel.singleAssetOperation)
+                    : SizedBox(),
+                viewModel.singleAssetOperation != null
+                    ? SfCartesianChart(
+                        series: getDefaultData(viewModel.singleAssetOperation),
+                        backgroundColor: ship_grey,
+                        plotAreaBorderColor: black,
+                        plotAreaBorderWidth: 3.0,
+                        primaryXAxis: DateTimeAxis(
+                            opposedPosition: true,
+                            dateFormat: DateFormat("hh:mm:ss")),
+                        primaryYAxis:
+                            DateTimeAxis(dateFormat: DateFormat("MMM dd")),
+                        legend: Legend(isVisible: false),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        zoomPanBehavior: ZoomPanBehavior(
+                            enablePinching: true, enablePanning: true),
+                      )
+                    : SizedBox(),
               ],
             ),
           );
         }
       },
-      viewModelBuilder: () => SingleAssetOperationViewModel(),
+      viewModelBuilder: () => SingleAssetOperationViewModel(widget.detail),
     );
   }
 
