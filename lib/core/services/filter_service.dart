@@ -63,6 +63,10 @@ class FilterService extends BaseService {
 
   clearFromSelectedFilter() {}
 
+  clearDatabase() {
+    box.clear();
+  }
+
   //removes filters of particular type
   clearFilterInDb(FilterType type) async {
     try {

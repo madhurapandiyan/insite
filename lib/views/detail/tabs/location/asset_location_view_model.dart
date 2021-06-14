@@ -5,6 +5,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,11 @@ class AssetLocationViewModel extends InsiteViewModel {
   Set<Marker> markers = Set();
   int index = 1;
 
-  AssetLocationViewModel() {
+  AssetDetail _assetDetail;
+  AssetDetail get assetDetail => _assetDetail;
+
+  AssetLocationViewModel(detail) {
+    this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
     customInfoWindowController = CustomInfoWindowController();
     _assetLocationHistoryService.setUp();
@@ -54,7 +59,9 @@ class AssetLocationViewModel extends InsiteViewModel {
     AssetLocationHistory result = await _assetLocationHistoryService
         .getAssetLocationHistory(_endDate, _startDate);
     _assetLocationHistory = result;
-    updateMarkers();
+    if (_assetLocationHistory != null) {
+      updateMarkers();
+    }
     _loading = false;
     notifyListeners();
   }

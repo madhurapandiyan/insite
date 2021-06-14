@@ -1,7 +1,6 @@
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
-import 'package:insite/core/models/fuel_level.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';

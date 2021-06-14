@@ -46,6 +46,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
 
   CustomerSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    setUp();
     _loading = true;
     getLoggedInUserMail();
     getSelectedData();
@@ -144,6 +145,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     List<Permission> list = await _loginService.getPermissions();
     if (list.isNotEmpty) {
       _localService.setHasPermission(true);
+      clearDb();
       _navigationService.replaceWith(dashboardViewRoute);
     } else {
       _youDontHavePermission = true;

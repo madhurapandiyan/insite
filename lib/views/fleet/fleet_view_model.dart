@@ -31,6 +31,9 @@ class FleetViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
+
   FleetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _fleetService.setUp();
@@ -95,5 +98,25 @@ class FleetViewModel extends InsiteViewModel {
       notifyListeners();
       getFleetSummaryList();
     }
+  }
+
+  void refresh() async {
+    pageNumber = 1;
+    pageSize = 50;
+    _isRefreshing = true;
+    notifyListeners();
+    List<Fleet> result = await _fleetService.getFleetSummaryList(
+        pageSize, pageNumber, appliedFilters);
+    getSelectedFilterData();
+    if (result != null && result.isNotEmpty) {
+      _assets.clear();
+      _assets.addAll(result);
+      _isRefreshing = false;
+      notifyListeners();
+    } else {
+      _isRefreshing = false;
+      notifyListeners();
+    }
+    Logger().i("list of assets " + result.length.toString());
   }
 }

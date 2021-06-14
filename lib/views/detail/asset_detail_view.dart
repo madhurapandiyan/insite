@@ -203,7 +203,9 @@ class _TabPageState extends State<AssetDetailView> {
                                   detail: viewModel.assetDetail,
                                 )
                               : selectedTabIndex == 2
-                                  ? SingleAssetOperationView()
+                                  ? SingleAssetOperationView(
+                                      detail: viewModel.assetDetail,
+                                    )
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,

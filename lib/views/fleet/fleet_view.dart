@@ -41,52 +41,64 @@ class _FleetViewState extends State<FleetView> {
                     child: CircularProgressIndicator(),
                   )
                 : viewModel.assets.isNotEmpty
-                    ? Column(
+                    ? Stack(
                         children: [
-                          viewModel.appliedFilters.isNotEmpty
-                              ? FilterChipView(
-                                  filters: viewModel.appliedFilters,
-                                  onClosed: (value) {
-                                    viewModel.removeFilter(value);
-                                  },
-                                )
-                              : SizedBox(),
-                          viewModel.appliedFilters
-                                  .where((element) =>
-                                      element.type == FilterType.PRODUCT_FAMILY)
-                                  .toList()
-                                  .isNotEmpty
-                              ? Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.15,
-                                  child: FleetKnobView(
-                                    data: viewModel.appliedFilters
-                                        .where((element) =>
-                                            element.type ==
-                                            FilterType.PRODUCT_FAMILY)
-                                        .toList(),
-                                  ),
-                                )
-                              : SizedBox(),
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: viewModel.assets.length,
-                                padding: EdgeInsets.all(16),
-                                controller: viewModel.scrollController,
-                                itemBuilder: (context, index) {
-                                  Fleet fleet = viewModel.assets[index];
-                                  return FleetListItem(
-                                    fleet: fleet,
-                                    onCallback: () {
-                                      viewModel.onDetailPageSelected(fleet);
-                                    },
-                                  );
-                                }),
+                          Column(
+                            children: [
+                              viewModel.appliedFilters.isNotEmpty
+                                  ? FilterChipView(
+                                      filters: viewModel.appliedFilters,
+                                      onClosed: (value) {
+                                        viewModel.removeFilter(value);
+                                        viewModel.refresh();
+                                      },
+                                    )
+                                  : SizedBox(),
+                              viewModel.appliedFilters
+                                      .where((element) =>
+                                          element.type ==
+                                          FilterType.PRODUCT_FAMILY)
+                                      .toList()
+                                      .isNotEmpty
+                                  ? Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.15,
+                                      child: FleetKnobView(
+                                        data: viewModel.appliedFilters
+                                            .where((element) =>
+                                                element.type ==
+                                                FilterType.PRODUCT_FAMILY)
+                                            .toList(),
+                                      ),
+                                    )
+                                  : SizedBox(),
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: viewModel.assets.length,
+                                    padding: EdgeInsets.all(16),
+                                    controller: viewModel.scrollController,
+                                    itemBuilder: (context, index) {
+                                      Fleet fleet = viewModel.assets[index];
+                                      return FleetListItem(
+                                        fleet: fleet,
+                                        onCallback: () {
+                                          viewModel.onDetailPageSelected(fleet);
+                                        },
+                                      );
+                                    }),
+                              ),
+                              viewModel.loadingMore
+                                  ? Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: CircularProgressIndicator())
+                                  : SizedBox()
+                            ],
                           ),
-                          viewModel.loadingMore
-                              ? Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: CircularProgressIndicator())
+                          viewModel.isRefreshing
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
                               : SizedBox()
                         ],
                       )

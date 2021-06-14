@@ -1,4 +1,5 @@
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
 import 'package:logger/logger.dart';
@@ -9,6 +10,9 @@ class SingleAssetOperationViewModel extends BaseViewModel {
   Logger log;
 
   var _singleAssetOperationService = locator<SingleAssetOperationService>();
+
+  AssetDetail _assetDetail;
+  AssetDetail get assetDetail => _assetDetail;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -28,16 +32,19 @@ class SingleAssetOperationViewModel extends BaseViewModel {
     this._endDate = endDate;
   }
 
-  SingleAssetOperationViewModel() {
+  SingleAssetOperationViewModel(AssetDetail detail) {
+    this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
     _singleAssetOperationService.setUp();
-    getSingleAssetOperation();
+    Future.delayed(Duration(seconds: 1), () {
+      getSingleAssetOperation();
+    });
   }
 
   getSingleAssetOperation() async {
-    SingleAssetOperation result =
-        await _singleAssetOperationService.getSingleAssetOperation(
-            _startDate, _endDate, '9a3126b3-d8c1-11e7-80ff-060d7e00a6d1');
+    Logger().d("single asset operation " + _assetDetail.assetUid);
+    SingleAssetOperation result = await _singleAssetOperationService
+        .getSingleAssetOperation(_startDate, _endDate, _assetDetail.assetUid);
     _singleAssetOperation = result;
     _loading = false;
     notifyListeners();

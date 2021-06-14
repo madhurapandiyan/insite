@@ -23,7 +23,9 @@ Map<String, dynamic> _$SingleAssetOperationToJson(
 
 AssetOperations _$AssetOperationsFromJson(Map<String, dynamic> json) {
   return AssetOperations(
-    pagination: json['pagination'],
+    pagination: json['pagination'] == null
+        ? null
+        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
     links: (json['links'] as List)
         ?.map(
             (e) => e == null ? null : Link.fromJson(e as Map<String, dynamic>))
@@ -45,7 +47,7 @@ Map<String, dynamic> _$AssetOperationsToJson(AssetOperations instance) =>
 Asset _$AssetFromJson(Map<String, dynamic> json) {
   return Asset(
     assetUid: json['assetUid'] as String,
-    assetId: json['assetId'],
+    assetId: json['assetId'] as String,
     makeCode: json['makeCode'] as String,
     model: json['model'] as String,
     serialNumber: json['serialNumber'] as String,
@@ -58,7 +60,10 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
         (json['distanceTravelledKilometers'] as num)?.toDouble(),
     dateRangeRuntimeDuration:
         (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
-    lastKnownOperator: json['lastKnownOperator'],
+    lastKnownOperator: json['lastKnownOperator'] == null
+        ? null
+        : LastKnownOperator.fromJson(
+            json['lastKnownOperator'] as Map<String, dynamic>),
     capabilities: json['capabilities'] == null
         ? null
         : Capabilities.fromJson(json['capabilities'] as Map<String, dynamic>),
@@ -235,6 +240,19 @@ Capabilities _$CapabilitiesFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$CapabilitiesToJson(Capabilities instance) =>
     <String, dynamic>{
       'hasActiveCoreSubscription': instance.hasActiveCoreSubscription,
+    };
+
+LastKnownOperator _$LastKnownOperatorFromJson(Map<String, dynamic> json) {
+  return LastKnownOperator(
+    name: json['name'] as String,
+    id: json['id'] as String,
+  );
+}
+
+Map<String, dynamic> _$LastKnownOperatorToJson(LastKnownOperator instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'id': instance.id,
     };
 
 Link _$LinkFromJson(Map<String, dynamic> json) {
