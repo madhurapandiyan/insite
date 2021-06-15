@@ -1066,4 +1066,29 @@ class _RestClient implements RestClient {
     final value = FuelBurnRateTrend.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<LocationSearchResponse> getLocations(
+      query, maxResults, authToken) async {
+    ArgumentError.checkNotNull(query, 'query');
+    ArgumentError.checkNotNull(maxResults, 'maxResults');
+    ArgumentError.checkNotNull(authToken, 'authToken');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'query': query,
+      r'maxResults': maxResults,
+      r'authToken': authToken
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/ww/api/search',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = LocationSearchResponse.fromJson(_result.data);
+    return value;
+  }
 }

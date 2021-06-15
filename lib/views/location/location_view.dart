@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/foundation.dart';
@@ -536,7 +535,7 @@ class _LocationViewState extends State<LocationView> {
           );
         }
       },
-      viewModelBuilder: () => LocationViewModel(),
+      viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
     );
   }
 

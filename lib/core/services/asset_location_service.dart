@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
@@ -52,6 +53,21 @@ class AssetLocationService extends BaseService {
         return result;
       }
       return null;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<List<LocationSearchData>> searchLocation(
+      int maxResults, String query) async {
+    var authToken = "366658D213F9F1429033919FCAE365FC";
+    try {
+      LocationSearchResponse result = await MyApi()
+          .getClientTwo()
+          .getLocations(query, maxResults, authToken);
+      List<LocationSearchData> list = result.Locations;
+      return list;
     } catch (e) {
       Logger().e(e);
       return null;

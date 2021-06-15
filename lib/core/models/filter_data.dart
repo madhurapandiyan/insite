@@ -11,7 +11,9 @@ class FilterData {
   final FilterType type;
   @HiveField(3)
   bool isSelected;
-  FilterData({this.count, this.title, this.isSelected, this.type});
+  @HiveField(4)
+  List<String> extras;
+  FilterData({this.count, this.title, this.isSelected, this.type, this.extras});
 }
 
 @HiveType(typeId: 1)
