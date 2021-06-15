@@ -54,7 +54,7 @@ class _TabPageState extends State<AssetDetailView> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             boxShadow: [
-                              new BoxShadow(blurRadius: 1.0, color: cardcolor)
+                              BoxShadow(blurRadius: 1.0, color: cardcolor)
                             ],
                             border: Border.all(width: 2.5, color: cardcolor),
                             shape: BoxShape.rectangle,
@@ -65,22 +65,22 @@ class _TabPageState extends State<AssetDetailView> {
                                 children: [
                                   Row(children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 2.0, bottom: 15.0),
                                       child: SvgPicture.asset(
                                           "assets/images/arrowdown.svg"),
                                     ),
                                     SizedBox(width: 10.0),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 13.0),
-                                      child: new Container(
+                                      padding: EdgeInsets.only(top: 13.0),
+                                      child: Container(
                                         width: 58.7,
                                         height: 54,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(5.0),
                                           boxShadow: [
-                                            new BoxShadow(
+                                            BoxShadow(
                                                 blurRadius: 1.0,
                                                 color: containercolor)
                                           ],
@@ -102,9 +102,9 @@ class _TabPageState extends State<AssetDetailView> {
                                           Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
+                                                padding: EdgeInsets.only(
                                                     right: 38.0),
-                                                child: new RichText(
+                                                child: RichText(
                                                     text: TextSpan(children: [
                                                   TextSpan(
                                                     text: viewModel.assetDetail
@@ -126,7 +126,7 @@ class _TabPageState extends State<AssetDetailView> {
                                           Text(
                                             viewModel.assetDetail.dealerName,
                                             maxLines: 2,
-                                            style: new TextStyle(
+                                            style: TextStyle(
                                                 fontFamily: 'Roboto',
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.w700,
@@ -155,16 +155,16 @@ class _TabPageState extends State<AssetDetailView> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             boxShadow: [
-                              new BoxShadow(blurRadius: 1.0, color: cardcolor)
+                              BoxShadow(blurRadius: 1.0, color: cardcolor)
                             ],
                             border: Border.all(width: 2.5, color: cardcolor),
                             shape: BoxShape.rectangle,
                           ),
                           child: Row(children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 14.99),
-                              child: new Text("UCID NAME :",
-                                  style: new TextStyle(
+                              padding: EdgeInsets.only(left: 14.99),
+                              child: Text("UCID NAME :",
+                                  style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w700,
                                       color: textcolor,
@@ -172,9 +172,9 @@ class _TabPageState extends State<AssetDetailView> {
                                       fontSize: 11.0)),
                             ),
                             SizedBox(width: 15.0),
-                            new Text(
+                            Text(
                               "TRAINING DEPT",
-                              style: new TextStyle(
+                              style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontWeight: FontWeight.w700,
                                   color: textcolor,
@@ -232,14 +232,14 @@ class _TabPageState extends State<AssetDetailView> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          new Container(
+          Container(
             width: 80,
             height: 80,
             child: Card(
               color:
                   selectedTabIndex == index ? mediumgrey : Colors.transparent,
               semanticContainer: true,
-              shape: new RoundedRectangleBorder(
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
@@ -253,7 +253,7 @@ class _TabPageState extends State<AssetDetailView> {
                 semanticContainer: true,
                 color: selectedTabIndex == index ? tango : cardcolor,
                 elevation: 10.0,
-                shape: new RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
