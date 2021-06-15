@@ -30,7 +30,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
     var color = [burntSienna, lightRose, mustard, emerald, emerald];
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
-      height: 230,
+      height: 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -39,117 +39,115 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
       ),
       child: Stack(
         children: [
-          SingleChildScrollView(
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/images/arrowdown.svg"),
-                        SizedBox(
-                          width: 10,
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset("assets/images/arrowdown.svg"),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      new Text(
+                        "FUEL LEVEL",
+                        style: new TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Roboto',
+                            color: textcolor,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 12.0),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 210,
+                      ),
+                      GestureDetector(
+                        onTap: () => print("button is tapped"),
+                        child: SvgPicture.asset(
+                          "assets/images/menu.svg",
+                          width: 20,
+                          height: 20,
                         ),
-                        new Text(
-                          "FUEL LEVEL",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 210,
-                        ),
-                        GestureDetector(
-                          onTap: () => print("button is tapped"),
-                          child: SvgPicture.asset(
-                            "assets/images/menu.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-              Divider(
-                thickness: 1.0,
-                color: black,
-              ),
-              widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 3),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
+            ),
+            Divider(
+              thickness: 1.0,
+              color: black,
+            ),
+            widget.isLoading
+                ? Expanded(child: Center(child: CircularProgressIndicator()))
+                : Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                              width: 175,
+                              height: 175,
+                              child: SfCircularChart(
+                                palette: <Color>[
+                                  burntSienna,
+                                  lightRose,
+                                  mustard,
+                                  emerald
+                                ],
+                                legend: Legend(isVisible: false),
+                                centerY: '70%',
+                                series: _getSemiDoughnutSeries(),
+                                tooltipBehavior:
+                                    TooltipBehavior(enable: true),
+                              )),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: SingleChildScrollView(
                             child: Container(
-                                width: 175,
-                                height: 175,
-                                child: SfCircularChart(
-                                  palette: <Color>[
-                                    burntSienna,
-                                    lightRose,
-                                    mustard,
-                                    emerald
-                                  ],
-                                  legend: Legend(isVisible: false),
-                                  centerY: '70%',
-                                  series: _getSemiDoughnutSeries(),
-                                  tooltipBehavior:
-                                      TooltipBehavior(enable: true),
-                                )),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: SingleChildScrollView(
-                              child: Container(
-                                child: ListView.separated(
-                                    separatorBuilder: (context, index) {
-                                      return Container(
-                                          width: 127.29,
-                                          child: Divider(
-                                              thickness: 1.0,
-                                              color: athenGrey));
-                                    },
-                                    itemCount: widget.chartData.length,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
-                                    itemBuilder: (context, index) {
-                                      ChartSampleData data =
-                                          widget.chartData[index];
-                                      return AssetStatusWidget(
-                                        chartColor: color[index],
-                                        chartData: data,
-                                        callBack: (value) {
-                                          widget.onFilterSelected(FilterData(
-                                              isSelected: true,
-                                              count: value.y.toString(),
-                                              title: value.x.toString(),
-                                              type: FilterType.FUEL_LEVEL));
-                                        },
-                                      );
-                                    }),
-                              ),
+                              child: ListView.separated(
+                                  separatorBuilder: (context, index) {
+                                    return Container(
+                                        width: 127.29,
+                                        child: Divider(
+                                            thickness: 1.0,
+                                            color: athenGrey));
+                                  },
+                                  itemCount: widget.chartData.length,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.0),
+                                  itemBuilder: (context, index) {
+                                    ChartSampleData data =
+                                        widget.chartData[index];
+                                    return AssetStatusWidget(
+                                      chartColor: color[index],
+                                      chartData: data,
+                                      callBack: (value) {
+                                        widget.onFilterSelected(FilterData(
+                                            isSelected: true,
+                                            count: value.y.toString(),
+                                            title: value.x.toString(),
+                                            type: FilterType.FUEL_LEVEL));
+                                      },
+                                    );
+                                  }),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-            ]),
-          ),
+                  ),
+          ]),
         ],
       ),
     );
