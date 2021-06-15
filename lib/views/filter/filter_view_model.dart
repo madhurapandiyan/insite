@@ -18,7 +18,7 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataAllAssets = [];
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
-  List<FilterData> filteredData = [];
+  List<FilterData> selectedFilterData = [];
 
   // String _startDate =
   //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
@@ -43,6 +43,7 @@ class FilterViewModel extends InsiteViewModel {
     _filterService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
+      getSelectedFilterData();
       getFilterData();
     });
   }
@@ -96,11 +97,31 @@ class FilterViewModel extends InsiteViewModel {
           FilterData data = FilterData(
               count: countData.count.toString(),
               title: countData.countOf,
-              isSelected: false,
+              isSelected: isAlreadSelected(countData.countOf, type),
+              extras: [],
               type: type);
           filterData.add(data);
         }
       }
+    }
+  }
+
+  bool isAlreadSelected(String name, FilterType type) {
+    try {
+      var item = appliedFilters.isNotEmpty
+          ? appliedFilters.firstWhere(
+              (element) => element.title == name && element.type == type,
+              orElse: () {
+                return null;
+              },
+            )
+          : null;
+      if (item != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 

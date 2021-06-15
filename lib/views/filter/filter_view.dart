@@ -39,6 +39,12 @@ class _FilterViewState extends State<FilterView> {
                         viewModel.appliedFilters.isNotEmpty
                             ? FilterChipView(
                                 filters: viewModel.appliedFilters,
+                                onClosed: (value) {
+                                  viewModel.removeFilter(value);
+                                },
+                                backgroundColor: chipBackgroundTwo,
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
                               )
                             : SizedBox(),
                         viewModel.appliedFilters.isNotEmpty
@@ -52,7 +58,7 @@ class _FilterViewState extends State<FilterView> {
                                 children: [
                                   InsiteButton(
                                     bgColor: tango,
-                                    textColor: ship_grey,
+                                    textColor: Colors.white,
                                     onTap: () {
                                       widget.onFilterApplied();
                                     },
@@ -65,8 +71,8 @@ class _FilterViewState extends State<FilterView> {
                                     width: 20,
                                   ),
                                   InsiteButton(
-                                    bgColor: Colors.white,
-                                    textColor: ship_grey,
+                                    bgColor: ship_grey,
+                                    textColor: Colors.white,
                                     onTap: () {
                                       widget.onFilterApplied();
                                     },

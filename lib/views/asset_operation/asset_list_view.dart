@@ -31,115 +31,127 @@ class _AssetListViewState extends State<AssetListView> {
             onFilterApplied: () {},
             body: Container(
               padding: EdgeInsets.all(8),
-              child: Column(
+              child: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 40,
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: tuna,
-                          ),
-                          child: DropdownButton<String>(
-                            value: menuItem,
-                            items: menuFilters.map((String value) {
-                              return new DropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(value),
-                              );
-                            }).toList(),
-                            elevation: 16,
-                            style: TextStyle(
-                                color: white, fontWeight: FontWeight.w700),
-                            underline: Container(
-                              height: 0,
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 40,
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: tuna,
+                              ),
+                              child: DropdownButton<String>(
+                                value: menuItem,
+                                items: menuFilters.map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList(),
+                                elevation: 16,
+                                style: TextStyle(
+                                    color: white, fontWeight: FontWeight.w700),
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                dropdownColor: cardcolor,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: white,
+                                ),
+                                onChanged: (String newValue) {
+                                  if (menuItem != newValue) {
+                                    setState(() {
+                                      menuItem = newValue;
+                                    });
+                                    viewModel.menuItem = menuItem == "Asset ID"
+                                        ? "assetid"
+                                        : "assetserialnumber";
+                                    viewModel.refresh();
+                                  }
+                                },
+                              ),
                             ),
-                            dropdownColor: cardcolor,
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: white,
+                            SizedBox(
+                              width: 10,
                             ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                menuItem = newValue;
-                              });
-                              viewModel.menuItem = menuItem == "Asset ID"
-                                  ? "assetid"
-                                  : "assetserialnumber";
-                              viewModel.refresh();
-                            },
-                          ),
+                            InsiteButton(
+                              title: "Date Range",
+                              height: 40,
+                              onTap: () async {
+                                dateRange = [];
+                                dateRange = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Dialog(
+                                      backgroundColor: transparent,
+                                      child: DateRangeWidget()),
+                                );
+                                if (dateRange.isNotEmpty) {
+                                  viewModel.startDate =
+                                      '${dateRange.first.year}-${dateRange.first.month}-${dateRange.first.day}';
+                                  viewModel.endDate =
+                                      '${dateRange.last.year}-${dateRange.last.month}-${dateRange.last.day}';
+                                  viewModel.updateDateRangeList();
+                                  viewModel.refresh();
+                                }
+                              },
+                              textColor: Colors.white,
+                              width: 100,
+                              bgColor: tuna,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          "Data displayed here is only an indicative figure. For viewing actual Asset usage per day, visit Asset Utilization - Single Asset View ",
+                          style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
-                        InsiteButton(
-                          title: "Date Range",
-                          height: 40,
-                          onTap: () async {
-                            dateRange = [];
-                            dateRange = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) => Dialog(
-                                  backgroundColor: transparent,
-                                  child: DateRangeWidget()),
-                            );
-                            if (dateRange.isNotEmpty) {
-                              viewModel.startDate =
-                                  '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-                              viewModel.endDate =
-                                  '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                              viewModel.updateDateRangeList();
-                              viewModel.refresh();
-                            }
-                          },
-                          textColor: Colors.white,
-                          width: 100,
-                          bgColor: tuna,
-                        ),
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                          child: viewModel.loading
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : viewModel.assets.isNotEmpty
+                                  ? ListView.builder(
+                                      itemCount: viewModel.assets.length,
+                                      shrinkWrap: true,
+                                      controller: viewModel.scrollController,
+                                      padding: EdgeInsets.all(8),
+                                      itemBuilder: (context, index) {
+                                        Asset asset = viewModel.assets[index];
+                                        return AssetListItem(
+                                          asset: asset,
+                                          days: viewModel.days,
+                                          onCallback: () {
+                                            viewModel
+                                                .onDetailPageSelected(asset);
+                                          },
+                                        );
+                                      })
+                                  : EmptyView(
+                                      title: "No Results",
+                                    )),
+                      viewModel.loadingMore
+                          ? Padding(
+                              padding: EdgeInsets.all(8),
+                              child: CircularProgressIndicator())
+                          : SizedBox()
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      "Data displayed here is only an indicative figure. For viewing actual Asset usage per day, visit Asset Utilization - Single Asset View ",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
-                  Expanded(
-                      child: viewModel.loading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : viewModel.assets.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: viewModel.assets.length,
-                                  shrinkWrap: true,
-                                  controller: viewModel.scrollController,
-                                  padding: EdgeInsets.all(8),
-                                  itemBuilder: (context, index) {
-                                    Asset asset = viewModel.assets[index];
-                                    return AssetListItem(
-                                      asset: asset,
-                                      days: viewModel.days,
-                                      onCallback: () {
-                                        viewModel.onDetailPageSelected(asset);
-                                      },
-                                    );
-                                  })
-                              : EmptyView(
-                                  title: "No Results",
-                                )),
-                  viewModel.loadingMore
-                      ? Padding(
-                          padding: EdgeInsets.all(8),
-                          child: CircularProgressIndicator())
+                  viewModel.refreshing
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
                       : SizedBox()
                 ],
               ),

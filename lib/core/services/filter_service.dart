@@ -112,19 +112,20 @@ class FilterService extends BaseService {
   }
 
   //removes a particular filter
-  removeFilter(value) async {
+  removeFilter(FilterData value) async {
     int size = box.values.length;
+    Logger().d("removeFilter service ", size);
     for (var i = 0; i < size; i++) {
       FilterData data = box.get(i);
-      print("current filter title " + data.title.toString());
-      if (data.title == value.title) {
+      if (data.title == value.title && data.type == value.type) {
+        print("delete filter " + data.title.toString());
         await box.deleteAt(i);
         return;
       }
     }
   }
 
-  addFilter(value) async {
+  addFilter(FilterData value) async {
     int size = box.values.length;
     if (size == 0) {
       box.add(value);
@@ -132,13 +133,13 @@ class FilterService extends BaseService {
       bool shouldAdd = true;
       for (var i = 0; i < size; i++) {
         FilterData data = box.get(i);
-        print("current filter type " + data.type.toString());
         if (data.title == value.title) {
           shouldAdd = false;
           return;
         }
       }
       if (shouldAdd) {
+        print("add filter " + value.title.toString());
         box.add(value);
       }
     }
