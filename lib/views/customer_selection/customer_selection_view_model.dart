@@ -20,7 +20,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   String _loggedInUserMail = "";
   String get loggedInUserMail => _loggedInUserMail;
 
-  bool _loading = false;
+  bool _loading = true;
   bool get loading => _loading;
 
   bool _youDontHavePermission = false;
@@ -47,7 +47,6 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   CustomerSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _loading = true;
     getLoggedInUserMail();
     getSelectedData();
     getCustomerList();

@@ -31,10 +31,12 @@ class LocationViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 2500;
 
-  LocationViewModel() {
+  LocationViewModel(TYPE type) {
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
-    getAssetLocation();
+    if (type == TYPE.LOCATION) {
+      getAssetLocation();
+    }
   }
 
   getAssetLocation() async {
@@ -45,3 +47,5 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 }
+
+enum TYPE { LOCATION, SEARCH }

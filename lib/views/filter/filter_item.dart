@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
@@ -71,7 +72,7 @@ class _FilterItemState extends State<FilterItem> {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text(
-        getTitle(widget.filterType),
+        Utils.getTitle(widget.filterType),
         style: TextStyle(color: Colors.white),
       ),
       children: [
@@ -177,49 +178,5 @@ class _FilterItemState extends State<FilterItem> {
         ),
       ],
     );
-  }
-
-  String getTitle(FilterType type) {
-    String title = "";
-    switch (type) {
-      case FilterType.PRODUCT_FAMILY:
-        title = "PRODUCT FAMILY";
-        break;
-      case FilterType.MAKE:
-        title = "MAKE";
-        break;
-      case FilterType.MODEL:
-        title = "MODEL";
-        break;
-      case FilterType.MODEL_YEAR:
-        title = "MODEL YEAR";
-        break;
-      case FilterType.LOCATION_SEARCH:
-        title = "LOCATION SEARCH";
-        break;
-      case FilterType.APPLICATION:
-        title = "APPLICATION";
-        break;
-      case FilterType.ASSET_COMMISION_DATE:
-        title = "ASSET COMMISSIONING DATE";
-        break;
-      case FilterType.SUBSCRIPTION_DATE:
-        title = "SUBSCRIPTION DATE";
-        break;
-      case FilterType.DEVICE_TYPE:
-        title = "DEVICE TYPE";
-        break;
-      case FilterType.ALL_ASSETS:
-        title = "ALL ASSETS";
-        break;
-      case FilterType.FUEL_LEVEL:
-        title = "FUEL LEVEL";
-        break;
-      case FilterType.IDLING_LEVEL:
-        title = "IDLING LEVEL";
-        break;
-      default:
-    }
-    return title;
   }
 }
