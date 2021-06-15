@@ -36,15 +36,23 @@ class IdleWorkingGraphWidget extends StatelessWidget {
           width: 16,
         ),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: idleLength == 0.0 ? double.infinity : idleLength),
-            child: Container(
-              height: 20,
-              decoration: BoxDecoration(
-                color: burntSienna,
-                border: Border.all(color: transparent, width: 0.0),
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+          child: Container(
+            height: 20,
+            decoration: BoxDecoration(
+              color: white.withOpacity(0.5),
+              border: Border.all(color: transparent, width: 0.0),
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: idleLength == 0.0 ? double.infinity : idleLength),
+              child: Container(
+                height: 20,
+                decoration: BoxDecoration(
+                  color: burntSienna,
+                  border: Border.all(color: transparent, width: 0.0),
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                ),
               ),
             ),
           ),
@@ -55,15 +63,24 @@ class IdleWorkingGraphWidget extends StatelessWidget {
           color: white,
         ),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-                right: workingLength == 0.0 ? double.infinity : workingLength),
-            child: Container(
-              height: 20,
-              decoration: BoxDecoration(
-                color: emerald,
-                border: Border.all(color: black, width: 0.0),
-                borderRadius: BorderRadius.all(Radius.circular(4)),
+          child: Container(
+            height: 20,
+            decoration: BoxDecoration(
+              color: white.withOpacity(0.5),
+              border: Border.all(color: transparent, width: 0.0),
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  right:
+                      workingLength == 0.0 ? double.infinity : workingLength),
+              child: Container(
+                height: 20,
+                decoration: BoxDecoration(
+                  color: emerald,
+                  border: Border.all(color: black, width: 0.0),
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                ),
               ),
             ),
           ),
