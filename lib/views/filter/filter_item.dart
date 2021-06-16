@@ -83,14 +83,22 @@ class _FilterItemState extends State<FilterItem> {
           ),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SearchBox(
-                  controller: _textEditingController,
-                  hint: "Search",
-                  onTextChanged: onSearchTextChanged,
-                ),
-              ),
+              list.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SearchBox(
+                        controller: _textEditingController,
+                        hint: "Search",
+                        onTextChanged: onSearchTextChanged,
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Not available",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
               list.where((element) => element.isSelected).length > 0
                   ? Padding(
                       padding: const EdgeInsets.symmetric(

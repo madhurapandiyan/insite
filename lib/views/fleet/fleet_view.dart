@@ -33,6 +33,7 @@ class _FleetViewState extends State<FleetView> {
           screenType: ScreenType.FLEET,
           onFilterApplied: () {
             viewModel.getSelectedFilterData();
+            viewModel.refresh();
           },
           body: Container(
             color: bgcolor,
@@ -52,6 +53,9 @@ class _FleetViewState extends State<FleetView> {
                                         viewModel.removeFilter(value);
                                         viewModel.refresh();
                                       },
+                                      backgroundColor: chipBackgroundOne,
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0, left: 16.0),
                                     )
                                   : SizedBox(),
                               viewModel.appliedFilters

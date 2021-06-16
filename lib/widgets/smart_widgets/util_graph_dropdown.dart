@@ -30,40 +30,30 @@ class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
         height: 0,
       ),
       onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
+        dropdownValue = newValue;
+        if (dropdownValue.contains('Runtime Hours'))
+          widget.graphType(UtilizationGraphType.RUNTIMEHOURS);
 
-          // (dropdownValue.contains('Total Hours') ||
-          //         dropdownValue.contains('Total Fuel Burned (Liters)') ||
-          //         dropdownValue.contains('Idle % Trend') ||
-          //         dropdownValue.contains('Fuel Burn Rate Trend'))
-          //     ? isRangeSelectionVisible = true
-          //     : isRangeSelectionVisible = false;
+        if (dropdownValue.contains('Distance Traveled (Kilometers)'))
+          widget.graphType(UtilizationGraphType.DISTANCETRAVELLED);
 
-          if (dropdownValue.contains('Runtime Hours'))
-            widget.graphType(UtilizationGraphType.RUNTIMEHOURS);
+        if (dropdownValue.contains('Idle % / Working %'))
+          widget.graphType(UtilizationGraphType.IDLEORWORKING);
 
-          if (dropdownValue.contains('Distance Traveled (Kilometers)'))
-            widget.graphType(UtilizationGraphType.DISTANCETRAVELLED);
+        if (dropdownValue.contains('Cumulative'))
+          widget.graphType(UtilizationGraphType.CUMULATIVE);
 
-          if (dropdownValue.contains('Idle % / Working %'))
-            widget.graphType(UtilizationGraphType.IDLEORWORKING);
+        if (dropdownValue.contains('Total Hours'))
+          widget.graphType(UtilizationGraphType.TOTALHOURS);
 
-          if (dropdownValue.contains('Cumulative'))
-            widget.graphType(UtilizationGraphType.CUMULATIVE);
+        if (dropdownValue.contains('Total Fuel Burned (Liters)'))
+          widget.graphType(UtilizationGraphType.TOTALFUELBURNED);
 
-          if (dropdownValue.contains('Total Hours'))
-            widget.graphType(UtilizationGraphType.TOTALHOURS);
+        if (dropdownValue.contains('Idle % Trend'))
+          widget.graphType(UtilizationGraphType.IDLETREND);
 
-          if (dropdownValue.contains('Total Fuel Burned (Liters)'))
-            widget.graphType(UtilizationGraphType.TOTALFUELBURNED);
-
-          if (dropdownValue.contains('Idle % Trend'))
-            widget.graphType(UtilizationGraphType.IDLETREND);
-
-          if (dropdownValue.contains('Fuel Burn Rate Trend'))
-            widget.graphType(UtilizationGraphType.FUELBURNRATETREND);
-        });
+        if (dropdownValue.contains('Fuel Burn Rate Trend'))
+          widget.graphType(UtilizationGraphType.FUELBURNRATETREND);
       },
       items: <String>[
         'Idle % / Working %',
