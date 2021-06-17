@@ -129,10 +129,12 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                         plotAreaBorderColor: black,
                         plotAreaBorderWidth: 3.0,
                         primaryXAxis: DateTimeAxis(
-                            opposedPosition: true,
-                            dateFormat: DateFormat("hh:mm:ss")),
-                        primaryYAxis:
-                            DateTimeAxis(dateFormat: DateFormat("MMM dd")),
+                          opposedPosition: true,
+                          dateFormat: DateFormat("hh:mm:ss"),
+                        ),
+                        primaryYAxis: DateTimeAxis(
+                          dateFormat: DateFormat("MMM dd"),
+                        ),
                         legend: Legend(isVisible: false),
                         tooltipBehavior: TooltipBehavior(enable: true),
                         zoomPanBehavior: ZoomPanBehavior(
@@ -206,8 +208,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
     );
   }
 
-  // TODO: Modify Asset Operation Data and Customise Graph
-
   static List<ScatterSeries<SingleAssetOperationChartData, DateTime>>
       getDefaultData(SingleAssetOperation assetOperation) {
     final List<SingleAssetOperationChartData> chartData =
@@ -215,11 +215,21 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
 
     List<SingleAssetOperationChartData> markers = [];
 
-    markers.add(SingleAssetOperationChartData(
-        assetOperation.assetOperations.assets[0].assetLastReceivedEvent
-            .lastReceivedEventTimeLocal,
-        assetOperation.assetOperations.assets[0].assetLastReceivedEvent
-            .lastReceivedEventTimeLocal));
+    for (Asset asset in assetOperation.assetOperations.assets) {
+      for (AssetLocalDate assetLocalDate in asset.assetLocalDates) {
+        for (Segment segment in assetLocalDate.segments) {
+          chartData.add(
+            SingleAssetOperationChartData(
+              segment.startTimeUtc,
+              segment.endTimeUtc,
+              DateFormat('MMM dd').format(assetLocalDate.assetLocalDate),
+            ),
+          );
+          print(
+              '@@@ ${DateFormat('MMM dd hh mm ss').format(segment.startTimeUtc)}');
+        }
+      }
+    }
 
     return <ScatterSeries<SingleAssetOperationChartData, DateTime>>[
       ScatterSeries<SingleAssetOperationChartData, DateTime>(
@@ -227,9 +237,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
         color: tango,
         dataSource: chartData,
         borderWidth: 5,
-        xValueMapper: (SingleAssetOperationChartData data, _) => data.xaxis,
-        // TODO: Change the axis data
-        // yValueMapper: (SingleAssetOperationChartData data, _) => data.yaxis,
+        xValueMapper: (SingleAssetOperationChartData data, _) => data.startTime,
+        yValueMapper: (SingleAssetOperationChartData data, _) => 10,
         markerSettings: MarkerSettings(
           isVisible: true,
           height: 10,

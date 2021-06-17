@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class SingleAssetOperationChartData {
   @required
-  final DateTime xaxis;
+  final DateTime startTime;
   @required
-  final DateTime yaxis;
+  final DateTime endTime;
+  @required
+  final String localDate;
 
-  SingleAssetOperationChartData(this.xaxis, this.yaxis);
+  SingleAssetOperationChartData(this.startTime, this.endTime, this.localDate);
 }

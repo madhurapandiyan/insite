@@ -42,6 +42,7 @@ class SingleAssetOperationService extends BaseService {
       }
       return null;
     } catch (e) {
+      print(e);
       Logger().e(e);
       return null;
     }

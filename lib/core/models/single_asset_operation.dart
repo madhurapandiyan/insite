@@ -1,6 +1,5 @@
-import 'package:insite/core/models/pagination.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
+
 part 'single_asset_operation.g.dart';
 
 @JsonSerializable()
@@ -11,15 +10,8 @@ class SingleAssetOperation {
 
   AssetOperations assetOperations;
 
-  factory SingleAssetOperation.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$SingleAssetOperationFromJson(json);
-    } catch (e) {
-      Logger().e("SingleAssetOperation exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory SingleAssetOperation.fromJson(Map<String, dynamic> json) =>
+      _$SingleAssetOperationFromJson(json);
 
   Map<String, dynamic> toJson() => _$SingleAssetOperationToJson(this);
 }
@@ -32,19 +24,12 @@ class AssetOperations {
     this.assets,
   });
 
-  Pagination pagination;
+  dynamic pagination;
   List<Link> links;
   List<Asset> assets;
 
-  factory AssetOperations.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$AssetOperationsFromJson(json);
-    } catch (e) {
-      Logger().e("AssetOperations exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory AssetOperations.fromJson(Map<String, dynamic> json) =>
+      _$AssetOperationsFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetOperationsToJson(this);
 }
@@ -71,31 +56,23 @@ class Asset {
   });
 
   String assetUid;
-  String assetId;
+  dynamic assetId;
   String makeCode;
   String model;
   String serialNumber;
   AssetIcon assetIcon;
   String productFamily;
   String customStateDescription;
-  double distanceTravelledKilometers;
-  double dateRangeRuntimeDuration;
-  LastKnownOperator lastKnownOperator;
+  var distanceTravelledKilometers;
+  var dateRangeRuntimeDuration;
+  dynamic lastKnownOperator;
   Capabilities capabilities;
   List<AssetLocalDate> assetLocalDates;
   AssetLastReceivedEvent assetLastReceivedEvent;
   dynamic firstEngineStartEvent;
   dynamic lastEngineStopEvent;
 
-  factory Asset.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$AssetFromJson(json);
-    } catch (e) {
-      Logger().e("Asset exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetToJson(this);
 }
@@ -106,27 +83,12 @@ class AssetIcon {
     this.key,
   });
 
-  int key;
+  var key;
 
-  factory AssetIcon.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$AssetIconFromJson(json);
-    } catch (e) {
-      Logger().e("AssetIcon exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory AssetIcon.fromJson(Map<String, dynamic> json) =>
+      _$AssetIconFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    try {
-      return _$AssetIconToJson(this);
-    } catch (e) {
-      Logger().e("AssetIcon exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  Map<String, dynamic> toJson() => _$AssetIconToJson(this);
 }
 
 @JsonSerializable()
@@ -147,15 +109,8 @@ class AssetLastReceivedEvent {
   bool isPairedEvent;
   String segmentType;
 
-  factory AssetLastReceivedEvent.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$AssetLastReceivedEventFromJson(json);
-    } catch (e) {
-      Logger().e("AssetLastReceivedEvent exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory AssetLastReceivedEvent.fromJson(Map<String, dynamic> json) =>
+      _$AssetLastReceivedEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetLastReceivedEventToJson(this);
 }
@@ -170,19 +125,12 @@ class AssetLocalDate {
   });
 
   DateTime assetLocalDate;
-  int totalRuntimeDurationSeconds;
-  int totalRuntimeKeyDateDurationSeconds;
+  var totalRuntimeDurationSeconds;
+  var totalRuntimeKeyDateDurationSeconds;
   List<Segment> segments;
 
-  factory AssetLocalDate.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$AssetLocalDateFromJson(json);
-    } catch (e) {
-      Logger().e("AssetLocalDate exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory AssetLocalDate.fromJson(Map<String, dynamic> json) =>
+      _$AssetLocalDateFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetLocalDateToJson(this);
 }
@@ -217,13 +165,13 @@ class Segment {
   DateTime endTimeUtc;
   DateTime startTimeLocal;
   DateTime endTimeLocal;
-  double startLocationLatitude;
-  double startLocationLongitude;
+  var startLocationLatitude;
+  var startLocationLongitude;
   String startStateTimezoneAbbrev;
-  double endLocationLatitude;
-  double endLocationLongitude;
+  var endLocationLatitude;
+  var endLocationLongitude;
   String endStateTimezoneAbbrev;
-  int durationSeconds;
+  var durationSeconds;
   String workDefinitionType;
   String segmentType;
   bool isProjectedEnd;
@@ -233,17 +181,10 @@ class Segment {
   DateTime endTimeKeyDateUtc;
   DateTime startTimeKeyDateLocal;
   DateTime endTimeKeyDateLocal;
-  int durationKeyDateSeconds;
+  var durationKeyDateSeconds;
 
-  factory Segment.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$SegmentFromJson(json);
-    } catch (e) {
-      Logger().e("Segment exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory Segment.fromJson(Map<String, dynamic> json) =>
+      _$SegmentFromJson(json);
 
   Map<String, dynamic> toJson() => _$SegmentToJson(this);
 }
@@ -256,37 +197,10 @@ class Capabilities {
 
   String hasActiveCoreSubscription;
 
-  factory Capabilities.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$CapabilitiesFromJson(json);
-    } catch (e) {
-      Logger().e("Capabilities exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory Capabilities.fromJson(Map<String, dynamic> json) =>
+      _$CapabilitiesFromJson(json);
 
   Map<String, dynamic> toJson() => _$CapabilitiesToJson(this);
-}
-
-@JsonSerializable()
-class LastKnownOperator {
-  LastKnownOperator({this.name, this.id});
-
-  String name;
-  String id;
-
-  factory LastKnownOperator.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$LastKnownOperatorFromJson(json);
-    } catch (e) {
-      Logger().e("Capabilities exception");
-      Logger().e(e);
-      return null;
-    }
-  }
-
-  Map<String, dynamic> toJson() => _$LastKnownOperatorToJson(this);
 }
 
 @JsonSerializable()
@@ -299,15 +213,7 @@ class Link {
   String rel;
   String href;
 
-  factory Link.fromJson(Map<String, dynamic> json) {
-    try {
-      return _$LinkFromJson(json);
-    } catch (e) {
-      Logger().e("Link exception");
-      Logger().e(e);
-      return null;
-    }
-  }
+  factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$LinkToJson(this);
 }
