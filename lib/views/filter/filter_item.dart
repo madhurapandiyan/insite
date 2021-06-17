@@ -12,7 +12,13 @@ class FilterItem extends StatefulWidget {
   final FilterType filterType;
   final Function(List<FilterData>) onApply;
   final Function onClear;
-  FilterItem({this.data, this.onApply, this.onClear, this.filterType});
+  final bool isSingleSelection;
+  FilterItem(
+      {this.data,
+      this.onApply,
+      this.onClear,
+      this.filterType,
+      this.isSingleSelection = false});
 
   @override
   _FilterItemState createState() => _FilterItemState();
@@ -66,6 +72,12 @@ class _FilterItemState extends State<FilterItem> {
       list[i].isSelected = false;
     }
     setState(() {});
+  }
+
+  deSelect() {
+    for (var i = 0; i < list.length; i++) {
+      list[i].isSelected = false;
+    }
   }
 
   @override
@@ -141,8 +153,14 @@ class _FilterItemState extends State<FilterItem> {
                   FilterData data = list[index];
                   return GestureDetector(
                     onTap: () {
-                      list[index].isSelected = !data.isSelected;
-                      setState(() {});
+                      if (widget.isSingleSelection) {
+                        deSelect();
+                        list[index].isSelected = true;
+                        setState(() {});
+                      } else {
+                        list[index].isSelected = !data.isSelected;
+                        setState(() {});
+                      }
                     },
                     child: Container(
                       color: data.isSelected ? tango : bgcolor,
@@ -161,7 +179,7 @@ class _FilterItemState extends State<FilterItem> {
                           ),
                           Expanded(
                             child: Text(
-                              data.title,
+                              Utils.getFilterTitle(data),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.white,

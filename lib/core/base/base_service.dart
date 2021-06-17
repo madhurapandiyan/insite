@@ -16,4 +16,12 @@ class BaseService {
     }
     return stringList.join(",");
   }
+
+  String constructQuery(key, value, isFirst) {
+    if (isFirst) {
+      return "?" + key + "=" + value;
+    } else {
+      return "&" + key + "=" + value;
+    }
+  }
 }

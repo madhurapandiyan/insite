@@ -32,7 +32,6 @@ class _FleetViewState extends State<FleetView> {
           viewModel: viewModel,
           screenType: ScreenType.FLEET,
           onFilterApplied: () {
-            viewModel.getSelectedFilterData();
             viewModel.refresh();
           },
           body: Container(
