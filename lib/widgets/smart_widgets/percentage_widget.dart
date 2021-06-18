@@ -37,7 +37,14 @@ class PercentageWidget extends StatelessWidget {
         ),
         trailing: value == null
             ? percentage == null
-                ? Text('')
+                ? Text(
+                    'NA',
+                    style: TextStyle(
+                      color: white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 : isPercentage == null
                     ? Text(
                         '${double.parse((percentage).toStringAsFixed(2))}%',

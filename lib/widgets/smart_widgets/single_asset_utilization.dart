@@ -187,7 +187,7 @@ class _SingleAssetUtilizationWidgetState
       );
 
   double calculatePercentage(double value) {
-    return ((value / 18) * 100);
+    return ((value / 18) * 10);
   }
 
   Column barWidget(double value, Color color) {

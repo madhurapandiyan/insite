@@ -294,8 +294,10 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/ww/api/search")
-  Future<LocationSearchResponse> getLocations(@Query("query") String query,
-      @Query("maxResults") int maxResults, @Query("authToken") String authToken);
+  Future<LocationSearchResponse> getLocations(
+      @Query("query") String query,
+      @Query("maxResults") int maxResults,
+      @Query("authToken") String authToken);
 }
 
 @JsonSerializable()
