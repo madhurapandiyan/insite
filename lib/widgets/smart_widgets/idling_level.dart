@@ -94,6 +94,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
+                            flex: 1,
                             child: Container(
                                 height: maxheight,
                                 child: SfCartesianChart(
