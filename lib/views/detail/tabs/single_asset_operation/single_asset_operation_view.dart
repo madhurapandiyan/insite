@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'single_asset_operation_view_model.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class SingleAssetOperationView extends StatefulWidget {
   final AssetDetail detail;
@@ -22,6 +23,7 @@ class SingleAssetOperationView extends StatefulWidget {
 
 class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
   List<DateTime> dateRange;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetOperationViewModel>.reactive(
@@ -128,17 +130,20 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                         backgroundColor: ship_grey,
                         plotAreaBorderColor: black,
                         plotAreaBorderWidth: 3.0,
-                        primaryXAxis: DateTimeAxis(
+                        primaryXAxis: CategoryAxis(),
+                        primaryYAxis: NumericAxis(
+                          // dateFormat: DateFormat("MMM dd"),
                           opposedPosition: true,
-                          dateFormat: DateFormat("hh:mm:ss"),
-                        ),
-                        primaryYAxis: DateTimeAxis(
-                          dateFormat: DateFormat("MMM dd"),
+                          minimum: 0,
+                          maximum: 24,
                         ),
                         legend: Legend(isVisible: false),
                         tooltipBehavior: TooltipBehavior(enable: true),
                         zoomPanBehavior: ZoomPanBehavior(
-                            enablePinching: true, enablePanning: true),
+                          enablePinching: true,
+                          enablePanning: true,
+                        ),
+                        isTransposed: true,
                       )
                     : SizedBox(),
               ],
@@ -208,37 +213,45 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
     );
   }
 
-  static List<ScatterSeries<SingleAssetOperationChartData, DateTime>>
+  static List<ScatterSeries<SingleAssetOperationChartData, String>>
       getDefaultData(SingleAssetOperation assetOperation) {
     final List<SingleAssetOperationChartData> chartData =
         <SingleAssetOperationChartData>[];
 
-    List<SingleAssetOperationChartData> markers = [];
-
-    for (Asset asset in assetOperation.assetOperations.assets) {
-      for (AssetLocalDate assetLocalDate in asset.assetLocalDates) {
-        for (Segment segment in assetLocalDate.segments) {
+    for (Asset asset in assetOperation.assetOperations.assets)
+      for (AssetLocalDate assetLocalDate in asset.assetLocalDates)
+        for (Segment segment in assetLocalDate.segments)
           chartData.add(
             SingleAssetOperationChartData(
-              segment.startTimeUtc,
-              segment.endTimeUtc,
+              Utils.getDecimalFromTime(segment.startTimeUtc),
+              Utils.getDecimalFromTime(segment.endTimeUtc),
               DateFormat('MMM dd').format(assetLocalDate.assetLocalDate),
             ),
           );
-          print(
-              '@@@ ${DateFormat('MMM dd hh mm ss').format(segment.startTimeUtc)}');
-        }
-      }
-    }
 
-    return <ScatterSeries<SingleAssetOperationChartData, DateTime>>[
-      ScatterSeries<SingleAssetOperationChartData, DateTime>(
+    return <ScatterSeries<SingleAssetOperationChartData, String>>[
+      ScatterSeries<SingleAssetOperationChartData, String>(
         enableTooltip: true,
         color: tango,
         dataSource: chartData,
         borderWidth: 5,
-        xValueMapper: (SingleAssetOperationChartData data, _) => data.startTime,
-        yValueMapper: (SingleAssetOperationChartData data, _) => 10,
+        xValueMapper: (SingleAssetOperationChartData data, _) => data.localDate,
+        yValueMapper: (SingleAssetOperationChartData data, _) => data.startTime,
+        markerSettings: MarkerSettings(
+          isVisible: true,
+          height: 10,
+          width: 10,
+          shape: DataMarkerType.rectangle,
+          borderWidth: 3,
+        ),
+      ),
+      ScatterSeries<SingleAssetOperationChartData, String>(
+        enableTooltip: true,
+        color: tango,
+        dataSource: chartData,
+        borderWidth: 5,
+        xValueMapper: (SingleAssetOperationChartData data, _) => data.localDate,
+        yValueMapper: (SingleAssetOperationChartData data, _) => data.endTime,
         markerSettings: MarkerSettings(
           isVisible: true,
           height: 10,

@@ -99,4 +99,10 @@ class Utils {
     }
     return title;
   }
+
+  static double getDecimalFromTime(DateTime input) {
+    int totalSeconds = (input.minute * 60) + input.second;
+    double rep = totalSeconds / 3600;
+    return (input.hour + rep);
+  }
 }
