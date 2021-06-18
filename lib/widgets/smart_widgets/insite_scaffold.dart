@@ -91,7 +91,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                 _isFilterSelected
                     ? FilterView(
                         onFilterApplied: () {
-                          widget.onFilterApplied();
+                          onFilterApplied();
                         },
                       )
                     : SizedBox()

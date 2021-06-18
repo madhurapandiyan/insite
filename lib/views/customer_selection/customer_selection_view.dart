@@ -17,7 +17,6 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
   @override
   void initState() {
     super.initState();
-    ProgressDialog.show(context);
   }
 
   @override
@@ -87,15 +86,13 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Expanded(
-                          child: Text(
-                            viewModel.loggedInUserMail,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
+                        child: Text(
+                          viewModel.loggedInUserMail,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
                         ),
                       ),
                     ],

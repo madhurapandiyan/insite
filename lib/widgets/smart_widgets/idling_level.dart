@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -28,10 +27,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height * 0.43;
     double maxheight = MediaQuery.of(context).size.height * 0.32;
-
     return Container(
-      height: 348.00,
+      height: height,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),

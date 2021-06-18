@@ -23,9 +23,7 @@ Map<String, dynamic> _$SingleAssetOperationToJson(
 
 AssetOperations _$AssetOperationsFromJson(Map<String, dynamic> json) {
   return AssetOperations(
-    pagination: json['pagination'] == null
-        ? null
-        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+    pagination: json['pagination'],
     links: (json['links'] as List)
         ?.map(
             (e) => e == null ? null : Link.fromJson(e as Map<String, dynamic>))
@@ -47,7 +45,7 @@ Map<String, dynamic> _$AssetOperationsToJson(AssetOperations instance) =>
 Asset _$AssetFromJson(Map<String, dynamic> json) {
   return Asset(
     assetUid: json['assetUid'] as String,
-    assetId: json['assetId'] as String,
+    assetId: json['assetId'],
     makeCode: json['makeCode'] as String,
     model: json['model'] as String,
     serialNumber: json['serialNumber'] as String,
@@ -56,14 +54,9 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
         : AssetIcon.fromJson(json['assetIcon'] as Map<String, dynamic>),
     productFamily: json['productFamily'] as String,
     customStateDescription: json['customStateDescription'] as String,
-    distanceTravelledKilometers:
-        (json['distanceTravelledKilometers'] as num)?.toDouble(),
-    dateRangeRuntimeDuration:
-        (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
-    lastKnownOperator: json['lastKnownOperator'] == null
-        ? null
-        : LastKnownOperator.fromJson(
-            json['lastKnownOperator'] as Map<String, dynamic>),
+    distanceTravelledKilometers: json['distanceTravelledKilometers'],
+    dateRangeRuntimeDuration: json['dateRangeRuntimeDuration'],
+    lastKnownOperator: json['lastKnownOperator'],
     capabilities: json['capabilities'] == null
         ? null
         : Capabilities.fromJson(json['capabilities'] as Map<String, dynamic>),
@@ -102,7 +95,7 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
 
 AssetIcon _$AssetIconFromJson(Map<String, dynamic> json) {
   return AssetIcon(
-    key: json['key'] as int,
+    key: json['key'],
   );
 }
 
@@ -143,9 +136,9 @@ AssetLocalDate _$AssetLocalDateFromJson(Map<String, dynamic> json) {
     assetLocalDate: json['assetLocalDate'] == null
         ? null
         : DateTime.parse(json['assetLocalDate'] as String),
-    totalRuntimeDurationSeconds: json['totalRuntimeDurationSeconds'] as int,
+    totalRuntimeDurationSeconds: json['totalRuntimeDurationSeconds'],
     totalRuntimeKeyDateDurationSeconds:
-        json['totalRuntimeKeyDateDurationSeconds'] as int,
+        json['totalRuntimeKeyDateDurationSeconds'],
     segments: (json['segments'] as List)
         ?.map((e) =>
             e == null ? null : Segment.fromJson(e as Map<String, dynamic>))
@@ -176,13 +169,13 @@ Segment _$SegmentFromJson(Map<String, dynamic> json) {
     endTimeLocal: json['endTimeLocal'] == null
         ? null
         : DateTime.parse(json['endTimeLocal'] as String),
-    startLocationLatitude: (json['startLocationLatitude'] as num)?.toDouble(),
-    startLocationLongitude: (json['startLocationLongitude'] as num)?.toDouble(),
+    startLocationLatitude: json['startLocationLatitude'],
+    startLocationLongitude: json['startLocationLongitude'],
     startStateTimezoneAbbrev: json['startStateTimezoneAbbrev'] as String,
-    endLocationLatitude: (json['endLocationLatitude'] as num)?.toDouble(),
-    endLocationLongitude: (json['endLocationLongitude'] as num)?.toDouble(),
+    endLocationLatitude: json['endLocationLatitude'],
+    endLocationLongitude: json['endLocationLongitude'],
     endStateTimezoneAbbrev: json['endStateTimezoneAbbrev'] as String,
-    durationSeconds: json['durationSeconds'] as int,
+    durationSeconds: json['durationSeconds'],
     workDefinitionType: json['workDefinitionType'] as String,
     segmentType: json['segmentType'] as String,
     isProjectedEnd: json['isProjectedEnd'] as bool,
@@ -202,7 +195,7 @@ Segment _$SegmentFromJson(Map<String, dynamic> json) {
     endTimeKeyDateLocal: json['endTimeKeyDateLocal'] == null
         ? null
         : DateTime.parse(json['endTimeKeyDateLocal'] as String),
-    durationKeyDateSeconds: json['durationKeyDateSeconds'] as int,
+    durationKeyDateSeconds: json['durationKeyDateSeconds'],
   );
 }
 
@@ -240,19 +233,6 @@ Capabilities _$CapabilitiesFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$CapabilitiesToJson(Capabilities instance) =>
     <String, dynamic>{
       'hasActiveCoreSubscription': instance.hasActiveCoreSubscription,
-    };
-
-LastKnownOperator _$LastKnownOperatorFromJson(Map<String, dynamic> json) {
-  return LastKnownOperator(
-    name: json['name'] as String,
-    id: json['id'] as String,
-  );
-}
-
-Map<String, dynamic> _$LastKnownOperatorToJson(LastKnownOperator instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'id': instance.id,
     };
 
 Link _$LinkFromJson(Map<String, dynamic> json) {

@@ -43,6 +43,9 @@ class UtilizationListViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
+
   UtilizationListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _utilizationService.setUp();
@@ -87,7 +90,6 @@ class UtilizationListViewModel extends BaseViewModel {
 
   getUtilization() async {
     Logger().d("getUtilization");
-
     Utilization result = await _utilizationService.getUtilizationResult(
         _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
@@ -108,5 +110,28 @@ class UtilizationListViewModel extends BaseViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+  }
+
+  refresh() async {
+    Logger().d("refresh getUtilization");
+    pageNumber = 1;
+    pageCount = 50;
+    _refreshing = true;
+    notifyListeners();
+    Logger().d("start date " + _startDate);
+    Logger().d("end date " + _endDate);
+    Utilization result = await _utilizationService.getUtilizationResult(
+        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+    if (result != null) {
+      _utilLizationListData.clear();
+      _utilLizationListData.addAll(result.assetResults);
+      _refreshing = false;
+      notifyListeners();
+    } else {
+      _refreshing = false;
+      notifyListeners();
+    }
+    Logger().i("list of _utilLizationListData " +
+        _utilLizationListData.length.toString());
   }
 }

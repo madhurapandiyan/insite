@@ -28,9 +28,10 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
   @override
   Widget build(BuildContext context) {
     var color = [burntSienna, lightRose, mustard, emerald, emerald];
+    double height = MediaQuery.of(context).size.height * 0.3;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
-      height: 250,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -86,66 +87,60 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
             ),
             widget.isLoading
                 ? Expanded(child: Center(child: CircularProgressIndicator()))
-                : Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
+                : Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                            width: 175,
+                            height: 175,
+                            child: SfCircularChart(
+                              palette: <Color>[
+                                burntSienna,
+                                lightRose,
+                                mustard,
+                                emerald
+                              ],
+                              legend: Legend(isVisible: false),
+                              centerY: '70%',
+                              series: _getSemiDoughnutSeries(),
+                              tooltipBehavior: TooltipBehavior(enable: true),
+                            )),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: SingleChildScrollView(
                           child: Container(
-                              width: 175,
-                              height: 175,
-                              child: SfCircularChart(
-                                palette: <Color>[
-                                  burntSienna,
-                                  lightRose,
-                                  mustard,
-                                  emerald
-                                ],
-                                legend: Legend(isVisible: false),
-                                centerY: '70%',
-                                series: _getSemiDoughnutSeries(),
-                                tooltipBehavior:
-                                    TooltipBehavior(enable: true),
-                              )),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: SingleChildScrollView(
-                            child: Container(
-                              child: ListView.separated(
-                                  separatorBuilder: (context, index) {
-                                    return Container(
-                                        width: 127.29,
-                                        child: Divider(
-                                            thickness: 1.0,
-                                            color: athenGrey));
-                                  },
-                                  itemCount: widget.chartData.length,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 5.0),
-                                  itemBuilder: (context, index) {
-                                    ChartSampleData data =
-                                        widget.chartData[index];
-                                    return AssetStatusWidget(
-                                      chartColor: color[index],
-                                      chartData: data,
-                                      callBack: (value) {
-                                        widget.onFilterSelected(FilterData(
-                                            isSelected: true,
-                                            count: value.y.toString(),
-                                            title: value.x.toString(),
-                                            type: FilterType.FUEL_LEVEL));
-                                      },
-                                    );
-                                  }),
-                            ),
+                            child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return Container(
+                                      width: 127.29,
+                                      child: Divider(
+                                          thickness: 1.0, color: athenGrey));
+                                },
+                                itemCount: widget.chartData.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                itemBuilder: (context, index) {
+                                  ChartSampleData data =
+                                      widget.chartData[index];
+                                  return AssetStatusWidget(
+                                    chartColor: color[index],
+                                    chartData: data,
+                                    callBack: (value) {
+                                      widget.onFilterSelected(FilterData(
+                                          isSelected: true,
+                                          count: value.y.toString(),
+                                          title: value.x.toString(),
+                                          type: FilterType.FUEL_LEVEL));
+                                    },
+                                  );
+                                }),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
           ]),
         ],

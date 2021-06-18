@@ -5,9 +5,7 @@ import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view.
 import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
@@ -18,12 +16,7 @@ class UtilLizationView extends StatefulWidget {
 class _UtilLizationViewState extends State<UtilLizationView> {
   bool isListSelected = true;
   int rangeChoice = 1;
-  String startDate = DateFormat('MM/dd/yyyy')
-      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
-  String endDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
-  List<DateTime> dateRange = [];
 
-  UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
 
   bool isRangeSelectionVisible = false;
 
@@ -43,8 +36,16 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                   border: Border.all(color: black, width: 0.0),
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: Column(
+                child: Stack(
                   children: [
+                    isListSelected
+                        ? Flexible(
+                            child: UtilizationListView(),
+                          )
+                        : Flexible(
+                            child: UtilizationGraphView(
+                            ),
+                          ),
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Row(
@@ -58,75 +59,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                                 });
                               }),
                           Spacer(),
-                          GestureDetector(
-                            onTap: () async {
-                              dateRange = [];
-
-                              dateRange = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) => Dialog(
-                                    backgroundColor: transparent,
-                                    child: DateRangeWidget()),
-                              );
-
-                              setState(() {
-                                if (dateRange.isNotEmpty) {
-                                  startDate = DateFormat('MM/dd/yyyy')
-                                      .format(dateRange.first);
-
-                                  endDate = DateFormat('MM/dd/yyyy')
-                                      .format(dateRange.last);
-                                }
-                              });
-
-                              print('@@@ After start date: $startDate');
-                              print('@@@ After end date: $endDate');
-                            },
-                            child: Container(
-                              width: 90,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: cardcolor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(4),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Date Range',
-                                  style: TextStyle(
-                                    color: white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-                        style: TextStyle(
-                          color: white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    isListSelected
-                        ? Flexible(
-                            child: UtilizationListView(dateRange: dateRange),
-                          )
-                        : Expanded(
-                            child: UtilizationGraphView(
-                              startDate: startDate,
-                              endDate: endDate,
-                            ),
-                          ),
                   ],
                 ),
               ),

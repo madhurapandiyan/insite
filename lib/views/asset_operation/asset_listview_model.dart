@@ -31,7 +31,7 @@ class AssetListViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  bool _refreshing = true;
+  bool _refreshing = false;
   bool get refreshing => _refreshing;
 
   // String _startDate =
@@ -61,11 +61,17 @@ class AssetListViewModel extends InsiteViewModel {
   List<DateTime> days = [];
 
   void updateDateRangeList() {
-    DateTime startTime = DateTime.parse(startDate);
-    DateTime endTime = DateTime.parse(endDate);
-    final daysToGenerate = endTime.difference(startTime).inDays + 1;
-    days = List.generate(daysToGenerate,
-        (i) => DateTime(startTime.year, startTime.month, startTime.day + (i)));
+    try {
+      DateTime startTime = DateTime.parse(startDate);
+      DateTime endTime = DateTime.parse(endDate);
+      final daysToGenerate = endTime.difference(startTime).inDays + 1;
+      days = List.generate(
+          daysToGenerate,
+          (i) =>
+              DateTime(startTime.year, startTime.month, startTime.day + (i)));
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   AssetListViewModel() {
@@ -92,6 +98,7 @@ class AssetListViewModel extends InsiteViewModel {
     pageNumber = 1;
     pageSize = 50;
     _refreshing = true;
+    notifyListeners();
     Logger().d("start date " + _startDate);
     Logger().d("end date " + _endDate);
     List<Asset> result = await _assetService.getAssetSummaryList(

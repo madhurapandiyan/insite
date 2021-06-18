@@ -45,6 +45,7 @@ class FilterService extends BaseService {
       return fuelLevelDatarespone;
     } catch (e) {
       Logger().e(e);
+      return null;
     }
   }
 
@@ -58,6 +59,7 @@ class FilterService extends BaseService {
       return idlingLevelDataResponse;
     } catch (e) {
       Logger().e(e);
+      return null;
     }
   }
 
@@ -75,8 +77,8 @@ class FilterService extends BaseService {
       print(box.values.length);
       print("FilterType " + type.toString());
       for (var i = 0; i < size; i++) {
-        FilterData data = box.get(i);
-        print("current filter type " + data.type.toString());
+        FilterData data = box.getAt(i);
+        Logger().d("current filter data on loop ", data);
         if (data.type == type) {
           await box.deleteAt(i);
         }
@@ -104,7 +106,7 @@ class FilterService extends BaseService {
     try {
       Logger().d("getSelectedFilters");
       print(box.values.length);
-      return box.values.toList();
+      return await box.values.toList();
     } catch (e) {
       Logger().e(e);
       return [];
@@ -112,34 +114,42 @@ class FilterService extends BaseService {
   }
 
   //removes a particular filter
-  removeFilter(value) async {
-    int size = box.values.length;
-    for (var i = 0; i < size; i++) {
-      FilterData data = box.get(i);
-      print("current filter title " + data.title.toString());
-      if (data.title == value.title) {
-        await box.deleteAt(i);
-        return;
+  removeFilter(FilterData value) {
+    try {
+      int size = box.values.length;
+      Logger().d("removeFilter service " + size.toString());
+      if (size > 0) {
+        for (var i = 0; i <= size; i++) {
+          FilterData data = box.getAt(i);
+          Logger().d("current filter data on loop ", data);
+          if (data.title == value.title && data.type == value.type) {
+            print("delete filter " + data.title.toString());
+            box.deleteAt(i);
+            return;
+          }
+        }
       }
+    } catch (e) {
+      Logger().e(e);
     }
   }
 
-  addFilter(value) async {
+  addFilter(FilterData value) async {
     int size = box.values.length;
     if (size == 0) {
       box.add(value);
     } else {
       bool shouldAdd = true;
       for (var i = 0; i < size; i++) {
-        FilterData data = box.get(i);
-        print("current filter type " + data.type.toString());
+        FilterData data = box.getAt(i);
         if (data.title == value.title) {
           shouldAdd = false;
           return;
         }
       }
       if (shouldAdd) {
-        box.add(value);
+        print("add filter " + value.title.toString());
+        await box.add(value);
       }
     }
   }

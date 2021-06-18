@@ -22,19 +22,26 @@ class MyApi {
   RestClient getClientOne() {
     return httpWrapper.clientOne;
   }
+
+  RestClient getClientTwo() {
+    return httpWrapper.clientTwo;
+  }
 }
 
 class HttpWrapper {
   final String _baseUrl = "https://unifiedfleet.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
+  final String _baseUrlTwo = "https://singlesearch.alk.com";
 
   final bool SHOW_LOGS = true;
   final _localService = locator<LocalService>();
 
   Dio dio = new Dio();
   Dio dioOne = new Dio();
+  Dio dioTwo = new Dio();
   var client;
   var clientOne;
+  var clientTwo;
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
@@ -81,8 +88,24 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioTwo.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "content-type": "application/json",
+            "Accept": "application/json",
+          });
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: _baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
+    clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

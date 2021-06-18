@@ -3,6 +3,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/filter/filter_item.dart';
 import 'package:insite/views/filter/filter_view_model.dart';
+import 'package:insite/views/location/location_search_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
@@ -38,6 +39,12 @@ class _FilterViewState extends State<FilterView> {
                         viewModel.appliedFilters.isNotEmpty
                             ? FilterChipView(
                                 filters: viewModel.appliedFilters,
+                                onClosed: (value) {
+                                  viewModel.removeFilter(value);
+                                },
+                                backgroundColor: chipBackgroundTwo,
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
                               )
                             : SizedBox(),
                         viewModel.appliedFilters.isNotEmpty
@@ -51,7 +58,7 @@ class _FilterViewState extends State<FilterView> {
                                 children: [
                                   InsiteButton(
                                     bgColor: tango,
-                                    textColor: ship_grey,
+                                    textColor: Colors.white,
                                     onTap: () {
                                       widget.onFilterApplied();
                                     },
@@ -64,8 +71,8 @@ class _FilterViewState extends State<FilterView> {
                                     width: 20,
                                   ),
                                   InsiteButton(
-                                    bgColor: Colors.white,
-                                    textColor: ship_grey,
+                                    bgColor: ship_grey,
+                                    textColor: Colors.white,
                                     onTap: () {
                                       widget.onFilterApplied();
                                     },
@@ -150,7 +157,7 @@ class _FilterViewState extends State<FilterView> {
                         SizedBox(
                           height: 8,
                         ),
-                        FilterItem(
+                        LocationSearch(
                           filterType: FilterType.LOCATION_SEARCH,
                           data: [],
                           onApply: (List<FilterData> list) {

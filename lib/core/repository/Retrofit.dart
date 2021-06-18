@@ -12,6 +12,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
+import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
@@ -291,6 +292,12 @@ abstract class RestClient {
       @Query("pageSize") int pageSize,
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/ww/api/search")
+  Future<LocationSearchResponse> getLocations(
+      @Query("query") String query,
+      @Query("maxResults") int maxResults,
+      @Query("authToken") String authToken);
 }
 
 @JsonSerializable()

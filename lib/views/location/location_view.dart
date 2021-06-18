@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/foundation.dart';
@@ -45,7 +44,11 @@ class _LocationViewState extends State<LocationView> {
   List<ClusterItem<InsiteMarker>> clusterMarkers = [];
 
   ClusterManager _manager;
-
+@override
+  void initState() {
+      _manager = _initClusterManager();
+    super.initState();
+  }
   @override
   void dispose() {
     _customInfoWindowController.dispose();
@@ -321,7 +324,7 @@ class _LocationViewState extends State<LocationView> {
             );
           }
 
-          _manager = _initClusterManager();
+        
 
           return InsiteScaffold(
             viewModel: viewModel,
@@ -536,15 +539,15 @@ class _LocationViewState extends State<LocationView> {
           );
         }
       },
-      viewModelBuilder: () => LocationViewModel(),
+      viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
     );
   }
 
   ClusterManager _initClusterManager() {
     return ClusterManager<InsiteMarker>(clusterMarkers, _updateMarkers,
         markerBuilder: _markerBuilder,
-        initialZoom: 12,
-        stopClusteringZoom: 17.0);
+        initialZoom: 5,
+        stopClusteringZoom: 10.0);
   }
 
   void _updateMarkers(Set<Marker> markers) {
@@ -561,7 +564,7 @@ class _LocationViewState extends State<LocationView> {
           position: cluster.location,
           onTap: () {
             print('---- $cluster');
-            cluster.items.forEach((p) => print(p));
+            //cluster.items.forEach((p) => print(p));
           },
           icon: await _getMarkerBitmap(cluster.isMultiple ? 125 : 75,
               text: cluster.isMultiple ? cluster.count.toString() : null),
@@ -573,8 +576,8 @@ class _LocationViewState extends State<LocationView> {
 
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint1 = Paint()..color = Colors.orange;
-    final Paint paint2 = Paint()..color = Colors.white;
+    final Paint paint1 = Paint()..color = Colors.white;
+    final Paint paint2 = Paint()..color = Colors.blue;
 
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.0, paint1);
     canvas.drawCircle(Offset(size / 2, size / 2), size / 2.2, paint2);
@@ -586,8 +589,9 @@ class _LocationViewState extends State<LocationView> {
         text: text,
         style: TextStyle(
             fontSize: size / 3,
-            color: Colors.white,
-            fontWeight: FontWeight.normal),
+            color: darkGrey,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w400),
       );
       painter.layout();
       painter.paint(
