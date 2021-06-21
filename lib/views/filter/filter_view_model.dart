@@ -189,5 +189,6 @@ class FilterViewModel extends InsiteViewModel {
 
   onFilterCleared(FilterType type) {
     _filterService.clearFilterInDb(type);
+    getSelectedFilterData();
   }
 }

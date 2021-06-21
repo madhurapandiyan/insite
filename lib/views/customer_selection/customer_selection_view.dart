@@ -174,13 +174,6 @@ class _CustomerSelectionViewState extends State<CustomerSelectionView> {
                                     list: viewModel.customers,
                                   )),
                           viewModel.accountSelected != null &&
-                                  viewModel.subAccountSelected == null &&
-                                  viewModel.subCustomers.isNotEmpty
-                              ? SizedBox(
-                                  height: 10,
-                                )
-                              : SizedBox(),
-                          viewModel.accountSelected != null &&
                                       viewModel.subAccountSelected == null &&
                                       viewModel.subCustomers.isNotEmpty ||
                                   viewModel.accountSelected != null &&

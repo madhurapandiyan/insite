@@ -93,6 +93,10 @@ abstract class RestClient {
       @Queries() Map<String, dynamic> queries,
       @Header("x-visionlink-customeruid") customerId);
 
+  @GET('{url}')
+  Future<location.AssetLocationData> assetLocationSummary(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
   Future<AssetDetail> assetDetail(@Query("assetUID") String assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
