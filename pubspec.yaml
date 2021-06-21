@@ -37,6 +37,8 @@ dependencies:
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
   quiver: ^2.1.5
+  dependencies:
+  syncfusion_flutter_calendar: ^19.1.69
 
 dev_dependencies:
   flutter_test:

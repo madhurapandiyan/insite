@@ -44,11 +44,12 @@ class _LocationViewState extends State<LocationView> {
   List<ClusterItem<InsiteMarker>> clusterMarkers = [];
 
   ClusterManager _manager;
-@override
+  @override
   void initState() {
-      _manager = _initClusterManager();
+    _manager = _initClusterManager();
     super.initState();
   }
+
   @override
   void dispose() {
     _customInfoWindowController.dispose();
@@ -323,8 +324,6 @@ class _LocationViewState extends State<LocationView> {
               ),
             );
           }
-
-        
 
           return InsiteScaffold(
             viewModel: viewModel,

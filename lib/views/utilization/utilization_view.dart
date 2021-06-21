@@ -17,7 +17,6 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   bool isListSelected = true;
   int rangeChoice = 1;
 
-
   bool isRangeSelectionVisible = false;
 
   @override
@@ -43,8 +42,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                             child: UtilizationListView(),
                           )
                         : Flexible(
-                            child: UtilizationGraphView(
-                            ),
+                            child: UtilizationGraphView(),
                           ),
                     Padding(
                       padding: EdgeInsets.all(16.0),

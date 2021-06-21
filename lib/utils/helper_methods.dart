@@ -123,4 +123,28 @@ class Utils {
     }
     return title;
   }
+
+  static DateTime getMinDate(List<DateTime> inputDates) {
+    DateTime minDate;
+
+    for (DateTime item in inputDates) {
+      if (minDate == null)
+        minDate = item;
+      else if (item.isBefore(minDate)) minDate = item;
+    }
+
+    return minDate;
+  }
+
+  static DateTime getMaxDate(List<DateTime> inputDates) {
+    DateTime maxDate;
+
+    for (DateTime item in inputDates) {
+      if (maxDate == null)
+        maxDate = item;
+      else if (item.isAfter(maxDate)) maxDate = item;
+    }
+
+    return maxDate;
+  }
 }
