@@ -76,6 +76,14 @@ abstract class RestClient {
       @Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
 
+  @GET('{url}')
+  Future<FleetSummaryResponse> fleetSummaryURL(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET('{url}')
+  Future<AssetResponse> assetSummaryURL(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
   Future<AssetResponse> assetSummary(@Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
@@ -84,6 +92,10 @@ abstract class RestClient {
   Future<location.AssetLocationData> assetLocation(
       @Queries() Map<String, dynamic> queries,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<location.AssetLocationData> assetLocationSummary(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
   Future<AssetDetail> assetDetail(@Query("assetUID") String assetUID,

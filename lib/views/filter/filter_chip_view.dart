@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'filter_chip_item.dart';
 
 class FilterChipView extends StatelessWidget {
@@ -23,7 +24,7 @@ class FilterChipView extends StatelessWidget {
           (index) {
             FilterData data = filters[index];
             return FilterChipItem(
-              label: data.title,
+              label: Utils.getFilterTitle(data),
               backgroundColor: backgroundColor,
               onClose: () {
                 onClosed(data);

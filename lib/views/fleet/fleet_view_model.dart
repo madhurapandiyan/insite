@@ -91,7 +91,7 @@ class FleetViewModel extends InsiteViewModel {
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
-    if (_shouldLoadmore && !_loadingMore) {
+    if (_shouldLoadmore && !_loadingMore && !_isRefreshing) {
       log.i("load more called");
       pageNumber++;
       _loadingMore = true;
@@ -101,13 +101,13 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   void refresh() async {
+    await getSelectedFilterData();
     pageNumber = 1;
     pageSize = 50;
     _isRefreshing = true;
     notifyListeners();
     List<Fleet> result = await _fleetService.getFleetSummaryList(
         pageSize, pageNumber, appliedFilters);
-    getSelectedFilterData();
     if (result != null && result.isNotEmpty) {
       _assets.clear();
       _assets.addAll(result);

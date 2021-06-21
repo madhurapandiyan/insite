@@ -237,6 +237,7 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.FUEL_LEVEL);
                           },
+                          isSingleSelection: true,
                           onClear: () {
                             viewModel.onFilterCleared(FilterType.FUEL_LEVEL);
                           },
@@ -251,6 +252,7 @@ class _FilterViewState extends State<FilterView> {
                             viewModel.onFilterSelected(
                                 list, FilterType.IDLING_LEVEL);
                           },
+                          isSingleSelection: true,
                           onClear: () {
                             viewModel.onFilterCleared(FilterType.IDLING_LEVEL);
                           },

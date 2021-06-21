@@ -231,6 +231,44 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<FleetSummaryResponse> fleetSummaryURL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = FleetSummaryResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetResponse> assetSummaryURL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<AssetResponse> assetSummary(queries, customerId) async {
     ArgumentError.checkNotNull(queries, 'queries');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -265,6 +303,25 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'GET',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetLocationData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetLocationData> assetLocationSummary(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);

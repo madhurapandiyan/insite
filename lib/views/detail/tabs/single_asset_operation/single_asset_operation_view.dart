@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'single_asset_operation_view_model.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class SingleAssetOperationView extends StatefulWidget {
   final AssetDetail detail;
@@ -159,7 +158,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
     DateFormat format = DateFormat('dd/MM/yyyy hh:mm');
 
     return Table(
-      border: TableBorder.all(width: 2.0),
+      border: TableBorder.all(width: 1.0),
       children: [
         TableRow(
           children: [

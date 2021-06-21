@@ -95,6 +95,7 @@ class AssetListViewModel extends InsiteViewModel {
   }
 
   void refresh() async {
+    await getSelectedFilterData();
     pageNumber = 1;
     pageSize = 50;
     _refreshing = true;
@@ -143,7 +144,7 @@ class AssetListViewModel extends InsiteViewModel {
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
-    if (_shouldLoadmore && !_loadingMore) {
+    if (_shouldLoadmore && !_loadingMore && !_refreshing) {
       log.i("load more called");
       pageNumber++;
       _loadingMore = true;

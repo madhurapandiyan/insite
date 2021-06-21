@@ -105,4 +105,22 @@ class Utils {
     double rep = totalSeconds / 3600;
     return (input.hour + rep);
   }
+
+  static String getFilterTitle(FilterData data) {
+    String title = data.title;
+    if (data.type == FilterType.IDLING_LEVEL) {
+      if (data.extras[1].isEmpty) {
+        title = ">" + data.extras[0] + "%";
+      } else {
+        title = data.extras[0] + "-" + data.extras[1] + "%";
+      }
+    } else if (data.type == FilterType.FUEL_LEVEL) {
+      if (title == "100") {
+        title = "<=" + title + "%";
+      } else {
+        title = "<" + title + "%";
+      }
+    }
+    return title;
+  }
 }

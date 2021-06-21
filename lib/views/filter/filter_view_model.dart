@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   var _filterService = locator<FilterService>();
@@ -77,11 +78,12 @@ class FilterViewModel extends InsiteViewModel {
     AssetCountData resultFuelLevel =
         await _filterService.getFuellevel("fuellevel");
     filterDataFuelLevel.removeWhere((element) => element.title == "");
-    addData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
+    addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
     AssetCountData resultIdlingLevel =
         await _filterService.getIdlingLevelData(startDate, endDate);
-    addData(filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
+    addIdlingData(
+        filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     _loading = false;
     notifyListeners();
@@ -99,6 +101,56 @@ class FilterViewModel extends InsiteViewModel {
               title: countData.countOf,
               isSelected: isAlreadSelected(countData.countOf, type),
               extras: [],
+              type: type);
+          filterData.add(data);
+        }
+      }
+    }
+  }
+
+  addFuelData(filterData, resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData.isNotEmpty) {
+      for (CountData countData in resultModel.countData) {
+        if (countData.countOf != "Not Reporting" &&
+            countData.countOf != "Excluded") {
+          FilterData data = FilterData(
+              count: countData.count.toString(),
+              title: countData.countOf,
+              isSelected: isAlreadSelected(countData.countOf, type),
+              extras: [],
+              type: type);
+          filterData.add(data);
+        }
+      }
+    }
+  }
+
+  addIdlingData(filterData, resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData.isNotEmpty) {
+      for (CountData countData in resultModel.countData) {
+        if (countData.countOf != "Not Reporting" &&
+            countData.countOf != "Excluded") {
+          var x = countData.countOf
+              .split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", "");
+          var y = countData.countOf
+              .split(",")
+              .last
+              .replaceAll("[", "")
+              .replaceAll("]", "");
+          Logger().d("idling level data x", x);
+          Logger().d("idling level data y", y);
+          FilterData data = FilterData(
+              count: countData.count.toString(),
+              title: countData.countOf,
+              isSelected: isAlreadSelected(countData.countOf, type),
+              extras: [x, y],
               type: type);
           filterData.add(data);
         }
@@ -137,5 +189,6 @@ class FilterViewModel extends InsiteViewModel {
 
   onFilterCleared(FilterType type) {
     _filterService.clearFilterInDb(type);
+    getSelectedFilterData();
   }
 }

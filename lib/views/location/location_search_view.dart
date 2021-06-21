@@ -69,7 +69,7 @@ class _LocationSearchState extends State<LocationSearch> {
                                 onTap: () {
                                   Logger().d("clear filter");
                                   viewModel.clearFilter();
-                                  widget.onClear();
+                                  // widget.onClear();
                                 },
                               ),
                               InsiteButton(
@@ -145,7 +145,13 @@ class _LocationSearchState extends State<LocationSearch> {
                                 );
                               },
                             )
-                          : SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No Results",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
                 ],
               ),
             ),

@@ -12,7 +12,13 @@ class FilterItem extends StatefulWidget {
   final FilterType filterType;
   final Function(List<FilterData>) onApply;
   final Function onClear;
-  FilterItem({this.data, this.onApply, this.onClear, this.filterType});
+  final bool isSingleSelection;
+  FilterItem(
+      {this.data,
+      this.onApply,
+      this.onClear,
+      this.filterType,
+      this.isSingleSelection = false});
 
   @override
   _FilterItemState createState() => _FilterItemState();
@@ -22,23 +28,20 @@ class _FilterItemState extends State<FilterItem> {
   TextEditingController _textEditingController = TextEditingController();
 
   onSearchTextChanged(String text) async {
-    Logger().i("query typeed " + text);
+    Logger().i("query typed " + text);
     if (text != null && text.trim().isNotEmpty) {
+      List<FilterData> tempList = [];
+      tempList.clear();
       list.forEach((item) {
-        if (item.title.contains(text) || item.title.contains(text))
-          _displayList.add(item);
+        if (item.title.toLowerCase().contains(text)) tempList.add(item);
       });
+      _displayList = tempList;
       Logger().i("total list size " + list.length.toString());
       Logger().i("searched list size " + _displayList.length.toString());
       setState(() {});
     } else {
-      if (_displayList.isNotEmpty) {
-        _displayList.clear();
-        if (_textEditingController != null && text.isEmpty) {
-          setState(() {});
-          return;
-        }
-      }
+      _displayList = list;
+      setState(() {});
     }
   }
 
@@ -62,10 +65,16 @@ class _FilterItemState extends State<FilterItem> {
   }
 
   clearFilter() {
-    for (var i = 0; i < list.length; i++) {
-      list[i].isSelected = false;
+    for (var i = 0; i < _displayList.length; i++) {
+      _displayList[i].isSelected = false;
     }
     setState(() {});
+  }
+
+  deSelect() {
+    for (var i = 0; i < _displayList.length; i++) {
+      _displayList[i].isSelected = false;
+    }
   }
 
   @override
@@ -83,7 +92,7 @@ class _FilterItemState extends State<FilterItem> {
           ),
           child: Column(
             children: [
-              list.isNotEmpty
+              _displayList.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SearchBox(
@@ -99,7 +108,7 @@ class _FilterItemState extends State<FilterItem> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-              list.where((element) => element.isSelected).length > 0
+              _displayList.where((element) => element.isSelected).length > 0
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 8),
@@ -118,7 +127,7 @@ class _FilterItemState extends State<FilterItem> {
                           ),
                           InsiteButton(
                             onTap: () {
-                              widget.onApply(list
+                              widget.onApply(_displayList
                                   .where((element) => element.isSelected)
                                   .toList());
                             },
@@ -134,15 +143,21 @@ class _FilterItemState extends State<FilterItem> {
                 height: 8,
               ),
               ListView.builder(
-                itemCount: list.length,
+                itemCount: _displayList.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  FilterData data = list[index];
+                  FilterData data = _displayList[index];
                   return GestureDetector(
                     onTap: () {
-                      list[index].isSelected = !data.isSelected;
-                      setState(() {});
+                      if (widget.isSingleSelection) {
+                        deSelect();
+                        _displayList[index].isSelected = true;
+                        setState(() {});
+                      } else {
+                        _displayList[index].isSelected = !data.isSelected;
+                        setState(() {});
+                      }
                     },
                     child: Container(
                       color: data.isSelected ? tango : bgcolor,
@@ -161,7 +176,7 @@ class _FilterItemState extends State<FilterItem> {
                           ),
                           Expanded(
                             child: Text(
-                              data.title,
+                              Utils.getFilterTitle(data),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.white,
