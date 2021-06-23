@@ -31,87 +31,89 @@ class _SingleAssetUtilizationListViewState
           SingleAssetUtilizationListViewModel viewModel, Widget _) {
         if (viewModel.loading)
           return Center(child: CircularProgressIndicator());
-        return Stack(
-          children: [
-            Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: GestureDetector(
-                      onTap: () async {
-                        dateRange = [];
-                        dateRange = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              backgroundColor: transparent,
-                              child: DateRangeWidget()),
-                        );
-                        if (dateRange != null && dateRange.isNotEmpty) {
-                          viewModel.startDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.first);
-                          viewModel.endDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.last);
-                          viewModel.refresh();
-                        }
-                      },
-                      child: Container(
-                        width: 90,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: cardcolor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
+        return SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          dateRange = [];
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeWidget()),
+                          );
+                          if (dateRange != null && dateRange.isNotEmpty) {
+                            viewModel.startDate = DateFormat('MM/dd/yyyy')
+                                .format(dateRange.first);
+                            viewModel.endDate =
+                                DateFormat('MM/dd/yyyy').format(dateRange.last);
+                            viewModel.refresh();
+                          }
+                        },
+                        child: Container(
+                          width: 90,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: cardcolor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Date Range',
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          child: Center(
+                            child: Text(
+                              'Date Range',
+                              style: TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                viewModel.loading
-                    ? Container(
-                        child: Center(child: CircularProgressIndicator()))
-                    : viewModel.utilLizationList.isNotEmpty
-                        ? ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return Divider();
-                            },
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: viewModel.utilLizationList.length,
-                            padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                            itemBuilder: (context, index) {
-                              AssetResult utilizationData =
-                                  viewModel.utilLizationList[index];
-                              return UtilizationListItem(
-                                utilizationData: utilizationData,
-                                isShowingInDetailPage: true,
-                                onCallback: () {},
-                              );
-                            })
-                        : EmptyView(
-                            title: "No Assets Found",
-                          ),
-              ],
-            ),
-            viewModel.refreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
-          ],
+                  viewModel.loading
+                      ? Container(
+                          child: Center(child: CircularProgressIndicator()))
+                      : viewModel.utilLizationList.isNotEmpty
+                          ? ListView.separated(
+                              separatorBuilder: (context, index) {
+                                return Divider();
+                              },
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: viewModel.utilLizationList.length,
+                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                              itemBuilder: (context, index) {
+                                AssetResult utilizationData =
+                                    viewModel.utilLizationList[index];
+                                return UtilizationListItem(
+                                  utilizationData: utilizationData,
+                                  isShowingInDetailPage: true,
+                                  onCallback: () {},
+                                );
+                              })
+                          : EmptyView(
+                              title: "No Assets Found",
+                            ),
+                ],
+              ),
+              viewModel.refreshing
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SizedBox()
+            ],
+          ),
         );
       },
       viewModelBuilder: () =>
