@@ -102,12 +102,7 @@ class HomeViewModel extends InsiteViewModel {
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber, pageSize, '-lastlocationupdateutc');
     _assetLocation = result;
-    for (var locationData in _assetLocation.mapRecords) {
-      markers.add(Marker(
-          markerId: MarkerId('${markerId++}'),
-          position: LatLng(locationData.lastReportedLocationLatitude,
-              locationData.lastReportedLocationLongitude)));
-    }
+
     _assetLocationloading = false;
     notifyListeners();
   }

@@ -7,6 +7,7 @@ import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
+import 'package:insite/widgets/smart_widgets/fleet_google_map_home.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/notifications.dart';
@@ -90,24 +91,16 @@ class _HomeViewState extends State<HomeView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Container(
-                      height: 305,
-                      color: cardcolor,
-                      child: FleetGoogleMap(
-                        latitude: null,
-                        longitude: null,
-                        status: "",
-                        screenType: ScreenType.DASHBOARD,
-                        isLoading: viewModel.assetLocationloading,
-                        acquiredMarkers: viewModel.markers,
-                        initLocation: viewModel.assetLocation != null
-                            ? LatLng(
-                                viewModel.assetLocation.mapRecords.first
-                                    .lastReportedLocationLatitude,
-                                viewModel.assetLocation.mapRecords.first
-                                    .lastReportedLocationLongitude)
-                            : null,
-                      ),
-                    ),
+                        height: 305,
+                        color: cardcolor,
+                        child: FleetGoogleMapHome(
+                          assetLocation: viewModel.assetLocation != null
+                              ? viewModel.assetLocation.mapRecords
+                              : null,
+                          isLoading: viewModel.assetLocationloading,
+                          screenType: ScreenType.DASHBOARD,
+                          status: '',
+                        )),
                   ),
                   SizedBox(
                     height: 20.0,
