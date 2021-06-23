@@ -92,7 +92,7 @@ class _FilterItemState extends State<FilterItem> {
           ),
           child: Column(
             children: [
-              _displayList.isNotEmpty
+              list.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SearchBox(

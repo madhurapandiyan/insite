@@ -9,8 +9,10 @@ class EmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: cod_grey,
+      alignment: Alignment.center,
       child: Center(
         child: Text(title,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

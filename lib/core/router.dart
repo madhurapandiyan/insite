@@ -6,7 +6,7 @@ import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart' as view8;
 import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/splash/splash_view.dart' as view0;
-import 'package:insite/views/customer_selection/customer_selection_view.dart'
+import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
 import 'package:insite/views/home/home_view.dart' as view2;
 import 'package:insite/views/fleet/fleet_view.dart' as view3;
@@ -23,7 +23,7 @@ class Router {
       case splashViewRoute:
         return MaterialPageRoute(builder: (_) => view0.SplashView());
       case customerSelectionViewRoute:
-        return MaterialPageRoute(builder: (_) => view1.CustomerSelectionView());
+        return MaterialPageRoute(builder: (_) => view1.AccountSelectionView());
       case homeViewRoute:
         return MaterialPageRoute(builder: (_) => view2.HomeView());
       case fleetViewRoute:
