@@ -6,11 +6,12 @@ import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class CustomerSelectionViewModel extends InsiteViewModel {
+class AccountSelectionViewModel extends InsiteViewModel {
   var _localService = locator<LocalService>();
   var _loginService = locator<LoginService>();
   var _navigationService = locator<NavigationService>();
@@ -23,11 +24,11 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _secondaryLoading = false;
+  bool get secondaryLoading => _secondaryLoading;
+
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;
-
-  bool _onAccountSelected = false;
-  bool get onAccountSelected => _onAccountSelected;
 
   Customer _accountSelected;
   Customer get accountSelected => _accountSelected;
@@ -35,16 +36,16 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   Customer _subAccountSelected;
   Customer get subAccountSelected => _subAccountSelected;
 
-  List<Customer> _customers = [];
-  List<Customer> get customers => _customers;
+  List<AccountData> _customers = [];
+  List<AccountData> get customers => _customers;
 
-  List<Customer> _subCustomers = [];
-  List<Customer> get subCustomers => _subCustomers;
+  List<AccountData> _subCustomers = [];
+  List<AccountData> get subCustomers => _subCustomers;
 
   List<Permission> _permissions = [];
   List<Permission> get permissions => _permissions;
 
-  CustomerSelectionViewModel() {
+  AccountSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     getLoggedInUserMail();
@@ -82,7 +83,20 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     Logger().d("getCustomerList");
     List<Customer> result = await _loginService.getCustomers();
     Logger().d("getCustomerList " + result.length.toString());
-    _customers = result;
+    for (Customer customer in result) {
+      if (_accountSelected != null &&
+          _accountSelected.DisplayName == customer.DisplayName) {
+        _customers.add(AccountData(
+            isSelected: true,
+            selectionType: AccountType.ACCOUNT,
+            value: customer));
+      } else {
+        _customers.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.ACCOUNT,
+            value: customer));
+      }
+    }
     _loading = false;
     notifyListeners();
   }
@@ -91,28 +105,63 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     Logger().d("getSubCustomerList");
     List<Customer> result =
         await _loginService.getSubCustomers(_accountSelected.CustomerUID);
-    Logger().d("getSubCustomerList " + result.length.toString());
+    Logger().d("getSubCustomerList result " + result.length.toString());
     if (result.isEmpty) {
-      _onAccountSelected = true;
-      _localService.saveAccountInfo(accountSelected);
-      _localService.saveCustomerInfo(null);
-      Future.delayed(Duration(seconds: 1), () {
-        notifyListeners();
-      });
+      await _localService.saveAccountInfo(accountSelected);
+      await _localService.saveCustomerInfo(null);
+      onCustomerSelected();
     } else {
-      _subCustomers.add(Customer(
-          CustomerUID: "",
-          Name: "ALL ACCOUNTS",
-          CustomerType: "ALL",
-          DisplayName: "ALL ACCOUNTS",
-          Children: []));
-      _subCustomers.addAll(result);
+      if (_subAccountSelected != null &&
+          _subAccountSelected.DisplayName == "ALL") {
+        _subCustomers.add(AccountData(
+            isSelected: true,
+            selectionType: AccountType.CUSTOMER,
+            value: Customer(
+                CustomerUID: "",
+                Name: "ALL ACCOUNTS",
+                CustomerType: "ALL",
+                DisplayName: "ALL ACCOUNTS",
+                Children: [])));
+      } else {
+        _subCustomers.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: Customer(
+                CustomerUID: "",
+                Name: "ALL ACCOUNTS",
+                CustomerType: "ALL",
+                DisplayName: "ALL ACCOUNTS",
+                Children: [])));
+      }
+      for (Customer customer in result) {
+        if (_subAccountSelected != null &&
+            _subAccountSelected.DisplayName == customer.DisplayName) {
+          _subCustomers.add(AccountData(
+              isSelected: true,
+              selectionType: AccountType.CUSTOMER,
+              value: customer));
+        } else {
+          _subCustomers.add(AccountData(
+              isSelected: false,
+              selectionType: AccountType.CUSTOMER,
+              value: customer));
+        }
+      }
+      _secondaryLoading = false;
       notifyListeners();
     }
   }
 
+  resetSelection() {
+    _accountSelected = null;
+    _subAccountSelected = null;
+    notifyListeners();
+  }
+
   setAccountSelected(value) {
+    Logger().d("setAccountSelected $value");
     _accountSelected = value;
+    _secondaryLoading = true;
     notifyListeners();
     if (accountSelected != null) {
       getSubCustomerList();
@@ -120,6 +169,7 @@ class CustomerSelectionViewModel extends InsiteViewModel {
   }
 
   setSubAccountSelected(Customer value) {
+    Logger().d("setSubAccountSelected $value");
     _subAccountSelected = value;
     _localService.saveAccountInfo(accountSelected);
     if (value.CustomerType != "ALL") {
@@ -127,27 +177,36 @@ class CustomerSelectionViewModel extends InsiteViewModel {
     } else {
       _localService.saveCustomerInfo(null);
     }
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 2), () {
       notifyListeners();
     });
   }
 
   onCustomerSelected() {
+    Logger().d("onCustomerSelected");
     checkPermission();
   }
 
   onHomeSelected() {
+    Logger().d("onHomeSelected");
     _navigationService.replaceWith(dashboardViewRoute);
   }
 
   checkPermission() async {
+    Logger().d("checkPermission");
+    _secondaryLoading = true;
+    notifyListeners();
     List<Permission> list = await _loginService.getPermissions();
     if (list.isNotEmpty) {
       _localService.setHasPermission(true);
       clearDb();
+      _secondaryLoading = false;
+      notifyListeners();
       _navigationService.replaceWith(dashboardViewRoute);
     } else {
       _youDontHavePermission = true;
+      _secondaryLoading = false;
+      notifyListeners();
       _localService.setHasPermission(false);
     }
   }

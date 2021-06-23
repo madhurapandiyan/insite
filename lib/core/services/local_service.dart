@@ -67,6 +67,7 @@ class LocalService extends BaseService {
   }
 
   Future<bool> saveCustomerInfo(Customer customer) async {
+    Logger().d("save customer info ");
     return await preferences.setString(
         CUSTOMER_INFO, customer != null ? jsonEncode(customer) : "");
   }

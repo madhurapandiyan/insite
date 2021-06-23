@@ -6,10 +6,10 @@ import 'package:logger/logger.dart';
 import 'customer_selection_dropdown.dart';
 
 class CustomerSelectableList extends StatefulWidget {
-  final Function(SelectedData) onSelected;
-  final SelectionType selectionType;
-  final SelectedData selectedData;
-  final List<Customer> list;
+  final Function(AccountData) onSelected;
+  final AccountType selectionType;
+  final AccountData selectedData;
+  final List<AccountData> list;
   CustomerSelectableList(
       {this.onSelected, this.selectionType, this.list, this.selectedData});
 
@@ -19,9 +19,9 @@ class CustomerSelectableList extends StatefulWidget {
 
 class _CustomerSelectableListState extends State<CustomerSelectableList> {
   int selectedIndex;
-  SelectedData selected;
-  List<Customer> list = [];
-  List<Customer> _searchList = [];
+  AccountData selected;
+  List<AccountData> _list = [];
+  List<AccountData> _searchList = [];
   TextEditingController _textEditingController = TextEditingController();
 
   @override
@@ -29,13 +29,10 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
     Logger().d("customer list");
     Logger().d(widget.list.length);
     selected = widget.selectedData != null ? widget.selectedData : null;
-    if (list.isNotEmpty) {
-      list.clear();
-      list.addAll(widget.list);
-    } else {
-      list.addAll(widget.list);
-    }
-    Logger().i("init total list size " + list.length.toString());
+    _list.clear();
+    _list = widget.list;
+    _searchList = _list;
+    Logger().i("init total list size " + _list.length.toString());
     _textEditingController.addListener(() {
       onSearchTextChanged(_textEditingController.text);
     });
@@ -45,11 +42,14 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
   onSearchTextChanged(String text) async {
     Logger().i("query typeed " + text);
     if (text != null && text.trim().isNotEmpty) {
-      list.forEach((item) {
-        if (item.DisplayName.contains(text) || item.DisplayName.contains(text))
-          _searchList.add(item);
+      List<AccountData> tempList = [];
+      tempList.clear();
+      _list.forEach((item) {
+        if (item.value.DisplayName.toLowerCase().contains(text))
+          tempList.add(item);
       });
-      Logger().i("total list size " + list.length.toString());
+      _searchList = tempList;
+      Logger().i("total list size " + _list.length.toString());
       Logger().i("searched list size " + _searchList.length.toString());
       setState(() {});
     } else {
@@ -89,13 +89,13 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                   itemCount: _searchList.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    Customer customer = _searchList[index];
+                    Customer customer = _searchList[index].value;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
                         });
-                        widget.onSelected(SelectedData(
+                        widget.onSelected(AccountData(
                             selectionType: widget.selectionType,
                             value: customer));
                       },
@@ -129,16 +129,16 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                   },
                 )
               : ListView.builder(
-                  itemCount: list.length,
+                  itemCount: _list.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    Customer customer = list[index];
+                    Customer customer = _list[index].value;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
                         });
-                        widget.onSelected(SelectedData(
+                        widget.onSelected(AccountData(
                             selectionType: widget.selectionType,
                             value: customer));
                       },
