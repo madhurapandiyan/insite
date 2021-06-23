@@ -42,7 +42,8 @@ class _SingleAssetUtilizationGraphViewState
     return ViewModelBuilder<SingleAssetUtilizationGraphViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetUtilizationGraphViewModel viewModel, Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
 
         return Stack(
           children: [

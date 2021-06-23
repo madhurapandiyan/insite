@@ -40,10 +40,10 @@ class _SingleAssetUtilizationViewState
             child: Stack(
               children: [
                 isListSelected
-                    ? Flexible(
+                    ? Expanded(
                         child: SingleAssetUtilizationListView(
                             detail: widget.detail))
-                    : Flexible(
+                    : Expanded(
                         child: SingleAssetUtilizationGraphView(
                             detail: widget.detail)),
                 Padding(

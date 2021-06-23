@@ -29,7 +29,8 @@ class _SingleAssetUtilizationListViewState
     return ViewModelBuilder<SingleAssetUtilizationListViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetUtilizationListViewModel viewModel, Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(
