@@ -14,20 +14,20 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/date_range.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class LocationView extends StatefulWidget {
-  LocationView();
-
   @override
   _LocationViewState createState() => _LocationViewState();
 }
 
 class _LocationViewState extends State<LocationView> {
   String _currentSelectedItem = "MAP";
+
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
@@ -38,9 +38,8 @@ class _LocationViewState extends State<LocationView> {
   BitmapDescriptor mapMarker;
 
   Set<Marker> markers = Set();
-  CustomInfoWindowController _customInfoWindowController =
+  CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
-
   List<ClusterItem<InsiteMarker>> clusterMarkers = [];
 
   ClusterManager _manager;
@@ -52,7 +51,7 @@ class _LocationViewState extends State<LocationView> {
 
   @override
   void dispose() {
-    _customInfoWindowController.dispose();
+    customInfoWindowController.dispose();
     super.dispose();
   }
 
@@ -76,255 +75,15 @@ class _LocationViewState extends State<LocationView> {
           for (var assetLocation in assetLocationList) {
             clusterMarkers.add(
               ClusterItem(
-                LatLng(assetLocation.lastReportedLocationLatitude,
-                    assetLocation.lastReportedLocationLongitude),
-                item: InsiteMarker(
+                  LatLng(assetLocation.lastReportedLocationLatitude,
+                      assetLocation.lastReportedLocationLongitude),
+                  item: InsiteMarker(
                     markerId: MarkerId('${index++}'),
                     position: LatLng(assetLocation.lastReportedLocationLatitude,
                         assetLocation.lastReportedLocationLongitude),
-                    onTapInfoWindow: () {
-                      _customInfoWindowController.addInfoWindow(
-                          Column(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: tuna,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: tuna,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "${assetLocation.assetSerialNumber}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Make/Model",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              "${assetLocation.model}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Asset Status",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              "${assetLocation.status}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Geofence",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              (assetLocation.geofences ==
-                                                          null ||
-                                                      assetLocation.geofences
-                                                              .length ==
-                                                          0)
-                                                  ? ''
-                                                  : "${assetLocation.geofences}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Hours",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              "${assetLocation.hourMeter} hrs",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Last Reported Time",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              assetLocation.lastReportedUtc ==
-                                                      null
-                                                  ? ''
-                                                  // : "${DateFormat('h:mma').format(assetLocation.lastReportedUtc)}",
-                                                  : 'need to change here',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(color: shark),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Fuel % remaining",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              "${assetLocation.fuelLevelLastReported}%",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(4),
-                                              bottomRight: Radius.circular(4)),
-                                          color: tuna,
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Location",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                            Text(
-                                              "${assetLocation.lastReportedLocation}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontFamily: 'Roboto',
-                                                  color: textcolor,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Triangle.isosceles(
-                                edge: Edge.BOTTOM,
-                                child: Container(
-                                  color: tuna,
-                                  width: 20.0,
-                                  height: 10.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          LatLng(assetLocation.lastReportedLocationLatitude,
-                              assetLocation.lastReportedLocationLongitude));
-                    }),
-              ),
+                  )),
             );
           }
-
           return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.LOCATION,
@@ -419,15 +178,12 @@ class _LocationViewState extends State<LocationView> {
                   child: Stack(
                     children: [
                       GoogleMap(
-                        onTap: (position) {
-                          _customInfoWindowController.hideInfoWindow();
-                        },
                         onCameraMove: (position) {
-                          _customInfoWindowController.onCameraMove();
+                          customInfoWindowController.onCameraMove();
                           _manager.onCameraMove(position);
                         },
                         onMapCreated: (GoogleMapController controller) async {
-                          _customInfoWindowController.googleMapController =
+                          customInfoWindowController.googleMapController =
                               controller;
 
                           _controller.complete(controller);
@@ -447,10 +203,10 @@ class _LocationViewState extends State<LocationView> {
                             zoom: 5),
                       ),
                       CustomInfoWindow(
-                        controller: _customInfoWindowController,
-                        height: 75,
+                        controller: customInfoWindowController,
+                        height: 250,
                         width: 150,
-                        offset: 50,
+                        offset: 1,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -562,8 +318,103 @@ class _LocationViewState extends State<LocationView> {
           markerId: MarkerId(cluster.getId()),
           position: cluster.location,
           onTap: () {
-            print('---- $cluster');
-            //cluster.items.forEach((p) => print(p));
+            customInfoWindowController.addInfoWindow(
+                Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: cardcolor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Cluster Info",
+                                  style: new TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 13.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: silver),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 55.0,
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    customInfoWindowController.hideInfoWindow();
+                                  },
+                                  child:
+                                      Image.asset("assets/images/mapclose.png"))
+                            ],
+                          ),
+                          Divider(),
+                          Container(
+                            width: 216,
+                            height: 32,
+                            color: thunder,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 38, top: 5.0, bottom: 5.0),
+                              child: Text(
+                                cluster.count.toString() + "Assets",
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: silver),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Column(
+                            children: [
+                              InsiteButton(
+                                width: 120,
+                                height: 40,
+                                bgColor: tango,
+                                title: "Fleet List",
+                                textColor: appbarcolor,
+                                onTap: () {
+                                  print("button is tapped");
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              InsiteButton(
+                                width: 120,
+                                height: 40,
+                                bgColor: tango,
+                                title: "Zoom to cluster",
+                                textColor: appbarcolor,
+                                onTap: () {
+                                  print("button is tapped");
+                                },
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Triangle.isosceles(
+                      edge: Edge.BOTTOM,
+                      child: Container(
+                        color: cardcolor,
+                        width: 20.0,
+                        height: 10.0,
+                      ),
+                    ),
+                  ],
+                ),
+                LatLng(cluster.location.latitude, cluster.location.longitude));
           },
           icon: await _getMarkerBitmap(cluster.isMultiple ? 125 : 75,
               text: cluster.isMultiple ? cluster.count.toString() : null),
