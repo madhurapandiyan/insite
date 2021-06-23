@@ -153,37 +153,39 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                 //         isTransposed: true,
                 //       )
                 //     : SizedBox(),
-                viewModel.singleAssetOperation != null
-                    ? SfCalendar(
-                        showNavigationArrow: false,
-                        backgroundColor: ship_grey,
-                        cellBorderColor: black,
-                        controller: calendarController,
-                        // allowedViews: _allowedViews,
-                        view: CalendarView.week,
-                        todayTextStyle: TextStyle(color: ship_grey),
-                        headerDateFormat: 'MMM yyyy',
-                        // scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
+                Expanded(
+                  child: viewModel.singleAssetOperation != null
+                      ? SfCalendar(
+                          showNavigationArrow: false,
+                          backgroundColor: ship_grey,
+                          cellBorderColor: black,
+                          controller: calendarController,
+                          // allowedViews: _allowedViews,
+                          view: CalendarView.week,
+                          todayTextStyle: TextStyle(color: ship_grey),
+                          headerDateFormat: 'MMM yyyy',
+                          // scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
 
-                        minDate: viewModel.singleAssetOperation.assetOperations
-                                .assets.isEmpty
-                            ? DateTime.now().subtract(
-                                Duration(days: DateTime.now().weekday))
-                            : viewModel.minDate,
-                        maxDate: viewModel.singleAssetOperation.assetOperations
-                                .assets.isEmpty
-                            ? DateTime.now()
-                            : viewModel.maxDate,
-                        onViewChanged: onViewChanged,
+                          minDate: viewModel.singleAssetOperation
+                                  .assetOperations.assets.isEmpty
+                              ? DateTime.now().subtract(
+                                  Duration(days: DateTime.now().weekday))
+                              : viewModel.minDate,
+                          maxDate: viewModel.singleAssetOperation
+                                  .assetOperations.assets.isEmpty
+                              ? DateTime.now()
+                              : viewModel.maxDate,
+                          onViewChanged: onViewChanged,
 
-                        dataSource:
-                            AppointmentDataSource(getRecursiveAppointments()),
-                        // monthViewSettings: const MonthViewSettings(
-                        //     appointmentDisplayMode:
-                        //         MonthAppointmentDisplayMode.appointment,
-                        //     appointmentDisplayCount: 4),
-                      )
-                    : EmptyView(title: 'No data here'),
+                          dataSource:
+                              AppointmentDataSource(getRecursiveAppointments()),
+                          // monthViewSettings: const MonthViewSettings(
+                          //     appointmentDisplayMode:
+                          //         MonthAppointmentDisplayMode.appointment,
+                          //     appointmentDisplayCount: 4),
+                        )
+                      : EmptyView(title: 'No data here'),
+                ),
               ],
             ),
           );

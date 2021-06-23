@@ -177,7 +177,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 CustomInfoWindow(
                                   controller:
                                       viewModel.customInfoWindowController,
-                                  height: 75,
+                                  height: 100,
                                   width: 150,
                                   offset: 50,
                                 ),
@@ -270,7 +270,97 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               ],
                             ),
                           )
-                        : SizedBox(),
+                        : Expanded(
+                            child: Stack(
+                              children: [
+                                GoogleMap(
+                                  onCameraMove: (position) {
+                                    viewModel.customInfoWindowController
+                                        .onCameraMove();
+                                  },
+                                  mapType: _changemap(),
+                                  compassEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  markers: viewModel.markers,
+                                  initialCameraPosition: CameraPosition(
+                                      target: LatLng(21.7679, 78.8718),
+                                      zoom: 4),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 28.0,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          zoomVal++;
+                                          _plus(
+                                            zoomVal,
+                                            LatLng(21.7679, 78.8718),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 27.47,
+                                          height: 26.97,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 1.0,
+                                                color: darkhighlight,
+                                              ),
+                                            ],
+                                            border: Border.all(
+                                                width: 1.0,
+                                                color: darkhighlight),
+                                            shape: BoxShape.rectangle,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            "assets/images/plus.svg",
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      GestureDetector(
+                                          onTap: () {
+                                            zoomVal--;
+                                            _minus(
+                                              zoomVal,
+                                              LatLng(21.7679, 78.8718),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 27.47,
+                                            height: 26.97,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurRadius: 1.0,
+                                                  color: darkhighlight,
+                                                ),
+                                              ],
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color: darkhighlight),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/minus.svg",
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),
