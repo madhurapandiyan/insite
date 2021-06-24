@@ -36,20 +36,22 @@ class _AccountSelectionDropDownWidgetState
 
   onSearchTextChanged(String text) async {
     Logger().i("query typeed " + text);
-    if (text != null && text.trim().isNotEmpty) {
-      List<AccountData> tempList = [];
-      tempList.clear();
-      _list.forEach((item) {
-        if (item.value.DisplayName.toLowerCase().contains(text))
-          tempList.add(item);
-      });
-      _displayList = tempList;
-      Logger().i("total list size " + _list.length.toString());
-      Logger().i("searched list size " + _displayList.length.toString());
-      setState(() {});
-    } else {
-      _displayList = _list;
-      setState(() {});
+    if (text != null) {
+      if (text.trim().isNotEmpty) {
+        List<AccountData> tempList = [];
+        tempList.clear();
+        _list.forEach((item) {
+          if (item.value.DisplayName.toLowerCase().contains(text))
+            tempList.add(item);
+        });
+        _displayList = tempList;
+        Logger().i("total list size " + _list.length.toString());
+        Logger().i("searched list size " + _displayList.length.toString());
+        setState(() {});
+      } else {
+        _displayList = _list;
+        setState(() {});
+      }
     }
   }
 

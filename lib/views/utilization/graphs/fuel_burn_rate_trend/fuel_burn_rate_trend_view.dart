@@ -13,63 +13,89 @@ class FuelBurnRateTrendView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _FuelBurnRateTrendViewState createState() => _FuelBurnRateTrendViewState();
+  FuelBurnRateTrendViewState createState() => FuelBurnRateTrendViewState();
 }
 
-class _FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
+class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
+  var viewModel;
+
+  @override
+  void initState() {
+    viewModel = FuelBurnRateTrendViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FuelBurnRateTrendViewModel>.reactive(
       builder: (BuildContext context, FuelBurnRateTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-
-        return Column(
+        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: RangeSelectionWidget(
-                      label1: 'Day',
-                      label2: 'Week',
-                      label3: 'month',
-                      rangeChoice: (int choice) {
-                        setState(() {
-                          rangeChoice = choice;
-                          viewModel.range = rangeTexts[rangeChoice - 1];
-                          viewModel.getFuelBurnRateTrend();
-                        });
-                      },
-                    ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RangeSelectionWidget(
+                          label1: 'Day',
+                          label2: 'Week',
+                          label3: 'month',
+                          rangeChoice: (int choice) {
+                            setState(() {
+                              rangeChoice = choice;
+                              viewModel.range = rangeTexts[rangeChoice - 1];
+                              viewModel.getFuelBurnRateTrend();
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: UtilizationLegends(
+                          label1: 'Working',
+                          label2: 'Idle',
+                          label3: 'Runtime',
+                          color1: emerald,
+                          color2: burntSienna,
+                          color3: creamCan,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: UtilizationLegends(
-                      label1: 'Working',
-                      label2: 'Idle',
-                      label3: 'Runtime',
-                      color1: emerald,
-                      color2: burntSienna,
-                      color3: creamCan,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: FuelBurnRateGraph(
+                      rangeSelection: rangeChoice,
+                      fuelBurnRateTrend: viewModel.fuelBurnRateTrend),
+                ),
+              ],
             ),
-            Expanded(
-              child: FuelBurnRateGraph(
-                  rangeSelection: rangeChoice,
-                  fuelBurnRateTrend: viewModel.fuelBurnRateTrend),
-            ),
+            viewModel.isRefreshing
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          FuelBurnRateTrendViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

@@ -51,6 +51,11 @@ class AccountSelectionViewModel extends InsiteViewModel {
     getLoggedInUserMail();
     getSelectedData();
     getCustomerList();
+    Future.delayed(Duration(seconds: 1), () {
+      if (_subAccountSelected != null) {
+        getSubCustomerList();
+      }
+    });
   }
 
   getSelectedData() async {
@@ -101,16 +106,13 @@ class AccountSelectionViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getSubCustomerList() async {
+  Future<List<Customer>> getSubCustomerList() async {
     Logger().d("getSubCustomerList");
     List<Customer> result =
         await _loginService.getSubCustomers(_accountSelected.CustomerUID);
     Logger().d("getSubCustomerList result " + result.length.toString());
-    if (result.isEmpty) {
-      await _localService.saveAccountInfo(accountSelected);
-      await _localService.saveCustomerInfo(null);
-      onCustomerSelected();
-    } else {
+    if (result.isNotEmpty) {
+      _subCustomers.clear();
       if (_subAccountSelected != null &&
           _subAccountSelected.DisplayName == "ALL") {
         _subCustomers.add(AccountData(
@@ -147,9 +149,10 @@ class AccountSelectionViewModel extends InsiteViewModel {
               value: customer));
         }
       }
-      _secondaryLoading = false;
-      notifyListeners();
     }
+    _loading = false;
+    notifyListeners();
+    return result;
   }
 
   resetSelection() {
@@ -158,22 +161,32 @@ class AccountSelectionViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  setAccountSelected(value) {
+  setAccountSelected(value) async {
     Logger().d("setAccountSelected $value");
     _accountSelected = value;
+    _subAccountSelected = null;
+    _subCustomers.clear();
     _secondaryLoading = true;
     notifyListeners();
     if (accountSelected != null) {
-      getSubCustomerList();
+      List<Customer> subCustomerlist = await getSubCustomerList();
+      if (subCustomerlist.isEmpty) {
+        await _localService.saveAccountInfo(accountSelected);
+        await _localService.saveCustomerInfo(null);
+        onCustomerSelected();
+      } else {
+        _secondaryLoading = false;
+        notifyListeners();
+      }
     }
   }
 
   setSubAccountSelected(Customer value) {
-    Logger().d("setSubAccountSelected $value");
+    Logger().d("setSubAccountSelected " + value.CustomerUID);
     _subAccountSelected = value;
     _localService.saveAccountInfo(accountSelected);
     if (value.CustomerType != "ALL") {
-      _localService.saveCustomerInfo(subAccountSelected);
+      _localService.saveCustomerInfo(value);
     } else {
       _localService.saveCustomerInfo(null);
     }

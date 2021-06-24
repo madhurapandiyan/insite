@@ -58,5 +58,15 @@ abstract class InsiteViewModel extends BaseViewModel {
     _filterService.clearDatabase();
   }
 
+  updateDateRange(String startDate, String endDate, String type) async {
+    FilterData data = FilterData(
+        title: "Date Range",
+        count: type,
+        extras: [startDate, endDate],
+        isSelected: true,
+        type: FilterType.DATE_RANGE);
+    await _filterService.updateFilter(data);
+  }
+
   List<FilterData> appliedFilters = [];
 }

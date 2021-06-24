@@ -21,8 +21,10 @@ class TotalHoursViewModel extends BaseViewModel {
   TotalHours _totalHours;
   TotalHours get totalHours => _totalHours;
 
-  String _startDate;
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
+  String _startDate;
   String _endDate;
 
   TotalHoursViewModel(String startDate, String endDate) {
@@ -37,6 +39,21 @@ class TotalHoursViewModel extends BaseViewModel {
         _range, _startDate, _endDate, 1, 25, true);
     _totalHours = result;
     _loading = false;
+    notifyListeners();
+  }
+
+  updateDate(startDate, endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
+  }
+
+  refresh() async {
+    _isRefreshing = true;
+    notifyListeners();
+    TotalHours result = await _utilizationGraphService.getTotalHours(
+        _range, _startDate, _endDate, 1, 25, true);
+    _totalHours = result;
+    _isRefreshing = false;
     notifyListeners();
   }
 }

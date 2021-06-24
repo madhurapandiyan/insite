@@ -41,5 +41,7 @@ enum FilterType {
   @HiveField(10)
   FUEL_LEVEL,
   @HiveField(11)
-  IDLING_LEVEL
+  IDLING_LEVEL,
+  @HiveField(12)
+  DATE_RANGE
 }

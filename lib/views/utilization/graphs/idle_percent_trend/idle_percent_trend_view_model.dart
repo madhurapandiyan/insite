@@ -19,11 +19,13 @@ class IdlePercentTrendViewModel extends BaseViewModel {
   bool get loading => _loading;
 
   String _startDate;
+  String _endDate;
 
   IdlePercentTrend _idlePercentTrend;
   IdlePercentTrend get idlePercentTrend => _idlePercentTrend;
 
-  String _endDate;
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
   IdlePercentTrendViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
@@ -37,6 +39,21 @@ class IdlePercentTrendViewModel extends BaseViewModel {
         .getIdlePercentTrend(_range, _startDate, _endDate, 1, 25, true);
     _idlePercentTrend = result;
     _loading = false;
+    notifyListeners();
+  }
+
+  updateDate(startDate, endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
+  }
+
+  refresh() async {
+    _isRefreshing = true;
+    notifyListeners();
+    IdlePercentTrend result = await _utilizationGraphService
+        .getIdlePercentTrend(_range, _startDate, _endDate, 1, 25, true);
+    _idlePercentTrend = result;
+    _isRefreshing = false;
     notifyListeners();
   }
 }

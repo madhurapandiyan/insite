@@ -16,7 +16,6 @@ class TotalFuelBurnedViewModel extends BaseViewModel {
   }
 
   String _startDate;
-
   String _endDate;
 
   TotalFuelBurned _totalFuelBurned;
@@ -24,6 +23,9 @@ class TotalFuelBurnedViewModel extends BaseViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
   TotalFuelBurnedViewModel(String startDate, String endDate) {
     this.log = getLogger(this.runtimeType.toString());
@@ -37,6 +39,21 @@ class TotalFuelBurnedViewModel extends BaseViewModel {
         _range, _startDate, _endDate, 1, 25, true);
     _totalFuelBurned = result;
     _loading = false;
+    notifyListeners();
+  }
+
+  updateDate(startDate, endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
+  }
+
+  refresh() async {
+    _isRefreshing = true;
+    notifyListeners();
+    TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
+        _range, _startDate, _endDate, 1, 25, true);
+    _totalFuelBurned = result;
+    _isRefreshing = false;
     notifyListeners();
   }
 }
