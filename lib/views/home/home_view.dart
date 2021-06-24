@@ -93,10 +93,10 @@ class _HomeViewState extends State<HomeView> {
                     child: Container(
                         height: 305,
                         color: cardcolor,
-                        child: FleetGoogleMapHome(
-                          assetLocation: viewModel.assetLocation != null
-                              ? viewModel.assetLocation.mapRecords
-                              : null,
+                        child:viewModel.assetLocation==null?Center(
+                          child: CircularProgressIndicator(),
+                        ) :FleetGoogleMapHome(
+                          assetLocation:viewModel.assetLocation.mapRecords,
                           isLoading: viewModel.assetLocationloading,
                           screenType: ScreenType.DASHBOARD,
                           status: '',
