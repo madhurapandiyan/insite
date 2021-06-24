@@ -13,62 +13,89 @@ class CumulativeView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CumulativeViewState createState() => _CumulativeViewState();
+  CumulativeViewState createState() => CumulativeViewState();
 }
 
-class _CumulativeViewState extends State<CumulativeView> {
+class CumulativeViewState extends State<CumulativeView> {
   int rangeChoice = 1;
+  var viewModel;
+
+  @override
+  void initState() {
+    viewModel = CumulativeViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CumulativeViewModel>.reactive(
       builder: (BuildContext context, CumulativeViewModel viewModel, Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-
-        return Column(
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: RangeSelectionWidget(
-                      label1: 'Runtime',
-                      label2: 'Fuel Burned',
-                      label3: null,
-                      rangeChoice: (int choice) {
-                        setState(() {
-                          rangeChoice = choice;
-                        });
-                      },
-                    ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RangeSelectionWidget(
+                          label1: 'Runtime',
+                          label2: 'Fuel Burned',
+                          label3: null,
+                          rangeChoice: (int choice) {
+                            setState(() {
+                              rangeChoice = choice;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: UtilizationLegends(
+                          label1: 'Working',
+                          label2: 'Idle',
+                          label3: 'Runtime',
+                          color1: emerald,
+                          color2: burntSienna,
+                          color3: creamCan,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: UtilizationLegends(
-                      label1: 'Working',
-                      label2: 'Idle',
-                      label3: 'Runtime',
-                      color1: emerald,
-                      color2: burntSienna,
-                      color3: creamCan,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: rangeChoice == 1
+                      ? CumulativeChart(
+                          runTimeCumulative: viewModel.runTimeCumulative)
+                      : CumulativeChart(
+                          fuelBurnedCumulative: viewModel.fuelBurnedCumulative,
+                        ),
+                ),
+              ],
             ),
-            Expanded(
-              child: rangeChoice == 1
-                  ? CumulativeChart(
-                      runTimeCumulative: viewModel.runTimeCumulative)
-                  : CumulativeChart(
-                      fuelBurnedCumulative: viewModel.fuelBurnedCumulative,
-                    ),
-            ),
+            viewModel.isRefreshing
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          CumulativeViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

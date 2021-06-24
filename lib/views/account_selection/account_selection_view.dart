@@ -135,14 +135,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                         onReset: () {
                                           viewModel.resetSelection();
                                         },
-                                        selected: viewModel.accountSelected !=
-                                                null
-                                            ? AccountData(
-                                                selectionType:
-                                                    AccountType.ACCOUNT,
-                                                value:
-                                                    viewModel.accountSelected)
-                                            : null,
+                                        selected: null,
                                         list: viewModel.customers,
                                       )),
                               viewModel.accountSelected != null &&
@@ -164,8 +157,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                           viewModel.onCustomerSelected();
                                         },
                                         onReset: () {
-                                          viewModel.setAccountSelected(null);
-                                          viewModel.setSubAccountSelected(null);
+                                          viewModel.resetSelection();
                                         },
                                         selected:
                                             viewModel.subAccountSelected != null

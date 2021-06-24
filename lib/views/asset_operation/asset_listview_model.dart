@@ -62,6 +62,7 @@ class AssetListViewModel extends InsiteViewModel {
 
   void updateDateRangeList() {
     try {
+      updateDateRange(startDate, endDate, "type");
       DateTime startTime = DateTime.parse(startDate);
       DateTime endTime = DateTime.parse(endDate);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;

@@ -15,62 +15,89 @@ class IdlePercentTrendView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _IdlePercentTrendViewState createState() => _IdlePercentTrendViewState();
+  IdlePercentTrendViewState createState() => IdlePercentTrendViewState();
 }
 
-class _IdlePercentTrendViewState extends State<IdlePercentTrendView> {
+class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
+  @override
+  void initState() {
+    viewModel = IdlePercentTrendViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  var viewModel;
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<IdlePercentTrendViewModel>.reactive(
       builder: (BuildContext context, IdlePercentTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-        return Column(
+        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: RangeSelectionWidget(
-                      label1: 'Day',
-                      label2: 'Week',
-                      label3: 'month',
-                      rangeChoice: (int choice) {
-                        setState(() {
-                          rangeChoice = choice;
-                          viewModel.range = rangeTexts[rangeChoice - 1];
-                          viewModel.getIdlePercentTrend();
-                        });
-                      },
-                    ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RangeSelectionWidget(
+                          label1: 'Day',
+                          label2: 'Week',
+                          label3: 'month',
+                          rangeChoice: (int choice) {
+                            setState(() {
+                              rangeChoice = choice;
+                              viewModel.range = rangeTexts[rangeChoice - 1];
+                              viewModel.getIdlePercentTrend();
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: UtilizationLegends(
+                          label1: 'Working',
+                          label2: 'Idle',
+                          label3: 'Runtime',
+                          color1: emerald,
+                          color2: burntSienna,
+                          color3: creamCan,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: UtilizationLegends(
-                      label1: 'Working',
-                      label2: 'Idle',
-                      label3: 'Runtime',
-                      color1: emerald,
-                      color2: burntSienna,
-                      color3: creamCan,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: IdleTrendGraph(
+                      rangeSelection: rangeChoice,
+                      idlePercentTrend: viewModel.idlePercentTrend),
+                ),
+              ],
             ),
-            Expanded(
-              child: IdleTrendGraph(
-                  rangeSelection: rangeChoice,
-                  idlePercentTrend: viewModel.idlePercentTrend),
-            ),
+            viewModel.isRefreshing
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          IdlePercentTrendViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

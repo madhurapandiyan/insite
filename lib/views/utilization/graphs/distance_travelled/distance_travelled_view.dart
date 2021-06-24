@@ -11,54 +11,81 @@ class DistanceTravelledView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _DistanceTravelledViewState createState() => _DistanceTravelledViewState();
+  DistanceTravelledViewState createState() => DistanceTravelledViewState();
 }
 
-class _DistanceTravelledViewState extends State<DistanceTravelledView> {
+class DistanceTravelledViewState extends State<DistanceTravelledView> {
+  var viewModel;
+
+  @override
+  void initState() {
+    viewModel = DistanceTravelledViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DistanceTravelledViewModel>.reactive(
       builder: (BuildContext context, DistanceTravelledViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-        return Column(
+        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: viewModel.utilLizationListData.length,
-                  controller: viewModel.scrollController,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PercentageWidget(
-                        label: viewModel
-                            .utilLizationListData[index].assetSerialNumber,
-                        value: viewModel.utilLizationListData[index]
-                                    .distanceTravelledKilometers ==
-                                null
-                            ? 'NA'
-                            : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
-                        percentage: viewModel.utilLizationListData[index]
-                                    .distanceTravelledKilometers ==
-                                null
-                            ? 0
-                            : viewModel.utilLizationListData[index]
-                                    .distanceTravelledKilometers /
-                                1000,
-                        color: creamCan);
-                  }),
+            Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: viewModel.utilLizationListData.length,
+                      controller: viewModel.scrollController,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PercentageWidget(
+                            label: viewModel
+                                .utilLizationListData[index].assetSerialNumber,
+                            value: viewModel.utilLizationListData[index]
+                                        .distanceTravelledKilometers ==
+                                    null
+                                ? 'NA'
+                                : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
+                            percentage: viewModel.utilLizationListData[index]
+                                        .distanceTravelledKilometers ==
+                                    null
+                                ? 0
+                                : viewModel.utilLizationListData[index]
+                                        .distanceTravelledKilometers /
+                                    1000,
+                            color: creamCan);
+                      }),
+                ),
+                viewModel.loadingMore
+                    ? Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(),
+                      )
+                    : SizedBox(),
+              ],
             ),
-            viewModel.loadingMore
-                ? Padding(
-                    padding: EdgeInsets.all(8),
+            viewModel.isRefreshing
+                ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : SizedBox(),
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          DistanceTravelledViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

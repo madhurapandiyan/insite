@@ -16,7 +16,6 @@ class UtilLizationView extends StatefulWidget {
 class _UtilLizationViewState extends State<UtilLizationView> {
   bool isListSelected = true;
   int rangeChoice = 1;
-
   bool isRangeSelectionVisible = false;
 
   @override

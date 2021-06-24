@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/utilization.dart';
@@ -6,11 +7,10 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class UtilizationListViewModel extends BaseViewModel {
+class UtilizationListViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationService = locator<AssetUtilizationService>();
   var _navigationService = locator<NavigationService>();
@@ -49,6 +49,7 @@ class UtilizationListViewModel extends BaseViewModel {
   UtilizationListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _utilizationService.setUp();
+    setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -114,6 +115,7 @@ class UtilizationListViewModel extends BaseViewModel {
 
   refresh() async {
     Logger().d("refresh getUtilization");
+    updateDateRange(_startDate, _endDate, "Utlization List");
     pageNumber = 1;
     pageCount = 50;
     _refreshing = true;

@@ -13,62 +13,87 @@ class TotalHoursView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TotalHoursViewState createState() => _TotalHoursViewState();
+  TotalHoursViewState createState() => TotalHoursViewState();
 }
 
-class _TotalHoursViewState extends State<TotalHoursView> {
+class TotalHoursViewState extends State<TotalHoursView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
+  var viewModel;
+  @override
+  void initState() {
+    viewModel = TotalHoursViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalHoursViewModel>.reactive(
       builder: (BuildContext context, TotalHoursViewModel viewModel, Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-        return Column(
+        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: RangeSelectionWidget(
-                      label1: 'Day',
-                      label2: 'Week',
-                      label3: 'month',
-                      rangeChoice: (int choice) {
-                        setState(() {
-                          rangeChoice = choice;
-                          viewModel.range = rangeTexts[rangeChoice - 1];
-                          viewModel.getTotalHours();
-                        });
-                      },
-                    ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RangeSelectionWidget(
+                          label1: 'Day',
+                          label2: 'Week',
+                          label3: 'month',
+                          rangeChoice: (int choice) {
+                            setState(() {
+                              rangeChoice = choice;
+                              viewModel.range = rangeTexts[rangeChoice - 1];
+                              viewModel.getTotalHours();
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: UtilizationLegends(
+                          label1: 'Working',
+                          label2: 'Idle',
+                          label3: 'Runtime',
+                          color1: emerald,
+                          color2: burntSienna,
+                          color3: creamCan,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: UtilizationLegends(
-                      label1: 'Working',
-                      label2: 'Idle',
-                      label3: 'Runtime',
-                      color1: emerald,
-                      color2: burntSienna,
-                      color3: creamCan,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: TotalHoursChart(
+                      rangeSelection: rangeChoice,
+                      totalHours: viewModel.totalHours),
+                ),
+              ],
             ),
-            Expanded(
-              child: TotalHoursChart(
-                  rangeSelection: rangeChoice,
-                  totalHours: viewModel.totalHours),
-            ),
+            viewModel.isRefreshing
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          TotalHoursViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

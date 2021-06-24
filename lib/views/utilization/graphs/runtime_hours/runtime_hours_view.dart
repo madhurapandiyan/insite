@@ -12,75 +12,102 @@ class RuntimeHoursView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RuntimeHoursViewState createState() => _RuntimeHoursViewState();
+  RuntimeHoursViewState createState() => RuntimeHoursViewState();
 }
 
-class _RuntimeHoursViewState extends State<RuntimeHoursView> {
+class RuntimeHoursViewState extends State<RuntimeHoursView> {
+  var viewModel;
+  @override
+  void initState() {
+    viewModel = RuntimeHoursViewModel(widget.startDate, widget.endDate);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
   int rangeChoice = 1;
+  
+  refresh(String startDate, String endDate) {
+    viewModel.updateDate(startDate, endDate);
+    viewModel.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<RuntimeHoursViewModel>.reactive(
       builder:
           (BuildContext context, RuntimeHoursViewModel viewModel, Widget _) {
-        if (viewModel.loading) return CircularProgressIndicator();
-        return Column(
+        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: RangeSelectionWidget(
-                  label1: 'Runtime',
-                  label2: 'Working',
-                  label3: 'idle',
-                  rangeChoice: (int choice) {
-                    setState(() {
-                      rangeChoice = choice;
-                    });
-                  },
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: RangeSelectionWidget(
+                      label1: 'Runtime',
+                      label2: 'Working',
+                      label3: 'idle',
+                      rangeChoice: (int choice) {
+                        setState(() {
+                          rangeChoice = choice;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: viewModel.utilLizationListData.length,
-                  controller: viewModel.scrollController,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PercentageWidget(
-                        value: rangeChoice == 1
-                            ? ('${viewModel.utilLizationListData[index].runtimeHours}')
-                            : rangeChoice == 2
-                                ? ('${viewModel.utilLizationListData[index].workingHours}')
-                                : ('${viewModel.utilLizationListData[index].idleHours}'),
-                        label: viewModel
-                            .utilLizationListData[index].assetSerialNumber,
-                        percentage: rangeChoice == 1
-                            ? (viewModel
-                                    .utilLizationListData[index].runtimeHours /
-                                100)
-                            : rangeChoice == 2
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: viewModel.utilLizationListData.length,
+                      controller: viewModel.scrollController,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return PercentageWidget(
+                            value: rangeChoice == 1
+                                ? ('${viewModel.utilLizationListData[index].runtimeHours}')
+                                : rangeChoice == 2
+                                    ? ('${viewModel.utilLizationListData[index].workingHours}')
+                                    : ('${viewModel.utilLizationListData[index].idleHours}'),
+                            label: viewModel
+                                .utilLizationListData[index].assetSerialNumber,
+                            percentage: rangeChoice == 1
                                 ? (viewModel.utilLizationListData[index]
-                                        .workingHours /
+                                        .runtimeHours /
                                     100)
-                                : (viewModel
-                                        .utilLizationListData[index].idleHours /
-                                    10),
-                        color: sandyBrown);
-                  }),
+                                : rangeChoice == 2
+                                    ? (viewModel.utilLizationListData[index]
+                                            .workingHours /
+                                        100)
+                                    : (viewModel.utilLizationListData[index]
+                                            .idleHours /
+                                        10),
+                            color: sandyBrown);
+                      }),
+                ),
+                viewModel.loadingMore
+                    ? Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(),
+                      )
+                    : SizedBox(),
+              ],
             ),
-            viewModel.loadingMore
-                ? Padding(
-                    padding: EdgeInsets.all(8),
+            viewModel.isRefreshing
+                ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : SizedBox(),
+                : SizedBox()
           ],
         );
       },
-      viewModelBuilder: () =>
-          RuntimeHoursViewModel(widget.startDate, widget.endDate),
+      viewModelBuilder: () => viewModel,
     );
   }
 }

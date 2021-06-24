@@ -28,8 +28,10 @@ class RuntimeHoursViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  String _startDate;
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
+  String _startDate;
   String _endDate;
 
   RuntimeHoursViewModel(String startDate, String endDate) {
@@ -62,7 +64,6 @@ class RuntimeHoursViewModel extends BaseViewModel {
 
   getUtilization() async {
     Logger().d("getUtilization");
-
     Utilization result = await _utilizationService.getUtilizationResult(
         _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
@@ -81,6 +82,32 @@ class RuntimeHoursViewModel extends BaseViewModel {
     } else {
       _loading = false;
       _loadingMore = false;
+      notifyListeners();
+    }
+  }
+
+  updateDate(startDate, endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
+  }
+
+  refresh() async {
+    Logger().d("idle percent working view refreshing ");
+    pageNumber = 1;
+    pageCount = 50;
+    _isRefreshing = true;
+    notifyListeners();
+    Utilization result = await _utilizationService.getUtilizationResult(
+        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+    if (result != null &&
+        result.assetResults != null &&
+        result.assetResults.isNotEmpty) {
+      _utilLizationListData.clear();
+      _utilLizationListData.addAll(result.assetResults);
+      _isRefreshing = false;
+      notifyListeners();
+    } else {
+      _isRefreshing = false;
       notifyListeners();
     }
   }

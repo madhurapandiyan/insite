@@ -153,4 +153,29 @@ class FilterService extends BaseService {
       }
     }
   }
+
+  updateFilter(FilterData value) async {
+    int size = box.values.length;
+    if (size == 0) {
+      box.add(value);
+    } else {
+      bool shouldUpdate = false;
+      int index = 0;
+      for (var i = 0; i < size; i++) {
+        FilterData data = box.getAt(i);
+        if (data.title == value.title) {
+          shouldUpdate = true;
+          index = i;
+          return;
+        }
+      }
+      if (shouldUpdate) {
+        print("add filter index and value" +
+            index.toString() +
+            " " +
+            value.title.toString());
+        await box.putAt(index, value);
+      }
+    }
+  }
 }
