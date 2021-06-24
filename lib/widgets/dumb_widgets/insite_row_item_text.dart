@@ -51,7 +51,7 @@ class InsiteTableRowWithImage extends StatelessWidget {
             child: InsiteImage(
               height: 30,
               width: 50,
-              path: "assets/images/truck.png",
+              path: path,
             ),
           ),
           Expanded(

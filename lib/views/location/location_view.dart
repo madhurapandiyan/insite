@@ -323,7 +323,7 @@ class _LocationViewState extends State<LocationView> {
                   children: [
                     Container(
                       width: 250,
-                      height: 220,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: cardcolor,
                         borderRadius: BorderRadius.circular(10),

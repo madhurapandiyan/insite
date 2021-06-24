@@ -391,7 +391,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                   children: [
                     Container(
                       width: 250,
-                      height: 200,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: cardcolor,
                         borderRadius: BorderRadius.circular(10),
