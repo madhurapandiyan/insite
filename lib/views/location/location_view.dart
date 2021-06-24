@@ -204,8 +204,8 @@ class _LocationViewState extends State<LocationView> {
                       ),
                       CustomInfoWindow(
                         controller: customInfoWindowController,
-                        height: 250,
-                        width: 150,
+                        width: MediaQuery.of(context).size.width*0.45,
+                        height:MediaQuery.of(context).size.height*0.40,
                         offset: 1,
                       ),
                       Padding(
@@ -322,7 +322,8 @@ class _LocationViewState extends State<LocationView> {
                 Column(
                   children: [
                     Container(
-                      height: 200,
+                      width: 250,
+                      height: 220,
                       decoration: BoxDecoration(
                         color: cardcolor,
                         borderRadius: BorderRadius.circular(10),
@@ -332,7 +333,7 @@ class _LocationViewState extends State<LocationView> {
                           Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(4.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   "Cluster Info",
                                   style: new TextStyle(
@@ -343,14 +344,17 @@ class _LocationViewState extends State<LocationView> {
                                 ),
                               ),
                               SizedBox(
-                                width: 55.0,
+                                width: 50.0,
                               ),
                               GestureDetector(
                                   onTap: () {
                                     customInfoWindowController.hideInfoWindow();
                                   },
                                   child:
-                                      Image.asset("assets/images/mapclose.png"))
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset("assets/images/mapclose.png"),
+                                      ))
                             ],
                           ),
                           Divider(),
