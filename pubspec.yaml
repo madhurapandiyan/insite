@@ -74,6 +74,14 @@ flutter:
     - assets/images/marker.png
     - assets/images/arrows.png
     - assets/images/mapclose.png
+    - assets/images/EX70.png
+    - assets/images/EX130.png
+    - assets/images/EX200.png
+    - assets/images/EX210.png
+    - assets/images/EX210LC.png
+    - assets/images/shinrai.png
+    - assets/images/TH86.png
+    - assets/images/TL340H.png
 
   fonts:
     - family: Roboto

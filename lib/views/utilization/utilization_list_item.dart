@@ -45,7 +45,7 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowIcon(
-                                iconPath: "",
+                                iconPath: "-",
                                 title: "16/02/2021",
                               ),
                               InsiteTableRowItem(
@@ -273,7 +273,7 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteTableRowWithImage(
                                 title: utilizationData.manufacturer,
-                                path: "-",
+                                path: Utils().imageData(utilizationData.model),
                               ),
                               InsiteTableRowItem(
                                 title: "Runime Hours",
