@@ -219,7 +219,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                     ),
                   ),
                 ),
-               Flexible(
+                Flexible(
                   child: Container(
                       width: 380.9,
                       height: 450.63,
@@ -283,8 +283,8 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
           ),
           CustomInfoWindow(
             controller: customInfoWindowController,
-            height: MediaQuery.of(context).size.width * 0.45,
-            width: MediaQuery.of(context).size.height * 0.40,
+            height: 250,
+            width: 180,
             offset: 1,
           ),
           Padding(
@@ -390,8 +390,8 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                 Column(
                   children: [
                     Container(
-                      width: 250,
-                      height: 250,
+                      //width: 200,
+                      height: 220,
                       decoration: BoxDecoration(
                         color: cardcolor,
                         borderRadius: BorderRadius.circular(10),
@@ -418,11 +418,11 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                                   onTap: () {
                                     customInfoWindowController.hideInfoWindow();
                                   },
-                                  child:
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset("assets/images/mapclose.png"),
-                                      ))
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                        "assets/images/mapclose.png"),
+                                  ))
                             ],
                           ),
                           Divider(),

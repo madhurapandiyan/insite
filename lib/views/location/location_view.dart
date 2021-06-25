@@ -204,8 +204,8 @@ class _LocationViewState extends State<LocationView> {
                       ),
                       CustomInfoWindow(
                         controller: customInfoWindowController,
-                        width: MediaQuery.of(context).size.width*0.45,
-                        height:MediaQuery.of(context).size.height*0.40,
+                        width: MediaQuery.of(context).size.width*0.42,
+                        height:MediaQuery.of(context).size.height*0.35,
                         offset: 1,
                       ),
                       Padding(
