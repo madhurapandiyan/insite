@@ -166,34 +166,20 @@ class FleetListItem extends StatelessWidget {
   }
 
   imageData(String model) {
-    switch (fleet.model) {
-      case "SHINRAI - BX80":
-        return "assets/images/shinrai.png";
-        break;
-      case "EX210LC SUPER PLUS":
-        return "assets/images/EX210LC.png";
-        break;
-      case "EX200LC SUPER PLUS":
-        return "assets/images/EX210LC.png";
-        break;
-      case "EX70 SUPER PLUS":
-        return "assets/images/EX70.png";
-        break;
-      case "EX130 SUPER PLUS":
-        return "assets/images/EX130.png";
-        break;
-      case "TH86":
-        return "assets/images/TH86.png";
-        break;
-      case "TL340H":
-        return "assets/images/TL340H.png";
-        break;
-      case "5T WL":
-        return "assets/images/TL340H.png";
-        break;
-      default:
-        return "assets/images/EX210.png";
-        break;
+    if (model.contains("SHINRAI")) {
+      return "assets/images/shinrai.png";
+    } else if (model.contains("EX130")) {
+      return "assets/images/EX130.png";
+    } else if (model.contains("EX210")) {
+      return "assets/images/EX210.png";
+    } else if (model.contains("EX210LC")) {
+      return "assets/images/EX210LC.png";
+    } else if (model.contains("TH86")) {
+      return "assets/images/TH86.png";
+    } else if (model.contains("TL340H")) {
+      return "assets/images/TL340H.png";
+    } else {
+      return "assets/images/EX210.png";
     }
   }
 }
