@@ -55,7 +55,7 @@ class FleetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowWithImage(
                           title: fleet.dealerName,
-                          path: imageData(fleet.model),
+                          path: Utils().imageData(fleet.model),
                         ),
                         InsiteTableRowItem(
                           title: "Last Known Status",
@@ -163,23 +163,5 @@ class FleetListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  imageData(String model) {
-    if (model.contains("SHINRAI")) {
-      return "assets/images/shinrai.png";
-    } else if (model.contains("EX130")) {
-      return "assets/images/EX130.png";
-    } else if (model.contains("EX210")) {
-      return "assets/images/EX210.png";
-    } else if (model.contains("EX210LC")) {
-      return "assets/images/EX210LC.png";
-    } else if (model.contains("TH86")) {
-      return "assets/images/TH86.png";
-    } else if (model.contains("TL340H")) {
-      return "assets/images/TL340H.png";
-    } else {
-      return "assets/images/EX210.png";
-    }
   }
 }
