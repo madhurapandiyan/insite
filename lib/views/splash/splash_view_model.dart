@@ -10,9 +10,10 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SplashViewModel extends InsiteViewModel {
+class SplashViewModel extends BaseViewModel {
   Logger log;
   final _nagivationService = locator<NavigationService>();
   final _localService = locator<LocalService>();

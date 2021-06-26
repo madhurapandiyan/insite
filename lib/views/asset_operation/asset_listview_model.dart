@@ -7,7 +7,6 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -34,25 +33,6 @@ class AssetListViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  // String _startDate =
-  //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
-  String _startDate = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String get startDate => _startDate;
-
-  // String _endDate =
-  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
-  String get endDate => _endDate;
-
   String _menuItem = "assetid";
   set menuItem(String menuItem) {
     this._menuItem = menuItem;
@@ -62,7 +42,6 @@ class AssetListViewModel extends InsiteViewModel {
 
   void updateDateRangeList() {
     try {
-      updateDateRange(startDate, endDate, "type");
       DateTime startTime = DateTime.parse(startDate);
       DateTime endTime = DateTime.parse(endDate);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;
@@ -97,14 +76,15 @@ class AssetListViewModel extends InsiteViewModel {
 
   void refresh() async {
     await getSelectedFilterData();
+    await getDateRangeFilterData();
     pageNumber = 1;
     pageSize = 50;
     _refreshing = true;
     notifyListeners();
-    Logger().d("start date " + _startDate);
-    Logger().d("end date " + _endDate);
+    Logger().d("start date " + startDate);
+    Logger().d("end date " + endDate);
     List<Asset> result = await _assetService.getAssetSummaryList(
-        _startDate, _endDate, pageSize, pageNumber, _menuItem, appliedFilters);
+        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
       _assets.clear();
       _assets.addAll(result);
@@ -115,10 +95,10 @@ class AssetListViewModel extends InsiteViewModel {
   }
 
   getAssetSummaryList() async {
-    Logger().d("start date " + _startDate);
-    Logger().d("end date " + _endDate);
+    Logger().d("start date " + startDate);
+    Logger().d("end date " + endDate);
     List<Asset> result = await _assetService.getAssetSummaryList(
-        _startDate, _endDate, pageSize, pageNumber, _menuItem, appliedFilters);
+        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
       if (result.isNotEmpty) {
         Logger().i("list of assets " + result.length.toString());

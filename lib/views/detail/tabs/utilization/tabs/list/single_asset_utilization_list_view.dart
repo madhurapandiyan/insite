@@ -5,7 +5,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/list/single_asset_utilization_list_view_model.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
@@ -47,7 +47,7 @@ class _SingleAssetUtilizationListViewState
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeWidget()),
+                                child: DateRangeView()),
                           );
                           if (dateRange != null && dateRange.isNotEmpty) {
                             viewModel.startDate = DateFormat('MM/dd/yyyy')

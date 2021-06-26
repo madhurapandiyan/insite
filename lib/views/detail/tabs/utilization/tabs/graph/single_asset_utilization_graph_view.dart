@@ -3,7 +3,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view_model.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -61,7 +61,7 @@ class _SingleAssetUtilizationGraphViewState
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeWidget()),
+                                child: DateRangeView()),
                           );
                           if (dateRange != null && dateRange.isNotEmpty) {
                             viewModel.startDate = DateFormat('MM/dd/yyyy')

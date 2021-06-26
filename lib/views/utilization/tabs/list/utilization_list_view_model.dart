@@ -22,18 +22,6 @@ class UtilizationListViewModel extends InsiteViewModel {
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
   bool _loading = true;
   bool get loading => _loading;
 
@@ -48,8 +36,8 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   UtilizationListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _utilizationService.setUp();
     setUp();
+    _utilizationService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -57,7 +45,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 2), () {
       getUtilization();
     });
   }
@@ -91,8 +79,9 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getUtilization() async {
     Logger().d("getUtilization");
+    await getDateRangeFilterData();
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -114,16 +103,16 @@ class UtilizationListViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    Logger().d("refresh getUtilization");
-    updateDateRange(_startDate, _endDate, "Utlization List");
+    Logger().d("refresh getUtilization list");
+    await getDateRangeFilterData();
     pageNumber = 1;
     pageCount = 50;
     _refreshing = true;
     notifyListeners();
-    Logger().d("start date " + _startDate);
-    Logger().d("end date " + _endDate);
+    Logger().d("start date " + startDate);
+    Logger().d("end date " + endDate);
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults);

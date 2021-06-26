@@ -5,7 +5,7 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_list_item.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_listview_model.dart';
@@ -91,14 +91,9 @@ class _AssetListViewState extends State<AssetListView> {
                                   context: context,
                                   builder: (BuildContext context) => Dialog(
                                       backgroundColor: transparent,
-                                      child: DateRangeWidget()),
+                                      child: DateRangeView()),
                                 );
                                 if (dateRange.isNotEmpty) {
-                                  viewModel.startDate =
-                                      '${dateRange.first.year}-${dateRange.first.month}-${dateRange.first.day}';
-                                  viewModel.endDate =
-                                      '${dateRange.last.year}-${dateRange.last.month}-${dateRange.last.day}';
-                                  viewModel.updateDateRangeList();
                                   viewModel.refresh();
                                 }
                               },

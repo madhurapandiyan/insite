@@ -37,6 +37,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.FUEL_LEVEL;
       case 11:
         return FilterType.IDLING_LEVEL;
+      case 12:
+        return FilterType.DATE_RANGE;
       default:
         return null;
     }
@@ -80,6 +82,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.IDLING_LEVEL:
         writer.writeByte(11);
+        break;
+      case FilterType.DATE_RANGE:
+        writer.writeByte(12);
         break;
     }
   }

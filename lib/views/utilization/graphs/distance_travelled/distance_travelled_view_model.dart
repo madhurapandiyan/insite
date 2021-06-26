@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class DistanceTravelledViewModel extends BaseViewModel {
+class DistanceTravelledViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationService = locator<AssetUtilizationService>();
 
@@ -19,9 +19,6 @@ class DistanceTravelledViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  String _startDate;
-  String _endDate;
-
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
@@ -33,10 +30,8 @@ class DistanceTravelledViewModel extends BaseViewModel {
 
   ScrollController scrollController;
 
-  DistanceTravelledViewModel(String startDate, String endDate) {
+  DistanceTravelledViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _startDate = startDate;
-    _endDate = endDate;
     scrollController = ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -64,7 +59,7 @@ class DistanceTravelledViewModel extends BaseViewModel {
   getUtilization() async {
     Logger().d("getUtilization");
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -85,11 +80,6 @@ class DistanceTravelledViewModel extends BaseViewModel {
     }
   }
 
-  updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
-  }
-
   refresh() async {
     Logger().d("idle percent working view refreshing ");
     pageNumber = 1;
@@ -97,7 +87,7 @@ class DistanceTravelledViewModel extends BaseViewModel {
     _isRefreshing = true;
     notifyListeners();
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null &&
         result.assetResults != null &&
         result.assetResults.isNotEmpty) {

@@ -12,7 +12,6 @@ import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -56,25 +55,6 @@ class HomeViewModel extends InsiteViewModel {
   int markerId = 1;
   List<ChartSampleData> statusChartData = [];
   List<ChartSampleData> fuelChartData = [];
-
-  // String _startDate =
-  //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
-  String _startDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String get startDate => _startDate;
-
-  // String _endDate =
-  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String _endDate = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().add(Duration(days: DateTime.now().weekday)));
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
-  String get endDate => _endDate;
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());

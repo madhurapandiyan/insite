@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class IdlePercentTrendViewModel extends BaseViewModel {
+class IdlePercentTrendViewModel extends InsiteViewModel {
   Logger log;
 
   var _utilizationGraphService = locator<UtilizationGraphsService>();
@@ -18,40 +18,36 @@ class IdlePercentTrendViewModel extends BaseViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  String _startDate;
-  String _endDate;
-
   IdlePercentTrend _idlePercentTrend;
   IdlePercentTrend get idlePercentTrend => _idlePercentTrend;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  IdlePercentTrendViewModel(String startDate, String endDate) {
+  IdlePercentTrendViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _startDate = startDate;
-    _endDate = endDate;
     getIdlePercentTrend();
   }
 
   getIdlePercentTrend() async {
     IdlePercentTrend result = await _utilizationGraphService
-        .getIdlePercentTrend(_range, _startDate, _endDate, 1, 25, true);
+        .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
     _idlePercentTrend = result;
     _loading = false;
     notifyListeners();
   }
 
   updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
+    startDate = startDate;
+    endDate = endDate;
   }
 
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
+    await getDateRangeFilterData();
     IdlePercentTrend result = await _utilizationGraphService
-        .getIdlePercentTrend(_range, _startDate, _endDate, 1, 25, true);
+        .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
     _idlePercentTrend = result;
     _isRefreshing = false;
     notifyListeners();

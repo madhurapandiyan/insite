@@ -6,9 +6,7 @@ import 'package:stacked/stacked.dart';
 import 'runtime_hours_view_model.dart';
 
 class RuntimeHoursView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const RuntimeHoursView({Key key, this.startDate, this.endDate})
+  const RuntimeHoursView({Key key,})
       : super(key: key);
 
   @override
@@ -19,7 +17,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
   var viewModel;
   @override
   void initState() {
-    viewModel = RuntimeHoursViewModel(widget.startDate, widget.endDate);
+    viewModel = RuntimeHoursViewModel();
     super.initState();
   }
 
@@ -31,8 +29,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
 
   int rangeChoice = 1;
   
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 

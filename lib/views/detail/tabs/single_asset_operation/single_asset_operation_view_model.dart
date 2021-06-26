@@ -1,3 +1,4 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
@@ -6,10 +7,9 @@ import 'package:insite/core/services/single_asset_operation_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class SingleAssetOperationViewModel extends BaseViewModel {
+class SingleAssetOperationViewModel extends InsiteViewModel {
   Logger log;
 
   var _singleAssetOperationService = locator<SingleAssetOperationService>();
@@ -49,6 +49,7 @@ class SingleAssetOperationViewModel extends BaseViewModel {
 
   SingleAssetOperationViewModel(AssetDetail detail) {
     this._assetDetail = detail;
+    setUp();
     this.log = getLogger(this.runtimeType.toString());
     _singleAssetOperationService.setUp();
     Future.delayed(Duration(seconds: 1), () {

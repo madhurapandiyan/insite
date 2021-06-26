@@ -9,7 +9,7 @@ import 'package:insite/views/utilization/graphs/runtime_hours/runtime_hours_view
 import 'package:insite/views/utilization/graphs/total_fuel_burned/total_fuel_burned_view.dart';
 import 'package:insite/views/utilization/graphs/total_hours/total_hours_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/util_graph_dropdown.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -57,13 +57,13 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
                 dateRange = await showDialog(
                   context: context,
                   builder: (BuildContext context) => Dialog(
-                      backgroundColor: transparent, child: DateRangeWidget()),
+                      backgroundColor: transparent, child: DateRangeView()),
                 );
                 if (dateRange != null && dateRange.isNotEmpty) {
                   setState(() {
                     startDate =
-                        DateFormat('MM/dd/yyyy').format(dateRange.first);
-                    endDate = DateFormat('MM/dd/yyyy').format(dateRange.last);
+                        DateFormat('yyyy-MM-dd').format(dateRange.first);
+                    endDate = DateFormat('yyyy-MM-dd').format(dateRange.last);
                   });
                   Logger().d("start date " + startDate);
                   Logger().d("end date " + endDate);
@@ -149,21 +149,21 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
 
   onDateChange() {
     if (graphType == UtilizationGraphType.IDLEORWORKING) {
-      idlePercentKey.currentState.refresh(startDate, endDate);
+      idlePercentKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.RUNTIMEHOURS) {
-      runTimeHoursKey.currentState.refresh(startDate, endDate);
+      runTimeHoursKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.DISTANCETRAVELLED) {
-      distanceTravelledKey.currentState.refresh(startDate, endDate);
+      distanceTravelledKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.CUMULATIVE) {
-      cumulativeKey.currentState.refresh(startDate, endDate);
+      cumulativeKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.TOTALHOURS) {
-      totalHoursKey.currentState.refresh(startDate, endDate);
+      totalHoursKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.TOTALFUELBURNED) {
-      totalFuelBurnedKey.currentState.refresh(startDate, endDate);
+      totalFuelBurnedKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.IDLETREND) {
-      idleTrendKey.currentState.refresh(startDate, endDate);
+      idleTrendKey.currentState.refresh();
     } else if (graphType == UtilizationGraphType.FUELBURNRATETREND) {
-      fuelBurnTrendKey.currentState.refresh(startDate, endDate);
+      fuelBurnTrendKey.currentState.refresh();
     }
   }
 
@@ -172,57 +172,41 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(
-          startDate: startDate,
-          endDate: endDate,
           key: idlePercentKey,
         );
         break;
       case UtilizationGraphType.RUNTIMEHOURS:
         return RuntimeHoursView(
-          startDate: startDate,
-          endDate: endDate,
           key: runTimeHoursKey,
         );
         break;
       case UtilizationGraphType.DISTANCETRAVELLED:
         return DistanceTravelledView(
-          startDate: startDate,
           key: distanceTravelledKey,
-          endDate: endDate,
         );
         break;
       case UtilizationGraphType.CUMULATIVE:
         return CumulativeView(
-          startDate: startDate,
           key: cumulativeKey,
-          endDate: endDate,
         );
         break;
       case UtilizationGraphType.TOTALHOURS:
         return TotalHoursView(
           key: totalHoursKey,
-          startDate: startDate,
-          endDate: endDate,
         );
         break;
       case UtilizationGraphType.TOTALFUELBURNED:
         return TotalFuelBurnedView(
-          startDate: startDate,
           key: totalFuelBurnedKey,
-          endDate: endDate,
         );
         break;
       case UtilizationGraphType.IDLETREND:
         return IdlePercentTrendView(
-          startDate: startDate,
           key: idlePercentKey,
-          endDate: endDate,
         );
         break;
       case UtilizationGraphType.FUELBURNRATETREND:
         return FuelBurnRateTrendView(
-          startDate: startDate,
-          endDate: endDate,
           key: fuelBurnTrendKey,
         );
         break;

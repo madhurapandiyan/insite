@@ -5,9 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'distance_travelled_view_model.dart';
 
 class DistanceTravelledView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const DistanceTravelledView({Key key, this.startDate, this.endDate})
+  const DistanceTravelledView({Key key})
       : super(key: key);
 
   @override
@@ -19,7 +17,7 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
 
   @override
   void initState() {
-    viewModel = DistanceTravelledViewModel(widget.startDate, widget.endDate);
+    viewModel = DistanceTravelledViewModel();
     super.initState();
   }
 
@@ -29,8 +27,7 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
     super.dispose();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 

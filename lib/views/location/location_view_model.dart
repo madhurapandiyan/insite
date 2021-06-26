@@ -34,6 +34,7 @@ class LocationViewModel extends InsiteViewModel {
   LocationViewModel(TYPE type) {
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
+    setUp();
     if (type == TYPE.LOCATION) {
       getAssetLocation();
     }
