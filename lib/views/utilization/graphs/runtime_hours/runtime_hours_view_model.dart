@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class RuntimeHoursViewModel extends BaseViewModel {
+class RuntimeHoursViewModel extends InsiteViewModel {
   Logger log;
 
   var _utilizationService = locator<AssetUtilizationService>();
@@ -31,13 +31,8 @@ class RuntimeHoursViewModel extends BaseViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  String _startDate;
-  String _endDate;
-
-  RuntimeHoursViewModel(String startDate, String endDate) {
+  RuntimeHoursViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _startDate = startDate;
-    _endDate = endDate;
     scrollController = ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -65,7 +60,7 @@ class RuntimeHoursViewModel extends BaseViewModel {
   getUtilization() async {
     Logger().d("getUtilization");
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -86,11 +81,6 @@ class RuntimeHoursViewModel extends BaseViewModel {
     }
   }
 
-  updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
-  }
-
   refresh() async {
     Logger().d("idle percent working view refreshing ");
     pageNumber = 1;
@@ -98,7 +88,7 @@ class RuntimeHoursViewModel extends BaseViewModel {
     _isRefreshing = true;
     notifyListeners();
     Utilization result = await _utilizationService.getUtilizationResult(
-        _startDate, _endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
     if (result != null &&
         result.assetResults != null &&
         result.assetResults.isNotEmpty) {

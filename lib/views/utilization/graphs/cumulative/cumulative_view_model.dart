@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class CumulativeViewModel extends BaseViewModel {
+class CumulativeViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationGraphService = locator<UtilizationGraphsService>();
 
@@ -21,47 +21,37 @@ class CumulativeViewModel extends BaseViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  CumulativeViewModel(String startDate, String endDate) {
+  CumulativeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _utilizationGraphService.setUp();
-    _startDate = startDate;
-    _endDate = endDate;
     Future.delayed(Duration(seconds: 1), () {
       getRunTimeCumulative();
       getFuelBurnedCumulative();
     });
   }
 
-  String _startDate;
-  String _endDate;
-
   getRunTimeCumulative() async {
-    RunTimeCumulative result = await _utilizationGraphService
-        .getRunTimeCumulative(_startDate, _endDate);
+    RunTimeCumulative result =
+        await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
     _runTimeCumulative = result;
   }
 
   getFuelBurnedCumulative() async {
     FuelBurnedCumulative result = await _utilizationGraphService
-        .getFuelBurnedCumulative(_startDate, _endDate);
+        .getFuelBurnedCumulative(startDate, endDate);
     _fuelBurnedCumulative = result;
     _loading = false;
     notifyListeners();
   }
 
-  updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
-  }
-
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
-    RunTimeCumulative resultRuntime = await _utilizationGraphService
-        .getRunTimeCumulative(_startDate, _endDate);
+    RunTimeCumulative resultRuntime =
+        await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
     _runTimeCumulative = resultRuntime;
     FuelBurnedCumulative resultFuel = await _utilizationGraphService
-        .getFuelBurnedCumulative(_startDate, _endDate);
+        .getFuelBurnedCumulative(startDate, endDate);
     _fuelBurnedCumulative = resultFuel;
     _isRefreshing = false;
     notifyListeners();

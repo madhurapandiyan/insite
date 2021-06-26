@@ -95,6 +95,9 @@ class Utils {
       case FilterType.IDLING_LEVEL:
         title = "IDLING LEVEL";
         break;
+      case FilterType.DATE_RANGE:
+        title = "DATE RANGE";
+        break;
       default:
     }
     return title;

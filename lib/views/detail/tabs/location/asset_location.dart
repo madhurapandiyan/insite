@@ -7,7 +7,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -106,7 +106,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 context: context,
                                 builder: (BuildContext context) => Dialog(
                                     backgroundColor: transparent,
-                                    child: DateRangeWidget()),
+                                    child: DateRangeView()),
                               );
                               if (dateRange.isNotEmpty) {
                                 setState(() {

@@ -18,6 +18,7 @@ class AssetDetailViewModel extends InsiteViewModel {
   AssetDetailViewModel(this.fleet) {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setUp();
+    setUp();
     Logger().i("asset choosen " + fleet.assetSerialNumber);
     Future.delayed(Duration(seconds: 1), () {
       getAssetDetail();

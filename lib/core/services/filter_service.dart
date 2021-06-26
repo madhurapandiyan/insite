@@ -1,29 +1,10 @@
-import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/asset_status.dart';
-import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:logger/logger.dart';
-import '../locator.dart';
-import 'local_service.dart';
-import 'package:hive/hive.dart';
 
-class FilterService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
-  var box;
-
-  setUp() async {
-    try {
-      box = await Hive.openBox<FilterData>('filter');
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
-    } catch (e) {
-      Logger().e(e);
-    }
-  }
-
+class FilterService extends DataBaseService {
   Future<AssetCountData> getAssetCount(type) async {
     try {
       AssetCountData assetStatusResponse = await MyApi()
@@ -170,11 +151,14 @@ class FilterService extends BaseService {
         }
       }
       if (shouldUpdate) {
-        print("add filter index and value" +
+        print("update date filter index and value" +
             index.toString() +
             " " +
             value.title.toString());
         await box.putAt(index, value);
+      } else {
+        print("add date filter and value" + value.title.toString());
+        await box.add(value);
       }
     }
   }

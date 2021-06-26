@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 
-class SingleAssetUtilizationListViewModel extends BaseViewModel {
+class SingleAssetUtilizationListViewModel extends InsiteViewModel {
   Logger log;
   var _assetUtilizationService = locator<AssetUtilizationService>();
 
@@ -35,7 +35,7 @@ class SingleAssetUtilizationListViewModel extends BaseViewModel {
 
   SingleAssetUtilizationListViewModel(AssetDetail detail) {
     this._assetDetail = detail;
-
+    setUp();
     _assetUtilizationService.setUp();
     getUtilList();
   }

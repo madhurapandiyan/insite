@@ -48,6 +48,7 @@ class AssetLocationViewModel extends InsiteViewModel {
   AssetLocationViewModel(detail) {
     this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
+    setUp();
     customInfoWindowController = CustomInfoWindowController();
     _assetLocationHistoryService.setUp();
     Future.delayed(Duration(seconds: 1), () {

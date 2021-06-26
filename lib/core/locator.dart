@@ -5,6 +5,7 @@ import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
@@ -15,7 +16,6 @@ import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
 import 'package:insite/core/services/utilization_graphs.dart';
-import 'package:insite/views/utilization/graphs/idle_percent_working_percent/idle_percent_working_percent_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -66,7 +66,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => FilterService());
     log.d("Registering Utilization Graphs Service");
     locator.registerLazySingleton(() => UtilizationGraphsService());
-    log.d("Database Service");
-    locator.registerLazySingleton(() => DataBaseService());
+    log.d("Registering DateRangeService Service");
+    locator.registerLazySingleton(() => DateRangeService());
   }
 }

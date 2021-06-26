@@ -9,7 +9,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -92,7 +92,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeWidget()),
+                                child: DateRangeView()),
                           );
                           setState(() {
                             dateRange = dateRange;

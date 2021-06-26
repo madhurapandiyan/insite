@@ -6,10 +6,9 @@ import 'package:stacked/stacked.dart';
 import 'idle_percent_working_percent_view_model.dart';
 
 class IdlePercentWorkingPercentView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const IdlePercentWorkingPercentView({Key key, this.startDate, this.endDate})
-      : super(key: key);
+  const IdlePercentWorkingPercentView({
+    Key key,
+  }) : super(key: key);
 
   @override
   IdlePercentWorkingPercentViewState createState() =>
@@ -22,8 +21,7 @@ class IdlePercentWorkingPercentViewState
 
   @override
   void initState() {
-    viewModel =
-        IdlePercentWorkingPercentViewModel(widget.startDate, widget.endDate);
+    viewModel = IdlePercentWorkingPercentViewModel();
     super.initState();
   }
 
@@ -33,8 +31,7 @@ class IdlePercentWorkingPercentViewState
     super.dispose();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 
@@ -44,7 +41,8 @@ class IdlePercentWorkingPercentViewState
     return ViewModelBuilder<IdlePercentWorkingPercentViewModel>.reactive(
       builder: (BuildContext context,
           IdlePercentWorkingPercentViewModel viewModel, Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(

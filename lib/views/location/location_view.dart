@@ -15,7 +15,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -138,7 +138,7 @@ class _LocationViewState extends State<LocationView> {
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeWidget()),
+                                child: DateRangeView()),
                           );
                           setState(() {
                             dateRange = dateRange;

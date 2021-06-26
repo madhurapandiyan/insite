@@ -7,10 +7,9 @@ import 'package:stacked/stacked.dart';
 import 'fuel_burn_rate_trend_view_model.dart';
 
 class FuelBurnRateTrendView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const FuelBurnRateTrendView({Key key, this.startDate, this.endDate})
-      : super(key: key);
+  const FuelBurnRateTrendView({
+    Key key,
+  }) : super(key: key);
 
   @override
   FuelBurnRateTrendViewState createState() => FuelBurnRateTrendViewState();
@@ -23,7 +22,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
 
   @override
   void initState() {
-    viewModel = FuelBurnRateTrendViewModel(widget.startDate, widget.endDate);
+    viewModel = FuelBurnRateTrendViewModel();
     super.initState();
   }
 
@@ -33,8 +32,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
     super.dispose();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 
@@ -43,7 +41,8 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
     return ViewModelBuilder<FuelBurnRateTrendViewModel>.reactive(
       builder: (BuildContext context, FuelBurnRateTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(

@@ -22,7 +22,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
   var viewModel;
   @override
   void initState() {
-    viewModel = TotalHoursViewModel(widget.startDate, widget.endDate);
+    viewModel = TotalHoursViewModel();
     super.initState();
   }
 
@@ -32,8 +32,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
     super.dispose();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 
@@ -41,7 +40,8 @@ class TotalHoursViewState extends State<TotalHoursView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalHoursViewModel>.reactive(
       builder: (BuildContext context, TotalHoursViewModel viewModel, Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(

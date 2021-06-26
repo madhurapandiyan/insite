@@ -3,8 +3,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/smart_widgets/date_range.dart';
-import 'package:intl/intl.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
@@ -38,13 +37,9 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                           context: context,
                           builder: (BuildContext context) => Dialog(
                               backgroundColor: transparent,
-                              child: DateRangeWidget()),
+                              child: DateRangeView()),
                         );
                         if (dateRange != null && dateRange.isNotEmpty) {
-                          viewModel.startDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.first);
-                          viewModel.endDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.last);
                           viewModel.refresh();
                         }
                       },

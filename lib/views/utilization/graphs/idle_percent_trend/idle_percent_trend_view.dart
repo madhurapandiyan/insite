@@ -23,7 +23,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
   @override
   void initState() {
-    viewModel = IdlePercentTrendViewModel(widget.startDate, widget.endDate);
+    viewModel = IdlePercentTrendViewModel();
     super.initState();
   }
 
@@ -35,8 +35,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
     super.dispose();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 

@@ -7,10 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'cumulative_view_model.dart';
 
 class CumulativeView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const CumulativeView({Key key, this.startDate, this.endDate})
-      : super(key: key);
+  const CumulativeView({Key key}) : super(key: key);
 
   @override
   CumulativeViewState createState() => CumulativeViewState();
@@ -22,12 +19,11 @@ class CumulativeViewState extends State<CumulativeView> {
 
   @override
   void initState() {
-    viewModel = CumulativeViewModel(widget.startDate, widget.endDate);
+    viewModel = CumulativeViewModel();
     super.initState();
   }
 
-  refresh(String startDate, String endDate) {
-    viewModel.updateDate(startDate, endDate);
+  refresh() {
     viewModel.refresh();
   }
 

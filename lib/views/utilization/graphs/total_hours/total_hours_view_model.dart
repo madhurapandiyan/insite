@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class TotalHoursViewModel extends BaseViewModel {
+class TotalHoursViewModel extends InsiteViewModel {
   Logger log;
 
   var _utilizationGraphService = locator<UtilizationGraphsService>();
@@ -24,34 +24,24 @@ class TotalHoursViewModel extends BaseViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  String _startDate;
-  String _endDate;
-
-  TotalHoursViewModel(String startDate, String endDate) {
+  TotalHoursViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _startDate = startDate;
-    _endDate = endDate;
     getTotalHours();
   }
 
   getTotalHours() async {
     TotalHours result = await _utilizationGraphService.getTotalHours(
-        _range, _startDate, _endDate, 1, 25, true);
+        _range, startDate, endDate, 1, 25, true);
     _totalHours = result;
     _loading = false;
     notifyListeners();
-  }
-
-  updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
   }
 
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
     TotalHours result = await _utilizationGraphService.getTotalHours(
-        _range, _startDate, _endDate, 1, 25, true);
+        _range, startDate, endDate, 1, 25, true);
     _totalHours = result;
     _isRefreshing = false;
     notifyListeners();

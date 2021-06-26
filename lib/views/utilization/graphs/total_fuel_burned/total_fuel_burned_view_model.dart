@@ -1,11 +1,11 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/services/utilization_graphs.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class TotalFuelBurnedViewModel extends BaseViewModel {
+class TotalFuelBurnedViewModel extends InsiteViewModel {
   Logger log;
 
   var _utilizationGraphService = locator<UtilizationGraphsService>();
@@ -14,9 +14,6 @@ class TotalFuelBurnedViewModel extends BaseViewModel {
   set range(String range) {
     this._range = range;
   }
-
-  String _startDate;
-  String _endDate;
 
   TotalFuelBurned _totalFuelBurned;
   TotalFuelBurned get totalFuelBurned => _totalFuelBurned;
@@ -27,31 +24,24 @@ class TotalFuelBurnedViewModel extends BaseViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  TotalFuelBurnedViewModel(String startDate, String endDate) {
+  TotalFuelBurnedViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _startDate = startDate;
-    _endDate = endDate;
     getTotalFuelBurned();
   }
 
   getTotalFuelBurned() async {
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
-        _range, _startDate, _endDate, 1, 25, true);
+        _range, startDate, endDate, 1, 25, true);
     _totalFuelBurned = result;
     _loading = false;
     notifyListeners();
-  }
-
-  updateDate(startDate, endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
   }
 
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
-        _range, _startDate, _endDate, 1, 25, true);
+        _range, startDate, endDate, 1, 25, true);
     _totalFuelBurned = result;
     _isRefreshing = false;
     notifyListeners();

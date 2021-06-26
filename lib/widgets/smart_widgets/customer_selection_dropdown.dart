@@ -113,7 +113,9 @@ class _AccountSelectionDropDownWidgetState
             borderRadius: BorderRadius.all(Radius.circular(8)),
             color: bgcolor,
           ),
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: _displayList.isNotEmpty && selected != null
+              ? MediaQuery.of(context).size.height * 0.4
+              : MediaQuery.of(context).size.height * 0.3,
           child: Column(
             children: [
               Container(
