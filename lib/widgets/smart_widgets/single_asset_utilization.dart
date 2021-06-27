@@ -4,6 +4,8 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
+  final double highestValue;
+  final AssetUtilization assetUtilization;
   @override
   _SingleAssetUtilizationWidgetState createState() =>
       _SingleAssetUtilizationWidgetState();
@@ -11,9 +13,8 @@ class SingleAssetUtilizationWidget extends StatefulWidget {
   const SingleAssetUtilizationWidget({
     Key key,
     @required this.assetUtilization,
+    @required this.highestValue,
   }) : super(key: key);
-
-  final AssetUtilization assetUtilization;
 }
 
 class _SingleAssetUtilizationWidgetState
@@ -206,7 +207,10 @@ class _SingleAssetUtilizationWidgetState
         ),
         Container(
           width: 15,
-          height: (totalBarHeight / 100) * calculatePercentage(value / 10),
+          height: (((value / widget.highestValue) * 100) - 5) <= 0
+              ? 0.0
+              : (totalBarHeight / 100) +
+                  (((value / widget.highestValue) * 100) - 5),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(

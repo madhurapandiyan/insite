@@ -25,6 +25,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  double _highestValue;
+  double get highestValue => _highestValue;
+
   bool _postingNote = false;
   bool get postingNote => _postingNote;
 
@@ -44,6 +47,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
         assetDetail.assetUid,
         '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
+    _highestValue = getHighestValue(_assetUtilization);
     _loading = false;
     notifyListeners();
   }
@@ -70,5 +74,38 @@ class AssetDashboardViewModel extends InsiteViewModel {
     await _assetSingleHistoryService.postNotes(assetDetail.assetUid, note);
     _postingNote = false;
     notifyListeners();
+  }
+
+  double getHighestValue(AssetUtilization assetUtilization) {
+    double highValue = double.minPositive;
+
+    if (assetUtilization.totalDay.workingHours > highValue)
+      highValue = assetUtilization.totalDay.workingHours;
+
+    if (assetUtilization.totalDay.idleHours > highValue)
+      highValue = assetUtilization.totalDay.idleHours;
+
+    if (assetUtilization.totalDay.runtimeHours > highValue)
+      highValue = assetUtilization.totalDay.runtimeHours;
+
+    if (assetUtilization.totalWeek.workingHours > highValue)
+      highValue = assetUtilization.totalWeek.workingHours;
+
+    if (assetUtilization.totalWeek.idleHours > highValue)
+      highValue = assetUtilization.totalWeek.idleHours;
+
+    if (assetUtilization.totalWeek.runtimeHours > highValue)
+      highValue = assetUtilization.totalWeek.runtimeHours;
+
+    if (assetUtilization.totalMonth.workingHours > highValue)
+      highValue = assetUtilization.totalMonth.workingHours;
+
+    if (assetUtilization.totalMonth.idleHours > highValue)
+      highValue = assetUtilization.totalMonth.idleHours;
+
+    if (assetUtilization.totalMonth.runtimeHours > highValue)
+      highValue = assetUtilization.totalMonth.runtimeHours;
+
+    return highValue;
   }
 }
