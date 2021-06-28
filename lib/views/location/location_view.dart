@@ -67,11 +67,10 @@ class _LocationViewState extends State<LocationView> {
               body: Center(
                 child: CircularProgressIndicator(),
               ));
-        } else {
+        } else if (viewModel.assetLocation != null) {
           int index = 1;
           List<MapRecord> assetLocationList =
               viewModel.assetLocation.mapRecords;
-
           for (var assetLocation in assetLocationList) {
             clusterMarkers.add(
               ClusterItem(
@@ -185,7 +184,6 @@ class _LocationViewState extends State<LocationView> {
                         onMapCreated: (GoogleMapController controller) async {
                           customInfoWindowController.googleMapController =
                               controller;
-
                           _controller.complete(controller);
                           _manager.setMapController(controller);
                         },
@@ -292,6 +290,8 @@ class _LocationViewState extends State<LocationView> {
               ],
             ),
           );
+        } else {
+          return Container();
         }
       },
       viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
@@ -350,11 +350,11 @@ class _LocationViewState extends State<LocationView> {
                                   onTap: () {
                                     customInfoWindowController.hideInfoWindow();
                                   },
-                                  child:
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset("assets/images/mapclose.png"),
-                                      ))
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                        "assets/images/mapclose.png"),
+                                  ))
                             ],
                           ),
                           Divider(),

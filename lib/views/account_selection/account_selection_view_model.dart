@@ -5,6 +5,7 @@ import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:logger/logger.dart';
@@ -15,6 +16,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   var _localService = locator<LocalService>();
   var _loginService = locator<LoginService>();
   var _navigationService = locator<NavigationService>();
+  var _localStorageService = locator<LocalStorageService>();
 
   Logger log;
 
@@ -47,6 +49,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   AccountSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _localStorageService.setUp();
     setUp();
     getLoggedInUserMail();
     getSelectedData();
@@ -200,8 +203,9 @@ class AccountSelectionViewModel extends InsiteViewModel {
     checkPermission();
   }
 
-  onHomeSelected() {
+  onHomeSelected() async {
     Logger().d("onHomeSelected");
+    await _localStorageService.clearAll();
     _navigationService.replaceWith(dashboardViewRoute);
   }
 
@@ -215,7 +219,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
       clearDb();
       _secondaryLoading = false;
       notifyListeners();
-      _navigationService.replaceWith(dashboardViewRoute);
+      onHomeSelected();
     } else {
       _youDontHavePermission = true;
       _secondaryLoading = false;

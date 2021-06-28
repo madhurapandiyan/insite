@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdlingLevel extends StatefulWidget {
-  final List<CountData> data;
+  final List<Count> data;
   final bool isLoading;
   final Function(FilterData) onFilterSelected;
 
@@ -130,7 +130,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                           " " +
                                           pointTapArgs.viewportPointIndex
                                               .toString());
-                                      CountData countDatum =
+                                      Count countDatum =
                                           widget.data[pointTapArgs.pointIndex];
                                       FilterData data = FilterData(
                                           isSelected: true,

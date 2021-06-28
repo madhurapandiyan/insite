@@ -79,7 +79,7 @@ class FleetViewModel extends InsiteViewModel {
 
   onDetailPageSelected(Fleet fleet) {
     _navigationService.navigateTo(assetDetailViewRoute,
-        arguments: DetailArguments(fleet: fleet));
+        arguments: DetailArguments(fleet: fleet, index: 0));
   }
 
   onHomeSelected() {
@@ -105,6 +105,7 @@ class FleetViewModel extends InsiteViewModel {
     pageNumber = 1;
     pageSize = 50;
     _isRefreshing = true;
+    _shouldLoadmore = true;
     notifyListeners();
     List<Fleet> result = await _fleetService.getFleetSummaryList(
         pageSize, pageNumber, appliedFilters);

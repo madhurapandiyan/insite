@@ -11,6 +11,7 @@ import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/search_service.dart';
@@ -68,5 +69,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => UtilizationGraphsService());
     log.d("Registering DateRangeService Service");
     locator.registerLazySingleton(() => DateRangeService());
+    log.d("Registering LocalStorage Service");
+    locator.registerLazySingleton(() => LocalStorageService());
   }
 }

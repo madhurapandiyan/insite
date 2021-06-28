@@ -93,7 +93,7 @@ class _AssetListViewState extends State<AssetListView> {
                                       backgroundColor: transparent,
                                       child: DateRangeView()),
                                 );
-                                if (dateRange.isNotEmpty) {
+                                if (dateRange != null && dateRange.isNotEmpty) {
                                   viewModel.refresh();
                                 }
                               },

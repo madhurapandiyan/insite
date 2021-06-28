@@ -2,12 +2,14 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   var _filterService = locator<FilterService>();
+  var _assetService = locator<AssetStatusService>();
   bool _loading = true;
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
@@ -42,6 +44,7 @@ class FilterViewModel extends InsiteViewModel {
 
   FilterViewModel() {
     _filterService.setUp();
+    _assetService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getSelectedFilterData();
@@ -50,38 +53,40 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   getFilterData() async {
-    AssetCountData resultModel = await _filterService.getAssetCount("model");
+    AssetCount resultModel =
+        await _assetService.getAssetCount("model", FilterType.MODEL);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
-    AssetCountData resultDeviceType =
-        await _filterService.getAssetCount("deviceType");
+    AssetCount resultDeviceType =
+        await _assetService.getAssetCount("deviceType", FilterType.DEVICE_TYPE);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
-    AssetCountData resultSubscriptiontype =
-        await _filterService.getAssetCount("subscriptiontype");
+    AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
+        "subscriptiontype", FilterType.SUBSCRIPTION_DATE);
     addData(filterDataSubscription, resultSubscriptiontype,
         FilterType.SUBSCRIPTION_DATE);
 
-    AssetCountData resultManufacturer =
-        await _filterService.getAssetCount("manufacturer");
+    AssetCount resultManufacturer =
+        await _assetService.getAssetCount("manufacturer", FilterType.MAKE);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
-    AssetCountData resultProductfamily =
-        await _filterService.getAssetCount("productfamily");
+    AssetCount resultProductfamily = await _assetService.getAssetCount(
+        "productfamily", FilterType.PRODUCT_FAMILY);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
-    AssetCountData resultAllAssets =
-        await _filterService.getAssetCount("assetstatus");
+    AssetCount resultAllAssets =
+        await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    AssetCountData resultFuelLevel =
-        await _filterService.getFuellevel("fuellevel");
+    AssetCount resultFuelLevel = await _assetService.getFuellevel(
+      "fuellevel",
+    );
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCountData resultIdlingLevel =
-        await _filterService.getIdlingLevelData(startDate, endDate);
+    AssetCount resultIdlingLevel =
+        await _assetService.getIdlingLevelData(startDate, endDate);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
@@ -89,11 +94,11 @@ class FilterViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  addData(filterData, resultModel, type) {
+  addData(filterData, AssetCount resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
         resultModel.countData.isNotEmpty) {
-      for (CountData countData in resultModel.countData) {
+      for (Count countData in resultModel.countData) {
         if (countData.countOf != "Not Reporting" &&
             countData.countOf != "Excluded") {
           FilterData data = FilterData(
@@ -112,7 +117,7 @@ class FilterViewModel extends InsiteViewModel {
     if (resultModel != null &&
         resultModel.countData != null &&
         resultModel.countData.isNotEmpty) {
-      for (CountData countData in resultModel.countData) {
+      for (Count countData in resultModel.countData) {
         if (countData.countOf != "Not Reporting" &&
             countData.countOf != "Excluded") {
           FilterData data = FilterData(
@@ -131,7 +136,7 @@ class FilterViewModel extends InsiteViewModel {
     if (resultModel != null &&
         resultModel.countData != null &&
         resultModel.countData.isNotEmpty) {
-      for (CountData countData in resultModel.countData) {
+      for (Count countData in resultModel.countData) {
         if (countData.countOf != "Not Reporting" &&
             countData.countOf != "Excluded") {
           var x = countData.countOf

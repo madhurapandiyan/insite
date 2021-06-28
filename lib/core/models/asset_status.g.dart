@@ -6,28 +6,28 @@ part of 'asset_status.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetCountData _$AssetCountDataFromJson(Map<String, dynamic> json) {
-  return AssetCountData(
+AssetCount _$AssetCountFromJson(Map<String, dynamic> json) {
+  return AssetCount(
     countData: (json['countData'] as List)
-        ?.map((e) =>
-            e == null ? null : CountData.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Count.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$AssetCountDataToJson(AssetCountData instance) =>
+Map<String, dynamic> _$AssetCountToJson(AssetCount instance) =>
     <String, dynamic>{
       'countData': instance.countData,
     };
 
-CountData _$CountDataFromJson(Map<String, dynamic> json) {
-  return CountData(
+Count _$CountFromJson(Map<String, dynamic> json) {
+  return Count(
     countOf: json['countOf'] as String,
     count: json['count'] as int,
   );
 }
 
-Map<String, dynamic> _$CountDataToJson(CountData instance) => <String, dynamic>{
+Map<String, dynamic> _$CountToJson(Count instance) => <String, dynamic>{
       'countOf': instance.countOf,
       'count': instance.count,
     };

@@ -36,11 +36,14 @@ class LocationViewModel extends InsiteViewModel {
     _assetLocationService.setUp();
     setUp();
     if (type == TYPE.LOCATION) {
-      getAssetLocation();
+      Future.delayed(Duration(seconds: 1), () {
+        getAssetLocation();
+      });
     }
   }
 
   getAssetLocation() async {
+    Logger().d("getAssetLocation");
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
     _assetLocation = result;

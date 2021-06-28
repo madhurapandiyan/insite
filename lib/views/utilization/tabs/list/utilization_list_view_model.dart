@@ -68,12 +68,12 @@ class UtilizationListViewModel extends InsiteViewModel {
     _navigationService.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
-        fleet: Fleet(
-          assetSerialNumber: fleet.assetSerialNumber,
-          assetId: fleet.assetIdentifierSqluid,
-          assetIdentifier: fleet.assetIdentifier,
-        ),
-      ),
+          fleet: Fleet(
+            assetSerialNumber: fleet.assetSerialNumber,
+            assetId: fleet.assetIdentifierSqluid,
+            assetIdentifier: fleet.assetIdentifier,
+          ),
+          index: 1),
     );
   }
 
@@ -108,6 +108,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     pageNumber = 1;
     pageCount = 50;
     _refreshing = true;
+    _shouldLoadmore = true;
     notifyListeners();
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
