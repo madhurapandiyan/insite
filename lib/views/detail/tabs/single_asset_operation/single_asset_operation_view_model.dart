@@ -20,7 +20,7 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
   List<DateTime> _assetOperationDates = [];
   List<DateTime> get assetOperationDates => _assetOperationDates;
 
-  List<SingleAssetOperationChartData> _chartData;
+  List<SingleAssetOperationChartData> _chartData = [];
   List<SingleAssetOperationChartData> get chartData => _chartData;
 
   DateTime _minDate;
@@ -62,7 +62,7 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     SingleAssetOperation result = await _singleAssetOperationService
         .getSingleAssetOperation(_startDate, _endDate, _assetDetail.assetUid);
     _singleAssetOperation = result;
-    setRequiredDates();
+    if (_singleAssetOperation != null) setRequiredDates();
     _loading = false;
     notifyListeners();
   }

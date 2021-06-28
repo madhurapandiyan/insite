@@ -4,6 +4,10 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
+  final double idleHighestValue;
+  final double runtimeHighestValue;
+  final double workingHighestValue;
+  final AssetUtilization assetUtilization;
   @override
   _SingleAssetUtilizationWidgetState createState() =>
       _SingleAssetUtilizationWidgetState();
@@ -11,9 +15,10 @@ class SingleAssetUtilizationWidget extends StatefulWidget {
   const SingleAssetUtilizationWidget({
     Key key,
     @required this.assetUtilization,
+    @required this.idleHighestValue,
+    @required this.runtimeHighestValue,
+    @required this.workingHighestValue,
   }) : super(key: key);
-
-  final AssetUtilization assetUtilization;
 }
 
 class _SingleAssetUtilizationWidgetState
@@ -80,41 +85,29 @@ class _SingleAssetUtilizationWidgetState
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       barChart(
-                          'Today',
-                          widget.assetUtilization.totalDay.workingHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalDay.workingHours,
-                          widget.assetUtilization.totalDay.idleHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalDay.idleHours,
-                          widget.assetUtilization.totalDay.runtimeHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalDay.runtimeHours),
+                        'Today',
+                        checkNull(
+                            widget.assetUtilization.totalDay.workingHours),
+                        checkNull(widget.assetUtilization.totalDay.idleHours),
+                        checkNull(
+                            widget.assetUtilization.totalDay.runtimeHours),
+                      ),
                       barChart(
-                          'Current Week',
-                          widget.assetUtilization.totalWeek.workingHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalWeek.workingHours,
-                          widget.assetUtilization.totalWeek.idleHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalWeek.idleHours,
-                          widget.assetUtilization.totalWeek.runtimeHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalWeek.runtimeHours),
+                        'Current Week',
+                        checkNull(
+                            widget.assetUtilization.totalWeek.workingHours),
+                        checkNull(widget.assetUtilization.totalWeek.idleHours),
+                        checkNull(
+                            widget.assetUtilization.totalWeek.runtimeHours),
+                      ),
                       barChart(
-                          'Current Month',
-                          widget.assetUtilization.totalMonth.workingHours ==
-                                  null
-                              ? 0.0
-                              : widget.assetUtilization.totalMonth.workingHours,
-                          widget.assetUtilization.totalMonth.idleHours == null
-                              ? 0.0
-                              : widget.assetUtilization.totalMonth.idleHours,
-                          widget.assetUtilization.totalMonth.runtimeHours ==
-                                  null
-                              ? 0.0
-                              : widget
-                                  .assetUtilization.totalMonth.runtimeHours),
+                        'Current Month',
+                        checkNull(
+                            widget.assetUtilization.totalMonth.workingHours),
+                        checkNull(widget.assetUtilization.totalMonth.idleHours),
+                        checkNull(
+                            widget.assetUtilization.totalMonth.runtimeHours),
+                      ),
                     ],
                   ),
                 ),
@@ -153,9 +146,12 @@ class _SingleAssetUtilizationWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      barWidget(workingValue, emerald),
-                      barWidget(idleValue, burntSienna),
-                      barWidget(runningValue, creamCan),
+                      barWidget(workingValue, emerald,
+                          SingleAssetUtilizationType.WORKINGHOURS),
+                      barWidget(idleValue, burntSienna,
+                          SingleAssetUtilizationType.IDLEHOURS),
+                      barWidget(runningValue, creamCan,
+                          SingleAssetUtilizationType.RUNTIMEHOURS),
                     ],
                   ),
                 ),
@@ -190,7 +186,8 @@ class _SingleAssetUtilizationWidgetState
     return ((value / 18) * 10);
   }
 
-  Column barWidget(double value, Color color) {
+  Column barWidget(
+      double value, Color color, SingleAssetUtilizationType barType) {
     double totalBarHeight = MediaQuery.of(context).size.height * 0.12;
 
     return Column(
@@ -206,7 +203,7 @@ class _SingleAssetUtilizationWidgetState
         ),
         Container(
           width: 15,
-          height: (totalBarHeight / 100) * calculatePercentage(value / 10),
+          height: getHighestValue(totalBarHeight, value, barType),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(
@@ -217,4 +214,32 @@ class _SingleAssetUtilizationWidgetState
       ],
     );
   }
+
+  double getHighestValue(
+      double totalBarHeight, double value, SingleAssetUtilizationType barType) {
+    switch (barType) {
+      case SingleAssetUtilizationType.IDLEHOURS:
+        if (((value / widget.idleHighestValue) * 100) <= 0) return 0.0;
+        return ((totalBarHeight / 100) +
+            (((value / widget.idleHighestValue) * 100)));
+        break;
+      case SingleAssetUtilizationType.WORKINGHOURS:
+        if (((value / widget.workingHighestValue) * 100) <= 0) return 0.0;
+        return ((totalBarHeight / 100) +
+            (((value / widget.workingHighestValue) * 100)));
+        break;
+      case SingleAssetUtilizationType.RUNTIMEHOURS:
+        if (((value / widget.runtimeHighestValue) * 100) <= 0) return 0.0;
+        return ((totalBarHeight / 100) +
+            (((value / widget.runtimeHighestValue) * 100)));
+        break;
+    }
+    return 0.0;
+  }
+
+  double checkNull(double value) {
+    return value == null ? 0.0 : value;
+  }
 }
+
+enum SingleAssetUtilizationType { IDLEHOURS, RUNTIMEHOURS, WORKINGHOURS }

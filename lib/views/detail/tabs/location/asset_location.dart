@@ -178,7 +178,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   controller:
                                       viewModel.customInfoWindowController,
                                   height: 100,
-                                  width: 150,
+                                  width: 175,
                                   offset: 50,
                                 ),
                                 Padding(
