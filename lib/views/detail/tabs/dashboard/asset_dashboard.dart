@@ -108,7 +108,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             ),
                             child: SingleAssetUtilizationWidget(
                               assetUtilization: viewModel.assetUtilization,
-                              highestValue: viewModel.highestValue,
+                              idleHighestValue: viewModel.idleHighestValue,
+                              runtimeHighestValue:
+                                  viewModel.runtimeHighestValue,
+                              workingHighestValue:
+                                  viewModel.workingHighestValue,
                             ),
                           )
                         : SizedBox(),

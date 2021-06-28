@@ -25,8 +25,14 @@ class AssetDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  double _highestValue;
-  double get highestValue => _highestValue;
+  double _idleHighestValue = 0.0;
+  double get idleHighestValue => _idleHighestValue;
+
+  double _runtimeHighestValue = 0.0;
+  double get runtimeHighestValue => _runtimeHighestValue;
+
+  double _workingHighestValue = 0.0;
+  double get workingHighestValue => _workingHighestValue;
 
   bool _postingNote = false;
   bool get postingNote => _postingNote;
@@ -47,7 +53,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
         assetDetail.assetUid,
         '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
-    _highestValue = getHighestValue(_assetUtilization);
+    getHighestValue(_assetUtilization);
     _loading = false;
     notifyListeners();
   }
@@ -76,36 +82,32 @@ class AssetDashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  double getHighestValue(AssetUtilization assetUtilization) {
-    double highValue = double.minPositive;
+  getHighestValue(AssetUtilization assetUtilization) {
+    if (assetUtilization.totalDay.workingHours > _workingHighestValue)
+      _workingHighestValue = assetUtilization.totalDay.workingHours;
 
-    if (assetUtilization.totalDay.workingHours > highValue)
-      highValue = assetUtilization.totalDay.workingHours;
+    if (assetUtilization.totalDay.idleHours > _idleHighestValue)
+      _idleHighestValue = assetUtilization.totalDay.idleHours;
 
-    if (assetUtilization.totalDay.idleHours > highValue)
-      highValue = assetUtilization.totalDay.idleHours;
+    if (assetUtilization.totalDay.runtimeHours > _runtimeHighestValue)
+      _runtimeHighestValue = assetUtilization.totalDay.runtimeHours;
 
-    if (assetUtilization.totalDay.runtimeHours > highValue)
-      highValue = assetUtilization.totalDay.runtimeHours;
+    if (assetUtilization.totalWeek.workingHours > _workingHighestValue)
+      _workingHighestValue = assetUtilization.totalWeek.workingHours;
 
-    if (assetUtilization.totalWeek.workingHours > highValue)
-      highValue = assetUtilization.totalWeek.workingHours;
+    if (assetUtilization.totalWeek.idleHours > _idleHighestValue)
+      _idleHighestValue = assetUtilization.totalWeek.idleHours;
 
-    if (assetUtilization.totalWeek.idleHours > highValue)
-      highValue = assetUtilization.totalWeek.idleHours;
+    if (assetUtilization.totalWeek.runtimeHours > _runtimeHighestValue)
+      _runtimeHighestValue = assetUtilization.totalWeek.runtimeHours;
 
-    if (assetUtilization.totalWeek.runtimeHours > highValue)
-      highValue = assetUtilization.totalWeek.runtimeHours;
+    if (assetUtilization.totalMonth.workingHours > _workingHighestValue)
+      _workingHighestValue = assetUtilization.totalMonth.workingHours;
 
-    if (assetUtilization.totalMonth.workingHours > highValue)
-      highValue = assetUtilization.totalMonth.workingHours;
+    if (assetUtilization.totalMonth.idleHours > _idleHighestValue)
+      _idleHighestValue = assetUtilization.totalMonth.idleHours;
 
-    if (assetUtilization.totalMonth.idleHours > highValue)
-      highValue = assetUtilization.totalMonth.idleHours;
-
-    if (assetUtilization.totalMonth.runtimeHours > highValue)
-      highValue = assetUtilization.totalMonth.runtimeHours;
-
-    return highValue;
+    if (assetUtilization.totalMonth.runtimeHours > _runtimeHighestValue)
+      _runtimeHighestValue = assetUtilization.totalMonth.runtimeHours;
   }
 }
