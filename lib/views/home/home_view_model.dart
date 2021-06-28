@@ -11,6 +11,7 @@ import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -24,6 +25,7 @@ class HomeViewModel extends InsiteViewModel {
   var _assetLocationService = locator<AssetLocationService>();
   var _fuelLevelService = locator<FuelLevelService>();
   var _idlingLevelService = locator<IdlingLevelService>();
+  var _localStorageService = locator<LocalStorageService>();
 
   Logger log;
 
@@ -39,17 +41,17 @@ class HomeViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
-  AssetCountData _assetStatusData;
-  AssetCountData get assetStatusData => _assetStatusData;
+  AssetCount _assetStatusData;
+  AssetCount get assetStatusData => _assetStatusData;
 
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
 
-  AssetCountData _fuelLevelData;
-  AssetCountData get fuelLevelData => _fuelLevelData;
+  AssetCount _fuelLevelData;
+  AssetCount get fuelLevelData => _fuelLevelData;
 
-  AssetCountData _idlingLevelData;
-  AssetCountData get idlingLevelData => _idlingLevelData;
+  AssetCount _idlingLevelData;
+  AssetCount get idlingLevelData => _idlingLevelData;
 
   Set<Marker> markers = {};
   int markerId = 1;
@@ -61,6 +63,7 @@ class HomeViewModel extends InsiteViewModel {
     _assetService.setUp();
     _assetLocationService.setUp();
     _fuelLevelService.setUp();
+    _localStorageService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetStatusData();
@@ -82,7 +85,6 @@ class HomeViewModel extends InsiteViewModel {
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber, pageSize, '-lastlocationupdateutc');
     _assetLocation = result;
-
     _assetLocationloading = false;
     notifyListeners();
   }
@@ -96,13 +98,15 @@ class HomeViewModel extends InsiteViewModel {
 
   void logout() {
     _localService.clearAll();
+    _localStorageService.clearAll();
     Future.delayed(Duration(seconds: 2), () {
       _navigationService.replaceWith(loginViewRoute);
     });
   }
 
   getAssetStatusData() async {
-    AssetCountData result = await _assetService.getAssetStatus();
+    AssetCount result =
+        await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     _assetStatusData = result;
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
@@ -115,7 +119,7 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getFuelLevelData() async {
-    AssetCountData result = await _fuelLevelService.getFuellevel();
+    AssetCount result = await _fuelLevelService.getFuellevel();
     _fuelLevelData = result;
     for (var fuelData in _fuelLevelData.countData) {
       if (fuelData.countOf != "Not Reporting") {
@@ -128,7 +132,7 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelData() async {
-    AssetCountData result =
+    AssetCount result =
         await _idlingLevelService.getIdlingLevel(startDate, endDate);
     _idlingLevelData = result;
     _idlingLevelDataloading = false;

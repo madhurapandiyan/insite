@@ -14,7 +14,8 @@ import 'asset_detail_view_model.dart';
 
 class AssetDetailView extends StatefulWidget {
   final Fleet fleet;
-  AssetDetailView({this.fleet});
+  final int tabIndex;
+  AssetDetailView({this.fleet, this.tabIndex});
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -22,11 +23,18 @@ class AssetDetailView extends StatefulWidget {
 
 class DetailArguments {
   final Fleet fleet;
-  DetailArguments({this.fleet});
+  final int index;
+  DetailArguments({this.fleet, this.index});
 }
 
 class _TabPageState extends State<AssetDetailView> {
   int selectedTabIndex = 0;
+  @override
+  void initState() {
+    selectedTabIndex = widget.tabIndex;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(

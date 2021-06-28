@@ -1,71 +1,30 @@
-import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/repository/db.dart';
-import 'package:insite/core/repository/network.dart';
 import 'package:logger/logger.dart';
 
 class FilterService extends DataBaseService {
-  Future<AssetCountData> getAssetCount(type) async {
-    try {
-      AssetCountData assetStatusResponse = await MyApi()
-          .getClient()
-          .assetCount(type, accountSelected.CustomerUID);
-      return assetStatusResponse;
-    } catch (e) {
-      Logger().e(e);
-      return null;
-    }
-  }
-
-  Future<AssetCountData> getFuellevel(type) async {
-    try {
-      AssetCountData fuelLevelDatarespone = await MyApi()
-          .getClient()
-          .fuelLevel(type, "25-50-75-100", accountSelected.CustomerUID);
-      print('data:${fuelLevelDatarespone.countData[0].countOf}');
-      return fuelLevelDatarespone;
-    } catch (e) {
-      Logger().e(e);
-      return null;
-    }
-  }
-
-  Future<AssetCountData> getIdlingLevelData(startDate, endDate) async {
-    try {
-      AssetCountData idlingLevelDataResponse = await MyApi()
-          .getClient()
-          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
-              accountSelected.CustomerUID);
-      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-      return idlingLevelDataResponse;
-    } catch (e) {
-      Logger().e(e);
-      return null;
-    }
-  }
-
   clearFromSelectedFilter() {}
 
   clearDatabase() {
-    box.clear();
+    filterBox.clear();
   }
 
   //removes filters of particular type
   clearFilterInDb(FilterType type) async {
     try {
-      int size = box.values.length;
+      int size = filterBox.values.length;
       print("filter size before clear");
-      print(box.values.length);
+      print(filterBox.values.length);
       print("FilterType " + type.toString());
       for (var i = 0; i < size; i++) {
-        FilterData data = box.getAt(i);
+        FilterData data = filterBox.getAt(i);
         Logger().d("current filter data on loop ", data);
         if (data.type == type) {
-          await box.deleteAt(i);
+          await filterBox.deleteAt(i);
         }
       }
       print("filter size after clear");
-      print(box.values.length);
+      print(filterBox.values.length);
     } catch (e) {
       Logger().e(e);
     }
@@ -77,7 +36,7 @@ class FilterService extends DataBaseService {
         addFilter(data);
       }
       print("filter size after update");
-      print(box.values.length);
+      print(filterBox.values.length);
     } catch (e) {
       Logger().e(e);
     }
@@ -86,8 +45,8 @@ class FilterService extends DataBaseService {
   Future<List<FilterData>> getSelectedFilters() async {
     try {
       Logger().d("getSelectedFilters");
-      print(box.values.length);
-      return await box.values.toList();
+      print(filterBox.values.length);
+      return await filterBox.values.toList();
     } catch (e) {
       Logger().e(e);
       return [];
@@ -97,16 +56,16 @@ class FilterService extends DataBaseService {
   //removes a particular filter
   removeFilter(FilterData value) {
     try {
-      int size = box.values.length;
+      int size = filterBox.values.length;
       Logger().d("removeFilter service " + size.toString());
       if (size > 0) {
-        for (var i = 0; i <= size; i++) {
-          FilterData data = box.getAt(i);
+        for (var i = 0; i < size; i++) {
+          FilterData data = filterBox.getAt(i);
           Logger().d("current filter data on loop ", data);
           if (data.title == value.title && data.type == value.type) {
             print("delete filter " + data.title.toString());
-            box.deleteAt(i);
-            return;
+            filterBox.deleteAt(i);
+            break;
           }
         }
       }
@@ -116,38 +75,38 @@ class FilterService extends DataBaseService {
   }
 
   addFilter(FilterData value) async {
-    int size = box.values.length;
+    int size = filterBox.values.length;
     if (size == 0) {
-      box.add(value);
+      filterBox.add(value);
     } else {
       bool shouldAdd = true;
       for (var i = 0; i < size; i++) {
-        FilterData data = box.getAt(i);
+        FilterData data = filterBox.getAt(i);
         if (data.title == value.title) {
           shouldAdd = false;
-          return;
+          break;
         }
       }
       if (shouldAdd) {
         print("add filter " + value.title.toString());
-        await box.add(value);
+        await filterBox.add(value);
       }
     }
   }
 
   updateFilter(FilterData value) async {
-    int size = box.values.length;
+    int size = filterBox.values.length;
     if (size == 0) {
-      box.add(value);
+      filterBox.add(value);
     } else {
       bool shouldUpdate = false;
       int index = 0;
       for (var i = 0; i < size; i++) {
-        FilterData data = box.getAt(i);
+        FilterData data = filterBox.getAt(i);
         if (data.title == value.title) {
           shouldUpdate = true;
           index = i;
-          return;
+          break;
         }
       }
       if (shouldUpdate) {
@@ -155,10 +114,10 @@ class FilterService extends DataBaseService {
             index.toString() +
             " " +
             value.title.toString());
-        await box.putAt(index, value);
+        await filterBox.putAt(index, value);
       } else {
         print("add date filter and value" + value.title.toString());
-        await box.add(value);
+        await filterBox.add(value);
       }
     }
   }

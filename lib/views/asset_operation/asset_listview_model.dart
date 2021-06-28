@@ -56,8 +56,8 @@ class AssetListViewModel extends InsiteViewModel {
 
   AssetListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _assetService.setUp();
     setUp();
+    _assetService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -68,6 +68,7 @@ class AssetListViewModel extends InsiteViewModel {
     updateDateRangeList();
     Future.delayed(Duration(seconds: 1), () {
       getSelectedFilterData();
+      getDateRangeFilterData();
     });
     Future.delayed(Duration(seconds: 2), () {
       getAssetSummaryList();
@@ -75,11 +76,12 @@ class AssetListViewModel extends InsiteViewModel {
   }
 
   void refresh() async {
-    await getSelectedFilterData();
     await getDateRangeFilterData();
+    await getSelectedFilterData();
     pageNumber = 1;
     pageSize = 50;
     _refreshing = true;
+    _shouldLoadmore = true;
     notifyListeners();
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
@@ -137,6 +139,7 @@ class AssetListViewModel extends InsiteViewModel {
   onDetailPageSelected(Asset asset) {
     _navigationService.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
+            index: 2,
             fleet: Fleet(
                 assetSerialNumber: asset.serialNumber,
                 assetId: asset.assetId,

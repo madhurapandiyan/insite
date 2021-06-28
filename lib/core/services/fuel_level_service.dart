@@ -21,15 +21,16 @@ class FuelLevelService {
     }
   }
 
-  Future<AssetCountData> getFuellevel() async {
+  Future<AssetCount> getFuellevel() async {
     try {
-      AssetCountData fuelLevelDatarespone = await MyApi()
+      AssetCount fuelLevelDatarespone = await MyApi()
           .getClient()
           .fuelLevel("fuellevel", "25-50-75-100", accountSelected.CustomerUID);
       print('data:${fuelLevelDatarespone.countData[0].countOf}');
       return fuelLevelDatarespone;
     } catch (e) {
       Logger().e(e);
+      return null;
     }
   }
 }

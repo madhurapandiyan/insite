@@ -25,6 +25,13 @@ class DateRangeViewModel extends BaseViewModel {
 
   String get endDate => _endDate;
 
+  DateRangeType get selectedDateRange => _selectedDateRange;
+
+  DateRangeType _selectedDateRange = DateRangeType.currentWeek;
+  set selectedDateRange(DateRangeType value) {
+    this._selectedDateRange = value;
+  }
+
   DateRangeType _dateType = DateRangeType.currentWeek;
   set dateType(DateRangeType dateType) {
     this._dateType = dateType;
@@ -58,7 +65,41 @@ class DateRangeViewModel extends BaseViewModel {
       endDate = appliedFilters[1];
       Logger().d("start ", startDate);
       Logger().d("start ", endDate);
+      Logger().d("label ", appliedFilters[2]);
+      _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();
     }
+  }
+
+  DateRangeType getType(value) {
+    DateRangeType type = DateRangeType.currentWeek;
+    switch (value) {
+      case "currentMonth":
+        type = DateRangeType.currentMonth;
+        break;
+      case "currentWeek":
+        type = DateRangeType.currentWeek;
+        break;
+      case "custom":
+        type = DateRangeType.custom;
+        break;
+      case "lastSevenDays":
+        type = DateRangeType.lastSevenDays;
+        break;
+      case "lastThirtyDays":
+        type = DateRangeType.lastThirtyDays;
+        break;
+      case "previousWeek":
+        type = DateRangeType.previousWeek;
+        break;
+      case "today":
+        type = DateRangeType.today;
+        break;
+      case "yesterday":
+        type = DateRangeType.yesterday;
+        break;
+      default:
+    }
+    return type;
   }
 }

@@ -770,7 +770,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCountData> assetCount(grouping, customerId) async {
+  Future<AssetCount> assetCount(grouping, customerId) async {
     ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
@@ -785,7 +785,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetCountData.fromJson(_result.data);
+    final value = AssetCount.fromJson(_result.data);
     return value;
   }
 
@@ -817,7 +817,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCountData> fuelLevel(grouping, thresholds, customerId) async {
+  Future<AssetCount> fuelLevel(grouping, thresholds, customerId) async {
     ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(thresholds, 'thresholds');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -836,7 +836,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetCountData.fromJson(_result.data);
+    final value = AssetCount.fromJson(_result.data);
     return value;
   }
 
@@ -866,7 +866,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCountData> idlingLevel(
+  Future<AssetCount> idlingLevel(
       startDate, idleEfficiencyRanges, endDate, customerId) async {
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
@@ -888,7 +888,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetCountData.fromJson(_result.data);
+    final value = AssetCount.fromJson(_result.data);
     return value;
   }
 

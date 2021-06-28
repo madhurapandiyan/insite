@@ -17,12 +17,12 @@ class DateRangeView extends StatefulWidget {
 }
 
 class _DateRangeViewState extends State<DateRangeView> {
-  DateRangeType selectedDateRange;
   DateTime fromDate, toDate;
   DateTime customFromDate, customToDate;
   DateTime _selectedDay;
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
   bool isCalenderVisible = false;
+  bool customCalenderIndex = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
@@ -73,12 +73,25 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.today, 0.25, 'Today'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.today,
+                        width: 0.25,
+                        onTapCallback: () {
+                          onLabelClicked(viewModel, DateRangeType.today);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Today"),
                     SizedBox(
                       width: 10,
                     ),
-                    dateRangeCard(
-                        context, DateRangeType.yesterday, 0.3, 'Yesterday'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.yesterday,
+                        width: 0.3,
+                        onTapCallback: () {
+                          onLabelClicked(viewModel, DateRangeType.yesterday);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Yesterday"),
                   ],
                 ),
                 SizedBox(
@@ -86,8 +99,14 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.currentWeek, 0.35,
-                        'Current Week'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.currentWeek,
+                        width: 0.35,
+                        onTapCallback: () {
+                          onLabelClicked(viewModel, DateRangeType.currentWeek);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Current Week"),
                   ],
                 ),
                 SizedBox(
@@ -95,8 +114,14 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.previousWeek, 0.35,
-                        'Previous Week'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.previousWeek,
+                        width: 0.35,
+                        onTapCallback: () {
+                          onLabelClicked(viewModel, DateRangeType.previousWeek);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Previous Week"),
                   ],
                 ),
                 SizedBox(
@@ -104,13 +129,27 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.lastSevenDays, 0.3,
-                        'Last 7 days'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.lastSevenDays,
+                        width: 0.3,
+                        onTapCallback: () {
+                          onLabelClicked(
+                              viewModel, DateRangeType.lastSevenDays);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Last 7 days"),
                     SizedBox(
                       width: 10,
                     ),
-                    dateRangeCard(context, DateRangeType.lastThirtyDays, 0.35,
-                        'Last 30 days'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.lastThirtyDays,
+                        width: 0.35,
+                        onTapCallback: () {
+                          onLabelClicked(
+                              viewModel, DateRangeType.lastThirtyDays);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Last 30 days"),
                   ],
                 ),
                 SizedBox(
@@ -118,8 +157,14 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.currentMonth, 0.38,
-                        'Current Month'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.currentMonth,
+                        width: 0.38,
+                        onTapCallback: () {
+                          onLabelClicked(viewModel, DateRangeType.currentMonth);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Current Month"),
                   ],
                 ),
                 SizedBox(
@@ -127,8 +172,15 @@ class _DateRangeViewState extends State<DateRangeView> {
                 ),
                 Row(
                   children: [
-                    dateRangeCard(context, DateRangeType.previousMonth, 0.38,
-                        'Previous Month'),
+                    RangeLabel(
+                        defaultDateRange: DateRangeType.previousMonth,
+                        width: 0.38,
+                        onTapCallback: () {
+                          onLabelClicked(
+                              viewModel, DateRangeType.previousMonth);
+                        },
+                        selectedDateRange: viewModel.selectedDateRange,
+                        label: "Previous Month"),
                   ],
                 ),
                 SizedBox(
@@ -140,7 +192,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                     'Custom'.toUpperCase(),
                     style: TextStyle(
                       color: white,
-                      fontSize: 15,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -158,7 +210,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 'From:'.toUpperCase(),
                                 style: TextStyle(
                                   color: white,
-                                  fontSize: 15,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -171,7 +223,8 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 setState(() {
                                   fromDate = null;
                                   isCalenderVisible = true;
-                                  selectedDateRange = DateRangeType.custom;
+                                  viewModel.selectedDateRange =
+                                      DateRangeType.custom;
                                   _selectedDay = null;
                                   currentCustomDatePick =
                                       CustomDatePick.customFromDate;
@@ -193,7 +246,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                             .toUpperCase(),
                                     style: TextStyle(
                                       color: white,
-                                      fontSize: 15,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -218,7 +271,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 'To:'.toUpperCase(),
                                 style: TextStyle(
                                   color: white,
-                                  fontSize: 15,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -231,7 +284,8 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 setState(() {
                                   toDate = null;
                                   isCalenderVisible = true;
-                                  selectedDateRange = DateRangeType.custom;
+                                  viewModel.selectedDateRange =
+                                      DateRangeType.custom;
                                   _selectedDay = null;
                                   currentCustomDatePick =
                                       CustomDatePick.customToDate;
@@ -253,7 +307,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                             .toUpperCase(),
                                     style: TextStyle(
                                       color: white,
-                                      fontSize: 15,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -315,7 +369,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                           await viewModel.updateDateRange(
                               '${fromDate.year}-${fromDate.month}-${fromDate.day}',
                               '${toDate.year}-${toDate.month}-${toDate.day}',
-                              describeEnum(selectedDateRange));
+                              describeEnum(viewModel.selectedDateRange));
                           Navigator.pop(context, [fromDate, toDate]);
                         }
                       },
@@ -374,34 +428,50 @@ class _DateRangeViewState extends State<DateRangeView> {
     }
   }
 
-  GestureDetector dateRangeCard(BuildContext context,
-      DateRangeType defaultDateRange, double width, String label) {
+  void onLabelClicked(
+      DateRangeViewModel viewModel, DateRangeType defaultDateRange) {
+    viewModel.selectedDateRange = defaultDateRange;
+    isCalenderVisible = false;
+    currentCustomDatePick = CustomDatePick.customNoDate;
+    customFromDate = null;
+    customToDate = null;
+    _selectedDay = null;
+    if (viewModel.selectedDateRange == DateRangeType.previousWeek) {
+      fromDate =
+          DateTime.now().subtract(Duration(days: DateTime.now().weekday + 6));
+      toDate = fromDate.add(Duration(days: 6));
+    } else if (viewModel.selectedDateRange == DateRangeType.previousMonth) {
+      fromDate = DateTime.utc(DateTime.now().year, DateTime.now().month - 1, 1);
+      toDate = DateTime.utc(DateTime.now().year, DateTime.now().month, 0);
+    } else if (viewModel.selectedDateRange == DateRangeType.yesterday) {
+      fromDate = calcFromDate(defaultDateRange);
+      toDate = calcFromDate(defaultDateRange);
+    } else {
+      toDate = DateTime.now();
+      fromDate = calcFromDate(defaultDateRange);
+    }
+    setState(() {});
+  }
+}
+
+class RangeLabel extends StatelessWidget {
+  final DateRangeType defaultDateRange;
+  final DateRangeType selectedDateRange;
+  final double width;
+  final String label;
+  final VoidCallback onTapCallback;
+  const RangeLabel(
+      {this.defaultDateRange,
+      this.selectedDateRange,
+      this.width,
+      this.label,
+      this.onTapCallback});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedDateRange = defaultDateRange;
-          isCalenderVisible = false;
-          currentCustomDatePick = CustomDatePick.customNoDate;
-          customFromDate = null;
-          customToDate = null;
-          _selectedDay = null;
-
-          if (selectedDateRange == DateRangeType.previousWeek) {
-            fromDate = DateTime.now()
-                .subtract(Duration(days: DateTime.now().weekday + 6));
-            toDate = fromDate.add(Duration(days: 6));
-          } else if (selectedDateRange == DateRangeType.previousMonth) {
-            fromDate =
-                DateTime.utc(DateTime.now().year, DateTime.now().month - 1, 1);
-            toDate = DateTime.utc(DateTime.now().year, DateTime.now().month, 0);
-          } else if (selectedDateRange == DateRangeType.yesterday) {
-            fromDate = calcFromDate(defaultDateRange);
-            toDate = calcFromDate(defaultDateRange);
-          } else {
-            toDate = DateTime.now();
-            fromDate = calcFromDate(defaultDateRange);
-          }
-        });
+        onTapCallback();
       },
       child: Container(
         width: MediaQuery.of(context).size.width * width,

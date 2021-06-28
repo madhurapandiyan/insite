@@ -21,9 +21,9 @@ class IdlingLevelService {
     }
   }
 
-  Future<AssetCountData> getIdlingLevel(startDate, endDate) async {
+  Future<AssetCount> getIdlingLevel(startDate, endDate) async {
     try {
-      AssetCountData idlingLevelDataResponse = await MyApi()
+      AssetCount idlingLevelDataResponse = await MyApi()
           .getClient()
           .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
               accountSelected.CustomerUID);
@@ -31,6 +31,7 @@ class IdlingLevelService {
       return idlingLevelDataResponse;
     } catch (e) {
       Logger().e(e);
+      return null;
     }
   }
 }

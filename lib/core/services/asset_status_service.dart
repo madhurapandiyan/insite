@@ -1,33 +1,130 @@
-import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
-import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/db/asset_count_data.dart';
+import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
-import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
 
-class AssetStatusService {
-  var _localService = locator<LocalService>();
-
-  Customer accountSelected;
-
-  AssetStatusService() {
-    setUp();
-  }
-
-  setUp() async {
+class AssetStatusService extends DataBaseService {
+  Future<AssetCount> getAssetCount(key, FilterType type) async {
     try {
-      accountSelected = await _localService.getAccountInfo();
+      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+      if (assetCountFromLocal != null) {
+        Logger().d("getAssetCount from local");
+        return assetCountFromLocal;
+      } else {
+        Logger().d("getAssetCount from api");
+        AssetCount assetStatusResponse = await MyApi()
+            .getClient()
+            .assetCount(key, accountSelected.CustomerUID);
+        bool updated = await updateAssetCount(assetStatusResponse, type);
+        if (updated) {
+          return assetStatusResponse;
+        } else {
+          return null;
+        }
+      }
     } catch (e) {
       Logger().e(e);
+      return null;
     }
   }
 
-  Future<AssetCountData> getAssetStatus() async {
+  Future<AssetCount> getAssetCountFromLocal(FilterType type) async {
     try {
-      AssetCountData assetStatusResponse = await MyApi()
+      int size = await assetCountBox.values.length;
+      if (size == 0) {
+        return null;
+      } else {
+        int index = -1;
+        for (var i = 0; i < size; i++) {
+          AssetCountData data = assetCountBox.getAt(i);
+          if (data.type == type) {
+            print("match asset count data " + data.counts.length.toString());
+            index = i;
+            break;
+          }
+        }
+        if (index != -1) {
+          AssetCountData filterData = await assetCountBox.getAt(index);
+          List<Count> counts = [];
+          for (CountData countData in filterData.counts) {
+            counts
+                .add(Count(count: countData.count, countOf: countData.countOf));
+          }
+          return AssetCount(countData: counts);
+        }
+        return null;
+      }
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<bool> updateAssetCount(AssetCount assetCount, FilterType type) async {
+    List<CountData> counts = [];
+    try {
+      for (Count countData in assetCount.countData) {
+        counts
+            .add(CountData(count: countData.count, countOf: countData.countOf));
+      }
+      AssetCountData assetCountData =
+          AssetCountData(counts: counts, type: type);
+      int size = await assetCountBox.values.length;
+      if (size == 0) {
+        await assetCountBox.add(assetCountData);
+      } else {
+        bool shouldUpdate = false;
+        int index = -1;
+        for (var i = 0; i < size; i++) {
+          FilterData data = await assetCountBox.getAt(i);
+          if (data.type == assetCountData.type) {
+            shouldUpdate = true;
+            index = i;
+            break;
+          }
+        }
+        if (shouldUpdate) {
+          print("update asset count data index and value" +
+              index.toString() +
+              " " +
+              assetCountData.type.toString());
+          await assetCountBox.putAt(index, assetCountData);
+        } else {
+          print("update asset count data " +
+              assetCountData.counts.length.toString());
+          await assetCountBox.add(assetCountData);
+        }
+      }
+      return true;
+    } catch (e) {
+      Logger().e(e);
+      return true;
+    }
+  }
+
+  Future<AssetCount> getFuellevel(type) async {
+    try {
+      AssetCount fuelLevelDatarespone = await MyApi()
           .getClient()
-          .assetCount("assetstatus", accountSelected.CustomerUID);
-      return assetStatusResponse;
+          .fuelLevel(type, "25-50-75-100", accountSelected.CustomerUID);
+      print('data:${fuelLevelDatarespone.countData[0].countOf}');
+      return fuelLevelDatarespone;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<AssetCount> getIdlingLevelData(startDate, endDate) async {
+    try {
+      AssetCount idlingLevelDataResponse = await MyApi()
+          .getClient()
+          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+              accountSelected.CustomerUID);
+      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+      return idlingLevelDataResponse;
     } catch (e) {
       Logger().e(e);
       return null;
