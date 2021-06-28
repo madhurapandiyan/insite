@@ -217,6 +217,7 @@ class _SingleAssetUtilizationWidgetState
 
   double getHighestValue(
       double totalBarHeight, double value, SingleAssetUtilizationType barType) {
+    if (value == 0) return 0.0;
     switch (barType) {
       case SingleAssetUtilizationType.IDLEHOURS:
         if (((value / widget.idleHighestValue) * 100) <= 0) return 0.0;

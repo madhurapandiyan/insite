@@ -82,7 +82,10 @@ class _SingleAssetUtilizationListViewState
                 Flexible(
                   child: viewModel.loading
                       ? Container(
-                          child: Center(child: CircularProgressIndicator()))
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
                       : viewModel.utilLizationList.isNotEmpty
                           ? ListView.separated(
                               separatorBuilder: (context, index) {

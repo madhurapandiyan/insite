@@ -68,35 +68,4 @@ class _SingleAssetUtilizationViewState
         },
         viewModelBuilder: () => SingleAssetUtilizationViewModel());
   }
-
-  // Widget getGraphWidgetForRuntimePerformance(
-  //     SingleAssetUtilization singleAssetUtilization, int index) {
-  //   if (rangeChoice == 1)
-  //     return PercentageWidget(
-  //         color: sandyBrown,
-  //         label:
-  //             '${singleAssetUtilization.daily[index].startDate.day}/${singleAssetUtilization.daily[index].startDate.month}/${singleAssetUtilization.daily[index].startDate.year}\n',
-  //         percentage: singleAssetUtilization.daily[index].data.runtimeHours ==
-  //                 null
-  //             ? null
-  //             : singleAssetUtilization.daily[index].data.runtimeHours * 100);
-  //   else if (rangeChoice == 2)
-  //     return PercentageWidget(
-  //         color: bermudaGrey,
-  //         label:
-  //             '${singleAssetUtilization.weekly[index].startDate.day}/${singleAssetUtilization.weekly[index].startDate.month}/${singleAssetUtilization.weekly[index].startDate.year}\n${singleAssetUtilization.weekly[index].endDate.day}/${singleAssetUtilization.weekly[index].endDate.month}/${singleAssetUtilization.weekly[index].endDate.year}',
-  //         percentage: singleAssetUtilization.weekly[index].data.runtimeHours ==
-  //                 null
-  //             ? null
-  //             : singleAssetUtilization.weekly[index].data.runtimeHours * 100);
-  //   else
-  //     return PercentageWidget(
-  //         color: bermudaGrey,
-  //         label:
-  //             '${singleAssetUtilization.monthly[index].startDate.day}/${singleAssetUtilization.monthly[index].startDate.month}/${singleAssetUtilization.monthly[index].startDate.year}\n${singleAssetUtilization.monthly[index].endDate.day}/${singleAssetUtilization.monthly[index].endDate.month}/${singleAssetUtilization.monthly[index].endDate.year}',
-  //         percentage: singleAssetUtilization.monthly[index].data.runtimeHours ==
-  //                 null
-  //             ? null
-  //             : singleAssetUtilization.monthly[index].data.runtimeHours * 100);
-  // }
 }

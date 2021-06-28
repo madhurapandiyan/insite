@@ -142,65 +142,68 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                         ],
                       ),
                     ),
-                    viewModel.singleAssetOperation != null
-                        ? assetOperationTable(viewModel.singleAssetOperation)
-                        : SizedBox(),
-                    // viewModel.singleAssetOperation != null
-                    //     ? SfCartesianChart(
-                    //         series: getDefaultData(viewModel.singleAssetOperation),
-                    //         backgroundColor: ship_grey,
-                    //         plotAreaBorderColor: black,
-                    //         plotAreaBorderWidth: 3.0,
-                    //         primaryXAxis: CategoryAxis(),
-                    //         primaryYAxis: NumericAxis(
-                    //           // dateFormat: DateFormat("MMM dd"),
-                    //           opposedPosition: true,
-                    //           minimum: 0,
-                    //           maximum: 24,
-                    //         ),
-                    //         legend: Legend(isVisible: false),
-                    //         tooltipBehavior: TooltipBehavior(enable: true),
-                    //         zoomPanBehavior: ZoomPanBehavior(
-                    //           enablePinching: true,
-                    //           enablePanning: true,
-                    //         ),
-                    //         isTransposed: true,
-                    //       )
-                    //     : SizedBox(),
-                    Expanded(
-                      child: viewModel.singleAssetOperation != null
-                          ? SfCalendar(
-                              showNavigationArrow: false,
-                              backgroundColor: ship_grey,
-                              cellBorderColor: black,
-                              controller: calendarController,
-                              // allowedViews: _allowedViews,
-                              view: CalendarView.week,
-                              todayTextStyle: TextStyle(color: ship_grey),
-                              headerDateFormat: 'MMM yyyy',
-                              // scheduleViewMonthHeaderBuilder: scheduleViewBuilder,
-
-                              minDate: viewModel.singleAssetOperation
-                                      .assetOperations.assets.isEmpty
-                                  ? DateTime.now().subtract(
-                                      Duration(days: DateTime.now().weekday))
-                                  : viewModel.minDate,
-                              maxDate: viewModel.singleAssetOperation
-                                      .assetOperations.assets.isEmpty
-                                  ? DateTime.now()
-                                  : viewModel.maxDate,
-                              onViewChanged: onViewChanged,
-
-                              dataSource: AppointmentDataSource(
-                                  getRecursiveAppointments()),
-                              // monthViewSettings: const MonthViewSettings(
-                              //     appointmentDisplayMode:
-                              //         MonthAppointmentDisplayMode.appointment,
-                              //     appointmentDisplayCount: 4),
-                            )
-                          : EmptyView(title: 'No data here'),
-                    ),
                   ],
+                ),
+
+                viewModel.singleAssetOperation != null
+                    ? assetOperationTable(viewModel.singleAssetOperation)
+                    : SizedBox(),
+                // viewModel.singleAssetOperation != null
+                //     ? SfCartesianChart(
+                //         series: getDefaultData(viewModel.singleAssetOperation),
+                //         backgroundColor: ship_grey,
+                //         plotAreaBorderColor: black,
+                //         plotAreaBorderWidth: 3.0,
+                //         primaryXAxis: CategoryAxis(),
+                //         primaryYAxis: NumericAxis(
+                //           // dateFormat: DateFormat("MMM dd"),
+                //           opposedPosition: true,
+                //           minimum: 0,
+                //           maximum: 24,
+                //         ),
+                //         legend: Legend(isVisible: false),
+                //         tooltipBehavior: TooltipBehavior(enable: true),
+                //         zoomPanBehavior: ZoomPanBehavior(
+                //           enablePinching: true,
+                //           enablePanning: true,
+                //         ),
+                //         isTransposed: true,
+                //       )
+                //     : SizedBox(),
+                Expanded(
+                  child: viewModel.singleAssetOperation != null
+                      ? SfCalendar(
+                          showNavigationArrow: false,
+                          backgroundColor: ship_grey,
+                          cellBorderColor: black,
+                          showCurrentTimeIndicator: false,
+                          controller: calendarController,
+                          view: CalendarView.week,
+                          todayTextStyle: TextStyle(color: ship_grey),
+                          timeSlotViewSettings: TimeSlotViewSettings(
+                              dateFormat: 'd',
+                              dayFormat: 'MMM',
+                              timeTextStyle: TextStyle(color: white)),
+                          minDate: viewModel.singleAssetOperation
+                                  .assetOperations.assets.isEmpty
+                              ? DateTime.now().subtract(
+                                  Duration(days: DateTime.now().weekday))
+                              : viewModel.minDate,
+                          maxDate: viewModel.singleAssetOperation
+                                  .assetOperations.assets.isEmpty
+                              ? DateTime.now()
+                              : viewModel.maxDate,
+                          onViewChanged: onViewChanged,
+                          viewHeaderStyle: ViewHeaderStyle(
+                            dayTextStyle: TextStyle(color: white),
+                            dateTextStyle: TextStyle(color: white),
+                            backgroundColor: tuna,
+                          ),
+                          dataSource: AppointmentDataSource(
+                            getRecursiveAppointments(),
+                          ),
+                        )
+                      : EmptyView(title: 'No data here'),
                 ),
                 viewModel.refreshing
                     ? Center(
@@ -356,27 +359,28 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
     final List<Appointment> appointments = <Appointment>[];
     final Random random = Random();
     // //Recurrence Appointment 1
-    // final DateTime currentDate = DateTime.now();
-    // final DateTime startTime =
-    //     DateTime(currentDate.year, currentDate.month, currentDate.day, 9, 0, 0);
-    // final DateTime endTime = DateTime(
-    //     currentDate.year, currentDate.month, currentDate.day, 11, 0, 0);
-    // final RecurrenceProperties recurrencePropertiesForAlternativeDay =
-    //     RecurrenceProperties(
-    //         startDate: startTime,
-    //         recurrenceType: RecurrenceType.daily,
-    //         interval: 2,
-    //         recurrenceRange: RecurrenceRange.count,
-    //         recurrenceCount: 20);
-    // final Appointment alternativeDayAppointment = Appointment(
-    //     startTime: startTime,
-    //     endTime: endTime,
-    //     color: colorCollection[random.nextInt(9)],
-    //     subject: 'Scrum meeting',
-    //     recurrenceRule: SfCalendar.generateRRule(
-    //         recurrencePropertiesForAlternativeDay, startTime, endTime));
+    final DateTime currentDate = DateTime.now();
+    final DateTime startTime =
+        DateTime(currentDate.year, currentDate.month, currentDate.day, 9, 0, 0);
+    final DateTime endTime = DateTime(
+        currentDate.year, currentDate.month, currentDate.day, 11, 0, 0);
+    final RecurrenceProperties recurrencePropertiesForAlternativeDay =
+        RecurrenceProperties(
+            startDate: startTime,
+            recurrenceType: RecurrenceType.daily,
+            interval: 2,
+            recurrenceRange: RecurrenceRange.count,
+            recurrenceCount: 20);
+    final Appointment alternativeDayAppointment = Appointment(
+      startTime: startTime,
+      endTime: endTime,
+      color: tango,
+      subject: 'Engine On/Off',
+      // recurrenceRule: SfCalendar.generateRRule(
+      //     recurrencePropertiesForAlternativeDay, startTime, endTime));
+    );
 
-    // appointments.add(alternativeDayAppointment);
+    appointments.add(alternativeDayAppointment);
 
     // //Recurrence Appointment 2
     // final DateTime startTime1 = DateTime(
@@ -403,28 +407,28 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
 
     // appointments.add(weeklyAppointment);
 
-    // final DateTime startTime2 = DateTime(
-    //     currentDate.year, currentDate.month, currentDate.day, 14, 0, 0);
-    // final DateTime endTime2 = DateTime(
-    //     currentDate.year, currentDate.month, currentDate.day, 15, 0, 0);
-    // final RecurrenceProperties recurrencePropertiesForMonthlyAppointment =
-    //     RecurrenceProperties(
-    //         startDate: startTime2,
-    //         recurrenceType: RecurrenceType.monthly,
-    //         recurrenceRange: RecurrenceRange.count,
-    //         interval: 1,
-    //         dayOfMonth: 1,
-    //         recurrenceCount: 10);
+    final DateTime startTime2 =
+        DateTime(currentDate.year, currentDate.month, 29, 14, 0, 0);
+    final DateTime endTime2 =
+        DateTime(currentDate.year, currentDate.month, 29, 15, 30, 0);
+    final RecurrenceProperties recurrencePropertiesForMonthlyAppointment =
+        RecurrenceProperties(
+            startDate: startTime2,
+            recurrenceType: RecurrenceType.monthly,
+            recurrenceRange: RecurrenceRange.count,
+            interval: 1,
+            dayOfMonth: 1,
+            recurrenceCount: 10);
 
-    // final Appointment monthlyAppointment = Appointment(
-    //     startTime: startTime2,
-    //     endTime: endTime2,
-    //     color: colorCollection[random.nextInt(9)],
-    //     subject: 'Sprint planning meeting',
-    //     recurrenceRule: SfCalendar.generateRRule(
-    //         recurrencePropertiesForMonthlyAppointment, startTime2, endTime2));
-
-    // appointments.add(monthlyAppointment);
+    final Appointment monthlyAppointment = Appointment(
+      startTime: startTime2,
+      endTime: endTime2,
+      color: tango,
+      subject: 'Engine On',
+      // recurrenceRule: SfCalendar.generateRRule(
+      //     recurrencePropertiesForMonthlyAppointment, startTime2, endTime2));
+    );
+    appointments.add(monthlyAppointment);
 
     // final DateTime startTime3 = DateTime(
     //     currentDate.year, currentDate.month, currentDate.day, 12, 0, 0);
