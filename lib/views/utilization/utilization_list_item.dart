@@ -273,7 +273,9 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteTableRowWithImage(
                                 title: utilizationData.manufacturer,
-                                path: Utils().imageData(utilizationData.model),
+                                path: utilizationData == null
+                                    ? "assets/images/EX210.png"
+                                    : Utils().imageData(utilizationData.model),
                               ),
                               InsiteTableRowItem(
                                 title: "Runime Hours",

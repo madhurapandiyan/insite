@@ -95,8 +95,10 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
                 : SizedBox()
           ],
         );
+        
       },
       viewModelBuilder: () => viewModel,
     );
   }
+ 
 }

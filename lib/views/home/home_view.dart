@@ -107,21 +107,19 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Notifications(),
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: AssetStatusUsage(
-                      statusChartData: viewModel.statusChartData != null
-                          ? viewModel.statusChartData
-                          : null,
-                      isLoading: viewModel.assetStatusloading,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
+                  // SizedBox(
+                  //   height: 20.0,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //   child: AssetStatusUsage(
+                  //     statusChartData: viewModel.statusChartData != null
+                  //         ? viewModel.statusChartData
+                  //         : null,
+                  //     isLoading: viewModel.assetStatusloading,
+                  //   ),
+                  // ),
+                  
                 ],
               ),
             ),

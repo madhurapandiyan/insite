@@ -20,9 +20,9 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
       },
       child: Container(
         width: 130,
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
+           mainAxisAlignment: MainAxisAlignment.start,
+           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
                 width: 15,
@@ -57,7 +57,8 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
               width: 15,
               height: 20,
               child: Image.asset("assets/images/arrows.png"),
-            )
+            ),
+         
           ],
         ),
       ),

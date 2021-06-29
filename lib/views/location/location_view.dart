@@ -27,30 +27,28 @@ class LocationView extends StatefulWidget {
 
 class _LocationViewState extends State<LocationView> {
   String _currentSelectedItem = "MAP";
-
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
-
   List<DateTime> dateRange;
-
   GoogleMapController mapController;
   BitmapDescriptor mapMarker;
-
+  var viewModel;
   Set<Marker> markers = Set();
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
   List<ClusterItem<InsiteMarker>> clusterMarkers = [];
-
   ClusterManager _manager;
   @override
   void initState() {
+    viewModel = LocationViewModel(TYPE.LOCATION);
     _manager = _initClusterManager();
     super.initState();
   }
 
   @override
   void dispose() {
+    viewModel.dispose();
     customInfoWindowController.dispose();
     super.dispose();
   }
@@ -202,8 +200,8 @@ class _LocationViewState extends State<LocationView> {
                       ),
                       CustomInfoWindow(
                         controller: customInfoWindowController,
-                        width: MediaQuery.of(context).size.width*0.42,
-                        height:MediaQuery.of(context).size.height*0.35,
+                        width: MediaQuery.of(context).size.width * 0.42,
+                        height: MediaQuery.of(context).size.height * 0.36,
                         offset: 1,
                       ),
                       Padding(
@@ -294,7 +292,7 @@ class _LocationViewState extends State<LocationView> {
           return Container();
         }
       },
-      viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
+      viewModelBuilder: () => viewModel,
     );
   }
 
@@ -312,8 +310,9 @@ class _LocationViewState extends State<LocationView> {
     });
   }
 
-  Future<Marker> Function(Cluster<InsiteMarker>) get _markerBuilder =>
-      (cluster) async {
+  Future<Marker> Function(Cluster<InsiteMarker>) get _markerBuilder => (
+        cluster,
+      ) async {
         return Marker(
           markerId: MarkerId(cluster.getId()),
           position: cluster.location,
@@ -323,7 +322,7 @@ class _LocationViewState extends State<LocationView> {
                   children: [
                     Container(
                       width: 250,
-                      height: 250,
+                      height: MediaQuery.of(context).size.height * 0.30,
                       decoration: BoxDecoration(
                         color: cardcolor,
                         borderRadius: BorderRadius.circular(10),
@@ -387,7 +386,7 @@ class _LocationViewState extends State<LocationView> {
                                 title: "Fleet List",
                                 textColor: appbarcolor,
                                 onTap: () {
-                                  print("button is tapped");
+                                  viewModel.onFleetPageSelected();
                                 },
                               ),
                               SizedBox(

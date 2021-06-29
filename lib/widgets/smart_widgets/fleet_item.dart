@@ -55,7 +55,9 @@ class FleetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowWithImage(
                           title: fleet.dealerName,
-                          path: Utils().imageData(fleet.model),
+                          path: fleet == null
+                              ? "assets/images/EX210.png"
+                              : Utils().imageData(fleet.model),
                         ),
                         InsiteTableRowItem(
                           title: "Last Known Status",
