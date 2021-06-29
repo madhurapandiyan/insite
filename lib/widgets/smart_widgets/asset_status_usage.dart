@@ -16,7 +16,16 @@ class AssetStatusUsage extends StatefulWidget {
 }
 
 class _AssetStatusUsageState extends State<AssetStatusUsage> {
-  var chartHrsData = ["30-40 HRS", "20-30 HRS", "10-20 HRS", "0-20 HRS"];
+  var chartHrsData = [
+    "30-40 HRS",
+    "20-30 HRS",
+    "10-20 HRS",
+    "0-20 HRS",
+    "30-40 HRS",
+    "20-30 HRS",
+    "10-20 HRS",
+    "0-20 HRS"
+  ];
   var colors = [
     emerald,
     burntSienna,
@@ -29,7 +38,7 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
   ];
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.28;
+    double height = MediaQuery.of(context).size.height * 0.30;
     return Container(
       height: height,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -39,114 +48,113 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
         border: Border.all(width: 2.5, color: cardcolor),
         shape: BoxShape.rectangle,
       ),
-      child: Stack(
+      child: Column(
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset("assets/images/arrowdown.svg"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        new Text(
-                          "ASSET USAGE BY HOURS",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
-                      ],
+                    SvgPicture.asset("assets/images/arrowdown.svg"),
+                    SizedBox(
+                      width: 10,
                     ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 60.0,
-                        ),
-                        GestureDetector(
-                          onTap: () => print("button is tapped"),
-                          child: SvgPicture.asset(
-                            "assets/images/menu.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                      ],
+                    new Text(
+                      "ASSET USAGE BY HOURS",
+                      style: new TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'Roboto',
+                          color: textcolor,
+                          fontStyle: FontStyle.normal,
+                          fontSize: 12.0),
                     ),
                   ],
                 ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: black,
-              ),
-              widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
-                  : new Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          child: SfCircularChart(
-                            palette: <Color>[
-                              emerald,
-                              burntSienna,
-                              mustard,
-                              textcolor,
-                              lightRose,
-                              persianIndigo,
-                              maptextcolor,
-                              sandyBrown
-                            ],
-                            legend: Legend(
-                                isVisible: false,
-                                overflowMode: LegendItemOverflowMode.wrap),
-                            centerX:
-                                (MediaQuery.of(context).size.width * 0.18)
-                                    .toStringAsFixed(0),
-                            series: _getLegendDefaultSeries(),
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                          ),
-                        ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 60.0,
+                    ),
+                    GestureDetector(
+                      onTap: () => print("button is tapped"),
+                      child: SvgPicture.asset(
+                        "assets/images/menu.svg",
+                        width: 20,
+                        height: 20,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return Container(
-                                  width: 127.29,
-                                  child: Divider(
-                                      thickness: 1.0, color: athenGrey));
-                            },
-                            itemCount: widget.statusChartData.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: ClampingScrollPhysics(),
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
-                            itemBuilder: (context, index) {
-                              ChartSampleData assetStatusData =
-                                  widget.statusChartData[index];
-
-                              return AssetStatusUsageWidget(
-                                chartHrsData: chartHrsData[index],
-                                chartColor: colors[index],
-                                assetStatusData: assetStatusData,
-                              );
-                            }),
-                      ),
-                    ],
-                  )
-            ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
+          Divider(
+            thickness: 1.0,
+            color: black,
+          ),
+          widget.isLoading
+              ? Expanded(child: Center(child: CircularProgressIndicator()))
+              : new Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      child: SfCircularChart(
+                        palette: <Color>[
+                          emerald,
+                          burntSienna,
+                          mustard,
+                          textcolor,
+                          lightRose,
+                          persianIndigo,
+                          maptextcolor,
+                          sandyBrown
+                        ],
+                        legend: Legend(
+                            isVisible: false,
+                            overflowMode: LegendItemOverflowMode.wrap),
+                        centerX:
+                            (MediaQuery.of(context).size.width * 0.18)
+                                .toStringAsFixed(0),
+                        series: _getLegendDefaultSeries(),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height*0.20,
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return Container(
+                                width: 127.29,
+                                child: Divider(
+                                    thickness: 1.0, color: athenGrey));
+                          },
+                          itemCount: widget.statusChartData.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: ClampingScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          itemBuilder: (context, index) {
+                            ChartSampleData assetStatusData =
+                                widget.statusChartData[index];
+      
+                            return AssetStatusUsageWidget(
+                              chartHrsData: chartHrsData[index],
+                              chartColor: colors[index],
+                              assetStatusData: assetStatusData,
+                            );
+                          }),
+                    ),
+                  ),
+                ],
+              ),
         ],
       ),
     );

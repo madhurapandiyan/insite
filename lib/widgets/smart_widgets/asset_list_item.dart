@@ -61,7 +61,7 @@ class AssetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowWithImage(
                           title: asset != null ? asset.productFamily : "",
-                          path: Utils().imageData(asset.model),
+                          path:asset==null? "assets/images/EX210.png": Utils().imageData(asset.model),
                         ),
                         InsiteTableRowItem(
                           title: "Total Duration",

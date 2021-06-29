@@ -28,7 +28,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
   @override
   Widget build(BuildContext context) {
     var color = [burntSienna, lightRose, mustard, emerald, emerald];
-    double height = MediaQuery.of(context).size.height * 0.3;
+    double height = MediaQuery.of(context).size.height * 0.33;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       height: height,
@@ -90,7 +90,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                 : Row(
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: 1,
                         child: Container(
                             width: 175,
                             height: 175,
@@ -108,36 +108,35 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             )),
                       ),
                       Expanded(
-                        flex: 2,
-                        child: SingleChildScrollView(
-                          child: Container(
-                            child: ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return Container(
-                                      width: 127.29,
-                                      child: Divider(
-                                          thickness: 1.0, color: athenGrey));
-                                },
-                                itemCount: widget.chartData.length,
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                                itemBuilder: (context, index) {
-                                  ChartSampleData data =
-                                      widget.chartData[index];
-                                  return AssetStatusWidget(
-                                    chartColor: color[index],
-                                    chartData: data,
-                                    callBack: (value) {
-                                      widget.onFilterSelected(FilterData(
-                                          isSelected: true,
-                                          count: value.y.toString(),
-                                          title: value.x.toString(),
-                                          type: FilterType.FUEL_LEVEL));
-                                    },
-                                  );
-                                }),
-                          ),
+                        flex: 1,
+                        child: Container(
+                          //height: MediaQuery.of(context).size.height*0.12,
+                          child: ListView.separated(
+                              separatorBuilder: (context, index) {
+                                return Container(
+                                    width: 127.29,
+                                    child: Divider(
+                                        thickness: 1.0, color: athenGrey));
+                              },
+                              itemCount: widget.chartData.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              itemBuilder: (context, index) {
+                                ChartSampleData data =
+                                    widget.chartData[index];
+                                return AssetStatusWidget(
+                                  chartColor: color[index],
+                                  chartData: data,
+                                  callBack: (value) {
+                                    widget.onFilterSelected(FilterData(
+                                        isSelected: true,
+                                        count: value.y.toString(),
+                                        title: value.x.toString(),
+                                        type: FilterType.FUEL_LEVEL));
+                                  },
+                                );
+                              }),
                         ),
                       ),
                     ],
