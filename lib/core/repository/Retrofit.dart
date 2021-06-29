@@ -22,6 +22,7 @@ import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
+import 'package:insite/core/models/utilization_summary.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -310,6 +311,13 @@ abstract class RestClient {
       @Query("query") String query,
       @Query("maxResults") int maxResults,
       @Query("authToken") String authToken);
+
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1")
+  Future<UtilizationSummary> getAssetUtilization(
+    @Query("date") String date,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 }
 
 @JsonSerializable()

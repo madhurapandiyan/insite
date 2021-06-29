@@ -5,6 +5,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
+import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
@@ -110,6 +111,21 @@ class AssetUtilizationService extends BaseService {
             .getClient()
             .singleAssetUtilization(assetUID, sort, startDate, endDate,
                 accountSelected.CustomerUID);
+        return response;
+      }
+      return null;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<UtilizationSummary> getUtilizationSummary(String date) async {
+    try {
+      if (date != null) {
+        UtilizationSummary response = await MyApi()
+            .getClient()
+            .getAssetUtilization(date, accountSelected.CustomerUID);
         return response;
       }
       return null;

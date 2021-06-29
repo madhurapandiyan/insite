@@ -186,4 +186,8 @@ class Utils {
       return "assets/images/EX210.png";
     }
   }
+
+  static double checkNull(double value) {
+    return value == null ? 0.0 : value;
+  }
 }
