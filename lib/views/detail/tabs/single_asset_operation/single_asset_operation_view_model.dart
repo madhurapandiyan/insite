@@ -5,7 +5,6 @@ import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -80,9 +79,9 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
           _assetOperationDates.add(segment.endTimeUtc);
           _chartData.add(
             SingleAssetOperationChartData(
-              Utils.getDecimalFromTime(segment.startTimeUtc),
-              Utils.getDecimalFromTime(segment.endTimeUtc),
-              DateFormat('MMM dd').format(assetLocalDate.assetLocalDate),
+              segment.startTimeUtc,
+              segment.endTimeUtc,
+              segment.segmentType,
             ),
           );
         }
@@ -92,6 +91,5 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     if (_assetOperationDates.isEmpty) return;
     _minDate = Utils.getMinDate(_assetOperationDates);
     _maxDate = Utils.getMaxDate(_assetOperationDates);
-    print('@@@ $_minDate');
   }
 }
