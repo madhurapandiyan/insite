@@ -23,25 +23,6 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> selectedFilterData = [];
 
-  // String _startDate =
-  //     '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}-${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}';
-  String _startDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String get startDate => _startDate;
-
-  // String _endDate =
-  //     '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}';
-  String _endDate = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().add(Duration(days: DateTime.now().weekday)));
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
-  String get endDate => _endDate;
-
   FilterViewModel() {
     _filterService.setUp();
     _assetService.setUp();
@@ -79,14 +60,13 @@ class FilterViewModel extends InsiteViewModel {
         await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    AssetCount resultFuelLevel = await _assetService.getFuellevel(
-      "fuellevel",
-    );
+    AssetCount resultFuelLevel =
+        await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount resultIdlingLevel =
-        await _assetService.getIdlingLevelData(startDate, endDate);
+    AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
+        startDate, endDate, FilterType.IDLING_LEVEL);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
