@@ -11,28 +11,22 @@ class LocationViewModel extends InsiteViewModel {
   Logger log;
 
   var _assetLocationService = locator<AssetLocationService>();
- var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<NavigationService>();
   bool _loading = true;
   bool get loading => _loading;
+
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
+
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
 
   int pageNumber = 1;
   int pageSize = 2500;
 
-  onFleetPageSelected(){
-    _navigationService.navigateTo(fleetViewRoute,
+  onFleetPageSelected() {
+    _navigationService.navigateTo(
+      fleetViewRoute,
     );
   }
 
@@ -46,13 +40,27 @@ class LocationViewModel extends InsiteViewModel {
       });
     }
   }
-  
+
+  refresh() async {
+    await getDateRangeFilterData();
+    Logger().d("refresh getAssetLocation");
+    _refreshing = true;
+    notifyListeners();
+    AssetLocationData result = await _assetLocationService.getAssetLocation(
+        pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
+    _assetLocation = result;
+    _loading = false;
+    _refreshing = false;
+    notifyListeners();
+  }
+
   getAssetLocation() async {
     Logger().d("getAssetLocation");
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
     _assetLocation = result;
     _loading = false;
+    _refreshing = false;
     notifyListeners();
   }
 }

@@ -42,7 +42,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           shouldShowAccount:
               widget.screenType == ScreenType.DASHBOARD ? true : false,
           shouldShowFilter: widget.screenType == ScreenType.FLEET ||
-                  widget.screenType == ScreenType.LOCATION
+                  widget.screenType == ScreenType.ASSET_OPERATION
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
