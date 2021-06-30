@@ -31,21 +31,11 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
 
   SingleAssetOperation _singleAssetOperation;
   SingleAssetOperation get singleAssetOperation => _singleAssetOperation;
-
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
 
   SingleAssetOperationViewModel(AssetDetail detail) {
     this._assetDetail = detail;
@@ -58,12 +48,27 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
   }
 
   getSingleAssetOperation() async {
+    await getDateRangeFilterData();
     Logger().d("single asset operation " + _assetDetail.assetUid);
     SingleAssetOperation result = await _singleAssetOperationService
-        .getSingleAssetOperation(_startDate, _endDate, _assetDetail.assetUid);
+        .getSingleAssetOperation(startDate, endDate, _assetDetail.assetUid);
     _singleAssetOperation = result;
     if (_singleAssetOperation != null) setRequiredDates();
     _loading = false;
+    notifyListeners();
+  }
+
+  refresh() async {
+    await getDateRangeFilterData();
+    _refreshing = true;
+    notifyListeners();
+    Logger().d("single asset operation " + _assetDetail.assetUid);
+    SingleAssetOperation result = await _singleAssetOperationService
+        .getSingleAssetOperation(startDate, endDate, _assetDetail.assetUid);
+    _singleAssetOperation = result;
+    if (_singleAssetOperation != null) setRequiredDates();
+    _loading = false;
+    _refreshing = false;
     notifyListeners();
   }
 
@@ -85,10 +90,8 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     }
 
     if (_assetOperationDates.isEmpty) return;
-
     _minDate = Utils.getMinDate(_assetOperationDates);
     _maxDate = Utils.getMaxDate(_assetOperationDates);
-
     print('@@@ $_minDate');
   }
 }

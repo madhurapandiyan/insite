@@ -18,18 +18,6 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
   SingleAssetUtilization _singleAssetUtilization;
   SingleAssetUtilization get singleAssetUtilization => _singleAssetUtilization;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -46,8 +34,8 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
         await _assetUtilizationService.getSingleAssetUtilizationResult(
       assetDetail.assetUid,
       '-LastReportedUtilizationTime',
-      _startDate,
-      _endDate,
+      startDate,
+      endDate,
     );
     _singleAssetUtilization = result;
     _loading = false;
@@ -55,16 +43,16 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();
     SingleAssetUtilization result =
         await _assetUtilizationService.getSingleAssetUtilizationResult(
       assetDetail.assetUid,
       '-LastReportedUtilizationTime',
-      _startDate,
-      _endDate,
+      startDate,
+      endDate,
     );
-
     if (result != null) {
       _singleAssetUtilization = result;
       _refreshing = false;

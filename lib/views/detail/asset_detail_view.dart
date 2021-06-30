@@ -199,7 +199,7 @@ class _TabPageState extends State<AssetDetailView> {
                         _tabcontainer(3, "assets/images/loca.svg"),
                       ],
                     ),
-                    Expanded(
+                    Flexible(
                       child: selectedTabIndex == 0
                           ? AssetDashbaord(
                               detail: viewModel.assetDetail,

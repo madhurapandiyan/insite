@@ -18,18 +18,6 @@ class SingleAssetUtilizationListViewModel extends InsiteViewModel {
   List<AssetResult> _utilLizationList = [];
   List<AssetResult> get utilLizationList => _utilLizationList;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
-
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -42,10 +30,11 @@ class SingleAssetUtilizationListViewModel extends InsiteViewModel {
 
   getUtilList() async {
     Logger().d("getUtilList");
+    await getDateRangeFilterData();
     var result = await _assetUtilizationService.getUtilizationData(
       assetDetail.assetUid,
-      _startDate,
-      _endDate,
+      startDate,
+      endDate,
     );
     _utilLizationList = result;
     _loading = false;
@@ -53,12 +42,13 @@ class SingleAssetUtilizationListViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();
     var result = await _assetUtilizationService.getUtilizationData(
       assetDetail.assetUid,
-      _startDate,
-      _endDate,
+      startDate,
+      endDate,
     );
     if (result != null) {
       _utilLizationList.clear();
