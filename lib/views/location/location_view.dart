@@ -93,11 +93,7 @@ class _LocationViewState extends State<LocationView> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      super.widget));
+                          viewModel.refresh();
                         },
                         child: Container(
                           width: 90,
@@ -120,53 +116,62 @@ class _LocationViewState extends State<LocationView> {
                           ),
                         ),
                       ),
-                      Text(
-                        (dateRange == null || dateRange.isEmpty)
-                            ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                            : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
-                        style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          setState(() {
-                            dateRange = dateRange;
-                            viewModel.startDate =
-                                '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-
-                            viewModel.endDate =
-                                '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                            // viewModel.getAssetLocationHistoryResult();
-                          });
-                        },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            (dateRange == null || dateRange.isEmpty)
+                                ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
+                                : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                            style: TextStyle(
                                 color: white,
-                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              dateRange = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                    backgroundColor: transparent,
+                                    child: DateRangeView()),
+                              );
+                              if (dateRange != null && dateRange.isNotEmpty) {
+                                setState(() {
+                                  dateRange = dateRange;
+                                  viewModel.startDate =
+                                      '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
+                                  viewModel.endDate =
+                                      '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                                  viewModel.refresh();
+                                });
+                              }
+                            },
+                            child: Container(
+                              width: 90,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: tuna,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Date Range',
+                                  style: TextStyle(
+                                    color: white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -281,7 +286,12 @@ class _LocationViewState extends State<LocationView> {
                                 )),
                           ],
                         ),
-                      )
+                      ),
+                      viewModel.refreshing
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ),
