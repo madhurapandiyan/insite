@@ -197,13 +197,17 @@ class _SingleAssetUtilizationWidgetState
         ),
         Container(
           width: 15,
-          height: ((value / widget.assetUtilization.totalMonth.runtimeHours) *
-                      100) <=
-                  0
+          height: (value == 0 ||
+                  widget.assetUtilization.totalMonth.runtimeHours == 0)
               ? 0.0
-              : ((totalBarHeight / 100) +
-                  ((value / widget.assetUtilization.totalMonth.runtimeHours) *
-                      100)),
+              : ((value / widget.assetUtilization.totalMonth.runtimeHours) *
+                          100) <=
+                      0
+                  ? 0.0
+                  : ((totalBarHeight / 100) +
+                      ((value /
+                              widget.assetUtilization.totalMonth.runtimeHours) *
+                          100)),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(

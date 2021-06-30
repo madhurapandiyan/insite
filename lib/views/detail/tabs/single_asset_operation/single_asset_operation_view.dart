@@ -25,7 +25,7 @@ class SingleAssetOperationView extends StatefulWidget {
 }
 
 class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
-  List<DateTime> dateRange;
+  List<DateTime> dateRange = [];
 
   final CalendarController calendarController = CalendarController();
   CalendarView _view = CalendarView.week;
@@ -237,34 +237,33 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                       height: 15.0,
                                     ),
                                     GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (sfCalendarTimeIntervalHeight >
-                                                45)
-                                              sfCalendarTimeIntervalHeight -= 5;
-                                          });
-                                        },
-                                        child: Container(
-                                          width: 27.47,
-                                          height: 26.97,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 1.0,
-                                                color: darkhighlight,
-                                              ),
-                                            ],
-                                            border: Border.all(
-                                                width: 1.0,
-                                                color: darkhighlight),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/images/minus.svg",
-                                          ),
-                                        ),),
+                                      onTap: () {
+                                        setState(() {
+                                          if (sfCalendarTimeIntervalHeight > 45)
+                                            sfCalendarTimeIntervalHeight -= 5;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 27.47,
+                                        height: 26.97,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 1.0,
+                                              color: darkhighlight,
+                                            ),
+                                          ],
+                                          border: Border.all(
+                                              width: 1.0, color: darkhighlight),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/images/minus.svg",
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -310,10 +309,9 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             ),
             InsiteTableRowItem(
               title: 'Distance Travelled',
-              content: assetOperation
-                      .assetOperations.assets.first.distanceTravelledKilometers
-                      .toString()
-                      .contains('null')
+              content: assetOperation.assetOperations.assets.first
+                          .distanceTravelledKilometers ==
+                      null
                   ? '-'
                   : '${assetOperation.assetOperations.assets.first.distanceTravelledKilometers} km',
             ),
@@ -323,17 +321,21 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
           children: [
             InsiteTableRowItem(
               title: 'Last Known Operator',
-              content: assetOperation
-                          .assetOperations.assets.first.lastKnownOperator ==
-                      null
-                  ? '-'
-                  : assetOperation
-                      .assetOperations.assets.first.lastKnownOperator,
+              content: assetOperation.assetOperations.assets.first
+                          .lastKnownOperator.runtimeType ==
+                      String
+                  ? assetOperation.assetOperations.assets.first
+                      .lastKnownOperator.runtimeType
+                  : '-',
             ),
             InsiteTableRowItem(
               title: 'This data was last refreshed on',
-              content: format.format(assetOperation.assetOperations.assets.first
-                  .assetLastReceivedEvent.lastReceivedEventTimeLocal),
+              content: assetOperation.assetOperations.assets.first
+                          .assetLastReceivedEvent.lastReceivedEventTimeLocal ==
+                      null
+                  ? '-'
+                  : format.format(assetOperation.assetOperations.assets.first
+                      .assetLastReceivedEvent.lastReceivedEventTimeLocal),
             ),
             InsiteTableRowItem(
               title: '',
@@ -362,16 +364,17 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
       List<SingleAssetOperationChartData> chartData) {
     final List<Appointment> appointments = <Appointment>[];
 
-    for (SingleAssetOperationChartData item in chartData) {
-      final Appointment chartPlot = Appointment(
-        startTime: item.startTime,
-        endTime: item.endTime,
-        color: tango,
-        subject: item.segmentType,
-      );
+    if (chartData.isNotEmpty)
+      for (SingleAssetOperationChartData item in chartData) {
+        final Appointment chartPlot = Appointment(
+          startTime: item.startTime,
+          endTime: item.endTime,
+          color: tango,
+          subject: item.segmentType,
+        );
 
-      appointments.add(chartPlot);
-    }
+        appointments.add(chartPlot);
+      }
 
     return appointments;
   }
