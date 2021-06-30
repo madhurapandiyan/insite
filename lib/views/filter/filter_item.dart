@@ -176,7 +176,7 @@ class _FilterItemState extends State<FilterItem> {
                           ),
                           Expanded(
                             child: Text(
-                              Utils.getFilterTitle(data),
+                              Utils.getFilterTitleForList(data),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.white,
