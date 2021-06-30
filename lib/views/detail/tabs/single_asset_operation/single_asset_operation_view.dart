@@ -264,7 +264,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                           child: SvgPicture.asset(
                                             "assets/images/minus.svg",
                                           ),
-                                        )),
+                                        ),),
                                   ],
                                 ),
                               ),
