@@ -109,7 +109,25 @@ class Utils {
     return (input.hour + rep);
   }
 
-  static String getFilterTitle(FilterData data) {
+  static String getFilterTitleForChipView(FilterData data) {
+    String title = data.title;
+    if (data.type == FilterType.IDLING_LEVEL) {
+      if (data.extras[1].isEmpty) {
+        title = "Idle %: " + ">" + data.extras[0] + "%";
+      } else {
+        title = "Idle %: " + data.extras[0] + "-" + data.extras[1] + "%";
+      }
+    } else if (data.type == FilterType.FUEL_LEVEL) {
+      if (title == "100") {
+        title = "Fuel Level : " + "<=" + title + "%";
+      } else {
+        title = "Fuel Level : " + "<" + title + "%";
+      }
+    }
+    return title;
+  }
+
+  static String getFilterTitleForList(FilterData data) {
     String title = data.title;
     if (data.type == FilterType.IDLING_LEVEL) {
       if (data.extras[1].isEmpty) {
@@ -150,6 +168,7 @@ class Utils {
 
     return maxDate;
   }
+
   imageData(String model) {
     if (model.contains("SHINRAI")) {
       return "assets/images/shinrai.png";
