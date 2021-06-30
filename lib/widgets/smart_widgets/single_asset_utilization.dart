@@ -6,6 +6,7 @@ import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
   final AssetUtilization assetUtilization;
+  final double greatestNumber;
   @override
   _SingleAssetUtilizationWidgetState createState() =>
       _SingleAssetUtilizationWidgetState();
@@ -13,6 +14,7 @@ class SingleAssetUtilizationWidget extends StatefulWidget {
   const SingleAssetUtilizationWidget({
     Key key,
     @required this.assetUtilization,
+    @required this.greatestNumber,
   }) : super(key: key);
 }
 
@@ -197,17 +199,18 @@ class _SingleAssetUtilizationWidgetState
         ),
         Container(
           width: 15,
-          height: (value == 0 ||
-                  widget.assetUtilization.totalMonth.runtimeHours == 0)
+          height: (value == 0 || widget.greatestNumber == 0)
               ? 0.0
-              : ((value / widget.assetUtilization.totalMonth.runtimeHours) *
-                          100) <=
-                      0
-                  ? 0.0
-                  : ((totalBarHeight / 100) +
-                      ((value /
-                              widget.assetUtilization.totalMonth.runtimeHours) *
-                          100)),
+              // : ((value / widget.assetUtilization.totalMonth.runtimeHours) *
+              //             100) <=
+              //         0
+              //     ? 0.0
+              // : ((totalBarHeight / 100) +
+              //     ((value /
+              //             widget.assetUtilization.totalMonth.runtimeHours) *
+              //         100)),
+              : ((((value / widget.greatestNumber) * 100) / totalBarHeight) *
+                  100),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(

@@ -72,15 +72,19 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  //   child: AssetUtilizationWidget(
-                  //     assetUtilization: viewModel.utilizationSummary != null
-                  //         ? viewModel.utilizationSummary
-                  //         : null,
-                  //     isLoading: viewModel.assetUtilizationLoading,
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AssetUtilizationWidget(
+                      assetUtilization: viewModel.utilizationSummary != null
+                          ? viewModel.utilizationSummary
+                          : null,
+                      totalGreatestNumber:
+                          viewModel.utilizationTotalGreatestValue,
+                      averageGreatestNumber:
+                          viewModel.utilizationAverageGreatestValue,
+                      isLoading: viewModel.assetUtilizationLoading,
+                    ),
+                  ),
                   SizedBox(
                     height: 20.0,
                   ),

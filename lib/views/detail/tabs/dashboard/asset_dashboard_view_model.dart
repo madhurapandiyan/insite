@@ -6,6 +6,7 @@ import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
@@ -28,6 +29,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
   bool _postingNote = false;
   bool get postingNote => _postingNote;
 
+  double _utilizationGreatestValue;
+  double get utilizationGreatestValue => _utilizationGreatestValue;
+
   AssetDashboardViewModel(AssetDetail detail) {
     this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
@@ -44,6 +48,10 @@ class AssetDashboardViewModel extends InsiteViewModel {
         assetDetail.assetUid,
         '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
+    _utilizationGreatestValue = Utils.greatestOfThree(
+        _assetUtilization.totalDay.runtimeHours,
+        _assetUtilization.totalWeek.runtimeHours,
+        _assetUtilization.totalMonth.runtimeHours);
     _loading = false;
     notifyListeners();
   }

@@ -46,6 +46,13 @@ class HomeViewModel extends InsiteViewModel {
   bool _assetUtilizationLoading = true;
   bool get assetUtilizationLoading => _assetUtilizationLoading;
 
+  double _utilizationTotalGreatestValue;
+  double get utilizationTotalGreatestValue => _utilizationTotalGreatestValue;
+
+  double _utilizationAverageGreatestValue;
+  double get utilizationAverageGreatestValue =>
+      _utilizationAverageGreatestValue;
+
   AssetCount _assetStatusData;
   AssetCount get assetStatusData => _assetStatusData;
 
@@ -160,6 +167,14 @@ class HomeViewModel extends InsiteViewModel {
         await _assetUtilizationService.getUtilizationSummary(
             '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _utilizationSummary = result;
+    _utilizationTotalGreatestValue = Utils.greatestOfThree(
+        _utilizationSummary.totalDay.runtimeHours,
+        _utilizationSummary.totalWeek.runtimeHours,
+        _utilizationSummary.totalMonth.runtimeHours);
+    _utilizationAverageGreatestValue = Utils.greatestOfThree(
+        _utilizationSummary.averageDay.runtimeHours,
+        _utilizationSummary.averageWeek.runtimeHours,
+        _utilizationSummary.averageMonth.runtimeHours);
     _assetUtilizationLoading = false;
     notifyListeners();
   }

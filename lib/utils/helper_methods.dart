@@ -190,4 +190,8 @@ class Utils {
   static double checkNull(double value) {
     return value == null ? 0.0 : value;
   }
+
+  static double greatestOfThree(double a, double b, double c) {
+    return (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+  }
 }
