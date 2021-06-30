@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
-import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -48,103 +47,87 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16)),
                 color: mediumgrey),
-            child: Stack(
+            child: Column(
               children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              viewModel.refresh();
-                            },
-                            child: Container(
-                              width: 90,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: tuna,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(4),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Refresh',
-                                  style: TextStyle(
-                                    color: white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: 90,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: tuna,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Refresh',
+                              style: TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                (dateRange == null || dateRange.isEmpty)
-                                    ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                                    : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
-                                style: TextStyle(
-                                    color: white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  dateRange = await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) => Dialog(
-                                        backgroundColor: transparent,
-                                        child: DateRangeView()),
-                                  );
-                                  if (dateRange != null &&
-                                      dateRange.isNotEmpty) {
-                                    setState(() {
-                                      dateRange = dateRange;
-                                      viewModel.startDate =
-                                          '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-                                      viewModel.endDate =
-                                          '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                                    });
-                                    viewModel.refresh();
-                                  }
-                                },
-                                child: Container(
-                                  width: 90,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: tuna,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(4),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Date Range',
-                                      style: TextStyle(
-                                        color: white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      Text(
+                        (dateRange == null || dateRange.isEmpty)
+                            ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
+                            : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                        style: TextStyle(
+                            color: white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          setState(() {
+                            dateRange = dateRange;
+                            viewModel.startDate =
+                                '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
 
+                            viewModel.endDate =
+                                '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
+                            viewModel.getSingleAssetOperation();
+                          });
+                        },
+                        child: Container(
+                          width: 90,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: tuna,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Date Range',
+                              style: TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 viewModel.singleAssetOperation != null
                     ? assetOperationTable(viewModel.singleAssetOperation)
                     : SizedBox(),
@@ -272,11 +255,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                         )
                       : EmptyView(title: 'No data here'),
                 ),
-                viewModel.refreshing
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox()
               ],
             ),
           );
