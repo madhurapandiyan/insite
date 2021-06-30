@@ -63,6 +63,7 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<bool> updateAssetCount(AssetCount assetCount, FilterType type) async {
+    Logger().d("updateAssetCount");
     List<CountData> counts = [];
     try {
       for (Count countData in assetCount.countData) {
@@ -78,7 +79,7 @@ class AssetStatusService extends DataBaseService {
         bool shouldUpdate = false;
         int index = -1;
         for (var i = 0; i < size; i++) {
-          FilterData data = await assetCountBox.getAt(i);
+          AssetCountData data = await assetCountBox.getAt(i);
           if (data.type == assetCountData.type) {
             shouldUpdate = true;
             index = i;
@@ -104,27 +105,51 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount> getFuellevel(type) async {
+  Future<AssetCount> getFuellevel(FilterType type) async {
+    Logger().d("getFuellevel");
     try {
-      AssetCount fuelLevelDatarespone = await MyApi()
-          .getClient()
-          .fuelLevel(type, "25-50-75-100", accountSelected.CustomerUID);
-      print('data:${fuelLevelDatarespone.countData[0].countOf}');
-      return fuelLevelDatarespone;
+      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+      if (assetCountFromLocal != null) {
+        Logger().d("getAssetCount from local");
+        return assetCountFromLocal;
+      } else {
+        AssetCount fuelLevelDatarespone = await MyApi().getClient().fuelLevel(
+            "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
+        print('data:${fuelLevelDatarespone.countData[0].countOf}');
+        bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+        if (updated) {
+          return fuelLevelDatarespone;
+        } else {
+          return null;
+        }
+      }
     } catch (e) {
       Logger().e(e);
       return null;
     }
   }
 
-  Future<AssetCount> getIdlingLevelData(startDate, endDate) async {
+  Future<AssetCount> getIdlingLevelData(
+      startDate, endDate, FilterType type) async {
+    Logger().d("getIdlingLevelData");
     try {
-      AssetCount idlingLevelDataResponse = await MyApi()
-          .getClient()
-          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
-              accountSelected.CustomerUID);
-      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-      return idlingLevelDataResponse;
+      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+      if (assetCountFromLocal != null) {
+        Logger().d("getAssetCount from local");
+        return assetCountFromLocal;
+      } else {
+        AssetCount idlingLevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+                accountSelected.CustomerUID);
+        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+        bool updated = await updateAssetCount(idlingLevelDataResponse, type);
+        if (updated) {
+          return idlingLevelDataResponse;
+        } else {
+          return null;
+        }
+      }
     } catch (e) {
       Logger().e(e);
       return null;

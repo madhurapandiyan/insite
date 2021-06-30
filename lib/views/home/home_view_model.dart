@@ -23,8 +23,6 @@ class HomeViewModel extends InsiteViewModel {
   var _navigationService = locator<NavigationService>();
   var _assetService = locator<AssetStatusService>();
   var _assetLocationService = locator<AssetLocationService>();
-  var _fuelLevelService = locator<FuelLevelService>();
-  var _idlingLevelService = locator<IdlingLevelService>();
   var _localStorageService = locator<LocalStorageService>();
 
   Logger log;
@@ -62,7 +60,6 @@ class HomeViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _assetService.setUp();
     _assetLocationService.setUp();
-    _fuelLevelService.setUp();
     _localStorageService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
@@ -119,7 +116,7 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getFuelLevelData() async {
-    AssetCount result = await _fuelLevelService.getFuellevel();
+    AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     _fuelLevelData = result;
     for (var fuelData in _fuelLevelData.countData) {
       if (fuelData.countOf != "Not Reporting") {
@@ -132,16 +129,16 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelData() async {
-    AssetCount result =
-        await _idlingLevelService.getIdlingLevel(startDate, endDate);
+    AssetCount result = await _assetService.getIdlingLevelData(
+        startDate, endDate, FilterType.IDLING_LEVEL);
     _idlingLevelData = result;
     _idlingLevelDataloading = false;
     notifyListeners();
   }
 
-  onFilterSelected(FilterData data) {
+  onFilterSelected(FilterData data) async {
     Logger().d("onFilterSelected " + data.count);
-    addFilter(data);
+    await addFilter(data);
     _navigationService.navigateWithTransition(FleetView(),
         transition: "rightToLeft");
   }
