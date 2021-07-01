@@ -33,13 +33,21 @@ class CumulativeViewModel extends InsiteViewModel {
   getRunTimeCumulative() async {
     RunTimeCumulative result =
         await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
-    _runTimeCumulative = result;
+    if (result.cumulatives == null)
+      _runTimeCumulative = null;
+    else
+      _runTimeCumulative = result;
+    _loading = false;
+    notifyListeners();
   }
 
   getFuelBurnedCumulative() async {
     FuelBurnedCumulative result = await _utilizationGraphService
         .getFuelBurnedCumulative(startDate, endDate);
-    _fuelBurnedCumulative = result;
+    if (result.cumulatives == null)
+      _fuelBurnedCumulative = null;
+    else
+      _fuelBurnedCumulative = result;
     _loading = false;
     notifyListeners();
   }
@@ -49,10 +57,16 @@ class CumulativeViewModel extends InsiteViewModel {
     notifyListeners();
     RunTimeCumulative resultRuntime =
         await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
-    _runTimeCumulative = resultRuntime;
+    if (resultRuntime.cumulatives == null)
+      _runTimeCumulative = null;
+    else
+      _runTimeCumulative = resultRuntime;
     FuelBurnedCumulative resultFuel = await _utilizationGraphService
         .getFuelBurnedCumulative(startDate, endDate);
-    _fuelBurnedCumulative = resultFuel;
+    if (resultFuel.cumulatives == null)
+      _fuelBurnedCumulative = null;
+    else
+      _fuelBurnedCumulative = resultFuel;
     _isRefreshing = false;
     notifyListeners();
   }

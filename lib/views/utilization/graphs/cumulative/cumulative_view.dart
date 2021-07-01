@@ -76,9 +76,12 @@ class CumulativeViewState extends State<CumulativeView> {
                 Expanded(
                   child: rangeChoice == 1
                       ? CumulativeChart(
-                          runTimeCumulative: viewModel.runTimeCumulative)
+                          runTimeCumulative: viewModel.runTimeCumulative,
+                          cumulativeChartType: CumulativeChartType.RUNTIME,
+                        )
                       : CumulativeChart(
                           fuelBurnedCumulative: viewModel.fuelBurnedCumulative,
+                          cumulativeChartType: CumulativeChartType.FUELBURNED,
                         ),
                 ),
               ],

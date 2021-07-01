@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'runtime_hours_view_model.dart';
 
 class RuntimeHoursView extends StatefulWidget {
-  const RuntimeHoursView({Key key,})
-      : super(key: key);
+  const RuntimeHoursView({
+    Key key,
+  }) : super(key: key);
 
   @override
   RuntimeHoursViewState createState() => RuntimeHoursViewState();
@@ -28,7 +30,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
   }
 
   int rangeChoice = 1;
-  
+
   refresh() {
     viewModel.refresh();
   }
@@ -38,7 +40,8 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
     return ViewModelBuilder<RuntimeHoursViewModel>.reactive(
       builder:
           (BuildContext context, RuntimeHoursViewModel viewModel, Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(
@@ -60,33 +63,37 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: viewModel.utilLizationListData.length,
-                      controller: viewModel.scrollController,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PercentageWidget(
-                            value: rangeChoice == 1
-                                ? ('${viewModel.utilLizationListData[index].runtimeHours}')
-                                : rangeChoice == 2
-                                    ? ('${viewModel.utilLizationListData[index].workingHours}')
-                                    : ('${viewModel.utilLizationListData[index].idleHours}'),
-                            label: viewModel
-                                .utilLizationListData[index].assetSerialNumber,
-                            percentage: rangeChoice == 1
-                                ? (viewModel.utilLizationListData[index]
-                                        .runtimeHours /
-                                    100)
-                                : rangeChoice == 2
+                  child: viewModel.utilLizationListData.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: viewModel.utilLizationListData.length,
+                          controller: viewModel.scrollController,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PercentageWidget(
+                                value: rangeChoice == 1
+                                    ? ('${viewModel.utilLizationListData[index].runtimeHours}')
+                                    : rangeChoice == 2
+                                        ? ('${viewModel.utilLizationListData[index].workingHours}')
+                                        : ('${viewModel.utilLizationListData[index].idleHours}'),
+                                label: viewModel.utilLizationListData[index]
+                                    .assetSerialNumber,
+                                percentage: rangeChoice == 1
                                     ? (viewModel.utilLizationListData[index]
-                                            .workingHours /
+                                            .runtimeHours /
                                         100)
-                                    : (viewModel.utilLizationListData[index]
-                                            .idleHours /
-                                        10),
-                            color: sandyBrown);
-                      }),
+                                    : rangeChoice == 2
+                                        ? (viewModel.utilLizationListData[index]
+                                                .workingHours /
+                                            100)
+                                        : (viewModel.utilLizationListData[index]
+                                                .idleHours /
+                                            10),
+                                color: sandyBrown);
+                          })
+                      : EmptyView(
+                          title: "No Assets Found",
+                        ),
                 ),
                 viewModel.loadingMore
                     ? Padding(

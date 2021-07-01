@@ -4,7 +4,6 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
-import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map_home.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
@@ -139,7 +138,6 @@ class _HomeViewState extends State<HomeView> {
                   //     isLoading: viewModel.assetStatusloading,
                   //   ),
                   // ),
-                  
                 ],
               ),
             ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'distance_travelled_view_model.dart';
 
 class DistanceTravelledView extends StatefulWidget {
-  const DistanceTravelledView({Key key})
-      : super(key: key);
+  const DistanceTravelledView({Key key}) : super(key: key);
 
   @override
   DistanceTravelledViewState createState() => DistanceTravelledViewState();
@@ -36,35 +36,41 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
     return ViewModelBuilder<DistanceTravelledViewModel>.reactive(
       builder: (BuildContext context, DistanceTravelledViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: viewModel.utilLizationListData.length,
-                      controller: viewModel.scrollController,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PercentageWidget(
-                            label: viewModel
-                                .utilLizationListData[index].assetSerialNumber,
-                            value: viewModel.utilLizationListData[index]
-                                        .distanceTravelledKilometers ==
-                                    null
-                                ? 'NA'
-                                : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
-                            percentage: viewModel.utilLizationListData[index]
-                                        .distanceTravelledKilometers ==
-                                    null
-                                ? 0
-                                : viewModel.utilLizationListData[index]
-                                        .distanceTravelledKilometers /
-                                    1000,
-                            color: creamCan);
-                      }),
+                  child: viewModel.utilLizationListData.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: viewModel.utilLizationListData.length,
+                          controller: viewModel.scrollController,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PercentageWidget(
+                                label: viewModel.utilLizationListData[index]
+                                    .assetSerialNumber,
+                                value: viewModel.utilLizationListData[index]
+                                            .distanceTravelledKilometers ==
+                                        null
+                                    ? 'NA'
+                                    : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
+                                percentage: viewModel
+                                            .utilLizationListData[index]
+                                            .distanceTravelledKilometers ==
+                                        null
+                                    ? 0
+                                    : viewModel.utilLizationListData[index]
+                                            .distanceTravelledKilometers /
+                                        1000,
+                                color: creamCan);
+                          })
+                      : EmptyView(
+                          title: "No Assets Found",
+                        ),
                 ),
                 viewModel.loadingMore
                     ? Padding(

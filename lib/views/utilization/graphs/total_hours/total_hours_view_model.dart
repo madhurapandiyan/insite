@@ -32,7 +32,10 @@ class TotalHoursViewModel extends InsiteViewModel {
   getTotalHours() async {
     TotalHours result = await _utilizationGraphService.getTotalHours(
         _range, startDate, endDate, 1, 25, true);
-    _totalHours = result;
+    if (result.cumulatives == null)
+      _totalHours = null;
+    else
+      _totalHours = result;
     _loading = false;
     notifyListeners();
   }
@@ -42,7 +45,10 @@ class TotalHoursViewModel extends InsiteViewModel {
     notifyListeners();
     TotalHours result = await _utilizationGraphService.getTotalHours(
         _range, startDate, endDate, 1, 25, true);
-    _totalHours = result;
+    if (result.cumulatives == null)
+      _totalHours = null;
+    else
+      _totalHours = result;
     _isRefreshing = false;
     notifyListeners();
   }
