@@ -88,6 +88,16 @@ abstract class RestClient {
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
   Future<AssetResponse> assetSummary(@Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
+    @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+    Future<AssetLocationData> assetLocationWithCluster(
+      @Query("latitude") double latitude,
+      @Query("longitude") double longitude,
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("radiuskm") double radiusKm,
+      @Query("sort") String sort,
+      @Header("x-visionlink-customeruid") customerId
+    );
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<location.AssetLocationData> assetLocation(

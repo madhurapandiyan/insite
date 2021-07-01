@@ -26,6 +26,29 @@ class AssetLocationService extends BaseService {
     }
   }
 
+  Future<AssetLocationData> getAssetLocationWithCluster(
+    int pageNumber,
+    int pageSize,
+    String sort,
+    double latitude,
+    double longitude,
+    double radiusKm,
+  ) async {
+    try {
+      if (pageNumber != null && pageSize != null && sort != null) {
+        AssetLocationData result = await MyApi()
+            .getClient()
+            .assetLocationWithCluster(latitude, longitude, pageNumber, pageSize,
+                radiusKm, sort, accountSelected.CustomerUID);
+        return result;
+      }
+      return null;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
   Future<AssetLocationData> getAssetLocation(
       int pageNumber, int pageSize, String sort, appliedFilters) async {
     try {
