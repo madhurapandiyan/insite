@@ -47,214 +47,235 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16)),
                 color: mediumgrey),
-            child: Column(
+            child: Stack(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Refresh',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              viewModel.refresh();
+                            },
+                            child: Container(
+                              width: 90,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: tuna,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        (dateRange == null || dateRange.isEmpty)
-                            ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                            : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
-                        style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          setState(() {
-                            dateRange = dateRange;
-                            viewModel.startDate =
-                                '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-
-                            viewModel.endDate =
-                                '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                            viewModel.getSingleAssetOperation();
-                          });
-                        },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                viewModel.singleAssetOperation != null
-                    ? assetOperationTable(viewModel.singleAssetOperation)
-                    : SizedBox(),
-                Expanded(
-                  child: viewModel.singleAssetOperation != null
-                      ? Stack(
-                          children: [
-                            SfCalendar(
-                              showNavigationArrow: false,
-                              backgroundColor: ship_grey,
-                              cellBorderColor: black,
-                              showCurrentTimeIndicator: false,
-                              controller: calendarController,
-                              view: CalendarView.week,
-                              todayTextStyle: TextStyle(color: ship_grey),
-                              timeSlotViewSettings: TimeSlotViewSettings(
-                                dateFormat: 'd',
-                                dayFormat: 'MMM',
-                                timeIntervalHeight:
-                                    sfCalendarTimeIntervalHeight,
-                                timeTextStyle: TextStyle(color: white),
-                              ),
-                              minDate: viewModel
-                                      .singleAssetOperation
-                                      .assetOperations
-                                      .assets
-                                      .first
-                                      .assetLocalDates
-                                      .isEmpty
-                                  ? DateTime.now().subtract(
-                                      Duration(days: DateTime.now().weekday))
-                                  : viewModel.minDate,
-                              maxDate: viewModel
-                                      .singleAssetOperation
-                                      .assetOperations
-                                      .assets
-                                      .first
-                                      .assetLocalDates
-                                      .isEmpty
-                                  ? DateTime.now()
-                                  : viewModel.maxDate,
-                              onViewChanged: onViewChanged,
-                              viewHeaderStyle: ViewHeaderStyle(
-                                dayTextStyle: TextStyle(color: white),
-                                dateTextStyle: TextStyle(color: white),
-                                backgroundColor: tuna,
-                              ),
-                              dataSource: AppointmentDataSource(
-                                getRecursiveAppointments(viewModel.chartData),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 90, horizontal: 16),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 28.0,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          sfCalendarTimeIntervalHeight += 5;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 27.47,
-                                        height: 26.97,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5.0)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 1.0,
-                                              color: darkhighlight,
-                                            ),
-                                          ],
-                                          border: Border.all(
-                                              width: 1.0, color: darkhighlight),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          "assets/images/plus.svg",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15.0,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (sfCalendarTimeIntervalHeight > 45)
-                                            sfCalendarTimeIntervalHeight -= 5;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 27.47,
-                                        height: 26.97,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5.0)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 1.0,
-                                              color: darkhighlight,
-                                            ),
-                                          ],
-                                          border: Border.all(
-                                              width: 1.0, color: darkhighlight),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                        child: SvgPicture.asset(
-                                          "assets/images/minus.svg",
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              child: Center(
+                                child: Text(
+                                  'Refresh',
+                                  style: TextStyle(
+                                    color: white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ],
-                        )
-                      : EmptyView(title: 'No data here'),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                (dateRange == null || dateRange.isEmpty)
+                                    ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
+                                    : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                                style: TextStyle(
+                                    color: white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  dateRange = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => Dialog(
+                                        backgroundColor: transparent,
+                                        child: DateRangeView()),
+                                  );
+                                  if (dateRange != null &&
+                                      dateRange.isNotEmpty) {
+                                    setState(() {
+                                      dateRange = dateRange;
+                                    });
+                                    viewModel.refresh();
+                                  }
+                                },
+                                child: Container(
+                                  width: 90,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: tuna,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Date Range',
+                                      style: TextStyle(
+                                        color: white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    viewModel.singleAssetOperation != null
+                        ? assetOperationTable(viewModel.singleAssetOperation)
+                        : SizedBox(),
+                    Expanded(
+                      child: viewModel.singleAssetOperation != null
+                          ? Stack(
+                              children: [
+                                SfCalendar(
+                                  showNavigationArrow: false,
+                                  backgroundColor: ship_grey,
+                                  cellBorderColor: black,
+                                  showCurrentTimeIndicator: false,
+                                  controller: calendarController,
+                                  view: CalendarView.week,
+                                  todayTextStyle: TextStyle(color: ship_grey),
+                                  timeSlotViewSettings: TimeSlotViewSettings(
+                                    dateFormat: 'd',
+                                    dayFormat: 'MMM',
+                                    timeIntervalHeight:
+                                        sfCalendarTimeIntervalHeight,
+                                    timeTextStyle: TextStyle(color: white),
+                                  ),
+                                  minDate: viewModel
+                                          .singleAssetOperation
+                                          .assetOperations
+                                          .assets
+                                          .first
+                                          .assetLocalDates
+                                          .isEmpty
+                                      ? DateTime.now().subtract(Duration(
+                                          days: DateTime.now().weekday))
+                                      : viewModel.minDate,
+                                  maxDate: viewModel
+                                          .singleAssetOperation
+                                          .assetOperations
+                                          .assets
+                                          .first
+                                          .assetLocalDates
+                                          .isEmpty
+                                      ? DateTime.now()
+                                      : viewModel.maxDate,
+                                  onViewChanged: onViewChanged,
+                                  viewHeaderStyle: ViewHeaderStyle(
+                                    dayTextStyle: TextStyle(color: white),
+                                    dateTextStyle: TextStyle(color: white),
+                                    backgroundColor: tuna,
+                                  ),
+                                  dataSource: AppointmentDataSource(
+                                    getRecursiveAppointments(
+                                        viewModel.chartData),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 90, horizontal: 16),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 28.0,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              sfCalendarTimeIntervalHeight += 5;
+                                            });
+                                          },
+                                          child: Container(
+                                            width: 27.47,
+                                            height: 26.97,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurRadius: 1.0,
+                                                  color: darkhighlight,
+                                                ),
+                                              ],
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color: darkhighlight),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/plus.svg",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              if (sfCalendarTimeIntervalHeight >
+                                                  45)
+                                                sfCalendarTimeIntervalHeight -=
+                                                    5;
+                                            });
+                                          },
+                                          child: Container(
+                                            width: 27.47,
+                                            height: 26.97,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurRadius: 1.0,
+                                                  color: darkhighlight,
+                                                ),
+                                              ],
+                                              border: Border.all(
+                                                  width: 1.0,
+                                                  color: darkhighlight),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/minus.svg",
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : EmptyView(title: 'No data here'),
+                    ),
+                  ],
                 ),
+                viewModel.refreshing
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SizedBox()
               ],
             ),
           );

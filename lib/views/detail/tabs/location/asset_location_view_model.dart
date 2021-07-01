@@ -27,17 +27,8 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  String _startDate =
-      '${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).month}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).day}/${DateTime.now().subtract(Duration(days: DateTime.now().weekday)).year}';
-  set startDate(String startDate) {
-    this._startDate = startDate;
-  }
-
-  String _endDate =
-      '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
-  set endDate(String endDate) {
-    this._endDate = endDate;
-  }
+  bool _refreshing = true;
+  bool get refreshing => _refreshing;
 
   Set<Marker> markers = Set();
   int index = 1;
@@ -58,7 +49,7 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   getAssetLocationHistoryResult() async {
     AssetLocationHistory result = await _assetLocationHistoryService
-        .getAssetLocationHistory(_endDate, _startDate);
+        .getAssetLocationHistory(endDate, startDate);
     _assetLocationHistory = result;
     if (_assetLocationHistory != null) {
       updateMarkers();
@@ -67,7 +58,23 @@ class AssetLocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  refresh() async {
+    await getDateRangeFilterData();
+    _refreshing = true;
+    notifyListeners();
+    AssetLocationHistory result = await _assetLocationHistoryService
+        .getAssetLocationHistory(endDate, startDate);
+    _assetLocationHistory = result;
+    if (_assetLocationHistory != null) {
+      updateMarkers();
+    }
+    _loading = false;
+    _refreshing = false;
+    notifyListeners();
+  }
+
   updateMarkers() {
+    markers.clear();
     for (var assetLocation in assetLocationHistory.assetLocation) {
       markers.add(Marker(
           markerId: MarkerId('${index++}'),

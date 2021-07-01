@@ -111,7 +111,9 @@ class Utils {
 
   static String getFilterTitleForChipView(FilterData data) {
     String title = data.title;
-    if (data.type == FilterType.IDLING_LEVEL) {
+    if (data.type == FilterType.DATE_RANGE) {
+      title = "Date " + "(" + data.extras[0] + " - " + data.extras[1] + ")";
+    } else if (data.type == FilterType.IDLING_LEVEL) {
       if (data.extras[1].isEmpty) {
         title = "Idle %: " + ">" + data.extras[0] + "%";
       } else {
@@ -129,7 +131,9 @@ class Utils {
 
   static String getFilterTitleForList(FilterData data) {
     String title = data.title;
-    if (data.type == FilterType.IDLING_LEVEL) {
+    if (data.type == FilterType.DATE_RANGE) {
+      title = "Date " + data.extras[0] + " " + data.extras[1];
+    } else if (data.type == FilterType.IDLING_LEVEL) {
       if (data.extras[1].isEmpty) {
         title = ">" + data.extras[0] + "%";
       } else {
