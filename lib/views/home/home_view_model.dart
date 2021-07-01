@@ -5,13 +5,16 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -24,6 +27,7 @@ class HomeViewModel extends InsiteViewModel {
   var _assetService = locator<AssetStatusService>();
   var _assetLocationService = locator<AssetLocationService>();
   var _localStorageService = locator<LocalStorageService>();
+  var _assetUtilizationService = locator<AssetUtilizationService>();
 
   Logger log;
 
@@ -39,6 +43,16 @@ class HomeViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
+  bool _assetUtilizationLoading = true;
+  bool get assetUtilizationLoading => _assetUtilizationLoading;
+
+  double _utilizationTotalGreatestValue;
+  double get utilizationTotalGreatestValue => _utilizationTotalGreatestValue;
+
+  double _utilizationAverageGreatestValue;
+  double get utilizationAverageGreatestValue =>
+      _utilizationAverageGreatestValue;
+
   AssetCount _assetStatusData;
   AssetCount get assetStatusData => _assetStatusData;
 
@@ -51,6 +65,9 @@ class HomeViewModel extends InsiteViewModel {
   AssetCount _idlingLevelData;
   AssetCount get idlingLevelData => _idlingLevelData;
 
+  UtilizationSummary _utilizationSummary;
+  UtilizationSummary get utilizationSummary => _utilizationSummary;
+
   Set<Marker> markers = {};
   int markerId = 1;
   List<ChartSampleData> statusChartData = [];
@@ -61,12 +78,14 @@ class HomeViewModel extends InsiteViewModel {
     _assetService.setUp();
     _assetLocationService.setUp();
     _localStorageService.setUp();
+    _assetUtilizationService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetStatusData();
       getFuelLevelData();
       getIdlingLevelData();
       getAssetLocation();
+      getUtilizationSummary();
     });
   }
 
@@ -141,5 +160,22 @@ class HomeViewModel extends InsiteViewModel {
     await addFilter(data);
     _navigationService.navigateWithTransition(FleetView(),
         transition: "rightToLeft");
+  }
+
+  getUtilizationSummary() async {
+    UtilizationSummary result =
+        await _assetUtilizationService.getUtilizationSummary(
+            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
+    _utilizationSummary = result;
+    _utilizationTotalGreatestValue = Utils.greatestOfThree(
+        _utilizationSummary.totalDay.runtimeHours,
+        _utilizationSummary.totalWeek.runtimeHours,
+        _utilizationSummary.totalMonth.runtimeHours);
+    _utilizationAverageGreatestValue = Utils.greatestOfThree(
+        _utilizationSummary.averageDay.runtimeHours,
+        _utilizationSummary.averageWeek.runtimeHours,
+        _utilizationSummary.averageMonth.runtimeHours);
+    _assetUtilizationLoading = false;
+    notifyListeners();
   }
 }

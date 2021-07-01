@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
-  final double idleHighestValue;
-  final double runtimeHighestValue;
-  final double workingHighestValue;
   final AssetUtilization assetUtilization;
+  final double greatestNumber;
   @override
   _SingleAssetUtilizationWidgetState createState() =>
       _SingleAssetUtilizationWidgetState();
@@ -15,9 +14,7 @@ class SingleAssetUtilizationWidget extends StatefulWidget {
   const SingleAssetUtilizationWidget({
     Key key,
     @required this.assetUtilization,
-    @required this.idleHighestValue,
-    @required this.runtimeHighestValue,
-    @required this.workingHighestValue,
+    @required this.greatestNumber,
   }) : super(key: key);
 }
 
@@ -86,26 +83,29 @@ class _SingleAssetUtilizationWidgetState
                     children: [
                       barChart(
                         'Today',
-                        checkNull(
+                        Utils.checkNull(
                             widget.assetUtilization.totalDay.workingHours),
-                        checkNull(widget.assetUtilization.totalDay.idleHours),
-                        checkNull(
+                        Utils.checkNull(
+                            widget.assetUtilization.totalDay.idleHours),
+                        Utils.checkNull(
                             widget.assetUtilization.totalDay.runtimeHours),
                       ),
                       barChart(
                         'Current Week',
-                        checkNull(
+                        Utils.checkNull(
                             widget.assetUtilization.totalWeek.workingHours),
-                        checkNull(widget.assetUtilization.totalWeek.idleHours),
-                        checkNull(
+                        Utils.checkNull(
+                            widget.assetUtilization.totalWeek.idleHours),
+                        Utils.checkNull(
                             widget.assetUtilization.totalWeek.runtimeHours),
                       ),
                       barChart(
                         'Current Month',
-                        checkNull(
+                        Utils.checkNull(
                             widget.assetUtilization.totalMonth.workingHours),
-                        checkNull(widget.assetUtilization.totalMonth.idleHours),
-                        checkNull(
+                        Utils.checkNull(
+                            widget.assetUtilization.totalMonth.idleHours),
+                        Utils.checkNull(
                             widget.assetUtilization.totalMonth.runtimeHours),
                       ),
                     ],
@@ -146,12 +146,9 @@ class _SingleAssetUtilizationWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      barWidget(workingValue, emerald,
-                          SingleAssetUtilizationType.WORKINGHOURS),
-                      barWidget(idleValue, burntSienna,
-                          SingleAssetUtilizationType.IDLEHOURS),
-                      barWidget(runningValue, creamCan,
-                          SingleAssetUtilizationType.RUNTIMEHOURS),
+                      barWidget(workingValue, emerald),
+                      barWidget(idleValue, burntSienna),
+                      barWidget(runningValue, creamCan),
                     ],
                   ),
                 ),
@@ -186,8 +183,7 @@ class _SingleAssetUtilizationWidgetState
     return ((value / 18) * 10);
   }
 
-  Column barWidget(
-      double value, Color color, SingleAssetUtilizationType barType) {
+  Column barWidget(double value, Color color) {
     double totalBarHeight = MediaQuery.of(context).size.height * 0.12;
 
     return Column(
@@ -203,7 +199,18 @@ class _SingleAssetUtilizationWidgetState
         ),
         Container(
           width: 15,
-          height: getHighestValue(totalBarHeight, value, barType),
+          height: (value == 0 || widget.greatestNumber == 0)
+              ? 0.0
+              // : ((value / widget.assetUtilization.totalMonth.runtimeHours) *
+              //             100) <=
+              //         0
+              //     ? 0.0
+              // : ((totalBarHeight / 100) +
+              //     ((value /
+              //             widget.assetUtilization.totalMonth.runtimeHours) *
+              //         100)),
+              : ((((value / widget.greatestNumber) * 100) / totalBarHeight) *
+                  100),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(
@@ -214,32 +221,4 @@ class _SingleAssetUtilizationWidgetState
       ],
     );
   }
-
-  double getHighestValue(
-      double totalBarHeight, double value, SingleAssetUtilizationType barType) {
-    switch (barType) {
-      case SingleAssetUtilizationType.IDLEHOURS:
-        if (((value / widget.idleHighestValue) * 100) <= 0) return 0.0;
-        return ((totalBarHeight / 100) +
-            (((value / widget.idleHighestValue) * 100)));
-        break;
-      case SingleAssetUtilizationType.WORKINGHOURS:
-        if (((value / widget.workingHighestValue) * 100) <= 0) return 0.0;
-        return ((totalBarHeight / 100) +
-            (((value / widget.workingHighestValue) * 100)));
-        break;
-      case SingleAssetUtilizationType.RUNTIMEHOURS:
-        if (((value / widget.runtimeHighestValue) * 100) <= 0) return 0.0;
-        return ((totalBarHeight / 100) +
-            (((value / widget.runtimeHighestValue) * 100)));
-        break;
-    }
-    return 0.0;
-  }
-
-  double checkNull(double value) {
-    return value == null ? 0.0 : value;
-  }
 }
-
-enum SingleAssetUtilizationType { IDLEHOURS, RUNTIMEHOURS, WORKINGHOURS }

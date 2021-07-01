@@ -5,6 +5,7 @@ import 'package:insite/utils/dialog.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_status_usage.dart';
+import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map_home.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -72,6 +73,22 @@ class _HomeViewState extends State<HomeView> {
                     height: 20.0,
                   ),
                   Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AssetUtilizationWidget(
+                      assetUtilization: viewModel.utilizationSummary != null
+                          ? viewModel.utilizationSummary
+                          : null,
+                      totalGreatestNumber:
+                          viewModel.utilizationTotalGreatestValue,
+                      averageGreatestNumber:
+                          viewModel.utilizationAverageGreatestValue,
+                      isLoading: viewModel.assetUtilizationLoading,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: IdlingLevel(
                       data: viewModel.idlingLevelData != null
@@ -91,14 +108,17 @@ class _HomeViewState extends State<HomeView> {
                     child: Container(
                         height: 305,
                         color: cardcolor,
-                        child:viewModel.assetLocation==null?Center(
-                          child: CircularProgressIndicator(),
-                        ) :FleetGoogleMapHome(
-                          assetLocation:viewModel.assetLocation.mapRecords,
-                          isLoading: viewModel.assetLocationloading,
-                          screenType: ScreenType.DASHBOARD,
-                          status: '',
-                        )),
+                        child: viewModel.assetLocation == null
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : FleetGoogleMapHome(
+                                assetLocation:
+                                    viewModel.assetLocation.mapRecords,
+                                isLoading: viewModel.assetLocationloading,
+                                screenType: ScreenType.DASHBOARD,
+                                status: '',
+                              )),
                   ),
                   SizedBox(
                     height: 20.0,

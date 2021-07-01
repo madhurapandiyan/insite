@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class AssetUtilizationWidget extends StatefulWidget {
+  final UtilizationSummary assetUtilization;
+  final double totalGreatestNumber;
+  final double averageGreatestNumber;
+  final bool isLoading;
   @override
   _AssetUtilizationWidgetState createState() => _AssetUtilizationWidgetState();
 
   const AssetUtilizationWidget({
     Key key,
     @required this.assetUtilization,
+    @required this.totalGreatestNumber,
+    @required this.averageGreatestNumber,
+    @required this.isLoading,
   }) : super(key: key);
-
-  final AssetUtilization assetUtilization;
 }
 
 class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   bool isAverageButtonSelected = true;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,137 +71,172 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                     thickness: 2,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    toggleButton(),
-                    statusWidget(emerald),
-                    Text(
-                      'Working'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                    statusWidget(burntSienna),
-                    Text(
-                      'Idle'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                    statusWidget(creamCan),
-                    Text(
-                      'Running'.toUpperCase(),
-                      style: TextStyle(color: white, fontSize: 12),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      isAverageButtonSelected
-                          ? barChart(
-                              'Today',
-                              widget.assetUtilization.targetDay.workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetDay.workingHours,
-                              widget.assetUtilization.targetDay.idleHours ==
-                                      null
-                                  ? 0.0
-                                  : widget.assetUtilization.targetDay.idleHours,
-                              widget.assetUtilization.targetDay.runtimeHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetDay.runtimeHours)
-                          : barChart(
-                              'Today',
-                              widget.assetUtilization.totalDay.workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalDay.workingHours,
-                              widget.assetUtilization.totalDay.idleHours == null
-                                  ? 0.0
-                                  : widget.assetUtilization.totalDay.idleHours,
-                              widget.assetUtilization.totalDay.runtimeHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalDay.runtimeHours),
-                      isAverageButtonSelected
-                          ? barChart(
-                              'Current Week',
-                              widget.assetUtilization.targetWeek.workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetWeek.workingHours,
-                              widget.assetUtilization.targetWeek.idleHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetWeek.idleHours,
-                              widget.assetUtilization.targetWeek == null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetWeek.runtimeHours)
-                          : barChart(
-                              'Current Week',
-                              widget.assetUtilization.totalWeek.workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalWeek.workingHours,
-                              widget.assetUtilization.totalWeek.idleHours ==
-                                      null
-                                  ? 0.0
-                                  : widget.assetUtilization.totalWeek.idleHours,
-                              widget.assetUtilization.totalWeek.runtimeHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalWeek.runtimeHours),
-                      isAverageButtonSelected
-                          ? barChart(
-                              'Current Month',
-                              widget.assetUtilization.targetMonth
-                                          .workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget.assetUtilization.targetMonth
-                                      .workingHours,
-                              widget.assetUtilization.targetMonth.idleHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.targetMonth.idleHours,
-                              widget.assetUtilization.targetMonth
-                                          .runtimeHours ==
-                                      null
-                                  ? 0.0
-                                  : widget.assetUtilization.targetMonth
-                                      .runtimeHours)
-                          : barChart(
-                              'Current Month',
-                              widget.assetUtilization.totalMonth.workingHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalMonth.workingHours,
-                              widget.assetUtilization.totalMonth.idleHours ==
-                                      null
-                                  ? 0.0
-                                  : widget
-                                      .assetUtilization.totalMonth.idleHours,
-                              widget.assetUtilization.totalMonth.runtimeHours ==
-                                      null
-                                  ? 0.0
-                                  : widget.assetUtilization.totalMonth
-                                      .runtimeHours),
-                    ],
-                  ),
-                ),
+                widget.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 130,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: white,
+                                  border: Border.all(color: tango, width: 2.0),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isAverageButtonSelected = true;
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: isAverageButtonSelected
+                                                ? tango
+                                                : white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(4),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Average'.toUpperCase(),
+                                              style: TextStyle(
+                                                color: isAverageButtonSelected
+                                                    ? white
+                                                    : doveGray,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            isAverageButtonSelected = false;
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: isAverageButtonSelected
+                                                ? white
+                                                : tango,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(4),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Total'.toUpperCase(),
+                                              style: TextStyle(
+                                                color: isAverageButtonSelected
+                                                    ? doveGray
+                                                    : white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: UtilizationLegends(
+                                  label1: 'Working',
+                                  label2: 'Idle',
+                                  label3: 'Running',
+                                  color1: emerald,
+                                  color2: burntSienna,
+                                  color3: creamCan,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                isAverageButtonSelected
+                                    ? barChart(
+                                        'Today',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageDay.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageDay.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageDay.runtimeHours),
+                                      )
+                                    : barChart(
+                                        'Today',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalDay.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalDay.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalDay.runtimeHours),
+                                      ),
+                                isAverageButtonSelected
+                                    ? barChart(
+                                        'Current Week',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageWeek.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageWeek.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageWeek.runtimeHours),
+                                      )
+                                    : barChart(
+                                        'Current Week',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalWeek.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalWeek.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalWeek.runtimeHours),
+                                      ),
+                                isAverageButtonSelected
+                                    ? barChart(
+                                        'Current Month',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageMonth.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageMonth.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .averageMonth.runtimeHours),
+                                      )
+                                    : barChart(
+                                        'Current Month',
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalMonth.workingHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalMonth.idleHours),
+                                        Utils.checkNull(widget.assetUtilization
+                                            .totalMonth.runtimeHours),
+                                      ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -265,7 +306,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
       );
 
   double calculatePercentage(double value) {
-    return ((value / 18) * 100);
+    return ((value / 18) * 10);
   }
 
   Column barWidget(double value, Color color) {
@@ -275,7 +316,9 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Text(
-          '${value.toStringAsFixed(1)}',
+          value < 1000
+              ? '${value.toStringAsFixed(1)}'
+              : '${(value / 1000).toStringAsFixed(1)}K',
           style: TextStyle(
               color: white, fontSize: 12, fontWeight: FontWeight.bold),
         ),
@@ -284,7 +327,25 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
         ),
         Container(
           width: 15,
-          height: (totalBarHeight / 100) * calculatePercentage(value / 10),
+          height: (value == 0 ||
+                  widget.totalGreatestNumber == 0 ||
+                  widget.averageGreatestNumber == 0)
+              ? 0.0
+              // : ((value / widget.assetUtilization.totalMonth.runtimeHours) *
+              //             100) <=
+              //         0
+              //     ? 0.0
+              // : ((totalBarHeight / 100) +
+              //     ((value /
+              //             widget.assetUtilization.totalMonth.runtimeHours) *
+              //         100)),
+              : isAverageButtonSelected
+                  ? ((((value / widget.averageGreatestNumber) * 100) /
+                          totalBarHeight) *
+                      100)
+                  : ((((value / widget.totalGreatestNumber) * 100) /
+                          totalBarHeight) *
+                      100),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.all(
@@ -295,84 +356,4 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
       ],
     );
   }
-
-  Container toggleButton() => Container(
-        width: 130,
-        height: 30,
-        decoration: BoxDecoration(
-          color: white,
-          border: Border.all(color: tango, width: 2.0),
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isAverageButtonSelected = true;
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isAverageButtonSelected ? tango : white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Average'.toUpperCase(),
-                      style: TextStyle(
-                        color: isAverageButtonSelected ? white : doveGray,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isAverageButtonSelected = false;
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isAverageButtonSelected ? white : tango,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Total'.toUpperCase(),
-                      style: TextStyle(
-                        color: isAverageButtonSelected ? doveGray : white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Container statusWidget(Color color) => Container(
-        width: 10.0,
-        height: 10.0,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
-      );
 }
