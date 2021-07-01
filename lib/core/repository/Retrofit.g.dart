@@ -290,6 +290,39 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AssetLocationData> assetLocationWithCluster(latitude, longitude,
+      pageNumber, pageSize, radiusKm, sort, customerId) async {
+    ArgumentError.checkNotNull(latitude, 'latitude');
+    ArgumentError.checkNotNull(longitude, 'longitude');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(radiusKm, 'radiusKm');
+    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'latitude': latitude,
+      r'longitude': longitude,
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'radiuskm': radiusKm,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetLocationData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<AssetLocationData> assetLocation(queries, customerId) async {
     ArgumentError.checkNotNull(queries, 'queries');
     ArgumentError.checkNotNull(customerId, 'customerId');

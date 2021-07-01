@@ -284,7 +284,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
           CustomInfoWindow(
             controller: customInfoWindowController,
             height: 250,
-            width: 180,
+            width: 220,
             offset: 1,
           ),
           Padding(
