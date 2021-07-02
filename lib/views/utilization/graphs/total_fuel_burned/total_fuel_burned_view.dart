@@ -8,9 +8,10 @@ import 'total_fuel_burned_view_model.dart';
 
 class TotalFuelBurnedView extends StatefulWidget {
   final int rangeChoice;
-  const TotalFuelBurnedView(
-      {Key key, this.rangeChoice,})
-      : super(key: key);
+  const TotalFuelBurnedView({
+    Key key,
+    this.rangeChoice,
+  }) : super(key: key);
 
   @override
   TotalFuelBurnedViewState createState() => TotalFuelBurnedViewState();
@@ -20,6 +21,7 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
   var viewModel;
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   void initState() {
     viewModel = TotalFuelBurnedViewModel();
@@ -41,7 +43,8 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
     return ViewModelBuilder<TotalFuelBurnedViewModel>.reactive(
       builder:
           (BuildContext context, TotalFuelBurnedViewModel viewModel, Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(
@@ -73,6 +76,11 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
                           color1: emerald,
                           color2: burntSienna,
                           color3: creamCan,
+                          shouldShowLabel: (List<bool> value) {
+                            setState(() {
+                              shouldShowLabel = value;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -80,8 +88,10 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
                 ),
                 Expanded(
                   child: TotalFuelBurnedGraph(
-                      rangeSelection: rangeChoice,
-                      totalFuelBurned: viewModel.totalFuelBurned),
+                    rangeSelection: rangeChoice,
+                    totalFuelBurned: viewModel.totalFuelBurned,
+                    shouldShowLabel: shouldShowLabel,
+                  ),
                 ),
               ],
             ),

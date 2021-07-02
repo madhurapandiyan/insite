@@ -20,6 +20,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
   var viewModel;
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   void initState() {
     viewModel = TotalHoursViewModel();
@@ -73,6 +74,11 @@ class TotalHoursViewState extends State<TotalHoursView> {
                           color1: emerald,
                           color2: burntSienna,
                           color3: creamCan,
+                          shouldShowLabel: (List<bool> value) {
+                            setState(() {
+                              shouldShowLabel = value;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -80,8 +86,10 @@ class TotalHoursViewState extends State<TotalHoursView> {
                 ),
                 Expanded(
                   child: TotalHoursChart(
-                      rangeSelection: rangeChoice,
-                      totalHours: viewModel.totalHours),
+                    rangeSelection: rangeChoice,
+                    totalHours: viewModel.totalHours,
+                    shouldShowLabel: shouldShowLabel,
+                  ),
                 ),
               ],
             ),

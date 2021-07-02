@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/idle_trend_graph.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -21,6 +19,7 @@ class IdlePercentTrendView extends StatefulWidget {
 class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
+
   @override
   void initState() {
     viewModel = IdlePercentTrendViewModel();
@@ -44,7 +43,8 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
     return ViewModelBuilder<IdlePercentTrendViewModel>.reactive(
       builder: (BuildContext context, IdlePercentTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading) return Center(child: CircularProgressIndicator());
+        if (viewModel.loading)
+          return Center(child: CircularProgressIndicator());
         return Stack(
           children: [
             Column(
@@ -68,23 +68,14 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
                           },
                         ),
                       ),
-                      Expanded(
-                        child: UtilizationLegends(
-                          label1: 'Working',
-                          label2: 'Idle',
-                          label3: 'Runtime',
-                          color1: emerald,
-                          color2: burntSienna,
-                          color3: creamCan,
-                        ),
-                      ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: IdleTrendGraph(
-                      rangeSelection: rangeChoice,
-                      idlePercentTrend: viewModel.idlePercentTrend),
+                    rangeSelection: rangeChoice,
+                    idlePercentTrend: viewModel.idlePercentTrend,
+                  ),
                 ),
               ],
             ),
@@ -95,10 +86,8 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
                 : SizedBox()
           ],
         );
-        
       },
       viewModelBuilder: () => viewModel,
     );
   }
- 
 }

@@ -7,10 +7,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class FuelBurnRateGraph extends StatelessWidget {
   final int rangeSelection;
   final FuelBurnRateTrend fuelBurnRateTrend;
+  final List<bool> shouldShowLabel;
   const FuelBurnRateGraph(
       {Key key,
       @required this.rangeSelection,
-      @required this.fuelBurnRateTrend})
+      @required this.fuelBurnRateTrend,
+      this.shouldShowLabel})
       : super(key: key);
 
   @override
@@ -55,33 +57,51 @@ class FuelBurnRateGraph extends StatelessWidget {
     }
 
     return <SplineSeries<CumulativeChartData, String>>[
-      SplineSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        splineType: SplineType.natural,
-        color: burntSienna,
-        width: 2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) =>
-            chartDate.idleBurnRate,
-      ),
-      SplineSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        splineType: SplineType.natural,
-        color: emerald,
-        width: 2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) =>
-            chartDate.workingBurnRate,
-      ),
-      SplineSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        splineType: SplineType.natural,
-        color: creamCan,
-        width: 2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) =>
-            chartDate.runtimeBurnRate,
-      ),
+      shouldShowLabel[1]
+          ? SplineSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              splineType: SplineType.natural,
+              color: burntSienna,
+              width: 2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.idleBurnRate,
+            )
+          : SplineSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
+      shouldShowLabel[0]
+          ? SplineSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              splineType: SplineType.natural,
+              color: emerald,
+              width: 2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.workingBurnRate,
+            )
+          : SplineSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
+      shouldShowLabel[2]
+          ? SplineSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              splineType: SplineType.natural,
+              color: creamCan,
+              width: 2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.runtimeBurnRate,
+            )
+          : SplineSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
     ];
   }
 }

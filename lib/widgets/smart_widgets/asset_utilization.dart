@@ -24,6 +24,7 @@ class AssetUtilizationWidget extends StatefulWidget {
 
 class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   bool isAverageButtonSelected = true;
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -96,6 +97,11 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                   color1: emerald,
                                   color2: burntSienna,
                                   color3: creamCan,
+                                  shouldShowLabel: (List<bool> value) {
+                                    setState(() {
+                                      shouldShowLabel = value;
+                                    });
+                                  },
                                 ),
                               ),
                             ],
@@ -202,9 +208,15 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      barWidget(workingValue, emerald),
-                      barWidget(idleValue, burntSienna),
-                      barWidget(runningValue, creamCan),
+                      shouldShowLabel[0]
+                          ? barWidget(workingValue, emerald)
+                          : SizedBox(),
+                      shouldShowLabel[1]
+                          ? barWidget(idleValue, burntSienna)
+                          : SizedBox(),
+                      shouldShowLabel[2]
+                          ? barWidget(runningValue, creamCan)
+                          : SizedBox(),
                     ],
                   ),
                 ),

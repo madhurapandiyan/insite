@@ -19,6 +19,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
   var viewModel;
+  List<bool> shouldShowLabel = [true, true, true];
 
   @override
   void initState() {
@@ -74,6 +75,11 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
                           color1: emerald,
                           color2: burntSienna,
                           color3: creamCan,
+                          shouldShowLabel: (List<bool> value) {
+                            setState(() {
+                              shouldShowLabel = value;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -81,8 +87,10 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
                 ),
                 Expanded(
                   child: FuelBurnRateGraph(
-                      rangeSelection: rangeChoice,
-                      fuelBurnRateTrend: viewModel.fuelBurnRateTrend),
+                    rangeSelection: rangeChoice,
+                    fuelBurnRateTrend: viewModel.fuelBurnRateTrend,
+                    shouldShowLabel: shouldShowLabel,
+                  ),
                 ),
               ],
             ),

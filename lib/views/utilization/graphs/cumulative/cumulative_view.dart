@@ -16,6 +16,7 @@ class CumulativeView extends StatefulWidget {
 class CumulativeViewState extends State<CumulativeView> {
   int rangeChoice = 1;
   var viewModel;
+  List<bool> shouldShowLabel = [true, true, true];
 
   @override
   void initState() {
@@ -68,6 +69,11 @@ class CumulativeViewState extends State<CumulativeView> {
                           color1: emerald,
                           color2: burntSienna,
                           color3: creamCan,
+                          shouldShowLabel: (List<bool> value) {
+                            setState(() {
+                              shouldShowLabel = value;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -78,10 +84,12 @@ class CumulativeViewState extends State<CumulativeView> {
                       ? CumulativeChart(
                           runTimeCumulative: viewModel.runTimeCumulative,
                           cumulativeChartType: CumulativeChartType.RUNTIME,
+                          shouldShowLabel: shouldShowLabel,
                         )
                       : CumulativeChart(
                           fuelBurnedCumulative: viewModel.fuelBurnedCumulative,
                           cumulativeChartType: CumulativeChartType.FUELBURNED,
+                          shouldShowLabel: shouldShowLabel,
                         ),
                 ),
               ],
