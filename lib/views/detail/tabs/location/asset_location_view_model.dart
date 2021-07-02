@@ -27,7 +27,7 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  bool _refreshing = true;
+  bool _refreshing = false;
   bool get refreshing => _refreshing;
 
   Set<Marker> markers = Set();

@@ -1,5 +1,4 @@
 import 'package:clippy_flutter/triangle.dart';
-import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -10,19 +9,18 @@ class LocationInfoWindowWidget extends StatelessWidget {
   final VoidCallback onFleetPageSelectedTap;
   final VoidCallback onTapWithZoom;
 
-  LocationInfoWindowWidget({
-    this.text,
-    this.onCustomWindowClose,
-     this.onFleetPageSelectedTap,
-     this.onTapWithZoom
-  });
+  LocationInfoWindowWidget(
+      {this.text,
+      this.onCustomWindowClose,
+      this.onFleetPageSelectedTap,
+      this.onTapWithZoom});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          //  width: 250,
+          width: MediaQuery.of(context).size.height * 0.30,
           height: MediaQuery.of(context).size.height * 0.30,
           decoration: BoxDecoration(
             color: cardcolor,
@@ -47,7 +45,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                     width: 50.0,
                   ),
                   GestureDetector(
-                      onTap:onCustomWindowClose,
+                      onTap: onCustomWindowClose,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset("assets/images/mapclose.png"),
@@ -77,24 +75,22 @@ class LocationInfoWindowWidget extends StatelessWidget {
               Column(
                 children: [
                   InsiteButton(
-                    width: 120,
-                    height: 40,
-                    bgColor: tango,
-                    title: "Fleet List",
-                    textColor: appbarcolor,
-                    onTap:onFleetPageSelectedTap
-                  ),
+                      width: MediaQuery.of(context).size.height * 0.15,
+                      height: 40,
+                      bgColor: tango,
+                      title: "  Fleet List  ",
+                      textColor: appbarcolor,
+                      onTap: onFleetPageSelectedTap),
                   SizedBox(
                     height: 15,
                   ),
                   InsiteButton(
-                    width: 120,
-                    height: 40,
-                    bgColor: tango,
-                    title: "Zoom to cluster",
-                    textColor: appbarcolor,
-                    onTap:onTapWithZoom
-                  )
+                      width: MediaQuery.of(context).size.height * 0.15,
+                      height: 40,
+                      bgColor: tango,
+                      title: "Zoom to cluster",
+                      textColor: appbarcolor,
+                      onTap: onTapWithZoom)
                 ],
               )
             ],
