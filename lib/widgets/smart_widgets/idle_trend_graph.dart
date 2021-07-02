@@ -7,9 +7,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class IdleTrendGraph extends StatelessWidget {
   final int rangeSelection;
   final IdlePercentTrend idlePercentTrend;
-  const IdleTrendGraph(
-      {Key key, @required this.rangeSelection, @required this.idlePercentTrend})
-      : super(key: key);
+
+  const IdleTrendGraph({
+    Key key,
+    @required this.rangeSelection,
+    @required this.idlePercentTrend,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

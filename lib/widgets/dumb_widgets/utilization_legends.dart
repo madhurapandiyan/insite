@@ -1,53 +1,143 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
-class UtilizationLegends extends StatelessWidget {
+class UtilizationLegends extends StatefulWidget {
   final String label1;
   final String label2;
   final String label3;
   final Color color1;
   final Color color2;
   final Color color3;
-  const UtilizationLegends(
-      {Key key,
-      @required this.label1,
-      @required this.label2,
-      @required this.label3,
-      @required this.color1,
-      @required this.color2,
-      @required this.color3})
-      : super(key: key);
+  final Function shouldShowLabel;
+  const UtilizationLegends({
+    Key key,
+    @required this.label1,
+    @required this.label2,
+    @required this.label3,
+    @required this.color1,
+    @required this.color2,
+    @required this.color3,
+    @required this.shouldShowLabel,
+  }) : super(key: key);
 
+  @override
+  _UtilizationLegendsState createState() => _UtilizationLegendsState();
+}
+
+class _UtilizationLegendsState extends State<UtilizationLegends> {
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        statusWidget(color1),
-        Text(
-          label1.toUpperCase(),
-          style: TextStyle(color: white, fontSize: 12),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                shouldShowLabel[0] = !shouldShowLabel[0];
+                if (checkAllFalse()) {
+                  shouldShowLabel = [true, true, true];
+                }
+                widget.shouldShowLabel(shouldShowLabel);
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                statusWidget(widget.color1, shouldShowLabel[0]),
+                Text(
+                  widget.label1.toUpperCase(),
+                  style: TextStyle(color: white, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
         ),
-        statusWidget(color2),
-        Text(
-          label2.toUpperCase(),
-          style: TextStyle(color: white, fontSize: 12),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                shouldShowLabel[1] = !shouldShowLabel[1];
+                if (checkAllFalse()) {
+                  shouldShowLabel = [true, true, true];
+                }
+                widget.shouldShowLabel(shouldShowLabel);
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                statusWidget(widget.color2, shouldShowLabel[1]),
+                Text(
+                  widget.label2.toUpperCase(),
+                  style: TextStyle(color: white, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
         ),
-        statusWidget(color3),
-        Text(
-          label3.toUpperCase(),
-          style: TextStyle(color: white, fontSize: 12),
-        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                shouldShowLabel[2] = !shouldShowLabel[2];
+                if (checkAllFalse()) {
+                  shouldShowLabel = [true, true, true];
+                }
+                widget.shouldShowLabel(shouldShowLabel);
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                statusWidget(widget.color3, shouldShowLabel[2]),
+                Text(
+                  widget.label3.toUpperCase(),
+                  style: TextStyle(color: white, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
 
-  Container statusWidget(Color color) => Container(
-        width: 10.0,
-        height: 10.0,
+  bool checkAllFalse() {
+    if (!shouldShowLabel[0] && !shouldShowLabel[1] && !shouldShowLabel[2])
+      return true;
+    return false;
+  }
+
+  Container statusWidget(Color color, bool selected) {
+    if (selected)
+      return Container(
+        width: 15.0,
+        height: 15.0,
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
         ),
       );
+    else
+      return Container(
+        width: 15.0,
+        height: 15.0,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Container(
+            width: 10.0,
+            height: 10.0,
+            decoration: BoxDecoration(
+              color: tuna,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      );
+  }
 }

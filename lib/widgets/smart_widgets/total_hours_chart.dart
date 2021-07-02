@@ -7,8 +7,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class TotalHoursChart extends StatelessWidget {
   final int rangeSelection;
   final TotalHours totalHours;
+  final List<bool> shouldShowLabel;
   const TotalHoursChart(
-      {Key key, @required this.rangeSelection, @required this.totalHours})
+      {Key key,
+      @required this.rangeSelection,
+      @required this.totalHours,
+      this.shouldShowLabel})
       : super(key: key);
 
   @override
@@ -85,27 +89,48 @@ class TotalHoursChart extends StatelessWidget {
     }
 
     return <StackedColumnSeries<CumulativeChartData, String>>[
-      StackedColumnSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        color: emerald,
-        width: 0.2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.working,
-      ),
-      StackedColumnSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        color: burntSienna,
-        width: 0.2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.idle,
-      ),
-      StackedColumnSeries<CumulativeChartData, String>(
-        dataSource: chartData,
-        color: creamCan,
-        width: 0.2,
-        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
-        yValueMapper: (CumulativeChartData chartDate, _) => chartDate.runtime,
-      ),
+      shouldShowLabel[0]
+          ? StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              color: emerald,
+              width: 0.2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.working,
+            )
+          : StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
+      shouldShowLabel[1]
+          ? StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              color: burntSienna,
+              width: 0.2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.idle,
+            )
+          : StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
+      shouldShowLabel[2]
+          ? StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: chartData,
+              color: creamCan,
+              width: 0.2,
+              xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+              yValueMapper: (CumulativeChartData chartDate, _) =>
+                  chartDate.runtime,
+            )
+          : StackedColumnSeries<CumulativeChartData, String>(
+              dataSource: [],
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+            ),
     ];
   }
 }

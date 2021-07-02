@@ -20,6 +20,7 @@ class SingleAssetUtilizationWidget extends StatefulWidget {
 
 class _SingleAssetUtilizationWidgetState
     extends State<SingleAssetUtilizationWidget> {
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,6 +76,11 @@ class _SingleAssetUtilizationWidgetState
                   color1: emerald,
                   color2: burntSienna,
                   color3: creamCan,
+                  shouldShowLabel: (List<bool> value) {
+                    setState(() {
+                      shouldShowLabel = value;
+                    });
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
@@ -146,9 +152,15 @@ class _SingleAssetUtilizationWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      barWidget(workingValue, emerald),
-                      barWidget(idleValue, burntSienna),
-                      barWidget(runningValue, creamCan),
+                      shouldShowLabel[0]
+                          ? barWidget(workingValue, emerald)
+                          : SizedBox(),
+                      shouldShowLabel[1]
+                          ? barWidget(idleValue, burntSienna)
+                          : SizedBox(),
+                      shouldShowLabel[2]
+                          ? barWidget(runningValue, creamCan)
+                          : SizedBox(),
                     ],
                   ),
                 ),

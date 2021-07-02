@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class AssetUtilizationWidget extends StatefulWidget {
@@ -23,6 +24,7 @@ class AssetUtilizationWidget extends StatefulWidget {
 
 class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   bool isAverageButtonSelected = true;
+  List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,85 +81,14 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                         children: [
                           Row(
                             children: [
-                              Container(
-                                width: 130,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: white,
-                                  border: Border.all(color: tango, width: 2.0),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isAverageButtonSelected = true;
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: isAverageButtonSelected
-                                                ? tango
-                                                : white,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(4),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              'Average'.toUpperCase(),
-                                              style: TextStyle(
-                                                color: isAverageButtonSelected
-                                                    ? white
-                                                    : doveGray,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isAverageButtonSelected = false;
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: isAverageButtonSelected
-                                                ? white
-                                                : tango,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(4),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              'Total'.toUpperCase(),
-                                              style: TextStyle(
-                                                color: isAverageButtonSelected
-                                                    ? doveGray
-                                                    : white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              ToggleButton(
+                                  label1: 'average',
+                                  label2: 'today',
+                                  optionSelected: (bool value) {
+                                    setState(() {
+                                      isAverageButtonSelected = value;
+                                    });
+                                  }),
                               Expanded(
                                 child: UtilizationLegends(
                                   label1: 'Working',
@@ -166,6 +97,11 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                   color1: emerald,
                                   color2: burntSienna,
                                   color3: creamCan,
+                                  shouldShowLabel: (List<bool> value) {
+                                    setState(() {
+                                      shouldShowLabel = value;
+                                    });
+                                  },
                                 ),
                               ),
                             ],
@@ -272,9 +208,15 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      barWidget(workingValue, emerald),
-                      barWidget(idleValue, burntSienna),
-                      barWidget(runningValue, creamCan),
+                      shouldShowLabel[0]
+                          ? barWidget(workingValue, emerald)
+                          : SizedBox(),
+                      shouldShowLabel[1]
+                          ? barWidget(idleValue, burntSienna)
+                          : SizedBox(),
+                      shouldShowLabel[2]
+                          ? barWidget(runningValue, creamCan)
+                          : SizedBox(),
                     ],
                   ),
                 ),

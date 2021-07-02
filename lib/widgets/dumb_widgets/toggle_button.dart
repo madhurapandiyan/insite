@@ -50,7 +50,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                 ),
                 child: Center(
                   child: Text(
-                    'List'.toUpperCase(),
+                    widget.label1.toUpperCase(),
                     style: TextStyle(
                       color: white,
                       fontSize: 12,
@@ -79,7 +79,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                 ),
                 child: Center(
                   child: Text(
-                    'Graph'.toUpperCase(),
+                    widget.label2.toUpperCase(),
                     style: TextStyle(
                       color: white,
                       fontSize: 12,
