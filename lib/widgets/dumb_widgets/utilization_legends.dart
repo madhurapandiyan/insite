@@ -31,7 +31,7 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(
+        Flexible(
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -48,13 +48,13 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
                 statusWidget(widget.color1, shouldShowLabel[0]),
                 Text(
                   widget.label1.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 12),
+                  style: TextStyle(color: white, fontSize: 10),
                 ),
               ],
             ),
           ),
         ),
-        Expanded(
+        Flexible(
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -71,13 +71,13 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
                 statusWidget(widget.color2, shouldShowLabel[1]),
                 Text(
                   widget.label2.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 12),
+                  style: TextStyle(color: white, fontSize: 10),
                 ),
               ],
             ),
           ),
         ),
-        Expanded(
+        Flexible(
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -94,7 +94,7 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
                 statusWidget(widget.color3, shouldShowLabel[2]),
                 Text(
                   widget.label3.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 12),
+                  style: TextStyle(color: white, fontSize: 10),
                 ),
               ],
             ),
@@ -113,8 +113,8 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
   Container statusWidget(Color color, bool selected) {
     if (selected)
       return Container(
-        width: 15.0,
-        height: 15.0,
+        width: 10.0,
+        height: 10.0,
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
@@ -122,16 +122,16 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
       );
     else
       return Container(
-        width: 15.0,
-        height: 15.0,
+        width: 10.0,
+        height: 10.0,
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
         ),
         child: Center(
           child: Container(
-            width: 10.0,
-            height: 10.0,
+            width: 8.0,
+            height: 8.0,
             decoration: BoxDecoration(
               color: tuna,
               shape: BoxShape.circle,

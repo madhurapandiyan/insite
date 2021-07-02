@@ -5,6 +5,7 @@ class InsiteButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final Color bgColor;
+  final double fontSize;
   final Color textColor;
   final double width;
   final double height;
@@ -15,6 +16,7 @@ class InsiteButton extends StatelessWidget {
       this.onTap,
       this.bgColor,
       this.height,
+      this.fontSize,
       this.icon,
       this.textColor});
 
@@ -40,6 +42,7 @@ class InsiteButton extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
+                fontSize: fontSize!=null?fontSize:12.0,
                   color: textColor != null ? textColor : Colors.white,
                   fontWeight: FontWeight.w700),
             ),

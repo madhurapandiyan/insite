@@ -129,7 +129,7 @@ class _SingleAssetUtilizationWidgetState
           double runningValue) =>
       Container(
         width: MediaQuery.of(context).size.width * 0.25,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.22,
         decoration: BoxDecoration(
           color: ship_grey,
           borderRadius: BorderRadius.all(
@@ -196,7 +196,7 @@ class _SingleAssetUtilizationWidgetState
   }
 
   Column barWidget(double value, Color color) {
-    double totalBarHeight = MediaQuery.of(context).size.height * 0.12;
+    double totalBarHeight = MediaQuery.of(context).size.height * 0.15;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
