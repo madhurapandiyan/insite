@@ -7,45 +7,81 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class CumulativeChart extends StatelessWidget {
   final RunTimeCumulative runTimeCumulative;
   final FuelBurnedCumulative fuelBurnedCumulative;
+  final CumulativeChartType cumulativeChartType;
 
   const CumulativeChart(
-      {Key key, this.runTimeCumulative, this.fuelBurnedCumulative})
+      {Key key,
+      this.runTimeCumulative,
+      this.fuelBurnedCumulative,
+      this.cumulativeChartType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SfCartesianChart(
-        title: ChartTitle(
-            textStyle: TextStyle(color: white),
-            text: runTimeCumulative == null
-                ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
-                : 'Daily average: ${runTimeCumulative.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
-        primaryXAxis: CategoryAxis(
-          title: AxisTitle(
-              text: runTimeCumulative == null
-                  ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
-                  : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
-              textStyle: TextStyle(color: white)),
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        series: runTimeCumulative == null
-            ? _getStackedColumnSeries(fuelBurnedCumulative)
-            : _getStackedColumnSeries(runTimeCumulative),
-        primaryYAxis: NumericAxis(
-          title: AxisTitle(
-              text: runTimeCumulative == null
-                  ? 'Cumulative Fuel Burned (Liters)'
-                  : 'Cumulative Runtime (Hours)',
-              textStyle: TextStyle(color: white)),
-          axisLine: AxisLine(width: 1),
-          labelStyle: TextStyle(color: white),
-          numberFormat: NumberFormat.compact(),
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        tooltipBehavior: TooltipBehavior(),
-        plotAreaBorderWidth: 0,
-      ),
+      child: (runTimeCumulative == null && fuelBurnedCumulative == null)
+          ? SfCartesianChart(
+              title: ChartTitle(
+                  textStyle: TextStyle(color: white),
+                  text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                      ? 'Daily average: NA'
+                      : 'Daily average: NA'),
+              primaryXAxis: CategoryAxis(
+                title: AxisTitle(
+                    text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                        ? 'Total Fuel Burned: NA'
+                        : 'Total Hours: NA',
+                    textStyle: TextStyle(color: white)),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              series: cumulativeChartType == CumulativeChartType.FUELBURNED
+                  ? _getStackedColumnSeries(fuelBurnedCumulative)
+                  : _getStackedColumnSeries(runTimeCumulative),
+              primaryYAxis: NumericAxis(
+                title: AxisTitle(
+                    text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                        ? 'Cumulative Fuel Burned (Liters)'
+                        : 'Cumulative Runtime (Hours)',
+                    textStyle: TextStyle(color: white)),
+                axisLine: AxisLine(width: 1),
+                labelStyle: TextStyle(color: white),
+                numberFormat: NumberFormat.compact(),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              tooltipBehavior: TooltipBehavior(),
+              plotAreaBorderWidth: 0,
+            )
+          : SfCartesianChart(
+              title: ChartTitle(
+                  textStyle: TextStyle(color: white),
+                  text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                      ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
+                      : 'Daily average: ${runTimeCumulative.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
+              primaryXAxis: CategoryAxis(
+                title: AxisTitle(
+                    text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                        ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
+                        : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
+                    textStyle: TextStyle(color: white)),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              series: cumulativeChartType == CumulativeChartType.FUELBURNED
+                  ? _getStackedColumnSeries(fuelBurnedCumulative)
+                  : _getStackedColumnSeries(runTimeCumulative),
+              primaryYAxis: NumericAxis(
+                title: AxisTitle(
+                    text: cumulativeChartType == CumulativeChartType.FUELBURNED
+                        ? 'Cumulative Fuel Burned (Liters)'
+                        : 'Cumulative Runtime (Hours)',
+                    textStyle: TextStyle(color: white)),
+                axisLine: AxisLine(width: 1),
+                labelStyle: TextStyle(color: white),
+                numberFormat: NumberFormat.compact(),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              tooltipBehavior: TooltipBehavior(),
+              plotAreaBorderWidth: 0,
+            ),
     );
   }
 
@@ -103,3 +139,5 @@ class CumulativeChartData {
 
   CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }
+
+enum CumulativeChartType { RUNTIME, FUELBURNED }

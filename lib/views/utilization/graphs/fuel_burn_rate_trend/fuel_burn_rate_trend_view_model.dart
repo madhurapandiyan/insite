@@ -32,7 +32,10 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
   getFuelBurnRateTrend() async {
     FuelBurnRateTrend result = await _utilizationGraphService
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
-    _fuelBurnRateTrend = result;
+    if (result.cumulatives == null)
+      _fuelBurnRateTrend = null;
+    else
+      _fuelBurnRateTrend = result;
     _loading = false;
     notifyListeners();
   }
@@ -42,7 +45,10 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
     notifyListeners();
     FuelBurnRateTrend result = await _utilizationGraphService
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
-    _fuelBurnRateTrend = result;
+    if (result.cumulatives == null)
+      _fuelBurnRateTrend = null;
+    else
+      _fuelBurnRateTrend = result;
     _isRefreshing = false;
     notifyListeners();
   }

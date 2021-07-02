@@ -14,37 +14,66 @@ class TotalHoursChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SfCartesianChart(
-        title: ChartTitle(
-            textStyle: TextStyle(color: white),
-            text: rangeSelection == 1
-                ? 'Daily average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
-                : rangeSelection == 2
-                    ? 'Weekly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
-                    : 'Monthly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
-        primaryXAxis: CategoryAxis(
-          title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-          labelStyle: TextStyle(color: white),
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        series: _getStackedColumnSeries(),
-        primaryYAxis: NumericAxis(
-          title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-          numberFormat: NumberFormat.compact(),
-          axisLine: AxisLine(width: 1),
-          labelStyle: TextStyle(color: white),
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        tooltipBehavior: TooltipBehavior(),
-        isTransposed: true,
-        plotAreaBorderWidth: 0,
-      ),
+      child: totalHours == null
+          ? SfCartesianChart(
+              title: ChartTitle(
+                  textStyle: TextStyle(color: white),
+                  text: rangeSelection == 1
+                      ? 'Daily average: NA'
+                      : rangeSelection == 2
+                          ? 'Weekly average: NA'
+                          : 'Monthly average: NA'),
+              primaryXAxis: CategoryAxis(
+                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                labelStyle: TextStyle(color: white),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              series: _getStackedColumnSeries(),
+              primaryYAxis: NumericAxis(
+                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                numberFormat: NumberFormat.compact(),
+                axisLine: AxisLine(width: 1),
+                labelStyle: TextStyle(color: white),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              tooltipBehavior: TooltipBehavior(),
+              isTransposed: true,
+              plotAreaBorderWidth: 0,
+            )
+          : SfCartesianChart(
+              title: ChartTitle(
+                  textStyle: TextStyle(color: white),
+                  text: rangeSelection == 1
+                      ? 'Daily average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
+                      : rangeSelection == 2
+                          ? 'Weekly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
+                          : 'Monthly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
+              primaryXAxis: CategoryAxis(
+                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                labelStyle: TextStyle(color: white),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              series: _getStackedColumnSeries(),
+              primaryYAxis: NumericAxis(
+                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                numberFormat: NumberFormat.compact(),
+                axisLine: AxisLine(width: 1),
+                labelStyle: TextStyle(color: white),
+                majorGridLines: MajorGridLines(width: 0),
+              ),
+              tooltipBehavior: TooltipBehavior(),
+              isTransposed: true,
+              plotAreaBorderWidth: 0,
+            ),
     );
   }
 
   List<StackedColumnSeries<CumulativeChartData, String>>
       _getStackedColumnSeries() {
     final List<CumulativeChartData> chartData = <CumulativeChartData>[];
+
+    if (totalHours == null)
+      return <StackedColumnSeries<CumulativeChartData, String>>[];
 
     for (var item in totalHours.intervals) {
       chartData.add(CumulativeChartData(

@@ -43,6 +43,9 @@ class FuelBurnRateGraph extends StatelessWidget {
   List<SplineSeries<CumulativeChartData, String>> _getStackedColumnSeries() {
     final List<CumulativeChartData> chartData = <CumulativeChartData>[];
 
+    if (fuelBurnRateTrend == null)
+      return <SplineSeries<CumulativeChartData, String>>[];
+
     for (var item in fuelBurnRateTrend.intervals) {
       chartData.add(CumulativeChartData(
           DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),

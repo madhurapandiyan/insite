@@ -41,6 +41,9 @@ class IdleTrendGraph extends StatelessWidget {
   List<SplineSeries<CumulativeChartData, String>> _getStackedColumnSeries() {
     final List<CumulativeChartData> chartData = <CumulativeChartData>[];
 
+    if (idlePercentTrend == null)
+      return <SplineSeries<CumulativeChartData, String>>[];
+
     for (var item in idlePercentTrend.intervals) {
       chartData.add(CumulativeChartData(
           DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),

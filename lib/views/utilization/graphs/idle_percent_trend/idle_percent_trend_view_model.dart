@@ -32,7 +32,10 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
   getIdlePercentTrend() async {
     IdlePercentTrend result = await _utilizationGraphService
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
-    _idlePercentTrend = result;
+    if (result.cumulatives == null)
+      _idlePercentTrend = null;
+    else
+      _idlePercentTrend = result;
     _loading = false;
     notifyListeners();
   }
@@ -48,7 +51,10 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     IdlePercentTrend result = await _utilizationGraphService
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
-    _idlePercentTrend = result;
+    if (result.cumulatives == null)
+      _idlePercentTrend = null;
+    else
+      _idlePercentTrend = result;
     _isRefreshing = false;
     notifyListeners();
   }

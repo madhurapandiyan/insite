@@ -32,7 +32,10 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
   getTotalFuelBurned() async {
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
-    _totalFuelBurned = result;
+    if (result.cumulatives == null)
+      _totalFuelBurned = null;
+    else
+      _totalFuelBurned = result;
     _loading = false;
     notifyListeners();
   }
@@ -42,7 +45,10 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
     notifyListeners();
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
-    _totalFuelBurned = result;
+    if (result.cumulatives == null)
+      _totalFuelBurned = null;
+    else
+      _totalFuelBurned = result;
     _isRefreshing = false;
     notifyListeners();
   }

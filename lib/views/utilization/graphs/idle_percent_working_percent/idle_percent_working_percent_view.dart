@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -64,32 +65,36 @@ class IdlePercentWorkingPercentViewState
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: viewModel.utilLizationListData.length,
-                      controller: viewModel.scrollController,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PercentageWidget(
-                            label: viewModel
-                                .utilLizationListData[index].assetSerialNumber,
-                            percentage: rangeChoice == 1
-                                ? viewModel.utilLizationListData[index]
-                                            .idleEfficiency ==
-                                        null
-                                    ? null
+                  child: viewModel.utilLizationListData.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: viewModel.utilLizationListData.length,
+                          controller: viewModel.scrollController,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return PercentageWidget(
+                                label: viewModel.utilLizationListData[index]
+                                    .assetSerialNumber,
+                                percentage: rangeChoice == 1
+                                    ? viewModel.utilLizationListData[index]
+                                                .idleEfficiency ==
+                                            null
+                                        ? null
+                                        : viewModel.utilLizationListData[index]
+                                                .idleEfficiency *
+                                            100
                                     : viewModel.utilLizationListData[index]
-                                            .idleEfficiency *
-                                        100
-                                : viewModel.utilLizationListData[index]
-                                            .workingEfficiency ==
-                                        null
-                                    ? null
-                                    : viewModel.utilLizationListData[index]
-                                            .workingEfficiency *
-                                        100,
-                            color: rangeChoice == 1 ? sandyBrown : olivine);
-                      }),
+                                                .workingEfficiency ==
+                                            null
+                                        ? null
+                                        : viewModel.utilLizationListData[index]
+                                                .workingEfficiency *
+                                            100,
+                                color: rangeChoice == 1 ? sandyBrown : olivine);
+                          })
+                      : EmptyView(
+                          title: "No Assets Found",
+                        ),
                 ),
                 viewModel.loadingMore
                     ? Padding(
