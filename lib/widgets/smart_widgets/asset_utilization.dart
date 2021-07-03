@@ -185,7 +185,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
           double runningValue) =>
       Container(
         width: MediaQuery.of(context).size.width * 0.25,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.21,
         decoration: BoxDecoration(
           color: ship_grey,
           borderRadius: BorderRadius.all(
@@ -252,7 +252,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   }
 
   Column barWidget(double value, Color color) {
-    double totalBarHeight = MediaQuery.of(context).size.height * 0.12;
+    double totalBarHeight = MediaQuery.of(context).size.height * 0.15;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -262,7 +262,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
               ? '${value.toStringAsFixed(1)}'
               : '${(value / 1000).toStringAsFixed(1)}K',
           style: TextStyle(
-              color: white, fontSize: 12, fontWeight: FontWeight.bold),
+              color: white, fontSize: 10, fontWeight: FontWeight.bold),
         ),
         SizedBox(
           height: 10,

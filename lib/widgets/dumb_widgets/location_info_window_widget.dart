@@ -75,8 +75,9 @@ class LocationInfoWindowWidget extends StatelessWidget {
               Column(
                 children: [
                   InsiteButton(
-                      width: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.height * 0.17,
                       height: 40,
+                      fontSize: 14,
                       bgColor: tango,
                       title: "  Fleet List  ",
                       textColor: appbarcolor,
@@ -85,8 +86,9 @@ class LocationInfoWindowWidget extends StatelessWidget {
                     height: 15,
                   ),
                   InsiteButton(
-                      width: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.height * 0.17,
                       height: 40,
+                      fontSize: 14,
                       bgColor: tango,
                       title: "Zoom to cluster",
                       textColor: appbarcolor,
