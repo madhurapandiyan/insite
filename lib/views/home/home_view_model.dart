@@ -67,9 +67,6 @@ class HomeViewModel extends InsiteViewModel {
 
   UtilizationSummary _utilizationSummary;
   UtilizationSummary get utilizationSummary => _utilizationSummary;
-
-  Set<Marker> markers = {};
-  int markerId = 1;
   List<ChartSampleData> statusChartData = [];
   List<ChartSampleData> fuelChartData = [];
 
@@ -84,7 +81,7 @@ class HomeViewModel extends InsiteViewModel {
       getAssetStatusData();
       getFuelLevelData();
       getIdlingLevelData();
-      getAssetLocation();
+    //  getAssetLocation();
       getUtilizationSummary();
     });
   }
@@ -96,14 +93,14 @@ class HomeViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 2500;
 
-  getAssetLocation() async {
-    AssetLocationData result =
-        await _assetLocationService.getAssetLocationWithoutFilter(
-            pageNumber, pageSize, '-lastlocationupdateutc');
-    _assetLocation = result;
-    _assetLocationloading = false;
-    notifyListeners();
-  }
+  // getAssetLocation() async {
+  //   AssetLocationData result =
+  //       await _assetLocationService.getAssetLocationWithoutFilter(
+  //           pageNumber, pageSize, '-lastlocationupdateutc');
+  //   _assetLocation = result;
+  //   _assetLocationloading = false;
+  //   notifyListeners();
+  // }
 
   openRespectivePage(ScreenType type) {
     if (type == ScreenType.FLEET) {

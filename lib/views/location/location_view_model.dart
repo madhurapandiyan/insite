@@ -29,7 +29,6 @@ class LocationViewModel extends InsiteViewModel {
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
   ClusterManager manager;
-  ClusterManager get clusterManagerData => manager;
   bool _refreshing = false;
   bool get refreshing => _refreshing;
   AssetLocationData _assetLocation;
@@ -148,6 +147,10 @@ class LocationViewModel extends InsiteViewModel {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocation();
       });
+    } else if (type == TYPE.DASHBOARD) {
+      Future.delayed(Duration(seconds: 1), () {
+        getAssetLocationHome();
+      });
     }
   }
 
@@ -178,6 +181,17 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getAssetLocationHome() async {
+    print('data');
+    AssetLocationData result =
+        await _assetLocationService.getAssetLocationWithoutFilter(
+            pageNumber, pageSize, '-lastlocationupdateutc');
+    _assetLocation = result;
+    clusterMarker();
+    _loading = false;
+    notifyListeners();
+  }
+
   getAssetLocation() async {
     Logger().d("getAssetLocation");
     AssetLocationData result = await _assetLocationService.getAssetLocation(
@@ -188,11 +202,10 @@ class LocationViewModel extends InsiteViewModel {
     );
     _assetLocation = result;
     clusterMarker();
-
     _loading = false;
     _refreshing = false;
     notifyListeners();
   }
 }
 
-enum TYPE { LOCATION, SEARCH }
+enum TYPE { LOCATION, SEARCH, DASHBOARD }
