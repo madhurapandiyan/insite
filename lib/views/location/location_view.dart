@@ -24,21 +24,14 @@ class _LocationViewState extends State<LocationView> {
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
   List<DateTime> dateRange;
-  //GoogleMapController mapController;
-  BitmapDescriptor mapMarker;
-  var viewModel;
- // Set<Marker> markers = Set();
 
   @override
   void initState() {
-    viewModel = LocationViewModel(TYPE.LOCATION);
     super.initState();
   }
 
   @override
   void dispose() {
-    viewModel.dispose();
-    viewModel.customInfoWindowController.dispose();
     super.dispose();
   }
 
@@ -276,7 +269,7 @@ class _LocationViewState extends State<LocationView> {
           return Container();
         }
       },
-      viewModelBuilder: () => viewModel,
+      viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
     );
   }
 

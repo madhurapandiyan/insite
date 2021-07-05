@@ -107,17 +107,7 @@ class _HomeViewState extends State<HomeView> {
                     child: Container(
                         height: 305,
                         color: cardcolor,
-                        child: viewModel.assetLocation == null
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : FleetGoogleMapHome(
-                                assetLocation:
-                                    viewModel.assetLocation.mapRecords,
-                                isLoading: viewModel.assetLocationloading,
-                                screenType: ScreenType.DASHBOARD,
-                                status: '',
-                              )),
+                        child: FleetGoogleMapHome()),
                   ),
                   SizedBox(
                     height: 20.0,
