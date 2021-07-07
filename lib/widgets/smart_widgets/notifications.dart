@@ -9,7 +9,7 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.32,
+      height: MediaQuery.of(context).size.height * 0.38,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),
@@ -39,7 +39,7 @@ class Notifications extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.22,
                 child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.all(
@@ -47,6 +47,7 @@ class Notifications extends StatelessWidget {
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
+                    
                     decoration: BoxDecoration(
                       color: mediumgrey,
                       border: Border.all(color: black, width: 0.0),

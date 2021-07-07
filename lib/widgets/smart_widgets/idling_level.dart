@@ -27,8 +27,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.43;
-    double maxheight = MediaQuery.of(context).size.height * 0.32;
+    double height = MediaQuery.of(context).size.height * 0.47;
+    double maxheight = MediaQuery.of(context).size.height * 0.33;
     return Container(
       height: height,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
