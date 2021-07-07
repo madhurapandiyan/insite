@@ -94,12 +94,12 @@ class _SingleAssetUtilizationGraphViewState
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0),
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         decoration: BoxDecoration(
                           color: cardcolor,
                           borderRadius: BorderRadius.all(Radius.circular(16)),
