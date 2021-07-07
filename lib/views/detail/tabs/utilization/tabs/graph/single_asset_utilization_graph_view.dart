@@ -424,21 +424,24 @@ class _SingleAssetUtilizationGraphViewState
                                       : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
                               percentage: rangeChoice == 1
                                   ? viewModel
-                                      .singleAssetUtilization
-                                      .daily[index]
-                                      .data
-                                      .distanceTravelledKilometers
+                                          .singleAssetUtilization
+                                          .daily[index]
+                                          .data
+                                          .distanceTravelledKilometers /
+                                      10
                                   : rangeChoice == 2
                                       ? viewModel
-                                          .singleAssetUtilization
-                                          .weekly[index]
-                                          .data
-                                          .distanceTravelledKilometers
+                                              .singleAssetUtilization
+                                              .weekly[index]
+                                              .data
+                                              .distanceTravelledKilometers /
+                                          10
                                       : viewModel
-                                          .singleAssetUtilization
-                                          .monthly[index]
-                                          .data
-                                          .distanceTravelledKilometers);
+                                              .singleAssetUtilization
+                                              .monthly[index]
+                                              .data
+                                              .distanceTravelledKilometers /
+                                          10);
                       },
                     ),
                   ),
