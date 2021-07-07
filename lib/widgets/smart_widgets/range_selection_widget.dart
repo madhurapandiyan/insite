@@ -118,7 +118,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                           widget.label3.toUpperCase(),
                           style: TextStyle(
                             color: white,
-                            fontSize: 10,
+                            fontSize: 102,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
