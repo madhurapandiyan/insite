@@ -28,9 +28,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
   @override
   Widget build(BuildContext context) {
     var color = [burntSienna, lightRose, mustard, emerald, emerald];
-    double height = MediaQuery.of(context).size.height * 0.33;
+    double height = MediaQuery.of(context).size.height * 0.34;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 8),
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -61,12 +61,24 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             fontStyle: FontStyle.normal,
                             fontSize: 12.0),
                       ),
+                      SizedBox(
+                        width: 60,
+                      )
                     ],
                   ),
                   Row(
                     children: [
+                      new Text(
+                        'ALL ASSETS',
+                        style: new TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Roboto',
+                            color: textcolor,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 12.0),
+                      ),
                       SizedBox(
-                        width: 210,
+                        width: 35.0,
                       ),
                       GestureDetector(
                         onTap: () => print("button is tapped"),
@@ -77,7 +89,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -92,9 +104,16 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                       Expanded(
                         flex: 1,
                         child: Container(
-                            width: 175,
-                            height: 175,
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width * 0.20,
+                            height: MediaQuery.of(context).size.height * 0.20,
                             child: SfCircularChart(
+                              centerX:
+                                  (MediaQuery.of(context).size.width * 0.18)
+                                      .toStringAsFixed(0),
+                              centerY:
+                                  (MediaQuery.of(context).size.height * 0.12)
+                                      .toStringAsFixed(0),
                               palette: <Color>[
                                 burntSienna,
                                 lightRose,
@@ -102,7 +121,6 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                 emerald
                               ],
                               legend: Legend(isVisible: false),
-                              centerY: '70%',
                               series: _getSemiDoughnutSeries(),
                               tooltipBehavior: TooltipBehavior(enable: true),
                             )),
@@ -110,7 +128,6 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          //height: MediaQuery.of(context).size.height*0.12,
                           child: ListView.separated(
                               separatorBuilder: (context, index) {
                                 return Container(
@@ -123,8 +140,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                               physics: NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.symmetric(horizontal: 5.0),
                               itemBuilder: (context, index) {
-                                ChartSampleData data =
-                                    widget.chartData[index];
+                                ChartSampleData data = widget.chartData[index];
                                 return AssetStatusWidget(
                                   chartColor: color[index],
                                   chartData: data,
