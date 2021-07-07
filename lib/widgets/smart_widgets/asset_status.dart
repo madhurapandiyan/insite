@@ -30,9 +30,11 @@ class _AssetStatusState extends State<AssetStatus> {
   ];
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.30;
+    // double width=MediaQuery.of(context).size.width*1.30;
+    double height = MediaQuery.of(context).size.height * 0.33;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      // width: width,
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
@@ -102,33 +104,39 @@ class _AssetStatusState extends State<AssetStatus> {
               ? Expanded(child: Center(child: CircularProgressIndicator()))
               : Row(
                   children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      child: SfCircularChart(
-                        palette: <Color>[
-                          emerald,
-                          burntSienna,
-                          mustard,
-                          textcolor,
-                          lightRose,
-                          persianIndigo,
-                          maptextcolor,
-                          sandyBrown
-                        ],
-                        legend: Legend(
-                            isVisible: false,
-                            overflowMode: LegendItemOverflowMode.wrap),
-                        series: _getLegendDefaultSeries(),
-                        centerX: (MediaQuery.of(context).size.width * 0.15)
-                            .toStringAsFixed(0),
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                      ),
-                    ),
                     Expanded(
                       flex: 1,
                       child: Container(
-                        height: MediaQuery.of(context).size.height*0.20,
+                        width: MediaQuery.of(context).size.width * 0.20,
+                        height: MediaQuery.of(context).size.height * 0.20,
+                        alignment: Alignment.center,
+                        child: SfCircularChart(
+                          palette: <Color>[
+                            emerald,
+                            burntSienna,
+                            mustard,
+                            textcolor,
+                            lightRose,
+                            persianIndigo,
+                            maptextcolor,
+                            sandyBrown
+                          ],
+                          legend: Legend(
+                              isVisible: false,
+                              overflowMode: LegendItemOverflowMode.wrap),
+                          series: _getLegendDefaultSeries(),
+                          centerX: (MediaQuery.of(context).size.width * 0.18)
+                              .toStringAsFixed(0),
+                          centerY: (MediaQuery.of(context).size.height * 0.10)
+                              .toStringAsFixed(0),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.12,
                         child: ListView.separated(
                             separatorBuilder: (context, index) {
                               return Divider(thickness: 1.0, color: athenGrey);
@@ -155,7 +163,6 @@ class _AssetStatusState extends State<AssetStatus> {
                             }),
                       ),
                     )
-
                   ],
                 ),
         ],
