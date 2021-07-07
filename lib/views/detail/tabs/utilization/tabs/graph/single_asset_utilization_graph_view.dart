@@ -6,6 +6,7 @@ import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_uti
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
+import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:intl/intl.dart';
 
@@ -94,7 +95,6 @@ class _SingleAssetUtilizationGraphViewState
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0),
@@ -122,9 +122,9 @@ class _SingleAssetUtilizationGraphViewState
                                   Icons.keyboard_arrow_down,
                                   color: white,
                                 ),
-                                iconSize: 24,
+                                iconSize: 20,
                                 elevation: 16,
-                                style: TextStyle(color: white),
+                                style: TextStyle(color: white, fontSize: 12),
                                 underline: Container(
                                   height: 0,
                                 ),
@@ -179,112 +179,20 @@ class _SingleAssetUtilizationGraphViewState
                         ),
                       ),
                     ),
+                    Spacer(),
                     isRangeSelectionVisible
-                        ? Container(
-                            width: 140,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        rangeChoice = 1;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: rangeChoice == 1
-                                            ? tango
-                                            : cardcolor,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(4),
-                                          topLeft: Radius.circular(4),
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Day'.toUpperCase(),
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        rangeChoice = 2;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: rangeChoice == 2
-                                            ? tango
-                                            : cardcolor,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Week'.toUpperCase(),
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        rangeChoice = 3;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: rangeChoice == 3
-                                            ? tango
-                                            : cardcolor,
-                                        borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(4),
-                                          topRight: Radius.circular(4),
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Month'.toUpperCase(),
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                        ? RangeSelectionWidget(
+                            label1: 'Day',
+                            label2: 'Week',
+                            label3: 'Month',
+                            rangeChoice: (int choice) {
+                              setState(() {
+                                rangeChoice = choice;
+                              });
+                            },
                           )
                         : Container(),
+                    Spacer(),
                   ],
                 ),
                 selectedGraph == SingleAssetUtilizationGraphType.RUNTIMEHOURS
