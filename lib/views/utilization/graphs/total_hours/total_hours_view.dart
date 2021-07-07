@@ -93,7 +93,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
                 ),
               ],
             ),
-            viewModel.isRefreshing
+            (viewModel.isRefreshing || viewModel.isSwitching)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )

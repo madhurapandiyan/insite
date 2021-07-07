@@ -79,7 +79,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
                 ),
               ],
             ),
-            viewModel.isRefreshing
+            (viewModel.isRefreshing || viewModel.isSwitching)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )

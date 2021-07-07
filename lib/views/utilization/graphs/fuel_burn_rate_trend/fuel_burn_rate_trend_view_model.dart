@@ -18,6 +18,9 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _isSwitching = false;
+  bool get isSwitching => _isSwitching;
+
   FuelBurnRateTrend _fuelBurnRateTrend;
   FuelBurnRateTrend get fuelBurnRateTrend => _fuelBurnRateTrend;
 
@@ -30,6 +33,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
   }
 
   getFuelBurnRateTrend() async {
+    _isSwitching = true;
     FuelBurnRateTrend result = await _utilizationGraphService
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
     if (result.cumulatives == null)
@@ -37,6 +41,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
     else
       _fuelBurnRateTrend = result;
     _loading = false;
+    _isSwitching = false;
     notifyListeners();
   }
 

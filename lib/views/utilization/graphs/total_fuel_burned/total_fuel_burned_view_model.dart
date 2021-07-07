@@ -21,6 +21,9 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _isSwitching = false;
+  bool get isSwitching => _isSwitching;
+
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
@@ -30,6 +33,7 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
   }
 
   getTotalFuelBurned() async {
+    _isSwitching = true;
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
     if (result.cumulatives == null)
@@ -37,6 +41,7 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
     else
       _totalFuelBurned = result;
     _loading = false;
+    _isSwitching = false;
     notifyListeners();
   }
 

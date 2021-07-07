@@ -95,7 +95,7 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
                 ),
               ],
             ),
-            viewModel.isRefreshing
+            (viewModel.isRefreshing || viewModel.isSwitching)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
