@@ -104,10 +104,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                        height: 305,
-                        color: cardcolor,
-                        child: FleetGoogleMapHome()),
+                    child: FleetGoogleMapHome(),
                   ),
                   SizedBox(
                     height: 20.0,
