@@ -18,6 +18,9 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool _isSwitching = false;
+  bool get isSwitching => _isSwitching;
+
   IdlePercentTrend _idlePercentTrend;
   IdlePercentTrend get idlePercentTrend => _idlePercentTrend;
 
@@ -30,6 +33,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
   }
 
   getIdlePercentTrend() async {
+    _isSwitching = true;
     IdlePercentTrend result = await _utilizationGraphService
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
     if (result.cumulatives == null)
@@ -37,6 +41,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
     else
       _idlePercentTrend = result;
     _loading = false;
+    _isSwitching = false;
     notifyListeners();
   }
 

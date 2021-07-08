@@ -94,7 +94,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
                 ),
               ],
             ),
-            viewModel.isRefreshing
+            (viewModel.isRefreshing || viewModel.isSwitching)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )

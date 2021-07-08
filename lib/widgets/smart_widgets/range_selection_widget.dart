@@ -24,7 +24,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 190,
+      width: MediaQuery.of(context).size.width * 0.4,
       height: 35,
       decoration: BoxDecoration(
         color: white,
@@ -56,7 +56,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     widget.label1.toUpperCase(),
                     style: TextStyle(
                       color: white,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -87,7 +87,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     widget.label2.toUpperCase(),
                     style: TextStyle(
                       color: white,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -118,7 +118,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                           widget.label3.toUpperCase(),
                           style: TextStyle(
                             color: white,
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
