@@ -20,7 +20,6 @@ class LocationInfoWindowWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.height * 0.30,
           height: MediaQuery.of(context).size.height * 0.30,
           decoration: BoxDecoration(
             color: cardcolor,
@@ -29,6 +28,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -41,9 +41,6 @@ class LocationInfoWindowWidget extends StatelessWidget {
                           color: silver),
                     ),
                   ),
-                  SizedBox(
-                    width: 50.0,
-                  ),
                   GestureDetector(
                       onTap: onCustomWindowClose,
                       child: Padding(
@@ -52,7 +49,6 @@ class LocationInfoWindowWidget extends StatelessWidget {
                       ))
                 ],
               ),
-              Divider(),
               Container(
                 width: 216,
                 height: 32,
@@ -70,31 +66,27 @@ class LocationInfoWindowWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 16,
+                height: 10,
               ),
-              Column(
-                children: [
-                  InsiteButton(
-                      width: MediaQuery.of(context).size.height * 0.17,
-                      height: 40,
-                      fontSize: 14,
-                      bgColor: tango,
-                      title: "  Fleet List  ",
-                      textColor: appbarcolor,
-                      onTap: onFleetPageSelectedTap),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  InsiteButton(
-                      width: MediaQuery.of(context).size.height * 0.17,
-                      height: 40,
-                      fontSize: 14,
-                      bgColor: tango,
-                      title: "Zoom to cluster",
-                      textColor: appbarcolor,
-                      onTap: onTapWithZoom)
-                ],
-              )
+              InsiteButton(
+                  width: MediaQuery.of(context).size.width * 0.30,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  fontSize: 12,
+                  bgColor: tango,
+                  title: "  Fleet List  ",
+                  textColor: appbarcolor,
+                  onTap: onFleetPageSelectedTap),
+              SizedBox(
+                height: 10,
+              ),
+              InsiteButton(
+                  width: MediaQuery.of(context).size.width * 0.30,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  fontSize: 12,
+                  bgColor: tango,
+                  title: "Zoom to cluster",
+                  textColor: appbarcolor,
+                  onTap: onTapWithZoom)
             ],
           ),
         ),

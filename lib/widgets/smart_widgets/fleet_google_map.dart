@@ -47,8 +47,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 374.04,
-      height: 305.44,
+      height: MediaQuery.of(context).size.height * 0.50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -177,8 +176,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                 height: 5.0,
               ),
               Container(
-                width: 374.46,
-                height: 60.97,
+                height: MediaQuery.of(context).size.height * 0.10,
                 color: greencolor,
                 child: Padding(
                   padding: EdgeInsets.only(left: 5.0, top: 8.0),
@@ -197,8 +195,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                   ? Expanded(child: Center(child: CircularProgressIndicator()))
                   : Flexible(
                       child: Container(
-                          width: 380.9,
-                          height: 450.63,
+                          height: MediaQuery.of(context).size.height * 0.45,
                           child: _googleMap(currentType)),
                     ),
               Divider(),
@@ -227,8 +224,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
 
   Widget _googleMap(type) {
     return Container(
-      width: 380.9,
-      height: 267.46,
+      height: MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
         color: tuna,
         borderRadius: BorderRadius.all(Radius.circular(10)),

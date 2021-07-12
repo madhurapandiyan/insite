@@ -154,24 +154,20 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: Container(
-                                width: 374.04,
-                                height: 305.4,
-                                color: cardcolor,
-                                child: FleetGoogleMap(
-                                    isLoading: false,
-                                    latitude: viewModel.assetDetail
-                                        .lastReportedLocationLatitude,
-                                    screenType: ScreenType.ASSET_DETAIL,
-                                    status: widget
-                                                .detail.lastLocationUpdateUTC !=
-                                            null
-                                        ? "Last Reported Time: ".toUpperCase() +
-                                            Utils.getLastReportedDateOne(widget
-                                                .detail.lastLocationUpdateUTC)
-                                        : "No Data Receiveed",
-                                    longitude: viewModel.assetDetail
-                                        .lastReportedLocationLongitude)),
+                            child: FleetGoogleMap(
+                                isLoading: false,
+                                latitude: viewModel.assetDetail
+                                    .lastReportedLocationLatitude,
+                                screenType: ScreenType.ASSET_DETAIL,
+                                status: widget
+                                            .detail.lastLocationUpdateUTC !=
+                                        null
+                                    ? "Last Reported Time: ".toUpperCase() +
+                                        Utils.getLastReportedDateOne(widget
+                                            .detail.lastLocationUpdateUTC)
+                                    : "No Data Receiveed",
+                                longitude: viewModel.assetDetail
+                                    .lastReportedLocationLongitude),
                           )
                         : SizedBox(),
                     SizedBox(
