@@ -124,7 +124,7 @@ class HomeViewModel extends InsiteViewModel {
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
         x: stausData.countOf,
-        y: stausData.count.roundToDouble(),
+        y: stausData.count.round(),
       ));
     }
     _assetStatusloading = false;
@@ -137,7 +137,7 @@ class HomeViewModel extends InsiteViewModel {
     for (var fuelData in _fuelLevelData.countData) {
       if (fuelData.countOf != "Not Reporting") {
         fuelChartData.add(ChartSampleData(
-            x: fuelData.countOf, y: fuelData.count.roundToDouble()));
+            x: fuelData.countOf, y: fuelData.count.round()));
       }
     }
     _assetFuelloading = false;

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -303,19 +304,31 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
     chartData.add(
       IdlingLevelSampleData(
-          x: widget.data[1].countOf,
+          x: widget.data[1].countOf.split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", ""),
           y: widget.data[1].count,
           color: burntSienna),
     );
     chartData.add(IdlingLevelSampleData(
-        x: widget.data[2].countOf, y: widget.data[2].count, color: silver));
+        x: widget.data[2].countOf.split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", ""), y: widget.data[2].count, color: silver));
     chartData.add(
       IdlingLevelSampleData(
-          x: widget.data[3].countOf, y: widget.data[3].count, color: mustard),
+          x: widget.data[3].countOf.split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", ""), y: widget.data[3].count, color: mustard),
     );
     chartData.add(
       IdlingLevelSampleData(
-          x: widget.data[4].countOf, y: widget.data[4].count, color: emerald),
+          x: widget.data[4].countOf.split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", ""), y: widget.data[4].count, color: emerald),
     );
 
     return <BarSeries<IdlingLevelSampleData, String>>[
@@ -331,7 +344,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   fontStyle: FontStyle.normal),
               labelPosition: ChartDataLabelPosition.outside),
           pointColorMapper: (IdlingLevelSampleData charts, _) => charts.color,
-          xValueMapper: (IdlingLevelSampleData charts, _) => charts.x,
+          xValueMapper: (IdlingLevelSampleData charts, _) =>charts.x,
           yValueMapper: (IdlingLevelSampleData charts, _) => charts.y),
     ];
   }
