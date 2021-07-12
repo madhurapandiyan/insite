@@ -88,16 +88,15 @@ abstract class RestClient {
   @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
   Future<AssetResponse> assetSummary(@Queries() Map<String, dynamic> queries,
       @Header("X-VisionLink-CustomerUid") customerId);
-    @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
-    Future<AssetLocationData> assetLocationWithCluster(
+  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+  Future<AssetLocationData> assetLocationWithCluster(
       @Query("latitude") double latitude,
       @Query("longitude") double longitude,
       @Query("pageNumber") int pageNumber,
       @Query("pageSize") int pageSize,
       @Query("radiuskm") double radiusKm,
       @Query("sort") String sort,
-      @Header("x-visionlink-customeruid") customerId
-    );
+      @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<location.AssetLocationData> assetLocation(
@@ -180,11 +179,20 @@ abstract class RestClient {
   @GET(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1")
   Future<UtilizationSummaryResponse> utilLizationList(
-      @Query("assetUid") String assetUID,
-      @Query("startDate") String startDate,
-      @Query("endDate") String endDate,
-      @Query("sort") String sort,
-      @Header("x-visionlink-customeruid") customerId);
+      @Query("assetUid")
+          String assetUID,
+      @Query("startDate")
+          String startDate,
+      @Query("endDate")
+          String endDate,
+      @Query("sort")
+          String sort,
+      @Header("x-visionlink-customeruid")
+          customerId,
+      @Query("includeNonReportedDays")
+          bool includeNonReportedDays,
+      @Query("includeOutsideLastReportedDay")
+          bool includeOutsideLastReportedDay);
 
   @GET(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1")

@@ -61,22 +61,23 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                             fillColor: white,
                             border: searchBorder,
                             focusedBorder: searchBorder,
-                            prefixIcon: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Wrap(
-                                children: [
-                                  dropDownMenu(),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    width: 2,
-                                    height: 50,
-                                    color: silver,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // hiding drop down menu for global search
+                            // prefixIcon: Padding(
+                            //   padding: EdgeInsets.symmetric(horizontal: 20),
+                            //   child: Wrap(
+                            //     children: [
+                            //       dropDownMenu(),
+                            //       SizedBox(
+                            //         width: 20,
+                            //       ),
+                            //       Container(
+                            //         width: 2,
+                            //         height: 50,
+                            //         color: silver,
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 searchController.clear();
@@ -99,7 +100,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                         viewModel.searchData.topMatches[index];
                                     return GestureDetector(
                                       onTap: () {
-                                        viewModel.onDetailPageSelected(match);
+                                        // viewModel.onDetailPageSelected(match);
                                         widget.onSelected(match);
                                       },
                                       child: Column(

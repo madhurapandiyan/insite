@@ -88,12 +88,15 @@ class FleetListItem extends StatelessWidget {
                         children: [
                           InsiteTableRowItem(
                             title: "Location - Last Reported",
-                            content: "-",
+                            content: fleet.lastReportedUTC != null
+                                ? Utils.getLastReportedDateOneUTC(
+                                    fleet.lastReportedUTC)
+                                : "-",
                           ),
                           InsiteTableRowItem(
                             title: "Last Reported Time      ",
                             content: fleet.lastReportedUTC != null
-                                ? Utils.getLastReportedDateFleet(
+                                ? Utils.getLastReportedDateOneUTC(
                                     fleet.lastReportedUTC)
                                 : "",
                           ),
@@ -102,10 +105,14 @@ class FleetListItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Location                 ",
-                          content: fleet.lastReportedLocationLatitude
-                                  .toString() +
-                              "/" +
-                              fleet.lastReportedLocationLongitude.toString(),
+                          //changing to location text
+                          // content: fleet.lastReportedLocationLatitude
+                          //         .toString() +
+                          //     "/" +
+                          //     fleet.lastReportedLocationLongitude.toString(),
+                          content: fleet.lastReportedLocation != null
+                              ? fleet.lastReportedLocation
+                              : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Signal Strength          ",
@@ -115,7 +122,10 @@ class FleetListItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Fuel - Last Reported     ",
-                          content: "-",
+                          content: fleet.lastPercentFuelRemainingUTC != null
+                              ? Utils.getLastReportedDateOneUTC(
+                                  fleet.lastPercentFuelRemainingUTC)
+                              : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Fuel Level%",
@@ -131,7 +141,9 @@ class FleetListItem extends StatelessWidget {
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",
-                          content: "-",
+                          content: fleet.dealerCustomerName != null
+                              ? fleet.dealerCustomerName
+                              : "-",
                         ),
                       ]),
                       TableRow(children: [
@@ -141,14 +153,15 @@ class FleetListItem extends StatelessWidget {
                         ),
                         InsiteTableRowItem(
                           title: "Dealer Name               ",
-                          content: "-",
+                          content:
+                              fleet.dealerName != null ? fleet.dealerName : "-",
                         ),
                       ]),
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Hr Meter",
                           content: fleet.hourMeter != null
-                              ? fleet.hourMeter.toString() + " hrs"
+                              ? fleet.hourMeter.round().toString() + " hrs"
                               : "-",
                         ),
                         InsiteTableRowItem(

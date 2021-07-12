@@ -1,12 +1,13 @@
 import 'package:insite/core/models/filter_data.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
     DateTime parseDate =
         new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy hh:mm');
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }
@@ -14,7 +15,25 @@ class Utils {
   static String getLastReportedDateOne(date) {
     DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('MM/dd/yyyy hh:mm a');
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  static String getLastReportedDateUTC(date) {
+    DateTime parseDate =
+        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  static String getLastReportedDateOneUTC(date) {
+    DateTime parseDate =
+        new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
+    var inputDate = DateTime.parse(parseDate.toLocal().toString());
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }
@@ -28,10 +47,10 @@ class Utils {
     return outputDate;
   }
 
-  static String getLastReportedDateFleet(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('hh:mm');
+  static String getLastReportedTime(date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date, true);
+    var inputDate = DateTime.parse(parseDate.toLocal().toString());
+    var outputFormat = DateFormat('hh:mm a');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }
@@ -81,13 +100,13 @@ class Utils {
         title = "ASSET COMMISSIONING DATE";
         break;
       case FilterType.SUBSCRIPTION_DATE:
-        title = "SUBSCRIPTION DATE";
+        title = "SUBSCRIPTION TYPE";
         break;
       case FilterType.DEVICE_TYPE:
         title = "DEVICE TYPE";
         break;
       case FilterType.ALL_ASSETS:
-        title = "ALL ASSETS";
+        title = "ASSET STATUS";
         break;
       case FilterType.FUEL_LEVEL:
         title = "FUEL LEVEL";
@@ -151,25 +170,21 @@ class Utils {
 
   static DateTime getMinDate(List<DateTime> inputDates) {
     DateTime minDate;
-
     for (DateTime item in inputDates) {
       if (minDate == null)
         minDate = item;
       else if (item.isBefore(minDate)) minDate = item;
     }
-
     return minDate;
   }
 
   static DateTime getMaxDate(List<DateTime> inputDates) {
     DateTime maxDate;
-
     for (DateTime item in inputDates) {
       if (maxDate == null)
         maxDate = item;
       else if (item.isAfter(maxDate)) maxDate = item;
     }
-
     return maxDate;
   }
 

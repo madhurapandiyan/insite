@@ -6,8 +6,11 @@ import 'insite_text.dart';
 class InsiteTableRowItem extends StatelessWidget {
   final String title;
   final String content;
-  
-  const InsiteTableRowItem({this.title, this.content,});
+
+  const InsiteTableRowItem({
+    this.title,
+    this.content,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +22,12 @@ class InsiteTableRowItem extends StatelessWidget {
           InsiteText(
             text: title,
             color: athenGrey,
+            size: 15,
             fontWeight: FontWeight.bold,
           ),
           InsiteText(
             text: content,
+            size: 13,
             fontWeight: FontWeight.normal,
             color: textcolor,
           )
@@ -35,7 +40,7 @@ class InsiteTableRowItem extends StatelessWidget {
 class InsiteTableRowWithImage extends StatelessWidget {
   final String title;
   final String path;
-  
+
   const InsiteTableRowWithImage({this.title, this.path});
 
   @override
@@ -53,12 +58,13 @@ class InsiteTableRowWithImage extends StatelessWidget {
             child: InsiteImage(
               height: 30,
               width: 50,
-              path:path,
+              path: path,
             ),
           ),
           Expanded(
             child: InsiteText(
               text: title,
+              size: 15,
               color: athenGrey,
               fontWeight: FontWeight.bold,
             ),
@@ -67,7 +73,8 @@ class InsiteTableRowWithImage extends StatelessWidget {
       ),
     );
   }
-   imageData(String model) {
+
+  imageData(String model) {
     if (model.contains("SHINRAI")) {
       return "assets/images/shinrai.png";
     } else if (model.contains("EX130")) {
@@ -107,6 +114,7 @@ class InsiteTableRowIcon extends StatelessWidget {
           ),
           InsiteText(
             text: title,
+            size: 15,
             fontWeight: FontWeight.normal,
             color: textcolor,
           )
@@ -114,5 +122,4 @@ class InsiteTableRowIcon extends StatelessWidget {
       ),
     );
   }
- 
 }

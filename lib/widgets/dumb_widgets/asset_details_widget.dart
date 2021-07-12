@@ -45,10 +45,11 @@ class AssetDetailWidgt extends StatelessWidget {
                 border: TableBorder.all(),
                 children: [
                   TableRow(children: [
-                    InsiteTableRowItem(
-                      title: "Asset Id",
-                      content: "-",
-                    ),
+                    // hiding for now
+                    // InsiteTableRowItem(
+                    //   title: "Asset Id",
+                    //   content: "-",
+                    // ),
                     InsiteTableRowItem(
                       title: "Asset Status",
                       content: detail.status,
@@ -59,10 +60,11 @@ class AssetDetailWidgt extends StatelessWidget {
                     )
                   ]),
                   TableRow(children: [
-                    InsiteTableRowItem(
-                      title: "Geofences",
-                      content: "-",
-                    ),
+                    // hiding for now
+                    // InsiteTableRowItem(
+                    //   title: "Geofences",
+                    //   content: "-",
+                    // ),
                     InsiteTableRowItem(
                       title: "Manufacturer",
                       content: detail.manufacturer,
@@ -75,13 +77,7 @@ class AssetDetailWidgt extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: "Model ",
-                      content: detail.productFamily,
-                    ),
-                    InsiteTableRowItem(
-                      title: "Hour Meter",
-                      content: detail.hourMeter != null
-                          ? detail.hourMeter.toString() + " Hrs"
-                          : "",
+                      content: detail.model != null ? detail.model : "-",
                     ),
                     InsiteTableRowItem(
                       title: "Year",
@@ -93,18 +89,16 @@ class AssetDetailWidgt extends StatelessWidget {
                     InsiteTableRowItem(
                       title: "Last Reported time",
                       content: detail.lastReportedTimeUTC != null
-                          ? Utils.getLastReportedDateOne(
+                          ? Utils.getLastReportedDateOneUTC(
                               detail.lastReportedTimeUTC)
                           : "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Groups",
-                      content: "-",
+                      title: "Hour Meter",
+                      content: detail.hourMeter != null
+                          ? detail.hourMeter.round().toString() + " Hrs"
+                          : "",
                     ),
-                    InsiteTableRowItem(
-                      title: "",
-                      content: "",
-                    )
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
@@ -113,17 +107,14 @@ class AssetDetailWidgt extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: "Location",
-                      content: detail.lastReportedLocationLatitude != null &&
-                              detail.lastReportedLocationLongitude != null
-                          ? detail.lastReportedLocationLatitude.toString() +
-                              "/" +
-                              detail.lastReportedLocationLongitude.toString()
-                          : "-",
+                      // content: detail.lastReportedLocationLatitude != null &&
+                      //         detail.lastReportedLocationLongitude != null
+                      //     ? detail.lastReportedLocationLatitude.toString() +
+                      //         "/" +
+                      //         detail.lastReportedLocationLongitude.toString()
+                      //     : "-",
+                      content: detail.lastReportedLocation,
                     ),
-                    InsiteTableRowItem(
-                      title: "",
-                      content: "",
-                    )
                   ])
                 ],
               ),

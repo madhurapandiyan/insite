@@ -9,7 +9,6 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'single_asset_operation_view_model.dart';
@@ -286,25 +285,27 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
   }
 
   Table assetOperationTable(SingleAssetOperation assetOperation) {
-    DateFormat format = DateFormat('dd/MM/yyyy hh:mm');
-
     return Table(
       border: TableBorder.all(width: 1.0),
       children: [
         TableRow(
           children: [
-            InsiteTableRowItem(
-              title: 'Last Event',
-              content: assetOperation.assetOperations.assets.first
-                      .assetLastReceivedEvent.lastReceivedEvent
-                      .contains('Off')
-                  ? 'Engine Ignition/ off'
-                  : 'Engine Ignition/ on',
-            ),
+            // InsiteTableRowItem(
+            //   title: 'Last Event',
+            //   content: assetOperation.assetOperations.assets.first
+            //           .assetLastReceivedEvent.lastReceivedEvent
+            //           .contains('Off')
+            //       ? 'Engine Ignition/ off'
+            //       : 'Engine Ignition/ on',
+            // ),
             InsiteTableRowItem(
               title: 'Last Event Time',
-              content: format.format(assetOperation.assetOperations.assets.first
-                  .assetLastReceivedEvent.lastReceivedEventTimeLocal),
+              content: Utils.getLastReportedDateOneUTC(assetOperation
+                  .assetOperations
+                  .assets
+                  .first
+                  .assetLastReceivedEvent
+                  .lastReceivedEventTimeLocal),
             ),
             InsiteTableRowItem(
               title: 'Distance Travelled',
@@ -318,23 +319,27 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
         ),
         TableRow(
           children: [
-            InsiteTableRowItem(
-              title: 'Last Known Operator',
-              content: assetOperation.assetOperations.assets.first
-                          .lastKnownOperator.runtimeType ==
-                      String
-                  ? assetOperation.assetOperations.assets.first
-                      .lastKnownOperator.runtimeType
-                  : '-',
-            ),
+            // InsiteTableRowItem(
+            //   title: 'Last Known Operator',
+            //   content: assetOperation.assetOperations.assets.first
+            //               .lastKnownOperator.runtimeType ==
+            //           String
+            //       ? assetOperation.assetOperations.assets.first
+            //           .lastKnownOperator.runtimeType
+            //       : '-',
+            // ),
             InsiteTableRowItem(
               title: 'This data was last refreshed on',
               content: assetOperation.assetOperations.assets.first
                           .assetLastReceivedEvent.lastReceivedEventTimeLocal ==
                       null
                   ? '-'
-                  : format.format(assetOperation.assetOperations.assets.first
-                      .assetLastReceivedEvent.lastReceivedEventTimeLocal),
+                  : Utils.getLastReportedDateOneUTC(assetOperation
+                      .assetOperations
+                      .assets
+                      .first
+                      .assetLastReceivedEvent
+                      .lastReceivedEventTimeLocal),
             ),
             InsiteTableRowItem(
               title: '',

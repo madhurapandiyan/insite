@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'single_asset_operation.g.dart';
 
 @JsonSerializable()
@@ -103,8 +102,8 @@ class AssetLastReceivedEvent {
   });
 
   String lastReceivedEvent;
-  DateTime lastReceivedEventTimeLocal;
-  DateTime lastReceivedEventUtc;
+  String lastReceivedEventTimeLocal;
+  String lastReceivedEventUtc;
   String timezoneAbbrev;
   bool isPairedEvent;
   String segmentType;

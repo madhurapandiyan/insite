@@ -38,8 +38,14 @@ class AssetUtilizationService extends BaseService {
     try {
       UtilizationSummaryResponse utilizationSummaryResponse = await MyApi()
           .getClient()
-          .utilLizationList(assetUID, startDate, endDate,
-              '-LastReportedUtilizationTime', accountSelected.CustomerUID);
+          .utilLizationList(
+              assetUID,
+              startDate,
+              endDate,
+              '-LastReportedUtilizationTime',
+              accountSelected.CustomerUID,
+              true,
+              true);
       return utilizationSummaryResponse.utilization;
     } catch (e) {
       Logger().e(e);

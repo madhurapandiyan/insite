@@ -60,6 +60,7 @@ class AssetDetail {
   final String accountName;
   final String universalCustomerIdentifier;
   final String universalCustomerName;
+  final String lastReportedLocation;
   final double lastReportedLocationLatitude;
   final double lastReportedLocationLongitude;
   final double fuelLevelLastReported;
@@ -81,6 +82,7 @@ class AssetDetail {
       this.lifetimeFuel,
       this.activeServicePlans,
       this.makeCode,
+      this.lastReportedLocation,
       this.fuelLevelLastReported,
       this.lastReportedTimeUTC,
       this.lastLocationUpdateUTC,

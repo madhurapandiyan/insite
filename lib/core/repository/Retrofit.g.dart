@@ -682,18 +682,30 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummaryResponse> utilLizationList(
-      assetUID, startDate, endDate, sort, customerId) async {
+      assetUID,
+      startDate,
+      endDate,
+      sort,
+      customerId,
+      includeNonReportedDays,
+      includeOutsideLastReportedDay) async {
     ArgumentError.checkNotNull(assetUID, 'assetUID');
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(sort, 'sort');
     ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(
+        includeNonReportedDays, 'includeNonReportedDays');
+    ArgumentError.checkNotNull(
+        includeOutsideLastReportedDay, 'includeOutsideLastReportedDay');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUID,
       r'startDate': startDate,
       r'endDate': endDate,
-      r'sort': sort
+      r'sort': sort,
+      r'includeNonReportedDays': includeNonReportedDays,
+      r'includeOutsideLastReportedDay': includeOutsideLastReportedDay
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(

@@ -20,12 +20,6 @@ class _SingleAssetUtilizationViewState
     extends State<SingleAssetUtilizationView> {
   bool isListSelected = true;
 
-  List<DateTime> dateRange = [];
-  List<DateTime> selectedDateRange = [
-    DateTime.now().subtract(Duration(days: DateTime.now().weekday)),
-    DateTime.now()
-  ];
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetUtilizationViewModel>.reactive(

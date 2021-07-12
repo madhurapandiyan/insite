@@ -55,7 +55,7 @@ class Notes extends StatelessWidget {
                 Text(
                   'NOTES',
                   style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 18),
+                      color: white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ],
             ),
@@ -78,7 +78,7 @@ class Notes extends StatelessWidget {
                                   ),
                                   InsiteTableRowItem(
                                     title: "",
-                                    content: Utils.getLastReportedDateOne(
+                                    content: Utils.getLastReportedDateOneUTC(
                                         notes[index].lastModifiedUTC),
                                   ),
                                 ])),

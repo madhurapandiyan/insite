@@ -77,7 +77,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                               fontFamily: 'Roboto',
                               color: textcolor,
                               fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
+                              fontSize: 15.0),
                         ),
                       ],
                     ),
@@ -117,6 +117,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                                     ),
                                   ),
                                   isExpanded: true,
+                                  dropdownColor: Colors.black,
                                   hint: Text(
                                     _currentSelectedItem,
                                   ),
