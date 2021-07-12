@@ -107,12 +107,8 @@ AssetLastReceivedEvent _$AssetLastReceivedEventFromJson(
     Map<String, dynamic> json) {
   return AssetLastReceivedEvent(
     lastReceivedEvent: json['lastReceivedEvent'] as String,
-    lastReceivedEventTimeLocal: json['lastReceivedEventTimeLocal'] == null
-        ? null
-        : DateTime.parse(json['lastReceivedEventTimeLocal'] as String),
-    lastReceivedEventUtc: json['lastReceivedEventUtc'] == null
-        ? null
-        : DateTime.parse(json['lastReceivedEventUtc'] as String),
+    lastReceivedEventTimeLocal: json['lastReceivedEventTimeLocal'] as String,
+    lastReceivedEventUtc: json['lastReceivedEventUtc'] as String,
     timezoneAbbrev: json['timezoneAbbrev'] as String,
     isPairedEvent: json['isPairedEvent'] as bool,
     segmentType: json['segmentType'] as String,
@@ -123,9 +119,8 @@ Map<String, dynamic> _$AssetLastReceivedEventToJson(
         AssetLastReceivedEvent instance) =>
     <String, dynamic>{
       'lastReceivedEvent': instance.lastReceivedEvent,
-      'lastReceivedEventTimeLocal':
-          instance.lastReceivedEventTimeLocal?.toIso8601String(),
-      'lastReceivedEventUtc': instance.lastReceivedEventUtc?.toIso8601String(),
+      'lastReceivedEventTimeLocal': instance.lastReceivedEventTimeLocal,
+      'lastReceivedEventUtc': instance.lastReceivedEventUtc,
       'timezoneAbbrev': instance.timezoneAbbrev,
       'isPairedEvent': instance.isPairedEvent,
       'segmentType': instance.segmentType,

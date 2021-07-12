@@ -119,6 +119,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     });
     _navigationService.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
+            index: 0,
             fleet: Fleet(
                 assetSerialNumber: match.serialNumber,
                 assetId: match.assetID,

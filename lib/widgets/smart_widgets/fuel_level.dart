@@ -50,7 +50,7 @@ class FuelLevel extends StatelessWidget {
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: 15),
                     ),
                     Expanded(
                       child: Container(),

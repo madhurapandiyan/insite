@@ -10,6 +10,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
   return Device(
     deviceType: json['deviceType'] as String,
     deviceUID: json['deviceUID'] as String,
+    deviceSerialNumber: json['deviceSerialNumber'] as String,
     activeServicePlans: (json['activeServicePlans'] as List)
         ?.map((e) =>
             e == null ? null : ServicePlan.fromJson(e as Map<String, dynamic>))
@@ -21,6 +22,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
       'deviceType': instance.deviceType,
+      'deviceSerialNumber': instance.deviceSerialNumber,
       'mainboardSoftwareVersion': instance.mainboardSoftwareVersion,
       'isGpsRollOverAffected': instance.isGpsRollOverAffected,
       'deviceUID': instance.deviceUID,

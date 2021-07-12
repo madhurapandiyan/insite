@@ -5,6 +5,7 @@ part 'device.g.dart';
 @JsonSerializable()
 class Device {
   final String deviceType;
+  final String deviceSerialNumber;
   final String mainboardSoftwareVersion;
   final bool isGpsRollOverAffected;
   final String deviceUID;
@@ -12,6 +13,7 @@ class Device {
   Device(
       {this.deviceType,
       this.deviceUID,
+      this.deviceSerialNumber,
       this.activeServicePlans,
       this.isGpsRollOverAffected,
       this.mainboardSoftwareVersion});

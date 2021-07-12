@@ -6,7 +6,6 @@ import 'package:insite/views/detail/tabs/utilization/tabs/list/single_asset_util
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class SingleAssetUtilizationListView extends StatefulWidget {
@@ -49,10 +48,6 @@ class _SingleAssetUtilizationListViewState
                               child: DateRangeView()),
                         );
                         if (dateRange != null && dateRange.isNotEmpty) {
-                          viewModel.startDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.first);
-                          viewModel.endDate =
-                              DateFormat('MM/dd/yyyy').format(dateRange.last);
                           viewModel.refresh();
                         }
                       },

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 
 class PingDevice extends StatelessWidget {
+  final AssetDetail assetDetail;
   const PingDevice({
     Key key,
+    this.assetDetail,
     @required this.onTap,
   }) : super(key: key);
 
@@ -14,7 +17,7 @@ class PingDevice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-     // width: MediaQuery.of(context).size.width * 0.95,
+      // width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.26,
       decoration: BoxDecoration(
         color: tuna,
@@ -43,7 +46,7 @@ class PingDevice extends StatelessWidget {
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: 15),
                     ),
                   ],
                 ),
@@ -64,15 +67,15 @@ class PingDevice extends StatelessWidget {
                 TableRow(children: [
                   InsiteTableRowItem(
                     title: "Registered Dealer",
-                    content: "Dharwad - Training Dept",
+                    content: assetDetail.dealerName,
                   ),
                   InsiteTableRowItem(
                     title: "Device Type",
-                    content: "TAP76",
+                    content: assetDetail.devices[0].deviceType,
                   ),
                   InsiteTableRowItem(
                     title: "Serial No.",
-                    content: "NG498917",
+                    content: assetDetail.devices[0].deviceSerialNumber,
                   ),
                 ])
               ],

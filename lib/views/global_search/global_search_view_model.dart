@@ -39,8 +39,10 @@ class GlobalSearchViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(TopMatch fleet) {
+    Logger().d("message $fleet");
     _navigationService.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
+            index: 0,
             fleet: Fleet(
                 assetSerialNumber: fleet.serialNumber,
                 assetId: fleet.assetUID,

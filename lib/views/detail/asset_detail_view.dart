@@ -178,7 +178,9 @@ class _TabPageState extends State<AssetDetailView> {
                           ),
                           SizedBox(width: 15.0),
                           Text(
-                            "TRAINING DEPT",
+                            viewModel.assetDetail != null
+                                ? viewModel.assetDetail.universalCustomerName
+                                : "-",
                             style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w700,

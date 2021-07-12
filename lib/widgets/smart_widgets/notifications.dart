@@ -31,7 +31,7 @@ class Notifications extends StatelessWidget {
                 Text(
                   'NOTIFICATIONS',
                   style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 18),
+                      color: white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ],
             ),

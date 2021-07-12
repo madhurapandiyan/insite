@@ -101,7 +101,7 @@ class _AccountSelectionDropDownWidgetState
             ? selected.value.DisplayName
             : widget.selectionType == AccountType.ACCOUNT
                 ? "Select"
-                : "Customer",
+                : "Search and Select",
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),

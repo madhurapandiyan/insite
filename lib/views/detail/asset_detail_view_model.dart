@@ -17,9 +17,15 @@ class AssetDetailViewModel extends InsiteViewModel {
 
   AssetDetailViewModel(this.fleet) {
     this.log = getLogger(this.runtimeType.toString());
-    _assetService.setUp();
     setUp();
-    Logger().i("asset choosen " + fleet.assetSerialNumber);
+    _assetService.setUp();
+    try {
+      Logger().i("asset choosen assetSerialNumber " + fleet.assetSerialNumber);
+      Logger().i("asset choosen assetIdentifier " + fleet.assetIdentifier);
+      Logger().i("asset choosen assetId " + fleet.assetId);
+    } catch (e) {
+      Logger().e(e);
+    }
     Future.delayed(Duration(seconds: 1), () {
       getAssetDetail();
     });

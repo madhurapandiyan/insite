@@ -79,8 +79,8 @@ class FilterViewModel extends InsiteViewModel {
         resultModel.countData != null &&
         resultModel.countData.isNotEmpty) {
       for (Count countData in resultModel.countData) {
-        if (countData.countOf != "Not Reporting" &&
-            countData.countOf != "Excluded") {
+        // if (countData.countOf != "Not Reporting" && //enabling not reporting
+        if (countData.countOf != "Excluded") {
           FilterData data = FilterData(
               count: countData.count.toString(),
               title: countData.countOf,

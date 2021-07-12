@@ -94,7 +94,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           lastReported:
                               widget.detail.fuelReportedTimeUTC != null
                                   ? "Last Reported Time: ".toUpperCase() +
-                                      Utils.getLastReportedDateOne(
+                                      Utils.getLastReportedDateOneUTC(
                                           widget.detail.fuelReportedTimeUTC)
                                   : "No Data Receiveed"),
                     ),
@@ -142,7 +142,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                       .detail.lastLifetimeDEFLitersUTC !=
                                   null
                               ? "Last Reported Time: ".toUpperCase() +
-                                  Utils.getLastReportedDateOne(
+                                  Utils.getLastReportedDateOneUTC(
                                       widget.detail.lastLifetimeDEFLitersUTC)
                               : "No Data Receiveed"),
                     ),
@@ -156,18 +156,17 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             ),
                             child: FleetGoogleMap(
                                 isLoading: false,
-                                latitude: viewModel.assetDetail
-                                    .lastReportedLocationLatitude,
+                                latitude: viewModel
+                                    .assetDetail.lastReportedLocationLatitude,
                                 screenType: ScreenType.ASSET_DETAIL,
-                                status: widget
-                                            .detail.lastLocationUpdateUTC !=
+                                status: widget.detail.lastLocationUpdateUTC !=
                                         null
                                     ? "Last Reported Time: ".toUpperCase() +
-                                        Utils.getLastReportedDateOne(widget
-                                            .detail.lastLocationUpdateUTC)
+                                        Utils.getLastReportedDateOneUTC(
+                                            widget.detail.lastLocationUpdateUTC)
                                     : "No Data Receiveed",
-                                longitude: viewModel.assetDetail
-                                    .lastReportedLocationLongitude),
+                                longitude: viewModel
+                                    .assetDetail.lastReportedLocationLongitude),
                           )
                         : SizedBox(),
                     SizedBox(
@@ -196,7 +195,10 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),
-                      child: PingDevice(onTap: () {}),
+                      child: PingDevice(
+                        onTap: () {},
+                        assetDetail: widget.detail,
+                      ),
                     ),
                     SizedBox(
                       height: 20,

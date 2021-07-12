@@ -17,6 +17,7 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) {
             e == null ? null : ServicePlan.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     json['makeCode'] as String,
+    json['lastReportedLocation'] as String,
     (json['fuelLevelLastReported'] as num)?.toDouble(),
     json['lastReportedTimeUTC'] as String,
     json['lastLocationUpdateUTC'] as String,
@@ -65,6 +66,7 @@ Map<String, dynamic> _$AssetDetailToJson(AssetDetail instance) =>
       'accountName': instance.accountName,
       'universalCustomerIdentifier': instance.universalCustomerIdentifier,
       'universalCustomerName': instance.universalCustomerName,
+      'lastReportedLocation': instance.lastReportedLocation,
       'lastReportedLocationLatitude': instance.lastReportedLocationLatitude,
       'lastReportedLocationLongitude': instance.lastReportedLocationLongitude,
       'fuelLevelLastReported': instance.fuelLevelLastReported,

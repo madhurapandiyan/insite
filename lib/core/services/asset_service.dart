@@ -26,7 +26,7 @@ class AssetService extends BaseService {
       accountSelected = await _localService.getAccountInfo();
       customerSelected = await _localService.getCustomerInfo();
     } catch (e) {
-      Logger().e(e);
+      Logger().e("setUp $e");
     }
   }
 
@@ -59,7 +59,7 @@ class AssetService extends BaseService {
                   accountSelected.CustomerUID);
       return assetResponse.assetOperations.assets;
     } catch (e) {
-      Logger().e(e);
+      Logger().e("getAssetSummaryList $e");
       return [];
     }
   }
@@ -71,7 +71,7 @@ class AssetService extends BaseService {
           .assetDetail(assetUID, accountSelected.CustomerUID);
       return assetResponse;
     } catch (e) {
-      Logger().e(e);
+      Logger().e("getAssetDetail $e");
       return null;
     }
   }
@@ -83,7 +83,7 @@ class AssetService extends BaseService {
           .asset(assetUID, accountSelected.CustomerUID);
       return assetResponse.Devices;
     } catch (e) {
-      Logger().e(e);
+      Logger().e("getAssetDevice $e");
       return [];
     }
   }
