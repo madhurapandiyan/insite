@@ -39,7 +39,7 @@ class PingDevice extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      'Details'.toUpperCase(),
+                      'Device Details'.toUpperCase(),
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
@@ -47,12 +47,13 @@ class PingDevice extends StatelessWidget {
                     ),
                   ],
                 ),
-                InsiteButton(
-                  title: 'Ping Device'.toUpperCase(),
-                  onTap: onTap,
-                  bgColor: tango,
-                  textColor: white,
-                ),
+                // Button be removed frp client side till now
+                // InsiteButton(
+                //   title: 'Ping Device'.toUpperCase(),
+                //   onTap: onTap,
+                //   bgColor: tango,
+                //   textColor: white,
+                // ),
               ],
             ),
             SizedBox(

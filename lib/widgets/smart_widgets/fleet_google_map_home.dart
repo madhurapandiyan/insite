@@ -99,6 +99,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                                     Expanded(
                                       flex: 1,
                                       child: DropdownButton(
+                                        dropdownColor: cardcolor,
                                         icon: Padding(
                                           padding: EdgeInsets.only(right: 8.0),
                                           child: Container(

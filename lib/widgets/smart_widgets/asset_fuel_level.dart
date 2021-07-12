@@ -28,7 +28,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
   @override
   Widget build(BuildContext context) {
     var color = [burntSienna, lightRose, mustard, emerald, emerald];
-    double height = MediaQuery.of(context).size.height * 0.34;
+    double height = MediaQuery.of(context).size.height * 0.32;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
       height: height,
@@ -102,14 +102,14 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                 : Row(
                     children: [
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Container(
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width * 0.20,
                             height: MediaQuery.of(context).size.height * 0.20,
                             child: SfCircularChart(
                               centerX:
-                                  (MediaQuery.of(context).size.width * 0.18)
+                                  (MediaQuery.of(context).size.width * 0.24)
                                       .toStringAsFixed(0),
                               centerY:
                                   (MediaQuery.of(context).size.height * 0.12)
@@ -126,7 +126,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             )),
                       ),
                       Expanded(
-                        flex: 1,
+                        
                         child: Container(
                           child: ListView.separated(
                               separatorBuilder: (context, index) {

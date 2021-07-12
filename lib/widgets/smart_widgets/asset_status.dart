@@ -105,7 +105,7 @@ class _AssetStatusState extends State<AssetStatus> {
               : Row(
                   children: [
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.20,
                         height: MediaQuery.of(context).size.height * 0.20,
@@ -125,7 +125,7 @@ class _AssetStatusState extends State<AssetStatus> {
                               isVisible: false,
                               overflowMode: LegendItemOverflowMode.wrap),
                           series: _getLegendDefaultSeries(),
-                          centerX: (MediaQuery.of(context).size.width * 0.18)
+                          centerX: (MediaQuery.of(context).size.width * 0.21)
                               .toStringAsFixed(0),
                           centerY: (MediaQuery.of(context).size.height * 0.10)
                               .toStringAsFixed(0),
@@ -134,7 +134,7 @@ class _AssetStatusState extends State<AssetStatus> {
                       ),
                     ),
                     Flexible(
-                      flex: 1,
+                      
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.12,
                         child: ListView.separated(
@@ -143,8 +143,8 @@ class _AssetStatusState extends State<AssetStatus> {
                             },
                             itemCount: widget.statusChartData.length,
                             shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
                             physics: ScrollPhysics(),
+                            scrollDirection: Axis.vertical,
                             padding: EdgeInsets.symmetric(horizontal: 5.0),
                             itemBuilder: (context, index) {
                               ChartSampleData assetStatusData =

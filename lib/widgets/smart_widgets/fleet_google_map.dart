@@ -106,6 +106,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                               Expanded(
                                 flex: 1,
                                 child: DropdownButton(
+                                  dropdownColor: cardcolor,
                                   icon: Padding(
                                     padding: EdgeInsets.only(right: 8.0),
                                     child: Container(
@@ -128,6 +129,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                                   ]
                                       .map((map) => DropdownMenuItem(
                                             value: map,
+                                            
                                             child: Text(map,
                                                 style: TextStyle(
                                                     fontSize: 11.0,
