@@ -38,10 +38,10 @@ class FuelLevel extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: white,
-                    ),
+                    // Icon(
+                    //   Icons.keyboard_arrow_down,
+                    //   color: white,
+                    // ),
                     SizedBox(
                       width: 10,
                     ),
@@ -55,10 +55,10 @@ class FuelLevel extends StatelessWidget {
                     Expanded(
                       child: Container(),
                     ),
-                    Icon(
-                      Icons.more_vert,
-                      color: white,
-                    ),
+                    // Icon(
+                      // Icons.more_vert,
+                      // color: white,
+                    // ),
                   ],
                 ),
                 Padding(

@@ -33,13 +33,17 @@ class _SingleAssetUtilizationViewState
             ),
             child: Stack(
               children: [
-                isListSelected
-                    ? Flexible(
-                        child: SingleAssetUtilizationListView(
-                            detail: widget.detail))
-                    : Flexible(
-                        child: SingleAssetUtilizationGraphView(
-                            detail: widget.detail)),
+                Column(
+                  children: [
+                    isListSelected
+                        ? Flexible(
+                            child: SingleAssetUtilizationListView(
+                                detail: widget.detail))
+                        : Flexible(
+                            child: SingleAssetUtilizationGraphView(
+                                detail: widget.detail)),
+                  ],
+                ),
                 Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(

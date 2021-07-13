@@ -36,13 +36,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                 ),
                 child: Stack(
                   children: [
-                    isListSelected
-                        ? Flexible(
-                            child: UtilizationListView(),
-                          )
-                        : Flexible(
-                            child: UtilizationGraphView(),
-                          ),
+                    Column(
+                      children: [
+                        isListSelected
+                            ? Flexible(
+                                child: UtilizationListView(),
+                              )
+                            : Flexible(
+                                child: UtilizationGraphView(),
+                              ),
+                      ],
+                    ),
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Row(

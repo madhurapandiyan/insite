@@ -48,7 +48,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                 children: [
                   Row(
                     children: [
-                      SvgPicture.asset("assets/images/arrowdown.svg"),
+                      // SvgPicture.asset("assets/images/arrowdown.svg"),
                       SizedBox(
                         width: 10,
                       ),
@@ -80,14 +80,14 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                       SizedBox(
                         width: 35.0,
                       ),
-                      GestureDetector(
-                        onTap: () => print("button is tapped"),
-                        child: SvgPicture.asset(
-                          "assets/images/menu.svg",
-                          width: 20,
-                          height: 20,
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () => print("button is tapped"),
+                      //   child: SvgPicture.asset(
+                      //     "assets/images/menu.svg",
+                      //     width: 20,
+                      //     height: 20,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],
@@ -126,7 +126,6 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             )),
                       ),
                       Expanded(
-                        
                         child: Container(
                           child: ListView.separated(
                               separatorBuilder: (context, index) {
