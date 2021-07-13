@@ -119,7 +119,11 @@ class FilterViewModel extends InsiteViewModel {
       for (Count countData in resultModel.countData) {
         if (countData.countOf != "Not Reporting" &&
             countData.countOf != "Excluded") {
-          var x = countData.countOf;
+          var x = countData.countOf
+              .split(",")
+              .first
+              .replaceAll("[", "")
+              .replaceAll("]", "");
           var y = countData.countOf
               .split(",")
               .last
