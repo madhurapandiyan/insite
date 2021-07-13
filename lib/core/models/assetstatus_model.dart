@@ -1,7 +1,7 @@
 
 class ChartSampleData {
   final String x;
-  final double y;
+  final int y;
   
   ChartSampleData({this.x, this.y});
 }

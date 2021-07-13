@@ -96,7 +96,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                   ? "Last Reported Time: ".toUpperCase() +
                                       Utils.getLastReportedDateOneUTC(
                                           widget.detail.fuelReportedTimeUTC)
-                                  : "No Data Receiveed"),
+                                  : "No Data Received"),
                     ),
                     SizedBox(
                       height: 20,
@@ -107,9 +107,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               horizontal: 16.0,
                             ),
                             child: SingleAssetUtilizationWidget(
-                              assetUtilization: viewModel.assetUtilization,
+                              assetUtilization: viewModel.assetUtilization!=null?
+                              viewModel.assetUtilization:null,
                               greatestNumber:
-                                  viewModel.utilizationGreatestValue,
+                                  viewModel.utilizationGreatestValue!=null?
+                                  viewModel.utilizationGreatestValue:null,
                             ),
                           )
                         : SizedBox(),

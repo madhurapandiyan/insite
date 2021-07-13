@@ -109,10 +109,11 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Notifications(),
-                  ),
+                  //For Notification widget we haven't any data for that so we commented
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  //   child: Notifications(),
+                  // ),
                   // SizedBox(
                   //   height: 20.0,
                   // ),

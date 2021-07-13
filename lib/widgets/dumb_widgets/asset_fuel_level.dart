@@ -15,7 +15,7 @@ class _AssetStatusFuelLevelWidgetState extends State<AssetFuelLevelWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 130,
+      width: 100,
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
