@@ -45,10 +45,10 @@ class Notes extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: white,
-                ),
+                // Icon(
+                //   Icons.keyboard_arrow_down,
+                //   color: white,
+                // ),
                 SizedBox(
                   width: 10,
                 ),

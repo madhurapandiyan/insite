@@ -34,10 +34,10 @@ class PingDevice extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: white,
-                    ),
+                    // Icon(
+                    //   Icons.keyboard_arrow_down,
+                    //   color: white,
+                    // ),
                     SizedBox(
                       width: 10,
                     ),

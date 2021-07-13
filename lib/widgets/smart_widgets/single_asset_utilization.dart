@@ -39,10 +39,10 @@ class _SingleAssetUtilizationWidgetState
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: white,
-                    ),
+                    // Icon(
+                    //   Icons.keyboard_arrow_down,
+                    //   color: white,
+                    // ),
                     SizedBox(
                       width: 10,
                     ),
@@ -56,10 +56,10 @@ class _SingleAssetUtilizationWidgetState
                     Expanded(
                       child: Container(),
                     ),
-                    Icon(
-                      Icons.more_vert,
-                      color: white,
-                    ),
+                    // Icon(
+                      // Icons.more_vert,
+                      // color: white,
+                    // ),
                   ],
                 ),
                 Padding(

@@ -1,5 +1,4 @@
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -57,7 +56,7 @@ class Utils {
   }
 
   static String parseDate(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+    return '${dateTime.day}-${dateTime.month}-${dateTime.year}';
   }
 
   static String getDayOfMonthSuffix(final int n) {
@@ -74,6 +73,19 @@ class Utils {
       default:
         return "th";
     }
+  }
+
+  static String getIdlingWidgetLabel(data) {
+    String title = data;
+    Logger().i("getIdlingWidgetLabel $title");
+    List<String> list =
+        data.split(",").first.replaceAll("[", "").replaceAll("]", "");
+    if (list[1].isEmpty) {
+      title = ">" + data.extras[0] + "%";
+    } else {
+      title = list[0] + "-" + list[1] + "%";
+    }
+    return title;
   }
 
   static String getTitle(FilterType type) {
@@ -214,6 +226,4 @@ class Utils {
   static double greatestOfThree(double a, double b, double c) {
     return (a > b) ? (a > c ? a : c) : (b > c ? b : c);
   }
-
-   
 }

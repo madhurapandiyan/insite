@@ -8,7 +8,6 @@ import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map_home.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 

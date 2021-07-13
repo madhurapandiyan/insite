@@ -241,7 +241,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 child: Center(
                                   child: Text(
                                     customFromDate == null
-                                        ? 'dd/mm/yy'.toUpperCase()
+                                        ? 'dd-mm-yyyy'.toUpperCase()
                                         : Utils.parseDate(customFromDate)
                                             .toUpperCase(),
                                     style: TextStyle(
@@ -302,7 +302,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 child: Center(
                                   child: Text(
                                     customToDate == null
-                                        ? 'dd/mm/yy'.toUpperCase()
+                                        ? 'dd-mm-yyyy'.toUpperCase()
                                         : Utils.parseDate(customToDate)
                                             .toUpperCase(),
                                     style: TextStyle(

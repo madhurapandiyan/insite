@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -49,7 +50,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   children: [
                     Row(
                       children: [
-                        SvgPicture.asset("assets/images/arrowdown.svg"),
+                        // SvgPicture.asset("assets/images/arrowdown.svg"),
                         SizedBox(
                           width: 10,
                         ),
@@ -69,14 +70,14 @@ class _IdlingLevelState extends State<IdlingLevel> {
                         SizedBox(
                           width: 190.0,
                         ),
-                        GestureDetector(
-                          onTap: () => print("button is tapped"),
-                          child: SvgPicture.asset(
-                            "assets/images/menu.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () => print("button is tapped"),
+                        //   child: SvgPicture.asset(
+                        //     "assets/images/menu.svg",
+                        //     width: 20,
+                        //     height: 20,
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
@@ -300,7 +301,6 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
     List<IdlingLevelSampleData> chartData = [];
-
     chartData.add(
       IdlingLevelSampleData(
           x: widget.data[1].countOf,

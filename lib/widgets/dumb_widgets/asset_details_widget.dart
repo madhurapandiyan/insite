@@ -27,7 +27,7 @@ class AssetDetailWidgt extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
               child: Row(
                 children: [
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                  // Icon(Icons.keyboard_arrow_down, color: Colors.white),
                   SizedBox(
                     width: 20,
                   ),

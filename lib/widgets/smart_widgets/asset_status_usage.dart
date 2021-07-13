@@ -77,14 +77,14 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                     SizedBox(
                       width: 60.0,
                     ),
-                    GestureDetector(
-                      onTap: () => print("button is tapped"),
-                      child: SvgPicture.asset(
-                        "assets/images/menu.svg",
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () => print("button is tapped"),
+                    //   child: SvgPicture.asset(
+                    //     "assets/images/menu.svg",
+                    //     width: 20,
+                    //     height: 20,
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

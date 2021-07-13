@@ -43,10 +43,10 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color: white,
-                    ),
+                    // Icon(
+                    //   Icons.keyboard_arrow_down,
+                    //   color: white,
+                    // ),
                     SizedBox(
                       width: 10,
                     ),
@@ -55,15 +55,15 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: 15),
                     ),
                     Expanded(
                       child: Container(),
                     ),
-                    Icon(
-                      Icons.more_vert,
-                      color: white,
-                    ),
+                    // Icon(
+                    //   Icons.more_vert,
+                    //   color: white,
+                    // ),
                   ],
                 ),
                 Padding(
