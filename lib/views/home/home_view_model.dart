@@ -1,4 +1,3 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
@@ -10,8 +9,6 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
-import 'package:insite/core/services/fuel_level_service.dart';
-import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -81,7 +78,7 @@ class HomeViewModel extends InsiteViewModel {
       getAssetStatusData();
       getFuelLevelData();
       getIdlingLevelData();
-    //  getAssetLocation();
+      //  getAssetLocation();
       getUtilizationSummary();
     });
   }
@@ -133,11 +130,13 @@ class HomeViewModel extends InsiteViewModel {
 
   getFuelLevelData() async {
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
-    _fuelLevelData = result;
-    for (var fuelData in _fuelLevelData.countData) {
-      if (fuelData.countOf != "Not Reporting") {
-        fuelChartData.add(ChartSampleData(
-            x: fuelData.countOf, y: fuelData.count.round()));
+    if (result != null) {
+      _fuelLevelData = result;
+      for (var fuelData in _fuelLevelData.countData) {
+        if (fuelData.countOf != "Not Reporting") {
+          fuelChartData.add(
+              ChartSampleData(x: fuelData.countOf, y: fuelData.count.round()));
+        }
       }
     }
     _assetFuelloading = false;
@@ -147,7 +146,9 @@ class HomeViewModel extends InsiteViewModel {
   getIdlingLevelData() async {
     AssetCount result = await _assetService.getIdlingLevelData(
         startDate, endDate, FilterType.IDLING_LEVEL);
-    _idlingLevelData = result;
+    if (result != null) {
+      _idlingLevelData = result;
+    }
     _idlingLevelDataloading = false;
     notifyListeners();
   }
@@ -163,15 +164,17 @@ class HomeViewModel extends InsiteViewModel {
     UtilizationSummary result =
         await _assetUtilizationService.getUtilizationSummary(
             '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
-    _utilizationSummary = result;
-    _utilizationTotalGreatestValue = Utils.greatestOfThree(
-        _utilizationSummary.totalDay.runtimeHours,
-        _utilizationSummary.totalWeek.runtimeHours,
-        _utilizationSummary.totalMonth.runtimeHours);
-    _utilizationAverageGreatestValue = Utils.greatestOfThree(
-        _utilizationSummary.averageDay.runtimeHours,
-        _utilizationSummary.averageWeek.runtimeHours,
-        _utilizationSummary.averageMonth.runtimeHours);
+    if (result != null) {
+      _utilizationSummary = result;
+      _utilizationTotalGreatestValue = Utils.greatestOfThree(
+          _utilizationSummary.totalDay.runtimeHours,
+          _utilizationSummary.totalWeek.runtimeHours,
+          _utilizationSummary.totalMonth.runtimeHours);
+      _utilizationAverageGreatestValue = Utils.greatestOfThree(
+          _utilizationSummary.averageDay.runtimeHours,
+          _utilizationSummary.averageWeek.runtimeHours,
+          _utilizationSummary.averageMonth.runtimeHours);
+    }
     _assetUtilizationLoading = false;
     notifyListeners();
   }

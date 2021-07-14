@@ -42,7 +42,10 @@ class _HomeViewState extends State<HomeView> {
                   SizedBox(
                     height: 20,
                   ),
-                  AssetCountWidget(),
+                  // AssetCountWidget(
+                  //   count: "14561",
+                  //   title: "ALL ASSETS",
+                  // ),
                   SizedBox(
                     height: 20,
                   ),

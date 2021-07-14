@@ -48,7 +48,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15),
+                          fontSize: 14),
                     ),
                     Expanded(
                       child: Container(),
@@ -60,7 +60,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                       style: TextStyle(
                           color: white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15),
+                          fontSize: 14),
                     ),
                   ],
                 ),

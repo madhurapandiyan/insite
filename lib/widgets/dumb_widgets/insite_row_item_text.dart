@@ -22,12 +22,12 @@ class InsiteTableRowItem extends StatelessWidget {
           InsiteText(
             text: title,
             color: athenGrey,
-            size: 15,
+            size: 14,
             fontWeight: FontWeight.bold,
           ),
           InsiteText(
             text: content,
-            size: 13,
+            size: 12,
             fontWeight: FontWeight.normal,
             color: textcolor,
           )
@@ -64,7 +64,7 @@ class InsiteTableRowWithImage extends StatelessWidget {
           Expanded(
             child: InsiteText(
               text: title,
-              size: 15,
+              size: 14,
               color: athenGrey,
               fontWeight: FontWeight.bold,
             ),
@@ -114,7 +114,7 @@ class InsiteTableRowIcon extends StatelessWidget {
           ),
           InsiteText(
             text: title,
-            size: 15,
+            size: 14,
             fontWeight: FontWeight.normal,
             color: textcolor,
           )

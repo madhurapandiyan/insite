@@ -46,7 +46,10 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteTableRowIcon(
                                 iconPath: "-",
-                                title: "16/02/2021",
+                                title: utilizationData.lastReportedTime != null
+                                    ? Utils.getLastReportedDateTwo(
+                                        utilizationData.lastReportedTime)
+                                    : "",
                               ),
                               InsiteTableRowItem(
                                 title: "Last Reported Time ",
@@ -113,7 +116,7 @@ class UtilizationListItem extends StatelessWidget {
                                                 .lastRuntimeHourMeter
                                                 .roundToDouble()
                                                 .toString()
-                                            : "",
+                                            : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Daily",
@@ -276,7 +279,7 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowWithImage(
-                                title: utilizationData.manufacturer,
+                                title: utilizationData.model,
                                 path: utilizationData == null
                                     ? "assets/images/EX210.png"
                                     : Utils().imageData(utilizationData.model),
