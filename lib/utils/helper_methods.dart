@@ -38,9 +38,34 @@ class Utils {
     return outputDate;
   }
 
+  static String getLastReportedDateTwoUTC(date) {
+    DateTime parseDate =
+        new DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  static String getDateInFormatddMMyyyy(date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
   static String getLastDuration(date) {
     DateTime parseDate =
         new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('hh:mm');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  static String getLastDurationOne(date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('hh:mm');
     var outputDate = outputFormat.format(inputDate);
@@ -144,7 +169,12 @@ class Utils {
   static String getFilterTitleForChipView(FilterData data) {
     String title = data.title;
     if (data.type == FilterType.DATE_RANGE) {
-      title = "Date " + "(" + data.extras[0] + " - " + data.extras[1] + ")";
+      title = "Date " +
+          "(" +
+          getDateInFormatddMMyyyy(data.extras[0]) +
+          " - " +
+          getDateInFormatddMMyyyy(data.extras[1]) +
+          ")";
     } else if (data.type == FilterType.IDLING_LEVEL) {
       if (data.extras[1].isEmpty) {
         title = "Idle %: " + ">" + data.extras[0] + "%";

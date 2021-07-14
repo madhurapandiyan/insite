@@ -28,9 +28,7 @@ class _AssetListViewState extends State<AssetListView> {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ASSET_OPERATION,
-            onFilterApplied: () {
-              
-            },
+            onFilterApplied: () {},
             body: Container(
               padding: EdgeInsets.all(8),
               child: Stack(
@@ -40,47 +38,47 @@ class _AssetListViewState extends State<AssetListView> {
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Container(
-                              height: 40,
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: tuna,
-                              ),
-                              child: DropdownButton<String>(
-                                value: menuItem,
-                                items: menuFilters.map((String value) {
-                                  return new DropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(value),
-                                  );
-                                }).toList(),
-                                elevation: 16,
-                                style: TextStyle(
-                                    color: white, fontWeight: FontWeight.w700),
-                                underline: Container(
-                                  height: 0,
-                                ),
-                                dropdownColor: cardcolor,
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: white,
-                                ),
-                                onChanged: (String newValue) {
-                                  if (menuItem != newValue) {
-                                    setState(() {
-                                      menuItem = newValue;
-                                    });
-                                    viewModel.menuItem = menuItem == "Asset ID"
-                                        ? "assetid"
-                                        : "assetserialnumber";
-                                    viewModel.refresh();
-                                  }
-                                },
-                              ),
-                            ),
+                            // Container(
+                            //   height: 40,
+                            //   padding: EdgeInsets.all(8),
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(4),
+                            //     color: tuna,
+                            //   ),
+                            //   child: DropdownButton<String>(
+                            //     value: menuItem,
+                            //     items: menuFilters.map((String value) {
+                            //       return new DropdownMenuItem<String>(
+                            //         value: value,
+                            //         child: new Text(value),
+                            //       );
+                            //     }).toList(),
+                            //     elevation: 16,
+                            //     style: TextStyle(
+                            //         color: white, fontWeight: FontWeight.w700),
+                            //     underline: Container(
+                            //       height: 0,
+                            //     ),
+                            //     dropdownColor: cardcolor,
+                            //     icon: Icon(
+                            //       Icons.keyboard_arrow_down,
+                            //       color: white,
+                            //     ),
+                            //     onChanged: (String newValue) {
+                            //       if (menuItem != newValue) {
+                            //         setState(() {
+                            //           menuItem = newValue;
+                            //         });
+                            //         viewModel.menuItem = menuItem == "Asset ID"
+                            //             ? "assetid"
+                            //             : "assetserialnumber";
+                            //         viewModel.refresh();
+                            //       }
+                            //     },
+                            //   ),
+                            // ),
                             SizedBox(
                               width: 10,
                             ),

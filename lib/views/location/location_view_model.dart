@@ -3,7 +3,6 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -63,8 +62,8 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   void _updateMarkers(Set<Marker> markers) {
-    print('Updated ${markers.length} markers');
     this.markers = markers;
+    print('Updated ${markers.length} markers');
     notifyListeners();
   }
 
@@ -127,7 +126,7 @@ class LocationViewModel extends InsiteViewModel {
     }
 
     final img = await pictureRecorder.endRecording().toImage(size, size);
-    final data = await img.toByteData(format: ImageByteFormat.png) as ByteData;
+    final data = await img.toByteData(format: ImageByteFormat.png);
 
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
@@ -158,31 +157,38 @@ class LocationViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("refresh getAssetLocation");
     _refreshing = true;
+    clusterMarkers.clear();
+    markers.clear();
     notifyListeners();
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
     _assetLocation = result;
+    clusterMarker();
+    manager.updateMap();
     _loading = false;
     _refreshing = false;
     notifyListeners();
   }
 
   refreshWithCluster(double latitude, double longitude) async {
-    Logger().d("getAssetLocation");
+    Logger().d("refreshWithCluster");
     _refreshing = true;
+    clusterMarkers.clear();
+    markers.clear();
     notifyListeners();
     AssetLocationData result =
         await _assetLocationService.getAssetLocationWithCluster(pageNumber,
             pageSize, '-lastlocationupdateutc', latitude, longitude, radiusKm);
     _assetLocation = result;
     clusterMarker();
-    _updateMarkers(markers);
+    manager.updateMap();
+    _loading = false;
     _refreshing = false;
     notifyListeners();
   }
 
   getAssetLocationHome() async {
-    print('data');
+    print('getAssetLocationHome');
     AssetLocationData result =
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber, pageSize, '-lastlocationupdateutc');

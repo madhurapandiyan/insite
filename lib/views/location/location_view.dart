@@ -60,6 +60,7 @@ class _LocationViewState extends State<LocationView> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          viewModel.customInfoWindowController.hideInfoWindow();
                           viewModel.refresh();
                         },
                         child: Container(
@@ -87,9 +88,10 @@ class _LocationViewState extends State<LocationView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            (dateRange == null || dateRange.isEmpty)
-                                ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                                : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                            Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
                             style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.bold,
@@ -107,14 +109,9 @@ class _LocationViewState extends State<LocationView> {
                                     child: DateRangeView()),
                               );
                               if (dateRange != null && dateRange.isNotEmpty) {
-                                setState(() {
-                                  dateRange = dateRange;
-                                  viewModel.startDate =
-                                      '${dateRange.first.month}/${dateRange.first.day}/${dateRange.first.year}';
-                                  viewModel.endDate =
-                                      '${dateRange.last.month}/${dateRange.last.day}/${dateRange.last.year}';
-                                  viewModel.refresh();
-                                });
+                                viewModel.customInfoWindowController
+                                    .hideInfoWindow();
+                                viewModel.refresh();
                               }
                             },
                             child: Container(
@@ -149,15 +146,21 @@ class _LocationViewState extends State<LocationView> {
                       GoogleMap(
                         onCameraMove: (position) {
                           viewModel.customInfoWindowController.onCameraMove();
-                          viewModel.manager!=null?viewModel.manager.onCameraMove(position):SizedBox();
+                          viewModel.manager != null
+                              ? viewModel.manager.onCameraMove(position)
+                              : SizedBox();
                         },
                         onMapCreated: (GoogleMapController controller) async {
                           viewModel.customInfoWindowController
                               .googleMapController = controller;
                           _controller.complete(controller);
-                          viewModel.manager!=null?viewModel.manager.setMapController(controller):SizedBox();
+                          viewModel.manager != null
+                              ? viewModel.manager.setMapController(controller)
+                              : SizedBox();
                         },
-                        onCameraIdle:viewModel.manager!=null?viewModel. manager.updateMap:null,
+                        onCameraIdle: viewModel.manager != null
+                            ? viewModel.manager.updateMap
+                            : null,
                         mapType: _changemap(),
                         compassEnabled: true,
                         zoomControlsEnabled: false,
@@ -290,23 +293,18 @@ class _LocationViewState extends State<LocationView> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-
         break;
       case "TERRAIN":
         Logger().i("map is in terrain type");
-
         return MapType.terrain;
-
         break;
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
-
         break;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;
-
       default:
         return MapType.normal;
     }

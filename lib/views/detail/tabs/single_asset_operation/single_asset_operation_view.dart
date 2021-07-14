@@ -9,6 +9,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'single_asset_operation_view_model.dart';
@@ -83,9 +84,11 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                           Row(
                             children: [
                               Text(
-                                (dateRange == null || dateRange.isEmpty)
-                                    ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                                    : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                                Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
                                 style: TextStyle(
                                     color: white,
                                     fontWeight: FontWeight.bold,
@@ -158,25 +161,10 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                         sfCalendarTimeIntervalHeight,
                                     timeTextStyle: TextStyle(color: white),
                                   ),
-                                  minDate: viewModel
-                                          .singleAssetOperation
-                                          .assetOperations
-                                          .assets
-                                          .first
-                                          .assetLocalDates
-                                          .isEmpty
-                                      ? DateTime.now().subtract(Duration(
-                                          days: DateTime.now().weekday))
-                                      : viewModel.minDate,
-                                  maxDate: viewModel
-                                          .singleAssetOperation
-                                          .assetOperations
-                                          .assets
-                                          .first
-                                          .assetLocalDates
-                                          .isEmpty
-                                      ? DateTime.now()
-                                      : viewModel.maxDate,
+                                  minDate: DateFormat("yyyy-MM-dd")
+                                      .parse(viewModel.startDate),
+                                  maxDate: DateFormat("yyyy-MM-dd")
+                                      .parse(viewModel.endDate),
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
                                     dayTextStyle: TextStyle(color: white),
@@ -330,20 +318,17 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             // ),
             InsiteTableRowItem(
               title: 'This data was last refreshed on',
-              content: assetOperation.assetOperations.assets.first
-                          .assetLastReceivedEvent.lastReceivedEventTimeLocal ==
-                      null
-                  ? '-'
-                  : Utils.getLastReportedDateOneUTC(assetOperation
-                      .assetOperations
-                      .assets
-                      .first
-                      .assetLastReceivedEvent
-                      .lastReceivedEventTimeLocal),
+              content: Utils.getLastReportedDateTwoUTC(
+                  DateTime.now().toLocal().toString()),
             ),
             InsiteTableRowItem(
-              title: '',
-              content: '',
+              title: 'Total Duration ',
+              content: Utils.getLastDurationOne(assetOperation
+                  .assetOperations
+                  .assets
+                  .first
+                  .assetLastReceivedEvent
+                  .lastReceivedEventTimeLocal),
             ),
           ],
         ),
@@ -367,19 +352,18 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
   List<Appointment> getRecursiveAppointments(
       List<SingleAssetOperationChartData> chartData) {
     final List<Appointment> appointments = <Appointment>[];
-
     if (chartData.isNotEmpty)
       for (SingleAssetOperationChartData item in chartData) {
         final Appointment chartPlot = Appointment(
-          startTime: item.startTime,
-          endTime: item.endTime,
-          color: tango,
-          subject: item.segmentType,
-        );
-
+            startTime: item.startTime.toLocal(),
+            endTime: item.endTime.toLocal(),
+            color: tango,
+            subject: ""
+            //making subject empty
+            // subject: item.segmentType,
+            );
         appointments.add(chartPlot);
       }
-
     return appointments;
   }
 }

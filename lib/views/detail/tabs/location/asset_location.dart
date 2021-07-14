@@ -67,6 +67,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              viewModel.customInfoWindowController
+                                  .hideInfoWindow();
                               viewModel.refresh();
                             },
                             child: Container(
@@ -94,9 +96,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             width: 20,
                           ),
                           Text(
-                            (dateRange == null || dateRange.isEmpty)
-                                ? '${Utils.parseDate(DateTime.now().subtract(Duration(days: DateTime.now().weekday)))} - ${Utils.parseDate(DateTime.now())}'
-                                : '${Utils.parseDate(dateRange.first)} - ${Utils.parseDate(dateRange.last)}',
+                            Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
                             style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.bold,
@@ -114,6 +117,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 setState(() {
                                   dateRange = dateRange;
                                 });
+                                viewModel.customInfoWindowController
+                                    .hideInfoWindow();
                                 viewModel.refresh();
                               }
                             },
@@ -177,8 +182,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ),
                           CustomInfoWindow(
                             controller: viewModel.customInfoWindowController,
-                            height: 100,
-                            width: 175,
+                            height: 160,
+                            width: 200,
                             offset: 50,
                           ),
                           Padding(

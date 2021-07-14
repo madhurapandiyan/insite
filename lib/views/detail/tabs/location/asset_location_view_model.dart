@@ -40,14 +40,15 @@ class AssetLocationViewModel extends InsiteViewModel {
     this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    customInfoWindowController = CustomInfoWindowController();
     _assetLocationHistoryService.setUp();
+    customInfoWindowController = CustomInfoWindowController();
     Future.delayed(Duration(seconds: 1), () {
       getAssetLocationHistoryResult();
     });
   }
 
   getAssetLocationHistoryResult() async {
+    await getDateRangeFilterData();
     AssetLocationHistory result = await _assetLocationHistoryService
         .getAssetLocationHistory(endDate, startDate);
     _assetLocationHistory = result;
@@ -60,6 +61,7 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   refresh() async {
     await getDateRangeFilterData();
+    markers.clear();
     _refreshing = true;
     notifyListeners();
     AssetLocationHistory result = await _assetLocationHistoryService
@@ -89,6 +91,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                         borderRadius: BorderRadius.circular(4),
                         color: tuna,
                       ),
+                      padding: EdgeInsets.all(8),
                       child: Column(
                         children: [
                           Container(
@@ -99,6 +102,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                               color: tuna,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Location Reported Time",
@@ -155,11 +159,15 @@ class AssetLocationViewModel extends InsiteViewModel {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               color: shark,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Location",
@@ -171,15 +179,9 @@ class AssetLocationViewModel extends InsiteViewModel {
                                       fontSize: 10.0),
                                 ),
                                 Text(
-                                  assetLocation.address.streetAddress +
-                                      ',' +
-                                      assetLocation.address.city +
-                                      ',' +
-                                      assetLocation.address.county +
-                                      ',' +
-                                      assetLocation.address.state +
-                                      ' ' +
-                                      assetLocation.address.zip,
+                                  assetLocation.address != null
+                                      ? getAddressText(assetLocation.address)
+                                      : "",
                                   style: TextStyle(
                                       fontFamily: 'Roboto',
                                       color: textcolor,
@@ -189,6 +191,9 @@ class AssetLocationViewModel extends InsiteViewModel {
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -197,6 +202,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                               color: tuna,
                             ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "Hours: ${assetLocation.hourmeter} Hrs",
@@ -237,6 +243,7 @@ class AssetLocationViewModel extends InsiteViewModel {
             );
           }));
     }
+    print("markers length ${markers.length}");
   }
   // INFO WINDOW
 
@@ -248,6 +255,23 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   void rebuildInfoWindow() {
     notifyListeners();
+  }
+
+  String getAddressText(Address address) {
+    print("getAddressText ${address.streetAddress}");
+    String text = "";
+    text = address.streetAddress != null
+        ? address.streetAddress
+        : "" + ',' + address.city != null
+            ? address.city
+            : "" + ',' + address.county != null
+                ? address.county
+                : "" + ',' + address.state != null
+                    ? address.state
+                    : "" + ' ' + address.zip != null
+                        ? address.zip
+                        : "";
+    return text;
   }
 
   void updateLocation(AssetLocation location) {

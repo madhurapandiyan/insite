@@ -140,7 +140,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  'Showing ${viewModel.searchData.totalCount} out of ${viewModel.searchData.totalCount} Assets',
+                                  'Showing ${viewModel.searchData.topMatches.length} out of ${viewModel.searchData.totalCount} Assets',
                                   style: TextStyle(color: white, fontSize: 12),
                                 ),
                                 TextButton(

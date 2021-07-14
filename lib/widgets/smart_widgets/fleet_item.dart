@@ -23,21 +23,24 @@ class FleetListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(color: cardcolor)),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(left: 8),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
                   Icon(Icons.arrow_drop_down, color: Colors.white),
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(Icons.crop_square, color: Colors.black)),
+                  // Container(
+                  //     decoration: BoxDecoration(
+                  //         color: Colors.black,
+                  //         borderRadius: BorderRadius.all(Radius.circular(4))),
+                  //     child: Icon(Icons.crop_square, color: Colors.black)),
                 ],
               ),
             ),
@@ -71,9 +74,16 @@ class FleetListItem extends StatelessWidget {
                           title: "Serial No. ",
                           content: fleet.assetSerialNumber,
                         ),
+                        // InsiteTableRowItem(
+                        //   title: "Custom Asset State",
+                        //   content: fleet.customStateDescription,
+                        // ),
                         InsiteTableRowItem(
-                          title: "Custom Asset State",
-                          content: fleet.customStateDescription,
+                          title: "Last Reported Time      ",
+                          content: fleet.lastReportedUTC != null
+                              ? Utils.getLastReportedDateOneUTC(
+                                  fleet.lastReportedUTC)
+                              : "",
                         ),
                       ],
                     ),
@@ -93,12 +103,18 @@ class FleetListItem extends StatelessWidget {
                                     fleet.lastReportedUTC)
                                 : "-",
                           ),
+                          // InsiteTableRowItem(
+                          //   title: "Last Reported Time      ",
+                          //   content: fleet.lastReportedUTC != null
+                          //       ? Utils.getLastReportedDateOneUTC(
+                          //           fleet.lastReportedUTC)
+                          //       : "",
+                          // ),
                           InsiteTableRowItem(
-                            title: "Last Reported Time      ",
-                            content: fleet.lastReportedUTC != null
-                                ? Utils.getLastReportedDateOneUTC(
-                                    fleet.lastReportedUTC)
-                                : "",
+                            title: "Dealer Name               ",
+                            content: fleet.dealerName != null
+                                ? fleet.dealerName
+                                : "-",
                           ),
                         ],
                       ),
@@ -151,24 +167,30 @@ class FleetListItem extends StatelessWidget {
                           title: "Asset Commissioning Date  ",
                           content: "-",
                         ),
-                        InsiteTableRowItem(
-                          title: "Dealer Name               ",
-                          content:
-                              fleet.dealerName != null ? fleet.dealerName : "-",
-                        ),
-                      ]),
-                      TableRow(children: [
+                        // InsiteTableRowItem(
+                        //   title: "Dealer Name               ",
+                        //   content:
+                        //       fleet.dealerName != null ? fleet.dealerName : "-",
+                        // ),
                         InsiteTableRowItem(
                           title: "Hr Meter",
                           content: fleet.hourMeter != null
                               ? fleet.hourMeter.round().toString() + " hrs"
                               : "-",
                         ),
-                        InsiteTableRowItem(
-                          title: "",
-                          content: "",
-                        ),
-                      ])
+                      ]),
+                      // TableRow(children: [
+                      //   InsiteTableRowItem(
+                      //     title: "Hr Meter",
+                      //     content: fleet.hourMeter != null
+                      //         ? fleet.hourMeter.round().toString() + " hrs"
+                      //         : "-",
+                      //   ),
+                      //   InsiteTableRowItem(
+                      //     title: "",
+                      //     content: "",
+                      //   ),
+                      // ])
                     ],
                   )
                 ],

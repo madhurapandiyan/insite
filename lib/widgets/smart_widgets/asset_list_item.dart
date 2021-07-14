@@ -30,21 +30,25 @@ class AssetListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(color: cardcolor)),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: 20,
+                  ),
                   Icon(Icons.arrow_drop_down, color: Colors.white),
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(Icons.crop_square, color: Colors.black)),
+                  // Container(
+                  //     decoration: BoxDecoration(
+                  //         color: Colors.black,
+                  //         borderRadius: BorderRadius.all(Radius.circular(4))),
+                  //     child: Icon(Icons.crop_square, color: Colors.black)),
                 ],
               ),
             ),
@@ -61,7 +65,9 @@ class AssetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowWithImage(
                           title: asset != null ? asset.productFamily : "",
-                          path:asset==null? "assets/images/EX210.png": Utils().imageData(asset.model),
+                          path: asset == null
+                              ? "assets/images/EX210.png"
+                              : Utils().imageData(asset.model),
                         ),
                         InsiteTableRowItem(
                           title: "Total Duration",

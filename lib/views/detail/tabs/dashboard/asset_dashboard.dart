@@ -107,11 +107,14 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               horizontal: 16.0,
                             ),
                             child: SingleAssetUtilizationWidget(
-                              assetUtilization: viewModel.assetUtilization!=null?
-                              viewModel.assetUtilization:null,
+                              assetUtilization:
+                                  viewModel.assetUtilization != null
+                                      ? viewModel.assetUtilization
+                                      : null,
                               greatestNumber:
-                                  viewModel.utilizationGreatestValue!=null?
-                                  viewModel.utilizationGreatestValue:null,
+                                  viewModel.utilizationGreatestValue != null
+                                      ? viewModel.utilizationGreatestValue
+                                      : null,
                             ),
                           )
                         : SizedBox(),
@@ -205,15 +208,15 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      child: Notifications(),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: 16.0,
+                    //   ),
+                    //   child: Notifications(),
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
                   ],
                 ),
               ),

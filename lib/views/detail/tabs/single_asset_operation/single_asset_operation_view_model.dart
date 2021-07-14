@@ -72,6 +72,7 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
   }
 
   setRequiredDates() {
+    _chartData.clear();
     for (Asset asset in _singleAssetOperation.assetOperations.assets) {
       for (AssetLocalDate assetLocalDate in asset.assetLocalDates) {
         for (Segment segment in assetLocalDate.segments) {

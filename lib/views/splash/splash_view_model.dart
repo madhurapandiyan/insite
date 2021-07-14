@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -67,13 +67,31 @@ class SplashViewModel extends BaseViewModel {
         });
       } else {
         if (!isProcessing) {
-          if (account != null) {
-            Logger().i("launching home splash view model");
-            _nagivationService.replaceWith(dashboardViewRoute);
-          } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
-          }
+          Logger().i("checking for permission");
+          checkPermission(account);
         }
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  checkPermission(Customer account) async {
+    try {
+      List<Permission> list = await _loginService.getPermissions();
+      if (list.isNotEmpty) {
+        _localService.setHasPermission(true);
+        if (account != null) {
+          _nagivationService.replaceWith(dashboardViewRoute);
+        } else {
+          _nagivationService.replaceWith(customerSelectionViewRoute);
+        }
+      } else {
+        _localService.setHasPermission(false);
+        shouldLoadWebview = true;
+        Future.delayed(Duration(seconds: 1), () {
+          notifyListeners();
+        });
       }
     } catch (e) {
       Logger().e(e);
