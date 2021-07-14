@@ -20,6 +20,14 @@ class Utils {
     return outputDate;
   }
 
+  static String getLastReportedDateTwo(date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
   static String getLastReportedDateUTC(date) {
     DateTime parseDate =
         new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);

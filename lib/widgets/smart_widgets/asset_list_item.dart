@@ -64,7 +64,7 @@ class AssetListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowWithImage(
-                          title: asset != null ? asset.productFamily : "",
+                          title: asset != null ? asset.model : "",
                           path: asset == null
                               ? "assets/images/EX210.png"
                               : Utils().imageData(asset.model),
