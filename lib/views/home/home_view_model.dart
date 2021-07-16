@@ -13,6 +13,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -40,6 +41,12 @@ class HomeViewModel extends InsiteViewModel {
 
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
+
+  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange get idlingLevelRange => _idlingLevelRange;
+  set idlingLevelRange(IdlingLevelRange catchedRange) {
+    this._idlingLevelRange = catchedRange;
+  }
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
@@ -174,9 +181,18 @@ class HomeViewModel extends InsiteViewModel {
 
   getIdlingLevelData() async {
     AssetCount result = await _assetService.getIdlingLevelData(
-        getStartRange("WEEK"), endDayRange, FilterType.IDLING_LEVEL);
+        getStartRange(), endDayRange, FilterType.IDLING_LEVEL);
     if (result != null) {
       _idlingLevelData = result;
+      print('@@@ ${_idlingLevelData.countData[1].count}');
+      print('@@@ ${_idlingLevelData.countData[1].countOf}');
+      print('@@@ ${_idlingLevelData.countData[2].count}');
+      print('@@@ ${_idlingLevelData.countData[2].countOf}');
+      print('@@@ ${_idlingLevelData.countData[3].count}');
+      print('@@@ ${_idlingLevelData.countData[3].countOf}');
+      print('@@@ ${_idlingLevelData.countData[4].count}');
+      print('@@@ ${_idlingLevelData.countData[4].countOf}');
+      print('@@@ \n');
     }
     _idlingLevelDataloading = false;
     notifyListeners();
@@ -208,18 +224,19 @@ class HomeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getStartRange(String s) {
-    switch (s) {
-      case "DAY":
+  getStartRange() {
+    switch (_idlingLevelRange) {
+      case IdlingLevelRange.DAY:
         return DateFormat('yyyy-MM-dd').format(DateTime.now());
         break;
 
-      case "WEEK":
+      case IdlingLevelRange.WEEK:
         return DateFormat('yyyy-MM-dd').format(DateTime.now()
             .subtract(Duration(days: DateTime.now().weekday - 1)));
         break;
-      case "MONTH":
-        return DateTime.utc(DateTime.now().year, DateTime.now().month, 1);
+      case IdlingLevelRange.MONTH:
+        return DateFormat('yyyy-MM-dd')
+            .format(DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
         break;
 
       default:
