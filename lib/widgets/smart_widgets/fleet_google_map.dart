@@ -129,7 +129,6 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                                   ]
                                       .map((map) => DropdownMenuItem(
                                             value: map,
-                                            
                                             child: Text(map,
                                                 style: TextStyle(
                                                     fontSize: 11.0,

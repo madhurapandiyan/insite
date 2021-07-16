@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/helper_methods.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -12,7 +11,8 @@ class IdlingLevel extends StatefulWidget {
   final bool isLoading;
   final Function(FilterData) onFilterSelected;
 
-  IdlingLevel({this.data, this.isLoading, this.onFilterSelected});
+  IdlingLevel(
+      {this.data, this.isLoading, this.onFilterSelected});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
@@ -95,7 +95,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            flex: 1,
+                            //flex: 1,
                             child: Container(
                                 height: maxheight,
                                 child: SfCartesianChart(
@@ -150,6 +150,61 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                             fontFamily: 'Roboto',
                                             fontStyle: FontStyle.normal)),
                                     series: _getDefaultBarSeries())),
+                          ),
+                          Container(
+                            height: maxheight,
+                            child: SfCartesianChart(
+                                isTransposed: true,
+                                plotAreaBorderWidth: 0,
+                                primaryXAxis: CategoryAxis(
+                                  labelStyle: TextStyle(
+                                      color: textcolor,
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Roboto',
+                                      fontStyle: FontStyle.normal),
+                                  majorGridLines:
+                                      MajorGridLines(width: 0, color: silver),
+                                ),
+                                onAxisLabelTapped: (axisLabelTapArgs) {
+                                  Logger().d("onAxisLabelTapped " +
+                                      axisLabelTapArgs.toString());
+                                },
+                                onDataLabelTapped: (onTapArgs) {
+                                  Logger().d("onDataLabelTapped " +
+                                      onTapArgs.toString());
+                                },
+                                onLegendTapped: (legendTapArgs) {
+                                  Logger().d("onLegendTapped " +
+                                      legendTapArgs.toString());
+                                },
+                                onPointTapped: (pointTapArgs) {
+                                  Logger().d("onPointTapped " +
+                                      pointTapArgs.pointIndex.toString() +
+                                      " " +
+                                      pointTapArgs.seriesIndex.toString() +
+                                      " " +
+                                      pointTapArgs.viewportPointIndex
+                                          .toString());
+                                  Count countDatum =
+                                      widget.data[pointTapArgs.pointIndex];
+                                  FilterData data = FilterData(
+                                      isSelected: true,
+                                      count: countDatum.count.toString(),
+                                      title: countDatum.countOf,
+                                      type: FilterType.IDLING_LEVEL);
+                                  widget.onFilterSelected(data);
+                                },
+                                primaryYAxis: NumericAxis(
+                                    majorGridLines:
+                                        MajorGridLines(width: 2, color: silver),
+                                    labelStyle: TextStyle(
+                                        color: textcolor,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Roboto',
+                                        fontStyle: FontStyle.normal)),
+                                series: _getDefaultBarSeries()),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -276,7 +331,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   chooseCalendarType(String s) {
     setState(() {
-      calendar = s;
+    calendar = s;
     });
   }
 
