@@ -21,7 +21,6 @@ class LocationView extends StatefulWidget {
 class _LocationViewState extends State<LocationView> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
-  Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
   List<DateTime> dateRange;
 
@@ -150,13 +149,17 @@ class _LocationViewState extends State<LocationView> {
                               ? viewModel.manager.onCameraMove(position)
                               : SizedBox();
                         },
+                        onTap: (argument) {
+                          viewModel.customInfoWindowController.hideInfoWindow();
+                        },
                         onMapCreated: (GoogleMapController controller) async {
                           viewModel.customInfoWindowController
                               .googleMapController = controller;
-                          _controller.complete(controller);
+                          viewModel.controller.complete(controller);
                           viewModel.manager != null
                               ? viewModel.manager.setMapController(controller)
                               : SizedBox();
+                          viewModel.zoomToMarkers();
                         },
                         onCameraIdle: viewModel.manager != null
                             ? viewModel.manager.updateMap
@@ -190,13 +193,13 @@ class _LocationViewState extends State<LocationView> {
                               onTap: () {
                                 zoomVal++;
                                 _plus(
-                                  zoomVal,
-                                  LatLng(
-                                      viewModel.assetLocation.mapRecords.first
-                                          .lastReportedLocationLatitude,
-                                      viewModel.assetLocation.mapRecords.first
-                                          .lastReportedLocationLongitude),
-                                );
+                                    zoomVal,
+                                    LatLng(
+                                        viewModel.assetLocation.mapRecords.first
+                                            .lastReportedLocationLatitude,
+                                        viewModel.assetLocation.mapRecords.first
+                                            .lastReportedLocationLongitude),
+                                    viewModel);
                               },
                               child: Container(
                                 width: 27.47,
@@ -226,13 +229,19 @@ class _LocationViewState extends State<LocationView> {
                                 onTap: () {
                                   zoomVal--;
                                   _minus(
-                                    zoomVal,
-                                    LatLng(
-                                        viewModel.assetLocation.mapRecords.first
-                                            .lastReportedLocationLatitude,
-                                        viewModel.assetLocation.mapRecords.first
-                                            .lastReportedLocationLongitude),
-                                  );
+                                      zoomVal,
+                                      LatLng(
+                                          viewModel
+                                              .assetLocation
+                                              .mapRecords
+                                              .first
+                                              .lastReportedLocationLatitude,
+                                          viewModel
+                                              .assetLocation
+                                              .mapRecords
+                                              .first
+                                              .lastReportedLocationLongitude),
+                                      viewModel);
                                 },
                                 child: Container(
                                   width: 27.47,
@@ -276,15 +285,17 @@ class _LocationViewState extends State<LocationView> {
     );
   }
 
-  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+  Future<void> _minus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController mapController = await viewModel.controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+  Future<void> _plus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController mapController = await viewModel.controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 

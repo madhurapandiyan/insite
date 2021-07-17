@@ -90,7 +90,7 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemCount: viewModel.utilLizationListData.length,
-                              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                              padding: EdgeInsets.only(left: 8, right: 8),
                               itemBuilder: (context, index) {
                                 AssetResult utilizationData =
                                     viewModel.utilLizationListData[index];

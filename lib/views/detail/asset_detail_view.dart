@@ -205,6 +205,11 @@ class _TabPageState extends State<AssetDetailView> {
                       child: selectedTabIndex == 0
                           ? AssetDashbaord(
                               detail: viewModel.assetDetail,
+                              switchTab: (index) {
+                                setState(() {
+                                  selectedTabIndex = index;
+                                });
+                              },
                             )
                           : selectedTabIndex == 1
                               ? SingleAssetUtilizationView(
