@@ -4,15 +4,17 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class LocationInfoWindowWidget extends StatelessWidget {
-  final String text;
+  final int assetCount;
+  final String infoText;
   final VoidCallback onCustomWindowClose;
   final VoidCallback onFleetPageSelectedTap;
   final VoidCallback onTapWithZoom;
 
   LocationInfoWindowWidget(
-      {this.text,
+      {this.assetCount,
       this.onCustomWindowClose,
       this.onFleetPageSelectedTap,
+      this.infoText,
       this.onTapWithZoom});
 
   @override
@@ -51,12 +53,13 @@ class LocationInfoWindowWidget extends StatelessWidget {
               ),
               Container(
                 width: 216,
-                height: 32,
                 color: thunder,
                 child: Padding(
                   padding: EdgeInsets.only(left: 38, top: 5.0, bottom: 5.0),
                   child: Text(
-                    text + " " + "Assets",
+                    assetCount > 1
+                        ? assetCount.toString() + " " + "Assets"
+                        : "Serialnumber \n $infoText",
                     style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 13.0,
@@ -73,7 +76,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: tango,
-                  title: "  Fleet List  ",
+                  title: assetCount > 1 ? "  Fleet List  " : "Dashboard",
                   textColor: appbarcolor,
                   onTap: onFleetPageSelectedTap),
               SizedBox(
@@ -84,7 +87,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: tango,
-                  title: "Zoom to cluster",
+                  title: assetCount > 1 ? "Zoom to cluster" : "Details",
                   textColor: appbarcolor,
                   onTap: onTapWithZoom)
             ],

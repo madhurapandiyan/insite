@@ -296,6 +296,9 @@ class UtilizationListItem extends StatelessWidget {
                               InsiteRichText(
                                 title: "Serial No. ",
                                 content: utilizationData.assetSerialNumber,
+                                onTap: () {
+                                  onCallback();
+                                },
                               ),
                               InsiteTableRowItem(
                                 title: "Working Time Hours",

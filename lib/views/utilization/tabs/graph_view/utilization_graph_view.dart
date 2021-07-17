@@ -105,7 +105,8 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
           ),
         ),
         Container(
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: MediaQuery.of(context).size.width * 1,
+          margin: const EdgeInsets.only(left: 12.0, right: 12),
           decoration: BoxDecoration(
             color: cardcolor,
             borderRadius: BorderRadius.all(Radius.circular(8)),

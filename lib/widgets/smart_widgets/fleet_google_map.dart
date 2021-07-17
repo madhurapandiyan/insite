@@ -10,17 +10,19 @@ import 'package:logger/logger.dart';
 class FleetGoogleMap extends StatefulWidget {
   final double latitude;
   final double longitude;
-  final Set<Marker> acquiredMarkers;
   final LatLng initLocation;
   final String status;
   final isLoading;
   final ScreenType screenType;
+  final VoidCallback onMarkerTap;
+  final String location;
   FleetGoogleMap(
       {@required this.latitude,
       @required this.longitude,
-      this.acquiredMarkers,
       this.status,
+      this.onMarkerTap,
       this.screenType,
+      this.location,
       this.isLoading,
       this.initLocation});
 
@@ -129,7 +131,6 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
                                   ]
                                       .map((map) => DropdownMenuItem(
                                             value: map,
-                                            
                                             child: Text(map,
                                                 style: TextStyle(
                                                     fontSize: 11.0,
@@ -237,9 +238,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,
-            markers: (widget.latitude == null && widget.longitude == null)
-                ? widget.acquiredMarkers
-                : _markers,
+            markers: _markers,
             initialCameraPosition: CameraPosition(
                 target: (widget.latitude == null && widget.longitude == null)
                     ? widget.initLocation
@@ -348,6 +347,12 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
       if (widget.latitude != null && widget.longitude != null)
         _markers.add(Marker(
             markerId: MarkerId('id-1'),
+            infoWindow: InfoWindow(
+              title: widget.location != null ? widget.location : "",
+              onTap: () {
+                widget.onMarkerTap();
+              },
+            ),
             position: LatLng(widget.latitude, widget.longitude)));
     });
   }

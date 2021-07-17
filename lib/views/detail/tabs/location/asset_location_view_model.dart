@@ -31,6 +31,7 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool get refreshing => _refreshing;
 
   Set<Marker> markers = Set();
+  List<LatLng> latlngs = [];
   int index = 1;
 
   AssetDetail _assetDetail;
@@ -62,6 +63,7 @@ class AssetLocationViewModel extends InsiteViewModel {
   refresh() async {
     await getDateRangeFilterData();
     markers.clear();
+    latlngs.cast();
     _refreshing = true;
     notifyListeners();
     AssetLocationHistory result = await _assetLocationHistoryService
@@ -77,7 +79,9 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   updateMarkers() {
     markers.clear();
+    latlngs.clear();
     for (var assetLocation in assetLocationHistory.assetLocation) {
+      latlngs.add(LatLng(assetLocation.latitude, assetLocation.longitude));
       markers.add(Marker(
           markerId: MarkerId('${index++}'),
           position: LatLng(assetLocation.latitude, assetLocation.longitude),
@@ -308,4 +312,21 @@ class AssetLocationViewModel extends InsiteViewModel {
   double get leftMargin => _leftMargin;
   double get topMargin => _topMargin;
   AssetLocation get assetLocation => _assetLocation;
+
+  LatLngBounds getBound() {
+    assert(latlngs.isNotEmpty);
+    double x0, x1, y0, y1;
+    for (LatLng latLng in latlngs) {
+      if (x0 == null) {
+        x0 = x1 = latLng.latitude;
+        y0 = y1 = latLng.longitude;
+      } else {
+        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude < x0) x0 = latLng.latitude;
+        if (latLng.longitude > y1) y1 = latLng.longitude;
+        if (latLng.longitude < y0) y0 = latLng.longitude;
+      }
+    }
+    return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
+  }
 }
