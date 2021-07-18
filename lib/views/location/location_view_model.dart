@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/core/router_constants.dart';
@@ -93,7 +94,7 @@ class LocationViewModel extends InsiteViewModel {
                   onFleetPageSelectedTap: () {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
-                      onFleetPageSelected();
+                      onFleetPageSelected(cluster.markers.toList());
                     } else {
                       onDetailPageSelected(
                           cluster.items.toList()[0].mapData, 0);
@@ -102,8 +103,7 @@ class LocationViewModel extends InsiteViewModel {
                   onTapWithZoom: () {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
-                      refreshCluster(cluster.location.latitude,
-                          cluster.location.longitude, cluster.markers.toList());
+                      refreshCluster(cluster.markers.toList());
                     } else {
                       onDetailPageSelected(
                           cluster.items.toList()[0].mapData, 3);
@@ -158,7 +158,30 @@ class LocationViewModel extends InsiteViewModel {
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
-  onFleetPageSelected() {
+  onFleetPageSelected(List<ClusterItem<InsiteMarker>> list) async {
+    List<LatLng> selectedClustorLatLnglist = [];
+    for (ClusterItem<InsiteMarker> item in list) {
+      selectedClustorLatLnglist.add(item.location);
+    }
+    LatLngBounds bounds = getBound(selectedClustorLatLnglist);
+    LatLng smallLatLng = bounds.southwest;
+    LatLng largeLatLng = bounds.northeast;
+    double radiusKm = await getDistanceFromLatLonInKm(smallLatLng.latitude,
+        smallLatLng.longitude, largeLatLng.latitude, largeLatLng.longitude);
+    Logger().d("lat lng northeast ${bounds.northeast}");
+    Logger().d("lat lng southwest ${bounds.southwest}");
+    Logger().d("radius between southwest northeast $radiusKm");
+    FilterData filterData = FilterData(
+        count: "",
+        isSelected: true,
+        title: "Clustor",
+        type: FilterType.CLUSTOR,
+        extras: [
+          smallLatLng.latitude.toString(),
+          largeLatLng.longitude.toString(),
+          radiusKm.toString()
+        ]);
+    await addFilter(filterData);
     _navigationService.navigateTo(
       fleetViewRoute,
     );
@@ -209,8 +232,7 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  refreshCluster(double latitude, double longitude,
-      List<ClusterItem<InsiteMarker>> list) async {
+  refreshCluster(List<ClusterItem<InsiteMarker>> list) async {
     Logger().d("refreshCluster with size of  ${list.length}");
     _refreshing = true;
     clusterMarkers.clear();

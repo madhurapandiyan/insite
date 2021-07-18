@@ -240,7 +240,6 @@ class FleetService extends BaseService {
           }
         }
       }
-
       // idlingLevel
       List<FilterData> idlingLevelList = appliedFilters
           .where((element) => element.type == FilterType.IDLING_LEVEL)
@@ -259,6 +258,45 @@ class FleetService extends BaseService {
                   constructQuery("idleEfficiencyGT", data.extras[0], false));
               value.write(
                   constructQuery("idleEfficiencyLTE", data.extras[1], false));
+            }
+          }
+        }
+      }
+      // location clustor
+      List<FilterData> locationClustorList = appliedFilters
+          .where((element) => element.type == FilterType.CLUSTOR)
+          .toList();
+      Logger().i("filter locationClustorList " +
+          locationClustorList.length.toString());
+      if (locationClustorList.isNotEmpty) {
+        for (FilterData data in locationClustorList) {
+          if (data.extras.isNotEmpty) {
+            Logger().d("location clustor extras 0 ", data.extras[0]);
+            Logger().d("location clustor extras 1", data.extras[1]);
+            Logger().d("location clustor extras 2", data.extras[2]);
+            value.write(constructQuery("latitude", data.extras[0], false));
+            value.write(constructQuery("longitude", data.extras[1], false));
+            value.write(constructQuery("radiuskm", data.extras[2], false));
+          }
+        }
+      }
+
+      if (locationClustorList.isEmpty) {
+        // location search
+        List<FilterData> locationSearchList = appliedFilters
+            .where((element) => element.type == FilterType.LOCATION_SEARCH)
+            .toList();
+        Logger().i("filter locationSearchList " +
+            locationSearchList.length.toString());
+        if (locationSearchList.isNotEmpty) {
+          for (FilterData data in locationSearchList) {
+            if (data.extras.isNotEmpty) {
+              Logger().d("location search extras 0 ", data.extras[0]);
+              Logger().d("location search extras 1", data.extras[1]);
+              Logger().d("location search extras 2", data.extras[2]);
+              value.write(constructQuery("latitude", data.extras[0], false));
+              value.write(constructQuery("longitude", data.extras[1], false));
+              value.write(constructQuery("radiuskm", data.extras[2], false));
             }
           }
         }

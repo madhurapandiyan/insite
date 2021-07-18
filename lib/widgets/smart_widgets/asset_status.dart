@@ -134,33 +134,30 @@ class _AssetStatusState extends State<AssetStatus> {
                       ),
                     ),
                     Flexible(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        child: ListView.separated(
-                            separatorBuilder: (context, index) {
-                              return Divider(thickness: 1.0, color: athenGrey);
-                            },
-                            itemCount: widget.statusChartData.length,
-                            shrinkWrap: true,
-                            physics: ScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
-                            itemBuilder: (context, index) {
-                              ChartSampleData assetStatusData =
-                                  widget.statusChartData[index];
-                              return AssetStatusWidget(
-                                chartColor: colors[index],
-                                chartData: assetStatusData,
-                                callBack: (value) {
-                                  widget.onFilterSelected(FilterData(
-                                      isSelected: true,
-                                      count: value.y.toString(),
-                                      title: value.x,
-                                      type: FilterType.ALL_ASSETS));
-                                },
-                              );
-                            }),
-                      ),
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return Divider(thickness: 1.0, color: athenGrey);
+                          },
+                          itemCount: widget.statusChartData.length,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          itemBuilder: (context, index) {
+                            ChartSampleData assetStatusData =
+                                widget.statusChartData[index];
+                            return AssetStatusWidget(
+                              chartColor: colors[index],
+                              label: assetStatusData.x,
+                              callBack: () {
+                                widget.onFilterSelected(FilterData(
+                                    isSelected: true,
+                                    count: assetStatusData.y.toString(),
+                                    title: assetStatusData.x,
+                                    type: FilterType.ALL_ASSETS));
+                              },
+                            );
+                          }),
                     )
                   ],
                 ),

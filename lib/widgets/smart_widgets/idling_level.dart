@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
@@ -301,22 +300,16 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
     List<IdlingLevelSampleData> chartData = [];
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[1].countOf,
-          y: widget.data[1].count,
-          color: burntSienna),
-    );
-    chartData.add(IdlingLevelSampleData(
-        x: widget.data[2].countOf, y: widget.data[2].count, color: silver));
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[3].countOf, y: widget.data[3].count, color: mustard),
-    );
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[4].countOf, y: widget.data[4].count, color: emerald),
-    );
+    for (Count count in widget.data) {
+      if (count.countOf != "Excluded") {
+        chartData.add(
+          IdlingLevelSampleData(
+              x: Utils.getIdlingWidgetLabel(count.countOf),
+              y: count.count,
+              color: burntSienna),
+        );
+      }
+    }
 
     return <BarSeries<IdlingLevelSampleData, String>>[
       BarSeries<IdlingLevelSampleData, String>(
