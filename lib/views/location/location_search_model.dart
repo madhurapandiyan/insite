@@ -44,7 +44,7 @@ class LocationSearchViewModel extends InsiteViewModel {
             isSelected: false,
             title: data.Address.StateName,
             type: FilterType.LOCATION_SEARCH,
-            extras: [data.Coords.Lat, data.Coords.Lon]);
+            extras: [data.Coords.Lat, data.Coords.Lon, 10.toString()]);
         _filterLocations.add(filterData);
       }
     }

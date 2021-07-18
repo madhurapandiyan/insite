@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/theme/colors.dart';
 
 class AssetStatusWidget extends StatefulWidget {
-  final ChartSampleData chartData;
   final Color chartColor;
-  final Function(ChartSampleData) callBack;
-  AssetStatusWidget({this.chartData, this.chartColor, this.callBack});
+  final String label;
+  final VoidCallback callBack;
+  AssetStatusWidget({this.label, this.chartColor, this.callBack});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
 }
@@ -16,13 +15,13 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.callBack(widget.chartData);
+        widget.callBack();
       },
       child: Container(
         width: 130,
         child: Row(
-           mainAxisAlignment: MainAxisAlignment.start,
-           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
                 width: 15,
@@ -40,7 +39,7 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
             ),
             Expanded(
               child: new Text(
-                widget.chartData.x.toUpperCase(),
+                widget.label.toUpperCase(),
                 textAlign: TextAlign.start,
                 style: new TextStyle(
                     fontWeight: FontWeight.w700,
@@ -58,7 +57,6 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
               height: 20,
               child: Image.asset("assets/images/arrows.png"),
             ),
-         
           ],
         ),
       ),
