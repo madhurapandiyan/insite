@@ -231,6 +231,7 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    await getSelectedFilterData();
     await getDateRangeFilterData();
     Logger().d("refresh getAssetLocation");
     _refreshing = true;

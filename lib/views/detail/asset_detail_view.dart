@@ -179,7 +179,11 @@ class _TabPageState extends State<AssetDetailView> {
                           SizedBox(width: 15.0),
                           Text(
                             viewModel.assetDetail != null
-                                ? viewModel.assetDetail.universalCustomerName
+                                ? viewModel.assetDetail.universalCustomerName !=
+                                        null
+                                    ? viewModel
+                                        .assetDetail.universalCustomerName
+                                    : ""
                                 : "-",
                             style: TextStyle(
                                 fontFamily: 'Roboto',
