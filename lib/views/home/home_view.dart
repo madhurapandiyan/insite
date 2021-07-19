@@ -5,7 +5,7 @@ import 'package:insite/utils/dialog.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
-import 'package:insite/widgets/smart_widgets/fleet_google_map_home.dart';
+import 'package:insite/views/location/home/google_map.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -99,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
                       data: viewModel.idlingLevelData != null
                           ? viewModel.idlingLevelData.countData
                           : null,
-                      isLoading: viewModel.idlingLevelDataloading,
+                       isLoading:viewModel.idlingLevelDataloading,
                       onFilterSelected: (value) {
                         viewModel.onFilterSelected(value);
                       },
@@ -109,6 +109,7 @@ class _HomeViewState extends State<HomeView> {
                           viewModel.getIdlingLevelData();
                         });
                       },
+                      isSwitching: viewModel.isSwitching,
                     ),
                   ),
                   SizedBox(
@@ -116,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: FleetGoogleMapHome(),
+                    child: GoogleMapHomeWidget(),
                   ),
                   SizedBox(
                     height: 20.0,

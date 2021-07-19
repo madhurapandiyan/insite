@@ -179,7 +179,11 @@ class _TabPageState extends State<AssetDetailView> {
                           SizedBox(width: 15.0),
                           Text(
                             viewModel.assetDetail != null
-                                ? viewModel.assetDetail.universalCustomerName
+                                ? viewModel.assetDetail.universalCustomerName !=
+                                        null
+                                    ? viewModel
+                                        .assetDetail.universalCustomerName
+                                    : ""
                                 : "-",
                             style: TextStyle(
                                 fontFamily: 'Roboto',
@@ -205,6 +209,11 @@ class _TabPageState extends State<AssetDetailView> {
                       child: selectedTabIndex == 0
                           ? AssetDashbaord(
                               detail: viewModel.assetDetail,
+                              switchTab: (index) {
+                                setState(() {
+                                  selectedTabIndex = index;
+                                });
+                              },
                             )
                           : selectedTabIndex == 1
                               ? SingleAssetUtilizationView(

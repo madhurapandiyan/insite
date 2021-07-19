@@ -44,8 +44,9 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
           return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16)),
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
                 color: mediumgrey),
             child: Stack(
               children: [
@@ -254,7 +255,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                 ),
                               ],
                             )
-                          : EmptyView(title: 'No data here'),
+                          : EmptyView(title: 'No Results'),
                     ),
                   ],
                 ),

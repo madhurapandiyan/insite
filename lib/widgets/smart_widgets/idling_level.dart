@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdlingLevel extends StatefulWidget {
   final List<Count> data;
   final bool isLoading;
+  final bool isSwitching;
   final Function(FilterData) onFilterSelected;
   final Function onRangeSelected;
 
   IdlingLevel(
-      {this.data, this.isLoading, this.onFilterSelected, this.onRangeSelected});
+      {this.data,
+      this.isLoading,
+      this.onFilterSelected,
+      this.onRangeSelected,
+      this.isSwitching});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
@@ -82,7 +88,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 color: black,
               ),
               widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  ? Expanded(
+                      child: Center(
+                      child: CircularProgressIndicator(),
+                    ))
                   : Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
@@ -171,9 +180,14 @@ class _IdlingLevelState extends State<IdlingLevel> {
                           )
                         ],
                       ),
-                    )
+                    ),
             ],
           ),
+          widget.isSwitching
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox()
         ],
       ),
     );
@@ -280,45 +294,18 @@ class _IdlingLevelState extends State<IdlingLevel> {
     );
   }
 
-  // // Color getColor(String countOf) {
-  // //   switch (countOf) {
-  // //     case '[0,10]':
-  // //       return burntSienna;
-  // //       break;
-  // //     case '[10,15]':
-  // //       return silver;
-  // //       break;
-  // //     case '[15,25]':
-  // //       return mustard;
-  // //       break;
-  // //     case '[25,]':
-  // //       return emerald;
-  // //       break;
-  // //     default:
-  // //       return Colors.lightBlueAccent;
-  // //   }
-  // }
-
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
     List<IdlingLevelSampleData> chartData = [];
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[1].countOf,
-          y: widget.data[1].count,
-          color: burntSienna),
-    );
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[2].countOf, y: widget.data[2].count, color: silver),
-    );
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[3].countOf, y: widget.data[3].count, color: mustard),
-    );
-    chartData.add(
-      IdlingLevelSampleData(
-          x: widget.data[4].countOf, y: widget.data[4].count, color: emerald),
-    );
+    for (Count count in widget.data) {
+      if (count.countOf != "Excluded") {
+        chartData.add(
+          IdlingLevelSampleData(
+            x: Utils.getIdlingWidgetLabel(count.countOf),
+            y: count.count,
+          ),
+        );
+      }
+    }
 
     return <BarSeries<IdlingLevelSampleData, String>>[
       BarSeries<IdlingLevelSampleData, String>(
@@ -332,18 +319,34 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   fontFamily: 'Roboto',
                   fontStyle: FontStyle.normal),
               labelPosition: ChartDataLabelPosition.outside),
-          pointColorMapper: (IdlingLevelSampleData charts, _) => charts.color,
+          pointColorMapper: (IdlingLevelSampleData charts, _) =>
+              getColorData(charts.x),
           xValueMapper: (IdlingLevelSampleData charts, _) => charts.x,
           yValueMapper: (IdlingLevelSampleData charts, _) => charts.y),
     ];
+  }
+
+  Color getColorData(String data) {
+    switch (data) {
+      case "0-10%":
+        return burntSienna;
+      case "10-15%":
+        return silver;
+      case "15-25%":
+        return mustard;
+      case ">25%":
+        return emerald;
+      default:
+        return null;
+    }
   }
 }
 
 class IdlingLevelSampleData {
   final String x;
   final int y;
-  final Color color;
-  IdlingLevelSampleData({this.x, this.y, this.color});
+
+  IdlingLevelSampleData({this.x, this.y});
 }
 
 enum IdlingLevelRange { DAY, WEEK, MONTH }

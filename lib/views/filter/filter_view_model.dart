@@ -4,7 +4,6 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/filter_service.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
@@ -65,10 +64,10 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL);
-    addIdlingData(
-        filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
+    // AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
+    //     startDate, endDate, FilterType.IDLING_LEVEL);
+    // addIdlingData(
+    //     filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     _loading = false;
     notifyListeners();

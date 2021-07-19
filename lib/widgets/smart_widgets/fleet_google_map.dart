@@ -7,28 +7,30 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 
-class FleetGoogleMap extends StatefulWidget {
+class GoogleMapDetailWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
-  final Set<Marker> acquiredMarkers;
   final LatLng initLocation;
   final String status;
   final isLoading;
   final ScreenType screenType;
-  FleetGoogleMap(
+  final VoidCallback onMarkerTap;
+  final String location;
+  GoogleMapDetailWidget(
       {@required this.latitude,
       @required this.longitude,
-      this.acquiredMarkers,
       this.status,
+      this.onMarkerTap,
       this.screenType,
+      this.location,
       this.isLoading,
       this.initLocation});
 
   @override
-  _FleetGoogleMapState createState() => _FleetGoogleMapState();
+  _GoogleMapDetailWidgetState createState() => _GoogleMapDetailWidgetState();
 }
 
-class _FleetGoogleMapState extends State<FleetGoogleMap> {
+class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
@@ -236,9 +238,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,
-            markers: (widget.latitude == null && widget.longitude == null)
-                ? widget.acquiredMarkers
-                : _markers,
+            markers: _markers,
             initialCameraPosition: CameraPosition(
                 target: (widget.latitude == null && widget.longitude == null)
                     ? widget.initLocation
@@ -347,6 +347,12 @@ class _FleetGoogleMapState extends State<FleetGoogleMap> {
       if (widget.latitude != null && widget.longitude != null)
         _markers.add(Marker(
             markerId: MarkerId('id-1'),
+            infoWindow: InfoWindow(
+              title: widget.location != null ? widget.location : "",
+              onTap: () {
+                widget.onMarkerTap();
+              },
+            ),
             position: LatLng(widget.latitude, widget.longitude)));
     });
   }

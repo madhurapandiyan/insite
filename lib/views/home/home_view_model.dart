@@ -48,8 +48,8 @@ class HomeViewModel extends InsiteViewModel {
     this._idlingLevelRange = catchedRange;
   }
 
-  bool _refreshing = false;
-  bool get refreshing => _refreshing;
+  bool _isSwitching = false;
+  bool get isSwitching => _isSwitching;
 
   bool _assetUtilizationLoading = true;
   bool get assetUtilizationLoading => _assetUtilizationLoading;
@@ -69,16 +69,9 @@ class HomeViewModel extends InsiteViewModel {
 
   AssetCount _fuelLevelData;
   AssetCount get fuelLevelData => _fuelLevelData;
-  String s;
+
   AssetCount _idlingLevelData;
   AssetCount get idlingLevelData => _idlingLevelData;
-
-  // String idlingLeveLDataDay = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  // set startDayRange(String endDay) {
-  //   this._endDayRange = endDay;
-  // }
-
-  // String get startDayRange => idlingLeveLDataDay;
 
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
@@ -167,32 +160,14 @@ class HomeViewModel extends InsiteViewModel {
     _assetFuelloading = false;
     notifyListeners();
   }
-  // getrefreshIdlingLevelData() async{
-  // _refreshing=true;
-  // notifyListeners();
-  //  AssetCount result = await _assetService.getIdlingLevelData(
-  //       startDate, endDate, FilterType.IDLING_LEVEL);
-  //   _idlingLevelData = result;
-  //   _refreshing=false;
-  //    _idlingLevelDataloading = false;
-  //    notifyListeners();
-
-  // }
 
   getIdlingLevelData() async {
-    AssetCount result = await _assetService.getIdlingLevelData(
-        getStartRange(), endDayRange, FilterType.IDLING_LEVEL);
+    _isSwitching = true;
+    AssetCount result =
+        await _assetService.getIdlingLevelData(getStartRange(), endDayRange);
     if (result != null) {
       _idlingLevelData = result;
-      print('@@@ ${_idlingLevelData.countData[1].count}');
-      print('@@@ ${_idlingLevelData.countData[1].countOf}');
-      print('@@@ ${_idlingLevelData.countData[2].count}');
-      print('@@@ ${_idlingLevelData.countData[2].countOf}');
-      print('@@@ ${_idlingLevelData.countData[3].count}');
-      print('@@@ ${_idlingLevelData.countData[3].countOf}');
-      print('@@@ ${_idlingLevelData.countData[4].count}');
-      print('@@@ ${_idlingLevelData.countData[4].countOf}');
-      print('@@@ \n');
+      _isSwitching = false;
     }
     _idlingLevelDataloading = false;
     notifyListeners();

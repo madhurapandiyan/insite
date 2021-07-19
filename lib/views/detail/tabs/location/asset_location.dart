@@ -25,9 +25,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
-
   List<DateTime> dateRange;
-
   GoogleMapController mapController;
   BitmapDescriptor mapMarker;
 
@@ -159,9 +157,15 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   .onCameraMove();
                             },
                             onMapCreated: (GoogleMapController controller) {
+                              mapController = controller;
                               _controller.complete(controller);
                               viewModel.customInfoWindowController
                                   .googleMapController = controller;
+                              Future.delayed(Duration(seconds: 1), () {
+                                mapController.animateCamera(
+                                    CameraUpdate.newLatLngBounds(
+                                        viewModel.getBound(), 0));
+                              });
                             },
                             mapType: _changemap(),
                             compassEnabled: true,

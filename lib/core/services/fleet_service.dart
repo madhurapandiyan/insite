@@ -50,103 +50,6 @@ class FleetService extends BaseService {
     }
   }
 
-  Map<String, dynamic> getFilterJson(
-      pageNumber, pageSize, customerId, sort, List<FilterData> appliedFilters) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pageNumber'] = pageNumber;
-    data['pageSize'] = pageSize;
-    if (sort != null) {
-      data["sort"] = sort;
-    }
-    if (customerId != null) {
-      data["customerIdentifier"] = customerId;
-    }
-    if (appliedFilters.isNotEmpty) {
-      // manufacturer
-      List<FilterData> makeList = appliedFilters
-          .where((element) => element.type == FilterType.MAKE)
-          .toList();
-      Logger().i("filter makeList " + makeList.length.toString());
-      if (makeList.isNotEmpty) {
-        if (makeList.length == 1) {
-          data["manufacturer"] = makeList[0].title;
-        } else {
-          data["manufacturer"] = convertFilterToCommaSeparatedString(makeList);
-        }
-      }
-      // productfamily
-      List<FilterData> productFamilyList = appliedFilters
-          .where((element) => element.type == FilterType.PRODUCT_FAMILY)
-          .toList();
-      Logger()
-          .i("filter productFamilyList " + productFamilyList.length.toString());
-      if (productFamilyList.isNotEmpty) {
-        if (productFamilyList.length == 1) {
-          data["productfamily"] = productFamilyList[0].title;
-        } else {
-          data["productfamily"] =
-              convertFilterToCommaSeparatedString(productFamilyList);
-        }
-      }
-      // model
-      List<FilterData> productModelList = appliedFilters
-          .where((element) => element.type == FilterType.MODEL)
-          .toList();
-      Logger()
-          .i("filter productModelList " + productModelList.length.toString());
-      if (productModelList.isNotEmpty) {
-        if (productModelList.length == 1) {
-          data["model"] = productModelList[0].title;
-        } else {
-          data["model"] = convertFilterToCommaSeparatedString(productModelList);
-        }
-      }
-      // subscription
-      List<FilterData> productSubscriptionList = appliedFilters
-          .where((element) => element.type == FilterType.SUBSCRIPTION_DATE)
-          .toList();
-      Logger().i("filter productSubscriptionList " +
-          productSubscriptionList.length.toString());
-      if (productSubscriptionList.isNotEmpty) {
-        if (productSubscriptionList.length == 1) {
-          data["subscription"] = productSubscriptionList[0].title;
-        } else {
-          data["subscription"] =
-              convertFilterToCommaSeparatedString(productSubscriptionList);
-        }
-      }
-      // assetstatus
-      List<FilterData> productAssetstatusList = appliedFilters
-          .where((element) => element.type == FilterType.ALL_ASSETS)
-          .toList();
-      Logger().i("filter productAssetstatusList " +
-          productAssetstatusList.length.toString());
-      if (productAssetstatusList.isNotEmpty) {
-        if (productAssetstatusList.length == 1) {
-          data["assetstatus"] = productAssetstatusList[0].title;
-        } else {
-          data["assetstatus"] =
-              convertFilterToCommaSeparatedString(productAssetstatusList);
-        }
-      }
-      // deviceType
-      List<FilterData> productDeviceTypeList = appliedFilters
-          .where((element) => element.type == FilterType.DEVICE_TYPE)
-          .toList();
-      Logger().i("filter productDeviceTypeList " +
-          productDeviceTypeList.length.toString());
-      if (productDeviceTypeList.isNotEmpty) {
-        if (productDeviceTypeList.length == 1) {
-          data["deviceType"] = productDeviceTypeList[0].title;
-        } else {
-          data["deviceType"] =
-              convertFilterToCommaSeparatedString(productDeviceTypeList);
-        }
-      }
-    }
-    return data;
-  }
-
   String getFilterUrl(
       pageNumber, pageSize, customerId, sort, List<FilterData> appliedFilters) {
     StringBuffer value = StringBuffer();
@@ -240,7 +143,6 @@ class FleetService extends BaseService {
           }
         }
       }
-
       // idlingLevel
       List<FilterData> idlingLevelList = appliedFilters
           .where((element) => element.type == FilterType.IDLING_LEVEL)
@@ -259,6 +161,45 @@ class FleetService extends BaseService {
                   constructQuery("idleEfficiencyGT", data.extras[0], false));
               value.write(
                   constructQuery("idleEfficiencyLTE", data.extras[1], false));
+            }
+          }
+        }
+      }
+      // location clustor
+      List<FilterData> locationClustorList = appliedFilters
+          .where((element) => element.type == FilterType.CLUSTOR)
+          .toList();
+      Logger().i("filter locationClustorList " +
+          locationClustorList.length.toString());
+      if (locationClustorList.isNotEmpty) {
+        for (FilterData data in locationClustorList) {
+          if (data.extras.isNotEmpty) {
+            Logger().d("location clustor extras 0 ", data.extras[0]);
+            Logger().d("location clustor extras 1", data.extras[1]);
+            Logger().d("location clustor extras 2", data.extras[2]);
+            value.write(constructQuery("latitude", data.extras[0], false));
+            value.write(constructQuery("longitude", data.extras[1], false));
+            value.write(constructQuery("radiuskm", data.extras[2], false));
+          }
+        }
+      }
+
+      if (locationClustorList.isEmpty) {
+        // location search
+        List<FilterData> locationSearchList = appliedFilters
+            .where((element) => element.type == FilterType.LOCATION_SEARCH)
+            .toList();
+        Logger().i("filter locationSearchList " +
+            locationSearchList.length.toString());
+        if (locationSearchList.isNotEmpty) {
+          for (FilterData data in locationSearchList) {
+            if (data.extras.isNotEmpty) {
+              Logger().d("location search extras 0 ", data.extras[0]);
+              Logger().d("location search extras 1", data.extras[1]);
+              Logger().d("location search extras 2", data.extras[2]);
+              value.write(constructQuery("latitude", data.extras[0], false));
+              value.write(constructQuery("longitude", data.extras[1], false));
+              value.write(constructQuery("radiuskm", data.extras[2], false));
             }
           }
         }

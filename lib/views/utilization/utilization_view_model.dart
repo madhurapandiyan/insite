@@ -6,11 +6,13 @@ import 'package:logger/logger.dart';
 class UtilLizationViewModel extends InsiteViewModel {
   Logger log;
 
-  bool _isMain = false;
-  bool get isMain => _isMain;
+  bool _isFilterApplied = false;
+  bool get isFilterApplied => _isFilterApplied;
 
   UtilLizationViewModel(value) {
-    _isMain = value;
+    _isFilterApplied = value;
     this.log = getLogger(this.runtimeType.toString());
   }
+
+  void refresh() {}
 }

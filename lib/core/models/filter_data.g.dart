@@ -39,6 +39,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.IDLING_LEVEL;
       case 12:
         return FilterType.DATE_RANGE;
+      case 13:
+        return FilterType.CLUSTOR;
       default:
         return null;
     }
@@ -85,6 +87,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.DATE_RANGE:
         writer.writeByte(12);
+        break;
+      case FilterType.CLUSTOR:
+        writer.writeByte(13);
         break;
     }
   }

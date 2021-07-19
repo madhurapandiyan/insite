@@ -8,15 +8,14 @@ import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
-import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
 import 'package:insite/widgets/smart_widgets/single_asset_utilization.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetDashbaord extends StatefulWidget {
   final AssetDetail detail;
-
-  AssetDashbaord({this.detail});
+  final Function(int) switchTab;
+  AssetDashbaord({this.detail, this.switchTab});
 
   @override
   _AssetDashbaordState createState() => _AssetDashbaordState();
@@ -159,7 +158,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: FleetGoogleMap(
+                            child: GoogleMapDetailWidget(
                                 isLoading: false,
                                 latitude: viewModel
                                     .assetDetail.lastReportedLocationLatitude,
@@ -170,6 +169,14 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                         Utils.getLastReportedDateOneUTC(
                                             widget.detail.lastLocationUpdateUTC)
                                     : "No Data Receiveed",
+                                onMarkerTap: () {
+                                  widget.switchTab(3);
+                                },
+                                location: viewModel
+                                            .assetDetail.lastReportedLocation !=
+                                        null
+                                    ? viewModel.assetDetail.lastReportedLocation
+                                    : "",
                                 longitude: viewModel
                                     .assetDetail.lastReportedLocationLongitude),
                           )

@@ -21,7 +21,6 @@ class LocationView extends StatefulWidget {
 class _LocationViewState extends State<LocationView> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
-  Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
   List<DateTime> dateRange;
 
@@ -39,252 +38,279 @@ class _LocationViewState extends State<LocationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LocationViewModel>.reactive(
       builder: (BuildContext context, LocationViewModel viewModel, Widget _) {
-        if (viewModel.loading) {
-          return InsiteScaffold(
-              viewModel: viewModel,
-              screenType: ScreenType.LOCATION,
-              onFilterApplied: () {},
-              body: Center(
-                child: CircularProgressIndicator(),
-              ));
-        } else if (viewModel.assetLocation != null) {
-          return InsiteScaffold(
-            viewModel: viewModel,
-            screenType: ScreenType.LOCATION,
-            body: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          viewModel.customInfoWindowController.hideInfoWindow();
-                          viewModel.refresh();
-                        },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Refresh',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                                " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
-                            style: TextStyle(
-                                color: white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              dateRange = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) => Dialog(
-                                    backgroundColor: transparent,
-                                    child: DateRangeView()),
-                              );
-                              if (dateRange != null && dateRange.isNotEmpty) {
-                                viewModel.customInfoWindowController
-                                    .hideInfoWindow();
-                                viewModel.refresh();
-                              }
-                            },
-                            child: Container(
-                              width: 90,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: tuna,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(4),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Date Range',
-                                  style: TextStyle(
-                                    color: white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+        return InsiteScaffold(
+          viewModel: viewModel,
+          screenType: ScreenType.LOCATION,
+          onFilterApplied: () {
+            viewModel.refresh();
+          },
+          body: viewModel.loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : viewModel.assetLocation != null
+                  ? Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  viewModel.customInfoWindowController
+                                      .hideInfoWindow();
+                                  viewModel.refresh();
+                                },
+                                child: Container(
+                                  width: 90,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: tuna,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Refresh',
+                                      style: TextStyle(
+                                        color: white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      GoogleMap(
-                        onCameraMove: (position) {
-                          viewModel.customInfoWindowController.onCameraMove();
-                          viewModel.manager != null
-                              ? viewModel.manager.onCameraMove(position)
-                              : SizedBox();
-                        },
-                        onMapCreated: (GoogleMapController controller) async {
-                          viewModel.customInfoWindowController
-                              .googleMapController = controller;
-                          _controller.complete(controller);
-                          viewModel.manager != null
-                              ? viewModel.manager.setMapController(controller)
-                              : SizedBox();
-                        },
-                        onCameraIdle: viewModel.manager != null
-                            ? viewModel.manager.updateMap
-                            : null,
-                        mapType: _changemap(),
-                        compassEnabled: true,
-                        zoomControlsEnabled: false,
-                        markers: viewModel.markers,
-                        initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                                viewModel.assetLocation.mapRecords.first
-                                    .lastReportedLocationLatitude,
-                                viewModel.assetLocation.mapRecords.first
-                                    .lastReportedLocationLongitude),
-                            zoom: 5),
-                      ),
-                      CustomInfoWindow(
-                        controller: viewModel.customInfoWindowController,
-                        width: MediaQuery.of(context).size.width * 0.42,
-                        height: MediaQuery.of(context).size.height * 0.36,
-                        offset: 1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 28.0,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                zoomVal++;
-                                _plus(
-                                  zoomVal,
-                                  LatLng(
-                                      viewModel.assetLocation.mapRecords.first
-                                          .lastReportedLocationLatitude,
-                                      viewModel.assetLocation.mapRecords.first
-                                          .lastReportedLocationLongitude),
-                                );
-                              },
-                              child: Container(
-                                width: 27.47,
-                                height: 26.97,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 1.0,
-                                      color: darkhighlight,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    Utils.getDateInFormatddMMyyyy(
+                                            viewModel.startDate) +
+                                        " - " +
+                                        Utils.getDateInFormatddMMyyyy(
+                                            viewModel.endDate),
+                                    style: TextStyle(
+                                        color: white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      dateRange = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            Dialog(
+                                                backgroundColor: transparent,
+                                                child: DateRangeView()),
+                                      );
+                                      if (dateRange != null &&
+                                          dateRange.isNotEmpty) {
+                                        viewModel.customInfoWindowController
+                                            .hideInfoWindow();
+                                        viewModel.refresh();
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 90,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: tuna,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(4),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Date Range',
+                                          style: TextStyle(
+                                            color: white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ],
-                                  border: Border.all(
-                                      width: 1.0, color: darkhighlight),
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/images/plus.svg",
-                                ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  zoomVal--;
-                                  _minus(
-                                    zoomVal,
-                                    LatLng(
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              GoogleMap(
+                                onCameraMove: (position) {
+                                  viewModel.customInfoWindowController
+                                      .onCameraMove();
+                                  viewModel.manager != null
+                                      ? viewModel.manager.onCameraMove(position)
+                                      : SizedBox();
+                                },
+                                onTap: (argument) {
+                                  viewModel.customInfoWindowController
+                                      .hideInfoWindow();
+                                },
+                                onMapCreated:
+                                    (GoogleMapController controller) async {
+                                  viewModel.customInfoWindowController
+                                      .googleMapController = controller;
+                                  viewModel.controller.complete(controller);
+                                  viewModel.manager != null
+                                      ? viewModel.manager
+                                          .setMapController(controller)
+                                      : SizedBox();
+                                  viewModel.zoomToMarkers();
+                                },
+                                onCameraIdle: viewModel.manager != null
+                                    ? viewModel.manager.updateMap
+                                    : null,
+                                mapType: _changemap(),
+                                compassEnabled: true,
+                                zoomControlsEnabled: false,
+                                markers: viewModel.markers,
+                                initialCameraPosition: CameraPosition(
+                                    target: LatLng(
                                         viewModel.assetLocation.mapRecords.first
                                             .lastReportedLocationLatitude,
                                         viewModel.assetLocation.mapRecords.first
                                             .lastReportedLocationLongitude),
-                                  );
-                                },
-                                child: Container(
-                                  width: 27.47,
-                                  height: 26.97,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 1.0,
-                                        color: darkhighlight,
+                                    zoom: 5),
+                              ),
+                              CustomInfoWindow(
+                                controller:
+                                    viewModel.customInfoWindowController,
+                                width: MediaQuery.of(context).size.width * 0.42,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.36,
+                                offset: 1,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 28.0,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        zoomVal++;
+                                        _plus(
+                                            zoomVal,
+                                            LatLng(
+                                                viewModel
+                                                    .assetLocation
+                                                    .mapRecords
+                                                    .first
+                                                    .lastReportedLocationLatitude,
+                                                viewModel
+                                                    .assetLocation
+                                                    .mapRecords
+                                                    .first
+                                                    .lastReportedLocationLongitude),
+                                            viewModel);
+                                      },
+                                      child: Container(
+                                        width: 27.47,
+                                        height: 26.97,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 1.0,
+                                              color: darkhighlight,
+                                            ),
+                                          ],
+                                          border: Border.all(
+                                              width: 1.0, color: darkhighlight),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                        child: SvgPicture.asset(
+                                          "assets/images/plus.svg",
+                                        ),
                                       ),
-                                    ],
-                                    border: Border.all(
-                                        width: 1.0, color: darkhighlight),
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/images/minus.svg",
-                                  ),
-                                )),
-                          ],
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    GestureDetector(
+                                        onTap: () {
+                                          zoomVal--;
+                                          _minus(
+                                              zoomVal,
+                                              LatLng(
+                                                  viewModel
+                                                      .assetLocation
+                                                      .mapRecords
+                                                      .first
+                                                      .lastReportedLocationLatitude,
+                                                  viewModel
+                                                      .assetLocation
+                                                      .mapRecords
+                                                      .first
+                                                      .lastReportedLocationLongitude),
+                                              viewModel);
+                                        },
+                                        child: Container(
+                                          width: 27.47,
+                                          height: 26.97,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 1.0,
+                                                color: darkhighlight,
+                                              ),
+                                            ],
+                                            border: Border.all(
+                                                width: 1.0,
+                                                color: darkhighlight),
+                                            shape: BoxShape.rectangle,
+                                          ),
+                                          child: SvgPicture.asset(
+                                            "assets/images/minus.svg",
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              viewModel.refreshing
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : SizedBox()
+                            ],
+                          ),
                         ),
-                      ),
-                      viewModel.refreshing
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : SizedBox()
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return Container();
-        }
+                      ],
+                    )
+                  : SizedBox(),
+        );
       },
       viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
     );
   }
 
-  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+  Future<void> _minus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController mapController = await viewModel.controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
+  Future<void> _plus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController mapController = await viewModel.controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 

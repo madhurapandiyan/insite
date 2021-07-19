@@ -73,6 +73,9 @@ class FleetListItem extends StatelessWidget {
                         InsiteRichText(
                           title: "Serial No. ",
                           content: fleet.assetSerialNumber,
+                          onTap: () {
+                            onCallback();
+                          },
                         ),
                         // InsiteTableRowItem(
                         //   title: "Custom Asset State",

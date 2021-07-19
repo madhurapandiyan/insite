@@ -47,8 +47,7 @@ class Utils {
   }
 
   static String getLastReportedDateTwoUTC(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(date);
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
     var outputDate = outputFormat.format(inputDate);
@@ -110,15 +109,29 @@ class Utils {
 
   static String getIdlingWidgetLabel(data) {
     String title = data;
-    Logger().i("getIdlingWidgetLabel $title");
-    List<String> list =
-        data.split(",").first.replaceAll("[", "").replaceAll("]", "");
+    String replaced = title.replaceAll("[", "").replaceAll("]", "");
+    List<String> list = replaced.split(",");
+    Logger().i("getIdlingWidgetLabel $list");
     if (list[1].isEmpty) {
-      title = ">" + data.extras[0] + "%";
+      title = ">" + list[0] + "%";
     } else {
       title = list[0] + "-" + list[1] + "%";
     }
     return title;
+  }
+
+  static String getFuleLevelWidgetLabel(data, isForFilter) {
+    String title = data;
+    if (title == "100") {
+      title = "<=" + title + "%";
+    } else {
+      title = "<" + title + "%";
+    }
+    if (isForFilter) {
+      return "Fuel Level : " + title;
+    } else {
+      return title;
+    }
   }
 
   static String getTitle(FilterType type) {
@@ -162,6 +175,9 @@ class Utils {
         break;
       case FilterType.DATE_RANGE:
         title = "DATE RANGE";
+        break;
+      case FilterType.CLUSTOR:
+        title = "CLUSTOR";
         break;
       default:
     }
@@ -210,11 +226,7 @@ class Utils {
         title = data.extras[0] + "-" + data.extras[1] + "%";
       }
     } else if (data.type == FilterType.FUEL_LEVEL) {
-      if (title == "100") {
-        title = "<=" + title + "%";
-      } else {
-        title = "<" + title + "%";
-      }
+      title = getFuleLevelWidgetLabel(title, true);
     }
     return title;
   }

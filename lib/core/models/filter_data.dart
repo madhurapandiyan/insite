@@ -43,5 +43,7 @@ enum FilterType {
   @HiveField(11)
   IDLING_LEVEL,
   @HiveField(12)
-  DATE_RANGE
+  DATE_RANGE,
+  @HiveField(13)
+  CLUSTOR,
 }

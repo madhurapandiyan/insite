@@ -10,26 +10,22 @@ import 'package:insite/views/location/location_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
-class FleetGoogleMapHome extends StatefulWidget {
+class GoogleMapHomeWidget extends StatefulWidget {
   @override
-  _FleetGoogleMapState createState() => _FleetGoogleMapState();
+  _GoogleMapHomeWidgetState createState() => _GoogleMapHomeWidgetState();
 }
 
-class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
+class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
-  var viewModel;
-  Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
   @override
   void initState() {
-    viewModel = LocationViewModel(TYPE.DASHBOARD);
     super.initState();
   }
 
   @override
   void dispose() {
-    viewModel.dispose();
     super.dispose();
   }
 
@@ -38,8 +34,8 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
     return ViewModelBuilder<LocationViewModel>.reactive(
       builder: (BuildContext context, LocationViewModel viewModel, Widget _) {
         return Container(
-            //  width: MediaQuery.of(context).size.width*0.32,
             height: MediaQuery.of(context).size.height * 0.50,
+            margin: EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               boxShadow: [BoxShadow(blurRadius: 1.0, color: cardcolor)],
@@ -172,7 +168,7 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                       height: 5.0,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height*0.10,
+                      height: MediaQuery.of(context).size.height * 0.10,
                       color: greencolor,
                       child: Padding(
                         padding: EdgeInsets.only(left: 5.0, top: 8.0),
@@ -194,12 +190,13 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                             ),
                           )
                         : Expanded(
-                          flex: 1,
-                          child: Container(
-                              //width: 380.9,
-                              height: MediaQuery.of(context).size.height*0.45,
-                              child: _googleMap(currentType)),
-                        ),
+                            flex: 1,
+                            child: Container(
+                                //width: 380.9,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.45,
+                                child: _googleMap(currentType, viewModel)),
+                          ),
                     Divider(),
                     Padding(
                       padding: EdgeInsets.only(left: 10.0, top: 5.0),
@@ -222,14 +219,13 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
               ],
             ));
       },
-      viewModelBuilder: () => viewModel,
+      viewModelBuilder: () => LocationViewModel(TYPE.DASHBOARD),
     );
   }
 
-  Widget _googleMap(type) {
+  Widget _googleMap(type, LocationViewModel viewModel) {
     return Container(
-      //width: 380.9,
-      height: MediaQuery.of(context).size.height*0.28,
+      height: MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
         color: tuna,
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -246,10 +242,11 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
             onMapCreated: (GoogleMapController controller) async {
               viewModel.customInfoWindowController.googleMapController =
                   controller;
-              _controller.complete(controller);
+              viewModel.controller.complete(controller);
               viewModel.manager != null
                   ? viewModel.manager.setMapController(controller)
                   : SizedBox();
+              viewModel.zoomToMarkers();
             },
             onCameraIdle:
                 viewModel.manager != null ? viewModel.manager.updateMap : null,
@@ -288,7 +285,8 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                             viewModel.assetLocation.mapRecords.first
                                 .lastReportedLocationLatitude,
                             viewModel.assetLocation.mapRecords.first
-                                .lastReportedLocationLongitude));
+                                .lastReportedLocationLongitude),
+                        viewModel);
                   },
                   child: Container(
                     width: 27.47,
@@ -319,10 +317,12 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
                       _minus(
                           zoomVal,
                           LatLng(
-                              viewModel.assetLocation.mapRecords.first
-                                  .lastReportedLocationLatitude,
-                              viewModel.assetLocation.mapRecords.first
-                                  .lastReportedLocationLongitude));
+                            viewModel.assetLocation.mapRecords.first
+                                .lastReportedLocationLatitude,
+                            viewModel.assetLocation.mapRecords.first
+                                .lastReportedLocationLongitude,
+                          ),
+                          viewModel);
                     },
                     child: Container(
                       width: 27.47,
@@ -350,14 +350,16 @@ class _FleetGoogleMapState extends State<FleetGoogleMapHome> {
     );
   }
 
-  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
+  Future<void> _minus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController controller = await viewModel.controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
-    final GoogleMapController controller = await _controller.future;
+  Future<void> _plus(double zoomVal, LatLng targetPosition,
+      LocationViewModel viewModel) async {
+    final GoogleMapController controller = await viewModel.controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }

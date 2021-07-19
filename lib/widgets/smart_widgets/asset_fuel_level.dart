@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -142,12 +142,13 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                 ChartSampleData data = widget.chartData[index];
                                 return AssetStatusWidget(
                                   chartColor: color[index],
-                                  chartData: data,
-                                  callBack: (value) {
+                                  label: Utils.getFuleLevelWidgetLabel(
+                                      data.x, false),
+                                  callBack: () {
                                     widget.onFilterSelected(FilterData(
                                         isSelected: true,
-                                        count: value.y.toString(),
-                                        title: value.x.toString(),
+                                        count: data.y.toString(),
+                                        title: data.x.toString(),
                                         type: FilterType.FUEL_LEVEL));
                                   },
                                 );

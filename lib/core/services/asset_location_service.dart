@@ -6,6 +6,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class AssetLocationService extends BaseService {
@@ -52,10 +53,26 @@ class AssetLocationService extends BaseService {
   Future<AssetLocationData> getAssetLocation(
       int pageNumber, int pageSize, String sort, appliedFilters) async {
     try {
-      if (pageNumber != null && pageSize != null && sort != null) {
-        AssetLocationData result = await MyApi().getClient().assetLocation(
-            getFilterJson(pageNumber, pageSize, null, sort, appliedFilters),
-            accountSelected.CustomerUID);
+      if (pageNumber != null &&
+          pageSize != null &&
+          sort != null &&
+          customerSelected != null) {
+        AssetLocationData result = await MyApi()
+            .getClient()
+            .assetLocationSummary(
+                Urls.locationSummary +
+                    getFilterUrl(pageNumber, pageSize,
+                        customerSelected.CustomerUID, sort, appliedFilters),
+                accountSelected.CustomerUID);
+        return result;
+      } else if (pageNumber != null && pageSize != null && sort != null) {
+        AssetLocationData result = await MyApi()
+            .getClient()
+            .assetLocationSummary(
+                Urls.locationSummary +
+                    getFilterUrl(
+                        pageNumber, pageSize, null, sort, appliedFilters),
+                accountSelected.CustomerUID);
         return result;
       }
       return null;
@@ -97,16 +114,16 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Map<String, dynamic> getFilterJson(
+  String getFilterUrl(
       pageNumber, pageSize, customerId, sort, List<FilterData> appliedFilters) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pageNumber'] = pageNumber;
-    data['pageSize'] = pageSize;
+    StringBuffer value = StringBuffer();
+    value.write(constructQuery("pageNumber", pageNumber.toString(), true));
+    value.write(constructQuery("pageSize", pageSize.toString(), false));
     if (sort != null) {
-      data["sort"] = sort;
+      value.write(constructQuery("sort", sort, false));
     }
     if (customerId != null) {
-      data["customerUID"] = customerId;
+      value.write(constructQuery("customerIdentifier", customerId, false));
     }
     if (appliedFilters.isNotEmpty) {
       // manufacturer
@@ -115,10 +132,8 @@ class AssetLocationService extends BaseService {
           .toList();
       Logger().i("filter makeList " + makeList.length.toString());
       if (makeList.isNotEmpty) {
-        if (makeList.length == 1) {
-          data["manufacturer"] = makeList[0].title;
-        } else {
-          data["manufacturer"] = convertFilterToCommaSeparatedString(makeList);
+        for (FilterData data in makeList) {
+          value.write(constructQuery("manufacturer", data.title, false));
         }
       }
       // productfamily
@@ -128,11 +143,8 @@ class AssetLocationService extends BaseService {
       Logger()
           .i("filter productFamilyList " + productFamilyList.length.toString());
       if (productFamilyList.isNotEmpty) {
-        if (productFamilyList.length == 1) {
-          data["productfamily"] = productFamilyList[0].title;
-        } else {
-          data["productfamily"] =
-              convertFilterToCommaSeparatedString(productFamilyList);
+        for (FilterData data in productFamilyList) {
+          value.write(constructQuery("productfamily", data.title, false));
         }
       }
       // model
@@ -142,10 +154,8 @@ class AssetLocationService extends BaseService {
       Logger()
           .i("filter productModelList " + productModelList.length.toString());
       if (productModelList.isNotEmpty) {
-        if (productModelList.length == 1) {
-          data["model"] = productModelList[0].title;
-        } else {
-          data["model"] = convertFilterToCommaSeparatedString(productModelList);
+        for (FilterData data in productModelList) {
+          value.write(constructQuery("model", data.title, false));
         }
       }
       // subscription
@@ -155,11 +165,8 @@ class AssetLocationService extends BaseService {
       Logger().i("filter productSubscriptionList " +
           productSubscriptionList.length.toString());
       if (productSubscriptionList.isNotEmpty) {
-        if (productSubscriptionList.length == 1) {
-          data["subscription"] = productSubscriptionList[0].title;
-        } else {
-          data["subscription"] =
-              convertFilterToCommaSeparatedString(productSubscriptionList);
+        for (FilterData data in productModelList) {
+          value.write(constructQuery("subscription", data.title, false));
         }
       }
       // assetstatus
@@ -169,11 +176,8 @@ class AssetLocationService extends BaseService {
       Logger().i("filter productAssetstatusList " +
           productAssetstatusList.length.toString());
       if (productAssetstatusList.isNotEmpty) {
-        if (productAssetstatusList.length == 1) {
-          data["assetstatus"] = productAssetstatusList[0].title;
-        } else {
-          data["assetstatus"] =
-              convertFilterToCommaSeparatedString(productAssetstatusList);
+        for (FilterData data in productAssetstatusList) {
+          value.write(constructQuery("assetstatus", data.title, false));
         }
       }
       // deviceType
@@ -183,14 +187,88 @@ class AssetLocationService extends BaseService {
       Logger().i("filter productDeviceTypeList " +
           productDeviceTypeList.length.toString());
       if (productDeviceTypeList.isNotEmpty) {
-        if (productDeviceTypeList.length == 1) {
-          data["deviceType"] = productDeviceTypeList[0].title;
-        } else {
-          data["deviceType"] =
-              convertFilterToCommaSeparatedString(productDeviceTypeList);
+        for (FilterData data in productAssetstatusList) {
+          value.write(constructQuery("deviceType", data.title, false));
+        }
+      }
+      // fuelLevel
+      List<FilterData> fuleLevelList = appliedFilters
+          .where((element) => element.type == FilterType.FUEL_LEVEL)
+          .toList();
+      Logger().i("filter fuleLevelList " + fuleLevelList.length.toString());
+      if (fuleLevelList.isNotEmpty) {
+        for (FilterData data in fuleLevelList) {
+          if (data.title == "100") {
+            value.write(
+                constructQuery("fuelLevelPercentLTE", data.title, false));
+          } else {
+            value
+                .write(constructQuery("fuelLevelPercentLT", data.title, false));
+          }
+        }
+      }
+      // idlingLevel
+      List<FilterData> idlingLevelList = appliedFilters
+          .where((element) => element.type == FilterType.IDLING_LEVEL)
+          .toList();
+      Logger().i("filter idlingLevelList " + idlingLevelList.length.toString());
+      if (idlingLevelList.isNotEmpty) {
+        for (FilterData data in idlingLevelList) {
+          if (data.extras.isNotEmpty) {
+            Logger().d("idling level extras 0 ", data.extras[0]);
+            Logger().d("idling level extras 1", data.extras[1]);
+            if (data.extras[1].isEmpty) {
+              value.write(
+                  constructQuery("idleEfficiencyGT", data.extras[0], false));
+            } else {
+              value.write(
+                  constructQuery("idleEfficiencyGT", data.extras[0], false));
+              value.write(
+                  constructQuery("idleEfficiencyLTE", data.extras[1], false));
+            }
+          }
+        }
+      }
+      // location clustor
+      List<FilterData> locationClustorList = appliedFilters
+          .where((element) => element.type == FilterType.CLUSTOR)
+          .toList();
+      Logger().i("filter locationClustorList " +
+          locationClustorList.length.toString());
+      if (locationClustorList.isNotEmpty) {
+        for (FilterData data in locationClustorList) {
+          if (data.extras.isNotEmpty) {
+            Logger().d("location clustor extras 0 ", data.extras[0]);
+            Logger().d("location clustor extras 1", data.extras[1]);
+            Logger().d("location clustor extras 2", data.extras[2]);
+            value.write(constructQuery("latitude", data.extras[0], false));
+            value.write(constructQuery("longitude", data.extras[1], false));
+            value.write(constructQuery("radiuskm", data.extras[2], false));
+          }
+        }
+      }
+
+      if (locationClustorList.isEmpty) {
+        // location search
+        List<FilterData> locationSearchList = appliedFilters
+            .where((element) => element.type == FilterType.LOCATION_SEARCH)
+            .toList();
+        Logger().i("filter locationSearchList " +
+            locationSearchList.length.toString());
+        if (locationSearchList.isNotEmpty) {
+          for (FilterData data in locationSearchList) {
+            if (data.extras.isNotEmpty) {
+              Logger().d("location search extras 0 ", data.extras[0]);
+              Logger().d("location search extras 1", data.extras[1]);
+              Logger().d("location search extras 2", data.extras[2]);
+              value.write(constructQuery("latitude", data.extras[0], false));
+              value.write(constructQuery("longitude", data.extras[1], false));
+              value.write(constructQuery("radiuskm", data.extras[2], false));
+            }
+          }
         }
       }
     }
-    return data;
+    return value.toString();
   }
 }
