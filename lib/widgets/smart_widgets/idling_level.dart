@@ -134,12 +134,16 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                       " " +
                                       pointTapArgs.viewportPointIndex
                                           .toString());
-                                  Count countDatum =
-                                      widget.data[pointTapArgs.pointIndex];
+                                  Count countDatum = getCountDataFiltered()[
+                                      pointTapArgs.pointIndex];
                                   FilterData data = FilterData(
                                       isSelected: true,
                                       count: countDatum.count.toString(),
                                       title: countDatum.countOf,
+                                      extras: countDatum.countOf
+                                          .replaceAll("[", "")
+                                          .replaceAll("]", "")
+                                          .split(","),
                                       type: FilterType.IDLING_LEVEL);
                                   widget.onFilterSelected(data);
                                 },
@@ -292,6 +296,16 @@ class _IdlingLevelState extends State<IdlingLevel> {
         ],
       ),
     );
+  }
+
+  List<Count> getCountDataFiltered() {
+    List<Count> chartData = [];
+    for (Count count in widget.data) {
+      if (count.countOf != "Excluded") {
+        chartData.add(count);
+      }
+    }
+    return chartData;
   }
 
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {

@@ -113,7 +113,9 @@ class AssetDetailWidgt extends StatelessWidget {
                       //         "/" +
                       //         detail.lastReportedLocationLongitude.toString()
                       //     : "-",
-                      content: detail.lastReportedLocation,
+                      content: detail.lastReportedLocation != null
+                          ? detail.lastReportedLocation
+                          : "-",
                     ),
                   ])
                 ],

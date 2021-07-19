@@ -13,7 +13,15 @@ class FilterData {
   bool isSelected;
   @HiveField(4)
   List<String> extras;
-  FilterData({this.count, this.title, this.isSelected, this.type, this.extras});
+  @HiveField(5)
+  final FilterSubType subType;
+  FilterData(
+      {this.count,
+      this.title,
+      this.isSelected,
+      this.type,
+      this.extras,
+      this.subType});
 }
 
 @HiveType(typeId: 1)
@@ -46,4 +54,14 @@ enum FilterType {
   DATE_RANGE,
   @HiveField(13)
   CLUSTOR,
+}
+
+@HiveType(typeId: 2)
+enum FilterSubType {
+  @HiveField(0)
+  DAY,
+  @HiveField(1)
+  WEEK,
+  @HiveField(2)
+  MONTH,
 }

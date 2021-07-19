@@ -10,6 +10,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'single_asset_operation_view_model.dart';
@@ -289,12 +290,16 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             // ),
             InsiteTableRowItem(
               title: 'Last Event Time',
-              content: Utils.getLastReportedDateOneUTC(assetOperation
-                  .assetOperations
-                  .assets
-                  .first
-                  .assetLastReceivedEvent
-                  .lastReceivedEventTimeLocal),
+              content: assetOperation.assetOperations.assets.first
+                          .assetLastReceivedEvent.lastReceivedEventTimeLocal !=
+                      null
+                  ? Utils.getLastReportedDateOneUTC(assetOperation
+                      .assetOperations
+                      .assets
+                      .first
+                      .assetLastReceivedEvent
+                      .lastReceivedEventTimeLocal)
+                  : "-",
             ),
             InsiteTableRowItem(
               title: 'Distance Travelled',
@@ -324,12 +329,16 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             ),
             InsiteTableRowItem(
               title: 'Total Duration ',
-              content: Utils.getLastDurationOne(assetOperation
-                  .assetOperations
-                  .assets
-                  .first
-                  .assetLastReceivedEvent
-                  .lastReceivedEventTimeLocal),
+              content: assetOperation.assetOperations.assets.first
+                          .assetLastReceivedEvent.lastReceivedEventTimeLocal !=
+                      null
+                  ? Utils.getLastDurationOne(assetOperation
+                      .assetOperations
+                      .assets
+                      .first
+                      .assetLastReceivedEvent
+                      .lastReceivedEventTimeLocal)
+                  : "-",
             ),
           ],
         ),
@@ -352,20 +361,25 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
 
   List<Appointment> getRecursiveAppointments(
       List<SingleAssetOperationChartData> chartData) {
-    final List<Appointment> appointments = <Appointment>[];
-    if (chartData.isNotEmpty)
-      for (SingleAssetOperationChartData item in chartData) {
-        final Appointment chartPlot = Appointment(
-            startTime: item.startTime.toLocal(),
-            endTime: item.endTime.toLocal(),
-            color: tango,
-            subject: ""
-            //making subject empty
-            // subject: item.segmentType,
-            );
-        appointments.add(chartPlot);
-      }
-    return appointments;
+    try {
+      final List<Appointment> appointments = <Appointment>[];
+      if (chartData.isNotEmpty)
+        for (SingleAssetOperationChartData item in chartData) {
+          final Appointment chartPlot = Appointment(
+              startTime: item.startTime.toLocal(),
+              endTime: item.endTime.toLocal(),
+              color: tango,
+              subject: ""
+              //making subject empty
+              // subject: item.segmentType,
+              );
+          appointments.add(chartPlot);
+        }
+      return appointments;
+    } catch (e) {
+      Logger().e(e);
+      return [];
+    }
   }
 }
 

@@ -64,9 +64,12 @@ class UtilizationListItem extends StatelessWidget {
                                 content: utilizationData
                                             .targetRuntimePerformance !=
                                         null
-                                    ? utilizationData.targetRuntimePerformance
-                                        .toString()
-                                    : "-",
+                                    ? (utilizationData
+                                                    .targetRuntimePerformance *
+                                                100)
+                                            .toStringAsFixed(2) +
+                                        " %"
+                                    : "",
                               ),
                             ],
                           ),
@@ -134,9 +137,10 @@ class UtilizationListItem extends StatelessWidget {
                                                     .targetRuntimePerformance !=
                                                 null
                                             ? (utilizationData
-                                                        .targetRuntimePerformance /
-                                                    100)
-                                                .toString()
+                                                            .targetRuntimePerformance *
+                                                        100)
+                                                    .toStringAsFixed(2) +
+                                                " %"
                                             : "",
                                       ),
                                     ]),
@@ -197,14 +201,15 @@ class UtilizationListItem extends StatelessWidget {
                                             .toString(),
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Idle%",
+                                        title: "Performance",
                                         content: utilizationData
                                                     .targetIdlePerformance !=
                                                 null
                                             ? (utilizationData
-                                                        .targetIdlePerformance /
-                                                    100)
-                                                .toString()
+                                                            .targetIdlePerformance *
+                                                        100)
+                                                    .toStringAsFixed(2) +
+                                                " %"
                                             : "",
                                       ),
                                     ],

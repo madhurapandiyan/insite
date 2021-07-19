@@ -8,7 +8,9 @@ class AssetCountData {
   List<CountData> counts;
   @HiveField(2)
   final FilterType type;
-  AssetCountData({this.counts, this.type});
+  @HiveField(3)
+  final FilterSubType subType;
+  AssetCountData({this.counts, this.type, this.subType});
 }
 
 @HiveType(typeId: 4)

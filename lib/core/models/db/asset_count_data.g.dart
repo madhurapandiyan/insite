@@ -19,17 +19,20 @@ class AssetCountDataAdapter extends TypeAdapter<AssetCountData> {
     return AssetCountData(
       counts: (fields[1] as List)?.cast<CountData>(),
       type: fields[2] as FilterType,
+      subType: fields[3] as FilterSubType,
     );
   }
 
   @override
   void write(BinaryWriter writer, AssetCountData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(1)
       ..write(obj.counts)
       ..writeByte(2)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(3)
+      ..write(obj.subType);
   }
 
   @override

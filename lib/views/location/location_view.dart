@@ -101,43 +101,43 @@ class _LocationViewState extends State<LocationView> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      dateRange = await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            Dialog(
-                                                backgroundColor: transparent,
-                                                child: DateRangeView()),
-                                      );
-                                      if (dateRange != null &&
-                                          dateRange.isNotEmpty) {
-                                        viewModel.customInfoWindowController
-                                            .hideInfoWindow();
-                                        viewModel.refresh();
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 90,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                        color: tuna,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(4),
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Date Range',
-                                          style: TextStyle(
-                                            color: white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () async {
+                                  //     dateRange = await showDialog(
+                                  //       context: context,
+                                  //       builder: (BuildContext context) =>
+                                  //           Dialog(
+                                  //               backgroundColor: transparent,
+                                  //               child: DateRangeView()),
+                                  //     );
+                                  //     if (dateRange != null &&
+                                  //         dateRange.isNotEmpty) {
+                                  //       viewModel.customInfoWindowController
+                                  //           .hideInfoWindow();
+                                  //       viewModel.refresh();
+                                  //     }
+                                  //   },
+                                  //   child: Container(
+                                  //     width: 90,
+                                  //     height: 30,
+                                  //     decoration: BoxDecoration(
+                                  //       color: tuna,
+                                  //       borderRadius: BorderRadius.all(
+                                  //         Radius.circular(4),
+                                  //       ),
+                                  //     ),
+                                  //     child: Center(
+                                  //       child: Text(
+                                  //         'Date Range',
+                                  //         style: TextStyle(
+                                  //           color: white,
+                                  //           fontSize: 12,
+                                  //           fontWeight: FontWeight.bold,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],

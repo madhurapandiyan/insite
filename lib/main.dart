@@ -16,6 +16,7 @@ void main() async {
   Hive.registerAdapter<FilterType>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
+  Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

@@ -76,13 +76,13 @@ abstract class InsiteViewModel extends BaseViewModel {
     await _filterService.removeFilter(value);
   }
 
-  addFilter(FilterData data) {
+  addFilter(FilterData data) async {
     print("addFilter title " + data.title.toString());
-    _filterService.addFilter(data);
+    await _filterService.addFilter(data);
   }
 
-  clearDb() {
-    _filterService.clearDatabase();
+  clearFilterDb() async {
+    await _filterService.clearDatabase();
   }
 
   getDateRangeFilterData() async {

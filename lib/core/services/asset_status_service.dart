@@ -8,7 +8,7 @@ import 'package:logger/logger.dart';
 class AssetStatusService extends DataBaseService {
   Future<AssetCount> getAssetCount(key, FilterType type) async {
     try {
-      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type, null);
       if (assetCountFromLocal != null) {
         Logger().d("getAssetCount from local");
         return assetCountFromLocal;
@@ -30,7 +30,8 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount> getAssetCountFromLocal(FilterType type) async {
+  Future<AssetCount> getAssetCountFromLocal(
+      FilterType type, FilterSubType subType) async {
     try {
       int size = await assetCountBox.values.length;
       if (size == 0) {
@@ -41,7 +42,13 @@ class AssetStatusService extends DataBaseService {
           AssetCountData data = assetCountBox.getAt(i);
           if (data.type == type) {
             print("match asset count data " + data.counts.length.toString());
-            index = i;
+            if (subType != null) {
+              if (data.subType == subType) {
+                index = i;
+              }
+            } else {
+              index = i;
+            }
             break;
           }
         }
@@ -108,7 +115,7 @@ class AssetStatusService extends DataBaseService {
   Future<AssetCount> getFuellevel(FilterType type) async {
     Logger().d("getFuellevel");
     try {
-      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type, null);
       if (assetCountFromLocal != null) {
         Logger().d("getAssetCount from local");
         return assetCountFromLocal;
@@ -129,45 +136,31 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  // Future<AssetCount> getIdlingLevelData(
-  //     startDate, endDate, FilterType type) async {
-  //   Logger().d("getIdlingLevelData");
-  //   try {
-  //     AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
-  //     if (assetCountFromLocal != null) {
-  //       Logger().d("getAssetCount from local");
-  //       return assetCountFromLocal;
-  //     } else {
-  //       AssetCount idlingLevelDataResponse = await MyApi()
-  //           .getClient()
-  //           .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
-  //               accountSelected.CustomerUID);
-  //       print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-  //       bool updated = await updateAssetCount(idlingLevelDataResponse, type);
-  //       if (updated) {
-  //         return idlingLevelDataResponse;
-  //       } else {
-  //         return null;
-  //       }
-  //     }
-  //   } catch (e) {
-  //     Logger().e(e);
-  //     return null;
-  //   }
-  // }
-
   Future<AssetCount> getIdlingLevelData(
-      String startDate, String endDate) async {
+      startDate, endDate, FilterType type, FilterSubType subType) async {
+    Logger().d("getIdlingLevelData");
     try {
-      AssetCount idlingLevelDataResponse = await MyApi()
-          .getClient()
-          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
-              accountSelected.CustomerUID);
-      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-      return idlingLevelDataResponse;
+      AssetCount assetCountFromLocal =
+          await getAssetCountFromLocal(type, subType);
+      if (assetCountFromLocal != null) {
+        Logger().d("getAssetCount from local");
+        return assetCountFromLocal;
+      } else {
+        AssetCount idlingLevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+                accountSelected.CustomerUID);
+        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+        bool updated = await updateAssetCount(idlingLevelDataResponse, type);
+        if (updated) {
+          return idlingLevelDataResponse;
+        } else {
+          return null;
+        }
+      }
     } catch (e) {
-      Logger().e(e.toString());
+      Logger().e(e);
+      return null;
     }
-    return null;
   }
 }

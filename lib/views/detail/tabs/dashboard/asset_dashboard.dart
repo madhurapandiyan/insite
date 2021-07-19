@@ -5,7 +5,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
-import 'package:insite/widgets/smart_widgets/fleet_google_map.dart';
+import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
@@ -160,8 +160,12 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             ),
                             child: GoogleMapDetailWidget(
                                 isLoading: false,
-                                latitude: viewModel
-                                    .assetDetail.lastReportedLocationLatitude,
+                                latitude: viewModel.assetDetail
+                                            .lastReportedLocationLatitude !=
+                                        null
+                                    ? viewModel.assetDetail
+                                        .lastReportedLocationLatitude
+                                    : null,
                                 screenType: ScreenType.ASSET_DETAIL,
                                 status: widget.detail.lastLocationUpdateUTC !=
                                         null
@@ -172,13 +176,18 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                 onMarkerTap: () {
                                   widget.switchTab(3);
                                 },
+                                initLocation: null,
                                 location: viewModel
                                             .assetDetail.lastReportedLocation !=
                                         null
                                     ? viewModel.assetDetail.lastReportedLocation
                                     : "",
-                                longitude: viewModel
-                                    .assetDetail.lastReportedLocationLongitude),
+                                longitude: viewModel.assetDetail
+                                            .lastReportedLocationLongitude !=
+                                        null
+                                    ? viewModel.assetDetail
+                                        .lastReportedLocationLongitude
+                                    : null),
                           )
                         : SizedBox(),
                     SizedBox(
