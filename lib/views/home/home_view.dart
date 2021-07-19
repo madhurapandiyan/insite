@@ -83,6 +83,10 @@ class _HomeViewState extends State<HomeView> {
                       assetUtilization: viewModel.utilizationSummary != null
                           ? viewModel.utilizationSummary
                           : null,
+                      onFilterSelected: (value) {
+                        // viewModel.onFilterSelected(value);
+                        viewModel.gotoFleetPage();
+                      },
                       totalGreatestNumber:
                           viewModel.utilizationTotalGreatestValue,
                       averageGreatestNumber:
@@ -99,15 +103,13 @@ class _HomeViewState extends State<HomeView> {
                       data: viewModel.idlingLevelData != null
                           ? viewModel.idlingLevelData.countData
                           : null,
-                       isLoading:viewModel.idlingLevelDataloading,
+                      isLoading: viewModel.idlingLevelDataloading,
                       onFilterSelected: (value) {
                         viewModel.onFilterSelected(value);
                       },
                       onRangeSelected: (IdlingLevelRange catchedRange) {
-                        setState(() {
-                          viewModel.idlingLevelRange = catchedRange;
-                          viewModel.getIdlingLevelData();
-                        });
+                        viewModel.idlingLevelRange = catchedRange;
+                        viewModel.getIdlingLevelData(true);
                       },
                       isSwitching: viewModel.isSwitching,
                     ),

@@ -178,22 +178,22 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
               SizedBox(
                 height: 5.0,
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.10,
-                color: greencolor,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 5.0, top: 8.0),
-                  child: Text(
-                    "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-                    style: TextStyle(
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal,
-                        color: maptextcolor),
-                  ),
-                ),
-              ),
+              // Container(
+              //   height: MediaQuery.of(context).size.height * 0.10,
+              //   color: greencolor,
+              //   child: Padding(
+              //     padding: EdgeInsets.only(left: 5.0, top: 8.0),
+              //     child: Text(
+              //       "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+              //       style: TextStyle(
+              //           fontSize: 11.0,
+              //           fontWeight: FontWeight.w500,
+              //           fontFamily: 'Roboto',
+              //           fontStyle: FontStyle.normal,
+              //           color: maptextcolor),
+              //     ),
+              //   ),
+              // ),
               widget.isLoading
                   ? Expanded(child: Center(child: CircularProgressIndicator()))
                   : Flexible(
@@ -241,7 +241,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             markers: _markers,
             initialCameraPosition: CameraPosition(
                 target: (widget.latitude == null && widget.longitude == null)
-                    ? widget.initLocation
+                    ? LatLng(30.666, 76.8127)
                     : LatLng(widget.latitude, widget.longitude),
                 zoom: (widget.latitude == null && widget.longitude == null)
                     ? 3
@@ -362,23 +362,18 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-
         break;
       case "TERRAIN":
         Logger().i("map is in terrain type");
-
         return MapType.terrain;
-
         break;
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
-
         break;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;
-
       default:
         return MapType.normal;
     }

@@ -55,11 +55,15 @@ class Utils {
   }
 
   static String getDateInFormatddMMyyyy(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastDuration(date) {
@@ -111,7 +115,6 @@ class Utils {
     String title = data;
     String replaced = title.replaceAll("[", "").replaceAll("]", "");
     List<String> list = replaced.split(",");
-    Logger().i("getIdlingWidgetLabel $list");
     if (list[1].isEmpty) {
       title = ">" + list[0] + "%";
     } else {

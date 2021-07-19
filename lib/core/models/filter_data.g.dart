@@ -105,6 +105,50 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
           typeId == other.typeId;
 }
 
+class FilterSubTypeAdapter extends TypeAdapter<FilterSubType> {
+  @override
+  final int typeId = 2;
+
+  @override
+  FilterSubType read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return FilterSubType.DAY;
+      case 1:
+        return FilterSubType.WEEK;
+      case 2:
+        return FilterSubType.MONTH;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, FilterSubType obj) {
+    switch (obj) {
+      case FilterSubType.DAY:
+        writer.writeByte(0);
+        break;
+      case FilterSubType.WEEK:
+        writer.writeByte(1);
+        break;
+      case FilterSubType.MONTH:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FilterSubTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class FilterDataAdapter extends TypeAdapter<FilterData> {
   @override
   final int typeId = 0;
@@ -121,13 +165,14 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       isSelected: fields[3] as bool,
       type: fields[2] as FilterType,
       extras: (fields[4] as List)?.cast<String>(),
+      subType: fields[5] as FilterSubType,
     );
   }
 
   @override
   void write(BinaryWriter writer, FilterData obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -137,7 +182,9 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       ..writeByte(3)
       ..write(obj.isSelected)
       ..writeByte(4)
-      ..write(obj.extras);
+      ..write(obj.extras)
+      ..writeByte(5)
+      ..write(obj.subType);
   }
 
   @override

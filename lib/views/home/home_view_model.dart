@@ -95,7 +95,7 @@ class HomeViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getAssetStatusData();
       getFuelLevelData();
-      getIdlingLevelData();
+      getIdlingLevelData(false);
       //  getAssetLocation();
       getUtilizationSummary();
     });
@@ -161,10 +161,11 @@ class HomeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getIdlingLevelData() async {
-    _isSwitching = true;
-    AssetCount result =
-        await _assetService.getIdlingLevelData(getStartRange(), endDayRange);
+  getIdlingLevelData(bool switching) async {
+    _isSwitching = switching;
+    notifyListeners();
+    AssetCount result = await _assetService.getIdlingLevelData(
+        getStartRange(), endDayRange, FilterType.IDLING_LEVEL, getFilterRange());
     if (result != null) {
       _idlingLevelData = result;
       _isSwitching = false;
@@ -174,8 +175,15 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   onFilterSelected(FilterData data) async {
-    Logger().d("onFilterSelected " + data.count);
+    Logger().d("onFilterSelected $data");
+    // await clearFilterDb();
     await addFilter(data);
+    Future.delayed(Duration(seconds: 1), () {
+      gotoFleetPage();
+    });
+  }
+
+  gotoFleetPage() {
     _navigationService.navigateWithTransition(FleetView(),
         transition: "rightToLeft");
   }
@@ -199,12 +207,27 @@ class HomeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getStartRange() {
+  FilterSubType getFilterRange() {
+    switch (_idlingLevelRange) {
+      case IdlingLevelRange.DAY:
+        return FilterSubType.DAY;
+        break;
+      case IdlingLevelRange.WEEK:
+        return FilterSubType.WEEK;
+        break;
+      case IdlingLevelRange.MONTH:
+        return FilterSubType.MONTH;
+        break;
+      default:
+        return null;
+    }
+  }
+
+  String getStartRange() {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return DateFormat('yyyy-MM-dd').format(DateTime.now());
         break;
-
       case IdlingLevelRange.WEEK:
         return DateFormat('yyyy-MM-dd').format(DateTime.now()
             .subtract(Duration(days: DateTime.now().weekday - 1)));
@@ -213,7 +236,6 @@ class HomeViewModel extends InsiteViewModel {
         return DateFormat('yyyy-MM-dd')
             .format(DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
         break;
-
       default:
         return null;
     }

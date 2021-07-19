@@ -21,7 +21,7 @@ class PercentageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.all(16.0),
       child: LinearPercentIndicator(
         width: MediaQuery.of(context).size.width * 0.6,
         animation: true,

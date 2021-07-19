@@ -31,7 +31,7 @@ class AssetLocationHistoryService extends BaseService {
           .getClient()
           .assetLocationHistoryDetail(
               endTimeLocal, startTimeLocal, accountSelected.CustomerUID);
-      return locationHistoryResponse;
+      return locationHistoryResponse != null ? locationHistoryResponse : null;
     } catch (e) {
       Logger().e(e);
       return null;

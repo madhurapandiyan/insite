@@ -214,17 +214,16 @@ class AssetLocationService extends BaseService {
       Logger().i("filter idlingLevelList " + idlingLevelList.length.toString());
       if (idlingLevelList.isNotEmpty) {
         for (FilterData data in idlingLevelList) {
+          Logger().d("idling filter data ${data.extras}");
           if (data.extras.isNotEmpty) {
-            Logger().d("idling level extras 0 ", data.extras[0]);
-            Logger().d("idling level extras 1", data.extras[1]);
             if (data.extras[1].isEmpty) {
               value.write(
-                  constructQuery("idleEfficiencyGT", data.extras[0], false));
+                  constructQuery("IdleEfficiency.GT", data.extras[0], false));
             } else {
               value.write(
-                  constructQuery("idleEfficiencyGT", data.extras[0], false));
+                  constructQuery("IdleEfficiency.GT", data.extras[0], false));
               value.write(
-                  constructQuery("idleEfficiencyLTE", data.extras[1], false));
+                  constructQuery("IdleEfficiency.LTE", data.extras[1], false));
             }
           }
         }
