@@ -158,7 +158,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: FleetGoogleMap(
+                            child: GoogleMapDetailWidget(
                                 isLoading: false,
                                 latitude: viewModel
                                     .assetDetail.lastReportedLocationLatitude,

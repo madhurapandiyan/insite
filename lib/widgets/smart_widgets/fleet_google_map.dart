@@ -7,7 +7,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 
-class FleetGoogleMap extends StatefulWidget {
+class GoogleMapDetailWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
   final LatLng initLocation;
@@ -16,7 +16,7 @@ class FleetGoogleMap extends StatefulWidget {
   final ScreenType screenType;
   final VoidCallback onMarkerTap;
   final String location;
-  FleetGoogleMap(
+  GoogleMapDetailWidget(
       {@required this.latitude,
       @required this.longitude,
       this.status,
@@ -27,10 +27,10 @@ class FleetGoogleMap extends StatefulWidget {
       this.initLocation});
 
   @override
-  _FleetGoogleMapState createState() => _FleetGoogleMapState();
+  _GoogleMapDetailWidgetState createState() => _GoogleMapDetailWidgetState();
 }
 
-class _FleetGoogleMapState extends State<FleetGoogleMap> {
+class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();

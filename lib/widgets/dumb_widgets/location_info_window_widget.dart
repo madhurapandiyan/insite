@@ -1,6 +1,7 @@
 import 'package:clippy_flutter/triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class LocationInfoWindowWidget extends StatelessWidget {
@@ -9,9 +10,10 @@ class LocationInfoWindowWidget extends StatelessWidget {
   final VoidCallback onCustomWindowClose;
   final VoidCallback onFleetPageSelectedTap;
   final VoidCallback onTapWithZoom;
-
+  final TYPE type;
   LocationInfoWindowWidget(
       {this.assetCount,
+      this.type,
       this.onCustomWindowClose,
       this.onFleetPageSelectedTap,
       this.infoText,
@@ -76,7 +78,11 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: tango,
-                  title: assetCount > 1 ? "  Fleet List  " : "Dashboard",
+                  title: assetCount > 1
+                      ? type == TYPE.DASHBOARD
+                          ? "  Fleet List  "
+                          : "  Fleet List  "
+                      : "Dashboard",
                   textColor: appbarcolor,
                   onTap: onFleetPageSelectedTap),
               SizedBox(
@@ -87,7 +93,11 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: tango,
-                  title: assetCount > 1 ? "Zoom to cluster" : "Details",
+                  title: assetCount > 1
+                      ? type == TYPE.DASHBOARD
+                          ? " Location "
+                          : "Zoom to cluster"
+                      : "Details",
                   textColor: appbarcolor,
                   onTap: onTapWithZoom)
             ],

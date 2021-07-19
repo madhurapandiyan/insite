@@ -37,6 +37,10 @@ class LocationViewModel extends InsiteViewModel {
   ClusterManager manager;
   bool _refreshing = false;
   bool get refreshing => _refreshing;
+
+  TYPE _pageType = TYPE.LOCATION;
+  TYPE get pageType => _pageType;
+
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
   int pageNumber = 1;
@@ -87,6 +91,7 @@ class LocationViewModel extends InsiteViewModel {
             customInfoWindowController.addInfoWindow(
                 LocationInfoWindowWidget(
                   assetCount: cluster.count,
+                  type: pageType,
                   infoText: cluster.items.toList()[0].mapData.assetSerialNumber,
                   onCustomWindowClose: () {
                     customInfoWindowController.hideInfoWindow();
@@ -103,7 +108,10 @@ class LocationViewModel extends InsiteViewModel {
                   onTapWithZoom: () {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
-                      refreshCluster(cluster.markers.toList());
+                      if (pageType == TYPE.DASHBOARD) {
+                      } else {
+                        refreshCluster(cluster.markers.toList());
+                      }
                     } else {
                       onDetailPageSelected(
                           cluster.items.toList()[0].mapData, 3);
@@ -198,16 +206,24 @@ class LocationViewModel extends InsiteViewModel {
                 assetIdentifier: mapData.assetIdentifier)));
   }
 
+  goToLocationPageSelected(MapRecord mapData, index) {
+    Logger().d("goToLocationPageSelected $mapData.serialNumber");
+    _navigationService.navigateTo(
+      locationViewRoute,
+    );
+  }
+
   LocationViewModel(TYPE type) {
+    this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
     setUp();
     manager = initClusterManager();
-    if (type == TYPE.LOCATION) {
+    if (pageType == TYPE.LOCATION) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocation();
       });
-    } else if (type == TYPE.DASHBOARD) {
+    } else if (pageType == TYPE.DASHBOARD) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocationHome();
       });
@@ -215,6 +231,7 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    await getSelectedFilterData();
     await getDateRangeFilterData();
     Logger().d("refresh getAssetLocation");
     _refreshing = true;
