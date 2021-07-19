@@ -15,9 +15,8 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class UtilizationGraphView extends StatefulWidget {
-  const UtilizationGraphView({
-    Key key,
-  }) : super(key: key);
+  final bool shouldRefresh;
+  const UtilizationGraphView({this.shouldRefresh});
 
   @override
   _UtilizationGraphViewState createState() => _UtilizationGraphViewState();

@@ -91,7 +91,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                   Container(
                                     padding: EdgeInsets.all(16),
                                     child: Text(
-                                      "CUSTOMER SELECTION :",
+                                      "ACCOUNT SELECTION :",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,

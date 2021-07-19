@@ -8,7 +8,8 @@ import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
 class UtilizationListView extends StatefulWidget {
-  const UtilizationListView({Key key}) : super(key: key);
+  final bool shouldRefresh;
+  const UtilizationListView({this.shouldRefresh});
 
   @override
   _UtilizationListViewState createState() => _UtilizationListViewState();

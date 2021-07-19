@@ -85,6 +85,9 @@ class AssetListItem extends StatelessWidget {
                         InsiteRichText(
                           title: "Serial No. ",
                           content: asset.serialNumber,
+                          onTap: () {
+                            onCallback();
+                          },
                         ),
                         InsiteTableRowItem(
                           title: "Last Known Operator",
