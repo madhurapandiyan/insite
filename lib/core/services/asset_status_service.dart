@@ -129,30 +129,45 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
+  // Future<AssetCount> getIdlingLevelData(
+  //     startDate, endDate, FilterType type) async {
+  //   Logger().d("getIdlingLevelData");
+  //   try {
+  //     AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
+  //     if (assetCountFromLocal != null) {
+  //       Logger().d("getAssetCount from local");
+  //       return assetCountFromLocal;
+  //     } else {
+  //       AssetCount idlingLevelDataResponse = await MyApi()
+  //           .getClient()
+  //           .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+  //               accountSelected.CustomerUID);
+  //       print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+  //       bool updated = await updateAssetCount(idlingLevelDataResponse, type);
+  //       if (updated) {
+  //         return idlingLevelDataResponse;
+  //       } else {
+  //         return null;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //     return null;
+  //   }
+  // }
+
   Future<AssetCount> getIdlingLevelData(
-      startDate, endDate, FilterType type) async {
-    Logger().d("getIdlingLevelData");
+      String startDate, String endDate) async {
     try {
-      AssetCount assetCountFromLocal = await getAssetCountFromLocal(type);
-      if (assetCountFromLocal != null) {
-        Logger().d("getAssetCount from local");
-        return assetCountFromLocal;
-      } else {
-        AssetCount idlingLevelDataResponse = await MyApi()
-            .getClient()
-            .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
-                accountSelected.CustomerUID);
-        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-        bool updated = await updateAssetCount(idlingLevelDataResponse, type);
-        if (updated) {
-          return idlingLevelDataResponse;
-        } else {
-          return null;
-        }
-      }
+      AssetCount idlingLevelDataResponse = await MyApi()
+          .getClient()
+          .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+              accountSelected.CustomerUID);
+      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+      return idlingLevelDataResponse;
     } catch (e) {
-      Logger().e(e);
-      return null;
+      Logger().e(e.toString());
     }
+    return null;
   }
 }

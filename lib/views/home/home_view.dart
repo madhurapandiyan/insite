@@ -99,10 +99,17 @@ class _HomeViewState extends State<HomeView> {
                       data: viewModel.idlingLevelData != null
                           ? viewModel.idlingLevelData.countData
                           : null,
-                      isLoading: viewModel.idlingLevelDataloading,
+                       isLoading:viewModel.idlingLevelDataloading,
                       onFilterSelected: (value) {
                         viewModel.onFilterSelected(value);
                       },
+                      onRangeSelected: (IdlingLevelRange catchedRange) {
+                        setState(() {
+                          viewModel.idlingLevelRange = catchedRange;
+                          viewModel.getIdlingLevelData();
+                        });
+                      },
+                      isSwitching: viewModel.isSwitching,
                     ),
                   ),
                   SizedBox(

@@ -13,6 +13,8 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/widgets/smart_widgets/idling_level.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -40,6 +42,15 @@ class HomeViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
+  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange get idlingLevelRange => _idlingLevelRange;
+  set idlingLevelRange(IdlingLevelRange catchedRange) {
+    this._idlingLevelRange = catchedRange;
+  }
+
+  bool _isSwitching = false;
+  bool get isSwitching => _isSwitching;
+
   bool _assetUtilizationLoading = true;
   bool get assetUtilizationLoading => _assetUtilizationLoading;
 
@@ -61,6 +72,13 @@ class HomeViewModel extends InsiteViewModel {
 
   AssetCount _idlingLevelData;
   AssetCount get idlingLevelData => _idlingLevelData;
+
+  String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  set endDayRange(String endDay) {
+    this._endDayRange = endDay;
+  }
+
+  String get endDayRange => _endDayRange;
 
   UtilizationSummary _utilizationSummary;
   UtilizationSummary get utilizationSummary => _utilizationSummary;
@@ -144,10 +162,12 @@ class HomeViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelData() async {
-    AssetCount result = await _assetService.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL);
+    _isSwitching = true;
+    AssetCount result =
+        await _assetService.getIdlingLevelData(getStartRange(), endDayRange);
     if (result != null) {
       _idlingLevelData = result;
+      _isSwitching = false;
     }
     _idlingLevelDataloading = false;
     notifyListeners();
@@ -177,5 +197,25 @@ class HomeViewModel extends InsiteViewModel {
     }
     _assetUtilizationLoading = false;
     notifyListeners();
+  }
+
+  getStartRange() {
+    switch (_idlingLevelRange) {
+      case IdlingLevelRange.DAY:
+        return DateFormat('yyyy-MM-dd').format(DateTime.now());
+        break;
+
+      case IdlingLevelRange.WEEK:
+        return DateFormat('yyyy-MM-dd').format(DateTime.now()
+            .subtract(Duration(days: DateTime.now().weekday - 1)));
+        break;
+      case IdlingLevelRange.MONTH:
+        return DateFormat('yyyy-MM-dd')
+            .format(DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
+        break;
+
+      default:
+        return null;
+    }
   }
 }

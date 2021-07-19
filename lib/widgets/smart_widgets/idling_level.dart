@@ -9,21 +9,22 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class IdlingLevel extends StatefulWidget {
   final List<Count> data;
   final bool isLoading;
+  final bool isSwitching;
   final Function(FilterData) onFilterSelected;
+  final Function onRangeSelected;
 
-  IdlingLevel({this.data, this.isLoading, this.onFilterSelected});
+  IdlingLevel(
+      {this.data,
+      this.isLoading,
+      this.onFilterSelected,
+      this.onRangeSelected,
+      this.isSwitching});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
 }
 
 class _IdlingLevelState extends State<IdlingLevel> {
-  String calendar;
-
-  @override
-  void initState() {
-    calendar = 'DAY';
-    super.initState();
-  }
+  IdlingLevelRange idlingLevelRange = IdlingLevelRange.DAY;
 
   @override
   Widget build(BuildContext context) {
@@ -87,68 +88,73 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 color: black,
               ),
               widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  ? Expanded(
+                      child: Center(
+                      child: CircularProgressIndicator(),
+                    ))
                   : Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            flex: 1,
+                            //flex: 1,
                             child: Container(
-                                height: maxheight,
-                                child: SfCartesianChart(
-                                    isTransposed: true,
-                                    plotAreaBorderWidth: 0,
-                                    primaryXAxis: CategoryAxis(
-                                      labelStyle: TextStyle(
-                                          color: textcolor,
-                                          fontSize: 10.0,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: 'Roboto',
-                                          fontStyle: FontStyle.normal),
-                                      majorGridLines: MajorGridLines(
-                                          width: 0, color: silver),
-                                    ),
-                                    onAxisLabelTapped: (axisLabelTapArgs) {
-                                      Logger().d("onAxisLabelTapped " +
-                                          axisLabelTapArgs.toString());
-                                    },
-                                    onDataLabelTapped: (onTapArgs) {
-                                      Logger().d("onDataLabelTapped " +
-                                          onTapArgs.toString());
-                                    },
-                                    onLegendTapped: (legendTapArgs) {
-                                      Logger().d("onLegendTapped " +
-                                          legendTapArgs.toString());
-                                    },
-                                    onPointTapped: (pointTapArgs) {
-                                      Logger().d("onPointTapped " +
-                                          pointTapArgs.pointIndex.toString() +
-                                          " " +
-                                          pointTapArgs.seriesIndex.toString() +
-                                          " " +
-                                          pointTapArgs.viewportPointIndex
-                                              .toString());
-                                      Count countDatum =
-                                          widget.data[pointTapArgs.pointIndex];
-                                      FilterData data = FilterData(
-                                          isSelected: true,
-                                          count: countDatum.count.toString(),
-                                          title: countDatum.countOf,
-                                          type: FilterType.IDLING_LEVEL);
-                                      widget.onFilterSelected(data);
-                                    },
-                                    primaryYAxis: NumericAxis(
-                                        majorGridLines: MajorGridLines(
-                                            width: 2, color: silver),
-                                        labelStyle: TextStyle(
-                                            color: textcolor,
-                                            fontSize: 10.0,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: 'Roboto',
-                                            fontStyle: FontStyle.normal)),
-                                    series: _getDefaultBarSeries())),
+                              height: maxheight,
+                              child: SfCartesianChart(
+                                isTransposed: true,
+                                plotAreaBorderWidth: 0,
+                                primaryXAxis: CategoryAxis(
+                                  labelStyle: TextStyle(
+                                      color: textcolor,
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Roboto',
+                                      fontStyle: FontStyle.normal),
+                                  majorGridLines:
+                                      MajorGridLines(width: 0, color: silver),
+                                ),
+                                onAxisLabelTapped: (axisLabelTapArgs) {
+                                  Logger().d("onAxisLabelTapped " +
+                                      axisLabelTapArgs.toString());
+                                },
+                                onDataLabelTapped: (onTapArgs) {
+                                  Logger().d("onDataLabelTapped " +
+                                      onTapArgs.toString());
+                                },
+                                onLegendTapped: (legendTapArgs) {
+                                  Logger().d("onLegendTapped " +
+                                      legendTapArgs.toString());
+                                },
+                                onPointTapped: (pointTapArgs) {
+                                  Logger().d("onPointTapped " +
+                                      pointTapArgs.pointIndex.toString() +
+                                      " " +
+                                      pointTapArgs.seriesIndex.toString() +
+                                      " " +
+                                      pointTapArgs.viewportPointIndex
+                                          .toString());
+                                  Count countDatum =
+                                      widget.data[pointTapArgs.pointIndex];
+                                  FilterData data = FilterData(
+                                      isSelected: true,
+                                      count: countDatum.count.toString(),
+                                      title: countDatum.countOf,
+                                      type: FilterType.IDLING_LEVEL);
+                                  widget.onFilterSelected(data);
+                                },
+                                primaryYAxis: NumericAxis(
+                                    majorGridLines:
+                                        MajorGridLines(width: 2, color: silver),
+                                    labelStyle: TextStyle(
+                                        color: textcolor,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Roboto',
+                                        fontStyle: FontStyle.normal)),
+                                series: _getDefaultBarSeries(),
+                              ),
+                            ),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -174,9 +180,14 @@ class _IdlingLevelState extends State<IdlingLevel> {
                           )
                         ],
                       ),
-                    )
+                    ),
             ],
           ),
+          widget.isSwitching
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox()
         ],
       ),
     );
@@ -194,8 +205,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
         children: [
           GestureDetector(
             onTap: () {
-              print(" 1 button is tapped");
-              chooseCalendarType("DAY");
+              setState(() {
+                idlingLevelRange = IdlingLevelRange.DAY;
+                widget.onRangeSelected(idlingLevelRange);
+              });
             },
             child: Container(
               width: 55,
@@ -203,7 +216,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color: calendar == 'DAY' ? tango : bgcolor,
+                color:
+                    idlingLevelRange == IdlingLevelRange.DAY ? tango : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("DAY",
@@ -220,8 +234,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
               width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
-              print(" 2 button is tapped ");
-              chooseCalendarType('WEEK');
+              setState(() {
+                idlingLevelRange = IdlingLevelRange.WEEK;
+                widget.onRangeSelected(idlingLevelRange);
+              });
             },
             child: Container(
               width: 55,
@@ -229,7 +245,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color: calendar == 'WEEK' ? tango : bgcolor,
+                color:
+                    idlingLevelRange == IdlingLevelRange.WEEK ? tango : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("WEEK",
@@ -246,8 +263,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
               width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
-              print('3 button is tapped ');
-              chooseCalendarType('MONTH');
+              setState(() {
+                idlingLevelRange = IdlingLevelRange.MONTH;
+                widget.onRangeSelected(idlingLevelRange);
+              });
             },
             child: Container(
               width: 55,
@@ -255,7 +274,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color: calendar == 'MONTH' ? tango : bgcolor,
+                color: idlingLevelRange == IdlingLevelRange.MONTH
+                    ? tango
+                    : bgcolor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("MONTH",
@@ -273,40 +294,15 @@ class _IdlingLevelState extends State<IdlingLevel> {
     );
   }
 
-  chooseCalendarType(String s) {
-    setState(() {
-      calendar = s;
-    });
-  }
-
-  // // Color getColor(String countOf) {
-  // //   switch (countOf) {
-  // //     case '[0,10]':
-  // //       return burntSienna;
-  // //       break;
-  // //     case '[10,15]':
-  // //       return silver;
-  // //       break;
-  // //     case '[15,25]':
-  // //       return mustard;
-  // //       break;
-  // //     case '[25,]':
-  // //       return emerald;
-  // //       break;
-  // //     default:
-  // //       return Colors.lightBlueAccent;
-  // //   }
-  // }
-
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
     List<IdlingLevelSampleData> chartData = [];
     for (Count count in widget.data) {
       if (count.countOf != "Excluded") {
         chartData.add(
           IdlingLevelSampleData(
-              x: Utils.getIdlingWidgetLabel(count.countOf),
-              y: count.count,
-              color: burntSienna),
+            x: Utils.getIdlingWidgetLabel(count.countOf),
+            y: count.count,
+          ),
         );
       }
     }
@@ -323,16 +319,34 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   fontFamily: 'Roboto',
                   fontStyle: FontStyle.normal),
               labelPosition: ChartDataLabelPosition.outside),
-          pointColorMapper: (IdlingLevelSampleData charts, _) => charts.color,
+          pointColorMapper: (IdlingLevelSampleData charts, _) =>
+              getColorData(charts.x),
           xValueMapper: (IdlingLevelSampleData charts, _) => charts.x,
           yValueMapper: (IdlingLevelSampleData charts, _) => charts.y),
     ];
+  }
+
+  Color getColorData(String data) {
+    switch (data) {
+      case "0-10%":
+        return burntSienna;
+      case "10-15%":
+        return silver;
+      case "15-25%":
+        return mustard;
+      case ">25%":
+        return emerald;
+      default:
+        return null;
+    }
   }
 }
 
 class IdlingLevelSampleData {
   final String x;
   final int y;
-  final Color color;
-  IdlingLevelSampleData({this.x, this.y, this.color});
+
+  IdlingLevelSampleData({this.x, this.y});
 }
+
+enum IdlingLevelRange { DAY, WEEK, MONTH }

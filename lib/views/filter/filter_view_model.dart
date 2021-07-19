@@ -64,10 +64,10 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL);
-    addIdlingData(
-        filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
+    // AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
+    //     startDate, endDate, FilterType.IDLING_LEVEL);
+    // addIdlingData(
+    //     filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     _loading = false;
     notifyListeners();
