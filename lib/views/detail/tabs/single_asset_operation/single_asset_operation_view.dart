@@ -49,8 +49,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                 color: mediumgrey),
             child: Stack(
               children: [
-                SingleChildScrollView(
-                    child: Column(
+                Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(16.0),
@@ -258,7 +257,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                           : EmptyView(title: 'No Results'),
                     ),
                   ],
-                )),
+                ),
                 viewModel.refreshing
                     ? Center(
                         child: CircularProgressIndicator(),

@@ -26,6 +26,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
           return InsiteScaffold(
             screenType: ScreenType.UTILIZATION,
             viewModel: viewModel,
+            onFilterApplied: () {
+              viewModel.refresh();
+            },
             body: Container(
               color: bgcolor,
               child: Container(
@@ -40,10 +43,14 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                       children: [
                         isListSelected
                             ? Flexible(
-                                child: UtilizationListView(),
+                                child: UtilizationListView(
+                                  shouldRefresh: viewModel.isFilterApplied,
+                                ),
                               )
                             : Flexible(
-                                child: UtilizationGraphView(),
+                                child: UtilizationGraphView(
+                                  shouldRefresh: viewModel.isFilterApplied,
+                                ),
                               ),
                       ],
                     ),
