@@ -83,6 +83,10 @@ class _HomeViewState extends State<HomeView> {
                       assetUtilization: viewModel.utilizationSummary != null
                           ? viewModel.utilizationSummary
                           : null,
+                      onFilterSelected: (value) {
+                        // viewModel.onFilterSelected(value);
+                        viewModel.gotoFleetPage();
+                      },
                       totalGreatestNumber:
                           viewModel.utilizationTotalGreatestValue,
                       averageGreatestNumber:

@@ -180,6 +180,11 @@ class HomeViewModel extends InsiteViewModel {
         transition: "rightToLeft");
   }
 
+  gotoFleetPage() {
+    _navigationService.navigateWithTransition(FleetView(),
+        transition: "rightToLeft");
+  }
+
   getUtilizationSummary() async {
     UtilizationSummary result =
         await _assetUtilizationService.getUtilizationSummary(
