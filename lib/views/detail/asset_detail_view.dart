@@ -71,12 +71,12 @@ class _TabPageState extends State<AssetDetailView> {
                             Column(
                               children: [
                                 Row(children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 2.0, bottom: 15.0),
-                                    child: SvgPicture.asset(
-                                        "assets/images/arrowdown.svg"),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(
+                                  //       left: 2.0, bottom: 15.0),
+                                  //   child: SvgPicture.asset(
+                                  //       "assets/images/arrowdown.svg"),
+                                  // ),
                                   SizedBox(width: 10.0),
                                   Padding(
                                     padding: EdgeInsets.only(top: 13.0),

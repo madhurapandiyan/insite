@@ -172,7 +172,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             zoomControlsEnabled: false,
                             markers: viewModel.markers,
                             initialCameraPosition:
-                                viewModel.assetLocationHistory != null
+                                viewModel.assetLocationHistory != null &&
+                                        viewModel.assetLocationHistory
+                                            .assetLocation.isNotEmpty
                                     ? CameraPosition(
                                         target: LatLng(
                                             viewModel.assetLocationHistory
@@ -181,7 +183,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                                 .assetLocation[0].longitude),
                                         zoom: 18)
                                     : CameraPosition(
-                                        target: LatLng(21.7679, 78.8718),
+                                        target: LatLng(30.666, 76.8127),
                                         zoom: 4),
                           ),
                           CustomInfoWindow(

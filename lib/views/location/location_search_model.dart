@@ -41,7 +41,9 @@ class LocationSearchViewModel extends InsiteViewModel {
       for (LocationSearchData data in _locations) {
         FilterData filterData = FilterData(
             count: data.Address.Zip,
-            isSelected: false,
+            isSelected: isAlreadSelected(
+                data.Address.City + data.Address.Country,
+                FilterType.LOCATION_SEARCH),
             title: data.Address.City + data.Address.Country,
             type: FilterType.LOCATION_SEARCH,
             extras: [data.Coords.Lat, data.Coords.Lon, 10.toString()]);

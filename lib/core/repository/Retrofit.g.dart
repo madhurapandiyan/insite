@@ -656,19 +656,44 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetLocationHistory> assetLocationHistoryDetail(
-      endTimeLocal, startTimeLocal, customerId) async {
-    ArgumentError.checkNotNull(endTimeLocal, 'endTimeLocal');
+  Future<AssetLocationHistory> assetLocationHistoryDetail(startTimeLocal,
+      endTimeLocal, pageNumber, pageSize, lastReported, customerId) async {
     ArgumentError.checkNotNull(startTimeLocal, 'startTimeLocal');
+    ArgumentError.checkNotNull(endTimeLocal, 'endTimeLocal');
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(lastReported, 'lastReported');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'startTimeLocal': startTimeLocal,
       r'endTimeLocal': endTimeLocal,
-      r'startTimeLocal': startTimeLocal
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'lastReported': lastReported
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
         '/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/64be6463-d8c1-11e7-80fc-065f15eda309/v2',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetLocationHistory.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetLocationHistory> assetLocationHistory(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

@@ -154,7 +154,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   cellBorderColor: black,
                                   showCurrentTimeIndicator: false,
                                   controller: calendarController,
-                                  view: CalendarView.timelineDay,
+                                  view: CalendarView.week,
                                   todayTextStyle: TextStyle(color: ship_grey),
                                   timeSlotViewSettings: TimeSlotViewSettings(
                                     dateFormat: 'd',
