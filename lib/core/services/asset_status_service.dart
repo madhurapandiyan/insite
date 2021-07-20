@@ -7,17 +7,19 @@ import 'package:logger/logger.dart';
 
 class AssetStatusService extends DataBaseService {
   Future<AssetCount> getAssetCount(key, FilterType type) async {
+    Logger().d("getAssetCount $type");
     try {
       AssetCount assetCountFromLocal = await getAssetCountFromLocal(type, null);
       if (assetCountFromLocal != null) {
-        Logger().d("getAssetCount from local");
+        Logger().d("from local");
         return assetCountFromLocal;
       } else {
-        Logger().d("getAssetCount from api");
+        Logger().d("from api");
         AssetCount assetStatusResponse = await MyApi()
             .getClient()
             .assetCount(key, accountSelected.CustomerUID);
         bool updated = await updateAssetCount(assetStatusResponse, type);
+        Logger().d("updated $updated");
         if (updated) {
           return assetStatusResponse;
         } else {
@@ -70,7 +72,7 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<bool> updateAssetCount(AssetCount assetCount, FilterType type) async {
-    Logger().d("updateAssetCount");
+    Logger().d("updateAssetCount $type");
     List<CountData> counts = [];
     try {
       for (Count countData in assetCount.countData) {
@@ -117,9 +119,10 @@ class AssetStatusService extends DataBaseService {
     try {
       AssetCount assetCountFromLocal = await getAssetCountFromLocal(type, null);
       if (assetCountFromLocal != null) {
-        Logger().d("getAssetCount from local");
+        Logger().d("from local");
         return assetCountFromLocal;
       } else {
+        Logger().d("from api");
         AssetCount fuelLevelDatarespone = await MyApi().getClient().fuelLevel(
             "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
         print('data:${fuelLevelDatarespone.countData[0].countOf}');
@@ -143,15 +146,16 @@ class AssetStatusService extends DataBaseService {
       AssetCount assetCountFromLocal =
           await getAssetCountFromLocal(type, subType);
       if (assetCountFromLocal != null) {
-        Logger().d("getAssetCount from local");
+        Logger().d(" from local");
         return assetCountFromLocal;
       } else {
+        Logger().d(" from api");
         AssetCount idlingLevelDataResponse = await MyApi()
             .getClient()
             .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
                 accountSelected.CustomerUID);
-        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
         bool updated = await updateAssetCount(idlingLevelDataResponse, type);
+        Logger().d("updated $updated");
         if (updated) {
           return idlingLevelDataResponse;
         } else {

@@ -40,9 +40,9 @@ class LocationSearchViewModel extends InsiteViewModel {
     if (_locations != null && _locations.isNotEmpty) {
       for (LocationSearchData data in _locations) {
         FilterData filterData = FilterData(
-            count: "",
+            count: data.Address.Zip,
             isSelected: false,
-            title: data.Address.StateName,
+            title: data.Address.City + data.Address.Country,
             type: FilterType.LOCATION_SEARCH,
             extras: [data.Coords.Lat, data.Coords.Lon, 10.toString()]);
         _filterLocations.add(filterData);

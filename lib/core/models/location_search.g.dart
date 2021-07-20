@@ -45,7 +45,9 @@ LocationSearchAddress _$LocationSearchAddressFromJson(
     Map<String, dynamic> json) {
   return LocationSearchAddress(
     StreetAddress: json['StreetAddress'] as String,
+    Zip: json['Zip'] as String,
     City: json['City'] as String,
+    Country: json['Country'] as String,
     State: json['State'] as String,
     StateName: json['StateName'] as String,
   );
@@ -58,6 +60,8 @@ Map<String, dynamic> _$LocationSearchAddressToJson(
       'City': instance.City,
       'State': instance.State,
       'StateName': instance.StateName,
+      'Zip': instance.Zip,
+      'Country': instance.Country,
     };
 
 LocationSearchCoords _$LocationSearchCoordsFromJson(Map<String, dynamic> json) {

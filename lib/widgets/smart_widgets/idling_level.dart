@@ -136,14 +136,21 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                           .toString());
                                   Count countDatum = getCountDataFiltered()[
                                       pointTapArgs.pointIndex];
+                                  var x = countDatum.countOf
+                                      .split(",")
+                                      .first
+                                      .replaceAll("[", "")
+                                      .replaceAll("]", "");
+                                  var y = countDatum.countOf
+                                      .split(",")
+                                      .last
+                                      .replaceAll("[", "")
+                                      .replaceAll("]", "");
                                   FilterData data = FilterData(
                                       isSelected: true,
                                       count: countDatum.count.toString(),
                                       title: countDatum.countOf,
-                                      extras: countDatum.countOf
-                                          .replaceAll("[", "")
-                                          .replaceAll("]", "")
-                                          .split(","),
+                                      extras: [x, y],
                                       type: FilterType.IDLING_LEVEL);
                                   widget.onFilterSelected(data);
                                 },
