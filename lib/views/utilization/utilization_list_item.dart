@@ -221,11 +221,11 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Working",
-                                  content: "-",
+                                  content: utilizationData.workingHours.toString(),
                                 ),
                                 InsiteTableRowItem(
                                   title: "Daily",
-                                  content: "-",
+                                  content: utilizationData.workingHours.toString(),
                                 ),
                               ],
                             ),
@@ -327,7 +327,8 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Last Utiization Report",
-                                  content: "-",
+                                  content: utilizationData.lastReportedTime!=null?
+                                  Utils.getLastReportedDateOne(utilizationData.lastReportedTime):'-',
                                 ),
                                 InsiteTableRowItem(
                                   title: "Idle Hours",
