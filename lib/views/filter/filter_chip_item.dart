@@ -13,7 +13,7 @@ class FilterChipItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 40,
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(color: transparent, width: 0.0),
@@ -30,11 +30,11 @@ class FilterChipItem extends StatelessWidget {
             Text(label.toUpperCase(),
                 style: TextStyle(
                   color: white,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 )),
             SizedBox(
-              width: 10,
+              width: 12,
             ),
             InkWell(
               onTap: () {

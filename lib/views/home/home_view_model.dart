@@ -164,8 +164,8 @@ class HomeViewModel extends InsiteViewModel {
   getIdlingLevelData(bool switching) async {
     _isSwitching = switching;
     notifyListeners();
-    AssetCount result = await _assetService.getIdlingLevelData(
-        getStartRange(), endDayRange, FilterType.IDLING_LEVEL, getFilterRange());
+    AssetCount result = await _assetService.getIdlingLevelData(getStartRange(),
+        endDayRange, FilterType.IDLING_LEVEL, getFilterRange());
     if (result != null) {
       _idlingLevelData = result;
       _isSwitching = false;

@@ -98,5 +98,24 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
+  bool isAlreadSelected(String name, FilterType type) {
+    try {
+      var item = appliedFilters.isNotEmpty
+          ? appliedFilters.firstWhere(
+              (element) => element.title == name && element.type == type,
+              orElse: () {
+                return null;
+              },
+            )
+          : null;
+      if (item != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   List<FilterData> appliedFilters = [];
 }

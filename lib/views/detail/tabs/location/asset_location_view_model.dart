@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -51,9 +50,9 @@ class AssetLocationViewModel extends InsiteViewModel {
   getAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     AssetLocationHistory result = await _assetLocationHistoryService
-        .getAssetLocationHistory(endDate, startDate);
-    _assetLocationHistory = result;
-    if (_assetLocationHistory != null) {
+        .getAssetLocationHistory(startDate, endDate, assetDetail.assetUid);
+    if (result != null) {
+      _assetLocationHistory = result;
       updateMarkers();
     }
     _loading = false;
@@ -67,9 +66,9 @@ class AssetLocationViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     AssetLocationHistory result = await _assetLocationHistoryService
-        .getAssetLocationHistory(endDate, startDate);
-    _assetLocationHistory = result;
-    if (_assetLocationHistory != null) {
+        .getAssetLocationHistory(startDate, endDate, assetDetail.assetUid);
+    if (result != null) {
+      _assetLocationHistory = result;
       updateMarkers();
     }
     _loading = false;

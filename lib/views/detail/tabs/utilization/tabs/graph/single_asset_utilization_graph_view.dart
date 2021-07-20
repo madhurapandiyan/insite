@@ -262,8 +262,16 @@ class _SingleAssetUtilizationGraphViewState
                                   null
                               ? null
                               : viewModel.singleAssetUtilization.daily[index]
-                                      .data.targetRuntimePerformance *
-                                  100,
+                                              .data.targetRuntimePerformance *
+                                          100 >
+                                      100
+                                  ? 100
+                                  : viewModel
+                                          .singleAssetUtilization
+                                          .daily[index]
+                                          .data
+                                          .targetRuntimePerformance *
+                                      100,
                         );
                       else if (selectedGraph ==
                           SingleAssetUtilizationGraphType.RUNTIMEHOURS)

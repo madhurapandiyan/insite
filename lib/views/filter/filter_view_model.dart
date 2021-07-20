@@ -64,10 +64,10 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    // AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
-    //     startDate, endDate, FilterType.IDLING_LEVEL);
-    // addIdlingData(
-    //     filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
+    AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
+        startDate, endDate, FilterType.IDLING_LEVEL, null);
+    addIdlingData(
+        filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     _loading = false;
     notifyListeners();
@@ -139,25 +139,6 @@ class FilterViewModel extends InsiteViewModel {
           filterData.add(data);
         }
       }
-    }
-  }
-
-  bool isAlreadSelected(String name, FilterType type) {
-    try {
-      var item = appliedFilters.isNotEmpty
-          ? appliedFilters.firstWhere(
-              (element) => element.title == name && element.type == type,
-              orElse: () {
-                return null;
-              },
-            )
-          : null;
-      if (item != null) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return false;
     }
   }
 

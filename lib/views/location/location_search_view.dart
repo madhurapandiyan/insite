@@ -115,7 +115,7 @@ class _LocationSearchState extends State<LocationSearch> {
                                       children: [
                                         Text(
                                           data.count.isNotEmpty
-                                              ? "($data.count) "
+                                              ? "(${data.count}) "
                                               : "",
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

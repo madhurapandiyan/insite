@@ -1,6 +1,5 @@
 import 'package:insite/core/models/filter_data.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
@@ -59,6 +58,18 @@ class Utils {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
       var inputDate = DateTime.parse(parseDate.toString());
       var outputFormat = DateFormat('dd-MM-yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmss(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {

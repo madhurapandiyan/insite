@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class AssetLocationHistoryService extends BaseService {
@@ -25,16 +26,40 @@ class AssetLocationHistoryService extends BaseService {
   }
 
   Future<AssetLocationHistory> getAssetLocationHistory(
-      String endTimeLocal, String startTimeLocal) async {
+    String startTimeLocal,
+    String endTimeLocal,
+    String assetUid,
+  ) async {
     try {
       AssetLocationHistory locationHistoryResponse = await MyApi()
           .getClient()
-          .assetLocationHistoryDetail(
-              endTimeLocal, startTimeLocal, accountSelected.CustomerUID);
+          .assetLocationHistory(
+              Urls.locationHistory +
+                  assetUid +
+                  "/v2" +
+                  getLocationHistoryUrl(startTimeLocal, endTimeLocal),
+              accountSelected.CustomerUID);
       return locationHistoryResponse != null ? locationHistoryResponse : null;
     } catch (e) {
       Logger().e(e);
       return null;
+    }
+  }
+
+  String getLocationHistoryUrl(startTimeLocal, endTimeLocal) {
+    try {
+      StringBuffer value = StringBuffer();
+      value.write(
+          constructQuery("startTimeLocal", startTimeLocal + 'T00:00:00', true));
+      value.write(
+          constructQuery("endTimeLocal", endTimeLocal + 'T23:59:59', false));
+      value.write(constructQuery("pageNumber", "1", false));
+      value.write(constructQuery("pageSize", "100", false));
+      value.write(constructQuery("lastReported", false.toString(), false));
+      return value.toString();
+    } catch (e) {
+      Logger().e(e);
+      return "";
     }
   }
 }

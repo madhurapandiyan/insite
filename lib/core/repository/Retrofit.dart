@@ -173,9 +173,17 @@ abstract class RestClient {
   @GET(
       "/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/64be6463-d8c1-11e7-80fc-065f15eda309/v2")
   Future<AssetLocationHistory> assetLocationHistoryDetail(
-      @Query("endTimeLocal") String endTimeLocal,
-      @Query("startTimeLocal") String startTimeLocal,
-      @Header("X-VisionLink-CustomerUid") customerId);
+    @Query("startTimeLocal") String startTimeLocal,
+    @Query("endTimeLocal") String endTimeLocal,
+    @Query("pageNumber") int pageNumber,
+    @Query("pageSize") int pageSize,
+    @Query("lastReported") bool lastReported,
+    @Header("X-VisionLink-CustomerUid") customerId,
+  );
+
+  @GET('{url}')
+  Future<AssetLocationHistory> assetLocationHistory(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET(
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1")

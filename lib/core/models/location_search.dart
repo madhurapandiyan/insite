@@ -30,8 +30,15 @@ class LocationSearchAddress {
   final String City;
   final String State;
   final String StateName;
+  final String Zip;
+  final String Country;
   LocationSearchAddress(
-      {this.StreetAddress, this.City, this.State, this.StateName});
+      {this.StreetAddress,
+      this.Zip,
+      this.City,
+      this.Country,
+      this.State,
+      this.StateName});
 
   factory LocationSearchAddress.fromJson(Map<String, dynamic> json) =>
       _$LocationSearchAddressFromJson(json);
