@@ -84,8 +84,7 @@ class _HomeViewState extends State<HomeView> {
                           ? viewModel.utilizationSummary
                           : null,
                       onFilterSelected: (value) {
-                        // viewModel.onFilterSelected(value);
-                        viewModel.gotoFleetPage();
+                        viewModel.gotoUtilizationPage();
                       },
                       totalGreatestNumber:
                           viewModel.utilizationTotalGreatestValue,
@@ -105,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
                           : null,
                       isLoading: viewModel.idlingLevelDataloading,
                       onFilterSelected: (value) {
-                        viewModel.onFilterSelected(value);
+                        viewModel.onIdlingLevelFilterSelected(value);
                       },
                       onRangeSelected: (IdlingLevelRange catchedRange) {
                         viewModel.idlingLevelRange = catchedRange;

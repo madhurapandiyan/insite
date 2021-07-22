@@ -776,58 +776,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Utilization> utilization(
-      startDate, endDate, pageNumber, pageSize, sort, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
+  Future<Utilization> utilization(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = Utilization.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<Utilization> utilizationCustomer(startDate, endDate, pageNumber,
-      pageSize, sort, customerUID, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

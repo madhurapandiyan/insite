@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -13,6 +14,8 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
+import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -183,8 +186,22 @@ class HomeViewModel extends InsiteViewModel {
     });
   }
 
+  onIdlingLevelFilterSelected(FilterData data) async {
+    Logger().d("onIdlingLevelFilterSelected $data");
+    // await clearFilterDb();
+    await addFilter(data);
+    Future.delayed(Duration(seconds: 1), () {
+      gotoUtilizationPage();
+    });
+  }
+
   gotoFleetPage() {
     _navigationService.navigateWithTransition(FleetView(),
+        transition: "rightToLeft");
+  }
+
+  gotoUtilizationPage() {
+    _navigationService.navigateWithTransition(UtilLizationView(),
         transition: "rightToLeft");
   }
 

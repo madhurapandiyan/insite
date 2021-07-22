@@ -212,24 +212,9 @@ abstract class RestClient {
       @Query("endDate") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization")
+  @GET('{url}')
   Future<Utilization> utilization(
-      @Query("startDate") String startDate,
-      @Query("endDate") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("sort") String sort,
-      @Header("x-visionlink-customeruid") customerId);
-
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization")
-  Future<Utilization> utilizationCustomer(
-      @Query("startDate") String startDate,
-      @Query("endDate") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("sort") String sort,
-      @Query("customerUID") String customerUID,
-      @Header("x-visionlink-customeruid") customerId);
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> assetCount(@Query("grouping") String grouping,
