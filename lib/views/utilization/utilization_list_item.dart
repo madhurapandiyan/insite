@@ -123,13 +123,20 @@ class UtilizationListItem extends StatelessWidget {
                                       ),
                                       InsiteTableRowItem(
                                         title: "Daily",
-                                        content: utilizationData.runtimeHours
-                                            .toString(),
+                                        content:
+                                            utilizationData.runtimeHours != null
+                                                ? utilizationData.runtimeHours
+                                                    .toString()
+                                                : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Target",
-                                        content: utilizationData.targetRuntime
-                                            .toString(),
+                                        content:
+                                            utilizationData.targetRuntime !=
+                                                    null
+                                                ? utilizationData.targetRuntime
+                                                    .toString()
+                                                : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
@@ -152,13 +159,23 @@ class UtilizationListItem extends StatelessWidget {
                                         ),
                                         InsiteTableRowItem(
                                           title: "Fuel Burned",
-                                          content: utilizationData.idleHours
-                                              .toString(),
+                                          content: utilizationData
+                                                      .runtimeFuelConsumedLiters !=
+                                                  null
+                                              ? utilizationData
+                                                  .runtimeFuelConsumedLiters
+                                                  .toStringAsFixed(1)
+                                              : "-",
                                         ),
                                         InsiteTableRowItem(
                                           title: "Burned Rate",
-                                          content: utilizationData.idleHours
-                                              .toString(),
+                                          content: utilizationData
+                                                      .runtimeFuelConsumptionRate !=
+                                                  null
+                                              ? utilizationData
+                                                  .runtimeFuelConsumptionRate
+                                                  .toStringAsFixed(2)
+                                              : "-",
                                         ),
                                         InsiteTableRowItem(
                                           title: "",
@@ -192,13 +209,19 @@ class UtilizationListItem extends StatelessWidget {
                                       ),
                                       InsiteTableRowItem(
                                         title: "Daily",
-                                        content: utilizationData.idleHours
-                                            .toString(),
+                                        content:
+                                            utilizationData.idleHours != null
+                                                ? utilizationData.idleHours
+                                                    .toString()
+                                                : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Target",
-                                        content: utilizationData.targetIdle
-                                            .toString(),
+                                        content:
+                                            utilizationData.targetIdle != null
+                                                ? utilizationData.targetIdle
+                                                    .toString()
+                                                : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
@@ -221,11 +244,15 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Working",
-                                  content: utilizationData.workingHours.toString(),
+                                  content: utilizationData.workingHours != null
+                                      ? utilizationData.workingHours.toString()
+                                      : "-",
                                 ),
                                 InsiteTableRowItem(
                                   title: "Daily",
-                                  content: utilizationData.workingHours.toString(),
+                                  content: utilizationData.workingHours != null
+                                      ? utilizationData.workingHours.toString()
+                                      : "-",
                                 ),
                               ],
                             ),
@@ -327,8 +354,11 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Last Utiization Report",
-                                  content: utilizationData.lastReportedTime!=null?
-                                  Utils.getLastReportedDateOne(utilizationData.lastReportedTime):'-',
+                                  content:
+                                      utilizationData.lastReportedTime != null
+                                          ? Utils.getLastReportedDateOne(
+                                              utilizationData.lastReportedTime)
+                                          : '-',
                                 ),
                                 InsiteTableRowItem(
                                   title: "Idle Hours",

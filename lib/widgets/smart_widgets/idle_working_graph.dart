@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:logger/logger.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class IdleWorkingGraphWidget extends StatelessWidget {
   final String label;
@@ -14,81 +16,73 @@ class IdleWorkingGraphWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            label.length > 10 ? label.substring(0, 7) + '...' : label,
+    Logger().d("idle $idleLength");
+    Logger().d("working $workingLength");
+    double width = MediaQuery.of(context).size.width * 0.35;
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, right: 16.0),
+      child: Row(
+        children: [
+          Text(
+            // label.length > 10 ? label.substring(0, 7) + '...' : label,
+            label,
             style: TextStyle(
               color: white,
-              fontSize: 12,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        Container(
-          width: 2,
-          height: 60,
-          color: white,
-        ),
-        SizedBox(
-          width: 16,
-        ),
-        Expanded(
-          child: Container(
-            height: 20,
-            decoration: BoxDecoration(
-              color: white.withOpacity(0.5),
-              border: Border.all(color: transparent, width: 0.0),
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: idleLength == 0.0 ? double.infinity : idleLength),
-              child: Container(
-                height: 20,
-                decoration: BoxDecoration(
-                  color: burntSienna,
-                  border: Border.all(color: transparent, width: 0.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-              ),
-            ),
+          Container(
+            width: 2,
+            height: 60,
+            color: white,
           ),
-        ),
-        Container(
-          width: 2,
-          height: 60,
-          color: white,
-        ),
-        Expanded(
-          child: Container(
-            height: 20,
-            decoration: BoxDecoration(
-              color: white.withOpacity(0.5),
-              border: Border.all(color: transparent, width: 0.0),
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                  right:
-                      workingLength == 0.0 ? double.infinity : workingLength),
-              child: Container(
-                height: 20,
-                decoration: BoxDecoration(
-                  color: emerald,
-                  border: Border.all(color: black, width: 0.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-              ),
-            ),
+          SizedBox(
+            width: 8,
           ),
-        ),
-        SizedBox(
-          width: 16,
-        ),
-      ],
+          LinearPercentIndicator(
+            animation: true,
+            animationDuration: 1000,
+            padding: EdgeInsets.all(0),
+            isRTL: true,
+            width: width,
+            center: Text(
+              "${idleLength.toStringAsFixed(1)}",
+              style: TextStyle(fontSize: 12),
+            ),
+            lineHeight: 20.0,
+            percent: (idleLength * 10 / 100) > 1 ? 1 : (idleLength * 10 / 100),
+            linearStrokeCap: LinearStrokeCap.butt,
+            progressColor: burntSienna,
+            backgroundColor: concrete,
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          Container(
+            width: 2,
+            height: 60,
+            color: white,
+          ),
+          LinearPercentIndicator(
+            alignment: MainAxisAlignment.start,
+            animation: true,
+            animationDuration: 1000,
+            lineHeight: 20.0,
+            width: width,
+            center: Text(
+              "${(idleLength + workingLength).toStringAsFixed(1)}",
+              style: TextStyle(fontSize: 12),
+            ),
+            percent: ((idleLength + workingLength) * 10 / 100) > 1
+                ? 1
+                : ((idleLength + workingLength) * 10 / 100),
+            linearStrokeCap: LinearStrokeCap.butt,
+            progressColor: burntSienna,
+            backgroundColor: concrete,
+          ),
+        ],
+      ),
     );
   }
 }

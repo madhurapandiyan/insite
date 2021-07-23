@@ -168,7 +168,7 @@ class _TabPageState extends State<AssetDetailView> {
                         child: Row(children: [
                           Padding(
                             padding: EdgeInsets.only(left: 14.99),
-                            child: Text("UCID NAME :",
+                            child: Text("UCID NAME : ",
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w700,
@@ -183,7 +183,7 @@ class _TabPageState extends State<AssetDetailView> {
                                         null
                                     ? viewModel
                                         .assetDetail.universalCustomerName
-                                    : ""
+                                    : "-"
                                 : "-",
                             style: TextStyle(
                                 fontFamily: 'Roboto',

@@ -17,6 +17,12 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
 
   SingleAssetUtilization _singleAssetUtilization;
   SingleAssetUtilization get singleAssetUtilization => _singleAssetUtilization;
+  double idleDay;
+  double idleWeek;
+  double idleMonth;
+  List<double> listIdleDay = [];
+  List<double> listWeekDay = [];
+  List<double> listMonthDay = [];
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
@@ -37,12 +43,27 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
       startDate,
       endDate,
     );
-    _singleAssetUtilization = result;
+    if (result != null) {
+      _singleAssetUtilization = result;
+      for (Range data in _singleAssetUtilization.daily) {
+        listIdleDay.add(data.data.idleHours);
+      }
+      for (Range data in _singleAssetUtilization.weekly) {
+        listWeekDay.add(data.data.idleHours);
+      }
+      for (Range data in _singleAssetUtilization.monthly) {
+        listMonthDay.add(data.data.idleHours);
+      }
+      Logger().d("listIdleDay ${listIdleDay.length}");
+      Logger().d("listWeekDay ${listWeekDay.length}");
+      Logger().d("listMonthDay ${listMonthDay.length}");
+    }
     _loading = false;
     notifyListeners();
   }
 
   refresh() async {
+    Logger().d("refresh getSingleAssetUtilization");
     await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();
