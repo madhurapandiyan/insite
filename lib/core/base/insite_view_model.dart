@@ -74,6 +74,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   removeFilter(value) async {
     Logger().d("removeFilter title " + value.title.toString());
     await _filterService.removeFilter(value);
+    getSelectedFilterData();
   }
 
   addFilter(FilterData data) async {

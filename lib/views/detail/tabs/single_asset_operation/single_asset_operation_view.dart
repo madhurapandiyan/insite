@@ -142,7 +142,92 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                       ),
                     ),
                     viewModel.singleAssetOperation != null
-                        ? assetOperationTable(viewModel.singleAssetOperation)
+                        ? Table(
+                            border: TableBorder.all(width: 1.0),
+                            children: [
+                              TableRow(
+                                children: [
+                                  // InsiteTableRowItem(
+                                  //   title: 'Last Event',
+                                  //   content: assetOperation.assetOperations.assets.first
+                                  //           .assetLastReceivedEvent.lastReceivedEvent
+                                  //           .contains('Off')
+                                  //       ? 'Engine Ignition/ off'
+                                  //       : 'Engine Ignition/ on',
+                                  // ),
+                                  InsiteTableRowItem(
+                                    title: 'Last Event Time',
+                                    content: viewModel
+                                                .singleAssetOperation
+                                                .assetOperations
+                                                .assets
+                                                .first
+                                                .assetLastReceivedEvent
+                                                .lastReceivedEventTimeLocal !=
+                                            null
+                                        ? Utils.getLastReportedDateOneLocalUTC(
+                                            viewModel
+                                                .singleAssetOperation
+                                                .assetOperations
+                                                .assets
+                                                .first
+                                                .assetLastReceivedEvent
+                                                .lastReceivedEventTimeLocal)
+                                        : "-",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: 'Distance Travelled',
+                                    content: viewModel
+                                                .singleAssetOperation
+                                                .assetOperations
+                                                .assets
+                                                .first
+                                                .distanceTravelledKilometers ==
+                                            null
+                                        ? '-'
+                                        : '${viewModel.singleAssetOperation.assetOperations.assets.first.distanceTravelledKilometers} km',
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  // InsiteTableRowItem(
+                                  //   title: 'Last Known Operator',
+                                  //   content: assetOperation.assetOperations.assets.first
+                                  //               .lastKnownOperator.runtimeType ==
+                                  //           String
+                                  //       ? assetOperation.assetOperations.assets.first
+                                  //           .lastKnownOperator.runtimeType
+                                  //       : '-',
+                                  // ),
+                                  InsiteTableRowItem(
+                                    title: 'This data was last refreshed on',
+                                    content: Utils.formatCurrentSystemTime(
+                                        DateTime.now().toString()),
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: 'Total Duration ',
+                                    content: viewModel
+                                                .singleAssetOperation
+                                                .assetOperations
+                                                .assets
+                                                .first
+                                                .assetLastReceivedEvent
+                                                .lastReceivedEventTimeLocal !=
+                                            null
+                                        ? Utils.getLastDurationOne(viewModel
+                                            .singleAssetOperation
+                                            .assetOperations
+                                            .assets
+                                            .first
+                                            .assetLastReceivedEvent
+                                            .lastReceivedEventTimeLocal)
+                                        : "-",
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
                         : SizedBox(),
                     Expanded(
                       child: viewModel.singleAssetOperation != null
@@ -271,78 +356,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
         }
       },
       viewModelBuilder: () => SingleAssetOperationViewModel(widget.detail),
-    );
-  }
-
-  Table assetOperationTable(SingleAssetOperation assetOperation) {
-    return Table(
-      border: TableBorder.all(width: 1.0),
-      children: [
-        TableRow(
-          children: [
-            // InsiteTableRowItem(
-            //   title: 'Last Event',
-            //   content: assetOperation.assetOperations.assets.first
-            //           .assetLastReceivedEvent.lastReceivedEvent
-            //           .contains('Off')
-            //       ? 'Engine Ignition/ off'
-            //       : 'Engine Ignition/ on',
-            // ),
-            InsiteTableRowItem(
-              title: 'Last Event Time',
-              content: assetOperation.assetOperations.assets.first
-                          .assetLastReceivedEvent.lastReceivedEventTimeLocal !=
-                      null
-                  ? Utils.getLastReportedDateOneUTC(assetOperation
-                      .assetOperations
-                      .assets
-                      .first
-                      .assetLastReceivedEvent
-                      .lastReceivedEventTimeLocal)
-                  : "-",
-            ),
-            InsiteTableRowItem(
-              title: 'Distance Travelled',
-              content: assetOperation.assetOperations.assets.first
-                          .distanceTravelledKilometers ==
-                      null
-                  ? '-'
-                  : '${assetOperation.assetOperations.assets.first.distanceTravelledKilometers} km',
-            ),
-          ],
-        ),
-        TableRow(
-          children: [
-            // InsiteTableRowItem(
-            //   title: 'Last Known Operator',
-            //   content: assetOperation.assetOperations.assets.first
-            //               .lastKnownOperator.runtimeType ==
-            //           String
-            //       ? assetOperation.assetOperations.assets.first
-            //           .lastKnownOperator.runtimeType
-            //       : '-',
-            // ),
-            InsiteTableRowItem(
-              title: 'This data was last refreshed on',
-              content: Utils.getLastReportedDateTwoUTC(
-                  DateTime.now().toLocal().toString()),
-            ),
-            InsiteTableRowItem(
-              title: 'Total Duration ',
-              content: assetOperation.assetOperations.assets.first
-                          .assetLastReceivedEvent.lastReceivedEventTimeLocal !=
-                      null
-                  ? Utils.getLastDurationOne(assetOperation
-                      .assetOperations
-                      .assets
-                      .first
-                      .assetLastReceivedEvent
-                      .lastReceivedEventTimeLocal)
-                  : "-",
-            ),
-          ],
-        ),
-      ],
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:insite/core/models/filter_data.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
@@ -45,8 +46,18 @@ class Utils {
     return outputDate;
   }
 
-  static String getLastReportedDateTwoUTC(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(date);
+  static String getLastReportedDateOneLocalUTC(date) {
+    DateTime parseDate =
+        new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  static String formatCurrentSystemTime(date) {
+    Logger().d("formatCurrentSystemTime $date");
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss.zzzz").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
     var outputDate = outputFormat.format(inputDate);
@@ -289,5 +300,11 @@ class Utils {
 
   static double greatestOfThree(double a, double b, double c) {
     return (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+  }
+
+  static double findlargestNoFromList(List<double> list) {
+    var listToSort = list;
+    listToSort.sort();
+    return listToSort.last;
   }
 }

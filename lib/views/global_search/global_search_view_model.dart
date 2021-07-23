@@ -33,7 +33,9 @@ class GlobalSearchViewModel extends InsiteViewModel {
   getSearchResult(type) async {
     SearchData result =
         await _searchService.getSearchResult(_searchKeyword, type);
-    _searchData = result;
+    if (result != null) {
+      _searchData = result;
+    }
     _loading = false;
     notifyListeners();
   }

@@ -60,8 +60,15 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
 
   getUtilization() async {
     Logger().d("getUtilization");
+    await getSelectedFilterData();
+    await getDateRangeFilterData();
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate,
+        endDate,
+        '-RuntimeHours',
+        pageNumber,
+        pageCount,
+        appliedFilters);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -84,13 +91,19 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
 
   refresh() async {
     Logger().d("idle percent working view refreshing ");
+    await getSelectedFilterData();
     await getDateRangeFilterData();
     pageNumber = 1;
     pageCount = 50;
     _isRefreshing = true;
     notifyListeners();
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate,
+        endDate,
+        '-RuntimeHours',
+        pageNumber,
+        pageCount,
+        appliedFilters);
     if (result != null &&
         result.assetResults != null &&
         result.assetResults.isNotEmpty) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:logger/logger.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PercentageWidget extends StatelessWidget {
@@ -20,22 +21,25 @@ class PercentageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d("percentage $percentage");
+    Logger().d("value $value");
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
       child: LinearPercentIndicator(
         width: MediaQuery.of(context).size.width * 0.6,
         animation: true,
-        animationDuration: 2000,
+        animationDuration: 1000,
         lineHeight: 20.0,
         leading: Text(
-          label.length > 10 ? label.substring(0, 7) + '...' : label,
+          // label.length > 10 ? label.substring(0, 7) + '...' : label,
+          label,
           style: TextStyle(
             color: white,
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: FontWeight.bold,
           ),
         ),
-        trailing: value == null
+        trailing: value == null && value.toString().isNotEmpty
             ? percentage == null
                 ? Text(
                     'NA',
@@ -47,7 +51,7 @@ class PercentageWidget extends StatelessWidget {
                   )
                 : isPercentage == null
                     ? Text(
-                        '${double.parse((percentage).toStringAsFixed(2))}%',
+                        '${double.parse((percentage).toStringAsFixed(1))}%',
                         style: TextStyle(
                           color: white,
                           fontSize: 12,
@@ -56,7 +60,7 @@ class PercentageWidget extends StatelessWidget {
                       )
                     : isPercentage
                         ? Text(
-                            '${double.parse((percentage).toStringAsFixed(2))}%',
+                            '${double.parse((percentage).toStringAsFixed(1))}%',
                             style: TextStyle(
                               color: white,
                               fontSize: 12,
@@ -64,7 +68,7 @@ class PercentageWidget extends StatelessWidget {
                             ),
                           )
                         : Text(
-                            '${double.parse((percentage).toStringAsFixed(2))}',
+                            '${double.parse((percentage).toStringAsFixed(1))}',
                             style: TextStyle(
                               color: white,
                               fontSize: 12,

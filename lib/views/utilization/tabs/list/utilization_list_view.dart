@@ -30,7 +30,7 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: GestureDetector(
                       onTap: () async {
                         dateRange = [];
@@ -68,7 +68,8 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.only(
+                      left: 16.0, top: 8, bottom: 16, right: 16),
                   child: Text(
                     'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
                     style: TextStyle(

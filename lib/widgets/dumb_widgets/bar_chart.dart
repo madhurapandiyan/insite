@@ -26,7 +26,7 @@ class BarChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.25,
+      width: MediaQuery.of(context).size.width * 0.26,
       height: MediaQuery.of(context).size.height * 0.21,
       decoration: BoxDecoration(
         color: ship_grey,
@@ -93,7 +93,7 @@ class BarChartWidget extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.25,
+              width: MediaQuery.of(context).size.width * 0.26,
               decoration: BoxDecoration(
                 color: black,
                 borderRadius: BorderRadius.only(

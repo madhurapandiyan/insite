@@ -33,7 +33,7 @@ class BarWidget extends StatelessWidget {
                   ? '${value.toStringAsFixed(1)}'
                   : '${(value / 1000).toStringAsFixed(1)}K',
               style: TextStyle(
-                  color: white, fontSize: 10, fontWeight: FontWeight.bold),
+                  color: white, fontSize: 8, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 10,
@@ -62,7 +62,7 @@ class BarWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.all(
-                  Radius.circular(8),
+                  Radius.circular(6),
                 ),
               ),
             ),

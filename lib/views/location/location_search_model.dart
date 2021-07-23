@@ -38,6 +38,7 @@ class LocationSearchViewModel extends InsiteViewModel {
         await _assetLocationService.searchLocation(10, query);
     _locations = result;
     if (_locations != null && _locations.isNotEmpty) {
+      _filterLocations.clear();
       for (LocationSearchData data in _locations) {
         FilterData filterData = FilterData(
             count: data.Address.Zip,

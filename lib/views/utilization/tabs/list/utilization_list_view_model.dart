@@ -79,9 +79,10 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getUtilization() async {
     Logger().d("getUtilization");
+    await getSelectedFilterData();
     await getDateRangeFilterData();
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount,appliedFilters);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -104,6 +105,7 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   refresh() async {
     Logger().d("refresh getUtilization list");
+    await getSelectedFilterData();
     await getDateRangeFilterData();
     pageNumber = 1;
     pageCount = 50;
@@ -113,7 +115,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount);
+        startDate, endDate, '-RuntimeHours', pageNumber, pageCount,appliedFilters);
     if (result != null) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults);

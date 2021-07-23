@@ -110,9 +110,9 @@ class AssetResult {
   String model;
   String manufacturer;
   double currentHourMeter;
-  dynamic runtimeFuelConsumedLiters;
+  double runtimeFuelConsumedLiters;
   List<String> runtimeFuelConsumedLitersCalloutTypes;
-  dynamic runtimeFuelConsumptionRate;
+  double runtimeFuelConsumptionRate;
   double runtimeHours;
   List<String> runtimeHoursCalloutTypes;
   bool supportsIdle;

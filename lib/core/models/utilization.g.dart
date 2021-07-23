@@ -63,12 +63,14 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) {
     model: json['model'] as String,
     manufacturer: json['manufacturer'] as String,
     currentHourMeter: (json['currentHourMeter'] as num)?.toDouble(),
-    runtimeFuelConsumedLiters: json['runtimeFuelConsumedLiters'],
+    runtimeFuelConsumedLiters:
+        (json['runtimeFuelConsumedLiters'] as num)?.toDouble(),
     runtimeFuelConsumedLitersCalloutTypes:
         (json['runtimeFuelConsumedLitersCalloutTypes'] as List)
             ?.map((e) => e as String)
             ?.toList(),
-    runtimeFuelConsumptionRate: json['runtimeFuelConsumptionRate'],
+    runtimeFuelConsumptionRate:
+        (json['runtimeFuelConsumptionRate'] as num)?.toDouble(),
     runtimeHours: (json['runtimeHours'] as num)?.toDouble(),
     runtimeHoursCalloutTypes: (json['runtimeHoursCalloutTypes'] as List)
         ?.map((e) => e as String)
