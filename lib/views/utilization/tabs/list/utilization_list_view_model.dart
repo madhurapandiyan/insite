@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +17,10 @@ class UtilizationListViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationService = locator<AssetUtilizationService>();
   var _navigationService = locator<NavigationService>();
+  var _assetService = locator<AssetStatusService>();
+
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
 
   int pageNumber = 1;
   int pageCount = 50;
@@ -37,6 +44,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   UtilizationListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
+    _assetService.setUp();
     _utilizationService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -47,6 +55,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 2), () {
       getUtilization();
+      getAssetCount();
     });
   }
 
@@ -62,6 +71,19 @@ class UtilizationListViewModel extends InsiteViewModel {
       notifyListeners();
       getUtilization();
     }
+  }
+
+  getAssetCount() async {
+    Logger().d("getAssetCount");
+    AssetCount result =
+        await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
+    if (result != null) {
+      if (result.countData.isNotEmpty && result.countData[0].count != null) {
+        _totalCount = result.countData[0].count.toInt();
+      }
+      Logger().d("result ${result.toJson()}");
+    }
+    notifyListeners();
   }
 
   onDetailPageSelected(AssetResult fleet) {
@@ -82,7 +104,12 @@ class UtilizationListViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount,appliedFilters);
+        startDate,
+        endDate,
+        '-RuntimeHours',
+        pageNumber,
+        pageCount,
+        appliedFilters);
     if (result != null) {
       if (result.assetResults.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults);
@@ -115,7 +142,12 @@ class UtilizationListViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     Utilization result = await _utilizationService.getUtilizationResult(
-        startDate, endDate, '-RuntimeHours', pageNumber, pageCount,appliedFilters);
+        startDate,
+        endDate,
+        '-RuntimeHours',
+        pageNumber,
+        pageCount,
+        appliedFilters);
     if (result != null) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults);

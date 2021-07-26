@@ -79,7 +79,7 @@ AssetSummaryResponse _$AssetSummaryResponseFromJson(Map<String, dynamic> json) {
         ?.toList(),
     pagination: json['pagination'] == null
         ? null
-        : AssetPagination.fromJson(json['pagination'] as Map<String, dynamic>),
+        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
   );
 }
 

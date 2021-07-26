@@ -15,9 +15,13 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        AssetCount assetStatusResponse = await MyApi()
-            .getClient()
-            .assetCount(key, accountSelected.CustomerUID);
+        AssetCount assetStatusResponse = key != null
+            ? await MyApi()
+                .getClient()
+                .assetCount(key, accountSelected.CustomerUID)
+            : await MyApi()
+                .getClient()
+                .assetCountAll(accountSelected.CustomerUID);
         bool updated = await updateAssetCount(assetStatusResponse, type);
         Logger().d("updated $updated");
         if (updated) {

@@ -30,6 +30,9 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
+  bool _update = false;
+  bool get update => _update;
+
   IdlePercentWorkingPercentViewModel() {
     Logger().d("idle percent working");
     this.log = getLogger(this.runtimeType.toString());
@@ -87,6 +90,13 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
+  }
+
+  updateCountToFalse() {
+    _update = false;
+    notifyListeners();
   }
 
   refresh() async {
@@ -109,11 +119,16 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         result.assetResults.isNotEmpty) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults);
+      _update = true;
       _isRefreshing = false;
       notifyListeners();
     } else {
       _isRefreshing = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
+    _update = false;
+    notifyListeners();
   }
 }

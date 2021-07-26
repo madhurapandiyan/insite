@@ -6,6 +6,7 @@ import 'package:insite/views/filter/filter_chip_view.dart';
 import 'package:insite/views/filter/filter_knob_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -45,6 +46,11 @@ class _FleetViewState extends State<FleetView> {
                         children: [
                           Column(
                             children: [
+                              PageHeader(
+                                count: viewModel.assets.length,
+                                total: viewModel.totalCount,
+                                isDashboard: false,
+                              ),
                               viewModel.appliedFilters.isNotEmpty
                                   ? FilterChipView(
                                       filters: viewModel.appliedFilters,

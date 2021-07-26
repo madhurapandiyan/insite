@@ -22,6 +22,9 @@ class FleetViewModel extends InsiteViewModel {
   List<Fleet> _assets = [];
   List<Fleet> get assets => _assets;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -54,17 +57,20 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   getFleetSummaryList() async {
-    List<Fleet> result = await _fleetService.getFleetSummaryList(
+    FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
         pageSize, pageNumber, appliedFilters);
     if (result != null) {
-      if (result.isNotEmpty) {
-        Logger().i("list of assets " + result.length.toString());
-        _assets.addAll(result);
+      if (result.pagination.totalCount != null) {
+        _totalCount = result.pagination.totalCount.toInt();
+      }
+      if (result.fleetRecords != null && result.fleetRecords.isNotEmpty) {
+        Logger().i("list of assets " + result.fleetRecords.length.toString());
+        _assets.addAll(result.fleetRecords);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(result);
+        _assets.addAll(result.fleetRecords);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -107,17 +113,18 @@ class FleetViewModel extends InsiteViewModel {
     _isRefreshing = true;
     _shouldLoadmore = true;
     notifyListeners();
-    List<Fleet> result = await _fleetService.getFleetSummaryList(
+    FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
         pageSize, pageNumber, appliedFilters);
-    if (result != null && result.isNotEmpty) {
+    if (result != null &&
+        result.fleetRecords != null &&
+        result.fleetRecords.isNotEmpty) {
       _assets.clear();
-      _assets.addAll(result);
+      _assets.addAll(result.fleetRecords);
       _isRefreshing = false;
       notifyListeners();
     } else {
       _isRefreshing = false;
       notifyListeners();
     }
-    Logger().i("list of assets " + result.length.toString());
   }
 }

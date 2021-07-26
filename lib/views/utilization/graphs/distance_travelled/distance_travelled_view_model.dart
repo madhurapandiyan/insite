@@ -28,6 +28,9 @@ class DistanceTravelledViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
+  bool _update = false;
+  bool get update => _update;
+
   ScrollController scrollController;
 
   DistanceTravelledViewModel() {
@@ -85,6 +88,8 @@ class DistanceTravelledViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
   }
 
   refresh() async {
@@ -113,5 +118,12 @@ class DistanceTravelledViewModel extends InsiteViewModel {
       _isRefreshing = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
+  }
+
+  updateCountToFalse() {
+    _update = false;
+    notifyListeners();
   }
 }

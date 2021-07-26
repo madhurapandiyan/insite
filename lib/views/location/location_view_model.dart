@@ -41,8 +41,12 @@ class LocationViewModel extends InsiteViewModel {
   TYPE _pageType = TYPE.LOCATION;
   TYPE get pageType => _pageType;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
+
   int pageNumber = 1;
   int pageSize = 2500;
 
@@ -242,6 +246,7 @@ class LocationViewModel extends InsiteViewModel {
     AssetLocationData result = await _assetLocationService.getAssetLocation(
         pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
     _assetLocation = result;
+    _totalCount = result.pagination.totalCount;
     clusterMarker();
     manager.updateMap();
     _loading = false;
@@ -277,6 +282,7 @@ class LocationViewModel extends InsiteViewModel {
             largeLatLng.longitude,
             radiusKm);
     _assetLocation = result;
+    _totalCount = result.pagination.totalCount;
     clusterMarker();
     manager.updateMap();
     _loading = false;
@@ -305,6 +311,7 @@ class LocationViewModel extends InsiteViewModel {
       appliedFilters,
     );
     _assetLocation = result;
+    _totalCount = result.pagination.totalCount;
     clusterMarker();
     _loading = false;
     _refreshing = false;

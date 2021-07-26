@@ -41,6 +41,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.DATE_RANGE;
       case 13:
         return FilterType.CLUSTOR;
+      case 14:
+        return FilterType.ASSET_STATUS;
       default:
         return null;
     }
@@ -90,6 +92,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.CLUSTOR:
         writer.writeByte(13);
+        break;
+      case FilterType.ASSET_STATUS:
+        writer.writeByte(14);
         break;
     }
   }

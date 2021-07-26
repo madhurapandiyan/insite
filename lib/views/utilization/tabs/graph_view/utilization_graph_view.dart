@@ -8,11 +8,14 @@ import 'package:insite/views/utilization/graphs/idle_percent_working_percent/idl
 import 'package:insite/views/utilization/graphs/runtime_hours/runtime_hours_view.dart';
 import 'package:insite/views/utilization/graphs/total_fuel_burned/total_fuel_burned_view.dart';
 import 'package:insite/views/utilization/graphs/total_hours/total_hours_view.dart';
+import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view_model.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/util_graph_dropdown.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked/stacked.dart';
 
 class UtilizationGraphView extends StatefulWidget {
   final bool shouldRefresh;
@@ -44,106 +47,126 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GestureDetector(
-              onTap: () async {
-                dateRange = [];
-                dateRange = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                      backgroundColor: transparent, child: DateRangeView()),
-                );
-                if (dateRange != null && dateRange.isNotEmpty) {
-                  setState(() {
-                    startDate =
-                        DateFormat('yyyy-MM-dd').format(dateRange.first);
-                    endDate = DateFormat('yyyy-MM-dd').format(dateRange.last);
-                  });
-                  Logger().d("start date " + startDate);
-                  Logger().d("end date " + endDate);
-                  onDateChange();
-                }
-              },
-              child: Container(
-                width: 90,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: cardcolor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Date Range',
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+    return ViewModelBuilder<UtilizationGraphViewModel>.reactive(
+      builder: (BuildContext context, UtilizationGraphViewModel viewModel,
+          Widget _) {
+        var startDate2 = startDate;
+        return Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                child: GestureDetector(
+                  onTap: () async {
+                    dateRange = [];
+                    dateRange = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                          backgroundColor: transparent, child: DateRangeView()),
+                    );
+                    if (dateRange != null && dateRange.isNotEmpty) {
+                      setState(() {
+                        startDate =
+                            DateFormat('yyyy-MM-dd').format(dateRange.first);
+                        endDate =
+                            DateFormat('yyyy-MM-dd').format(dateRange.last);
+                      });
+                      Logger().d("start date " + startDate);
+                      Logger().d("end date " + endDate);
+                      onDateChange();
+                    }
+                  },
+                  child: Container(
+                    width: 90,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: cardcolor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(4),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Date Range',
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-            style: TextStyle(
-              color: white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+            PageHeader(
+              isDashboard: graphType == UtilizationGraphType.IDLEORWORKING ||
+                      graphType == UtilizationGraphType.RUNTIMEHOURS ||
+                      graphType == UtilizationGraphType.DISTANCETRAVELLED
+                  ? false
+                  : true,
+              total: viewModel.totalCount,
+              count: viewModel.count,
             ),
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width * 1,
-          margin: const EdgeInsets.only(left: 12.0, right: 12),
-          decoration: BoxDecoration(
-            color: cardcolor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(6.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.75,
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
+                style: TextStyle(
+                  color: white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              margin: const EdgeInsets.only(left: 12.0, right: 12),
               decoration: BoxDecoration(
                 color: cardcolor,
-                border: Border.all(color: black, width: 0.0),
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: UtilGraphDropdownWidget(
-                      graphType: (UtilizationGraphType selectedGraph) {
-                        setState(() {
-                          graphType = selectedGraph;
-                        });
-                      },
+                padding: EdgeInsets.all(6.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                    color: cardcolor,
+                    border: Border.all(color: black, width: 0.0),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+                    child: Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: UtilGraphDropdownWidget(
+                          graphType: (UtilizationGraphType selectedGraph) {
+                            setState(() {
+                              graphType = selectedGraph;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-        Flexible(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: getGraphView(graphType, startDate, endDate),
-          ),
-        ),
-      ],
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: getGraphView(graphType, startDate2, endDate, (value) {
+                  viewModel.updateCurrentCount(value);
+                }),
+              ),
+            ),
+          ],
+        );
+      },
+      viewModelBuilder: () => UtilizationGraphViewModel(),
     );
   }
 
@@ -167,22 +190,34 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
     }
   }
 
-  Widget getGraphView(
-      UtilizationGraphType utilizationGraphType, startDate, endDate) {
+  Widget getGraphView(UtilizationGraphType utilizationGraphType, startDate,
+      endDate, update(int)) {
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(
           key: idlePercentKey,
+          updateCount: (value) {
+            Logger().d("updateCount $value");
+            update(value);
+          },
         );
         break;
       case UtilizationGraphType.RUNTIMEHOURS:
         return RuntimeHoursView(
           key: runTimeHoursKey,
+          updateCount: (value) {
+            Logger().d("updateCount $value");
+            update(value);
+          },
         );
         break;
       case UtilizationGraphType.DISTANCETRAVELLED:
         return DistanceTravelledView(
           key: distanceTravelledKey,
+          updateCount: (value) {
+            Logger().d("updateCount $value");
+            update(value);
+          },
         );
         break;
       case UtilizationGraphType.CUMULATIVE:

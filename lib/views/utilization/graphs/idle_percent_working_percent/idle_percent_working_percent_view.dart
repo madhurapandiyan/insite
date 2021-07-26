@@ -7,8 +7,10 @@ import 'package:stacked/stacked.dart';
 import 'idle_percent_working_percent_view_model.dart';
 
 class IdlePercentWorkingPercentView extends StatefulWidget {
+  final Function(int) updateCount;
   const IdlePercentWorkingPercentView({
     Key key,
+    this.updateCount,
   }) : super(key: key);
 
   @override
@@ -42,75 +44,93 @@ class IdlePercentWorkingPercentViewState
     return ViewModelBuilder<IdlePercentWorkingPercentViewModel>.reactive(
       builder: (BuildContext context,
           IdlePercentWorkingPercentViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
-        return Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: RangeSelectionWidget(
-                      label1: 'Idle',
-                      label2: 'Working',
-                      label3: null,
-                      rangeChoice: (int choice) {
-                        setState(() {
-                          rangeChoice = choice;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: viewModel.utilLizationListData.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: viewModel.utilLizationListData.length,
-                          controller: viewModel.scrollController,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return PercentageWidget(
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                percentage: rangeChoice == 1
-                                    ? viewModel.utilLizationListData[index]
-                                                .idleEfficiency ==
-                                            null
-                                        ? null
-                                        : viewModel.utilLizationListData[index]
-                                                .idleEfficiency *
-                                            100
-                                    : viewModel.utilLizationListData[index]
-                                                .workingEfficiency ==
-                                            null
-                                        ? null
-                                        : viewModel.utilLizationListData[index]
-                                                .workingEfficiency *
-                                            100,
-                                color: rangeChoice == 1 ? sandyBrown : olivine);
-                          })
-                      : EmptyView(
-                          title: "No Assets Found",
+        if (viewModel.update) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            widget.updateCount(viewModel.utilLizationListData.length);
+            viewModel.updateCountToFalse();
+          });
+        }
+        return viewModel.loading
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: RangeSelectionWidget(
+                            label1: 'Idle',
+                            label2: 'Working',
+                            label3: null,
+                            rangeChoice: (int choice) {
+                              setState(() {
+                                rangeChoice = choice;
+                              });
+                            },
+                          ),
                         ),
-                ),
-                viewModel.loadingMore
-                    ? Padding(
-                        padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            viewModel.isRefreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
-          ],
-        );
+                      ),
+                      Expanded(
+                        child: viewModel.utilLizationListData.isNotEmpty
+                            ? ListView.builder(
+                                itemCount:
+                                    viewModel.utilLizationListData.length,
+                                controller: viewModel.scrollController,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return PercentageWidget(
+                                      label: viewModel
+                                          .utilLizationListData[index]
+                                          .assetSerialNumber,
+                                      percentage: rangeChoice == 1
+                                          ? viewModel
+                                                      .utilLizationListData[
+                                                          index]
+                                                      .idleEfficiency ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                      .utilLizationListData[
+                                                          index]
+                                                      .idleEfficiency *
+                                                  100
+                                          : viewModel
+                                                      .utilLizationListData[
+                                                          index]
+                                                      .workingEfficiency ==
+                                                  null
+                                              ? null
+                                              : viewModel
+                                                      .utilLizationListData[
+                                                          index]
+                                                      .workingEfficiency *
+                                                  100,
+                                      color: rangeChoice == 1
+                                          ? sandyBrown
+                                          : olivine);
+                                })
+                            : EmptyView(
+                                title: "No Assets Found",
+                              ),
+                      ),
+                      viewModel.loadingMore
+                          ? Padding(
+                              padding: EdgeInsets.all(8),
+                              child: CircularProgressIndicator(),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                  viewModel.isRefreshing
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox()
+                ],
+              );
       },
       viewModelBuilder: () => viewModel,
     );

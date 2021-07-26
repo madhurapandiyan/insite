@@ -8,8 +8,8 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
-import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -51,6 +51,11 @@ class _LocationViewState extends State<LocationView> {
               : viewModel.assetLocation != null
                   ? Column(
                       children: [
+                        PageHeader(
+                          count: viewModel.pageSize,
+                          total: viewModel.totalCount,
+                          isDashboard: false,
+                        ),
                         Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Row(

@@ -78,7 +78,7 @@ class AssetLastReceivedEvent {
 @JsonSerializable()
 class AssetSummaryResponse {
   final List<Links> links;
-  final AssetPagination pagination;
+  final Pagination pagination;
   final List<Asset> assets;
   AssetSummaryResponse({this.assets, this.links, this.pagination});
 

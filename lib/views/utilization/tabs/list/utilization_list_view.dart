@@ -4,6 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
@@ -30,7 +31,8 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding:
+                        const EdgeInsets.only(left: 16.0, right: 16, top: 16),
                     child: GestureDetector(
                       onTap: () async {
                         dateRange = [];
@@ -66,6 +68,11 @@ class _UtilizationListViewState extends State<UtilizationListView> {
                       ),
                     ),
                   ),
+                ),
+                PageHeader(
+                  isDashboard: false,
+                  total: viewModel.totalCount,
+                  count: viewModel.utilLizationListData.length,
                 ),
                 Padding(
                   padding: EdgeInsets.only(

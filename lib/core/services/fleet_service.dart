@@ -25,7 +25,7 @@ class FleetService extends BaseService {
     }
   }
 
-  Future<List<Fleet>> getFleetSummaryList(
+  Future<FleetSummaryResponse> getFleetSummaryList(
     pageSize,
     pageNumber,
     List<FilterData> appliedFilters,
@@ -43,10 +43,10 @@ class FleetService extends BaseService {
                   getFilterUrl(
                       pageNumber, pageSize, null, "assetid", appliedFilters),
               accountSelected.CustomerUID);
-      return fleetSummaryResponse.fleetRecords;
+      return fleetSummaryResponse;
     } catch (e) {
       Logger().e(e);
-      return [];
+      return null;
     }
   }
 
@@ -160,8 +160,8 @@ class FleetService extends BaseService {
               } else {
                 value.write(
                     constructQuery("IdleEfficiency.GT", data.extras[0], false));
-                value.write(
-                    constructQuery("IdleEfficiency.LTE", data.extras[1], false));
+                value.write(constructQuery(
+                    "IdleEfficiency.LTE", data.extras[1], false));
               }
             }
           }

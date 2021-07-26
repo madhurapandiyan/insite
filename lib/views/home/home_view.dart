@@ -8,6 +8,7 @@ import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/views/location/home/google_map.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
@@ -38,15 +39,13 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 20,
+                  PageHeader(
+                    isDashboard: true,
+                    total: viewModel.totalCount,
+                    count: 0,
                   ),
-                  // AssetCountWidget(
-                  //   count: "14561",
-                  //   title: "ALL ASSETS",
-                  // ),
                   SizedBox(
-                    height: 20,
+                    height: 16,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
