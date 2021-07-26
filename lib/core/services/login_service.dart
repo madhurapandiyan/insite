@@ -63,9 +63,7 @@ class LoginService extends BaseService {
     }
   }
 
-  void saveExpiryTime(String expiryTime) {
-    
-  }
+  void saveExpiryTime(String expiryTime) {}
 
   Future<List<Customer>> getCustomers() async {
     try {

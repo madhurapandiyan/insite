@@ -30,7 +30,7 @@ class AssetService extends BaseService {
     }
   }
 
-  Future<List<Asset>> getAssetSummaryList(
+  Future<AssetSummaryResponse> getAssetSummaryList(
     startDate,
     endDate,
     pageSize,
@@ -57,10 +57,10 @@ class AssetService extends BaseService {
                       getFilterURL(startDate, endDate, pageNumber, pageSize,
                           null, menuFilterType, appliedFilters),
                   accountSelected.CustomerUID);
-      return assetResponse.assetOperations.assets;
+      return assetResponse.assetOperations;
     } catch (e) {
       Logger().e("getAssetSummaryList $e");
-      return [];
+      return null;
     }
   }
 

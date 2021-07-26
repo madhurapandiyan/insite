@@ -54,6 +54,8 @@ enum FilterType {
   DATE_RANGE,
   @HiveField(13)
   CLUSTOR,
+  @HiveField(14)
+  ASSET_STATUS,
 }
 
 @HiveType(typeId: 2)

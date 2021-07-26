@@ -20,6 +20,25 @@ class InsiteText extends StatelessWidget {
   }
 }
 
+class InsiteTextOverFlow extends StatelessWidget {
+  final String text;
+  final Color color;
+  final double size;
+  final FontWeight fontWeight;
+  const InsiteTextOverFlow({this.text, this.color, this.fontWeight, this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text,
+        overflow: TextOverflow.fade,
+        style: TextStyle(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: size,
+        ));
+  }
+}
+
 class InsiteRichText extends StatelessWidget {
   final String title;
   final String content;

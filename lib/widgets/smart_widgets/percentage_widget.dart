@@ -21,8 +21,6 @@ class PercentageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger().d("percentage $percentage");
-    Logger().d("value $value");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
       child: LinearPercentIndicator(
@@ -31,8 +29,8 @@ class PercentageWidget extends StatelessWidget {
         animationDuration: 1000,
         lineHeight: 20.0,
         leading: Text(
-          // label.length > 10 ? label.substring(0, 7) + '...' : label,
-          label,
+          label.length > 10 ? label.substring(0, 7) + '...' : label,
+          // label,
           style: TextStyle(
             color: white,
             fontSize: 10,

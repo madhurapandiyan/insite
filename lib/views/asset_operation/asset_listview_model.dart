@@ -20,6 +20,9 @@ class AssetListViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   int pageNumber = 1;
   int pageSize = 50;
   ScrollController scrollController;
@@ -85,31 +88,34 @@ class AssetListViewModel extends InsiteViewModel {
     notifyListeners();
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
-    List<Asset> result = await _assetService.getAssetSummaryList(
+    AssetSummaryResponse result = await _assetService.getAssetSummaryList(
         startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
       _assets.clear();
-      _assets.addAll(result);
+      _assets.addAll(result.assets);
       _refreshing = false;
       notifyListeners();
     }
-    Logger().i("list of assets " + result.length.toString());
+    Logger().i("list of assets " + result.assets.length.toString());
   }
 
   getAssetSummaryList() async {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
-    List<Asset> result = await _assetService.getAssetSummaryList(
+    AssetSummaryResponse result = await _assetService.getAssetSummaryList(
         startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
-      if (result.isNotEmpty) {
-        Logger().i("list of assets " + result.length.toString());
-        _assets.addAll(result);
+      if (result.pagination.totalAssets != null) {
+        _totalCount = result.pagination.totalAssets.toInt();
+      }
+      if (result.assets.isNotEmpty) {
+        Logger().i("list of assets " + result.assets.length.toString());
+        _assets.addAll(result.assets);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(result);
+        _assets.addAll(result.assets);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;

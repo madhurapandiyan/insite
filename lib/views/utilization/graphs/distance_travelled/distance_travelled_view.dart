@@ -6,7 +6,11 @@ import 'package:stacked/stacked.dart';
 import 'distance_travelled_view_model.dart';
 
 class DistanceTravelledView extends StatefulWidget {
-  const DistanceTravelledView({Key key}) : super(key: key);
+  final Function(int) updateCount;
+  const DistanceTravelledView({
+    Key key,
+    this.updateCount,
+  }) : super(key: key);
 
   @override
   DistanceTravelledViewState createState() => DistanceTravelledViewState();
@@ -36,57 +40,67 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
     return ViewModelBuilder<DistanceTravelledViewModel>.reactive(
       builder: (BuildContext context, DistanceTravelledViewModel viewModel,
           Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
-        return Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: viewModel.utilLizationListData.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: viewModel.utilLizationListData.length,
-                          controller: viewModel.scrollController,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return PercentageWidget(
-                                label: viewModel.utilLizationListData[index]
-                                    .assetSerialNumber,
-                                value: viewModel.utilLizationListData[index]
-                                            .distanceTravelledKilometers ==
-                                        null
-                                    ? 'NA'
-                                    : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
-                                percentage: viewModel
-                                            .utilLizationListData[index]
-                                            .distanceTravelledKilometers ==
-                                        null
-                                    ? 0
-                                    : viewModel.utilLizationListData[index]
-                                            .distanceTravelledKilometers /
-                                        1000,
-                                color: creamCan);
-                          })
-                      : EmptyView(
-                          title: "No Assets Found",
-                        ),
-                ),
-                viewModel.loadingMore
-                    ? Padding(
-                        padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            viewModel.isRefreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
-          ],
-        );
+        if (viewModel.update) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            widget.updateCount(viewModel.utilLizationListData.length);
+            viewModel.updateCountToFalse();
+          });
+        }
+        return viewModel.loading
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: viewModel.utilLizationListData.isNotEmpty
+                            ? ListView.builder(
+                                itemCount:
+                                    viewModel.utilLizationListData.length,
+                                controller: viewModel.scrollController,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return PercentageWidget(
+                                      label: viewModel
+                                          .utilLizationListData[index]
+                                          .assetSerialNumber,
+                                      value: viewModel
+                                                  .utilLizationListData[index]
+                                                  .distanceTravelledKilometers ==
+                                              null
+                                          ? 'NA'
+                                          : '${viewModel.utilLizationListData[index].distanceTravelledKilometers}',
+                                      percentage: viewModel
+                                                  .utilLizationListData[index]
+                                                  .distanceTravelledKilometers ==
+                                              null
+                                          ? 0
+                                          : viewModel
+                                                  .utilLizationListData[index]
+                                                  .distanceTravelledKilometers /
+                                              1000,
+                                      color: creamCan);
+                                })
+                            : EmptyView(
+                                title: "No Assets Found",
+                              ),
+                      ),
+                      viewModel.loadingMore
+                          ? Padding(
+                              padding: EdgeInsets.all(8),
+                              child: CircularProgressIndicator(),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                  viewModel.isRefreshing
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox()
+                ],
+              );
       },
       viewModelBuilder: () => viewModel,
     );

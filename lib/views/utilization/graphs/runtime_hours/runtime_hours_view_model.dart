@@ -31,6 +31,9 @@ class RuntimeHoursViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
+  bool _update = false;
+  bool get update => _update;
+
   RuntimeHoursViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
@@ -86,6 +89,8 @@ class RuntimeHoursViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
   }
 
   refresh() async {
@@ -114,5 +119,12 @@ class RuntimeHoursViewModel extends InsiteViewModel {
       _isRefreshing = false;
       notifyListeners();
     }
+    _update = true;
+    notifyListeners();
+  }
+
+  updateCountToFalse() {
+    _update = false;
+    notifyListeners();
   }
 }
