@@ -192,7 +192,6 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                         : Expanded(
                             flex: 1,
                             child: Container(
-                                //width: 380.9,
                                 height:
                                     MediaQuery.of(context).size.height * 0.45,
                                 child: _googleMap(currentType, viewModel)),
@@ -248,8 +247,9 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   : SizedBox();
               viewModel.zoomToMarkers();
             },
-            onCameraIdle:
-                viewModel.manager != null ? viewModel.manager.updateMap : null,
+            onCameraIdle: viewModel.manager != null
+                ? viewModel.manager.updateMap
+                : null,
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,

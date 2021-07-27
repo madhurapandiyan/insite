@@ -130,7 +130,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                   widget.detail.percentDEFRemaining != null
                               ? widget.detail.percentDEFRemaining.toDouble()
                               : null,
-                          title: "Diesel Exhaust Fuel Level",
+                          title: "Diesel Exhaust Fluid (DEF) Level ",
                           lifeTimeFuel: widget.detail.lifetimeDEFLiters != null
                               ? "lifetime fuel :\n" +
                                   widget.detail.lifetimeDEFLiters
@@ -148,7 +148,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               ? "Last Reported Time: ".toUpperCase() +
                                   Utils.getLastReportedDateOneUTC(
                                       widget.detail.lastLifetimeDEFLitersUTC)
-                              : "No Data Receiveed"),
+                              : "No Data Received"),
                     ),
                     SizedBox(
                       height: 20,
