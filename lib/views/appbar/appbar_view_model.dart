@@ -13,18 +13,24 @@ class AppbarViewModel extends InsiteViewModel {
   var _localStorageService = locator<LocalStorageService>();
   var _snackbarService = locator<SnackbarService>();
 
-  Customer accountSelected;
-  Customer customerSelected;
+  Customer _accountSelected;
+  Customer get accountSelected => _accountSelected;
+
+  Customer _customerSelected;
+  Customer get customerSelected => _customerSelected;
 
   AppbarViewModel() {
-    setUp();
+    Future.delayed(Duration(seconds: 3), () {
+      setUp();
+    });
     _localStorageService.setUp();
   }
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      _accountSelected = await _localService.getAccountInfo();
+      _customerSelected = await _localService.getCustomerInfo();
+      notifyListeners();
     } catch (e) {
       Logger().e(e);
     }

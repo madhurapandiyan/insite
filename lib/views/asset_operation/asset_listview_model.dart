@@ -2,11 +2,14 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:flutter/material.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -14,6 +17,7 @@ class AssetListViewModel extends InsiteViewModel {
   Logger log;
   var _assetService = locator<AssetService>();
   var _navigationService = locator<NavigationService>();
+  var _assetStatusService = locator<AssetStatusService>();
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
 
@@ -61,6 +65,7 @@ class AssetListViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     _assetService.setUp();
+    _assetStatusService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -75,6 +80,7 @@ class AssetListViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 2), () {
       getAssetSummaryList();
+      getAssetOperationCount();
     });
   }
 
@@ -96,6 +102,7 @@ class AssetListViewModel extends InsiteViewModel {
       _refreshing = false;
       notifyListeners();
     }
+    getAssetOperationCount();
     Logger().i("list of assets " + result.assets.length.toString());
   }
 
@@ -150,5 +157,23 @@ class AssetListViewModel extends InsiteViewModel {
                 assetSerialNumber: asset.serialNumber,
                 assetId: asset.assetId,
                 assetIdentifier: asset.assetUid)));
+  }
+
+  getAssetOperationCount() async {
+    Logger().d("getAssetOperationCount");
+    AssetCount assetCount = await _assetStatusService.getAssetCountByFilter(
+        startDate,
+        endDate,
+        "-RuntimeHours",
+        ScreenType.UTILIZATION,
+        appliedFilters);
+    if (assetCount != null) {
+      if (assetCount.countData.isNotEmpty &&
+          assetCount.countData[0].count != null) {
+        _totalCount = assetCount.countData[0].count.toInt();
+      }
+      Logger().d("result ${assetCount.toJson()}");
+    }
+    notifyListeners();
   }
 }

@@ -9,6 +9,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -159,5 +160,20 @@ class UtilizationListViewModel extends InsiteViewModel {
     }
     Logger().i("list of _utilLizationListData " +
         _utilLizationListData.length.toString());
+    getUtilizationCount();
+  }
+
+  getUtilizationCount() async {
+    Logger().d("getUtilizationCount");
+    AssetCount assetCount = await _assetService.getAssetCountByFilter(startDate,
+        endDate, "-RuntimeHours", ScreenType.UTILIZATION, appliedFilters);
+    if (assetCount != null) {
+      if (assetCount.countData.isNotEmpty &&
+          assetCount.countData[0].count != null) {
+        _totalCount = assetCount.countData[0].count.toInt();
+      }
+      Logger().d("result ${assetCount.toJson()}");
+    }
+    notifyListeners();
   }
 }

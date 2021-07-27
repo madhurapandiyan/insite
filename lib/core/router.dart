@@ -2,9 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
-import 'package:insite/views/asset_operation/asset_list_view.dart';
-import 'package:insite/views/dashboard/dashboard_view.dart' as view8;
-import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
@@ -13,9 +10,11 @@ import 'package:insite/views/fleet/fleet_view.dart' as view3;
 import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
-import 'package:insite/views/test_router/test_router_view.dart' as view7;
-import 'package:insite/views/utilization/utilization_view.dart' as view11;
+import 'package:insite/views/dashboard/dashboard_view.dart' as view7;
+import 'package:insite/views/asset_operation/asset_list_view.dart' as view8;
+import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
+import 'package:insite/views/health/health_view.dart' as view11;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -34,12 +33,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view5.LogoutView());
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
-      case testRouterViewRoute:
-        return MaterialPageRoute(builder: (_) => view7.TestRouterView());
       case dashboardViewRoute:
-        return MaterialPageRoute(builder: (_) => view8.DashboardView());
-      case locationViewRoute:
-        return MaterialPageRoute(builder: (_) => view10.LocationView());
+        return MaterialPageRoute(builder: (_) => view7.DashboardView());
+      case assetViewRoute:
+        return MaterialPageRoute(builder: (_) => view8.AssetListView());
       case assetDetailViewRoute:
         var fleetArgs = settings.arguments as view9.DetailArguments;
         return MaterialPageRoute(
@@ -47,11 +44,10 @@ class Router {
                   fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
                 ));
-      case assetViewRoute:
-        return MaterialPageRoute(builder: (_) => AssetListView());
-      case utilRouterViewRoute:
-        return MaterialPageRoute(builder: (_) => view11.UtilLizationView());
-
+      case locationViewRoute:
+        return MaterialPageRoute(builder: (_) => view10.LocationView());
+      case healthViewRoute:
+        return MaterialPageRoute(builder: (_) => view11.HealthView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

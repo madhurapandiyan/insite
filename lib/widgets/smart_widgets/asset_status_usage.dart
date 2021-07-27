@@ -144,7 +144,6 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                           itemBuilder: (context, index) {
                             ChartSampleData assetStatusData =
                                 widget.statusChartData[index];
-      
                             return AssetStatusUsageWidget(
                               chartHrsData: chartHrsData[index],
                               chartColor: colors[index],

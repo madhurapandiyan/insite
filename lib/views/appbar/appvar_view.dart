@@ -5,6 +5,7 @@ import 'package:insite/utils/dialog.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,6 +17,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onFilterTap;
   final bool shouldShowAccount;
   final bool shouldShowSearch;
+  final bool shouldShowTitle;
   final bool shouldShowFilter;
   final bool shouldShowLogout;
   InsiteAppBar({
@@ -25,6 +27,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.shouldShowAccount,
     this.isFilterSelected,
     this.shouldShowFilter,
+    this.shouldShowTitle = false,
     this.shouldShowLogout,
     this.shouldShowSearch,
     this.onSearchTap,
@@ -45,67 +48,87 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
     return ViewModelBuilder<AppbarViewModel>.reactive(
       viewModelBuilder: () => AppbarViewModel(),
       builder: (BuildContext context, AppbarViewModel viewModel, Widget _) {
-        return AppBar(
-          backgroundColor: appbarcolor,
-          leading: IconButton(
-              icon: SvgPicture.asset("assets/images/menubar.svg"),
-              onPressed: () {
-                viewModel.onHomePressed();
-              }),
-          title: InsiteImage(
-            height: 65,
-            width: 65,
-            path: "assets/images/hitachi.png",
-          ),
-          actions: [
-            shouldShowAccount
-                ? IconButton(
-                    icon: Icon(
-                      Icons.account_circle_rounded,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      viewModel.onAccountPressed();
-                    })
-                : SizedBox(),
-            shouldShowFilter
-                ? Container(
-                    color: isFilterSelected ? mediumgrey : appbarcolor,
-                    child: IconButton(
-                      icon: SvgPicture.asset(
-                        "assets/images/filter.svg",
-                        color: isFilterSelected ? white : black,
-                      ),
-                      onPressed: () {
-                        onFilterTap();
-                      },
+        return Column(
+          children: [
+            AppBar(
+              backgroundColor: appbarcolor,
+              titleSpacing: 0,
+              leading: IconButton(
+                  icon: SvgPicture.asset("assets/images/menubar.svg"),
+                  onPressed: () {
+                    viewModel.onHomePressed();
+                  }),
+              title: InsiteImage(
+                height: 65,
+                width: 65,
+                path: "assets/images/hitachi.png",
+              ),
+              actions: [
+                shouldShowAccount
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.account_circle_rounded,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          viewModel.onAccountPressed();
+                        })
+                    : SizedBox(),
+                shouldShowFilter
+                    ? Container(
+                        color: isFilterSelected ? mediumgrey : appbarcolor,
+                        child: IconButton(
+                          icon: SvgPicture.asset(
+                            "assets/images/filter.svg",
+                            color: isFilterSelected ? white : black,
+                          ),
+                          onPressed: () {
+                            onFilterTap();
+                          },
+                        ),
+                      )
+                    : SizedBox(),
+                shouldShowSearch
+                    ? Container(
+                        color: isSearchSelected ? mediumgrey : appbarcolor,
+                        child: IconButton(
+                          icon: SvgPicture.asset(
+                            "assets/images/searchs.svg",
+                            color: isSearchSelected ? white : black,
+                          ),
+                          onPressed: () {
+                            onSearchTap();
+                          },
+                        ),
+                      )
+                    : SizedBox(),
+                shouldShowLogout
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          showLogoutPrompt(viewModel, context);
+                        })
+                    : SizedBox(),
+              ],
+            ),
+            shouldShowTitle
+                ? Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: InsiteTextOverFlow(
+                      text: viewModel.accountSelected != null &&
+                              viewModel.accountSelected.DisplayName != null
+                          ? viewModel.accountSelected.DisplayName
+                          : "",
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.normal,
+                      size: 12,
                     ),
                   )
-                : SizedBox(),
-            shouldShowSearch
-                ? Container(
-                    color: isSearchSelected ? mediumgrey : appbarcolor,
-                    child: IconButton(
-                      icon: SvgPicture.asset(
-                        "assets/images/searchs.svg",
-                        color: isSearchSelected ? white : black,
-                      ),
-                      onPressed: () {
-                        onSearchTap();
-                      },
-                    ),
-                  )
-                : SizedBox(),
-            shouldShowLogout
-                ? IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      showLogoutPrompt(viewModel, context);
-                    })
-                : SizedBox(),
+                : SizedBox()
           ],
         );
       },

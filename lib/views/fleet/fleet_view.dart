@@ -60,7 +60,7 @@ class _FleetViewState extends State<FleetView> {
                                       },
                                       backgroundColor: chipBackgroundOne,
                                       padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8.0, left: 16.0),
+                                          top: 8.0, bottom: 8.0, left: 20.0),
                                     )
                                   : SizedBox(),
                               viewModel.appliedFilters
@@ -85,7 +85,8 @@ class _FleetViewState extends State<FleetView> {
                               Expanded(
                                 child: ListView.builder(
                                     itemCount: viewModel.assets.length,
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.only(
+                                        left: 16, right: 16, top: 8),
                                     controller: viewModel.scrollController,
                                     itemBuilder: (context, index) {
                                       Fleet fleet = viewModel.assets[index];

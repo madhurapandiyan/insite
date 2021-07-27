@@ -109,16 +109,13 @@ class UtilizationListViewState extends State<UtilizationListView> {
                         ? Container(
                             child: Center(child: CircularProgressIndicator()))
                         : viewModel.utilLizationListData.isNotEmpty
-                            ? ListView.separated(
-                                separatorBuilder: (context, index) {
-                                  return Divider();
-                                },
+                            ? ListView.builder(
                                 controller: viewModel.scrollController,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount:
                                     viewModel.utilLizationListData.length,
-                                padding: EdgeInsets.only(left: 8, right: 8),
+                                padding: EdgeInsets.only(left: 16, right: 16),
                                 itemBuilder: (context, index) {
                                   AssetResult utilizationData =
                                       viewModel.utilLizationListData[index];

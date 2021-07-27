@@ -29,7 +29,9 @@ class _AssetListViewState extends State<AssetListView> {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ASSET_OPERATION,
-            onFilterApplied: () {},
+            onFilterApplied: () {
+              viewModel.refresh();
+            },
             body: Stack(
               children: [
                 Column(
