@@ -36,6 +36,18 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
+  Future<AssetCount> getAssetCountByFilter(List<FilterData> list) async {
+    Logger().d("getAssetCountByFilter ");
+    try {
+      AssetCount assetStatusResponse =
+          await MyApi().getClient().assetCountAll(accountSelected.CustomerUID);
+      return assetStatusResponse;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
   Future<AssetCount> getAssetCountFromLocal(
       FilterType type, FilterSubType subType) async {
     try {

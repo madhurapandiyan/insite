@@ -19,13 +19,14 @@ import 'package:stacked/stacked.dart';
 
 class UtilizationGraphView extends StatefulWidget {
   final bool shouldRefresh;
-  const UtilizationGraphView({this.shouldRefresh});
+  const UtilizationGraphView({this.shouldRefresh, Key key}) : super(key: key);
 
   @override
-  _UtilizationGraphViewState createState() => _UtilizationGraphViewState();
+  UtilizationGraphViewState createState() => UtilizationGraphViewState();
 }
 
-class _UtilizationGraphViewState extends State<UtilizationGraphView> {
+class UtilizationGraphViewState extends State<UtilizationGraphView> {
+
   UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
   List<DateTime> dateRange = [];
   String startDate = DateFormat('MM/dd/yyyy')
@@ -168,6 +169,10 @@ class _UtilizationGraphViewState extends State<UtilizationGraphView> {
       },
       viewModelBuilder: () => UtilizationGraphViewModel(),
     );
+  }
+
+  onFilterApplied() {
+    onDateChange();
   }
 
   onDateChange() {
