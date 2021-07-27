@@ -25,12 +25,14 @@ class InsiteTextOverFlow extends StatelessWidget {
   final Color color;
   final double size;
   final FontWeight fontWeight;
-  const InsiteTextOverFlow({this.text, this.color, this.fontWeight, this.size});
+  final TextOverflow overflow;
+  const InsiteTextOverFlow(
+      {this.text, this.overflow, this.color, this.fontWeight, this.size});
 
   @override
   Widget build(BuildContext context) {
     return Text(text,
-        overflow: TextOverflow.fade,
+        overflow: overflow != null ? overflow : TextOverflow.ellipsis,
         style: TextStyle(
           color: color,
           fontWeight: fontWeight,

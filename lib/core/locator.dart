@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_service.dart';

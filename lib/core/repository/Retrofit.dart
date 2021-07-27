@@ -72,11 +72,6 @@ abstract class RestClient {
   Future<CustomersResponse> accountHierarchyChildren(
       @Query("targetcustomeruid") String targetcustomeruid);
 
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2")
-  Future<FleetSummaryResponse> fleetSummary(
-      @Queries() Map<String, dynamic> queries,
-      @Header("X-VisionLink-CustomerUid") customerId);
-
   @GET('{url}')
   Future<FleetSummaryResponse> fleetSummaryURL(
       @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
@@ -84,10 +79,6 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetResponse> assetSummaryURL(
       @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
-
-  @GET("/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals")
-  Future<AssetResponse> assetSummary(@Queries() Map<String, dynamic> queries,
-      @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<AssetLocationData> assetLocationWithCluster(

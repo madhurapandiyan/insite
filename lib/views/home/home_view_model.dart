@@ -71,9 +71,6 @@ class HomeViewModel extends InsiteViewModel {
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
 
-  AssetCount _fuelLevelData;
-  AssetCount get fuelLevelData => _fuelLevelData;
-
   AssetCount _idlingLevelData;
   AssetCount get idlingLevelData => _idlingLevelData;
 
@@ -165,9 +162,10 @@ class HomeViewModel extends InsiteViewModel {
   getFuelLevelData() async {
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
-      _fuelLevelData = result;
+      AssetCount _fuelLevelData = result;
       for (var fuelData in _fuelLevelData.countData) {
         if (fuelData.countOf != "Not Reporting") {
+          Logger().d("countOf ${fuelData.countOf}");
           fuelChartData.add(
               ChartSampleData(x: fuelData.countOf, y: fuelData.count.round()));
         }

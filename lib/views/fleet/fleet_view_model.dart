@@ -85,7 +85,7 @@ class FleetViewModel extends InsiteViewModel {
 
   onDetailPageSelected(Fleet fleet) {
     _navigationService.navigateTo(assetDetailViewRoute,
-        arguments: DetailArguments(fleet: fleet, index: 0));
+        arguments: DetailArguments(fleet: fleet, index: 0,));
   }
 
   onHomeSelected() {

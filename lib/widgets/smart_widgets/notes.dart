@@ -30,10 +30,6 @@ class Notes extends StatelessWidget {
     );
 
     return Container(
-     // width: MediaQuery.of(context).size.width * 0.95,
-      height: notes.isNotEmpty
-          ? MediaQuery.of(context).size.height * 0.40
-          : MediaQuery.of(context).size.height * 0.22,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),
@@ -58,6 +54,9 @@ class Notes extends StatelessWidget {
                       color: white, fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 10,
             ),
             notes.isNotEmpty
                 ? Container(
@@ -87,13 +86,12 @@ class Notes extends StatelessWidget {
                   )
                 : SizedBox(),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(8.0),
               child: Stack(
                 alignment: AlignmentDirectional.bottomEnd,
                 children: [
                   Container(
-                  //  width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height*0.15,
+                    height: MediaQuery.of(context).size.height * 0.15,
                     child: Material(
                       elevation: 5.0,
                       borderRadius: BorderRadius.all(

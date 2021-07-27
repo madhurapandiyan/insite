@@ -31,6 +31,11 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   var _navigationService = locator<NavigationService>();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
@@ -54,7 +59,22 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           shouldShowSearch:
               widget.screenType == ScreenType.ACCOUNT ? false : true,
           screenType: widget.screenType,
-          height: 56,
+          height: widget.screenType == ScreenType.FLEET ||
+                  widget.screenType == ScreenType.ASSET_OPERATION ||
+                  widget.screenType == ScreenType.UTILIZATION ||
+                  widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.DASHBOARD ||
+                  widget.screenType == ScreenType.LOCATION
+              ? 80
+              : 56,
+          shouldShowTitle: widget.screenType == ScreenType.FLEET ||
+                  widget.screenType == ScreenType.ASSET_OPERATION ||
+                  widget.screenType == ScreenType.UTILIZATION ||
+                  widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.DASHBOARD ||
+                  widget.screenType == ScreenType.LOCATION
+              ? true
+              : false,
           isSearchSelected: _isSearchSelected,
           isFilterSelected: _isFilterSelected,
           onSearchTap: () {

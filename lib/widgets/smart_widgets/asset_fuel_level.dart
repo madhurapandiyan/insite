@@ -187,4 +187,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
               labelIntersectAction: LabelIntersectAction.none))
     ];
   }
+
+  getCount(){
+
+  }
+  
 }

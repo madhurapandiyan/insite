@@ -1,11 +1,36 @@
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
+import '../locator.dart';
+import 'local_service.dart';
+
 class AssetStatusService extends DataBaseService {
+  Customer accountSelected;
+  Customer customerSelected;
+  var _localService = locator<LocalService>();
+
+  AssetStatusService() {
+    init();
+  }
+
+  init() async {
+    try {
+      accountSelected = await _localService.getAccountInfo();
+      customerSelected = await _localService.getCustomerInfo();
+      Logger().d("account selected " + accountSelected.CustomerUID);
+      Logger().d("customer selected " + customerSelected.CustomerUID);
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   Future<AssetCount> getAssetCount(key, FilterType type) async {
     Logger().d("getAssetCount $type");
     try {
@@ -36,11 +61,29 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount> getAssetCountByFilter(List<FilterData> list) async {
+  Future<AssetCount> getAssetCountByFilter(
+    startDate,
+    endDate,
+    sort,
+    screenType,
+    appliedFilters,
+  ) async {
     Logger().d("getAssetCountByFilter ");
     try {
-      AssetCount assetStatusResponse =
-          await MyApi().getClient().assetCountAll(accountSelected.CustomerUID);
+      AssetCount assetStatusResponse = await MyApi()
+          .getClient()
+          .assetCountByFilter(
+              Urls.assetCountSubscriptionSummary +
+                  FilterUtils.getFilterURLForCount(
+                      startDate,
+                      endDate,
+                      accountSelected != null && customerSelected != null
+                          ? customerSelected.CustomerUID
+                          : null,
+                      sort,
+                      appliedFilters,
+                      screenType),
+              accountSelected.CustomerUID);
       return assetStatusResponse;
     } catch (e) {
       Logger().e(e);
@@ -141,7 +184,7 @@ class AssetStatusService extends DataBaseService {
         Logger().d("from api");
         AssetCount fuelLevelDatarespone = await MyApi().getClient().fuelLevel(
             "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
-        print('data:${fuelLevelDatarespone.countData[0].countOf}');
+        print('data:${fuelLevelDatarespone.toJson()}');
         bool updated = await updateAssetCount(fuelLevelDatarespone, type);
         if (updated) {
           return fuelLevelDatarespone;

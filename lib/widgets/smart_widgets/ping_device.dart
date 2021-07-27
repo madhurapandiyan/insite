@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 
 class PingDevice extends StatelessWidget {
@@ -17,8 +16,6 @@ class PingDevice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.26,
       decoration: BoxDecoration(
         color: tuna,
         border: Border.all(color: black, width: 0.0),

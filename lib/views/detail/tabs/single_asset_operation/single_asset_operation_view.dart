@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';

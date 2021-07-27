@@ -5,6 +5,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/views/asset_operation/asset_list_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
@@ -39,6 +40,9 @@ class DashboardViewModel extends InsiteViewModel {
           transition: "fade");
     } else if (type == ScreenType.LOCATION) {
       _navigationService.navigateWithTransition(LocationView(),
+          transition: "fade");
+    } else {
+      _navigationService.navigateWithTransition(HealthView(),
           transition: "fade");
     }
   }

@@ -42,49 +42,42 @@ class _UtilLizationViewState extends State<UtilLizationView> {
             },
             body: Container(
               color: bgcolor,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: mediumgrey,
-                  border: Border.all(color: black, width: 0.0),
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        isListSelected
-                            ? Flexible(
-                                child: UtilizationListView(
-                                  shouldRefresh: viewModel.isFilterApplied,
-                                  key: listViewKey,
-                                ),
-                              )
-                            : Flexible(
-                                child: UtilizationGraphView(
-                                  shouldRefresh: viewModel.isFilterApplied,
-                                  key: graphViewKey,
-                                ),
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      isListSelected
+                          ? Flexible(
+                              child: UtilizationListView(
+                                shouldRefresh: viewModel.isFilterApplied,
+                                key: listViewKey,
                               ),
+                            )
+                          : Flexible(
+                              child: UtilizationGraphView(
+                                shouldRefresh: viewModel.isFilterApplied,
+                                key: graphViewKey,
+                              ),
+                            ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        ToggleButton(
+                            label1: 'list',
+                            label2: 'graph',
+                            optionSelected: (bool value) {
+                              setState(() {
+                                isListSelected = value;
+                              });
+                            }),
+                        Spacer(),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          ToggleButton(
-                              label1: 'list',
-                              label2: 'graph',
-                              optionSelected: (bool value) {
-                                setState(() {
-                                  isListSelected = value;
-                                });
-                              }),
-                          Spacer(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

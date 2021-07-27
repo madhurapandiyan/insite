@@ -11,4 +11,6 @@ class Urls {
       "/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/";
   static String assetCountSummary =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
+  static String assetCountSubscriptionSummary =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/Subscription/v1";
 }
