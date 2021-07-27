@@ -92,17 +92,17 @@ class _LocationViewState extends State<LocationView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    Utils.getDateInFormatddMMyyyy(
-                                            viewModel.startDate) +
-                                        " - " +
-                                        Utils.getDateInFormatddMMyyyy(
-                                            viewModel.endDate),
-                                    style: TextStyle(
-                                        color: white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                  ),
+                                  // Text(
+                                  //   Utils.getDateInFormatddMMyyyy(
+                                  //           viewModel.startDate) +
+                                  //       " - " +
+                                  //       Utils.getDateInFormatddMMyyyy(
+                                  //           viewModel.endDate),
+                                  //   style: TextStyle(
+                                  //       color: white,
+                                  //       fontWeight: FontWeight.bold,
+                                  //       fontSize: 12),
+                                  // ),
                                   SizedBox(
                                     width: 10,
                                   ),

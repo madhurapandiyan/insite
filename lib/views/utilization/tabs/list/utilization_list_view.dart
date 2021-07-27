@@ -10,129 +10,147 @@ import 'utilization_list_view_model.dart';
 
 class UtilizationListView extends StatefulWidget {
   final bool shouldRefresh;
-  const UtilizationListView({this.shouldRefresh});
+  const UtilizationListView({this.shouldRefresh, Key key}) : super(key: key);
 
   @override
-  _UtilizationListViewState createState() => _UtilizationListViewState();
+  UtilizationListViewState createState() => UtilizationListViewState();
 }
 
-class _UtilizationListViewState extends State<UtilizationListView> {
+class UtilizationListViewState extends State<UtilizationListView> {
   List<DateTime> dateRange = [];
+
+  var viewModel;
+
+  @override
+  void initState() {
+    viewModel = UtilizationListViewModel();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  onFilterApplied() {
+    viewModel.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
-      builder:
-          (BuildContext context, UtilizationListViewModel viewModel, Widget _) {
-        return Stack(
-          children: [
-            Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                    child: GestureDetector(
-                      onTap: () async {
-                        dateRange = [];
-                        dateRange = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              backgroundColor: transparent,
-                              child: DateRangeView()),
-                        );
-                        if (dateRange != null && dateRange.isNotEmpty) {
-                          viewModel.refresh();
-                        }
-                      },
-                      child: Container(
-                        width: 90,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: cardcolor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
+        builder: (BuildContext context, UtilizationListViewModel viewModel,
+            Widget _) {
+          return Stack(
+            children: [
+              Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+                      child: GestureDetector(
+                        onTap: () async {
+                          dateRange = [];
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          if (dateRange != null && dateRange.isNotEmpty) {
+                            viewModel.refresh();
+                          }
+                        },
+                        child: Container(
+                          width: 90,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: cardcolor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Date Range',
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          child: Center(
+                            child: Text(
+                              'Date Range',
+                              style: TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                PageHeader(
-                  isDashboard: false,
-                  total: viewModel.totalCount,
-                  count: viewModel.utilLizationListData.length,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: 16.0, top: 8, bottom: 16, right: 16),
-                  child: Text(
-                    'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                  PageHeader(
+                    isDashboard: false,
+                    total: viewModel.totalCount,
+                    count: viewModel.utilLizationListData.length,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 16.0, top: 8, bottom: 16, right: 16),
+                    child: Text(
+                      'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
+                      style: TextStyle(
+                        color: white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: viewModel.loading
-                      ? Container(
-                          child: Center(child: CircularProgressIndicator()))
-                      : viewModel.utilLizationListData.isNotEmpty
-                          ? ListView.separated(
-                              separatorBuilder: (context, index) {
-                                return Divider();
-                              },
-                              controller: viewModel.scrollController,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: viewModel.utilLizationListData.length,
-                              padding: EdgeInsets.only(left: 8, right: 8),
-                              itemBuilder: (context, index) {
-                                AssetResult utilizationData =
-                                    viewModel.utilLizationListData[index];
-                                return UtilizationListItem(
-                                  utilizationData: utilizationData,
-                                  isShowingInDetailPage: false,
-                                  onCallback: () {
-                                    viewModel
-                                        .onDetailPageSelected(utilizationData);
-                                  },
-                                );
-                              })
-                          : EmptyView(
-                              title: "No Assets Found",
-                            ),
-                ),
-                viewModel.loadingMore
-                    ? Padding(
-                        padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            viewModel.refreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
-          ],
-        );
-      },
-      viewModelBuilder: () => UtilizationListViewModel(),
-    );
+                  Expanded(
+                    child: viewModel.loading
+                        ? Container(
+                            child: Center(child: CircularProgressIndicator()))
+                        : viewModel.utilLizationListData.isNotEmpty
+                            ? ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return Divider();
+                                },
+                                controller: viewModel.scrollController,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount:
+                                    viewModel.utilLizationListData.length,
+                                padding: EdgeInsets.only(left: 8, right: 8),
+                                itemBuilder: (context, index) {
+                                  AssetResult utilizationData =
+                                      viewModel.utilLizationListData[index];
+                                  return UtilizationListItem(
+                                    utilizationData: utilizationData,
+                                    isShowingInDetailPage: false,
+                                    onCallback: () {
+                                      viewModel.onDetailPageSelected(
+                                          utilizationData);
+                                    },
+                                  );
+                                })
+                            : EmptyView(
+                                title: "No Assets Found",
+                              ),
+                  ),
+                  viewModel.loadingMore
+                      ? Padding(
+                          padding: EdgeInsets.all(8),
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              viewModel.refreshing
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SizedBox()
+            ],
+          );
+        },
+        viewModelBuilder: () => viewModel);
   }
 }

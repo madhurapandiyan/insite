@@ -225,6 +225,7 @@ class _SingleAssetUtilizationGraphViewState
                               .IDLETIMEIDLEPERCENTAGE)
                         return PercentageWidget(
                             color: sandyBrown,
+                            isTwoLineLabel: true,
                             label: rangeChoice == 1
                                 ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
                                 : rangeChoice == 2

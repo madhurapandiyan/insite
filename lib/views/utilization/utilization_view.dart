@@ -6,7 +6,6 @@ import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {
@@ -19,6 +18,17 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   int rangeChoice = 1;
   bool isRangeSelectionVisible = false;
 
+  final GlobalKey<UtilizationListViewState> listViewKey = new GlobalKey();
+  final GlobalKey<UtilizationGraphViewState> graphViewKey = new GlobalKey();
+
+  void refreshWithFilter() {
+    if (isListSelected) {
+      listViewKey.currentState.onFilterApplied();
+    } else {
+      graphViewKey.currentState.onFilterApplied();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
@@ -28,7 +38,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
             screenType: ScreenType.UTILIZATION,
             viewModel: viewModel,
             onFilterApplied: () {
-              viewModel.refresh();
+              refreshWithFilter();
             },
             body: Container(
               color: bgcolor,
@@ -46,11 +56,13 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                             ? Flexible(
                                 child: UtilizationListView(
                                   shouldRefresh: viewModel.isFilterApplied,
+                                  key: listViewKey,
                                 ),
                               )
                             : Flexible(
                                 child: UtilizationGraphView(
                                   shouldRefresh: viewModel.isFilterApplied,
+                                  key: graphViewKey,
                                 ),
                               ),
                       ],

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:logger/logger.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PercentageWidget extends StatelessWidget {
@@ -9,6 +8,7 @@ class PercentageWidget extends StatelessWidget {
   final Color color;
   final bool isPercentage;
   final String value;
+  final bool isTwoLineLabel;
 
   const PercentageWidget({
     Key key,
@@ -16,6 +16,7 @@ class PercentageWidget extends StatelessWidget {
     @required this.percentage,
     @required this.color,
     this.isPercentage,
+    this.isTwoLineLabel = false,
     this.value,
   }) : super(key: key);
 
@@ -29,8 +30,11 @@ class PercentageWidget extends StatelessWidget {
         animationDuration: 1000,
         lineHeight: 20.0,
         leading: Text(
-          label.length > 10 ? label.substring(0, 7) + '...' : label,
-          // label,
+          !isTwoLineLabel
+              ? label.length > 10
+                  ? label.substring(0, 9) + '...'
+                  : label
+              : label,
           style: TextStyle(
             color: white,
             fontSize: 10,

@@ -99,11 +99,6 @@ abstract class RestClient {
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 
-  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
-  Future<location.AssetLocationData> assetLocation(
-      @Queries() Map<String, dynamic> queries,
-      @Header("x-visionlink-customeruid") customerId);
-
   @GET('{url}')
   Future<location.AssetLocationData> assetLocationSummary(
       @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
@@ -223,6 +218,10 @@ abstract class RestClient {
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> assetCountAll(
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AssetCount> assetCountByFilter(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<location.AssetLocationData> assetLocationWithOutFilter(
