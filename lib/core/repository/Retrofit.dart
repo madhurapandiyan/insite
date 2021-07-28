@@ -13,6 +13,7 @@ import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
@@ -54,8 +55,11 @@ abstract class RestClient {
   Future<List<Sample>> getTasks();
 
   @GET("/userinfo?schema=openid")
-  Future<UserInfo> getUserInfo();
-
+  Future<UserInfo> getUserInfo(
+  @Header("content-type") String contentType,
+  @Header("Authorization") String authorization
+  );
+ 
   @GET(
       "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
   Future<PermissionResponse> getPermission(
@@ -324,6 +328,17 @@ abstract class RestClient {
     @Query("date") String date,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @POST("/token")
+  Future<LoginResponse> getLoginData(
+      @Query("username") String username,
+      @Query("password") String password,
+      @Query("grant_type") String granttype,
+      @Query("client_id") String clientid,
+      @Query("client_secret") String clientsecret,
+      @Query("scope") String scope,
+      @Header("content-type") String contentType
+      );
 }
 
 @JsonSerializable()
