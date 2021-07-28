@@ -26,7 +26,7 @@ class LoginViewModel extends InsiteViewModel {
     _loginService.saveToken(result.access_token, result.expires_in.toString());
     _loading = true;
     notifyListeners();
-     print('data:$result');
+    print('data:$result');
   }
 
   submit() {
@@ -36,5 +36,4 @@ class LoginViewModel extends InsiteViewModel {
     }
     formKey.currentState.save();
   }
-  
 }

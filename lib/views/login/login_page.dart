@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.asset("assets/images/cap.png"),
-                      Image.asset("assets/images/layerTata.png")
+                      Image.asset("assets/images/layer_tata.png")
                     ],
                   ),
                   SizedBox(
@@ -55,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: 10.0,
                             ),
-                            Image.asset("assets/images/hitachiFont.png"),
-                            Image.asset("assets/images/fontLogin.png"),
+                            Image.asset("assets/images/hitachi_font.png"),
+                            Image.asset("assets/images/font_login.png"),
                             SizedBox(
                               height: 15,
                             ),
@@ -104,18 +104,20 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             viewModel.loading
                                 ? Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4.0),
+                                        borderRadius:
+                                            BorderRadius.circular(4.0),
                                         boxShadow: [
                                           new BoxShadow(
                                               blurRadius: 1.0, color: tango)
                                         ],
-                                        border:
-                                            Border.all(width: 2.5, color: tango),
+                                        border: Border.all(
+                                            width: 2.5, color: tango),
                                         shape: BoxShape.rectangle,
                                       ),
                                       child: Center(
@@ -124,10 +126,10 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                       ),
                                     ),
-                                )
+                                  )
                                 : Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: InsiteButton(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: InsiteButton(
                                       title: 'SIGN IN',
                                       onTap: () {
                                         var username =
@@ -140,11 +142,12 @@ class _LoginPageState extends State<LoginPage> {
                                       },
                                       //width: MediaQuery.of(context).size.width*0.350,
                                       bgColor: tango,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.05,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.05,
                                       textColor: appbarcolor,
                                     ),
-                                )
+                                  )
                           ],
                         ),
                       ),
@@ -157,17 +160,17 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
-                        "assets/images/craneSmallLogin.png",
+                        "assets/images/crane_small_login.png",
                         width: 123,
                         height: 70,
                       ),
                       Image.asset(
-                        "assets/images/jcpLogin.png",
+                        "assets/images/jcp_login.png",
                         width: 143,
                         height: 70,
                       ),
                       Image.asset(
-                        "assets/images/craneLargeLogin.png",
+                        "assets/images/crane_large_login.png",
                         width: 123,
                         height: 60,
                       ),
@@ -180,17 +183,17 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
-                        "assets/images/tractorLogin.png",
+                        "assets/images/tractor_login.png",
                         width: 123,
                         height: 70,
                       ),
                       Image.asset(
-                        "assets/images/lorryLogin.png",
+                        "assets/images/lorry_login.png",
                         width: 143,
                         height: 70,
                       ),
                       Image.asset(
-                        "assets/images/lorryLargeLogin.png",
+                        "assets/images/lorry_large_login.png",
                         width: 123,
                         height: 60,
                       ),

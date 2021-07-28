@@ -27,9 +27,7 @@ class LoginService extends BaseService {
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "eoltool://mobile");
       UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
-          "application/json",
-          "Bearer" + " "+  await _localService.getToken()
-          );
+          "application/json", "Bearer" + " " + await _localService.getToken());
       return userInfo;
     } catch (e) {
       Logger().e(e.toString());
