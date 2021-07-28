@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
@@ -25,10 +26,13 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "eoltool://mobile");
-      UserInfo userInfo = await MyApi().getClientOne().getUserInfo();
+      UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
+          "application/json",
+          "Bearer" + " "+  await _localService.getToken()
+          );
       return userInfo;
     } catch (e) {
-      Logger().e(e);
+      Logger().e(e.toString());
       return null;
     }
   }
@@ -109,5 +113,31 @@ class LoginService extends BaseService {
       Logger().e(e);
       return [];
     }
+  }
+
+  Future<LoginResponse> getLoginData(
+    username,
+    password,
+  ) async {
+    try {
+      LoginResponse loginResponse = await MyApi().getClientOne().getLoginData(
+          username,
+          password,
+          'password',
+          'kk3nOJhfWo1_GkxiMnvQ8iHtax8a',
+          '_bd5Ohhjft9AbrTANMeILT4sMBoa',
+          'openid',
+          "application/x-www-form-urlencoded");
+      return loginResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  saveToken(token, String expiryTime) {
+    Logger().i("saveToken from webview");
+    getUser(token, false);
+    saveExpiryTime(expiryTime);
   }
 }

@@ -75,9 +75,8 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
           options.headers.addAll({
-            "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " + await _localService.getToken(),
+            //"Authorization": "Bearer " + await _localService.getToken(),
             "timezoneoffset": -330
           });
           return options;

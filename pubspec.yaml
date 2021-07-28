@@ -82,6 +82,16 @@ flutter:
     - assets/images/shinrai.png
     - assets/images/TH86.png
     - assets/images/TL340H.png
+    - assets/images/cap.png
+    - assets/images/layerTata.png
+    - assets/images/jcpLogin.png
+    - assets/images/craneSmallLogin.png
+    - assets/images/craneLargeLogin.png
+    - assets/images/tractorLogin.png
+    - assets/images/lorryLogin.png
+    - assets/images/lorryLargeLogin.png
+    - assets/images/hitachiFont.png
+    - assets/images/fontLogin.png
 
   fonts:
     - family: Roboto

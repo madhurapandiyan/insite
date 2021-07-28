@@ -124,7 +124,9 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UserInfo> getUserInfo() async {
+  Future<UserInfo> getUserInfo(contentType, authorization) async {
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    ArgumentError.checkNotNull(authorization, 'authorization');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -133,8 +135,12 @@ class _RestClient implements RestClient {
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
-            headers: <String, dynamic>{},
+            headers: <String, dynamic>{
+              r'content-type': contentType,
+              r'Authorization': authorization
+            },
             extra: _extra,
+            contentType: contentType,
             baseUrl: baseUrl),
         data: _data);
     final value = UserInfo.fromJson(_result.data);
@@ -1229,6 +1235,39 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = UtilizationSummary.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<LoginResponse> getLoginData(username, password, granttype, clientid,
+      clientsecret, scope, contentType) async {
+    ArgumentError.checkNotNull(username, 'username');
+    ArgumentError.checkNotNull(password, 'password');
+    ArgumentError.checkNotNull(granttype, 'granttype');
+    ArgumentError.checkNotNull(clientid, 'clientid');
+    ArgumentError.checkNotNull(clientsecret, 'clientsecret');
+    ArgumentError.checkNotNull(scope, 'scope');
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'username': username,
+      r'password': password,
+      r'grant_type': granttype,
+      r'client_id': clientid,
+      r'client_secret': clientsecret,
+      r'scope': scope
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/token',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'content-type': contentType},
+            extra: _extra,
+            contentType: contentType,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = LoginResponse.fromJson(_result.data);
     return value;
   }
 }
