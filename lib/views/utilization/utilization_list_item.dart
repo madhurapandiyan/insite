@@ -44,7 +44,7 @@ class UtilizationListItem extends StatelessWidget {
                         children: [
                           TableRow(
                             children: [
-                              InsiteTableRowIcon(
+                              InsiteTableRowItemWithIcon(
                                 iconPath: "-",
                                 title: utilizationData.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
@@ -310,7 +310,7 @@ class UtilizationListItem extends StatelessWidget {
                         children: [
                           TableRow(
                             children: [
-                              InsiteTableRowWithImage(
+                              InsiteTableRowItemWithImage(
                                 title: utilizationData.model,
                                 path: utilizationData == null
                                     ? "assets/images/EX210.png"

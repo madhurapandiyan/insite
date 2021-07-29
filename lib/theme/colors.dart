@@ -46,3 +46,7 @@ final kNeumorphicColors = [emerald, concrete, mustard, burntSienna];
 //chip background
 const Color chipBackgroundOne = Color(0xff303238);
 const Color chipBackgroundTwo = Color(0xff211F20);
+
+//buttonColor
+const Color buttonColorFive = Color(0xffEB5757);
+

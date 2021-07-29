@@ -10,11 +10,13 @@ class InsiteButton extends StatelessWidget {
   final double width;
   final double height;
   final Icon icon;
+  final EdgeInsets padding;
   const InsiteButton(
       {this.title,
       this.width,
       this.onTap,
       this.bgColor,
+      this.padding,
       this.height,
       this.fontSize,
       this.icon,
@@ -25,7 +27,7 @@ class InsiteButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: padding != null ? padding : EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: bgColor != null ? bgColor : tango,
@@ -42,7 +44,7 @@ class InsiteButton extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: fontSize!=null?fontSize:12.0,
+                  fontSize: fontSize != null ? fontSize : 12.0,
                   color: textColor != null ? textColor : Colors.white,
                   fontWeight: FontWeight.w700),
             ),

@@ -9,15 +9,15 @@ import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
-import 'asset_listview_model.dart';
+import 'asset_operation_model.dart';
 
-class AssetListView extends StatefulWidget {
-  AssetListView();
+class AssetOperationView extends StatefulWidget {
+  AssetOperationView();
   @override
-  _AssetListViewState createState() => _AssetListViewState();
+  _AssetOperationViewState createState() => _AssetOperationViewState();
 }
 
-class _AssetListViewState extends State<AssetListView> {
+class _AssetOperationViewState extends State<AssetOperationView> {
   List<String> menuFilters = ['Asset ID', 'Serial Number'];
   String menuItem = "Asset ID";
   List<DateTime> dateRange = [];
@@ -25,7 +25,7 @@ class _AssetListViewState extends State<AssetListView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
-      builder: (BuildContext context, AssetListViewModel viewModel, Widget _) {
+      builder: (BuildContext context, AssetOperationViewModel viewModel, Widget _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ASSET_OPERATION,
@@ -135,7 +135,7 @@ class _AssetListViewState extends State<AssetListView> {
                                     padding: EdgeInsets.all(16),
                                     itemBuilder: (context, index) {
                                       Asset asset = viewModel.assets[index];
-                                      return AssetListItem(
+                                      return AssetOperationListItem(
                                         asset: asset,
                                         days: viewModel.days,
                                         onCallback: () {
@@ -161,7 +161,7 @@ class _AssetListViewState extends State<AssetListView> {
               ],
             ));
       },
-      viewModelBuilder: () => AssetListViewModel(),
+      viewModelBuilder: () => AssetOperationViewModel(),
     );
   }
 }

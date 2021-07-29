@@ -66,8 +66,8 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                     child: Row(
                       children: [
                         ToggleButton(
-                            label1: 'list',
-                            label2: 'graph',
+                            label1: '  list  ',
+                            label2: '  graph  ',
                             optionSelected: (bool value) {
                               setState(() {
                                 isListSelected = value;

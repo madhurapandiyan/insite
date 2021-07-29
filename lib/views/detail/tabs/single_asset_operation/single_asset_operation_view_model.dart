@@ -78,6 +78,8 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
         for (Segment segment in assetLocalDate.segments) {
           _assetOperationDates.add(segment.startTimeUtc);
           _assetOperationDates.add(segment.endTimeUtc);
+          Logger().d(
+              "segment data ${segment.startTimeUtc} ${segment.endTimeUtc} ${segment.segmentType}");
           _chartData.add(
             SingleAssetOperationChartData(
               segment.startTimeUtc,
