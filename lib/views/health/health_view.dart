@@ -15,10 +15,11 @@ class HealthView extends StatelessWidget {
           onFilterApplied: () {},
           screenType: ScreenType.HEALTH,
           body: Center(
-            child: InsiteText(
+            child:InsiteText(
               text: 'Coming soon !',
               color: Colors.white,
             ),
+
           ),
         );
       },

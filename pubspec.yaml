@@ -92,6 +92,7 @@ flutter:
     - assets/images/lorry_large_login.png
     - assets/images/hitachi_font.png
     - assets/images/font_login.png
+    - assets/images/fault_world.png
 
   fonts:
     - family: Roboto
