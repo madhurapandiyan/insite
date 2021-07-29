@@ -13,7 +13,7 @@ import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class AssetListViewModel extends InsiteViewModel {
+class AssetOperationViewModel extends InsiteViewModel {
   Logger log;
   var _assetService = locator<AssetService>();
   var _navigationService = locator<NavigationService>();
@@ -61,7 +61,7 @@ class AssetListViewModel extends InsiteViewModel {
     }
   }
 
-  AssetListViewModel() {
+  AssetOperationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     _assetService.setUp();

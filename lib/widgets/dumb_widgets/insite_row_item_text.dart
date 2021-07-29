@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'insite_image.dart';
 import 'insite_text.dart';
 
@@ -37,11 +38,11 @@ class InsiteTableRowItem extends StatelessWidget {
   }
 }
 
-class InsiteTableRowWithImage extends StatelessWidget {
+class InsiteTableRowItemWithImage extends StatelessWidget {
   final String title;
   final String path;
 
-  const InsiteTableRowWithImage({this.title, this.path});
+  const InsiteTableRowItemWithImage({this.title, this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +94,10 @@ class InsiteTableRowWithImage extends StatelessWidget {
   }
 }
 
-class InsiteTableRowIcon extends StatelessWidget {
+class InsiteTableRowItemWithIcon extends StatelessWidget {
   final String title;
   final String iconPath;
-  const InsiteTableRowIcon({this.title, this.iconPath});
+  const InsiteTableRowItemWithIcon({this.title, this.iconPath});
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +118,42 @@ class InsiteTableRowIcon extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.normal,
             color: textcolor,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class InsiteTableRowItemWithButton extends StatelessWidget {
+  final String title;
+  final String content;
+
+  const InsiteTableRowItemWithButton({
+    this.title,
+    this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InsiteText(
+            text: title,
+            color: athenGrey,
+            size: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          InsiteButton(
+            bgColor: buttonColorFive,
+            title: content,
+            padding: EdgeInsets.all(0),
+            height: 25,
+            width: 60,
+            fontSize: 12,
           )
         ],
       ),

@@ -20,6 +20,29 @@ class InsiteText extends StatelessWidget {
   }
 }
 
+class InsiteTextWithPadding extends StatelessWidget {
+  final String text;
+  final Color color;
+  final double size;
+  final EdgeInsets padding;
+  final FontWeight fontWeight;
+  const InsiteTextWithPadding(
+      {this.text, this.color, this.fontWeight, this.padding, this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: padding,
+      child: Text(text,
+          style: TextStyle(
+            color: color,
+            fontWeight: fontWeight,
+            fontSize: size,
+          )),
+    );
+  }
+}
+
 class InsiteTextOverFlow extends StatelessWidget {
   final String text;
   final Color color;

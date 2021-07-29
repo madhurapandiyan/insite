@@ -21,7 +21,6 @@ class _ToggleButtonState extends State<ToggleButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 130,
       height: 30,
       decoration: BoxDecoration(
         color: white,
@@ -30,61 +29,58 @@ class _ToggleButtonState extends State<ToggleButton> {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isOptionOneSelected = true;
-                  widget.optionSelected(isOptionOneSelected);
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isOptionOneSelected ? tango : cardcolor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(4),
-                    topLeft: Radius.circular(4),
-                  ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isOptionOneSelected = true;
+                widget.optionSelected(isOptionOneSelected);
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: isOptionOneSelected ? tango : cardcolor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(4),
+                  topLeft: Radius.circular(4),
                 ),
-                child: Center(
-                  child: Text(
-                    widget.label1.toUpperCase(),
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+              ),
+              padding: EdgeInsets.all(4),
+              child: Center(
+                child: Text(
+                  widget.label1.toUpperCase(),
+                  style: TextStyle(
+                    color: white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isOptionOneSelected = false;
-                  widget.optionSelected(isOptionOneSelected);
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isOptionOneSelected ? cardcolor : tango,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(4),
-                    topRight: Radius.circular(4),
-                  ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isOptionOneSelected = false;
+                widget.optionSelected(isOptionOneSelected);
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: isOptionOneSelected ? cardcolor : tango,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(4),
+                  topRight: Radius.circular(4),
                 ),
-                child: Center(
-                  child: Text(
-                    widget.label2.toUpperCase(),
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+              ),
+              padding: EdgeInsets.all(4),
+              child: Center(
+                child: Text(
+                  widget.label2.toUpperCase(),
+                  style: TextStyle(
+                    color: white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

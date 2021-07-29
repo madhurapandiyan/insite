@@ -8,11 +8,11 @@ import 'package:insite/widgets/smart_widgets/date_slider.dart';
 import 'package:intl/intl.dart';
 import 'insite_expansion_tile.dart';
 
-class AssetListItem extends StatelessWidget {
+class AssetOperationListItem extends StatelessWidget {
   final Asset asset;
   final List<DateTime> days;
   final VoidCallback onCallback;
-  const AssetListItem({
+  const AssetOperationListItem({
     this.asset,
     this.onCallback,
     this.days,
@@ -63,7 +63,7 @@ class AssetListItem extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        InsiteTableRowWithImage(
+                        InsiteTableRowItemWithImage(
                           title: asset != null ? asset.model : "",
                           path: asset == null
                               ? "assets/images/EX210.png"

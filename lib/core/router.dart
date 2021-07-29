@@ -11,7 +11,8 @@ import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view7;
-import 'package:insite/views/asset_operation/asset_list_view.dart' as view8;
+import 'package:insite/views/asset_operation/asset_operation_view.dart'
+    as view8;
 import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
@@ -36,7 +37,7 @@ class Router {
       case dashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view7.DashboardView());
       case assetViewRoute:
-        return MaterialPageRoute(builder: (_) => view8.AssetListView());
+        return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
         var fleetArgs = settings.arguments as view9.DetailArguments;
         return MaterialPageRoute(

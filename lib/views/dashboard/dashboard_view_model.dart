@@ -3,7 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/views/asset_operation/asset_list_view.dart';
+import 'package:insite/views/asset_operation/asset_operation_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/home/home_view.dart';
@@ -33,7 +33,7 @@ class DashboardViewModel extends InsiteViewModel {
       _navigationService.navigateWithTransition(FleetView(),
           transition: "fade");
     } else if (type == ScreenType.ASSET_OPERATION) {
-      _navigationService.navigateWithTransition(AssetListView(),
+      _navigationService.navigateWithTransition(AssetOperationView(),
           transition: "fade");
     } else if (type == ScreenType.UTILIZATION) {
       _navigationService.navigateWithTransition(UtilLizationView(),
