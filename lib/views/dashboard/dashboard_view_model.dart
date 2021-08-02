@@ -41,7 +41,7 @@ class DashboardViewModel extends InsiteViewModel {
     } else if (type == ScreenType.LOCATION) {
       _navigationService.navigateWithTransition(LocationView(),
           transition: "fade");
-    } else {
+    } else if (type == ScreenType.HEALTH) {
       _navigationService.navigateWithTransition(HealthView(),
           transition: "fade");
     }

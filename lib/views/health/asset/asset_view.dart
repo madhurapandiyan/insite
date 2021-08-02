@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:insite/widgets/dumb_widgets/fault_list_item.dart';
+import 'package:insite/core/models/fault.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/health_asset_list_item.dart';
 import 'package:stacked/stacked.dart';
 
@@ -35,13 +36,25 @@ class AssetViewState extends State<AssetView> {
               height: 60,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return HealthAssetListItem();
-                },
-              ),
+              child: model.loading
+                  ? Container(child: Center(child: CircularProgressIndicator()))
+                  : model.faults.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: model.faults.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            Fault fault = model.faults[index];
+                            return HealthAssetListItem(
+                              fault: fault,
+                              onCallback: () {
+                                viewModel.onDetailPageSelected(fault);
+                              },
+                            );
+                          },
+                        )
+                      : EmptyView(
+                          title: "No Assets Found",
+                        ),
             ),
           ],
         );

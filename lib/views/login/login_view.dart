@@ -5,6 +5,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,14 +20,7 @@ class _LoginViewState extends State<LoginView> {
   StreamSubscription _onDestroy;
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String logoutUrl =
-      "https://identity.trimble.com/i/commonauth?commonAuthLogout=true&type=samlsso&sessionDataKey=E294FEF4A64BF7E14940E2964F78E351&commonAuthCallerPath=https://unifiedfleet.myvisionlink.com/";
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  String loginUrl =
-      "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
-          "https://unifiedfleet.myvisionlink.com" +
-          "&client_id=" +
-          "2JkDsLlgBWwDEdRHkUiaO9TRWMYa";
   bool isLoading = false;
   var _navigationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
@@ -66,8 +60,8 @@ class _LoginViewState extends State<LoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("URL changed: $url");
-        if (url.startsWith(
-            "https://unifiedfleet.myvisionlink.com/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
+        if (url.startsWith(Urls.unifiedServiceBaseUrl +
+            "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
           print("URL changed with access token: $url");
           // Future.delayed(Duration(seconds: 2), () {
           // flutterWebviewPlugin.launch(loginUrl);
@@ -77,8 +71,8 @@ class _LoginViewState extends State<LoginView> {
           //     predicate: (Route<dynamic> route) => false);
           // });
           // flutterWebviewPlugin.close();
-        } else if (url.startsWith(
-            "https://unifiedfleet.myvisionlink.com/#/access_token=")) {
+        } else if (url
+            .startsWith(Urls.unifiedServiceBaseUrl + "/#/access_token=")) {
           print("URL changed with access token: $url");
           try {
             List<String> list = url.split("=");
@@ -120,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url: logoutUrl,
+                  url: Urls.logoutUrlUnifiedService,
                 ),
                 isLoading
                     ? Center(child: CircularProgressIndicator())

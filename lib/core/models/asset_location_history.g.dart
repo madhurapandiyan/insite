@@ -96,16 +96,6 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'zip': instance.zip,
     };
 
-Links _$LinksFromJson(Map<String, dynamic> json) {
-  return Links(
-    self: json['self'] as String,
-  );
-}
-
-Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{
-      'self': instance.self,
-    };
-
 Pagination _$PaginationFromJson(Map<String, dynamic> json) {
   return Pagination(
     totalCount: json['totalCount'] as int,

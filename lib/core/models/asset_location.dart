@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'links.dart';
 part 'asset_location.g.dart';
 
 @JsonSerializable()
@@ -36,23 +37,6 @@ class CountDatum {
       _$CountDatumFromJson(json);
 
   Map<String, dynamic> toJson() => _$CountDatumToJson(this);
-}
-
-@JsonSerializable()
-class Links {
-  Links({
-    this.self,
-    this.next,
-    this.prev,
-  });
-
-  String self;
-  String next;
-  dynamic prev;
-
-  factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LinksToJson(this);
 }
 
 @JsonSerializable()

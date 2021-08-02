@@ -14,27 +14,32 @@ class FilterUtils {
       ScreenType screenType) {
     try {
       StringBuffer value = StringBuffer();
-      value.write(constructQuery("pageNumber", pageNumber.toString(), true));
-      value.write(constructQuery("pageSize", pageSize.toString(), false));
-      if (screenType != ScreenType.FLEET && screenType != ScreenType.LOCATION) {
-        if (screenType == ScreenType.ASSET_OPERATION) {
-          if (sort != null) {
+      if (screenType == ScreenType.HEALTH) {
+        value.write(constructQuery("page", pageNumber.toString(), true));
+        value.write(constructQuery("limit", pageSize.toString(), false));
+      } else {
+        value.write(constructQuery("pageNumber", pageNumber.toString(), true));
+        value.write(constructQuery("pageSize", pageSize.toString(), false));
+      }
+      if (sort != null) {
+        if (screenType != ScreenType.FLEET &&
+            screenType != ScreenType.LOCATION) {
+          if (screenType == ScreenType.ASSET_OPERATION) {
             value.write(constructQuery("startdate", startDate, false));
-          }
-          if (sort != null) {
             value.write(constructQuery("enddate", endDate, false));
-          }
-        } else {
-          if (sort != null) {
+          } else if (screenType == ScreenType.HEALTH) {
+            value.write(constructQuery("startDateTime", startDate, false));
+            value.write(constructQuery("endDateTime", endDate, false));
+          } else {
             value.write(constructQuery("startDate", startDate, false));
-          }
-          if (sort != null) {
             value.write(constructQuery("endDate", endDate, false));
           }
         }
-      }
-      if (sort != null) {
-        value.write(constructQuery("sort", sort, false));
+        if (screenType == ScreenType.HEALTH) {
+          value.write(constructQuery("langDesc", sort, false));
+        } else {
+          value.write(constructQuery("sort", sort, false));
+        }
       }
       if (screenType == ScreenType.FLEET || screenType == ScreenType.LOCATION) {
         if (customerId != null) {

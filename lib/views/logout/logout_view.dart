@@ -6,6 +6,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'logout_view_model.dart';
@@ -16,14 +17,7 @@ class LogoutView extends StatefulWidget {
 }
 
 class _LogoutViewState extends State<LogoutView> {
-  String loginUrl =
-      "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
-          "https://unifiedfleet.myvisionlink.com" +
-          "&client_id=" +
-          "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
-          "&state=https://unifiedfleet.myvisionlink.com/tatahitachi/&nonce=1&t=DCCCF741-6BC4-436D-A4D5-68C6D3403573";
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-
   StreamSubscription _onDestroy;
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
@@ -133,7 +127,7 @@ class _LogoutViewState extends State<LogoutView> {
             body: SafeArea(
               child: Stack(
                 children: [
-                  WebviewScaffold(url: loginUrl),
+                  WebviewScaffold(url: Urls.unifiedServiceloginUrl),
                   isLoading
                       ? Center(child: CircularProgressIndicator())
                       : SizedBox()

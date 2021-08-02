@@ -8,6 +8,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
@@ -55,11 +56,9 @@ abstract class RestClient {
   Future<List<Sample>> getTasks();
 
   @GET("/userinfo?schema=openid")
-  Future<UserInfo> getUserInfo(
-  @Header("content-type") String contentType,
-  @Header("Authorization") String authorization
-  );
- 
+  Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
+      @Header("Authorization") String authorization);
+
   @GET(
       "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
   Future<PermissionResponse> getPermission(
@@ -337,8 +336,15 @@ abstract class RestClient {
       @Query("client_id") String clientid,
       @Query("client_secret") String clientsecret,
       @Query("scope") String scope,
-      @Header("content-type") String contentType
-      );
+      @Header("content-type") String contentType);
+
+  @POST('{url}')
+  Future<FaultSummaryResponse> faultViewSummaryURL(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+
+  @POST('{url}')
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 }
 
 @JsonSerializable()

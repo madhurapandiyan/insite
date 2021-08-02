@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/fault.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
@@ -6,12 +7,16 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class FaultListItem extends StatelessWidget {
-  const FaultListItem({Key key}) : super(key: key);
+  final Fault fault;
+  final VoidCallback onCallback;
+  const FaultListItem({this.fault, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        onCallback();
+      },
       child: Card(
         color: cardcolor,
         shape: RoundedRectangleBorder(

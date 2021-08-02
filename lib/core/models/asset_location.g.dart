@@ -46,20 +46,6 @@ Map<String, dynamic> _$CountDatumToJson(CountDatum instance) =>
       'count': instance.count,
     };
 
-Links _$LinksFromJson(Map<String, dynamic> json) {
-  return Links(
-    self: json['self'] as String,
-    next: json['next'] as String,
-    prev: json['prev'],
-  );
-}
-
-Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{
-      'self': instance.self,
-      'next': instance.next,
-      'prev': instance.prev,
-    };
-
 MapRecord _$MapRecordFromJson(Map<String, dynamic> json) {
   return MapRecord(
     assetIdentifier: json['assetIdentifier'] as String,
