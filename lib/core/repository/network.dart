@@ -69,7 +69,7 @@ class HttpWrapper {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " + await _localService.getToken(),
+           // "Authorization": "Bearer " + await _localService.getToken(),
           });
           return options;
         },

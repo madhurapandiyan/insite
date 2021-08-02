@@ -12,3 +12,4 @@ const String assetViewRoute = 'assetViewRoute';
 const String assetDetailViewRoute = 'assetDetailViewRoute';
 const String locationViewRoute = 'locationViewRoute';
 const String healthViewRoute = 'healthViewRoute';
+const String healthListViewRoute = 'healthListViewRoute';

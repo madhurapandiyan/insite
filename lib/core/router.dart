@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/views/detail/tabs/health_list/health_list_view.dart'as view12;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
@@ -49,6 +50,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
+        case healthListViewRoute:
+        return MaterialPageRoute(builder: (_)=>(view12.HealthListView()));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

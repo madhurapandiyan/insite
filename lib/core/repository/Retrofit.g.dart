@@ -1245,4 +1245,41 @@ class _RestClient implements RestClient {
     final value = AssetFaultSummaryResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<HealthListResponse> getHealthListData(assetUid, endDateTime, langDesc,
+      limit, page, startDateTime, customerId, authorization) async {
+    ArgumentError.checkNotNull(assetUid, 'assetUid');
+    ArgumentError.checkNotNull(endDateTime, 'endDateTime');
+    ArgumentError.checkNotNull(langDesc, 'langDesc');
+    ArgumentError.checkNotNull(limit, 'limit');
+    ArgumentError.checkNotNull(page, 'page');
+    ArgumentError.checkNotNull(startDateTime, 'startDateTime');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(authorization, 'authorization');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetUid': assetUid,
+      r'endDateTime': endDateTime,
+      r'langDesc': langDesc,
+      r'limit': limit,
+      r'page': page,
+      r'startDateTime': startDateTime
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-service/1.0/health/FaultDetails/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'Authorization': authorization
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = HealthListResponse.fromJson(_result.data);
+    return value;
+  }
 }
