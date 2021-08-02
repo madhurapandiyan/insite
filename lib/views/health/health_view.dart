@@ -77,7 +77,6 @@ class _HealthViewState extends State<HealthView> {
                 ),
               ],
             ),
-
           ),
         );
       },

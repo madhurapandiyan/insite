@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'home_view.dart';
 
 class HomeViewModel extends InsiteViewModel {
   var _localService = locator<LocalService>();
@@ -118,13 +117,6 @@ class HomeViewModel extends InsiteViewModel {
   //   _assetLocationloading = false;
   //   notifyListeners();
   // }
-
-  openRespectivePage(ScreenType type) {
-    if (type == ScreenType.FLEET) {
-      _navigationService.navigateWithTransition(FleetView(),
-          transition: "rightToLeft");
-    }
-  }
 
   void logout() {
     _localService.clearAll();

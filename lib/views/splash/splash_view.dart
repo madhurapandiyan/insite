@@ -5,6 +5,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
@@ -15,12 +16,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  String loginUrl =
-      "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
-          "https://unifiedfleet.myvisionlink.com" +
-          "&client_id=" +
-          "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
-          "&state=https://unifiedfleet.myvisionlink.com/tatahitachi/&nonce=1&t=DCCCF741-6BC4-436D-A4D5-68C6D3403573";
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
   StreamSubscription _onDestroy;
@@ -73,8 +68,8 @@ class _SplashViewState extends State<SplashView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url.startsWith(
-              "https://unifiedfleet.myvisionlink.com/#access_token=")) {
+          state.url
+              .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
         print("URL changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -107,8 +102,7 @@ class _SplashViewState extends State<SplashView> {
       if (mounted) {
         print("URL changed: $url");
         if (url != null &&
-            url.startsWith(
-                "https://unifiedfleet.myvisionlink.com/#access_token=")) {
+            url.startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             if (url.contains("=")) {
@@ -155,7 +149,7 @@ class _SplashViewState extends State<SplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: loginUrl)
+                    ? WebviewScaffold(url: Urls.unifiedServiceloginUrl)
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(),

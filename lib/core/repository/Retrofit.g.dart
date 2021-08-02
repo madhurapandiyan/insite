@@ -216,27 +216,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<FleetSummaryResponse> fleetSummary(queries, customerId) async {
-    ArgumentError.checkNotNull(queries, 'queries');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(queries ?? <String, dynamic>{});
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = FleetSummaryResponse.fromJson(_result.data);
-    return value;
-  }
-
-  @override
   Future<FleetSummaryResponse> fleetSummaryURL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -275,27 +254,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetResponse> assetSummary(queries, customerId) async {
-    ArgumentError.checkNotNull(queries, 'queries');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(queries ?? <String, dynamic>{});
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetResponse.fromJson(_result.data);
-    return value;
-  }
-
-  @override
   Future<AssetLocationData> assetLocationWithCluster(latitude, longitude,
       pageNumber, pageSize, radiusKm, sort, customerId) async {
     ArgumentError.checkNotNull(latitude, 'latitude');
@@ -314,27 +272,6 @@ class _RestClient implements RestClient {
       r'radiuskm': radiusKm,
       r'sort': sort
     };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetLocationData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetLocationData> assetLocation(queries, customerId) async {
-    ArgumentError.checkNotNull(queries, 'queries');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(queries ?? <String, dynamic>{});
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
         '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
@@ -1268,6 +1205,44 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = LoginResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<FaultSummaryResponse> faultViewSummaryURL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = FaultSummaryResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetFaultSummaryResponse.fromJson(_result.data);
     return value;
   }
 }

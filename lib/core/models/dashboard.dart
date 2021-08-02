@@ -21,7 +21,7 @@ final List<Category> categories = [
   Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
       ScreenType.ASSET_OPERATION),
   Category(5, "LOCATION", "assets/images/loca.svg", ScreenType.LOCATION),
-  Category(6, "HEALTH", "assets/images/van.svg", ScreenType.MAINTENANCE),
+  Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
   Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
   Category(8, "ADMINISTRATION", "assets/images/admin.svg",
       ScreenType.ADMINISTRATION),

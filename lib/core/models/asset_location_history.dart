@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'links.dart';
+
 part 'asset_location_history.g.dart';
 
 @JsonSerializable()
@@ -84,18 +86,6 @@ class Address {
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
 
-@JsonSerializable()
-class Links {
-  Links({
-    this.self,
-  });
-
-  String self;
-
-  factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LinksToJson(this);
-}
 
 @JsonSerializable()
 class Pagination {
