@@ -339,12 +339,12 @@ abstract class RestClient {
       @Header("content-type") String contentType);
 
   @POST('{url}')
-  Future<FaultSummaryResponse> faultViewSummaryURL(
-      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+  Future<FaultSummaryResponse> faultViewSummaryURL(@Path() String url,
+      @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 
   @POST('{url}')
-  Future<AssetFaultSummaryResponse> assetViewSummaryURL(
-      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(@Path() String url,
+      @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 }
 
 @JsonSerializable()

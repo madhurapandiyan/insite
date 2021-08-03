@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'insite_row_item_text.dart';
@@ -57,7 +58,11 @@ class HealthAssetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: "Asset ID :",
-                          path: "assets/images/EX210.png",
+                          path: fault.asset["details"] != null &&
+                                  fault.asset["details"]["model"] != null
+                              ? Utils()
+                                  .imageData(fault.asset["details"]["model"])
+                              : "assets/images/EX210.png",
                         ),
                         Table(
                           border: TableBorder.all(),
@@ -69,11 +74,18 @@ class HealthAssetListItem extends StatelessWidget {
                             TableRow(children: [
                               InsiteTableRowItem(
                                 title: "Make :",
-                                content: "Tata Hitachi",
+                                content: fault.asset["details"] != null &&
+                                        fault.asset["details"]["makeCode"] !=
+                                            null
+                                    ? fault.asset["details"]["makeCode"]
+                                    : "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Model :",
-                                content: "EX200LCSU..",
+                                content: fault.asset["details"] != null &&
+                                        fault.asset["details"]["model"] != null
+                                    ? fault.asset["details"]["model"]
+                                    : "-",
                               ),
                             ])
                           ],
@@ -82,14 +94,17 @@ class HealthAssetListItem extends StatelessWidget {
                     ),
                     TableRow(children: [
                       InsiteRichText(
-                        title: "Serial No. :",
-                        content: "SP20-56343",
+                        title: "Serial No. : ",
+                        content: fault.asset["basic"] != null &&
+                                fault.asset["basic"]["serialNumber"] != null
+                            ? fault.asset["basic"]["serialNumber"]
+                            : "",
                         onTap: () {},
                       ),
-                      InsiteTableRowItemWithButton(
-                        title: "Fault Total",
-                        content: "123",
-                      ),
+                      InsiteTableRowItemWithMultipleButton(
+                          title: "Fault Total",
+                          texts:
+                              fault.countData != null ? fault.countData : []),
                     ]),
                   ],
                 ),
@@ -104,101 +119,111 @@ class HealthAssetListItem extends StatelessWidget {
                     children: [
                       TableRow(children: [
                         InsiteTableRowItem(
-                          title: "Source :",
-                          content: "System Master Control",
+                          title: "Last Reported Time : ",
+                          content: fault.asset != null &&
+                                  fault.asset["dynamic"] != null
+                              ? Utils.getLastReportedDateOne(fault
+                                  .asset["dynamic"]["locationReportedTimeUTC"])
+                              : "-",
                         ),
                         InsiteTableRowItem(
-                          title: "Source :",
-                          content: "System Master Control",
+                          title: "Location : ",
+                          content: fault.asset != null &&
+                                  fault.asset["dynamic"] != null
+                              ? (fault.asset["dynamic"]["location"])
+                              : "-",
                         ),
                       ]),
                       TableRow(children: [
                         InsiteTableRowItem(
-                          title: "Source :",
-                          content: "System Master Control",
+                          title: "Current Hour Meter : ",
+                          content: fault.asset != null &&
+                                  fault.asset["dynamic"] != null
+                              ? (fault.asset["dynamic"]["hourMeter"].toString())
+                              : "-",
                         ),
                         InsiteTableRowItem(
-                          title: "Source :",
-                          content: "System Master Control",
+                          title: "",
+                          content: "",
                         ),
                       ]),
                     ],
                   ),
-                  Table(
-                    columnWidths: {
-                      0: FlexColumnWidth(1),
-                      1: FlexColumnWidth(1),
-                      2: FlexColumnWidth(1),
-                      3: FlexColumnWidth(1),
-                    },
-                    border: TableBorder.all(),
-                    children: [
-                      TableRow(children: [
-                        InsiteTextWithPadding(
-                          padding: EdgeInsets.all(8),
-                          text: "Date / time",
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        InsiteTextWithPadding(
-                          padding: EdgeInsets.all(8),
-                          text: "Severity",
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        InsiteTextWithPadding(
-                          padding: EdgeInsets.all(8),
-                          text: "Source",
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                        InsiteTextWithPadding(
-                          padding: EdgeInsets.all(8),
-                          text: "Description",
-                          color: Colors.white,
-                          size: 12,
-                        ),
-                      ]),
-                    ],
-                  ),
-                  Table(
-                    columnWidths: {
-                      0: FlexColumnWidth(1),
-                      1: FlexColumnWidth(1),
-                      2: FlexColumnWidth(1),
-                      3: FlexColumnWidth(1),
-                    },
-                    border: TableBorder.all(),
-                    children: List.generate(
-                        4,
-                        (index) => TableRow(children: [
-                              InsiteTextWithPadding(
-                                padding: EdgeInsets.all(8),
-                                text: "1/06/21 17:52",
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                              InsiteButton(
-                                title: "High",
-                                padding: EdgeInsets.all(8),
-                                bgColor: buttonColorFive,
-                                height: 30,
-                                width: 40,
-                              ),
-                              InsiteTextWithPadding(
-                                padding: EdgeInsets.all(8),
-                                text: "Engine",
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                              InsiteTextWithPadding(
-                                padding: EdgeInsets.all(8),
-                                text: "Engine over heat",
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                            ])),
-                  ),
+                  // Table(
+                  //   columnWidths: {
+                  //     0: FlexColumnWidth(1),
+                  //     1: FlexColumnWidth(1),
+                  //     2: FlexColumnWidth(1),
+                  //     3: FlexColumnWidth(1),
+                  //   },
+                  //   border: TableBorder.all(),
+                  //   children: [
+                  //     TableRow(children: [
+                  //       InsiteTextWithPadding(
+                  //         padding: EdgeInsets.all(8),
+                  //         text: "Date / time",
+                  //         color: Colors.white,
+                  //         size: 12,
+                  //       ),
+                  //       InsiteTextWithPadding(
+                  //         padding: EdgeInsets.all(8),
+                  //         text: "Severity",
+                  //         color: Colors.white,
+                  //         size: 12,
+                  //       ),
+                  //       InsiteTextWithPadding(
+                  //         padding: EdgeInsets.all(8),
+                  //         text: "Source",
+                  //         color: Colors.white,
+                  //         size: 12,
+                  //       ),
+                  //       InsiteTextWithPadding(
+                  //         padding: EdgeInsets.all(8),
+                  //         text: "Description",
+                  //         color: Colors.white,
+                  //         size: 12,
+                  //       ),
+                  //     ]),
+                  //   ],
+                  // ),
+                  // Table(
+                  //   columnWidths: {
+                  //     0: FlexColumnWidth(1),
+                  //     1: FlexColumnWidth(1),
+                  //     2: FlexColumnWidth(1),
+                  //     3: FlexColumnWidth(1),
+                  //   },
+                  //   border: TableBorder.all(),
+                  //   children: List.generate(
+                  //       4,
+                  //       (index) => TableRow(children: [
+                  //             InsiteTextWithPadding(
+                  //               padding: EdgeInsets.all(8),
+                  //               text: "1/06/21 17:52",
+                  //               color: Colors.white,
+                  //               size: 12,
+                  //             ),
+                  //             InsiteButton(
+                  //               title: "High",
+                  //               padding: EdgeInsets.all(8),
+                  //               bgColor: buttonColorFive,
+                  //               height: 30,
+                  //               width: 40,
+                  //             ),
+                  //             InsiteTextWithPadding(
+                  //               padding: EdgeInsets.all(8),
+                  //               text: "Engine",
+                  //               color: Colors.white,
+                  //               size: 12,
+                  //             ),
+                  //             InsiteTextWithPadding(
+                  //               padding: EdgeInsets.all(8),
+                  //               text: "Engine over heat",
+                  //               color: Colors.white,
+                  //               size: 12,
+                  //             ),
+                  //           ])),
+                  // ),
                 ],
               ),
             ),

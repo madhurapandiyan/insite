@@ -32,8 +32,8 @@ abstract class InsiteViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  String _startDate = DateFormat('yyyy-MM-dd').format(
-      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
+  String _startDate = DateFormat('yyyy-MM-dd')
+      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
   set startDate(String startDate) {
     this._startDate = startDate;
   }

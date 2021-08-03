@@ -6,7 +6,10 @@ class PageHeader extends StatelessWidget {
   final int count;
   final int total;
   final bool isDashboard;
-  const PageHeader({this.count, this.total, this.isDashboard});
+  final EdgeInsets margin;
+  final EdgeInsets padding;
+  const PageHeader(
+      {this.count, this.total, this.isDashboard, this.margin, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +18,10 @@ class PageHeader extends StatelessWidget {
           // border: Border.all(width: 1, color: Colors.black),
           color: cardcolor,
           borderRadius: BorderRadius.all(Radius.circular(4))),
-      margin: EdgeInsets.only(top: 16, left: 20, right: 20),
-      padding: EdgeInsets.all(8),
+      margin: margin != null
+          ? margin
+          : EdgeInsets.only(top: 16, left: 20, right: 20),
+      padding: padding != null ? padding : EdgeInsets.all(8),
       child: Row(
         children: [
           InsiteText(

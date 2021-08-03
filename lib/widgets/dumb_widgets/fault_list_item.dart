@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
-
 import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
@@ -57,7 +57,11 @@ class FaultListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: "Asset ID :",
-                          path: "assets/images/EX210.png",
+                          path: fault.asset["details"] != null &&
+                                  fault.asset["details"]["model"] != null
+                              ? Utils()
+                                  .imageData(fault.asset["details"]["model"])
+                              : "assets/images/EX210.png",
                         ),
                         Table(
                           border: TableBorder.all(),
@@ -69,11 +73,18 @@ class FaultListItem extends StatelessWidget {
                             TableRow(children: [
                               InsiteTableRowItem(
                                 title: "Make :",
-                                content: "Tata Hitachi",
+                                content: fault.asset["details"] != null &&
+                                        fault.asset["details"]["makeCode"] !=
+                                            null
+                                    ? fault.asset["details"]["makeCode"]
+                                    : "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Model :",
-                                content: "EX200LCSU..",
+                                content: fault.asset["details"] != null &&
+                                        fault.asset["details"]["model"] != null
+                                    ? fault.asset["details"]["model"]
+                                    : "-",
                               ),
                             ])
                           ],
@@ -82,14 +93,50 @@ class FaultListItem extends StatelessWidget {
                     ),
                     TableRow(children: [
                       InsiteRichText(
-                        title: "Serial No. :",
-                        content: "SP20-56343",
+                        title: "Serial No. : ",
+                        content: fault.asset["basic"] != null &&
+                                fault.asset["basic"]["serialNumber"] != null
+                            ? fault.asset["basic"]["serialNumber"]
+                            : "",
                         onTap: () {},
                       ),
-                      InsiteTableRowItemWithButton(
-                        title: "Fault Total",
-                        content: "123",
-                      ),
+                      Table(
+                        border: TableBorder.all(),
+                        columnWidths: {
+                          0: FlexColumnWidth(3),
+                          1: FlexColumnWidth(3),
+                        },
+                        children: [
+                          TableRow(children: [
+                            InsiteTableRowItem(
+                              title: "Date/Time :",
+                              content: fault.basic != null &&
+                                      fault.basic.faultOccuredUTC != null
+                                  ? Utils.getLastReportedDateOne(
+                                      fault.basic.faultOccuredUTC)
+                                  : "-",
+                            ),
+                            InsiteTableRowItemWithButton(
+                              title: "Severity : ",
+                              buttonColor:
+                                  Utils.getFaultColor(fault.basic.severity),
+                              content: fault.basic != null &&
+                                      fault.basic.severity != null
+                                  ? fault.basic.severity.toLowerCase() == "red"
+                                      ? "HIGH"
+                                      : fault.basic.severity.toLowerCase() ==
+                                              "green"
+                                          ? "MEDIUM"
+                                          : fault.basic.severity
+                                                      .toLowerCase() ==
+                                                  "yellow"
+                                              ? "LOW"
+                                              : ""
+                                  : "",
+                            ),
+                          ])
+                        ],
+                      )
                     ]),
                   ],
                 ),
@@ -99,9 +146,23 @@ class FaultListItem extends StatelessWidget {
                     border: TableBorder.all(),
                     children: [
                       TableRow(children: [
-                        InsiteTableRowItem(
-                          title: "Source :",
-                          content: "System Master Control",
+                        InsiteRichText(
+                          title: "Source : ",
+                          content:
+                              fault.basic != null && fault.basic.source != null
+                                  ? fault.basic.source
+                                  : "",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ]),
+                      TableRow(children: [
+                        InsiteRichText(
+                          title: "Description : ",
+                          content: fault.basic != null &&
+                                  fault.basic.description != null
+                              ? fault.basic.description
+                              : "",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ]),
                     ],

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'asset_status.dart';
 import 'links.dart';
 part 'fault.g.dart';
 
@@ -21,11 +22,12 @@ class FaultSummaryResponse {
 
 @JsonSerializable()
 class Fault {
-  final FaultAsset asset;
+  final dynamic asset;
   final FaultBasic basic;
   final FaultDetails details;
+  final List<Count> countData;
 
-  Fault({this.asset, this.basic, this.details});
+  Fault({this.asset, this.basic, this.details, this.countData});
 
   factory Fault.fromJson(Map<String, dynamic> json) {
     return _$FaultFromJson(json);
@@ -36,12 +38,10 @@ class Fault {
 
 @JsonSerializable()
 class FaultAsset {
-  final int limit;
-  final int total;
   final String uid;
   final dynamic basic;
   final dynamic details;
-  FaultAsset({this.limit, this.total, this.uid, this.basic, this.details});
+  FaultAsset({this.uid, this.basic, this.details});
 
   factory FaultAsset.fromJson(Map<String, dynamic> json) {
     return _$FaultAssetFromJson(json);
@@ -51,10 +51,41 @@ class FaultAsset {
 }
 
 @JsonSerializable()
+class FaultDynamic {
+  final String status;
+  final String location;
+  final String locationReportedTimeUTC;
+  final String hourMeter;
+  final String odometer;
+  FaultDynamic(
+      {this.status,
+      this.location,
+      this.locationReportedTimeUTC,
+      this.hourMeter,
+      this.odometer});
+
+  factory FaultDynamic.fromJson(Map<String, dynamic> json) {
+    return _$FaultDynamicFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$FaultDynamicToJson(this);
+}
+
+@JsonSerializable()
 class FaultBasic {
-  final int limit;
-  final int total;
-  FaultBasic({this.limit, this.total});
+  final String faultIdentifiers;
+  final String description;
+  final String source;
+  final String severity;
+  final String faultType;
+  final String faultOccuredUTC;
+  FaultBasic(
+      {this.faultIdentifiers,
+      this.description,
+      this.source,
+      this.faultOccuredUTC,
+      this.faultType,
+      this.severity});
 
   factory FaultBasic.fromJson(Map<String, dynamic> json) {
     return _$FaultBasicFromJson(json);
@@ -65,9 +96,8 @@ class FaultBasic {
 
 @JsonSerializable()
 class FaultDetails {
-  final int limit;
-  final int total;
-  FaultDetails({this.limit, this.total});
+  final String faultReceivedUTC;
+  FaultDetails({this.faultReceivedUTC});
 
   factory FaultDetails.fromJson(Map<String, dynamic> json) {
     return _$FaultDetailsFromJson(json);
@@ -79,12 +109,12 @@ class FaultDetails {
 @JsonSerializable()
 class AssetFaultSummaryResponse {
   final List<Links> pageLinks;
-  final List<Fault> faults;
+  final List<Fault> assetFaults;
   final int page;
   final int limit;
   final int total;
   AssetFaultSummaryResponse(
-      {this.faults, this.pageLinks, this.limit, this.page, this.total});
+      {this.assetFaults, this.pageLinks, this.limit, this.page, this.total});
 
   factory AssetFaultSummaryResponse.fromJson(Map<String, dynamic> json) {
     return _$AssetFaultSummaryResponseFromJson(json);
