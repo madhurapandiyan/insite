@@ -1209,12 +1209,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<FaultSummaryResponse> faultViewSummaryURL(url, customerId) async {
+  Future<FaultSummaryResponse> faultViewSummaryURL(
+      url, fitlers, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(fitlers, 'fitlers');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = fitlers;
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -1228,12 +1230,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetFaultSummaryResponse> assetViewSummaryURL(url, customerId) async {
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(
+      url, fitlers, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(fitlers, 'fitlers');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = fitlers;
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(

@@ -5,6 +5,7 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -15,6 +16,10 @@ class AssetViewModel extends InsiteViewModel {
 
   int pageNumber = 1;
   int pageSize = 50;
+
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -51,16 +56,21 @@ class AssetViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     AssetFaultSummaryResponse result =
-        await _faultService.getAssetViewSummaryList("2021-08-01T18:30:00Z",
-            "2021-08-02T18:29:59Z", pageSize, pageNumber, appliedFilters);
-    if (result != null) {
-      if (result.faults.isNotEmpty) {
-        _faults.addAll(result.faults);
+        await _faultService.getAssetViewSummaryList(
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            pageSize,
+            pageNumber,
+            appliedFilters);
+    if (result != null && result.assetFaults != null) {
+      _totalCount = result.total;
+      if (result.assetFaults.isNotEmpty) {
+        _faults.addAll(result.assetFaults);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.faults);
+        _faults.addAll(result.assetFaults);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -85,11 +95,15 @@ class AssetViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     AssetFaultSummaryResponse result =
-        await _faultService.getAssetViewSummaryList("2021-08-01T18:30:00Z",
-            "2021-08-02T18:29:59Z", pageSize, pageNumber, appliedFilters);
-    if (result != null) {
+        await _faultService.getAssetViewSummaryList(
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            pageSize,
+            pageNumber,
+            appliedFilters);
+    if (result != null && result.assetFaults != null) {
       _faults.clear();
-      _faults.addAll(result.faults);
+      _faults.addAll(result.assetFaults);
       _refreshing = false;
       notifyListeners();
     } else {
@@ -118,9 +132,9 @@ class AssetViewModel extends InsiteViewModel {
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
-            assetSerialNumber: fleet.asset.uid,
-            assetId: fleet.asset.uid,
-            assetIdentifier: fleet.asset.uid,
+            assetSerialNumber: fleet.asset["uid"],
+            assetId: fleet.asset["uid"],
+            assetIdentifier: fleet.asset["uid"],
           ),
           index: 1),
     );

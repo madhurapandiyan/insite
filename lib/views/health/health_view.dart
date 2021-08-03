@@ -38,7 +38,9 @@ class _HealthViewState extends State<HealthView> {
       builder: (BuildContext context, HealthViewModel viewModel, Widget _) {
         return InsiteScaffold(
           viewModel: viewModel,
-          onFilterApplied: () {},
+          onFilterApplied: () {
+            refreshWithFilter();
+          },
           screenType: ScreenType.HEALTH,
           body: Container(
             color: bgcolor,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'insite_image.dart';
 import 'insite_text.dart';
@@ -128,9 +130,10 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
 class InsiteTableRowItemWithButton extends StatelessWidget {
   final String title;
   final String content;
-
+  final Color buttonColor;
   const InsiteTableRowItemWithButton({
     this.title,
+    this.buttonColor,
     this.content,
   });
 
@@ -147,14 +150,79 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.bold,
           ),
-          InsiteButton(
-            bgColor: buttonColorFive,
-            title: content,
-            padding: EdgeInsets.all(0),
-            height: 25,
-            width: 60,
-            fontSize: 12,
-          )
+          content.isNotEmpty
+              ? InsiteButton(
+                  bgColor: buttonColor != null ? buttonColor : buttonColorFive,
+                  title: content,
+                  padding: EdgeInsets.all(0),
+                  height: 25,
+                  width: 60,
+                  fontSize: 12,
+                )
+              : InsiteText(
+                  text: "-",
+                  color: athenGrey,
+                  size: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+        ],
+      ),
+    );
+  }
+}
+
+class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
+  final String title;
+  final List<Count> texts;
+  const InsiteTableRowItemWithMultipleButton({
+    this.title,
+    this.texts,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InsiteText(
+            text: title,
+            color: athenGrey,
+            size: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          Row(
+            children: List.generate(
+              texts.length,
+              (index) {
+                Count text = texts[index];
+                return text.count > 0
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 4),
+                        child: InsiteButton(
+                          bgColor: Utils.getFaultColor(text.countOf),
+                          title: text.count.toString(),
+                          padding: EdgeInsets.all(0),
+                          height: 25,
+                          width: 60,
+                          fontSize: 12,
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4),
+                        child: InsiteText(
+                          text: "-",
+                          color: athenGrey,
+                          size: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+              },
+            ),
+          ),
         ],
       ),
     );

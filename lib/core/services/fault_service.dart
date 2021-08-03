@@ -35,6 +35,16 @@ class FaultService extends BaseService {
     pageNumber,
     List<FilterData> appliedFilters,
   ) async {
+    dynamic filters = {
+      "colFilters": [
+        "basic",
+        "details",
+        "dynamic",
+        "asset.basic",
+        "asset.details",
+        "asset.dynamic"
+      ]
+    };
     try {
       FaultSummaryResponse fleetSummaryResponse =
           accountSelected != null && customerSelected != null
@@ -49,6 +59,7 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
+                  filters,
                   accountSelected.CustomerUID)
               : await MyApi().getClientThree().faultViewSummaryURL(
                   Urls.faultViewSummary +
@@ -61,6 +72,7 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
+                  filters,
                   accountSelected.CustomerUID);
       return fleetSummaryResponse;
     } catch (e) {
@@ -76,6 +88,9 @@ class FaultService extends BaseService {
     pageNumber,
     List<FilterData> appliedFilters,
   ) async {
+    dynamic filters = {
+      "colFilters": ["asset.basic", "asset.details", "asset.dynamic"]
+    };
     try {
       AssetFaultSummaryResponse fleetSummaryResponse =
           accountSelected != null && customerSelected != null
@@ -90,9 +105,10 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
+                  filters,
                   accountSelected.CustomerUID)
               : await MyApi().getClientThree().assetViewSummaryURL(
-                  Urls.faultViewSummary +
+                  Urls.assetViewSummary +
                       FilterUtils.getFilterURL(
                           startDate,
                           endDate,
@@ -102,6 +118,7 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
+                  filters,
                   accountSelected.CustomerUID);
       return fleetSummaryResponse;
     } catch (e) {
