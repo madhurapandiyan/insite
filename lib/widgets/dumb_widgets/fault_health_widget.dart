@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FaultWidget extends StatefulWidget {
- final String containerText;
+  final Count data;
+ //final String containerText;
   final String level;
-  final String buttonText;
+  //final String buttonText;
   final Color buttonColor;
 
   FaultWidget(
-      {this.containerText,  this.level, this.buttonText, this.buttonColor});
+      {this.data,  this.level,  this.buttonColor});
 
 
   @override
@@ -25,7 +27,7 @@ class _FaultWidgetState extends State<FaultWidget> {
         InsiteButton(
           textColor: silver,
           bgColor: darkGrey,
-          title: widget.containerText,
+          title: widget.data.assetCount.toString(),
           width: 51,
           height: 27,
         ),
@@ -46,7 +48,7 @@ class _FaultWidgetState extends State<FaultWidget> {
         ),
         InsiteButton(
           bgColor: widget.buttonColor,
-          title: widget.buttonText,
+          title: widget.data.faultCount.toString(),
           textColor: darkGrey,
           width: 61,
           height: 28,

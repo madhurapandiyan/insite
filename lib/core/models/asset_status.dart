@@ -18,9 +18,13 @@ class AssetCount {
 class Count {
   String countOf;
   int count;
+  int assetCount;
+  int faultCount;
   Count({
     this.countOf,
     this.count,
+    this.assetCount,
+    this.faultCount
   });
 
   factory Count.fromJson(Map<String, dynamic> json) => _$CountFromJson(json);
