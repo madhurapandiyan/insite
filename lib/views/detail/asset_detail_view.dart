@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
@@ -16,7 +17,8 @@ import 'asset_detail_view_model.dart';
 class AssetDetailView extends StatefulWidget {
   final Fleet fleet;
   final int tabIndex;
-  AssetDetailView({this.fleet, this.tabIndex});
+  final ScreenType type;
+  AssetDetailView({this.fleet, this.tabIndex, this.type = ScreenType.FLEET});
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -25,7 +27,8 @@ class AssetDetailView extends StatefulWidget {
 class DetailArguments {
   final Fleet fleet;
   final int index;
-  DetailArguments({this.fleet, this.index});
+  final ScreenType type;
+  DetailArguments({this.fleet, this.index, this.type = ScreenType.FLEET});
 }
 
 class _TabPageState extends State<AssetDetailView> {
@@ -35,6 +38,54 @@ class _TabPageState extends State<AssetDetailView> {
     selectedTabIndex = widget.tabIndex;
     super.initState();
   }
+
+  List<Category> typeOne = [
+    Category(
+      1,
+      "DASHBOARD",
+      "assets/images/clock.svg",
+      ScreenType.DASHBOARD,
+    ),
+    Category(
+      2,
+      "UTILIZATION",
+      "assets/images/supportmanager.svg",
+      ScreenType.UTILIZATION,
+    ),
+    Category(
+      3,
+      "ASSET OPERATION",
+      "assets/images/assetmanager.svg",
+      ScreenType.ASSET_OPERATION,
+    ),
+    Category(
+      4,
+      "LOCATION",
+      "assets/images/loca.svg",
+      ScreenType.LOCATION,
+    ),
+  ];
+
+  List<Category> typeTwo = [
+    Category(
+      1,
+      "DASHBOARD",
+      "assets/images/clock.svg",
+      ScreenType.DASHBOARD,
+    ),
+    Category(
+      2,
+      "HEALTH",
+      "assets/images/supportmanager.svg",
+      ScreenType.HEALTH,
+    ),
+    Category(
+      3,
+      "LOCATION",
+      "assets/images/loca.svg",
+      ScreenType.LOCATION,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -166,64 +217,90 @@ class _TabPageState extends State<AssetDetailView> {
                           border: Border.all(width: 2.5, color: cardcolor),
                           shape: BoxShape.rectangle,
                         ),
-                        child: Row(children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 14.99),
-                            child: Text("UCID NAME : ",
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(children: [
+                            Text("UCID NAME : ",
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w700,
                                     color: textcolor,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 11.0)),
-                          ),
-                          SizedBox(width: 15.0),
-                          Text(
-                            viewModel.assetDetail != null
-                                ? viewModel.assetDetail.universalCustomerName !=
-                                        null
-                                    ? viewModel
-                                        .assetDetail.universalCustomerName
-                                    : "-"
-                                : "-",
-                            style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w700,
-                                color: textcolor,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 11.0),
-                          )
-                        ]),
+                            SizedBox(width: 15.0),
+                            Expanded(
+                              child: Text(
+                                viewModel.assetDetail != null
+                                    ? viewModel.assetDetail
+                                                .universalCustomerName !=
+                                            null
+                                        ? viewModel
+                                            .assetDetail.universalCustomerName
+                                        : "-"
+                                    : "-",
+                                style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.w700,
+                                    color: textcolor,
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 11.0),
+                              ),
+                            )
+                          ]),
+                        ),
                       ),
                     ),
                     SizedBox(height: 13.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _tabcontainer(0, "assets/images/clock.svg"),
-                        _tabcontainer(1, "assets/images/supportmanager.svg"),
-                        _tabcontainer(2, "assets/images/assetmanager.svg"),
-                        _tabcontainer(3, "assets/images/loca.svg"),
-                      ],
-                    ),
+                    widget.type == ScreenType.FLEET
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: List.generate(typeOne.length, (index) {
+                              Category category = typeOne[index];
+                              return _tabcontainer(index, category);
+                            }),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: List.generate(typeTwo.length, (index) {
+                              Category category = typeTwo[index];
+                              return _tabcontainer(index, category);
+                            }),
+                          ),
                     Flexible(
                       child: selectedTabIndex == 0
-                          ? AssetDashbaord(
-                              detail: viewModel.assetDetail,
-                              switchTab: (index) {
-                                setState(() {
-                                  selectedTabIndex = index;
-                                });
-                              },
-                            )
-                          : selectedTabIndex == 1
-                              ? SingleAssetUtilizationView(
+                          ? widget.type == ScreenType.FLEET
+                              ? AssetDashbaord(
                                   detail: viewModel.assetDetail,
+                                  switchTab: (index) {
+                                    setState(() {
+                                      selectedTabIndex = index;
+                                    });
+                                  },
                                 )
-                              : selectedTabIndex == 2
-                                  ? SingleAssetOperationView(
+                              : AssetDashbaord(
+                                  detail: viewModel.assetDetail,
+                                  switchTab: (index) {
+                                    setState(() {
+                                      selectedTabIndex = index;
+                                    });
+                                  },
+                                )
+                          : selectedTabIndex == 1
+                              ? widget.type == ScreenType.FLEET
+                                  ? SingleAssetUtilizationView(
                                       detail: viewModel.assetDetail,
                                     )
+                                  : HealthListView(
+                                      detail: viewModel.assetDetail,
+                                    )
+                              : selectedTabIndex == 2
+                                  ? widget.type == ScreenType.FLEET
+                                      ? SingleAssetOperationView(
+                                          detail: viewModel.assetDetail,
+                                        )
+                                      : AssetLocationView(
+                                          detail: viewModel.assetDetail,
+                                          screenType: widget.type)
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
@@ -242,7 +319,7 @@ class _TabPageState extends State<AssetDetailView> {
     );
   }
 
-  Widget _tabcontainer(int index, iconPath) {
+  Widget _tabcontainer(int index, Category category) {
     return GestureDetector(
       onTap: () {
         onTap(index);
@@ -276,7 +353,7 @@ class _TabPageState extends State<AssetDetailView> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [SvgPicture.asset(iconPath)],
+                  children: [SvgPicture.asset(category.image)],
                 ),
               )),
         ],

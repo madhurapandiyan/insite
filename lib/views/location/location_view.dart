@@ -300,7 +300,7 @@ class _LocationViewState extends State<LocationView> {
                   : SizedBox(),
         );
       },
-      viewModelBuilder: () => LocationViewModel(TYPE.LOCATION),
+      viewModelBuilder: () => LocationViewModel(ScreenType.LOCATION),
     );
   }
 

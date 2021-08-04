@@ -343,9 +343,21 @@ abstract class RestClient {
   Future<FaultSummaryResponse> faultViewSummaryURL(@Path() String url,
       @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 
-   @POST('{url}')
+  @POST('{url}')
   Future<AssetFaultSummaryResponse> assetViewSummaryURL(@Path() String url,
       @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
+
+  @POST('{url}')
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
+      @Path() String url,
+      @Path("id") String id,
+      @Header("X-VisionLink-CustomerUid") customerId);
+
+  @GET('{url}')
+  Future<HealthListResponse> assetViewLocationSummaryURL(
+      @Path() String url,
+      @Query("assetUid") String assetUid,
+      @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET("/t/trimble.com/vss-service/1.0/health/FaultDetails/v1")
   Future<HealthListResponse> getHealthListData(

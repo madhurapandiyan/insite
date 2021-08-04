@@ -1251,6 +1251,48 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
+      url, id, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(id, 'id');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetFaultSummaryResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<HealthListResponse> assetViewLocationSummaryURL(
+      url, assetUid, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(assetUid, 'assetUid');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'assetUid': assetUid};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = HealthListResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<HealthListResponse> getHealthListData(assetUid, endDateTime, langDesc,
       limit, page, startDateTime, customerId) async {
     ArgumentError.checkNotNull(assetUid, 'assetUid');

@@ -16,6 +16,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/location_info_window_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -38,8 +39,8 @@ class LocationViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  TYPE _pageType = TYPE.LOCATION;
-  TYPE get pageType => _pageType;
+  ScreenType _pageType = ScreenType.LOCATION;
+  ScreenType get pageType => _pageType;
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -112,7 +113,7 @@ class LocationViewModel extends InsiteViewModel {
                   onTapWithZoom: () {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
-                      if (pageType == TYPE.DASHBOARD) {
+                      if (pageType == ScreenType.DASHBOARD) {
                       } else {
                         refreshCluster(cluster.markers.toList());
                       }
@@ -217,17 +218,17 @@ class LocationViewModel extends InsiteViewModel {
     );
   }
 
-  LocationViewModel(TYPE type) {
+  LocationViewModel(ScreenType type) {
     this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
     setUp();
     manager = initClusterManager();
-    if (pageType == TYPE.LOCATION) {
+    if (pageType == ScreenType.LOCATION) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocation();
       });
-    } else if (pageType == TYPE.DASHBOARD) {
+    } else if (pageType == ScreenType.DASHBOARD) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocationHome();
       });
@@ -368,5 +369,3 @@ class LocationViewModel extends InsiteViewModel {
     return deg * (Math.pi / 180);
   }
 }
-
-enum TYPE { LOCATION, SEARCH, DASHBOARD }

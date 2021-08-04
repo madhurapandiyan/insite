@@ -7,6 +7,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -137,6 +138,7 @@ class FaultViewModel extends InsiteViewModel {
             assetId: fleet.asset["uid"],
             assetIdentifier: fleet.asset["uid"],
           ),
+          type: ScreenType.HEALTH,
           index: 1),
     );
   }

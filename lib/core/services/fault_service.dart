@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
@@ -9,7 +8,6 @@ import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
-
 import '../locator.dart';
 import 'local_service.dart';
 
@@ -129,8 +127,51 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<HealthListResponse> getHealthListData(String assetUID,
-       endDate,  limit,  page,  startDate) async {
+  Future<AssetFaultSummaryResponse> getAssetViewDetailSummaryList(
+      startDate,
+      endDate,
+      pageSize,
+      pageNumber,
+      List<FilterData> appliedFilters,
+      assetId) async {
+    try {
+      AssetFaultSummaryResponse fleetSummaryResponse =
+          accountSelected != null && customerSelected != null
+              ? await MyApi().getClientThree().assetViewDetailSummaryURL(
+                  Urls.assetViewDetailSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNumber,
+                          pageSize,
+                          customerSelected.CustomerUID,
+                          "en-US",
+                          appliedFilters,
+                          ScreenType.HEALTH),
+                  assetId,
+                  accountSelected.CustomerUID)
+              : await MyApi().getClientThree().assetViewDetailSummaryURL(
+                  Urls.assetViewDetailSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNumber,
+                          pageSize,
+                          null,
+                          "en-US",
+                          appliedFilters,
+                          ScreenType.HEALTH),
+                  assetId,
+                  accountSelected.CustomerUID);
+      return fleetSummaryResponse;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  Future<HealthListResponse> getHealthListData(
+      String assetUID, endDate, limit, page, startDate) async {
     try {
       HealthListResponse healthListResponse =
           await MyApi().getClient().getHealthListData(
@@ -142,11 +183,47 @@ class FaultService extends BaseService {
                 startDate,
                 accountSelected.CustomerUID,
               );
-      print('@@@:${healthListResponse.assetData.assetUid}');
       return healthListResponse;
     } catch (e) {
       Logger().e(e.toString());
     }
     return null;
+  }
+
+  Future<HealthListResponse> getAssetViewLocationSummary(
+    String assetUID,
+    startDate,
+    endDate,
+    page,
+    limit,
+    List<FilterData> appliedFilters,
+  ) async {
+    try {
+      HealthListResponse healthListResponse =
+          accountSelected != null && customerSelected != null
+              ? await MyApi().getClientThree().assetViewLocationSummaryURL(
+                  Urls.assetViewDetailSummaryV1 +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          page,
+                          limit,
+                          customerSelected.CustomerUID,
+                          "en-US",
+                          appliedFilters,
+                          ScreenType.HEALTH),
+                  assetUID,
+                  accountSelected.CustomerUID)
+              : await MyApi().getClientThree().assetViewLocationSummaryURL(
+                  Urls.assetViewDetailSummaryV1 +
+                      FilterUtils.getFilterURL(startDate, endDate, page, limit,
+                          null, "en-US", appliedFilters, ScreenType.HEALTH),
+                  assetUID,
+                  accountSelected.CustomerUID);
+      return healthListResponse;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
   }
 }

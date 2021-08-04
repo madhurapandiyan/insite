@@ -8,13 +8,14 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetLocationView extends StatefulWidget {
   final AssetDetail detail;
-
-  AssetLocationView({this.detail});
+  final ScreenType screenType;
+  AssetLocationView({this.detail, this.screenType = ScreenType.FLEET});
 
   @override
   _AssetLocationViewState createState() => _AssetLocationViewState();
@@ -62,9 +63,12 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          viewModel.customInfoWindowController
-                              .hideInfoWindow();
-                          viewModel.refresh();
+                          viewModel.customInfoWindowController.hideInfoWindow();
+                          if (widget.screenType == ScreenType.HEALTH) {
+                            viewModel.refreshForAssetView();
+                          } else {
+                            viewModel.refresh();
+                          }
                         },
                         child: Container(
                           width: 90,
@@ -93,8 +97,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                       Text(
                         Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
                             " - " +
-                            Utils.getDateInFormatddMMyyyy(
-                                viewModel.endDate),
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
                         style: TextStyle(
                             color: white,
                             fontWeight: FontWeight.bold,
@@ -146,12 +149,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                     children: [
                       GoogleMap(
                         onTap: (position) {
-                          viewModel.customInfoWindowController
-                              .hideInfoWindow();
+                          viewModel.customInfoWindowController.hideInfoWindow();
                         },
                         onCameraMove: (position) {
-                          viewModel.customInfoWindowController
-                              .onCameraMove();
+                          viewModel.customInfoWindowController.onCameraMove();
                         },
                         onMapCreated: (GoogleMapController controller) {
                           mapController = controller;
@@ -170,8 +171,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         markers: viewModel.markers,
                         initialCameraPosition:
                             viewModel.assetLocationHistory != null &&
-                                    viewModel.assetLocationHistory
-                                        .assetLocation.isNotEmpty
+                                    viewModel.assetLocationHistory.assetLocation
+                                        .isNotEmpty
                                 ? CameraPosition(
                                     target: LatLng(
                                         viewModel.assetLocationHistory
@@ -180,12 +181,12 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                             .assetLocation[0].longitude),
                                     zoom: 18)
                                 : CameraPosition(
-                                    target: LatLng(30.666, 76.8127),
-                                    zoom: 4),
+                                    target: LatLng(30.666, 76.8127), zoom: 4),
                       ),
                       CustomInfoWindow(
                         controller: viewModel.customInfoWindowController,
-                        height: 160,
+                        height:
+                            widget.screenType == ScreenType.HEALTH ? 240 : 160,
                         width: 200,
                         offset: 50,
                       ),
@@ -198,8 +199,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                if (viewModel.assetLocationHistory !=
-                                    null) {
+                                if (viewModel.assetLocationHistory != null) {
                                   zoomVal++;
                                   _plus(
                                     zoomVal,
@@ -215,8 +215,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 width: 27.47,
                                 height: 26.97,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 1.0,
@@ -237,8 +237,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             ),
                             GestureDetector(
                                 onTap: () {
-                                  if (viewModel.assetLocationHistory !=
-                                      null) {
+                                  if (viewModel.assetLocationHistory != null) {
                                     zoomVal--;
                                     _minus(
                                       zoomVal,
@@ -254,8 +253,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   width: 27.47,
                                   height: 26.97,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(5.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
                                     boxShadow: [
                                       BoxShadow(
                                         blurRadius: 1.0,
@@ -286,7 +285,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
           );
         }
       },
-      viewModelBuilder: () => AssetLocationViewModel(widget.detail),
+      viewModelBuilder: () =>
+          AssetLocationViewModel(widget.detail, widget.screenType),
     );
   }
 

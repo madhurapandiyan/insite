@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/services/asset_location_service.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'location_view_model.dart';
@@ -22,10 +23,10 @@ class LocationSearchViewModel extends InsiteViewModel {
   List<FilterData> _filterLocations = [];
   List<FilterData> get filterLocations => _filterLocations;
 
-  LocationSearchViewModel(TYPE type) {
+  LocationSearchViewModel(ScreenType type) {
     this.log = getLogger(this.runtimeType.toString());
     _assetLocationService.setUp();
-    if (type == TYPE.SEARCH) {
+    if (type == ScreenType.SEARCH) {
       // searchLocation("");
     }
     textEditingController.addListener(() {

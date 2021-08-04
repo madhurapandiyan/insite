@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'insite_row_item_text.dart';
 import 'insite_text.dart';
@@ -99,7 +98,9 @@ class HealthAssetListItem extends StatelessWidget {
                                 fault.asset["basic"]["serialNumber"] != null
                             ? fault.asset["basic"]["serialNumber"]
                             : "",
-                        onTap: () {},
+                        onTap: () {
+                          onCallback();
+                        },
                       ),
                       InsiteTableRowItemWithMultipleButton(
                           title: "Fault Total",

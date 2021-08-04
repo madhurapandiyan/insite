@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_search_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:insite/views/location/location_view_model.dart';
 
 class LocationSearch extends StatefulWidget {
   final List<FilterData> data;
@@ -158,7 +158,7 @@ class _LocationSearchState extends State<LocationSearch> {
           ],
         );
       },
-      viewModelBuilder: () => LocationSearchViewModel(TYPE.SEARCH),
+      viewModelBuilder: () => LocationSearchViewModel(ScreenType.SEARCH),
     );
   }
 }

@@ -15,11 +15,28 @@ class FilterUtils {
     try {
       StringBuffer value = StringBuffer();
       if (screenType == ScreenType.HEALTH) {
-        value.write(constructQuery("page", pageNumber.toString(), true));
-        value.write(constructQuery("limit", pageSize.toString(), false));
+        if (pageNumber != null) {
+          value.write(constructQuery("page", pageNumber.toString(), true));
+        }
+        if (pageSize != null) {
+          if (pageNumber == null) {
+            value.write(constructQuery("limit", pageSize.toString(), true));
+          } else {
+            value.write(constructQuery("limit", pageSize.toString(), false));
+          }
+        }
       } else {
-        value.write(constructQuery("pageNumber", pageNumber.toString(), true));
-        value.write(constructQuery("pageSize", pageSize.toString(), false));
+        if (pageNumber != null) {
+          value
+              .write(constructQuery("pageNumber", pageNumber.toString(), true));
+        }
+        if (pageSize != null) {
+          if (pageNumber == null) {
+            value.write(constructQuery("pageSize", pageSize.toString(), true));
+          } else {
+            value.write(constructQuery("pageSize", pageSize.toString(), false));
+          }
+        }
       }
       if (sort != null) {
         if (screenType != ScreenType.FLEET &&

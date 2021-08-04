@@ -98,7 +98,9 @@ class FaultListItem extends StatelessWidget {
                                 fault.asset["basic"]["serialNumber"] != null
                             ? fault.asset["basic"]["serialNumber"]
                             : "",
-                        onTap: () {},
+                        onTap: () {
+                          onCallback();
+                        },
                       ),
                       Table(
                         border: TableBorder.all(),
@@ -153,6 +155,9 @@ class FaultListItem extends StatelessWidget {
                                   ? fault.basic.source
                                   : "",
                           style: TextStyle(color: Colors.white),
+                          onTap: () {
+                            onCallback();
+                          },
                         ),
                       ]),
                       TableRow(children: [
@@ -162,6 +167,9 @@ class FaultListItem extends StatelessWidget {
                                   fault.basic.description != null
                               ? fault.basic.description
                               : "",
+                          onTap: () {
+                            onCallback();
+                          },
                           style: TextStyle(color: Colors.white),
                         ),
                       ]),

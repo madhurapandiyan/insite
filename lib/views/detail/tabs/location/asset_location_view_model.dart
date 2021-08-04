@@ -5,11 +5,15 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_location_history.dart';
+import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -17,11 +21,15 @@ class AssetLocationViewModel extends InsiteViewModel {
   Logger log;
 
   var _assetLocationHistoryService = locator<AssetLocationHistoryService>();
+  var _faultService = locator<FaultService>();
 
   AssetLocationHistory _assetLocationHistory;
   AssetLocationHistory get assetLocationHistory => _assetLocationHistory;
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
+
+  HealthListResponse _healthListResponse;
+  HealthListResponse get healthListResponse => _healthListResponse;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -36,14 +44,23 @@ class AssetLocationViewModel extends InsiteViewModel {
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;
 
-  AssetLocationViewModel(detail) {
+  ScreenType _pageType = ScreenType.LOCATION;
+  ScreenType get pageType => _pageType;
+
+  AssetLocationViewModel(detail, type) {
     this._assetDetail = detail;
+    this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     _assetLocationHistoryService.setUp();
+    _faultService.setUp();
     customInfoWindowController = CustomInfoWindowController();
     Future.delayed(Duration(seconds: 1), () {
-      getAssetLocationHistoryResult();
+      if (_pageType == ScreenType.HEALTH) {
+        getFaultAssetLocationHistoryResult();
+      } else {
+        getAssetLocationHistoryResult();
+      }
     });
   }
 
@@ -248,6 +265,256 @@ class AssetLocationViewModel extends InsiteViewModel {
     }
     print("markers length ${markers.length}");
   }
+
+  getFaultAssetLocationHistoryResult() async {
+    await getDateRangeFilterData();
+    await getSelectedFilterData();
+    HealthListResponse result = await _faultService.getAssetViewLocationSummary(
+        assetDetail.assetUid,
+        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        null,
+        5000,
+        appliedFilters);
+    if (result != null) {
+      _healthListResponse = result;
+      updateMarkersForFault();
+    }
+    _loading = false;
+    notifyListeners();
+  }
+
+  refreshForAssetView() async {
+    await getDateRangeFilterData();
+    await getSelectedFilterData();
+    markers.clear();
+    latlngs.cast();
+    _refreshing = true;
+    notifyListeners();
+    HealthListResponse result = await _faultService.getAssetViewLocationSummary(
+        assetDetail.assetUid,
+        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        null,
+        2500,
+        appliedFilters);
+    if (result != null) {
+      _healthListResponse = result;
+      updateMarkersForFault();
+    }
+    _loading = false;
+    _refreshing = false;
+    notifyListeners();
+  }
+
+  updateMarkersForFault() {
+    markers.clear();
+    latlngs.clear();
+    for (var assetLocation in _healthListResponse.assetData.faults) {
+      latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
+          assetLocation.lastReportedLocationLongitude));
+      markers.add(Marker(
+          markerId: MarkerId('${index++}'),
+          position: LatLng(assetLocation.lastReportedLocationLatitude,
+              assetLocation.lastReportedLocationLongitude),
+          onTap: () {
+            customInfoWindowController.addInfoWindow(
+              Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: tuna,
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(4),
+                                  topRight: Radius.circular(4)),
+                              color: tuna,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Location Reported Time",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  assetLocation.lastReportedTimeUTC != null
+                                      ? Utils.getLastReportedDateOne(
+                                          assetLocation.lastReportedTimeUTC)
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: shark,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Location",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  assetLocation.lastReportedLocation != null
+                                      ? assetLocation.lastReportedLocation
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: shark,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Description :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  assetLocation.description != null
+                                      ? assetLocation.description
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: shark,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Fault Code :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  assetLocation.faultCode != null
+                                      ? assetLocation.faultCode
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: shark,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Source :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 10.0),
+                                ),
+                                Text(
+                                  assetLocation.source != null
+                                      ? assetLocation.source
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: textcolor,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                  Triangle.isosceles(
+                    edge: Edge.BOTTOM,
+                    child: Container(
+                      color: tuna,
+                      width: 20.0,
+                      height: 10.0,
+                    ),
+                  ),
+                ],
+              ),
+              LatLng(assetLocation.lastReportedLocationLatitude,
+                  assetLocation.lastReportedLocationLongitude),
+            );
+          }));
+    }
+    print("markers length ${markers.length}");
+  }
+
   // INFO WINDOW
 
   bool _showInfoWindow;

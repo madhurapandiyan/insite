@@ -225,4 +225,5 @@ enum ScreenType {
   PLANT,
   SUBSCRIPTION,
   NOTIFICATION,
+  SEARCH
 }

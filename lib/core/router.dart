@@ -44,6 +44,7 @@ class Router {
             builder: (_) => view9.AssetDetailView(
                   fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
+                  type: fleetArgs.type,
                 ));
       case locationViewRoute:
         return MaterialPageRoute(builder: (_) => view10.LocationView());

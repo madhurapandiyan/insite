@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -218,7 +219,7 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
               ],
             ));
       },
-      viewModelBuilder: () => LocationViewModel(TYPE.DASHBOARD),
+      viewModelBuilder: () => LocationViewModel(ScreenType.DASHBOARD),
     );
   }
 

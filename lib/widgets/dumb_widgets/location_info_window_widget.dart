@@ -1,7 +1,7 @@
 import 'package:clippy_flutter/triangle.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/location/location_view_model.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class LocationInfoWindowWidget extends StatelessWidget {
@@ -10,7 +10,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
   final VoidCallback onCustomWindowClose;
   final VoidCallback onFleetPageSelectedTap;
   final VoidCallback onTapWithZoom;
-  final TYPE type;
+  final ScreenType type;
   LocationInfoWindowWidget(
       {this.assetCount,
       this.type,
@@ -79,7 +79,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   fontSize: 12,
                   bgColor: tango,
                   title: assetCount > 1
-                      ? type == TYPE.DASHBOARD
+                      ? type == ScreenType.DASHBOARD
                           ? "  Fleet List  "
                           : "  Fleet List  "
                       : "Dashboard",
@@ -94,7 +94,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   fontSize: 12,
                   bgColor: tango,
                   title: assetCount > 1
-                      ? type == TYPE.DASHBOARD
+                      ? type == ScreenType.DASHBOARD
                           ? " Location "
                           : "Zoom to cluster"
                       : "Details",
