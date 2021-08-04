@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
@@ -125,5 +127,26 @@ class FaultService extends BaseService {
       Logger().e(e);
       return null;
     }
+  }
+
+  Future<HealthListResponse> getHealthListData(String assetUID,
+       endDate,  limit,  page,  startDate) async {
+    try {
+      HealthListResponse healthListResponse =
+          await MyApi().getClient().getHealthListData(
+                assetUID,
+                endDate,
+                'en-US',
+                limit,
+                page,
+                startDate,
+                accountSelected.CustomerUID,
+              );
+      print('@@@:${healthListResponse.assetData.assetUid}');
+      return healthListResponse;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }

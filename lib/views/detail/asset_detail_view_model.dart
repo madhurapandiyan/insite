@@ -12,6 +12,7 @@ class AssetDetailViewModel extends InsiteViewModel {
   Fleet fleet;
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;
+
   bool _loading = true;
   bool get loading => _loading;
 
