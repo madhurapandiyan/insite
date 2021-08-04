@@ -2,7 +2,6 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -13,9 +12,6 @@ class AssetDetailViewModel extends InsiteViewModel {
   Fleet fleet;
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;
-
-  // FaultAssetData _faultAssetData;
-  // FaultAssetData get faultAssetData => _faultAssetData;
 
   bool _loading = true;
   bool get loading => _loading;
