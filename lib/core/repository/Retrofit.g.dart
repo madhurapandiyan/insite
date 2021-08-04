@@ -1251,10 +1251,9 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
-      url, id, customerId) async {
+  Future<FaultSummaryResponse> assetViewDetailSummaryURL(
+      url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(id, 'id');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1262,12 +1261,12 @@ class _RestClient implements RestClient {
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'POST',
+            method: 'GET',
             headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetFaultSummaryResponse.fromJson(_result.data);
+    final value = FaultSummaryResponse.fromJson(_result.data);
     return value;
   }
 

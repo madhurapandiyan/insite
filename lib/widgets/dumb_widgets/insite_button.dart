@@ -11,10 +11,12 @@ class InsiteButton extends StatelessWidget {
   final double height;
   final Icon icon;
   final EdgeInsets padding;
+  final EdgeInsets margin;
   const InsiteButton(
       {this.title,
       this.width,
       this.onTap,
+      this.margin,
       this.bgColor,
       this.padding,
       this.height,
@@ -28,6 +30,7 @@ class InsiteButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: padding != null ? padding : EdgeInsets.all(8),
+        margin: margin != null ? margin : EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: bgColor != null ? bgColor : tango,
@@ -39,6 +42,7 @@ class InsiteButton extends StatelessWidget {
           mainAxisAlignment: icon != null
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               title,

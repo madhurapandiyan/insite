@@ -45,11 +45,25 @@ Fault _$FaultFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Count.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    description: json['description'] as String,
+    faultCode: json['faultCode'] as String,
+    hours: (json['hours'] as num)?.toDouble(),
+    faultType: json['faultType'] as String,
+    faultOccuredUTC: json['faultOccuredUTC'] as String,
+    severityLabel: json['severityLabel'] as String,
+    source: json['source'] as String,
   );
 }
 
 Map<String, dynamic> _$FaultToJson(Fault instance) => <String, dynamic>{
       'asset': instance.asset,
+      'description': instance.description,
+      'faultType': instance.faultType,
+      'hours': instance.hours,
+      'severityLabel': instance.severityLabel,
+      'faultOccuredUTC': instance.faultOccuredUTC,
+      'source': instance.source,
+      'faultCode': instance.faultCode,
       'basic': instance.basic,
       'details': instance.details,
       'countData': instance.countData,
