@@ -6,14 +6,12 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FaultWidget extends StatefulWidget {
   final Count data;
- //final String containerText;
+  //final String containerText;
   final String level;
   //final String buttonText;
   final Color buttonColor;
 
-  FaultWidget(
-      {this.data,  this.level,  this.buttonColor});
-
+  FaultWidget({this.data, this.level, this.buttonColor});
 
   @override
   _FaultWidgetState createState() => _FaultWidgetState();
@@ -26,6 +24,7 @@ class _FaultWidgetState extends State<FaultWidget> {
       children: [
         InsiteButton(
           textColor: silver,
+          padding: EdgeInsets.all(4),
           bgColor: darkGrey,
           title: widget.data.assetCount.toString(),
           width: 51,
