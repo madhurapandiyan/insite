@@ -368,6 +368,12 @@ abstract class RestClient {
     @Query("startDateTime") String startDateTime,
     @Header("x-visionlink-customeruid") customerId,
   );
+  @GET("/t/trimble.com/vss-service/1.0/health/FaultCount/v1")
+  Future <AssetCount> getDashboardListData(
+    @Query("endDateTime") String endDate,
+    @Query("startDateTime") String startDate,
+    @Header("x-visionlink-customeruid") customerId
+  );
 }
 
 @JsonSerializable()

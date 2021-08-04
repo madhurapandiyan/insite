@@ -1,4 +1,5 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/filter_data.dart';
@@ -220,5 +221,21 @@ class FaultService extends BaseService {
       Logger().e(e);
       return null;
     }
+  }
+
+  Future<AssetCount> getDashboardListData(
+    endDate,
+    startDate,
+  ) async {
+    try {
+      AssetCount assetCountResponse = await MyApi()
+          .getClient()
+          .getDashboardListData(
+              endDate, startDate, accountSelected.CustomerUID);
+      return assetCountResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
   }
 }

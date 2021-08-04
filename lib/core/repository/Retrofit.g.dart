@@ -1323,4 +1323,29 @@ class _RestClient implements RestClient {
     final value = HealthListResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetCount> getDashboardListData(
+      endDate, startDate, customerId) async {
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'endDateTime': endDate,
+      r'startDateTime': startDate
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-service/1.0/health/FaultCount/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCount.fromJson(_result.data);
+    return value;
+  }
 }

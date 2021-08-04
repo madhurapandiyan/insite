@@ -4,6 +4,7 @@ import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
+import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
 import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
@@ -277,7 +278,7 @@ class _TabPageState extends State<AssetDetailView> {
                                     });
                                   },
                                 )
-                              : AssetDashbaord(
+                              : HealthDashboardView(
                                   detail: viewModel.assetDetail,
                                   switchTab: (index) {
                                     setState(() {
