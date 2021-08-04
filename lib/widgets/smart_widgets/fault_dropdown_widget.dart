@@ -70,15 +70,16 @@ class _FaultDropDownState extends State<FaultDropDown> {
         ),
         Row(
           children: [
-            Container(
-              child: SvgPicture.asset(
-                "assets/images/arrowdown.svg",
-                width: 10,
-                height: 10,
-              ),
+            SvgPicture.asset(
+              "assets/images/arrowdown.svg",
+              width: 10,
+              height: 10,
+            ),
+            SizedBox(
+              width: 10,
             )
           ],
-        )
+        ),
       ],
     );
   }
