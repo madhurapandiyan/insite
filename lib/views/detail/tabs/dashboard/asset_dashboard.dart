@@ -37,6 +37,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
 
   @override
   Widget build(BuildContext context) {
+    //print("@@@:${widget.detail}");
     return ViewModelBuilder<AssetDashboardViewModel>.reactive(
       builder:
           (BuildContext context, AssetDashboardViewModel viewModel, Widget _) {
@@ -240,7 +241,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
           );
         }
       },
-      viewModelBuilder: () => AssetDashboardViewModel(widget.detail),
+      viewModelBuilder: () => AssetDashboardViewModel(
+        widget.detail),
     );
   }
 }

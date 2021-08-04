@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
+import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
 import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';

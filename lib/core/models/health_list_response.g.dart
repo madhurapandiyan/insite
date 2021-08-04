@@ -10,7 +10,7 @@ HealthListResponse _$HealthListResponseFromJson(Map<String, dynamic> json) {
   return HealthListResponse(
     assetData: json['assetData'] == null
         ? null
-        : AssetData.fromJson(json['assetData'] as Map<String, dynamic>),
+        : FaultAssetData.fromJson(json['assetData'] as Map<String, dynamic>),
   );
 }
 
@@ -19,16 +19,19 @@ Map<String, dynamic> _$HealthListResponseToJson(HealthListResponse instance) =>
       'assetData': instance.assetData,
     };
 
-AssetData _$AssetDataFromJson(Map<String, dynamic> json) {
-  return AssetData(
+FaultAssetData _$FaultAssetDataFromJson(Map<String, dynamic> json) {
+  return FaultAssetData(
     faults: (json['faults'] as List)
         ?.map(
             (e) => e == null ? null : Fault.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    assetUid: json['assetUid'] as String,
   );
 }
 
-Map<String, dynamic> _$AssetDataToJson(AssetData instance) => <String, dynamic>{
+Map<String, dynamic> _$FaultAssetDataToJson(FaultAssetData instance) =>
+    <String, dynamic>{
+      'assetUid': instance.assetUid,
       'faults': instance.faults,
     };
 

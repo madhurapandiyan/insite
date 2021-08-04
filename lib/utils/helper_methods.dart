@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -81,6 +83,18 @@ class Utils {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
       var inputDate = DateTime.parse(parseDate.toString());
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZ(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {
@@ -306,5 +320,17 @@ class Utils {
     var listToSort = list;
     listToSort.sort();
     return listToSort.last;
+  }
+
+  static Color getFaultColor(text) {
+    return text != null && text != null
+        ? text.toLowerCase() == "red"
+            ? buttonColorFive
+            : text.toLowerCase() == "green"
+                ? Colors.green
+                : text.toLowerCase() == "yellow"
+                    ? Colors.yellow
+                    : buttonColorFive
+        : buttonColorFive;
   }
 }

@@ -9,7 +9,6 @@ import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/fuel_level_service.dart';
-import 'package:insite/core/services/health_list_service.dart';
 import 'package:insite/core/services/idling_level_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
@@ -74,7 +73,5 @@ class LocatorInjector {
     locator.registerLazySingleton(() => LocalStorageService());
     log.d("Registering Fault Service");
     locator.registerLazySingleton(() => FaultService());
-    log.d("Registering HealthList Service");
-    locator.registerLazySingleton(()=>HealthListService());
   }
 }

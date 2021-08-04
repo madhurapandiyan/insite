@@ -69,7 +69,9 @@ class InsiteRichText extends StatelessWidget {
   final String content;
   final Color textColor;
   final VoidCallback onTap;
-  const InsiteRichText({this.title, this.content, this.textColor, this.onTap});
+  final TextStyle style;
+  const InsiteRichText(
+      {this.title, this.content, this.textColor, this.onTap, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -84,11 +86,13 @@ class InsiteRichText extends StatelessWidget {
             ..onTap = () {
               onTap();
             },
-          style: TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: 13.0,
-              fontWeight: FontWeight.bold,
-              color: textColor != null ? textColor : tango),
+          style: style != null
+              ? style
+              : TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.bold,
+                  color: textColor != null ? textColor : tango),
         )
       ])),
     );

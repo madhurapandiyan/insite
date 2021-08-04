@@ -340,22 +340,22 @@ abstract class RestClient {
       @Header("content-type") String contentType);
 
   @POST('{url}')
-  Future<FaultSummaryResponse> faultViewSummaryURL(
-      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+  Future<FaultSummaryResponse> faultViewSummaryURL(@Path() String url,
+      @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 
-  @POST('{url}')
-  Future<AssetFaultSummaryResponse> assetViewSummaryURL(
-      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
+   @POST('{url}')
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(@Path() String url,
+      @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
+
   @GET("/t/trimble.com/vss-service/1.0/health/FaultDetails/v1")
-   Future<HealthListResponse> getHealthListData(
+  Future<HealthListResponse> getHealthListData(
     @Query("assetUid") String assetUid,
     @Query("endDateTime") String endDateTime,
     @Query("langDesc") String langDesc,
     @Query("limit") int limit,
     @Query("page") int page,
     @Query("startDateTime") String startDateTime,
-    @Header("x-visionlink-customeruid") String customerId,
-    @Header("Authorization") String authorization
+    @Header("x-visionlink-customeruid") customerId,
   );
 }
 

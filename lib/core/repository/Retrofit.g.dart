@@ -1209,12 +1209,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<FaultSummaryResponse> faultViewSummaryURL(url, customerId) async {
+  Future<FaultSummaryResponse> faultViewSummaryURL(
+      url, fitlers, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(fitlers, 'fitlers');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = fitlers;
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -1228,12 +1230,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetFaultSummaryResponse> assetViewSummaryURL(url, customerId) async {
+  Future<AssetFaultSummaryResponse> assetViewSummaryURL(
+      url, fitlers, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(fitlers, 'fitlers');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = fitlers;
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -1248,7 +1252,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<HealthListResponse> getHealthListData(assetUid, endDateTime, langDesc,
-      limit, page, startDateTime, customerId, authorization) async {
+      limit, page, startDateTime, customerId) async {
     ArgumentError.checkNotNull(assetUid, 'assetUid');
     ArgumentError.checkNotNull(endDateTime, 'endDateTime');
     ArgumentError.checkNotNull(langDesc, 'langDesc');
@@ -1256,7 +1260,6 @@ class _RestClient implements RestClient {
     ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(startDateTime, 'startDateTime');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(authorization, 'authorization');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUid,
@@ -1272,10 +1275,7 @@ class _RestClient implements RestClient {
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'Authorization': authorization
-            },
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);

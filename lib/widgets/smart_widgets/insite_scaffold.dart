@@ -49,6 +49,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           shouldShowFilter: widget.screenType == ScreenType.FLEET ||
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
+                  widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION
               ? true
               : false,

@@ -50,8 +50,6 @@ class Router {
         return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
-        case healthListViewRoute:
-        return MaterialPageRoute(builder: (_)=>(view12.HealthListView()));
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
