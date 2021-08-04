@@ -23,11 +23,29 @@ class FaultSummaryResponse {
 @JsonSerializable()
 class Fault {
   final dynamic asset;
+  final String description;
+  final String faultType;
+  final double hours;
+  final String severityLabel;
+  final String faultOccuredUTC;
+  final String source;
+  final String faultCode;
   final FaultBasic basic;
   final FaultDetails details;
   final List<Count> countData;
 
-  Fault({this.asset, this.basic, this.details, this.countData});
+  Fault(
+      {this.asset,
+      this.basic,
+      this.details,
+      this.countData,
+      this.description,
+      this.faultCode,
+      this.hours,
+      this.faultType,
+      this.faultOccuredUTC,
+      this.severityLabel,
+      this.source});
 
   factory Fault.fromJson(Map<String, dynamic> json) {
     return _$FaultFromJson(json);

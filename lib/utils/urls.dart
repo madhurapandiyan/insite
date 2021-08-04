@@ -52,8 +52,8 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/Faults/Search";
   static String assetViewSummary =
       "/t/trimble.com/vss-service/1.0/health/Assets/FaultTotals";
-  static String assetViewDetailSummary =
-      "/t/trimble.com/vss-service/1.0/health/Assets/{id}/Faults";
+  static String assetHealthSummary =
+      "/t/trimble.com/vss-service/1.0/health/Assets";
   static String assetViewDetailSummaryV1 =
       "/t/trimble.com/vss-service/1.0/health/FaultDetails/v1";
 }

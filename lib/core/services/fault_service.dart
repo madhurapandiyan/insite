@@ -127,18 +127,14 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<AssetFaultSummaryResponse> getAssetViewDetailSummaryList(
-      startDate,
-      endDate,
-      pageSize,
-      pageNumber,
-      List<FilterData> appliedFilters,
-      assetId) async {
+  Future<FaultSummaryResponse> getAssetViewDetailSummaryList(startDate, endDate,
+      pageSize, pageNumber, List<FilterData> appliedFilters, assetId) async {
     try {
-      AssetFaultSummaryResponse fleetSummaryResponse =
+      FaultSummaryResponse fleetSummaryResponse =
           accountSelected != null && customerSelected != null
               ? await MyApi().getClientThree().assetViewDetailSummaryURL(
-                  Urls.assetViewDetailSummary +
+                  Urls.assetHealthSummary +
+                      "/${assetId}/Faults" +
                       FilterUtils.getFilterURL(
                           startDate,
                           endDate,
@@ -148,10 +144,10 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
-                  assetId,
                   accountSelected.CustomerUID)
               : await MyApi().getClientThree().assetViewDetailSummaryURL(
-                  Urls.assetViewDetailSummary +
+                  Urls.assetHealthSummary +
+                      "/${assetId}/Faults" +
                       FilterUtils.getFilterURL(
                           startDate,
                           endDate,
@@ -161,7 +157,6 @@ class FaultService extends BaseService {
                           "en-US",
                           appliedFilters,
                           ScreenType.HEALTH),
-                  assetId,
                   accountSelected.CustomerUID);
       return fleetSummaryResponse;
     } catch (e) {

@@ -347,10 +347,9 @@ abstract class RestClient {
   Future<AssetFaultSummaryResponse> assetViewSummaryURL(@Path() String url,
       @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 
-  @POST('{url}')
-  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
+  @GET('{url}')
+  Future<FaultSummaryResponse> assetViewDetailSummaryURL(
       @Path() String url,
-      @Path("id") String id,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
