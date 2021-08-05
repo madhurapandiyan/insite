@@ -67,7 +67,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                         TableRow(
                           children: [
                             InsiteTableRowItemWithImage(
-                              title: "Asset ID :",
+                              title: "Asset ID :" + "\n" + "-",
                               path: widget.fault.asset["details"] != null &&
                                       widget.fault.asset["details"]["model"] !=
                                           null

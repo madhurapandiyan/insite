@@ -27,6 +27,7 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
     (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
     json['lastKnownOperator'] as String,
     json['capabilities'] as String,
+    (json['distanceTravelledKilometers'] as num)?.toDouble(),
   );
 }
 
@@ -37,6 +38,7 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'model': instance.model,
       'serialNumber': instance.serialNumber,
       'productFamily': instance.productFamily,
+      'distanceTravelledKilometers': instance.distanceTravelledKilometers,
       'customStateDescription': instance.customStateDescription,
       'dateRangeRuntimeDuration': instance.dateRangeRuntimeDuration,
       'lastKnownOperator': instance.lastKnownOperator,

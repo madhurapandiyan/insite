@@ -143,11 +143,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               ? widget.detail.percentDEFRemaining.toString()
                               : null,
                           lastReported: widget
-                                      .detail.lastLifetimeDEFLitersUTC !=
+                                      .detail.fuelReportedTimeUTC !=
                                   null
                               ? "Last Reported Time: ".toUpperCase() +
                                   Utils.getLastReportedDateOneUTC(
-                                      widget.detail.lastLifetimeDEFLitersUTC)
+                                      widget.detail.fuelReportedTimeUTC)
                               : "No Data Received"),
                     ),
                     SizedBox(

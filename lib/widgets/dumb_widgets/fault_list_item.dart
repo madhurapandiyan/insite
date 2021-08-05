@@ -56,7 +56,7 @@ class FaultListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: "Asset ID :",
+                          title: "Asset ID :" + "\n" + "-",
                           path: fault.asset["details"] != null &&
                                   fault.asset["details"]["model"] != null
                               ? Utils()

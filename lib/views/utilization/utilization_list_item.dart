@@ -339,6 +339,7 @@ class UtilizationListItem extends StatelessWidget {
                                 content:
                                     utilizationData.workingHours.toString(),
                               ),
+                              
                             ],
                           ),
                           // TableRow(
@@ -364,7 +365,7 @@ class UtilizationListItem extends StatelessWidget {
                         Table(
                           border: TableBorder.all(),
                           columnWidths: {
-                            0: FlexColumnWidth(6),
+                            0: FlexColumnWidth(5),
                             1: FlexColumnWidth(3),
                           },
                           children: [
