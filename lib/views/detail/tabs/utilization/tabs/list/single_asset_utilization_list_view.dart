@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/list/single_asset_utilization_list_view_model.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -34,45 +35,60 @@ class _SingleAssetUtilizationListViewState
           children: [
             Column(
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: GestureDetector(
-                      onTap: () async {
-                        dateRange = [];
-                        dateRange = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              backgroundColor: transparent,
-                              child: DateRangeView()),
-                        );
-                        if (dateRange != null && dateRange.isNotEmpty) {
-                          viewModel.refresh();
-                        }
-                      },
-                      child: Container(
-                        width: 90,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: cardcolor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                          " - " +
+                          Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                      style: TextStyle(
+                          color: white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          dateRange = [];
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          if (dateRange != null && dateRange.isNotEmpty) {
+                            viewModel.refresh();
+                          }
+                        },
+                        child: Container(
+                          width: 90,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: cardcolor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Date Range',
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          child: Center(
+                            child: Text(
+                              'Date Range',
+                              style: TextStyle(
+                                color: white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
                 Flexible(
                   child: viewModel.loading

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/utilization/graphs/cumulative/cumulative_view.dart';
 import 'package:insite/views/utilization/graphs/distance_travelled/distance_travelled_view.dart';
 import 'package:insite/views/utilization/graphs/fuel_burn_rate_trend/fuel_burn_rate_trend_view.dart';
@@ -52,51 +53,60 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
         var startDate2 = startDate;
         return Column(
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                child: GestureDetector(
-                  onTap: () async {
-                    dateRange = [];
-                    dateRange = await showDialog(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                          backgroundColor: transparent, child: DateRangeView()),
-                    );
-                    if (dateRange != null && dateRange.isNotEmpty) {
-                      setState(() {
-                        startDate =
-                            DateFormat('yyyy-MM-dd').format(dateRange.first);
-                        endDate =
-                            DateFormat('yyyy-MM-dd').format(dateRange.last);
-                      });
-                      Logger().d("start date " + startDate);
-                      Logger().d("end date " + endDate);
-                      onDateChange();
-                    }
-                  },
-                  child: Container(
-                    width: 90,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: cardcolor,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                        " - " +
+                        Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                    style: TextStyle(
+                        color: white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11),
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      dateRange = [];
+                      dateRange = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                            backgroundColor: transparent,
+                            child: DateRangeView()),
+                      );
+                      if (dateRange != null && dateRange.isNotEmpty) {
+                        onFilterApplied();
+                      }
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: cardcolor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Date Range',
-                        style: TextStyle(
-                          color: white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          'Date Range',
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             PageHeader(
@@ -240,7 +250,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
         break;
       case UtilizationGraphType.IDLETREND:
         return IdlePercentTrendView(
-          key: idlePercentKey,
+          key: idleTrendKey,
         );
         break;
       case UtilizationGraphType.FUELBURNRATETREND:

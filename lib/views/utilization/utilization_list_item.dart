@@ -311,7 +311,9 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithImage(
-                                title: utilizationData.model,
+                                title: utilizationData.manufacturer +
+                                    "\n" +
+                                    utilizationData.model,
                                 path: utilizationData == null
                                     ? "assets/images/EX210.png"
                                     : Utils().imageData(utilizationData.model),
@@ -339,6 +341,22 @@ class UtilizationListItem extends StatelessWidget {
                               ),
                             ],
                           ),
+                          // TableRow(
+                          //   children: [
+                          //     InsiteTableRowItem(
+                          //       title: "Last Utiization Report",
+                          //       content:
+                          //           utilizationData.lastReportedTime != null
+                          //               ? Utils.getLastReportedDateOne(
+                          //                   utilizationData.lastReportedTime)
+                          //               : '-',
+                          //     ),
+                          //     InsiteTableRowItem(
+                          //       title: "Idle Hours",
+                          //       content: utilizationData.idleHours.toString(),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       tilePadding: EdgeInsets.all(0),

@@ -3,7 +3,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
-import 'package:insite/core/services/filter_service.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
@@ -20,6 +19,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> selectedFilterData = [];
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
   FilterViewModel() {
     setUp();
@@ -110,8 +111,12 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   void onFilterApplied() {
+    _isRefreshing = true;
+    notifyListeners();
     updateFilterInDb(selectedFilterData);
     getSelectedFilterData();
+    _isRefreshing = false;
+    notifyListeners();
   }
 
   addIdlingData(filterData, resultModel, type) {
