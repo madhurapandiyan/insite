@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -29,117 +30,120 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (BuildContext context, HomeViewModel viewModel, Widget _) {
-        return InsiteScaffold(
-          viewModel: viewModel,
-          screenType: ScreenType.DASHBOARD,
-          onFilterApplied: () {},
-          body: SingleChildScrollView(
-            child: Container(
-              color: bgcolor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  PageHeader(
-                    isDashboard: true,
-                    total: viewModel.totalCount,
-                    count: 0,
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: AssetStatus(
-                        statusChartData: viewModel.statusChartData != null
-                            ? viewModel.statusChartData
+        return InsiteInheritedDataProvider(
+          count: viewModel.appliedFilters.length,
+          child: InsiteScaffold(
+            viewModel: viewModel,
+            screenType: ScreenType.DASHBOARD,
+            onFilterApplied: () {},
+            body: SingleChildScrollView(
+              child: Container(
+                color: bgcolor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    PageHeader(
+                      isDashboard: true,
+                      total: viewModel.totalCount,
+                      count: 0,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetStatus(
+                          statusChartData: viewModel.statusChartData != null
+                              ? viewModel.statusChartData
+                              : null,
+                          onFilterSelected: (value) {
+                            viewModel.onFilterSelected(value);
+                          },
+                          isLoading: viewModel.assetStatusloading),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetFuelLevel(
+                        chartData: viewModel.fuelChartData != null
+                            ? viewModel.fuelChartData
                             : null,
                         onFilterSelected: (value) {
                           viewModel.onFilterSelected(value);
                         },
-                        isLoading: viewModel.assetStatusloading),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: AssetFuelLevel(
-                      chartData: viewModel.fuelChartData != null
-                          ? viewModel.fuelChartData
-                          : null,
-                      onFilterSelected: (value) {
-                        viewModel.onFilterSelected(value);
-                      },
-                      isLoading: viewModel.assetFuelloading,
+                        isLoading: viewModel.assetFuelloading,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: AssetUtilizationWidget(
-                      assetUtilization: viewModel.utilizationSummary != null
-                          ? viewModel.utilizationSummary
-                          : null,
-                      onFilterSelected: (value) {
-                        viewModel.gotoUtilizationPage();
-                      },
-                      totalGreatestNumber:
-                          viewModel.utilizationTotalGreatestValue,
-                      averageGreatestNumber:
-                          viewModel.utilizationAverageGreatestValue,
-                      isLoading: viewModel.assetUtilizationLoading,
+                    SizedBox(
+                      height: 20.0,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: IdlingLevel(
-                      data: viewModel.idlingLevelData != null
-                          ? viewModel.idlingLevelData.countData
-                          : null,
-                      isLoading: viewModel.idlingLevelDataloading,
-                      onFilterSelected: (value) {
-                        viewModel.onIdlingLevelFilterSelected(value);
-                      },
-                      onRangeSelected: (IdlingLevelRange catchedRange) {
-                        viewModel.idlingLevelRange = catchedRange;
-                        viewModel.getIdlingLevelData(true);
-                      },
-                      isSwitching: viewModel.isSwitching,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetUtilizationWidget(
+                        assetUtilization: viewModel.utilizationSummary != null
+                            ? viewModel.utilizationSummary
+                            : null,
+                        onFilterSelected: (value) {
+                          viewModel.gotoUtilizationPage();
+                        },
+                        totalGreatestNumber:
+                            viewModel.utilizationTotalGreatestValue,
+                        averageGreatestNumber:
+                            viewModel.utilizationAverageGreatestValue,
+                        isLoading: viewModel.assetUtilizationLoading,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: GoogleMapHomeWidget(),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  //For Notification widget we haven't any data for that so we commented
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  //   child: Notifications(),
-                  // ),
-                  // SizedBox(
-                  //   height: 20.0,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  //   child: AssetStatusUsage(
-                  //     statusChartData: viewModel.statusChartData != null
-                  //         ? viewModel.statusChartData
-                  //         : null,
-                  //     isLoading: viewModel.assetStatusloading,
-                  //   ),
-                  // ),
-                ],
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: IdlingLevel(
+                        data: viewModel.idlingLevelData != null
+                            ? viewModel.idlingLevelData.countData
+                            : null,
+                        isLoading: viewModel.idlingLevelDataloading,
+                        onFilterSelected: (value) {
+                          viewModel.onIdlingLevelFilterSelected(value);
+                        },
+                        onRangeSelected: (IdlingLevelRange catchedRange) {
+                          viewModel.idlingLevelRange = catchedRange;
+                          viewModel.getIdlingLevelData(true);
+                        },
+                        isSwitching: viewModel.isSwitching,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GoogleMapHomeWidget(),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    //For Notification widget we haven't any data for that so we commented
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //   child: Notifications(),
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //   child: AssetStatusUsage(
+                    //     statusChartData: viewModel.statusChartData != null
+                    //         ? viewModel.statusChartData
+                    //         : null,
+                    //     isLoading: viewModel.assetStatusloading,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),

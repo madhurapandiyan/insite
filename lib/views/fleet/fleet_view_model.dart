@@ -6,14 +6,11 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class FleetViewModel extends InsiteViewModel {
   var _fleetService = locator<FleetService>();
   var _navigationService = locator<NavigationService>();
-
-  Logger log;
 
   int pageNumber = 1;
   int pageSize = 50;
@@ -38,7 +35,6 @@ class FleetViewModel extends InsiteViewModel {
   bool get isRefreshing => _isRefreshing;
 
   FleetViewModel() {
-    this.log = getLogger(this.runtimeType.toString());
     _fleetService.setUp();
     setUp();
     scrollController = new ScrollController();
@@ -85,7 +81,10 @@ class FleetViewModel extends InsiteViewModel {
 
   onDetailPageSelected(Fleet fleet) {
     _navigationService.navigateTo(assetDetailViewRoute,
-        arguments: DetailArguments(fleet: fleet, index: 0,));
+        arguments: DetailArguments(
+          fleet: fleet,
+          index: 0,
+        ));
   }
 
   onHomeSelected() {
@@ -93,12 +92,12 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   _loadMore() {
-    log.i("shouldLoadmore and is already loadingMore " +
+    Logger().i("shouldLoadmore and is already loadingMore " +
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
     if (_shouldLoadmore && !_loadingMore && !_isRefreshing) {
-      log.i("load more called");
+      Logger().i("load more called");
       pageNumber++;
       _loadingMore = true;
       notifyListeners();
@@ -118,6 +117,9 @@ class FleetViewModel extends InsiteViewModel {
     if (result != null &&
         result.fleetRecords != null &&
         result.fleetRecords.isNotEmpty) {
+      if (result.pagination.totalCount != null) {
+        _totalCount = result.pagination.totalCount.toInt();
+      }
       _assets.clear();
       _assets.addAll(result.fleetRecords);
       _isRefreshing = false;

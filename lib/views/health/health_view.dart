@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/health/asset/asset_view.dart';
 import 'package:insite/views/health/fault/fault_view.dart';
@@ -36,48 +37,53 @@ class _HealthViewState extends State<HealthView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthViewModel>.reactive(
       builder: (BuildContext context, HealthViewModel viewModel, Widget _) {
-        return InsiteScaffold(
-          viewModel: viewModel,
-          onFilterApplied: () {
-            refreshWithFilter();
-          },
-          screenType: ScreenType.HEALTH,
-          body: Container(
-            color: bgcolor,
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    isListSelected
-                        ? Flexible(
-                            child: FaultView(
-                              key: faultViewKey,
-                            ),
-                          )
-                        : Flexible(
-                            child: AssetView(
-                              key: assetViewKey,
-                            ),
-                          ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
+        return InsiteInheritedDataProvider(
+          count: viewModel.appliedFilters.length,
+          child: InsiteScaffold(
+            viewModel: viewModel,
+            onFilterApplied: () {
+              viewModel.refresh();
+              refreshWithFilter();
+            },
+            screenType: ScreenType.HEALTH,
+            body: Container(
+              color: bgcolor,
+              child: Stack(
+                children: [
+                  Column(
                     children: [
-                      ToggleButton(
-                          label1: 'Fault View',
-                          label2: 'Asset View',
-                          optionSelected: (bool value) {
-                            setState(() {
-                              isListSelected = value;
-                            });
-                          }),
-                      Spacer(),
+                      isListSelected
+                          ? Flexible(
+                              child: FaultView(
+                                key: faultViewKey,
+                              ),
+                            )
+                          : Flexible(
+                              child: AssetView(
+                                key: assetViewKey,
+                              ),
+                            ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 16),
+                    child: Row(
+                      children: [
+                        ToggleButton(
+                            label1: 'Fault View',
+                            label2: 'Asset View',
+                            optionSelected: (bool value) {
+                              setState(() {
+                                isListSelected = value;
+                              });
+                            }),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

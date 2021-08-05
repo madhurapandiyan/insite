@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
@@ -9,8 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
 class UtilizationListView extends StatefulWidget {
-  final bool shouldRefresh;
-  const UtilizationListView({this.shouldRefresh, Key key}) : super(key: key);
+  const UtilizationListView({Key key}) : super(key: key);
 
   @override
   UtilizationListViewState createState() => UtilizationListViewState();
@@ -46,45 +46,60 @@ class UtilizationListViewState extends State<UtilizationListView> {
             children: [
               Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                      child: GestureDetector(
-                        onTap: () async {
-                          dateRange = [];
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          if (dateRange != null && dateRange.isNotEmpty) {
-                            viewModel.refresh();
-                          }
-                        },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: cardcolor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                              " - " +
+                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                          style: TextStyle(
+                              color: white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            dateRange = [];
+                            dateRange = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => Dialog(
+                                  backgroundColor: transparent,
+                                  child: DateRangeView()),
+                            );
+                            if (dateRange != null && dateRange.isNotEmpty) {
+                              viewModel.refresh();
+                            }
+                          },
+                          child: Container(
+                            width: 90,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: cardcolor,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                            child: Center(
+                              child: Text(
+                                'Date Range',
+                                style: TextStyle(
+                                  color: white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   PageHeader(
@@ -94,7 +109,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: 16.0, top: 8, bottom: 16, right: 16),
+                        left: 18.0, top: 8, bottom: 16, right: 16),
                     child: Text(
                       'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
                       style: TextStyle(

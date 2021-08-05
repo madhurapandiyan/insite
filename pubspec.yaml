@@ -39,6 +39,7 @@ dependencies:
   quiver: ^2.1.5
   dependencies:
   syncfusion_flutter_calendar: ^19.1.69
+  badges: ^1.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
@@ -19,26 +20,30 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
-        return InsiteScaffold(
-          screenType: ScreenType.DASHBOARD,
-          onFilterApplied: () {},
-          viewModel: viewModel,
-          body: Container(
-            padding: EdgeInsets.all(16),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 1000
-                      ? 7
-                      : MediaQuery.of(context).size.width > 600
-                          ? 5
-                          : 3,
-                  crossAxisSpacing: 5.0,
-                  mainAxisSpacing: 5.0),
-              itemBuilder: (context, index) {
-                Category category = categories[index];
-                return _buildCategoryItem(context, index, category, viewModel);
-              },
-              itemCount: categories.length,
+        return InsiteInheritedDataProvider(
+          count: viewModel.appliedFilters.length,
+          child: InsiteScaffold(
+            screenType: ScreenType.DASHBOARD,
+            onFilterApplied: () {},
+            viewModel: viewModel,
+            body: Container(
+              padding: EdgeInsets.all(16),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).size.width > 1000
+                        ? 7
+                        : MediaQuery.of(context).size.width > 600
+                            ? 5
+                            : 3,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 5.0),
+                itemBuilder: (context, index) {
+                  Category category = categories[index];
+                  return _buildCategoryItem(
+                      context, index, category, viewModel);
+                },
+                itemCount: categories.length,
+              ),
             ),
           ),
         );

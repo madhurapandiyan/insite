@@ -1,5 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
@@ -45,8 +47,11 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final count = InsiteInheritedDataProvider.of(context) != null
+        ? InsiteInheritedDataProvider.of(context).count
+        : 0;
     return ViewModelBuilder<AppbarViewModel>.reactive(
-      viewModelBuilder: () => AppbarViewModel(),
+      viewModelBuilder: () => AppbarViewModel(screenType),
       builder: (BuildContext context, AppbarViewModel viewModel, Widget _) {
         return Column(
           children: [
@@ -77,15 +82,32 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                 shouldShowFilter
                     ? Container(
                         color: isFilterSelected ? mediumgrey : appbarcolor,
-                        child: IconButton(
-                          icon: SvgPicture.asset(
-                            "assets/images/filter.svg",
-                            color: isFilterSelected ? white : black,
-                          ),
-                          onPressed: () {
-                            onFilterTap();
-                          },
-                        ),
+                        child: count != null && count > 0
+                            ? Badge(
+                                badgeContent: Text(count.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    )),
+                                position: BadgePosition.topStart(start: 25),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/images/filter.svg",
+                                    color: isFilterSelected ? white : black,
+                                  ),
+                                  onPressed: () {
+                                    onFilterTap();
+                                  },
+                                ),
+                              )
+                            : IconButton(
+                                icon: SvgPicture.asset(
+                                  "assets/images/filter.svg",
+                                  color: isFilterSelected ? white : black,
+                                ),
+                                onPressed: () {
+                                  onFilterTap();
+                                },
+                              ),
                       )
                     : SizedBox(),
                 shouldShowSearch

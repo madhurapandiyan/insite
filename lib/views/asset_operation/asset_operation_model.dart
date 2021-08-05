@@ -80,13 +80,13 @@ class AssetOperationViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 2), () {
       getAssetSummaryList();
-      getAssetOperationCount();
     });
   }
 
   void refresh() async {
     await getDateRangeFilterData();
     await getSelectedFilterData();
+    await getAssetOperationCount();
     pageNumber = 1;
     pageSize = 50;
     _refreshing = true;
@@ -101,14 +101,17 @@ class AssetOperationViewModel extends InsiteViewModel {
       _assets.addAll(result.assets);
       _refreshing = false;
       notifyListeners();
+    } else {
+      _refreshing = false;
+      notifyListeners();
     }
-    getAssetOperationCount();
     Logger().i("list of assets " + result.assets.length.toString());
   }
 
   getAssetSummaryList() async {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
+    await getAssetOperationCount();
     AssetSummaryResponse result = await _assetService.getAssetSummaryList(
         startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
@@ -165,7 +168,7 @@ class AssetOperationViewModel extends InsiteViewModel {
         startDate,
         endDate,
         "-RuntimeHours",
-        ScreenType.UTILIZATION,
+        ScreenType.ASSET_OPERATION,
         appliedFilters);
     if (assetCount != null) {
       if (assetCount.countData.isNotEmpty &&

@@ -32,8 +32,8 @@ abstract class InsiteViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  String _startDate = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
+  String _startDate = DateFormat('yyyy-MM-dd').format(
+      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
   set startDate(String startDate) {
     this._startDate = startDate;
   }
@@ -65,6 +65,14 @@ abstract class InsiteViewModel extends BaseViewModel {
     });
   }
 
+  updateFilterInDb(List<FilterData> selectedFilterData) {
+    _filterService.updateFilterInDb(selectedFilterData);
+  }
+
+  clearFilterOfTypeInDb(type) {
+    _filterService.clearFilterOfTypeInDb(type);
+  }
+
   getSelectedFilterData() async {
     appliedFilters = await _filterService.getSelectedFilters();
     Logger().d(appliedFilters.length.toString());
@@ -83,7 +91,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   }
 
   clearFilterDb() async {
-    await _filterService.clearDatabase();
+    await _filterService.clearFilterDatabase();
   }
 
   getDateRangeFilterData() async {

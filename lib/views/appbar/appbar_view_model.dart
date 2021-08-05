@@ -4,6 +4,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -19,7 +20,10 @@ class AppbarViewModel extends InsiteViewModel {
   Customer _customerSelected;
   Customer get customerSelected => _customerSelected;
 
-  AppbarViewModel() {
+  ScreenType _screenType;
+  ScreenType get screenType => _screenType;
+
+  AppbarViewModel(this._screenType) {
     Future.delayed(Duration(seconds: 3), () {
       setUp();
     });
@@ -42,7 +46,9 @@ class AppbarViewModel extends InsiteViewModel {
       _snackbarService.showSnackbar(
           message: "Account not selected", duration: Duration(seconds: 2));
     } else {
-      _navigationService.replaceWith(dashboardViewRoute);
+      if (screenType != ScreenType.DASHBOARD) {
+        _navigationService.replaceWith(dashboardViewRoute);
+      }
     }
   }
 

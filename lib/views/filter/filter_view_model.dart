@@ -7,7 +7,6 @@ import 'package:insite/core/services/filter_service.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
-  var _filterService = locator<FilterService>();
   var _assetService = locator<AssetStatusService>();
   bool _loading = true;
   bool get loading => _loading;
@@ -23,9 +22,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> selectedFilterData = [];
 
   FilterViewModel() {
-    _filterService.setUp();
-    _assetService.setUp();
     setUp();
+    _assetService.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getSelectedFilterData();
       getFilterData();
@@ -68,7 +66,7 @@ class FilterViewModel extends InsiteViewModel {
         startDate, endDate, FilterType.IDLING_LEVEL, null);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
-
+    selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
   }
@@ -111,6 +109,11 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
+  void onFilterApplied() {
+    updateFilterInDb(selectedFilterData);
+    getSelectedFilterData();
+  }
+
   addIdlingData(filterData, resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
@@ -142,18 +145,92 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
+  removeSelectedFilter(value) async {
+    Logger().d("removeFilter title " + value.title.toString());
+    try {
+      int size = selectedFilterData.length;
+      if (size > 0) {
+        for (var i = 0; i < size; i++) {
+          FilterData data = selectedFilterData[i];
+          Logger().d("current filter data on loop ", data);
+          if (data.title == value.title && data.type == value.type) {
+            print("delete filter " + data.title.toString());
+            selectedFilterData.removeAt(i);
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     super.dispose();
   }
 
   onFilterSelected(List<FilterData> list, FilterType type) {
-    _filterService.updateFilterInDb(type, list);
-    getSelectedFilterData();
+    if (list.isEmpty) {
+      clearFilterOfType(type);
+    } else {
+      list.forEach((element) {
+        updateFilter(element);
+      });
+    }
+    notifyListeners();
+    // updateFilterInDb(list);
+    // getSelectedFilterData();
+  }
+
+  updateFilter(FilterData value) async {
+    int size = selectedFilterData.length;
+    if (size == 0) {
+      selectedFilterData.add(value);
+    } else {
+      bool shouldAdd = true;
+      for (var i = 0; i < size; i++) {
+        FilterData data = selectedFilterData[i];
+        if (data.title == value.title) {
+          shouldAdd = false;
+          break;
+        }
+      }
+      if (shouldAdd) {
+        print("add filter " + value.title.toString());
+        selectedFilterData.add(value);
+      }
+    }
+  }
+
+  //removes filters of particular type
+  clearFilterOfType(FilterType type) async {
+    try {
+      int size = selectedFilterData.length;
+      print("filter size before clear");
+      print(selectedFilterData.length);
+      print("FilterType " + type.toString());
+      selectedFilterData.removeWhere((element) => element.type == type);
+      //commenting tradional way of removing elements in list
+      // for (var i = 0; i < size; i++) {
+      //   FilterData data = selectedFilterData[i];
+      //   Logger().d("current filter data on loop ${data.type} , ${data.title}");
+      //   if (data.type == type) {
+      //     selectedFilterData.removeAt(i);
+      //   }
+      // }
+      print("filter size after clear");
+      print(selectedFilterData.length);
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   onFilterCleared(FilterType type) {
-    _filterService.clearFilterInDb(type);
-    getSelectedFilterData();
+    clearFilterOfType(type);
+    notifyListeners();
+    // clearFilterOfTypeInDb(type);
+    // getSelectedFilterData();
   }
 }

@@ -64,6 +64,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION
               ? 80
@@ -72,6 +73,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION
               ? true
@@ -113,8 +115,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                     : SizedBox(),
                 _isFilterSelected
                     ? FilterView(
-                        onFilterApplied: () {
-                          onFilterApplied();
+                        onFilterApplied: (bool) {
+                          onFilterApplied(bool);
                         },
                       )
                     : SizedBox()
@@ -129,11 +131,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     } else if (action == error.ErrorAction.LOGIN) {}
   }
 
-  onFilterApplied() {
+  onFilterApplied(bool) {
     setState(() {
       _isFilterSelected = !_isFilterSelected;
     });
-    widget.onFilterApplied();
+    if (bool) {
+      widget.onFilterApplied();
+    }
   }
 
   onGlobalSearchItemSelected(TopMatch match) {

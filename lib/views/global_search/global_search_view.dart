@@ -143,17 +143,17 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                   'Showing ${viewModel.searchData.topMatches.length} out of ${viewModel.searchData.totalCount} Assets',
                                   style: TextStyle(color: white, fontSize: 12),
                                 ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Show list',
-                                    style: TextStyle(
-                                      color: white,
-                                      fontSize: 12,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ),
+                                // TextButton(
+                                //   onPressed: () {},
+                                //   child: Text(
+                                //     'Show list',
+                                //     style: TextStyle(
+                                //       color: white,
+                                //       fontSize: 12,
+                                //       decoration: TextDecoration.underline,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                     ],
