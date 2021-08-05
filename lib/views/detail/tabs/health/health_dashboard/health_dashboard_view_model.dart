@@ -36,6 +36,8 @@ class HealthDashboardViewModel extends InsiteViewModel {
       _assetSingleHistoryService.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getDashboardListData();
+      getAssetDetail();
+      getNotes();
     });
   }
 

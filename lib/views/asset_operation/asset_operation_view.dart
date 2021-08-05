@@ -117,6 +117,9 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                       child: DateRangeView()),
                                 );
                                 if (dateRange != null && dateRange.isNotEmpty) {
+                                  setState(() {
+                                    dateRange=dateRange;
+                                  });
                                   viewModel.refresh();
                                 }
                               },

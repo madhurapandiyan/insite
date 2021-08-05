@@ -12,6 +12,7 @@ class Asset {
   final String model;
   final String serialNumber;
   final String productFamily;
+  final double distanceTravelledKilometers;
   final String customStateDescription;
   final double dateRangeRuntimeDuration;
   final String lastKnownOperator;
@@ -30,7 +31,8 @@ class Asset {
       this.customStateDescription,
       this.dateRangeRuntimeDuration,
       this.lastKnownOperator,
-      this.capabilities);
+      this.capabilities,
+      this.distanceTravelledKilometers);
 
   factory Asset.fromJson(dynamic json) {
     try {

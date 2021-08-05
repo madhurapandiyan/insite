@@ -92,12 +92,10 @@ class AssetOperationListItem extends StatelessWidget {
                           },
                         ),
                         InsiteTableRowItem(
-                          title: "Last Known Operator",
+                          title: "Distance Travelled Kilometers",
                           content: asset != null &&
-                                  asset.assetLastReceivedEvent != null
-                              ? Utils.getLastReportedDate(asset
-                                  .assetLastReceivedEvent
-                                  .lastReceivedEventTimeLocal)
+                                  asset.distanceTravelledKilometers != null
+                              ?asset.distanceTravelledKilometers.toString()
                               : "-",
                         ),
                       ],
