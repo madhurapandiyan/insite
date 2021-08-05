@@ -64,6 +64,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION
               ? 80
@@ -72,6 +73,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HOME ||
+                  widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION
               ? true

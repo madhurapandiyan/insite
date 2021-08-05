@@ -18,15 +18,13 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilizationGraphView extends StatefulWidget {
-  final bool shouldRefresh;
-  const UtilizationGraphView({this.shouldRefresh, Key key}) : super(key: key);
+  const UtilizationGraphView({Key key}) : super(key: key);
 
   @override
   UtilizationGraphViewState createState() => UtilizationGraphViewState();
 }
 
 class UtilizationGraphViewState extends State<UtilizationGraphView> {
-
   UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
   List<DateTime> dateRange = [];
   String startDate = DateFormat('MM/dd/yyyy')

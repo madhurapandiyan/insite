@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view.dart';
@@ -34,55 +35,58 @@ class _UtilLizationViewState extends State<UtilLizationView> {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
         builder:
             (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
-          return InsiteScaffold(
-            screenType: ScreenType.UTILIZATION,
-            viewModel: viewModel,
-            onFilterApplied: () {
-              refreshWithFilter();
-            },
-            body: Container(
-              color: bgcolor,
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      isListSelected
-                          ? Flexible(
-                              child: UtilizationListView(
-                                shouldRefresh: viewModel.isFilterApplied,
-                                key: listViewKey,
-                              ),
-                            )
-                          : Flexible(
-                              child: UtilizationGraphView(
-                                shouldRefresh: viewModel.isFilterApplied,
-                                key: graphViewKey,
-                              ),
-                            ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
+          return InsiteInheritedDataProvider(
+            count: viewModel.appliedFilters.length,
+            child: InsiteScaffold(
+              screenType: ScreenType.UTILIZATION,
+              viewModel: viewModel,
+              onFilterApplied: () {
+                viewModel.refresh();
+                refreshWithFilter();
+              },
+              body: Container(
+                color: bgcolor,
+                child: Stack(
+                  children: [
+                    Column(
                       children: [
-                        ToggleButton(
-                            label1: '  list  ',
-                            label2: '  graph  ',
-                            optionSelected: (bool value) {
-                              setState(() {
-                                isListSelected = value;
-                              });
-                            }),
-                        Spacer(),
+                        isListSelected
+                            ? Flexible(
+                                child: UtilizationListView(
+                                  key: listViewKey,
+                                ),
+                              )
+                            : Flexible(
+                                child: UtilizationGraphView(
+                                  key: graphViewKey,
+                                ),
+                              ),
                       ],
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16),
+                      child: Row(
+                        children: [
+                          ToggleButton(
+                              label1: '  list  ',
+                              label2: '  graph  ',
+                              optionSelected: (bool value) {
+                                setState(() {
+                                  isListSelected = value;
+                                });
+                              }),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         },
-        viewModelBuilder: () => UtilLizationViewModel(true));
+        viewModelBuilder: () => UtilLizationViewModel());
   }
 }
 

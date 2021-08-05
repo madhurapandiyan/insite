@@ -101,6 +101,9 @@ class AssetOperationViewModel extends InsiteViewModel {
       _assets.addAll(result.assets);
       _refreshing = false;
       notifyListeners();
+    } else {
+      _refreshing = false;
+      notifyListeners();
     }
     Logger().i("list of assets " + result.assets.length.toString());
   }
