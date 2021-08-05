@@ -85,7 +85,10 @@ class FleetViewModel extends InsiteViewModel {
 
   onDetailPageSelected(Fleet fleet) {
     _navigationService.navigateTo(assetDetailViewRoute,
-        arguments: DetailArguments(fleet: fleet, index: 0,));
+        arguments: DetailArguments(
+          fleet: fleet,
+          index: 0,
+        ));
   }
 
   onHomeSelected() {
@@ -118,6 +121,9 @@ class FleetViewModel extends InsiteViewModel {
     if (result != null &&
         result.fleetRecords != null &&
         result.fleetRecords.isNotEmpty) {
+      if (result.pagination.totalCount != null) {
+        _totalCount = result.pagination.totalCount.toInt();
+      }
       _assets.clear();
       _assets.addAll(result.fleetRecords);
       _isRefreshing = false;

@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
 
 class FilterView extends StatefulWidget {
-  final VoidCallback onFilterApplied;
+  final Function(bool) onFilterApplied;
   FilterView({this.onFilterApplied});
 
   @override
@@ -36,54 +36,55 @@ class _FilterViewState extends State<FilterView> {
                         SizedBox(
                           height: 8,
                         ),
-                        viewModel.appliedFilters.isNotEmpty
+                        viewModel.selectedFilterData.isNotEmpty
                             ? FilterChipView(
-                                filters: viewModel.appliedFilters,
+                                filters: viewModel.selectedFilterData,
                                 onClosed: (value) {
-                                  viewModel.removeFilter(value);
+                                  viewModel.removeSelectedFilter(value);
                                 },
                                 backgroundColor: chipBackgroundTwo,
                                 padding: const EdgeInsets.only(
                                     top: 8.0, bottom: 8.0),
                               )
                             : SizedBox(),
-                        viewModel.appliedFilters.isNotEmpty
+                        viewModel.selectedFilterData.isNotEmpty
                             ? SizedBox(
                                 height: 8,
                               )
                             : SizedBox(),
-                        viewModel.appliedFilters.isNotEmpty
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  InsiteButton(
-                                    bgColor: tango,
-                                    textColor: Colors.white,
-                                    onTap: () {
-                                      widget.onFilterApplied();
-                                    },
-                                    width: 100,
-                                    height: 40,
-                                    title: "APPLY",
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  InsiteButton(
-                                    bgColor: ship_grey,
-                                    textColor: Colors.white,
-                                    onTap: () {
-                                      widget.onFilterApplied();
-                                    },
-                                    width: 100,
-                                    height: 40,
-                                    title: "CANCEL",
-                                  ),
-                                ],
-                              )
-                            : SizedBox(),
-                        viewModel.appliedFilters.isNotEmpty
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InsiteButton(
+                              bgColor: tango,
+                              textColor: Colors.white,
+                              onTap: () {
+                                viewModel.onFilterApplied();
+                                Future.delayed(Duration(seconds: 2), () {
+                                  widget.onFilterApplied(true);
+                                });
+                              },
+                              width: 100,
+                              height: 40,
+                              title: "APPLY",
+                            ),
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                            ),
+                            InsiteButton(
+                              bgColor: ship_grey,
+                              textColor: Colors.white,
+                              onTap: () {
+                                widget.onFilterApplied(false);
+                              },
+                              width: 100,
+                              height: 40,
+                              title: "CANCEL",
+                            ),
+                          ],
+                        ),
+                        viewModel.selectedFilterData.isNotEmpty
                             ? SizedBox(
                                 height: 8,
                               )

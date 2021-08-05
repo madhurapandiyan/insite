@@ -51,9 +51,17 @@ class _FleetViewState extends State<FleetView> {
                                 total: viewModel.totalCount,
                                 isDashboard: false,
                               ),
-                              viewModel.appliedFilters.isNotEmpty
+                              viewModel.appliedFilters
+                                      .where((element) =>
+                                          element.type != FilterType.DATE_RANGE)
+                                      .toList()
+                                      .isNotEmpty
                                   ? FilterChipView(
-                                      filters: viewModel.appliedFilters,
+                                      filters: viewModel.appliedFilters
+                                          .where((element) =>
+                                              element.type !=
+                                              FilterType.DATE_RANGE)
+                                          .toList(),
                                       onClosed: (value) {
                                         viewModel.removeFilter(value);
                                         viewModel.refresh();

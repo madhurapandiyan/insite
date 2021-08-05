@@ -56,7 +56,6 @@ class UtilizationListViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 2), () {
       getUtilization();
-      getAssetCount();
     });
   }
 
@@ -104,6 +103,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     Logger().d("getUtilization");
     await getSelectedFilterData();
     await getDateRangeFilterData();
+    await getUtilizationCount();
     Utilization result = await _utilizationService.getUtilizationResult(
         startDate,
         endDate,
@@ -142,6 +142,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     notifyListeners();
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
+    await getUtilizationCount();
     Utilization result = await _utilizationService.getUtilizationResult(
         startDate,
         endDate,
@@ -160,7 +161,6 @@ class UtilizationListViewModel extends InsiteViewModel {
     }
     Logger().i("list of _utilLizationListData " +
         _utilLizationListData.length.toString());
-    getUtilizationCount();
   }
 
   getUtilizationCount() async {

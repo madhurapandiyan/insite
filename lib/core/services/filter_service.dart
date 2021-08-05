@@ -5,12 +5,16 @@ import 'package:logger/logger.dart';
 class FilterService extends DataBaseService {
   clearFromSelectedFilter() {}
 
-  clearDatabase() {
-    filterBox.clear();
+  Future clearFilterDatabase() async {
+    try {
+      return await filterBox.clear();
+    } catch (e) {
+      Logger().e("clearFilterDatabase $e");
+    }
   }
 
   //removes filters of particular type
-  clearFilterInDb(FilterType type) async {
+  clearFilterOfTypeInDb(FilterType type) async {
     try {
       int size = filterBox.values.length;
       print("filter size before clear");
@@ -30,12 +34,13 @@ class FilterService extends DataBaseService {
     }
   }
 
-  updateFilterInDb(FilterType type, List<FilterData> list) {
+  updateFilterInDb(List<FilterData> list) {
     try {
-      for (FilterData data in list) {
-        addFilter(data);
-      }
-      print("filter size after update");
+      Logger().d("updateFilterInDb list size ${list.length}");
+      clearFilterDatabase().then((value) => {
+            for (FilterData data in list) {addFilter(data)}
+          });
+      Logger().d("filter size after update");
       print(filterBox.values.length);
     } catch (e) {
       Logger().e(e);
@@ -63,7 +68,7 @@ class FilterService extends DataBaseService {
           FilterData data = filterBox.getAt(i);
           Logger().d("current filter data on loop ", data);
           if (data.title == value.title && data.type == value.type) {
-            print("delete filter " + data.title.toString());
+            Logger().d("delete filter ${data.title.toString()}");
             filterBox.deleteAt(i);
             break;
           }
@@ -88,7 +93,7 @@ class FilterService extends DataBaseService {
         }
       }
       if (shouldAdd) {
-        print("add filter " + value.title.toString());
+        Logger().d("add filter ${value.title.toString()}");
         await filterBox.add(value);
       }
     }

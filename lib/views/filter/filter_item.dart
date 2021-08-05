@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
@@ -125,16 +124,16 @@ class _FilterItemState extends State<FilterItem> {
                               widget.onClear();
                             },
                           ),
-                          InsiteButton(
-                            onTap: () {
-                              widget.onApply(_displayList
-                                  .where((element) => element.isSelected)
-                                  .toList());
-                            },
-                            width: 100,
-                            height: 40,
-                            title: "APPLY",
-                          )
+                          // InsiteButton(
+                          //   onTap: () {
+                          //     widget.onApply(_displayList
+                          //         .where((element) => element.isSelected)
+                          //         .toList());
+                          //   },
+                          //   width: 100,
+                          //   height: 40,
+                          //   title: "APPLY",
+                          // )
                         ],
                       ),
                     )
@@ -158,6 +157,9 @@ class _FilterItemState extends State<FilterItem> {
                         _displayList[index].isSelected = !data.isSelected;
                         setState(() {});
                       }
+                      widget.onApply(_displayList
+                          .where((element) => element.isSelected)
+                          .toList());
                     },
                     child: Container(
                       color: data.isSelected ? tango : bgcolor,

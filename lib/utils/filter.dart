@@ -408,9 +408,43 @@ class FilterUtils {
           }
         }
       }
-      List<int> list = [1, 6, 5, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-      for (int id in list) {
-        value.write(constructQuery("subscriptionId", id.toString(), false));
+      List<int> assetOperationlist = [
+        1,
+        6,
+        5,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ];
+      List<int> utilizationlist = [
+        1,
+        6,
+        5,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        37
+      ];
+      if (screenType == ScreenType.UTILIZATION) {
+        for (int id in utilizationlist) {
+          value.write(constructQuery("subscriptionId", id.toString(), false));
+        }
+      } else {
+        for (int id in assetOperationlist) {
+          value.write(constructQuery("subscriptionId", id.toString(), false));
+        }
       }
       return value.toString();
     } catch (e) {

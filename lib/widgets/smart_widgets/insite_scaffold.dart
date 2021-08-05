@@ -113,8 +113,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                     : SizedBox(),
                 _isFilterSelected
                     ? FilterView(
-                        onFilterApplied: () {
-                          onFilterApplied();
+                        onFilterApplied: (bool) {
+                          onFilterApplied(bool);
                         },
                       )
                     : SizedBox()
@@ -129,11 +129,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     } else if (action == error.ErrorAction.LOGIN) {}
   }
 
-  onFilterApplied() {
+  onFilterApplied(bool) {
     setState(() {
       _isFilterSelected = !_isFilterSelected;
     });
-    widget.onFilterApplied();
+    if (bool) {
+      widget.onFilterApplied();
+    }
   }
 
   onGlobalSearchItemSelected(TopMatch match) {
