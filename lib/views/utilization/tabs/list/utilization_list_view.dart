@@ -60,7 +60,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                           style: TextStyle(
                               color: white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 10),
+                              fontSize: 11),
                         ),
                         SizedBox(
                           width: 4,

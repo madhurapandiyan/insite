@@ -12,18 +12,20 @@ class FilterItem extends StatefulWidget {
   final Function(List<FilterData>) onApply;
   final Function onClear;
   final bool isSingleSelection;
-  FilterItem(
-      {this.data,
-      this.onApply,
-      this.onClear,
-      this.filterType,
-      this.isSingleSelection = false});
+  FilterItem({
+    this.data,
+    this.onApply,
+    this.onClear,
+    this.filterType,
+    this.isSingleSelection = false,
+    Key key,
+  }) : super(key: key);
 
   @override
-  _FilterItemState createState() => _FilterItemState();
+  FilterItemState createState() => FilterItemState();
 }
 
-class _FilterItemState extends State<FilterItem> {
+class FilterItemState extends State<FilterItem> {
   TextEditingController _textEditingController = TextEditingController();
 
   onSearchTextChanged(String text) async {
@@ -74,6 +76,13 @@ class _FilterItemState extends State<FilterItem> {
     for (var i = 0; i < _displayList.length; i++) {
       _displayList[i].isSelected = false;
     }
+  }
+
+  deSelectFromOutSide(FilterData value) {
+    _displayList
+        .firstWhere((element) => element.title == value.title)
+        .isSelected = false;
+    setState(() {});
   }
 
   @override

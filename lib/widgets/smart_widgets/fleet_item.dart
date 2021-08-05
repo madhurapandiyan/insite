@@ -57,7 +57,7 @@ class FleetListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: fleet.dealerName,
+                          title: fleet.manufacturer + "\n" + fleet.model,
                           path: fleet == null
                               ? "assets/images/EX210.png"
                               : Utils().imageData(fleet.model),

@@ -104,7 +104,7 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,11 +115,14 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          InsiteText(
-            text: title,
-            size: 14,
-            fontWeight: FontWeight.normal,
-            color: textcolor,
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: InsiteText(
+              text: title,
+              size: 14,
+              fontWeight: FontWeight.normal,
+              color: textcolor,
+            ),
           )
         ],
       ),
