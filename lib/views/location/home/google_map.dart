@@ -2,14 +2,20 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart' as flutter_map;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart'
+    as cluster;
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import 'package:latlong/latlong.dart' as latlng;
 
 class GoogleMapHomeWidget extends StatefulWidget {
   @override
@@ -29,6 +35,8 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
   void dispose() {
     super.dispose();
   }
+
+  final cluster.PopupController _popupController = cluster.PopupController();
 
   @override
   Widget build(BuildContext context) {
@@ -168,22 +176,22 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                     SizedBox(
                       height: 5.0,
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.10,
-                      color: greencolor,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 5.0, top: 8.0),
-                        child: Text(
-                          "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-                          style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Roboto',
-                              fontStyle: FontStyle.normal,
-                              color: maptextcolor),
-                        ),
-                      ),
-                    ),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height * 0.10,
+                    //   color: greencolor,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.only(left: 5.0, top: 8.0),
+                    //     child: Text(
+                    //       "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+                    //       style: TextStyle(
+                    //           fontSize: 11.0,
+                    //           fontWeight: FontWeight.w500,
+                    //           fontFamily: 'Roboto',
+                    //           fontStyle: FontStyle.normal,
+                    //           color: maptextcolor),
+                    //     ),
+                    //   ),
+                    // ),
                     viewModel.loading
                         ? Expanded(
                             child: Center(
@@ -195,25 +203,125 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                             child: Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.45,
-                                child: _googleMap(currentType, viewModel)),
+                                child: _googleMap(currentType, viewModel)
+                                // child: flutter_map.FlutterMap(
+                                //   options: flutter_map.MapOptions(
+                                //     center: latlng.LatLng(50, 20),
+                                //     plugins: [cluster.MarkerClusterPlugin()],
+                                //     onTap: (_) {
+                                //       _popupController.hidePopup();
+                                //     },
+                                //     zoom: 5.0,
+                                //     interactiveFlags:
+                                //         flutter_map.InteractiveFlag.all -
+                                //             flutter_map.InteractiveFlag.rotate,
+                                //   ),
+                                //   layers: [
+                                //     flutter_map.TileLayerOptions(
+                                //       urlTemplate:
+                                //           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                //       subdomains: ['a', 'b', 'c'],
+                                //     ),
+                                //     cluster.MarkerClusterLayerOptions(
+                                //       maxClusterRadius: 120,
+                                //       size: Size(40, 40),
+                                //       fitBoundsOptions:
+                                //           flutter_map.FitBoundsOptions(
+                                //         padding: EdgeInsets.all(50),
+                                //       ),
+                                //       onClusterTap: (clusterNode) {
+                                //         print(
+                                //             "onClusterTap ${clusterNode.point.latitude}");
+                                //         _popupController
+                                //             .showPopupFor(flutter_map.Marker(
+                                //           point: clusterNode.point,
+                                //           builder: (context) {
+                                //             return Container(
+                                //               width: 200,
+                                //               height: 100,
+                                //               color: cardBackgroundOne,
+                                //               child: GestureDetector(
+                                //                 onTap: () {
+                                //                   debugPrint('Popup tap!');
+                                //                 },
+                                //                 child: Text(
+                                //                   'popup for marker at ${clusterNode.point}',
+                                //                 ),
+                                //               ),
+                                //             );
+                                //           },
+                                //         ));
+                                //       },
+                                //       zoomToBoundsOnClick: false,
+                                //       markers: viewModel.allMarkers,
+                                //       polygonOptions: cluster.PolygonOptions(
+                                //           borderColor: Colors.blueAccent,
+                                //           color: Colors.black12,
+                                //           borderStrokeWidth: 3),
+                                //       popupOptions: cluster.PopupOptions(
+                                //           popupSnap: cluster.PopupSnap.markerTop,
+                                //           popupController: _popupController,
+                                //           popupBuilder: (_, marker) {
+                                //             print("popup");
+                                //             return Container(
+                                //               width: 200,
+                                //               height: 100,
+                                //               color: Colors.white,
+                                //               child: GestureDetector(
+                                //                 onTap: () =>
+                                //                     debugPrint('Popup tap!'),
+                                //                 child: Text(
+                                //                   'Container popup for marker at ${marker.point}',
+                                //                 ),
+                                //               ),
+                                //             );
+                                //           }),
+                                //       builder: (context, markers) {
+                                //         // return FloatingActionButton(
+                                //         //   child:
+                                //         return Container(
+                                //           width: 40,
+                                //           decoration: ShapeDecoration(
+                                //             color: Colors.black,
+                                //             shape: CircleBorder(),
+                                //           ),
+                                //           alignment: Alignment.center,
+                                //           height: 40,
+                                //           child: Text(
+                                //             markers.length.toString(),
+                                //             style: TextStyle(color: Colors.white),
+                                //             // onPressed: () {
+                                //             //   _popupController.showPopupFor(markers[0]);
+                                //             //   print("on ClusterTap ${markers.length}");
+                                //             // },
+                                //           ),
+                                //         );
+                                //       },
+                                //     ),
+                                //     // MarkerLayerOptions(
+                                //     //     markers: allMarkers.sublist(
+                                //     //         0, min(allMarkers.length, _sliderVal))),
+                                //   ],
+                                // ),
+                                ),
                           ),
                     Divider(),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                      child: Container(
-                        width: 290.5,
-                        height: 22.57,
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'Roboto',
-                              color: textcolor),
-                        ),
-                      ),
-                    )
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 10.0, top: 5.0),
+                    //   child: Container(
+                    //     width: 290.5,
+                    //     height: 22.57,
+                    //     child: Text(
+                    //       '',
+                    //       style: TextStyle(
+                    //           fontSize: 10.0,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontStyle: FontStyle.normal,
+                    //           fontFamily: 'Roboto',
+                    //           color: textcolor),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ],
@@ -239,6 +347,11 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   ? viewModel.manager.onCameraMove(position)
                   : SizedBox();
             },
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+              new Factory<OneSequenceGestureRecognizer>(
+                () => new EagerGestureRecognizer(),
+              ),
+            ].toSet(),
             onMapCreated: (GoogleMapController controller) async {
               viewModel.customInfoWindowController.googleMapController =
                   controller;
@@ -248,9 +361,8 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   : SizedBox();
               viewModel.zoomToMarkers();
             },
-            onCameraIdle: viewModel.manager != null
-                ? viewModel.manager.updateMap
-                : null,
+            onCameraIdle:
+                viewModel.manager != null ? viewModel.manager.updateMap : null,
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,
@@ -349,6 +461,10 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
         ],
       ),
     );
+  }
+
+  Widget _flutterMap() {
+    return Container();
   }
 
   Future<void> _minus(double zoomVal, LatLng targetPosition,

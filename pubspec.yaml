@@ -40,6 +40,8 @@ dependencies:
   dependencies:
   syncfusion_flutter_calendar: ^19.1.69
   badges: ^1.2.0
+  flutter_map: ^0.12.0
+  flutter_map_marker_cluster: ^0.3.5 # or the latest version on Pub
 
 dev_dependencies:
   flutter_test:

@@ -22,6 +22,8 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'dart:math' as Math;
+import 'package:flutter_map/flutter_map.dart' as flutter_map;
+import 'package:latlong/latlong.dart' as latlng;
 
 class LocationViewModel extends InsiteViewModel {
   Logger log;
@@ -51,12 +53,27 @@ class LocationViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 2500;
 
+  List<flutter_map.Marker> allMarkers = [];
+
   clusterMarker() {
     int index = 1;
     List<MapRecord> assetLocationList = assetLocation.mapRecords;
     clusterMarkers.clear();
     latlngs.clear();
     for (var assetLocation in assetLocationList) {
+      allMarkers.add(
+        flutter_map.Marker(
+          point: latlng.LatLng(
+            assetLocation.lastReportedLocationLatitude,
+            assetLocation.lastReportedLocationLongitude,
+          ),
+          builder: (context) => const Icon(
+            Icons.location_on,
+            color: Colors.red,
+            size: 24.0,
+          ),
+        ),
+      );
       latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
           assetLocation.lastReportedLocationLongitude));
       clusterMarkers.add(
@@ -104,7 +121,7 @@ class LocationViewModel extends InsiteViewModel {
                   onFleetPageSelectedTap: () {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
-                      onFleetPageSelected(cluster.markers.toList());
+                      onFleetPageSelected(cluster.markers.toList(), false);
                     } else {
                       onDetailPageSelected(
                           cluster.items.toList()[0].mapData, 0);
@@ -114,6 +131,7 @@ class LocationViewModel extends InsiteViewModel {
                     customInfoWindowController.hideInfoWindow();
                     if (cluster.count > 1) {
                       if (pageType == ScreenType.DASHBOARD) {
+                        onFleetPageSelected(cluster.markers.toList(), true);
                       } else {
                         refreshCluster(cluster.markers.toList());
                       }
@@ -171,7 +189,8 @@ class LocationViewModel extends InsiteViewModel {
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
-  onFleetPageSelected(List<ClusterItem<InsiteMarker>> list) async {
+  onFleetPageSelected(
+      List<ClusterItem<InsiteMarker>> list, shouldGoToLocationPage) async {
     List<LatLng> selectedClustorLatLnglist = [];
     for (ClusterItem<InsiteMarker> item in list) {
       selectedClustorLatLnglist.add(item.location);
@@ -195,9 +214,13 @@ class LocationViewModel extends InsiteViewModel {
           radiusKm.toString()
         ]);
     await addFilter(filterData);
-    _navigationService.navigateTo(
-      fleetViewRoute,
-    );
+    if (shouldGoToLocationPage) {
+      goToLocationPageSelected();
+    } else {
+      _navigationService.navigateTo(
+        fleetViewRoute,
+      );
+    }
   }
 
   onDetailPageSelected(MapRecord mapData, index) {
@@ -211,8 +234,8 @@ class LocationViewModel extends InsiteViewModel {
                 assetIdentifier: mapData.assetIdentifier)));
   }
 
-  goToLocationPageSelected(MapRecord mapData, index) {
-    Logger().d("goToLocationPageSelected $mapData.serialNumber");
+  goToLocationPageSelected() {
+    Logger().d("goToLocationPageSelected ");
     _navigationService.navigateTo(
       locationViewRoute,
     );
@@ -245,7 +268,12 @@ class LocationViewModel extends InsiteViewModel {
     latlngs.clear();
     notifyListeners();
     AssetLocationData result = await _assetLocationService.getAssetLocation(
-        pageNumber, pageSize, '-lastlocationupdateutc', appliedFilters);
+        startDate,
+        endDate,
+        pageNumber,
+        pageSize,
+        '-lastlocationupdateutc',
+        appliedFilters);
     _assetLocation = result;
     _totalCount = result.pagination.totalCount;
     clusterMarker();
@@ -304,8 +332,11 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   getAssetLocation() async {
+    await getSelectedFilterData();
     Logger().d("getAssetLocation");
     AssetLocationData result = await _assetLocationService.getAssetLocation(
+      startDate,
+      endDate,
       pageNumber,
       pageSize,
       '-lastlocationupdateutc',

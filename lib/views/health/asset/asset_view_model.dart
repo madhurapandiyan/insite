@@ -58,8 +58,8 @@ class AssetViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     AssetFaultSummaryResponse result =
         await _faultService.getAssetViewSummaryList(
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters);
@@ -97,8 +97,8 @@ class AssetViewModel extends InsiteViewModel {
     Logger().d("end date " + endDate);
     AssetFaultSummaryResponse result =
         await _faultService.getAssetViewSummaryList(
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters);

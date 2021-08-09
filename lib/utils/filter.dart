@@ -151,28 +151,48 @@ class FilterUtils {
         }
 
         // idlingLevel
-        List<FilterData> idlingLevelList = appliedFilters
-            .where((element) => element.type == FilterType.IDLING_LEVEL)
-            .toList();
-        Logger()
-            .i("filter idlingLevelList " + idlingLevelList.length.toString());
-        if (idlingLevelList.isNotEmpty) {
-          for (FilterData data in idlingLevelList) {
-            if (data.extras.isNotEmpty) {
-              Logger().d("idling level extras 0 ", data.extras[0]);
-              Logger().d("idling level extras 1", data.extras[1]);
-              if (data.extras[1].isEmpty) {
-                value.write(
-                    constructQuery("IdleEfficiency.GT", data.extras[0], false));
-              } else {
-                value.write(
-                    constructQuery("IdleEfficiency.GT", data.extras[0], false));
-                value.write(constructQuery(
-                    "IdleEfficiency.LTE", data.extras[1], false));
+        if (screenType != ScreenType.HEALTH) {
+          List<FilterData> idlingLevelList = appliedFilters
+              .where((element) => element.type == FilterType.IDLING_LEVEL)
+              .toList();
+          Logger()
+              .i("filter idlingLevelList " + idlingLevelList.length.toString());
+          if (idlingLevelList.isNotEmpty) {
+            for (FilterData data in idlingLevelList) {
+              if (data.extras.isNotEmpty) {
+                Logger().d("idling level extras 0 ", data.extras[0]);
+                Logger().d("idling level extras 1", data.extras[1]);
+                if (data.extras[1].isEmpty) {
+                  if (screenType == ScreenType.ASSET_OPERATION) {
+                    value.write(constructQuery(
+                        "IdleEfficiency.GT", data.extras[0], false));
+                  } else {
+                    value.write(constructQuery(
+                        "idleEfficiencyGT", data.extras[0], false));
+                  }
+                } else {
+                  if (screenType == ScreenType.ASSET_OPERATION) {
+                    value.write(constructQuery(
+                        "IdleEfficiency.GT", data.extras[0], false));
+                    value.write(constructQuery(
+                        "IdleEfficiency.LTE", data.extras[1], false));
+                  } else {
+                    value.write(constructQuery(
+                        "idleEfficiencyGT", data.extras[0], false));
+                    value.write(constructQuery(
+                        "idleEfficiencyLTE", data.extras[1], false));
+                  }
+                }
               }
+            }
+            if (screenType == ScreenType.FLEET ||
+                screenType == ScreenType.LOCATION) {
+              value.write(constructQuery("startDateLocal", startDate, false));
+              value.write(constructQuery("endDateLocal", endDate, false));
             }
           }
         }
+
         // location clustor
         List<FilterData> locationClustorList = appliedFilters
             .where((element) => element.type == FilterType.CLUSTOR)
@@ -358,13 +378,18 @@ class FilterUtils {
               Logger().d("idling level extras 0 ", data.extras[0]);
               Logger().d("idling level extras 1", data.extras[1]);
               if (data.extras[1].isEmpty) {
-                value.write(
-                    constructQuery("IdleEfficiency.GT", data.extras[0], false));
-              } else {
-                value.write(
-                    constructQuery("IdleEfficiency.GT", data.extras[0], false));
+                // idleEfficiencyRanges
                 value.write(constructQuery(
-                    "IdleEfficiency.LTE", data.extras[1], false));
+                    "idleEfficiencyRanges", data.extras[0], false));
+                // value.write(
+                //     constructQuery("IdleEfficiency.GT", data.extras[0], false));
+              } else {
+                value.write(constructQuery("idleEfficiencyRanges",
+                    "${data.extras[0]},${data.extras[1]}", false));
+                // value.write(
+                //     constructQuery("IdleEfficiency.GT", data.extras[0], false));
+                // value.write(constructQuery(
+                //     "IdleEfficiency.LTE", data.extras[1], false));
               }
             }
           }

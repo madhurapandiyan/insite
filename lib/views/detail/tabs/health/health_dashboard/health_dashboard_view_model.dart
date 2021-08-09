@@ -12,13 +12,13 @@ import 'package:insite/core/logger.dart';
 class HealthDashboardViewModel extends InsiteViewModel {
   Logger log;
   var _faultService = locator<FaultService>();
-   var _assetSingleHistoryService = locator<AssetService>();
+  var _assetSingleHistoryService = locator<AssetService>();
 
   bool _loading = true;
   bool get loading => _loading;
 
-   AssetCount _faultListData;
-   AssetCount get faultListData => _faultListData;
+  AssetCount _faultListData;
+  AssetCount get faultListData => _faultListData;
 
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;
@@ -26,14 +26,14 @@ class HealthDashboardViewModel extends InsiteViewModel {
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
 
-   bool _postingNote = false;
+  bool _postingNote = false;
   bool get postingNote => _postingNote;
 
   HealthDashboardViewModel(AssetDetail assetDetail) {
-    this._assetDetail=assetDetail;
+    this._assetDetail = assetDetail;
     this.log = getLogger(this.runtimeType.toString());
     _faultService.setUp();
-      _assetSingleHistoryService.setUp();
+    _assetSingleHistoryService.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getDashboardListData();
       getAssetDetail();
@@ -43,8 +43,8 @@ class HealthDashboardViewModel extends InsiteViewModel {
 
   getDashboardListData() async {
     AssetCount result = await _faultService.getDashboardListData(
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
     _faultListData = result;
     _loading = false;
     notifyListeners();
@@ -58,7 +58,7 @@ class HealthDashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-   getNotes() async {
+  getNotes() async {
     List<Note> result =
         await _assetSingleHistoryService.getAssetNotes(assetDetail.assetUid);
     _assetNotes = result;

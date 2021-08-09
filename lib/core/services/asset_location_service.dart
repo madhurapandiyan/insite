@@ -51,8 +51,8 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<AssetLocationData> getAssetLocation(
-      int pageNumber, int pageSize, String sort, appliedFilters) async {
+  Future<AssetLocationData> getAssetLocation(startDate, endDate, int pageNumber,
+      int pageSize, String sort, appliedFilters) async {
     try {
       if (pageNumber != null &&
           pageSize != null &&
@@ -63,8 +63,8 @@ class AssetLocationService extends BaseService {
             .assetLocationSummary(
                 Urls.locationSummary +
                     FilterUtils.getFilterURL(
-                        null,
-                        null,
+                        startDate,
+                        endDate,
                         pageNumber,
                         pageSize,
                         customerSelected.CustomerUID,
@@ -78,8 +78,15 @@ class AssetLocationService extends BaseService {
             .getClient()
             .assetLocationSummary(
                 Urls.locationSummary +
-                    FilterUtils.getFilterURL(null, null, pageNumber, pageSize,
-                        null, sort, appliedFilters, ScreenType.LOCATION),
+                    FilterUtils.getFilterURL(
+                        startDate,
+                        endDate,
+                        pageNumber,
+                        pageSize,
+                        null,
+                        sort,
+                        appliedFilters,
+                        ScreenType.LOCATION),
                 accountSelected.CustomerUID);
         return result;
       }

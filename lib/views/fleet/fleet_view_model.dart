@@ -54,7 +54,7 @@ class FleetViewModel extends InsiteViewModel {
 
   getFleetSummaryList() async {
     FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
-        pageSize, pageNumber, appliedFilters);
+        startDate, endDate, pageSize, pageNumber, appliedFilters);
     if (result != null) {
       if (result.pagination.totalCount != null) {
         _totalCount = result.pagination.totalCount.toInt();
@@ -113,7 +113,7 @@ class FleetViewModel extends InsiteViewModel {
     _shouldLoadmore = true;
     notifyListeners();
     FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
-        pageSize, pageNumber, appliedFilters);
+        startDate, endDate, pageSize, pageNumber, appliedFilters);
     if (result != null &&
         result.fleetRecords != null &&
         result.fleetRecords.isNotEmpty) {
