@@ -1325,19 +1325,21 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> getDashboardListData(
-      endDate, startDate, customerId) async {
+  Future<SingleAssetFaultResponse> getDashboardListData(
+      assetUid, endDate, startDate, customerId) async {
+    ArgumentError.checkNotNull(assetUid, 'assetUid');
     ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(startDate, 'startDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'assetUid': assetUid,
       r'endDateTime': endDate,
       r'startDateTime': startDate
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-service/1.0/health/FaultCount/v1',
+        '/t/trimble.com/vss-service/1.0/health/faultSummary/v1',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1345,7 +1347,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetCount.fromJson(_result.data);
+    final value = SingleAssetFaultResponse.fromJson(_result.data);
     return value;
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
-import 'package:insite/widgets/smart_widgets/fault_dropdown_widget.dart';
 
-class FaultHealthDashboard extends StatefulWidget {
-  final List<Count> countData;
+class 
+FaultHealthDashboard extends StatefulWidget {
+  final List<CountData> countData;
   final bool loading;
   FaultHealthDashboard({this.countData, this.loading});
 
@@ -15,11 +15,13 @@ class FaultHealthDashboard extends StatefulWidget {
 }
 
 class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
+
   var buttonColor = [burntSienna, Colors.orange, mustard];
   var level = ["HIGH", "MEDIUM", "LOW"];
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       height: MediaQuery.of(context).size.height * 0.38,
       decoration: BoxDecoration(
@@ -104,14 +106,15 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                       scrollDirection: Axis.vertical,
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       itemBuilder: (context, index) {
-                        Count count = widget.countData[index];
+                        CountData countResponse = widget.countData[index];
                         return FaultWidget(
-                          data: count,
+                          data: countResponse,
                           buttonColor: buttonColor[index],
                           level: level[index],
                         );
                       }),
                 ),
+
           SizedBox(
             height: 10,
           ),
