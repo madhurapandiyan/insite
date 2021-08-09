@@ -1,8 +1,9 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -17,8 +18,8 @@ class HealthDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  AssetCount _faultListData;
-  AssetCount get faultListData => _faultListData;
+  List<CountData> _faultData=[];
+ List<CountData>  get faultData => _faultData;
 
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;
@@ -42,10 +43,13 @@ class HealthDashboardViewModel extends InsiteViewModel {
   }
 
   getDashboardListData() async {
-    AssetCount result = await _faultService.getDashboardListData(
+    SingleAssetFaultResponse result = await _faultService.getDashboardListData(
+        _assetDetail.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    _faultListData = result;
+    if (result != null) {
+      _faultData = result.summaryData[0].countData;
+    }
     _loading = false;
     notifyListeners();
   }

@@ -1,9 +1,9 @@
 import 'package:insite/core/base/base_service.dart';
-import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/health_list_response.dart';
+import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
@@ -223,15 +223,18 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<AssetCount> getDashboardListData(
+  Future<SingleAssetFaultResponse> getDashboardListData(
+    assetUid,
     endDate,
     startDate,
   ) async {
     try {
-      AssetCount assetCountResponse = await MyApi()
+      SingleAssetFaultResponse assetCountResponse = await MyApi()
           .getClient()
           .getDashboardListData(
+            assetUid,
               endDate, startDate, accountSelected.CustomerUID);
+             // print('@@@:${assetCountResponse.countData[0].assetCount}');
       return assetCountResponse;
     } catch (e) {
       Logger().e(e);

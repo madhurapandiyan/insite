@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FaultWidget extends StatefulWidget {
-  final Count data;
+  final CountData data;
   //final String containerText;
   final String level;
   //final String buttonText;
   final Color buttonColor;
 
-  FaultWidget({this.data, this.level, this.buttonColor});
+  FaultWidget({
+    this.data,
+     this.level, this.buttonColor});
 
   @override
   _FaultWidgetState createState() => _FaultWidgetState();
 }
 
 class _FaultWidgetState extends State<FaultWidget> {
+
   @override
   Widget build(BuildContext context) {
+
+    print('data:$widget.data.assetCount');
     return Row(
       children: [
         InsiteButton(

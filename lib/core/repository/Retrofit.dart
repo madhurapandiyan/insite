@@ -19,6 +19,7 @@ import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/search_data.dart';
+import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
@@ -368,12 +369,12 @@ abstract class RestClient {
     @Query("startDateTime") String startDateTime,
     @Header("x-visionlink-customeruid") customerId,
   );
-  
-  @GET("/t/trimble.com/vss-service/1.0/health/FaultCount/v1")
-  Future <AssetCount> getDashboardListData(
+  @GET("/t/trimble.com/vss-service/1.0/health/faultSummary/v1")
+  Future <SingleAssetFaultResponse> getDashboardListData(
+    @Query("assetUid") String assetUid,
     @Query("endDateTime") String endDate,
     @Query("startDateTime") String startDate,
-    @Header("x-visionlink-customeruid") customerId
+    @Header("x-visionlink-customeruid") customerId,
   );
 }
 

@@ -69,17 +69,17 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
+               viewModel.faultData!=null?   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                     ),
                     child: FaultHealthDashboard(
-                      countData: viewModel.faultListData != null
-                          ? viewModel.faultListData.countData
+                      countData: viewModel.faultData != null
+                          ? viewModel.faultData
                           : null,
                       loading: viewModel.loading,
                     ),
-                  ),
+                  ):SizedBox(),
                   SizedBox(
                     height: 20,
                   ),

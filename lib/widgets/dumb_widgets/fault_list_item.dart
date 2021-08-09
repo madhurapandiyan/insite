@@ -56,38 +56,22 @@ class FaultListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: "Asset ID :" + "\n" + "-",
+                          title: fault.asset['details']["makeCode"] +
+                              " " +
+                              fault.asset["details"]["model"],
                           path: fault.asset["details"] != null &&
                                   fault.asset["details"]["model"] != null
                               ? Utils()
                                   .imageData(fault.asset["details"]["model"])
                               : "assets/images/EX210.png",
                         ),
-                        Table(
-                          border: TableBorder.all(),
-                          columnWidths: {
-                            0: FlexColumnWidth(3),
-                            1: FlexColumnWidth(3),
-                          },
-                          children: [
-                            TableRow(children: [
-                              InsiteTableRowItem(
-                                title: "Make :",
-                                content: fault.asset["details"] != null &&
-                                        fault.asset["details"]["makeCode"] !=
-                                            null
-                                    ? fault.asset["details"]["makeCode"]
-                                    : "-",
-                              ),
-                              InsiteTableRowItem(
-                                title: "Model :",
-                                content: fault.asset["details"] != null &&
-                                        fault.asset["details"]["model"] != null
-                                    ? fault.asset["details"]["model"]
-                                    : "-",
-                              ),
-                            ])
-                          ],
+                        InsiteTableRowItem(
+                          title: "Date/Time :",
+                          content: fault.basic != null &&
+                                  fault.basic.faultOccuredUTC != null
+                              ? Utils.getLastReportedDateOne(
+                                  fault.basic.faultOccuredUTC)
+                              : "-",
                         )
                       ],
                     ),
@@ -110,14 +94,6 @@ class FaultListItem extends StatelessWidget {
                         },
                         children: [
                           TableRow(children: [
-                            InsiteTableRowItem(
-                              title: "Date/Time :",
-                              content: fault.basic != null &&
-                                      fault.basic.faultOccuredUTC != null
-                                  ? Utils.getLastReportedDateOne(
-                                      fault.basic.faultOccuredUTC)
-                                  : "-",
-                            ),
                             InsiteTableRowItemWithButton(
                               title: "Severity : ",
                               buttonColor:

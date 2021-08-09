@@ -61,13 +61,15 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                       border: TableBorder.all(),
                       columnWidths: {
                         0: FlexColumnWidth(3),
-                        1: FlexColumnWidth(3),
+                        1: FlexColumnWidth(2),
                       },
                       children: [
                         TableRow(
                           children: [
                             InsiteTableRowItemWithImage(
-                              title: "Asset ID :" + "\n" + "-",
+                              title: widget.fault.asset["details"]["makeCode"] +
+                                  " " +
+                                  widget.fault.asset["details"]["model"],
                               path: widget.fault.asset["details"] != null &&
                                       widget.fault.asset["details"]["model"] !=
                                           null
@@ -75,38 +77,15 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                       widget.fault.asset["details"]["model"])
                                   : "assets/images/EX210.png",
                             ),
-                            Table(
-                              border: TableBorder.all(),
-                              columnWidths: {
-                                0: FlexColumnWidth(3),
-                                1: FlexColumnWidth(3),
-                              },
-                              children: [
-                                TableRow(children: [
-                                  InsiteTableRowItem(
-                                    title: "Make :",
-                                    content:
-                                        widget.fault.asset["details"] != null &&
-                                                widget.fault.asset["details"]
-                                                        ["makeCode"] !=
-                                                    null
-                                            ? widget.fault.asset["details"]
-                                                ["makeCode"]
-                                            : "-",
-                                  ),
-                                  InsiteTableRowItem(
-                                    title: "Model :",
-                                    content: widget.fault.asset["details"] !=
-                                                null &&
-                                            widget.fault.asset["details"]
-                                                    ["model"] !=
-                                                null
-                                        ? widget.fault.asset["details"]["model"]
-                                        : "-",
-                                  ),
-                                ])
-                              ],
-                            )
+                           InsiteTableRowItem(
+                             title: "Date/Time",
+                             content: widget.fault.asset != null &&
+                                      widget.fault.asset["dynamic"] != null
+                                  ? Utils.getLastReportedDateOne(
+                                      widget.fault.asset["dynamic"]
+                                          ["locationReportedTimeUTC"])
+                                  : "-" ,
+                           )
                           ],
                         ),
                         TableRow(children: [
@@ -133,7 +112,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                     onExpansionChanged: (value) {
                       viewModel.onExpanded();
                     },
-                    tilePadding: EdgeInsets.all(0),
+                    childrenPadding: EdgeInsets.only(left: 8),
+                    tilePadding: EdgeInsets.all(8),
                     children: [
                       Table(
                         columnWidths: {
