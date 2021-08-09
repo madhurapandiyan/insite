@@ -54,27 +54,27 @@ class _FleetViewState extends State<FleetView> {
                                   total: viewModel.totalCount,
                                   isDashboard: false,
                                 ),
-                                viewModel.appliedFilters
-                                        .where((element) =>
-                                            element.type !=
-                                            FilterType.DATE_RANGE)
-                                        .toList()
-                                        .isNotEmpty
-                                    ? FilterChipView(
-                                        filters: viewModel.appliedFilters
-                                            .where((element) =>
-                                                element.type !=
-                                                FilterType.DATE_RANGE)
-                                            .toList(),
-                                        onClosed: (value) {
-                                          viewModel.removeFilter(value);
-                                          viewModel.refresh();
-                                        },
-                                        backgroundColor: chipBackgroundOne,
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 8.0, left: 20.0),
-                                      )
-                                    : SizedBox(),
+                                // viewModel.appliedFilters
+                                //         .where((element) =>
+                                //             element.type !=
+                                //             FilterType.DATE_RANGE)
+                                //         .toList()
+                                //         .isNotEmpty
+                                //     ? FilterChipView(
+                                //         filters: viewModel.appliedFilters
+                                //             .where((element) =>
+                                //                 element.type !=
+                                //                 FilterType.DATE_RANGE)
+                                //             .toList(),
+                                //         onClosed: (value) {
+                                //           viewModel.removeFilter(value);
+                                //           viewModel.refresh();
+                                //         },
+                                //         backgroundColor: chipBackgroundOne,
+                                //         padding: const EdgeInsets.only(
+                                //             top: 8.0, bottom: 8.0, left: 20.0),
+                                //       )
+                                //     : SizedBox(),
                                 // viewModel.appliedFilters
                                 //         .where((element) =>
                                 //             element.type ==

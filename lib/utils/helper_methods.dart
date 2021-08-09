@@ -103,6 +103,33 @@ class Utils {
     }
   }
 
+  static String getDateInFormatyyyyMMddTHHmmssZStart(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String getLastDuration(date) {
     DateTime parseDate =
         new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);

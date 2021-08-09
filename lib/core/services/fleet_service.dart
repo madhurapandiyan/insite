@@ -28,6 +28,8 @@ class FleetService extends BaseService {
   }
 
   Future<FleetSummaryResponse> getFleetSummaryList(
+    startDate,
+    endDate,
     pageSize,
     pageNumber,
     List<FilterData> appliedFilters,
@@ -38,8 +40,8 @@ class FleetService extends BaseService {
               ? await MyApi().getClient().fleetSummaryURL(
                   Urls.fleetSummary +
                       FilterUtils.getFilterURL(
-                          null,
-                          null,
+                          startDate,
+                          endDate,
                           pageNumber,
                           pageSize,
                           customerSelected.CustomerUID,
@@ -49,7 +51,7 @@ class FleetService extends BaseService {
                   accountSelected.CustomerUID)
               : await MyApi().getClient().fleetSummaryURL(
                   Urls.fleetSummary +
-                      FilterUtils.getFilterURL(null, null, pageNumber, pageSize,
+                      FilterUtils.getFilterURL(startDate, endDate, pageNumber, pageSize,
                           null, "assetid", appliedFilters, ScreenType.FLEET),
                   accountSelected.CustomerUID);
       return fleetSummaryResponse;

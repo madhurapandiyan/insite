@@ -52,10 +52,10 @@ class HealthListViewModel extends InsiteViewModel {
   getHealthListData() async {
     HealthListResponse result = await _faultService.getHealthListData(
         _assetDetail.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
     _faults = result.assetData.faults;
     _healthListDataLoding = false;
     notifyListeners();
@@ -67,10 +67,10 @@ class HealthListViewModel extends InsiteViewModel {
     notifyListeners();
     HealthListResponse result = await _faultService.getHealthListData(
         _assetDetail.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
     if (result != null) {
       _faults.clear();
       _faults.addAll(result.assetData.faults);

@@ -39,8 +39,8 @@ class FaultListItemViewModel extends InsiteViewModel {
     Logger().d("end date " + endDate);
     FaultSummaryResponse result =
         await _faultService.getAssetViewDetailSummaryList(
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             5,
             1,
             appliedFilters,

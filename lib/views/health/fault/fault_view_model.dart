@@ -16,7 +16,7 @@ class FaultViewModel extends InsiteViewModel {
   var _navigationService = locator<NavigationService>();
 
   int pageNumber = 1;
-  int pageSize = 40;
+  int pageSize = 20;
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -59,8 +59,8 @@ class FaultViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     FaultSummaryResponse result = await _faultService.getFaultSummaryList(
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
         appliedFilters);
@@ -97,8 +97,8 @@ class FaultViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     FaultSummaryResponse result = await _faultService.getFaultSummaryList(
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
         appliedFilters);

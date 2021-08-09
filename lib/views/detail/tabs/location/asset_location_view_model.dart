@@ -271,8 +271,8 @@ class AssetLocationViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     HealthListResponse result = await _faultService.getAssetViewLocationSummary(
         assetDetail.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         null,
         5000,
         appliedFilters);
