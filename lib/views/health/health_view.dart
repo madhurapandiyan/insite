@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/health/asset/asset_view.dart';
 import 'package:insite/views/health/fault/fault_view.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';

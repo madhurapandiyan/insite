@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PageHeader extends StatelessWidget {

@@ -1,12 +1,10 @@
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/date_range_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
-import 'date_range_view.dart';
-
 class DateRangeViewModel extends BaseViewModel {
   var _dateRangeService = locator<DateRangeService>();
 

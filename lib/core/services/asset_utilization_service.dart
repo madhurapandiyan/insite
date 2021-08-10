@@ -9,9 +9,9 @@ import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 
 class AssetUtilizationService extends BaseService {

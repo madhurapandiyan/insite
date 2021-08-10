@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -369,5 +370,3 @@ class IdlingLevelSampleData {
 
   IdlingLevelSampleData({this.x, this.y});
 }
-
-enum IdlingLevelRange { DAY, WEEK, MONTH }

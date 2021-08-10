@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view.dart';
 import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
@@ -90,13 +90,3 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   }
 }
 
-enum UtilizationGraphType {
-  IDLEORWORKING,
-  RUNTIMEHOURS,
-  DISTANCETRAVELLED,
-  CUMULATIVE,
-  TOTALHOURS,
-  TOTALFUELBURNED,
-  IDLETREND,
-  FUELBURNRATETREND
-}

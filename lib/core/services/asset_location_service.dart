@@ -5,9 +5,9 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 
 class AssetLocationService extends BaseService {

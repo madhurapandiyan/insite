@@ -4,10 +4,9 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/services/asset_location_service.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'location_view_model.dart';
 
 class LocationSearchViewModel extends InsiteViewModel {
   Logger log;

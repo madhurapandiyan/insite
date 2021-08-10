@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -510,16 +511,3 @@ class RangeLabel extends StatelessWidget {
   }
 }
 
-enum DateRangeType {
-  today,
-  yesterday,
-  currentWeek,
-  previousWeek,
-  lastSevenDays,
-  lastThirtyDays,
-  currentMonth,
-  previousMonth,
-  custom
-}
-
-enum CustomDatePick { customFromDate, customToDate, customNoDate }

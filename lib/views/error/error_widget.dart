@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class ErrorWidget extends StatelessWidget {
@@ -58,4 +59,3 @@ class ErrorWidget extends StatelessWidget {
   }
 }
 
-enum ErrorAction { LOGOUT, LOGIN }

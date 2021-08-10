@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
