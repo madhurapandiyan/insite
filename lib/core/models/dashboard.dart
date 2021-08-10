@@ -1,4 +1,5 @@
-import 'package:insite/views/home/home_view.dart';
+
+import 'package:insite/utils/enums.dart';
 
 class Category {
   final int id;

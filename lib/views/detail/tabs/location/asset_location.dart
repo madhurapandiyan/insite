@@ -5,10 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 

@@ -3,7 +3,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
-import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';

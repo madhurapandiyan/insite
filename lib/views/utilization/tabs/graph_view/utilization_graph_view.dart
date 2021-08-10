@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/graphs/cumulative/cumulative_view.dart';
 import 'package:insite/views/utilization/graphs/distance_travelled/distance_travelled_view.dart';
 import 'package:insite/views/utilization/graphs/fuel_burn_rate_trend/fuel_burn_rate_trend_view.dart';
@@ -11,7 +11,6 @@ import 'package:insite/views/utilization/graphs/runtime_hours/runtime_hours_view
 import 'package:insite/views/utilization/graphs/total_fuel_burned/total_fuel_burned_view.dart';
 import 'package:insite/views/utilization/graphs/total_hours/total_hours_view.dart';
 import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view_model.dart';
-import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/util_graph_dropdown.dart';

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/filter/filter_chip_view.dart';
-import 'package:insite/views/filter/filter_knob_view.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';

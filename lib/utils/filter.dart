@@ -1,6 +1,6 @@
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
+import 'enums.dart';
 
 class FilterUtils {
   static String getFilterURL(

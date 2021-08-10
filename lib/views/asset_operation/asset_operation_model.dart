@@ -8,8 +8,8 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 

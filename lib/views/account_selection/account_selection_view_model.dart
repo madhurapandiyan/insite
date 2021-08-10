@@ -7,6 +7,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';

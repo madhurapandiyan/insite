@@ -9,13 +9,12 @@ import 'package:flutter_map/flutter_map.dart' as flutter_map;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart'
     as cluster;
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:latlong/latlong.dart' as latlng;
 
 class GoogleMapHomeWidget extends StatefulWidget {
   @override

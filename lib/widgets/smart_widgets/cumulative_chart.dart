@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -163,4 +164,3 @@ class CumulativeChartData {
   CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }
 
-enum CumulativeChartType { RUNTIME, FUELBURNED }

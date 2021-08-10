@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';

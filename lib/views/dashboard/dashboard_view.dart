@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/dashboard.dart';
+import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/home/home_view.dart';
+import 'package:insite/utils/dialog.dart';
+import 'package:insite/utils/enums.dart';
+import 'package:insite/views/location/home/google_map.dart';
+import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
+import 'package:insite/widgets/smart_widgets/asset_status.dart';
+import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
+import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
+import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 import 'dashboard_view_model.dart';
 
@@ -14,7 +21,12 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-  int selectedIndex;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Fleet selectedFleet;
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +35,133 @@ class _DashboardViewState extends State<DashboardView> {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
-            screenType: ScreenType.DASHBOARD,
-            onFilterApplied: () {},
             viewModel: viewModel,
-            body: Container(
-              padding: EdgeInsets.all(16),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width > 1000
-                        ? 7
-                        : MediaQuery.of(context).size.width > 600
-                            ? 5
-                            : 3,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0),
-                itemBuilder: (context, index) {
-                  Category category = categories[index];
-                  return _buildCategoryItem(
-                      context, index, category, viewModel);
-                },
-                itemCount: categories.length,
+            screenType: ScreenType.HOME,
+            onFilterApplied: () {},
+            body: SingleChildScrollView(
+              child: Container(
+                color: bgcolor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    PageHeader(
+                      isDashboard: true,
+                      total: viewModel.totalCount,
+                      screenType: ScreenType.HOME,
+                      count: 0,
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetStatus(
+                          statusChartData: viewModel.statusChartData != null
+                              ? viewModel.statusChartData
+                              : null,
+                          onFilterSelected: (value) {
+                            viewModel.onFilterSelected(value);
+                          },
+                          isLoading: viewModel.assetStatusloading),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetFuelLevel(
+                        chartData: viewModel.fuelChartData != null
+                            ? viewModel.fuelChartData
+                            : null,
+                        onFilterSelected: (value) {
+                          viewModel.onFilterSelected(value);
+                        },
+                        isLoading: viewModel.assetFuelloading,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: AssetUtilizationWidget(
+                        assetUtilization: viewModel.utilizationSummary != null
+                            ? viewModel.utilizationSummary
+                            : null,
+                        onFilterSelected: (value) {
+                          viewModel.gotoUtilizationPage();
+                        },
+                        totalGreatestNumber:
+                            viewModel.utilizationTotalGreatestValue,
+                        averageGreatestNumber:
+                            viewModel.utilizationAverageGreatestValue,
+                        isLoading: viewModel.assetUtilizationLoading,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: IdlingLevel(
+                        data: viewModel.idlingLevelData != null
+                            ? viewModel.idlingLevelData.countData
+                            : null,
+                        isLoading: viewModel.idlingLevelDataloading,
+                        onFilterSelected: (value) {
+                          viewModel.onIdlingLevelFilterSelected(value);
+                        },
+                        onRangeSelected: (IdlingLevelRange catchedRange) {
+                          viewModel.idlingLevelRange = catchedRange;
+                          viewModel.getIdlingLevelData(true);
+                        },
+                        isSwitching: viewModel.isSwitching,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: FaultHealthDashboard(
+                        countData: viewModel.faultCountData != null
+                            ? viewModel.faultCountData.countData
+                            : [],
+                        onFilterSelected: (value) {
+                          viewModel.onFaultFilterSelected(value);
+                        },
+                        loading: viewModel.faultCountloading,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GoogleMapHomeWidget(),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    //For Notification widget we haven't any data for that so we commented
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    //   child: Notifications(),
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //   child: AssetStatusUsage(
+                    //     statusChartData: viewModel.statusChartData != null
+                    //         ? viewModel.statusChartData
+                    //         : null,
+                    //     isLoading: viewModel.assetStatusloading,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -52,57 +171,63 @@ class _DashboardViewState extends State<DashboardView> {
     );
   }
 
-  Image appLogo = Image(
-      image: ExactAssetImage("assets/images/hitachi.png"),
-      height: 65.75,
-      width: 33.21,
-      alignment: FractionalOffset.center);
-
-  Widget _buildCategoryItem(BuildContext context, int index, Category category,
-      DashboardViewModel viewModel) {
-    return GestureDetector(
-      onTap: () {
-        buttontap(index, category, viewModel);
+  void showLogoutPrompt(DashboardViewModel viewModel) async {
+    bool value = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    "Logout",
+                    // style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    "Are you sure you want to logout?",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                ButtonBar(children: [
+                  TextButton(
+                    child: Text(
+                      "NO",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context, false);
+                    },
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  TextButton(
+                    child: Text(
+                      'YES',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context, true);
+                    },
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        );
       },
-      child: Container(
-        width: 118.71,
-        height: 111,
-        child: Card(
-          semanticContainer: true,
-          color: selectedIndex != null && selectedIndex == index
-              ? tango
-              : cardcolor,
-          elevation: 10.0,
-          margin: EdgeInsets.all(1.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset(category.image),
-              SizedBox(height: 8.0),
-              Text(
-                category.name,
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: textcolor),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
-  }
-
-  void buttontap(int index, Category category, DashboardViewModel viewModel) {
-    setState(() {
-      selectedIndex = index;
-    });
-    viewModel.openRespectivePage(category.screenType);
+    if (value != null && value) {
+      ProgressDialog.show(context);
+      viewModel.logout();
+    }
   }
 }

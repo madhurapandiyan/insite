@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/utilization/utilization_view.dart';
+import 'package:insite/utils/enums.dart';
 
 class UtilGraphDropdownWidget extends StatefulWidget {
   final Function graphType;

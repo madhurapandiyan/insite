@@ -5,11 +5,11 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/views/error/error_widget.dart' as error;
 
@@ -80,7 +80,6 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               : false,
           isSearchSelected: _isSearchSelected,
           isFilterSelected: _isFilterSelected,
-
           onSearchTap: () {
             setState(() {
               _isFilterSelected = false;
@@ -107,13 +106,11 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               )
             : Stack(children: [
                 widget.body,
-
                 _isSearchSelected
                     ? GlobalSearchView(
                         onSelected: (TopMatch value) {
                           onGlobalSearchItemSelected(value);
                         },
-
                       )
                     : SizedBox(),
                 _isFilterSelected
@@ -129,10 +126,10 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     );
   }
 
-  onErrorActionClicked(error.ErrorAction action, InsiteViewModel viewModel) {
-    if (action == error.ErrorAction.LOGIN) {
+  onErrorActionClicked(ErrorAction action, InsiteViewModel viewModel) {
+    if (action == ErrorAction.LOGIN) {
       viewModel.login();
-    } else if (action == error.ErrorAction.LOGIN) {}
+    } else if (action == ErrorAction.LOGIN) {}
   }
 
   onFilterApplied(bool) {

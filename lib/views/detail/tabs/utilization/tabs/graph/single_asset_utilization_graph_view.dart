@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
@@ -515,11 +516,4 @@ class _SingleAssetUtilizationGraphViewState
             : double.infinity
         : value * multiplyAmount;
   }
-}
-
-enum SingleAssetUtilizationGraphType {
-  IDLETIMEIDLEPERCENTAGE,
-  RUNTIMEPERFORMANCEPERCENT,
-  RUNTIMEHOURS,
-  DISTANCETRAVELED
 }
