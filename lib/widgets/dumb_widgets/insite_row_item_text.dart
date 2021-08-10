@@ -195,35 +195,39 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.bold,
           ),
-          Row(
-            children: List.generate(
-              texts.length,
-              (index) {
-                Count text = texts[index];
-                return text.count > 0
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 4),
-                        child: InsiteButton(
-                          bgColor: Utils.getFaultColor(text.countOf),
-                          title: text.count.toString(),
-                          padding: EdgeInsets.all(0),
-                          height: 25,
-                          width: 60,
-                          fontSize: 12,
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4),
-                        child: InsiteText(
-                          text: "-",
-                          color: athenGrey,
-                          size: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      );
-              },
+          Container(
+            height: 30,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: List.generate(
+                texts.length,
+                (index) {
+                  Count text = texts[index];
+                  return text.count > 0
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 4),
+                          child: InsiteButton(
+                            bgColor: Utils.getFaultColor(text.countOf),
+                            title: text.count.toString(),
+                            padding: EdgeInsets.all(0),
+                            height: 25,
+                            width: 60,
+                            fontSize: 12,
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 4),
+                          child: InsiteText(
+                            text: " - ",
+                            color: athenGrey,
+                            size: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                },
+              ),
             ),
           ),
         ],

@@ -65,7 +65,9 @@ class AssetOperationListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: asset != null
-                              ? asset.makeCode + "\n" + asset.model
+                              ? Utils.getMakeTitle(asset.makeCode) +
+                                  "\n" +
+                                  asset.model
                               : "",
                           path: asset == null
                               ? "assets/images/EX210.png"
@@ -95,7 +97,7 @@ class AssetOperationListItem extends StatelessWidget {
                           title: "Distance Travelled Kilometers",
                           content: asset != null &&
                                   asset.distanceTravelledKilometers != null
-                              ?asset.distanceTravelledKilometers.toString()
+                              ? asset.distanceTravelledKilometers.toString()
                               : "-",
                         ),
                       ],

@@ -118,6 +118,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                         onFilterApplied: (bool) {
                           onFilterApplied(bool);
                         },
+                        screenType: widget.screenType,
                       )
                     : SizedBox()
               ]),

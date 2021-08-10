@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
@@ -105,6 +106,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                   PageHeader(
                     isDashboard: false,
                     total: viewModel.totalCount,
+                    screenType: ScreenType.UTILIZATION,
                     count: viewModel.utilLizationListData.length,
                   ),
                   Padding(

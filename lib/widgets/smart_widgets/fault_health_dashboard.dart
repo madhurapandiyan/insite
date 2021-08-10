@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/core/models/single_asset_fault_response.dart';
+import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
 
-class 
-FaultHealthDashboard extends StatefulWidget {
-  final List<CountData> countData;
+class FaultHealthDashboard extends StatefulWidget {
+  final List<Count> countData;
   final bool loading;
-  FaultHealthDashboard({this.countData, this.loading});
+  final Function(FilterData) onFilterSelected;
+  FaultHealthDashboard({this.countData, this.loading, this.onFilterSelected});
 
   @override
   _FaultHealthDashboardState createState() => _FaultHealthDashboardState();
 }
 
 class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
-
   var buttonColor = [burntSienna, Colors.orange, mustard];
-  var level = ["HIGH", "MEDIUM", "LOW"];
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       height: MediaQuery.of(context).size.height * 0.38,
       decoration: BoxDecoration(
@@ -106,11 +105,18 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                       scrollDirection: Axis.vertical,
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       itemBuilder: (context, index) {
-                        CountData countResponse = widget.countData[index];
+                        Count countResponse = widget.countData[index];
                         return FaultWidget(
                           data: countResponse,
+                          onSelected: () {
+                            widget.onFilterSelected(FilterData(
+                                isSelected: true,
+                                count: countResponse.assetCount.toString(),
+                                title: countResponse.countOf,
+                                type: FilterType.SEVERITY));
+                          },
                           buttonColor: buttonColor[index],
-                          level: level[index],
+                          level: Utils.getFaultLabel(countResponse.countOf),
                         );
                       }),
                 ),

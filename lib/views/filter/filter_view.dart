@@ -3,6 +3,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/filter/filter_item.dart';
 import 'package:insite/views/filter/filter_view_model.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/location/location_search_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:stacked/stacked.dart';
@@ -10,7 +11,8 @@ import 'filter_chip_view.dart';
 
 class FilterView extends StatefulWidget {
   final Function(bool) onFilterApplied;
-  FilterView({this.onFilterApplied});
+  final ScreenType screenType;
+  FilterView({this.onFilterApplied, this.screenType});
 
   @override
   _FilterViewState createState() => _FilterViewState();
@@ -29,6 +31,7 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterDeviceTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterFuelLevelKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterIdlingLevelKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterSeverityKey = new GlobalKey();
 
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
@@ -53,6 +56,8 @@ class _FilterViewState extends State<FilterView> {
       filterFuelLevelKey.currentState.deSelectFromOutSide(data);
     } else if (data.type == FilterType.IDLING_LEVEL) {
       filterIdlingLevelKey.currentState.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.IDLING_LEVEL) {
+      filterSeverityKey.currentState.deSelectFromOutSide(data);
     }
   }
 
@@ -305,20 +310,41 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.IDLING_LEVEL,
-                              key: filterIdlingLevelKey,
-                              data: viewModel.filterDataIdlingLevel,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.IDLING_LEVEL);
-                              },
-                              isSingleSelection: true,
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.IDLING_LEVEL);
-                              },
+                            widget.screenType != ScreenType.HEALTH
+                                ? FilterItem(
+                                    filterType: FilterType.IDLING_LEVEL,
+                                    key: filterIdlingLevelKey,
+                                    data: viewModel.filterDataIdlingLevel,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.IDLING_LEVEL);
+                                    },
+                                    isSingleSelection: true,
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.IDLING_LEVEL);
+                                    },
+                                  )
+                                : SizedBox(),
+                            SizedBox(
+                              height: 8,
                             ),
+                            widget.screenType == ScreenType.HEALTH
+                                ? FilterItem(
+                                    filterType: FilterType.SEVERITY,
+                                    key: filterSeverityKey,
+                                    data: viewModel.filterSeverity,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.SEVERITY);
+                                    },
+                                    isSingleSelection: true,
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.SEVERITY);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),

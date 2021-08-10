@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/home/home_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -246,6 +245,9 @@ class Utils {
       case FilterType.CLUSTOR:
         title = "CLUSTOR";
         break;
+      case FilterType.SEVERITY:
+        title = "SEVERITY";
+        break;
       default:
     }
     return title;
@@ -278,6 +280,8 @@ class Utils {
       } else {
         title = "Fuel Level : " + "<" + title + "%";
       }
+    } else if (data.type == FilterType.SEVERITY) {
+      title = Utils.getFaultLabel(data.title);
     }
     return title;
   }
@@ -294,6 +298,8 @@ class Utils {
       }
     } else if (data.type == FilterType.FUEL_LEVEL) {
       title = getFuleLevelWidgetLabel(title, true);
+    } else if (data.type == FilterType.SEVERITY) {
+      title = Utils.getFaultLabel(data.title);
     }
     return title;
   }
@@ -352,13 +358,31 @@ class Utils {
 
   static Color getFaultColor(text) {
     return text != null && text != null
-        ? text.toLowerCase() == "red"
+        ? text.toLowerCase() == "red" || text.toLowerCase() == "high"
             ? buttonColorFive
-            : text.toLowerCase() == "green"
-                ? Colors.green
-                : text.toLowerCase() == "yellow"
+            : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
+                ? Colors.orange
+                : text.toLowerCase() == "yellow" || text.toLowerCase() == "low"
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
+  }
+
+  static String getFaultLabel(String text) {
+    return text.toLowerCase() == "red"
+        ? "HIGH"
+        : text.toLowerCase() == "orange"
+            ? "MEDIUM"
+            : text.toLowerCase() == "yellow"
+                ? "LOW"
+                : text;
+  }
+
+  static String getMakeTitle(String text) {
+    if (text.toLowerCase() == "thc") {
+      return "TATA HITACHI";
+    } else {
+      return text;
+    }
   }
 }

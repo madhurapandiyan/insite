@@ -25,17 +25,17 @@ class FaultListItem extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
                   Icon(Icons.arrow_drop_down, color: Colors.white),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
                   // Container(
                   //     decoration: BoxDecoration(
                   //         color: Colors.black,
@@ -49,15 +49,16 @@ class FaultListItem extends StatelessWidget {
                 title: Table(
                   border: TableBorder.all(),
                   columnWidths: {
-                    0: FlexColumnWidth(3),
+                    0: FlexColumnWidth(4),
                     1: FlexColumnWidth(3),
                   },
                   children: [
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: fault.asset['details']["makeCode"] +
-                              " " +
+                          title: Utils.getMakeTitle(
+                                  fault.asset['details']["makeCode"]) +
+                              "\n" +
                               fault.asset["details"]["model"],
                           path: fault.asset["details"] != null &&
                                   fault.asset["details"]["model"] != null
@@ -100,16 +101,7 @@ class FaultListItem extends StatelessWidget {
                                   Utils.getFaultColor(fault.basic.severity),
                               content: fault.basic != null &&
                                       fault.basic.severity != null
-                                  ? fault.basic.severity.toLowerCase() == "red"
-                                      ? "HIGH"
-                                      : fault.basic.severity.toLowerCase() ==
-                                              "green"
-                                          ? "MEDIUM"
-                                          : fault.basic.severity
-                                                      .toLowerCase() ==
-                                                  "yellow"
-                                              ? "LOW"
-                                              : ""
+                                  ? Utils.getFaultLabel(fault.basic.severity)
                                   : "",
                             ),
                           ])

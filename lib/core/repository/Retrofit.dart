@@ -350,8 +350,7 @@ abstract class RestClient {
 
   @GET('{url}')
   Future<FaultSummaryResponse> assetViewDetailSummaryURL(
-      @Path() String url,
-      @Header("X-VisionLink-CustomerUid") customerId);
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
   Future<HealthListResponse> assetViewLocationSummaryURL(
@@ -369,13 +368,21 @@ abstract class RestClient {
     @Query("startDateTime") String startDateTime,
     @Header("x-visionlink-customeruid") customerId,
   );
+
   @GET("/t/trimble.com/vss-service/1.0/health/faultSummary/v1")
-  Future <SingleAssetFaultResponse> getDashboardListData(
+  Future<SingleAssetFaultResponse> getDashboardListData(
     @Query("assetUid") String assetUid,
     @Query("endDateTime") String endDate,
     @Query("startDateTime") String startDate,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @GET('{url}')
+  Future<AssetCount> faultCount(
+      @Path() String url,
+      @Query("startDateTime") String startDate,
+      @Query("endDateTime") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

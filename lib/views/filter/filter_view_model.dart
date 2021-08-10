@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
@@ -18,6 +19,7 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataAllAssets = [];
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
+  List<FilterData> filterSeverity = [];
   List<FilterData> selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -67,6 +69,12 @@ class FilterViewModel extends InsiteViewModel {
         startDate, endDate, FilterType.IDLING_LEVEL, null);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
+
+    AssetCount resultSeverity = await _assetService.getFaultCount(
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(endDate));
+    addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
+
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
@@ -80,7 +88,9 @@ class FilterViewModel extends InsiteViewModel {
         // if (countData.countOf != "Not Reporting" && //enabling not reporting
         if (countData.countOf != "Excluded") {
           FilterData data = FilterData(
-              count: countData.count.toString(),
+              count: type == FilterType.SEVERITY
+                  ? countData.assetCount.toString()
+                  : countData.count.toString(),
               title: countData.countOf,
               isSelected: isAlreadSelected(countData.countOf, type),
               extras: [],

@@ -3,6 +3,7 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/health_asset_list_item.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
@@ -18,7 +19,7 @@ class AssetView extends StatefulWidget {
 
 class AssetViewState extends State<AssetView> {
   onFilterApplied() {
-    // viewModel.refresh();
+    viewModel.refresh();
   }
   var viewModel;
   List<DateTime> dateRange = [];
@@ -98,6 +99,7 @@ class AssetViewState extends State<AssetView> {
                 PageHeader(
                   isDashboard: false,
                   total: viewModel.totalCount,
+                  screenType: ScreenType.ASSET_OPERATION,
                   count: viewModel.faults.length,
                 ),
                 Expanded(
