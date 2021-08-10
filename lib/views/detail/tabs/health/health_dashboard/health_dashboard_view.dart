@@ -69,17 +69,19 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                   SizedBox(
                     height: 20,
                   ),
-               viewModel.faultData!=null?   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                    ),
-                    child: FaultHealthDashboard(
-                      countData: viewModel.faultData != null
-                          ? viewModel.faultData
-                          : null,
-                      loading: viewModel.loading,
-                    ),
-                  ):SizedBox(),
+                  viewModel.faultData != null
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                          ),
+                          child: FaultHealthDashboard(
+                            countData: viewModel.faultData != null
+                                ? viewModel.faultData
+                                : null,
+                            loading: viewModel.loading,
+                          ),
+                        )
+                      : SizedBox(),
                   SizedBox(
                     height: 20,
                   ),
@@ -142,27 +144,27 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                   SizedBox(
                     height: 20,
                   ),
-                   Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      child: PingDevice(
-                        onTap: () {},
-                        assetDetail: widget.detail,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
                     ),
-                    SizedBox(
-                      height: 20,
+                    child: PingDevice(
+                      onTap: () {},
+                      assetDetail: widget.detail,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      child: Notifications(),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    child: Notifications(),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                 ],
               ),
             ),

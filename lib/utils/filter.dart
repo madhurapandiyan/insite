@@ -192,6 +192,20 @@ class FilterUtils {
             }
           }
         }
+        
+        if (screenType == ScreenType.HEALTH) {
+          // severity
+          List<FilterData> severityList = appliedFilters
+              .where((element) => element.type == FilterType.SEVERITY)
+              .toList();
+          Logger().i(
+              "filter severityList " + severityList.length.toString());
+          if (severityList.isNotEmpty) {
+            for (FilterData data in severityList) {
+              value.write(constructQuery("severity", data.title, false));
+            }
+          }
+        }
 
         // location clustor
         List<FilterData> locationClustorList = appliedFilters

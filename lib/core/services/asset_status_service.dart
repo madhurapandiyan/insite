@@ -226,4 +226,18 @@ class AssetStatusService extends DataBaseService {
       return null;
     }
   }
+
+  Future<AssetCount> getFaultCount(startDate, endDate) async {
+    try {
+      AssetCount faultCountResponse = await MyApi().getClient().faultCount(
+          Urls.faultCountSummary,
+          startDate,
+          endDate,
+          accountSelected.CustomerUID);
+      return faultCountResponse;
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
 }

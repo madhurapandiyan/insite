@@ -43,6 +43,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.CLUSTOR;
       case 14:
         return FilterType.ASSET_STATUS;
+      case 15:
+        return FilterType.SEVERITY;
       default:
         return null;
     }
@@ -95,6 +97,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.ASSET_STATUS:
         writer.writeByte(14);
+        break;
+      case FilterType.SEVERITY:
+        writer.writeByte(15);
         break;
     }
   }

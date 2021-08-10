@@ -1350,4 +1350,28 @@ class _RestClient implements RestClient {
     final value = SingleAssetFaultResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetCount> faultCount(url, startDate, endDate, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startDateTime': startDate,
+      r'endDateTime': endDate
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCount.fromJson(_result.data);
+    return value;
+  }
 }

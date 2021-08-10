@@ -101,16 +101,7 @@ class FaultListItem extends StatelessWidget {
                                   Utils.getFaultColor(fault.basic.severity),
                               content: fault.basic != null &&
                                       fault.basic.severity != null
-                                  ? fault.basic.severity.toLowerCase() == "red"
-                                      ? "HIGH"
-                                      : fault.basic.severity.toLowerCase() ==
-                                              "green"
-                                          ? "MEDIUM"
-                                          : fault.basic.severity
-                                                      .toLowerCase() ==
-                                                  "yellow"
-                                              ? "LOW"
-                                              : ""
+                                  ? Utils.getFaultLabel(fault.basic.severity)
                                   : "",
                             ),
                           ])

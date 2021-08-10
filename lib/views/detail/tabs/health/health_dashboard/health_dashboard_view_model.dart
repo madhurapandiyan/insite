@@ -1,6 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -18,8 +19,8 @@ class HealthDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  List<CountData> _faultData=[];
- List<CountData>  get faultData => _faultData;
+  List<Count> _faultData = [];
+  List<Count> get faultData => _faultData;
 
   AssetDetail _assetDetail;
   AssetDetail get assetDetail => _assetDetail;

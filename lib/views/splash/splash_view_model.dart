@@ -88,6 +88,7 @@ class SplashViewModel extends BaseViewModel {
         }
       } else {
         _localService.setHasPermission(false);
+        _localService.clearAll();
         shouldLoadWebview = true;
         Future.delayed(Duration(seconds: 1), () {
           notifyListeners();

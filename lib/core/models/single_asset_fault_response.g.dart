@@ -25,8 +25,8 @@ Map<String, dynamic> _$SingleAssetFaultResponseToJson(
 SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) {
   return SummaryData(
     countData: (json['countData'] as List)
-        ?.map((e) =>
-            e == null ? null : CountData.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Count.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
@@ -34,18 +34,4 @@ SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$SummaryDataToJson(SummaryData instance) =>
     <String, dynamic>{
       'countData': instance.countData,
-    };
-
-CountData _$CountDataFromJson(Map<String, dynamic> json) {
-  return CountData(
-    countOf: json['countOf'] as String,
-    assetCount: json['assetCount'] as int,
-    faultCount: json['faultCount'] as int,
-  );
-}
-
-Map<String, dynamic> _$CountDataToJson(CountData instance) => <String, dynamic>{
-      'countOf': instance.countOf,
-      'assetCount': instance.assetCount,
-      'faultCount': instance.faultCount,
     };

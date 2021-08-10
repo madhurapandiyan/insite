@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -7,6 +8,7 @@ import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
 import 'package:insite/views/location/home/google_map.dart';
+import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
@@ -114,6 +116,21 @@ class _HomeViewState extends State<HomeView> {
                           viewModel.getIdlingLevelData(true);
                         },
                         isSwitching: viewModel.isSwitching,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: FaultHealthDashboard(
+                        countData: viewModel.faultCountData != null
+                            ? viewModel.faultCountData.countData
+                            : [],
+                        onFilterSelected: (value) {
+                          viewModel.onFaultFilterSelected(value);
+                        },
+                        loading: viewModel.faultCountloading,
                       ),
                     ),
                     SizedBox(

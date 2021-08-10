@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
+import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
@@ -13,6 +14,8 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
+import 'package:insite/views/health/fault/fault_view.dart';
+import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:intl/intl.dart';
@@ -73,6 +76,12 @@ class HomeViewModel extends InsiteViewModel {
   AssetCount _idlingLevelData;
   AssetCount get idlingLevelData => _idlingLevelData;
 
+  AssetCount _faultCountData;
+  AssetCount get faultCountData => _faultCountData;
+
+  bool _faultCountloading = true;
+  bool get faultCountloading => _faultCountloading;
+
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
     this._endDayRange = endDay;
@@ -99,6 +108,7 @@ class HomeViewModel extends InsiteViewModel {
       getIdlingLevelData(false);
       //  getAssetLocation();
       getUtilizationSummary();
+      getFaultCoundData();
     });
   }
 
@@ -180,12 +190,34 @@ class HomeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getFaultCoundData() async {
+    _faultCountloading = true;
+    notifyListeners();
+    AssetCount count = await _assetService.getFaultCount(
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(endDate));
+    if (count != null) {
+      _faultCountData = count;
+    }
+    _faultCountloading = false;
+    notifyListeners();
+  }
+
   onFilterSelected(FilterData data) async {
     Logger().d("onFilterSelected $data");
     // await clearFilterDb();
     await addFilter(data);
     Future.delayed(Duration(seconds: 1), () {
       gotoFleetPage();
+    });
+  }
+
+  onFaultFilterSelected(FilterData data) async {
+    Logger().d("onFilterSelected $data");
+    // await clearFilterDb();
+    await addFilter(data);
+    Future.delayed(Duration(seconds: 1), () {
+      gotoFaultPage();
     });
   }
 
@@ -196,6 +228,11 @@ class HomeViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       gotoUtilizationPage();
     });
+  }
+
+  gotoFaultPage() {
+    _navigationService.navigateWithTransition(HealthView(),
+        transition: "rightToLeft");
   }
 
   gotoFleetPage() {

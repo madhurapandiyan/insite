@@ -176,22 +176,22 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                     SizedBox(
                       height: 5.0,
                     ),
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height * 0.10,
-                    //   color: greencolor,
-                    //   child: Padding(
-                    //     padding: EdgeInsets.only(left: 5.0, top: 8.0),
-                    //     child: Text(
-                    //       "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-                    //       style: TextStyle(
-                    //           fontSize: 11.0,
-                    //           fontWeight: FontWeight.w500,
-                    //           fontFamily: 'Roboto',
-                    //           fontStyle: FontStyle.normal,
-                    //           color: maptextcolor),
-                    //     ),
-                    //   ),
-                    // ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.10,
+                      color: greencolor,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 5.0, top: 8.0),
+                        child: Text(
+                          "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+                          style: TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Roboto',
+                              fontStyle: FontStyle.normal,
+                              color: maptextcolor),
+                        ),
+                      ),
+                    ),
                     viewModel.loading
                         ? Expanded(
                             child: Center(
@@ -361,6 +361,9 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   : SizedBox();
               viewModel.zoomToMarkers();
             },
+            onTap: (argument) {
+              viewModel.customInfoWindowController.hideInfoWindow();
+            },
             onCameraIdle:
                 viewModel.manager != null ? viewModel.manager.updateMap : null,
             mapType: _changemap(),
@@ -391,6 +394,7 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                 GestureDetector(
                   onTap: () {
                     print("button is tapped");
+                    viewModel.customInfoWindowController.hideInfoWindow();
                     zoomVal++;
                     _plus(
                         zoomVal,
@@ -426,6 +430,7 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                 GestureDetector(
                     onTap: () {
                       print("button is tapped");
+                      viewModel.customInfoWindowController.hideInfoWindow();
                       zoomVal--;
                       _minus(
                           zoomVal,

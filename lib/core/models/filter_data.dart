@@ -56,6 +56,8 @@ enum FilterType {
   CLUSTOR,
   @HiveField(14)
   ASSET_STATUS,
+  @HiveField(15)
+  SEVERITY,
 }
 
 @HiveType(typeId: 2)
