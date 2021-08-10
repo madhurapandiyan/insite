@@ -56,6 +56,7 @@ class _LocationViewState extends State<LocationView> {
                           PageHeader(
                             count: viewModel.pageSize,
                             total: viewModel.totalCount,
+                            screenType: ScreenType.LOCATION,
                             isDashboard: true,
                           ),
                           Padding(

@@ -352,13 +352,21 @@ class Utils {
 
   static Color getFaultColor(text) {
     return text != null && text != null
-        ? text.toLowerCase() == "red"
+        ? text.toLowerCase() == "red" || text.toLowerCase() == "high"
             ? buttonColorFive
-            : text.toLowerCase() == "green"
+            : text.toLowerCase() == "green" || text.toLowerCase() == "medium"
                 ? Colors.green
-                : text.toLowerCase() == "yellow"
+                : text.toLowerCase() == "yellow" || text.toLowerCase() == "low"
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
+  }
+
+  static String getMakeTitle(String text) {
+    if (text.toLowerCase() == "thc") {
+      return "TATA HITACHI";
+    } else {
+      return text;
+    }
   }
 }

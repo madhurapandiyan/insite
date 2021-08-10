@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PageHeader extends StatelessWidget {
   final int count;
   final int total;
   final bool isDashboard;
+  final ScreenType screenType;
   final EdgeInsets margin;
   final EdgeInsets padding;
   const PageHeader(
-      {this.count, this.total, this.isDashboard, this.margin, this.padding});
+      {this.count,
+      this.total,
+      this.isDashboard,
+      this.margin,
+      this.padding,
+      this.screenType});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,13 @@ class PageHeader extends StatelessWidget {
       child: Row(
         children: [
           InsiteText(
-            text: isDashboard ? "$total assets" : "$count of $total assets",
+            text: screenType == ScreenType.HEALTH
+                ? isDashboard
+                    ? "$total faults"
+                    : "$count of $total faults"
+                : isDashboard
+                    ? "$total assets"
+                    : "$count of $total assets",
             fontWeight: FontWeight.bold,
             color: Colors.white,
             size: 15,

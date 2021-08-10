@@ -44,6 +44,7 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                       PageHeader(
                         count: viewModel.assets.length,
                         total: viewModel.totalCount,
+                        screenType: ScreenType.ASSET_OPERATION,
                         isDashboard: false,
                       ),
                       Padding(
@@ -118,7 +119,7 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                 );
                                 if (dateRange != null && dateRange.isNotEmpty) {
                                   setState(() {
-                                    dateRange=dateRange;
+                                    dateRange = dateRange;
                                   });
                                   viewModel.refresh();
                                 }

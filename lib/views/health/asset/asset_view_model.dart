@@ -16,7 +16,7 @@ class AssetViewModel extends InsiteViewModel {
   var _navigationService = locator<NavigationService>();
 
   int pageNumber = 1;
-  int pageSize = 50;
+  int pageSize = 20;
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -89,8 +89,12 @@ class AssetViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     pageNumber = 1;
-    pageSize = 50;
-    _refreshing = true;
+    pageSize = 20;
+    if (_faults.isEmpty) {
+      _loading = true;
+    } else {
+      _refreshing = true;
+    }
     _shouldLoadmore = true;
     notifyListeners();
     Logger().d("start date " + startDate);
@@ -103,11 +107,14 @@ class AssetViewModel extends InsiteViewModel {
             pageNumber,
             appliedFilters);
     if (result != null && result.assetFaults != null) {
+      _totalCount = result.total;
       _faults.clear();
       _faults.addAll(result.assetFaults);
       _refreshing = false;
+      _loading = false;
       notifyListeners();
     } else {
+      _loading = false;
       _refreshing = false;
       notifyListeners();
     }

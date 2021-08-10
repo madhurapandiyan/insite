@@ -36,17 +36,17 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(2),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 20,
-                      ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
                       Icon(Icons.arrow_drop_down, color: Colors.white),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
                       // Container(
                       //     decoration: BoxDecoration(
                       //         color: Colors.black,
@@ -57,18 +57,20 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                 ),
                 Expanded(
                   child: InsiteExpansionTile(
+                    // childrenPadding: EdgeInsets.all(0),
                     title: Table(
                       border: TableBorder.all(),
                       columnWidths: {
                         0: FlexColumnWidth(3),
-                        1: FlexColumnWidth(2),
+                        1: FlexColumnWidth(3),
                       },
                       children: [
                         TableRow(
                           children: [
                             InsiteTableRowItemWithImage(
-                              title: widget.fault.asset["details"]["makeCode"] +
-                                  " " +
+                              title: Utils.getMakeTitle(widget
+                                      .fault.asset["details"]["makeCode"]) +
+                                  "\n" +
                                   widget.fault.asset["details"]["model"],
                               path: widget.fault.asset["details"] != null &&
                                       widget.fault.asset["details"]["model"] !=
@@ -77,15 +79,15 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                       widget.fault.asset["details"]["model"])
                                   : "assets/images/EX210.png",
                             ),
-                           InsiteTableRowItem(
-                             title: "Date/Time",
-                             content: widget.fault.asset != null &&
+                            InsiteTableRowItem(
+                              title: "Date/Time",
+                              content: widget.fault.asset != null &&
                                       widget.fault.asset["dynamic"] != null
                                   ? Utils.getLastReportedDateOne(
                                       widget.fault.asset["dynamic"]
                                           ["locationReportedTimeUTC"])
-                                  : "-" ,
-                           )
+                                  : "-",
+                            )
                           ],
                         ),
                         TableRow(children: [
@@ -112,8 +114,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                     onExpansionChanged: (value) {
                       viewModel.onExpanded();
                     },
-                    childrenPadding: EdgeInsets.only(left: 8),
-                    tilePadding: EdgeInsets.all(8),
+                    tilePadding: EdgeInsets.all(0),
                     children: [
                       Table(
                         columnWidths: {
@@ -225,7 +226,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                     title: fault.severityLabel,
                                     padding: EdgeInsets.all(8),
                                     margin: EdgeInsets.all(8),
-                                    bgColor: buttonColorFive,
+                                    bgColor: Utils.getFaultColor(
+                                        fault.severityLabel),
                                     height: 30,
                                     width: 40,
                                   ),

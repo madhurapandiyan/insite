@@ -89,7 +89,11 @@ class AssetOperationViewModel extends InsiteViewModel {
     await getAssetOperationCount();
     pageNumber = 1;
     pageSize = 50;
-    _refreshing = true;
+    if (_assets.isEmpty) {
+      _loading = true;
+    } else {
+      _refreshing = true;
+    }
     _shouldLoadmore = true;
     notifyListeners();
     Logger().d("start date " + startDate);
@@ -99,9 +103,11 @@ class AssetOperationViewModel extends InsiteViewModel {
     if (result != null) {
       _assets.clear();
       _assets.addAll(result.assets);
+      _loading = false;
       _refreshing = false;
       notifyListeners();
     } else {
+      _loading = false;
       _refreshing = false;
       notifyListeners();
     }

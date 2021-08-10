@@ -45,6 +45,7 @@ class _HomeViewState extends State<HomeView> {
                     PageHeader(
                       isDashboard: true,
                       total: viewModel.totalCount,
+                      screenType: ScreenType.HOME,
                       count: 0,
                     ),
                     SizedBox(

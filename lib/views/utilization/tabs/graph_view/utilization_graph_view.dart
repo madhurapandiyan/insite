@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:insite/views/utilization/graphs/cumulative/cumulative_view.dart';
 import 'package:insite/views/utilization/graphs/distance_travelled/distance_travelled_view.dart';
 import 'package:insite/views/utilization/graphs/fuel_burn_rate_trend/fuel_burn_rate_trend_view.dart';
@@ -115,6 +116,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                       graphType == UtilizationGraphType.DISTANCETRAVELLED
                   ? false
                   : true,
+              screenType: ScreenType.UTILIZATION,
               total: viewModel.totalCount,
               count: viewModel.count,
             ),

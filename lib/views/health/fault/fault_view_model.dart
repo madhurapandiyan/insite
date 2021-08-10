@@ -90,8 +90,12 @@ class FaultViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     pageNumber = 1;
-    pageSize = 40;
-    _refreshing = true;
+    pageSize = 20;
+    if (_faults.isEmpty) {
+      _loading = true;
+    } else {
+      _refreshing = true;
+    }
     _shouldLoadmore = true;
     notifyListeners();
     Logger().d("start date " + startDate);
@@ -107,8 +111,10 @@ class FaultViewModel extends InsiteViewModel {
       _faults.clear();
       _faults.addAll(result.faults);
       _refreshing = false;
+      _loading = false;
       notifyListeners();
     } else {
+      _loading = false;
       _refreshing = false;
       notifyListeners();
     }
