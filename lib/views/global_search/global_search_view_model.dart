@@ -5,6 +5,7 @@ import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/home/home_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -48,6 +49,7 @@ class GlobalSearchViewModel extends InsiteViewModel {
             fleet: Fleet(
                 assetSerialNumber: fleet.serialNumber,
                 assetId: fleet.assetUID,
-                assetIdentifier: fleet.assetID)));
+                assetIdentifier: fleet.assetID)
+                ));
   }
 }

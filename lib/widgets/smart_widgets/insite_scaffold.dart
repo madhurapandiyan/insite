@@ -80,6 +80,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               : false,
           isSearchSelected: _isSearchSelected,
           isFilterSelected: _isFilterSelected,
+
           onSearchTap: () {
             setState(() {
               _isFilterSelected = false;
@@ -106,11 +107,13 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               )
             : Stack(children: [
                 widget.body,
+
                 _isSearchSelected
                     ? GlobalSearchView(
                         onSelected: (TopMatch value) {
                           onGlobalSearchItemSelected(value);
                         },
+
                       )
                     : SizedBox(),
                 _isFilterSelected

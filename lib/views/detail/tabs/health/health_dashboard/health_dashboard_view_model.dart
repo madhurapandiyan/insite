@@ -47,7 +47,9 @@ class HealthDashboardViewModel extends InsiteViewModel {
     SingleAssetFaultResponse result = await _faultService.getDashboardListData(
         _assetDetail.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate)
+        );
+      
     if (result != null) {
       _faultData = result.summaryData[0].countData;
     }

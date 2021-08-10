@@ -99,6 +99,17 @@ class FleetListItem extends StatelessWidget {
                     children: [
                       TableRow(
                         children: [
+                           InsiteTableRowItem(
+                          title: "Location                 ",
+                          //changing to location text
+                          // content: fleet.lastReportedLocationLatitude
+                          //         .toString() +
+                          //     "/" +
+                          //     fleet.lastReportedLocationLongitude.toString(),
+                          content: fleet.lastReportedLocation != null
+                              ? fleet.lastReportedLocation
+                              : "-",
+                        ),
                           InsiteTableRowItem(
                             title: "Location - Last Reported",
                             content: fleet.lastReportedUTC != null
@@ -113,32 +124,21 @@ class FleetListItem extends StatelessWidget {
                           //           fleet.lastReportedUTC)
                           //       : "",
                           // ),
-                          InsiteTableRowItem(
-                            title: "Dealer Name               ",
-                            content: fleet.dealerName != null
-                                ? fleet.dealerName
-                                : "-",
-                          ),
+                          // InsiteTableRowItem(
+                          //   title: "Dealer Name               ",
+                          //   content: fleet.dealerName != null
+                          //       ? fleet.dealerName
+                          //       : "-",
+                          // ),
                         ],
                       ),
                       TableRow(children: [
-                        InsiteTableRowItem(
-                          title: "Location                 ",
-                          //changing to location text
-                          // content: fleet.lastReportedLocationLatitude
-                          //         .toString() +
-                          //     "/" +
-                          //     fleet.lastReportedLocationLongitude.toString(),
-                          content: fleet.lastReportedLocation != null
-                              ? fleet.lastReportedLocation
+                         InsiteTableRowItem(
+                          title: "Fuel Level%",
+                          content: fleet.fuelLevelLastReported != null
+                              ? fleet.fuelLevelLastReported.toString()
                               : "-",
                         ),
-                        InsiteTableRowItem(
-                          title: "Signal Strength          ",
-                          content: "-",
-                        ),
-                      ]),
-                      TableRow(children: [
                         InsiteTableRowItem(
                           title: "Fuel - Last Reported     ",
                           content: fleet.lastPercentFuelRemainingUTC != null
@@ -146,41 +146,54 @@ class FleetListItem extends StatelessWidget {
                                   fleet.lastPercentFuelRemainingUTC)
                               : "-",
                         ),
-                        InsiteTableRowItem(
-                          title: "Fuel Level%",
-                          content: fleet.fuelLevelLastReported != null
-                              ? fleet.fuelLevelLastReported.toString()
+                        
+                       
+                      ]),
+                      TableRow(children: [
+                         InsiteTableRowItem(
+                          title: "Hr Meter",
+                          content: fleet.hourMeter != null
+                              ? fleet.hourMeter.round().toString() + " hrs"
                               : "-",
+                        ),
+                         InsiteTableRowItem(
+                          title: "Asset Commissioning Date  ",
+                          content: "-",
                         ),
                       ]),
                       TableRow(children: [
+                         InsiteTableRowItem(
+                          title: "Signal Strength          ",
+                          content: "-",
+                        ),
                         InsiteTableRowItem(
                           title: "Network Provider         ",
                           content: "-",
+                        ),
+                        
+                      ]),
+                      TableRow(children: [
+                        // InsiteTableRowItem(
+                        //   title: "Asset Commissioning Date  ",
+                        //   content: "-",
+                        // ),
+                        InsiteTableRowItem(
+                          title: "Dealer Name               ",
+                          content:
+                              fleet.dealerName != null ? fleet.dealerName : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",
                           content: fleet.dealerCustomerName != null
                               ? fleet.dealerCustomerName
                               : "-",
-                        ),
-                      ]),
-                      TableRow(children: [
-                        InsiteTableRowItem(
-                          title: "Asset Commissioning Date  ",
-                          content: "-",
-                        ),
+                        )
                         // InsiteTableRowItem(
-                        //   title: "Dealer Name               ",
-                        //   content:
-                        //       fleet.dealerName != null ? fleet.dealerName : "-",
+                        //   title: "Hr Meter",
+                        //   content: fleet.hourMeter != null
+                        //       ? fleet.hourMeter.round().toString() + " hrs"
+                        //       : "-",
                         // ),
-                        InsiteTableRowItem(
-                          title: "Hr Meter",
-                          content: fleet.hourMeter != null
-                              ? fleet.hourMeter.round().toString() + " hrs"
-                              : "-",
-                        ),
                       ]),
                       // TableRow(children: [
                       //   InsiteTableRowItem(

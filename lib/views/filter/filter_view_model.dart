@@ -71,8 +71,8 @@ class FilterViewModel extends InsiteViewModel {
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     AssetCount resultSeverity = await _assetService.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(endDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     selectedFilterData = appliedFilters;

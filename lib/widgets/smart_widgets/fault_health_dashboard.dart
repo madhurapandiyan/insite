@@ -95,11 +95,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                   child: CircularProgressIndicator(),
                 ))
               : Expanded(
-                  child: ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return Container(
-                            child: Divider(thickness: 1.0, color: black));
-                      },
+                  child: ListView.builder(
                       itemCount: widget.countData.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
