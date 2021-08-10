@@ -36,7 +36,7 @@ class _HomeViewState extends State<HomeView> {
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
             viewModel: viewModel,
-            screenType: ScreenType.DASHBOARD,
+            screenType: ScreenType.HOME,
             onFilterApplied: () {},
             body: SingleChildScrollView(
               child: Container(

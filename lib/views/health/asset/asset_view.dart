@@ -124,7 +124,7 @@ class AssetViewState extends State<AssetView> {
                               },
                             )
                           : EmptyView(
-                              title: "No Assets Found",
+                              title: "No Assets with fault codes to display",
                             ),
                 ),
                 viewModel.loadingMore

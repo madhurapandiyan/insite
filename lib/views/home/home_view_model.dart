@@ -194,8 +194,8 @@ class HomeViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount count = await _assetService.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(endDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     if (count != null) {
       _faultCountData = count;
     }

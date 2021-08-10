@@ -154,6 +154,20 @@ class Utils {
     return outputDate;
   }
 
+  static String getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 6))
+          .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String parseDate(DateTime dateTime) {
     return '${dateTime.day}-${dateTime.month}-${dateTime.year}';
   }
