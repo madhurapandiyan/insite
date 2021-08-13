@@ -198,19 +198,19 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.MODEL_YEAR,
-                              key: filterModelYearKey,
-                              data: viewModel.filterDataModelYear,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.MODEL_YEAR);
-                              },
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.MODEL_YEAR);
-                              },
-                            ),
+                            // FilterItem(
+                            //   filterType: FilterType.MODEL_YEAR,
+                            //   key: filterModelYearKey,
+                            //   data: viewModel.filterDataModelYear,
+                            //   onApply: (List<FilterData> list) {
+                            //     viewModel.onFilterSelected(
+                            //         list, FilterType.MODEL_YEAR);
+                            //   },
+                            //   onClear: () {
+                            //     viewModel
+                            //         .onFilterCleared(FilterType.MODEL_YEAR);
+                            //   },
+                            // ),
                             SizedBox(
                               height: 8,
                             ),
@@ -229,19 +229,19 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.APPLICATION,
-                              key: filterApplicationKey,
-                              data: [],
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.APPLICATION);
-                              },
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.APPLICATION);
-                              },
-                            ),
+                            // FilterItem(
+                            //   filterType: FilterType.APPLICATION,
+                            //   key: filterApplicationKey,
+                            //   data: [],
+                            //   onApply: (List<FilterData> list) {
+                            //     viewModel.onFilterSelected(
+                            //         list, FilterType.APPLICATION);
+                            //   },
+                            //   onClear: () {
+                            //     viewModel
+                            //         .onFilterCleared(FilterType.APPLICATION);
+                            //   },
+                            // ),
                             SizedBox(
                               height: 8,
                             ),

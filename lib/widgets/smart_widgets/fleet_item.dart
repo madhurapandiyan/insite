@@ -184,8 +184,8 @@ class FleetListItem extends StatelessWidget {
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",
-                          content: fleet.dealerCustomerName != null
-                              ? fleet.dealerCustomerName
+                          content: fleet.universalCustomerName != null
+                              ? fleet.universalCustomerName
                               : "-",
                         )
                         // InsiteTableRowItem(

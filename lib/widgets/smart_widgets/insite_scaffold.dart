@@ -146,6 +146,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
       _isSearchSelected = !_isSearchSelected;
     });
     _navigationService.navigateTo(assetDetailViewRoute,
+  
         arguments: DetailArguments(
             index: 0,
             fleet: Fleet(

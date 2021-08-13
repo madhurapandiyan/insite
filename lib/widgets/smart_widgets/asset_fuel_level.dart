@@ -170,6 +170,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
           radius: '85%',
           startAngle: 270,
           endAngle: 90,
+          //dataLabelMapper: (ChartSampleData data, _)=>d,
           xValueMapper: (ChartSampleData data, _) => data.x,
           yValueMapper: (ChartSampleData data, _) => data.y,
           dataLabelSettings: DataLabelSettings(
@@ -188,7 +189,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
     ];
   }
 
-  getCount(){
+  getCount(int data){
+    int result=data;
+    print("@@@:$result");
 
   }
   

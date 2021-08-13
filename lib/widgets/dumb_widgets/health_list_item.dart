@@ -73,8 +73,9 @@ class HealthListItem extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: 'Reported Date :',
-                    content: Utils.getLastReportedDateOne(
-                        faultElement.lastReportedTimeUTC),
+                    content:faultElement.lastReportedTimeUTC!=null?
+                     Utils.getLastReportedDateOneUTC(
+                        faultElement.lastReportedTimeUTC):"-",
                   ),
                   Column(
                     children: [

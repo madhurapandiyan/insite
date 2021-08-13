@@ -47,10 +47,10 @@ class AssetDetailHealth extends StatelessWidget {
               border: TableBorder.all(),
               children: [
                 TableRow(children: [
-                  InsiteTableRowItem(
-                    title: "Asset Id",
-                    content: "-",
-                  ),
+                  // InsiteTableRowItem(
+                  //   title: "Asset Id",
+                  //   content: "-",
+                  // ),
                   InsiteTableRowItem(
                     title: "Asset Status",
                     content: detail.status,
@@ -58,13 +58,17 @@ class AssetDetailHealth extends StatelessWidget {
                   InsiteTableRowItem(
                     title: "Serial No.",
                     content: detail.assetSerialNumber,
+                  ),
+                   InsiteTableRowItem(
+                    title: "Geofences",
+                    content: "-",
                   )
                 ]),
                 TableRow(children: [
-                  InsiteTableRowItem(
-                    title: "Geofences",
-                    content: "-",
-                  ),
+                  // InsiteTableRowItem(
+                  //   title: "Geofences",
+                  //   content: "-",
+                  // ),
                   InsiteTableRowItem(
                     title: "Manufacturer",
                     content: detail.manufacturer,
@@ -72,13 +76,17 @@ class AssetDetailHealth extends StatelessWidget {
                   InsiteTableRowItem(
                     title: "Product Family",
                     content: detail.productFamily,
-                  )
-                ]),
-                TableRow(children: [
+                  ),
                   InsiteTableRowItem(
                     title: "Model ",
                     content: detail.model != null ? detail.model : "-",
-                  ),
+                  )
+                ]),
+                TableRow(children: [
+                  // InsiteTableRowItem(
+                  //   title: "Model ",
+                  //   content: detail.model != null ? detail.model : "-",
+                  // ),
                   InsiteTableRowItem(
                     title: "Year",
                     content: detail.year != null ? detail.year.toString() : "-",
@@ -89,15 +97,23 @@ class AssetDetailHealth extends StatelessWidget {
                         ? detail.hourMeter.round().toString() + "hrs"
                         : "-",
                   ),
-                ]),
-                TableRow(children: [
-                  InsiteTableRowItem(
+                   InsiteTableRowItem(
                     title: "Last Reported time",
                     content: detail.lastReportedTimeUTC != null
                         ? Utils.getLastReportedDateOneUTC(
                             detail.lastReportedTimeUTC)
                         : "-",
-                  ),
+                  )
+
+                ]),
+                TableRow(children: [
+                  // InsiteTableRowItem(
+                  //   title: "Last Reported time",
+                  //   content: detail.lastReportedTimeUTC != null
+                  //       ? Utils.getLastReportedDateOneUTC(
+                  //           detail.lastReportedTimeUTC)
+                  //       : "-",
+                  // ),
                   InsiteTableRowItem(
                     title: "Groups",
                     content: "-",
@@ -130,6 +146,10 @@ class AssetDetailHealth extends StatelessWidget {
                         ),
                       )
                     ],
+                  ),
+                  InsiteTableRowItem(
+                    title: "Service Plans",
+                    content: getServiceNames(),
                   )
                 ]),
                 TableRow(children: [

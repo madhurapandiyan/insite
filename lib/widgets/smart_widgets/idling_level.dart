@@ -320,6 +320,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
     List<IdlingLevelSampleData> chartData = [];
     for (Count count in widget.data) {
       if (count.countOf != "Excluded") {
+        print('idlingData:${widget.data[3].count}');
         chartData.add(
           IdlingLevelSampleData(
             x: Utils.getIdlingWidgetLabel(count.countOf),
@@ -362,6 +363,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
         return null;
     }
   }
+
 }
 
 class IdlingLevelSampleData {
