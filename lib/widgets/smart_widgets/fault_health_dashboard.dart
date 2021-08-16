@@ -3,14 +3,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
 
 class FaultHealthDashboard extends StatefulWidget {
+  final ScreenType screenType;
   final List<Count> countData;
   final bool loading;
   final Function(FilterData) onFilterSelected;
-  FaultHealthDashboard({this.countData, this.loading, this.onFilterSelected});
+  FaultHealthDashboard(
+      {this.countData, this.loading, this.onFilterSelected,this.screenType});
 
   @override
   _FaultHealthDashboardState createState() => _FaultHealthDashboardState();
@@ -18,11 +21,12 @@ class FaultHealthDashboard extends StatefulWidget {
 
 class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
   var buttonColor = [burntSienna, Colors.orange, mustard];
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.38,
+      height: widget.countData.length >= 3
+          ? MediaQuery.of(context).size.height * 0.38
+          : MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
@@ -104,6 +108,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                         Count countResponse = widget.countData[index];
                         return FaultWidget(
                           data: countResponse,
+                          screenType:widget.screenType,
                           onSelected: () {
                             widget.onFilterSelected(FilterData(
                                 isSelected: true,

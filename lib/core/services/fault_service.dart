@@ -230,7 +230,7 @@ class FaultService extends BaseService {
   ) async {
     try {
       SingleAssetFaultResponse assetCountResponse = await MyApi()
-          .getClient()
+          .getClientThree()
           .getDashboardListData(
             assetUid,
               endDate, startDate, accountSelected.CustomerUID);

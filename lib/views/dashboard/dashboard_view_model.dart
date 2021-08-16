@@ -192,7 +192,7 @@ class DashboardViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount count = await _assetService.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     if (count != null) {
       _faultCountData = count;

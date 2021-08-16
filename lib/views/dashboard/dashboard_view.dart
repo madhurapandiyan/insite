@@ -124,6 +124,7 @@ class _DashboardViewState extends State<DashboardView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: FaultHealthDashboard(
+                        screenType: ScreenType.DASHBOARD,
                         countData: viewModel.faultCountData != null
                             ? viewModel.faultCountData.countData
                             : [],

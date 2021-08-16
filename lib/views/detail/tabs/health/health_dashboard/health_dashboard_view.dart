@@ -75,6 +75,7 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                             horizontal: 16.0,
                           ),
                           child: FaultHealthDashboard(
+                            screenType: ScreenType.ASSET_DETAIL,
                             countData: viewModel.faultData != null
                                 ? viewModel.faultData
                                 : null,

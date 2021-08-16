@@ -229,7 +229,7 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getFaultCount(startDate, endDate) async {
     try {
-      AssetCount faultCountResponse = await MyApi().getClient().faultCount(
+      AssetCount faultCountResponse = await MyApi().getClientThree().faultCount(
           Urls.faultCountSummary,
           startDate,
           endDate,
