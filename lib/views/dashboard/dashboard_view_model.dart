@@ -212,9 +212,9 @@ class DashboardViewModel extends InsiteViewModel {
     Logger().d("onFilterSelected $data");
     // await clearFilterDb();
     await addFilter(data);
-    Future.delayed(Duration(seconds: 1), () {
-      gotoFleetPage();
-    });
+    // Future.delayed(Duration(seconds: 1), () {
+      // gotoFleetPage();
+    // });
   }
 
   onFaultFilterSelected(FilterData data) async {
