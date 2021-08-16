@@ -10,6 +10,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -28,6 +29,7 @@ class DashboardViewModel extends InsiteViewModel {
   var _assetLocationService = locator<AssetLocationService>();
   var _localStorageService = locator<LocalStorageService>();
   var _assetUtilizationService = locator<AssetUtilizationService>();
+  var _dateRangeService = locator<DateRangeService>();
 
   Logger log;
 
@@ -98,6 +100,7 @@ class DashboardViewModel extends InsiteViewModel {
     _assetLocationService.setUp();
     _localStorageService.setUp();
     _assetUtilizationService.setUp();
+    _dateRangeService.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetCount();
@@ -132,6 +135,10 @@ class DashboardViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 2), () {
       _navigationService.replaceWith(loginViewRoute);
     });
+  }
+
+  updateDateRangeFilter(FilterData data) async {
+    await _dateRangeService.updateDateFilter(data);
   }
 
   getAssetStatusData() async {
@@ -205,9 +212,9 @@ class DashboardViewModel extends InsiteViewModel {
     Logger().d("onFilterSelected $data");
     // await clearFilterDb();
     await addFilter(data);
-    Future.delayed(Duration(seconds: 1), () {
-      gotoFleetPage();
-    });
+    // Future.delayed(Duration(seconds: 1), () {
+      // gotoFleetPage();
+    // });
   }
 
   onFaultFilterSelected(FilterData data) async {

@@ -1,12 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/date.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/bar_chart.dart';
 import 'package:insite/widgets/dumb_widgets/bar_wdiget.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
+import 'package:logger/logger.dart';
 
 class AssetUtilizationWidget extends StatefulWidget {
   final UtilizationSummary assetUtilization;
@@ -134,7 +138,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                       .averageDay
                                       .workingHours),
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(DateRangeType.today);
                                   },
                                   idleValue: Utils.checkNull(widget
                                       .assetUtilization.averageDay.idleHours),
@@ -145,7 +149,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                               : BarChartWidget(
                                   title: 'Today',
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(DateRangeType.today);
                                   },
                                   averageGreatestNumber:
                                       widget.averageGreatestNumber,
@@ -163,7 +167,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                               ? BarChartWidget(
                                   title: 'Current Week',
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(DateRangeType.currentWeek);
                                   },
                                   averageGreatestNumber:
                                       widget.averageGreatestNumber,
@@ -185,7 +189,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                               : BarChartWidget(
                                   title: 'Current Week',
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(DateRangeType.currentWeek);
                                   },
                                   averageGreatestNumber:
                                       widget.averageGreatestNumber,
@@ -203,7 +207,8 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                               ? BarChartWidget(
                                   title: 'Current Month',
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(
+                                        DateRangeType.currentMonth);
                                   },
                                   averageGreatestNumber:
                                       widget.averageGreatestNumber,
@@ -225,7 +230,8 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                               : BarChartWidget(
                                   title: 'Current Month',
                                   onTap: () {
-                                    widget.onFilterSelected(null);
+                                    onFilterSelected(
+                                        DateRangeType.currentMonth);
                                   },
                                   averageGreatestNumber:
                                       widget.averageGreatestNumber,
@@ -253,6 +259,26 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
         ],
       ),
     );
+  }
+
+  onFilterSelected(DateRangeType dateRangeType) {
+    Logger().d(
+        "on asset utilization filter selected ${describeEnum(dateRangeType)}");
+    DateTime fromDate, toDate;
+    fromDate = DateUtil.calcFromDate(dateRangeType);
+    toDate = DateTime.now();
+    Logger().d("from date ${fromDate} to date ${toDate}");
+    FilterData data = FilterData(
+        title: "Date Range",
+        count: describeEnum(dateRangeType),
+        extras: [
+          '${fromDate.year}-${fromDate.month}-${fromDate.day}',
+          '${toDate.year}-${toDate.month}-${toDate.day}',
+          describeEnum(dateRangeType)
+        ],
+        isSelected: true,
+        type: FilterType.DATE_RANGE);
+    widget.onFilterSelected(data);
   }
 
   Container barChart(String title, double workingValue, double idleValue,

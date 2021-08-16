@@ -23,7 +23,6 @@ class _SplashViewState extends State<SplashView> {
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   String token;
 
-  final _localService = locator<LocalService>();
   final _loginService = locator<LoginService>();
 
   @override
@@ -70,7 +69,7 @@ class _SplashViewState extends State<SplashView> {
       if (state.url != null &&
           state.url
               .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
-        print("URL changed with access token: $state.url");
+        print("STATE changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
             List<String> list = state.url.split("=");

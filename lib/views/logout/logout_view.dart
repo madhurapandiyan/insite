@@ -23,7 +23,6 @@ class _LogoutViewState extends State<LogoutView> {
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   String token;
 
-  final _localService = locator<LocalService>();
   final _loginService = locator<LoginService>();
 
   @override
@@ -79,8 +78,8 @@ class _LogoutViewState extends State<LogoutView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("URL changed: $url");
-        if (url.startsWith(
-            "https://unifiedfleet.myvisionlink.com/#access_token=")) {
+        if (url != null &&
+            url.startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             if (url.contains("=")) {

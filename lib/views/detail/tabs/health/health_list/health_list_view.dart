@@ -90,7 +90,7 @@ class _HealthListViewState extends State<HealthListView> {
                     ),
                   ),
                   Expanded(
-                    child: viewModel.healthListDataLoading
+                    child: viewModel.loading
                         ? Container(
                             child: Center(child: CircularProgressIndicator()))
                         : viewModel.faults.isNotEmpty
@@ -98,6 +98,7 @@ class _HealthListViewState extends State<HealthListView> {
                                 shrinkWrap: true,
                                 itemCount: viewModel.faults.length,
                                 padding: EdgeInsets.symmetric(horizontal: 8),
+                                controller: viewModel.scrollController,
                                 itemBuilder: (context, index) {
                                   Fault faultElement = viewModel.faults[index];
                                   return HealthListItem(
@@ -108,7 +109,13 @@ class _HealthListViewState extends State<HealthListView> {
                             : EmptyView(
                                 title: "No Assets Found",
                               ),
-                  )
+                  ),
+                  viewModel.loadingMore
+                      ? Padding(
+                          padding: EdgeInsets.all(8),
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox(),
                 ],
               ),
               viewModel.refreshing

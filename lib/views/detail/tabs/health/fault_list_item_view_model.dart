@@ -17,6 +17,12 @@ class FaultListItemViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
@@ -41,7 +47,7 @@ class FaultListItemViewModel extends InsiteViewModel {
         await _faultService.getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            5,
+            20,
             1,
             appliedFilters,
             fault.asset["uid"]);

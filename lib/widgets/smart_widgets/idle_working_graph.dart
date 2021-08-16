@@ -71,12 +71,16 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             lineHeight: 20.0,
             width: width,
             center: Text(
-              "${(idleLength + workingLength).toStringAsFixed(1)}",
+              // "${(idleLength + workingLength).toStringAsFixed(1)}",
+              "${(workingLength).toStringAsFixed(1)}",
               style: TextStyle(fontSize: 12),
             ),
-            percent: ((idleLength + workingLength) * 10 / 100) > 1
+            // percent: ((idleLength + workingLength) * 10 / 100) > 1
+            //     ? 1
+            //     : ((idleLength + workingLength) * 10 / 100),
+            percent: ((workingLength) * 10 / 100) > 1
                 ? 1
-                : ((idleLength + workingLength) * 10 / 100),
+                : ((workingLength) * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: burntSienna,
             backgroundColor: concrete,

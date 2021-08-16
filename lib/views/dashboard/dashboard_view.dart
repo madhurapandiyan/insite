@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -59,8 +60,9 @@ class _DashboardViewState extends State<DashboardView> {
                           statusChartData: viewModel.statusChartData != null
                               ? viewModel.statusChartData
                               : null,
-                          onFilterSelected: (value) {
-                            viewModel.onFilterSelected(value);
+                          onFilterSelected: (value) async {
+                            await viewModel.onFilterSelected(value);
+                            viewModel.gotoFleetPage();
                           },
                           isLoading: viewModel.assetStatusloading),
                     ),
@@ -73,8 +75,9 @@ class _DashboardViewState extends State<DashboardView> {
                         chartData: viewModel.fuelChartData != null
                             ? viewModel.fuelChartData
                             : null,
-                        onFilterSelected: (value) {
-                          viewModel.onFilterSelected(value);
+                        onFilterSelected: (value) async {
+                          await viewModel.onFilterSelected(value);
+                          viewModel.gotoFleetPage();
                         },
                         isLoading: viewModel.assetFuelloading,
                       ),
@@ -88,7 +91,8 @@ class _DashboardViewState extends State<DashboardView> {
                         assetUtilization: viewModel.utilizationSummary != null
                             ? viewModel.utilizationSummary
                             : null,
-                        onFilterSelected: (value) {
+                        onFilterSelected: (data) async {
+                          await viewModel.updateDateRangeFilter(data);
                           viewModel.gotoUtilizationPage();
                         },
                         totalGreatestNumber:
@@ -108,8 +112,9 @@ class _DashboardViewState extends State<DashboardView> {
                             ? viewModel.idlingLevelData.countData
                             : null,
                         isLoading: viewModel.idlingLevelDataloading,
-                        onFilterSelected: (value) {
-                          viewModel.onIdlingLevelFilterSelected(value);
+                        onFilterSelected: (value) async {
+                          await viewModel.onFilterSelected(value);
+                          viewModel.gotoUtilizationPage();
                         },
                         onRangeSelected: (IdlingLevelRange catchedRange) {
                           viewModel.idlingLevelRange = catchedRange;
@@ -128,8 +133,9 @@ class _DashboardViewState extends State<DashboardView> {
                         countData: viewModel.faultCountData != null
                             ? viewModel.faultCountData.countData
                             : [],
-                        onFilterSelected: (value) {
-                          viewModel.onFaultFilterSelected(value);
+                        onFilterSelected: (value) async {
+                          await viewModel.onFilterSelected(value);
+                          viewModel.gotoFaultPage();
                         },
                         loading: viewModel.faultCountloading,
                       ),
