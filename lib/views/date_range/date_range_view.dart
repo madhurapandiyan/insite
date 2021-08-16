@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
@@ -352,6 +353,10 @@ class _DateRangeViewState extends State<DateRangeView> {
                                       CustomDatePick.customToDate) {
                                     customToDate = _selectedDay;
                                     toDate = _selectedDay;
+                                    if (toDate.isBefore(fromDate)) {
+                                      Utils.showToast(
+                                          "End date cannot be less than start date.");
+                                    }
                                   }
                                 });
                               },
@@ -367,11 +372,16 @@ class _DateRangeViewState extends State<DateRangeView> {
                       height: 40,
                       onTap: () async {
                         if (fromDate != null && toDate != null) {
-                          await viewModel.updateDateRange(
-                              '${fromDate.year}-${fromDate.month}-${fromDate.day}',
-                              '${toDate.year}-${toDate.month}-${toDate.day}',
-                              describeEnum(viewModel.selectedDateRange));
-                          Navigator.pop(context, [fromDate, toDate]);
+                          if (toDate.isBefore(fromDate)) {
+                            Utils.showToast(
+                                "End date cannot be less than start date.");
+                          } else {
+                            await viewModel.updateDateRange(
+                                '${fromDate.year}-${fromDate.month}-${fromDate.day}',
+                                '${toDate.year}-${toDate.month}-${toDate.day}',
+                                describeEnum(viewModel.selectedDateRange));
+                            Navigator.pop(context, [fromDate, toDate]);
+                          }
                         }
                       },
                       bgColor: tango,
@@ -402,33 +412,6 @@ class _DateRangeViewState extends State<DateRangeView> {
     );
   }
 
-  DateTime calcFromDate(DateRangeType defaultDateRange) {
-    switch (defaultDateRange) {
-      case DateRangeType.today:
-        return DateTime.now();
-        break;
-      case DateRangeType.yesterday:
-        return (DateTime.now().subtract(Duration(days: 1)));
-        break;
-      case DateRangeType.currentWeek:
-        return (DateTime.now()
-            .subtract(Duration(days: DateTime.now().weekday - 1)));
-        break;
-      case DateRangeType.lastSevenDays:
-        return (DateTime.now().subtract(Duration(days: 6)));
-        break;
-      case DateRangeType.lastThirtyDays:
-        return (DateTime.now().subtract(Duration(days: 29)));
-        break;
-      case DateRangeType.currentMonth:
-        return (DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
-        break;
-      default:
-        return null;
-        break;
-    }
-  }
-
   void onLabelClicked(
       DateRangeViewModel viewModel, DateRangeType defaultDateRange) {
     viewModel.selectedDateRange = defaultDateRange;
@@ -445,11 +428,11 @@ class _DateRangeViewState extends State<DateRangeView> {
       fromDate = DateTime.utc(DateTime.now().year, DateTime.now().month - 1, 1);
       toDate = DateTime.utc(DateTime.now().year, DateTime.now().month, 0);
     } else if (viewModel.selectedDateRange == DateRangeType.yesterday) {
-      fromDate = calcFromDate(defaultDateRange);
-      toDate = calcFromDate(defaultDateRange);
+      fromDate = DateUtil.calcFromDate(defaultDateRange);
+      toDate = DateUtil.calcFromDate(defaultDateRange);
     } else {
       toDate = DateTime.now();
-      fromDate = calcFromDate(defaultDateRange);
+      fromDate = DateUtil.calcFromDate(defaultDateRange);
     }
     setState(() {});
   }
@@ -510,4 +493,3 @@ class RangeLabel extends StatelessWidget {
     );
   }
 }
-

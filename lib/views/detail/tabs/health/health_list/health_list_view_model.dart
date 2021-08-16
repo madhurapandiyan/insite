@@ -29,8 +29,8 @@ class HealthListViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  bool _healthListDataLoding = true;
-  bool get healthListDataLoading => _healthListDataLoding;
+  bool _loading = true;
+  bool get loading => _loading;
 
   ScrollController scrollController;
   HealthListViewModel(AssetDetail assetDetail) {
@@ -56,9 +56,24 @@ class HealthListViewModel extends InsiteViewModel {
         limit,
         page,
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    _faults = result.assetData.faults;
-    _healthListDataLoding = false;
-    notifyListeners();
+    if (result != null && result.assetData != null) {
+      if (result.assetData.faults.isNotEmpty) {
+        _faults.addAll(result.assetData.faults);
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      } else {
+        _faults.addAll(result.assetData.faults);
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
+      }
+    } else {
+      _loading = false;
+      _loadingMore = false;
+      notifyListeners();
+    }
   }
 
   refresh() async {
@@ -75,9 +90,11 @@ class HealthListViewModel extends InsiteViewModel {
       _faults.clear();
       _faults.addAll(result.assetData.faults);
       _refreshing = false;
+      _loading = false;
       notifyListeners();
     } else {
       _refreshing = false;
+      _loading = false;
       notifyListeners();
     }
   }

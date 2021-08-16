@@ -106,10 +106,12 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters);
-    if (result != null && result.assetFaults != null) {
+    if (result != null) {
       _totalCount = result.total;
       _faults.clear();
-      _faults.addAll(result.assetFaults);
+      if (result.assetFaults != null) {
+        _faults.addAll(result.assetFaults);
+      }
       _refreshing = false;
       _loading = false;
       notifyListeners();

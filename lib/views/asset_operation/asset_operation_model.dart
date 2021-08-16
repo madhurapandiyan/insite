@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -47,15 +48,16 @@ class AssetOperationViewModel extends InsiteViewModel {
 
   List<DateTime> days = [];
 
-  void updateDateRangeList() {
+  updateDateRangeList() {
     try {
-      DateTime startTime = DateTime.parse(startDate);
-      DateTime endTime = DateTime.parse(endDate);
+      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate);
+      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;
       days = List.generate(
           daysToGenerate,
           (i) =>
               DateTime(startTime.year, startTime.month, startTime.day + (i)));
+      Logger().d("date range length ${days.length}");
     } catch (e) {
       Logger().e(e);
     }
@@ -73,7 +75,6 @@ class AssetOperationViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    updateDateRangeList();
     Future.delayed(Duration(seconds: 1), () {
       getSelectedFilterData();
       getDateRangeFilterData();
@@ -87,6 +88,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     await getSelectedFilterData();
     await getAssetOperationCount();
+    updateDateRangeList();
     pageNumber = 1;
     pageSize = 50;
     if (_assets.isEmpty) {
@@ -118,6 +120,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     await getAssetOperationCount();
+    updateDateRangeList();
     AssetSummaryResponse result = await _assetService.getAssetSummaryList(
         startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {

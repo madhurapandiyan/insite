@@ -73,9 +73,10 @@ class HealthListItem extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: 'Reported Date :',
-                    content:faultElement.lastReportedTimeUTC!=null?
-                     Utils.getLastReportedDateOneUTC(
-                        faultElement.lastReportedTimeUTC):"-",
+                    content: faultElement.lastReportedTimeUTC != null
+                        ? Utils.getLastReportedDateOneUTC(
+                            faultElement.lastReportedTimeUTC)
+                        : "-",
                   ),
                   Column(
                     children: [
@@ -92,7 +93,8 @@ class HealthListItem extends StatelessWidget {
                       InsiteButton(
                         width: 70,
                         height: 30,
-                        bgColor: burntSienna,
+                        bgColor:
+                            Utils.getFaultColor(faultElement.severityLabel),
                         title: faultElement.severityLabel,
                         textColor: textcolor,
                       )
