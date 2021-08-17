@@ -1,9 +1,11 @@
+import 'package:flutter/scheduler.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
+import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
@@ -20,6 +22,7 @@ import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:quiver/iterables.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DashboardViewModel extends InsiteViewModel {
@@ -167,14 +170,19 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFuelLevelData() async {
+    int totalAssetCount = 0;
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
       AssetCount _fuelLevelData = result;
-      for (var fuelData in _fuelLevelData.countData) {
-        if (fuelData.countOf != "Not Reporting") {
-          Logger().d("countOf ${fuelData.countOf}");
-          fuelChartData.add(
-              ChartSampleData(x: fuelData.countOf, y: fuelData.count.round()));
+      for (int index = 0; index < result.countData.length; index++) {
+        if (result.countData[index].countOf != "Not Reporting") {
+          Logger().d("countOf ${result.countData[index].count}");
+
+          totalAssetCount = totalAssetCount + result.countData[index].count;
+          fuelChartData.add(ChartSampleData(
+              x: result.countData[index].countOf,
+              y: result.countData[index].count,
+              z: totalAssetCount.toString()));
         }
       }
     }
