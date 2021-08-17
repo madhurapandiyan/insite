@@ -28,6 +28,7 @@ class _HomeViewState extends State<HomeView> {
             onFilterApplied: () {},
             viewModel: viewModel,
             body: Container(
+              color: bgcolor,
               padding: EdgeInsets.all(16),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

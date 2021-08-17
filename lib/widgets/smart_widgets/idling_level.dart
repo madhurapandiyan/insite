@@ -11,6 +11,7 @@ class IdlingLevel extends StatefulWidget {
   final List<Count> data;
   final bool isLoading;
   final bool isSwitching;
+  final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
   final Function onRangeSelected;
 
@@ -19,6 +20,7 @@ class IdlingLevel extends StatefulWidget {
       this.isLoading,
       this.onFilterSelected,
       this.onRangeSelected,
+      this.isRefreshing,
       this.isSwitching});
   @override
   _IdlingLevelState createState() => _IdlingLevelState();
@@ -88,7 +90,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 thickness: 1.0,
                 color: black,
               ),
-              widget.isLoading
+              (widget.isLoading||widget.isRefreshing)
                   ? Expanded(
                       child: Center(
                       child: CircularProgressIndicator(),

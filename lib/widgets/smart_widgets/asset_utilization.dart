@@ -17,6 +17,7 @@ class AssetUtilizationWidget extends StatefulWidget {
   final double totalGreatestNumber;
   final double averageGreatestNumber;
   final bool isLoading;
+  final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
 
   @override
@@ -28,7 +29,8 @@ class AssetUtilizationWidget extends StatefulWidget {
       @required this.totalGreatestNumber,
       @required this.averageGreatestNumber,
       @required this.isLoading,
-      this.onFilterSelected})
+      this.onFilterSelected,
+      this.isRefreshing})
       : super(key: key);
 }
 
@@ -80,7 +82,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
               thickness: 2,
             ),
           ),
-          widget.isLoading
+          (widget.isLoading||widget.isRefreshing)
               ? Expanded(
                   child: Center(
                     child: CircularProgressIndicator(),

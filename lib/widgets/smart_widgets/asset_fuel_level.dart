@@ -9,16 +9,21 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class AssetFuelLevel extends StatefulWidget {
   final List<ChartSampleData> chartData;
   final bool isLoading;
+  final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
 
-  AssetFuelLevel({this.chartData, this.isLoading, this.onFilterSelected});
+  AssetFuelLevel(
+      {this.chartData,
+      this.isLoading,
+      this.onFilterSelected,
+      this.isRefreshing});
 
   @override
   _AssetFuelLevelState createState() => _AssetFuelLevelState();
 }
 
 class _AssetFuelLevelState extends State<AssetFuelLevel> {
-  var colors = [burntSienna, lightRose, mustard, emerald];
+  var colors = [burntSienna, lightRose, mustard, emerald,emerald];
 
   @override
   void initState() {
@@ -27,7 +32,16 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
 
   @override
   Widget build(BuildContext context) {
-    var color = [burntSienna, lightRose, mustard, emerald, emerald];
+    var color = [
+      burntSienna,
+      lightRose,
+      mustard,
+      emerald,
+      lightRose,
+      persianIndigo,
+      maptextcolor,
+      sandyBrown,
+    ];
     double height = MediaQuery.of(context).size.height * 0.32;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
@@ -97,7 +111,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
               thickness: 1.0,
               color: black,
             ),
-            widget.isLoading
+            (widget.isLoading || widget.isRefreshing)
                 ? Expanded(child: Center(child: CircularProgressIndicator()))
                 : Row(
                     children: [
@@ -125,8 +139,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                               tooltipBehavior: TooltipBehavior(enable: true),
                             )),
                       ),
-                      Expanded(
+                      Flexible(
                         child: Container(
+                          height: MediaQuery.of(context).size.height * 0.20,
                           child: ListView.separated(
                               separatorBuilder: (context, index) {
                                 return Container(
@@ -136,7 +151,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                               },
                               itemCount: widget.chartData.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
                               padding: EdgeInsets.symmetric(horizontal: 5.0),
                               itemBuilder: (context, index) {
                                 ChartSampleData data = widget.chartData[index];
@@ -170,7 +185,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
           radius: '85%',
           startAngle: 270,
           endAngle: 90,
-          dataLabelMapper: (ChartSampleData data, _)=>data.z,
+          dataLabelMapper: (ChartSampleData data, _) => data.z,
           xValueMapper: (ChartSampleData data, _) => data.x,
           yValueMapper: (ChartSampleData data, _) => data.y,
           dataLabelSettings: DataLabelSettings(

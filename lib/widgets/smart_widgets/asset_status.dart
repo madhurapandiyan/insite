@@ -9,8 +9,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class AssetStatus extends StatefulWidget {
   final List<ChartSampleData> statusChartData;
   final bool isLoading;
+  final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
-  AssetStatus({this.statusChartData, this.isLoading, this.onFilterSelected});
+  AssetStatus({this.statusChartData, this.isLoading, this.onFilterSelected,this.isRefreshing});
 
   @override
   _AssetStatusState createState() => _AssetStatusState();
@@ -99,7 +100,7 @@ class _AssetStatusState extends State<AssetStatus> {
             thickness: 1.0,
             color: black,
           ),
-          widget.isLoading
+          (widget.isLoading || widget.isRefreshing)
               ? Expanded(child: Center(child: CircularProgressIndicator()))
               : Row(
                   children: [

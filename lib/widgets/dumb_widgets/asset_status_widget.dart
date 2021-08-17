@@ -5,7 +5,9 @@ class AssetStatusWidget extends StatefulWidget {
   final Color chartColor;
   final String label;
   final VoidCallback callBack;
-  AssetStatusWidget({this.label, this.chartColor, this.callBack});
+  AssetStatusWidget({this.label, 
+  this.chartColor, 
+  this.callBack});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
 }
