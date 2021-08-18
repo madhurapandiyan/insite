@@ -214,6 +214,9 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (value != null && value) {
       ProgressDialog.show(context);
       viewModel.logout();
+      Future.delayed(Duration(seconds: 1), () {
+        ProgressDialog.dismiss();
+      });
     }
   }
 }

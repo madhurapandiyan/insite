@@ -11,8 +11,6 @@ import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
-import 'package:insite/widgets/dumb_widgets/single_asset_usage.dart';
-import 'package:insite/widgets/dumb_widgets/single_asset_usage_two.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
@@ -254,25 +252,25 @@ class _TabPageState extends State<AssetDetailView> {
                       ),
                     ),
                     SizedBox(height: 13.0),
-                    widget.type == ScreenType.FLEET
+                    widget.type == ScreenType.HEALTH
                         ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(typeOne.length, (index) {
-                              Category category = typeOne[index];
-                              return _tabcontainer(index, category);
-                            }),
-                          )
-                        : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: List.generate(typeTwo.length, (index) {
                               Category category = typeTwo[index];
                               return _tabcontainer(index, category);
                             }),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: List.generate(typeOne.length, (index) {
+                              Category category = typeOne[index];
+                              return _tabcontainer(index, category);
+                            }),
                           ),
                     Flexible(
                       child: selectedTabIndex == 0
-                          ? widget.type == ScreenType.FLEET
-                              ? AssetDashbaord(
+                          ? widget.type == ScreenType.HEALTH
+                              ? HealthDashboardView(
                                   detail: viewModel.assetDetail,
                                   switchTab: (index) {
                                     setState(() {
@@ -280,7 +278,7 @@ class _TabPageState extends State<AssetDetailView> {
                                     });
                                   },
                                 )
-                              : HealthDashboardView(
+                              : AssetDashbaord(
                                   detail: viewModel.assetDetail,
                                   switchTab: (index) {
                                     setState(() {
@@ -289,21 +287,21 @@ class _TabPageState extends State<AssetDetailView> {
                                   },
                                 )
                           : selectedTabIndex == 1
-                              ? widget.type == ScreenType.FLEET
-                                  ? SingleAssetUtilizationView(
+                              ? widget.type == ScreenType.HEALTH
+                                  ? HealthListView(
                                       detail: viewModel.assetDetail,
                                     )
-                                  : HealthListView(
+                                  : SingleAssetUtilizationView(
                                       detail: viewModel.assetDetail,
                                     )
                               : selectedTabIndex == 2
-                                  ? widget.type == ScreenType.FLEET
-                                      ? SingleAssetOperationView(
-                                          detail: viewModel.assetDetail,
-                                        )
-                                      : AssetLocationView(
+                                  ? widget.type == ScreenType.HEALTH
+                                      ? AssetLocationView(
                                           detail: viewModel.assetDetail,
                                           screenType: widget.type)
+                                      : SingleAssetOperationView(
+                                          detail: viewModel.assetDetail,
+                                        )
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,

@@ -215,6 +215,17 @@ abstract class RestClient {
   Future<AssetCount> assetCountAll(
       @Header("x-visionlink-customeruid") customerId);
 
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> assetCountcustomerUID(
+      @Query("grouping") String grouping,
+      @Query("customerUID") String customerUID,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> assetCountAllcustomerUID(
+      @Query("customerUID") String customerUID,
+      @Header("x-visionlink-customeruid") customerId);
+
   @GET('{url}')
   Future<AssetCount> assetCountByFilter(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
@@ -226,10 +237,25 @@ abstract class RestClient {
       @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId);
 
+  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+  Future<location.AssetLocationData> assetLocationWithOutFilterCustomerUID(
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("sort") String sort,
+      @Query("customerIdentifier") String customerIdentifier,
+      @Header("x-visionlink-customeruid") customerId);
+
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> fuelLevel(
       @Query("grouping") String grouping,
       @Query("thresholds") String thresholds,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> fuelLevelCustomerUID(
+      @Query("grouping") String grouping,
+      @Query("thresholds") String thresholds,
+      @Query("customerUID") String customerUID,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET(
@@ -244,6 +270,14 @@ abstract class RestClient {
       @Query("startDate") String startDate,
       @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
       @Query("endDate") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> idlingLevelCustomerUID(
+      @Query("startDate") String startDate,
+      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+      @Query("endDate") String endDate,
+      @Query("customerUID") String customerUID,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-notification/1.0/Notification/Count")
@@ -330,6 +364,14 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1")
+  Future<UtilizationSummary> getAssetUtilizationcustomerUID(
+    @Query("date") String date,
+    @Query("customerUID") String customerUID,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
   @POST("/token")
   Future<LoginResponse> getLoginData(
       @Query("username") String username,
@@ -376,6 +418,14 @@ abstract class RestClient {
     @Query("startDateTime") String startDate,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @GET('{url}')
+  Future<AssetCount> faultCountcustomerUID(
+      @Path() String url,
+      @Query("startDateTime") String startDate,
+      @Query("endDateTime") String endDate,
+      @Query("customerUid") String customerUid,
+      @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
   Future<AssetCount> faultCount(

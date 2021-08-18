@@ -153,10 +153,17 @@ class AssetUtilizationService extends BaseService {
   Future<UtilizationSummary> getUtilizationSummary(String date) async {
     try {
       if (date != null) {
-        UtilizationSummary response = await MyApi()
-            .getClient()
-            .getAssetUtilization(date, accountSelected.CustomerUID);
-        return response;
+        UtilizationSummary response = customerSelected != null
+            ? await MyApi().getClient().getAssetUtilizationcustomerUID(
+                date, customerSelected.CustomerUID, accountSelected.CustomerUID)
+            : await MyApi()
+                .getClient()
+                .getAssetUtilization(date, accountSelected.CustomerUID);
+        if (response != null) {
+          return response;
+        } else {
+          return null;
+        }
       }
       return null;
     } catch (e) {
