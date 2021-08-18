@@ -81,6 +81,8 @@ class DashboardViewModel extends InsiteViewModel {
 
   AssetCount _faultCountData;
   AssetCount get faultCountData => _faultCountData;
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
 
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
@@ -148,6 +150,7 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount result =
         await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     _assetStatusData = result;
+    statusChartData.clear();
     for (var stausData in _assetStatusData.countData) {
       statusChartData.add(ChartSampleData(
         x: stausData.countOf,
@@ -155,6 +158,19 @@ class DashboardViewModel extends InsiteViewModel {
       ));
     }
     _assetStatusloading = false;
+    notifyListeners();
+  }
+
+  refresh() async {
+    _refreshing = true;
+    notifyListeners();
+    await getAssetCount();
+    await getAssetStatusData();
+    await getFuelLevelData();
+    await getUtilizationSummary();
+    await getFaultCoundData();
+    await getIdlingLevelData(false);
+    _refreshing = false;
     notifyListeners();
   }
 
@@ -174,11 +190,12 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
       AssetCount _fuelLevelData = result;
+      fuelChartData.clear();
       for (int index = 0; index < result.countData.length; index++) {
         if (result.countData[index].countOf != "Not Reporting") {
           Logger().d("countOf ${result.countData[index].count}");
-
           totalAssetCount = totalAssetCount + result.countData[index].count;
+
           fuelChartData.add(ChartSampleData(
               x: result.countData[index].countOf,
               y: result.countData[index].count,
@@ -221,7 +238,7 @@ class DashboardViewModel extends InsiteViewModel {
     // await clearFilterDb();
     await addFilter(data);
     // Future.delayed(Duration(seconds: 1), () {
-      // gotoFleetPage();
+    // gotoFleetPage();
     // });
   }
 

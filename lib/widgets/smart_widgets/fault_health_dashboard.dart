@@ -10,10 +10,11 @@ import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
 class FaultHealthDashboard extends StatefulWidget {
   final ScreenType screenType;
   final List<Count> countData;
+  final bool isRefreshing;
   final bool loading;
   final Function(FilterData) onFilterSelected;
   FaultHealthDashboard(
-      {this.countData, this.loading, this.onFilterSelected,this.screenType});
+      {this.countData, this.loading, this.onFilterSelected,this.screenType,this.isRefreshing});
 
   @override
   _FaultHealthDashboardState createState() => _FaultHealthDashboardState();
@@ -93,7 +94,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
           SizedBox(
             height: 10,
           ),
-          widget.loading
+          (widget.loading|| widget.isRefreshing)
               ? Expanded(
                   child: Center(
                   child: CircularProgressIndicator(),

@@ -6,6 +6,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/home/google_map.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
@@ -45,11 +46,33 @@ class _DashboardViewState extends State<DashboardView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    PageHeader(
-                      isDashboard: true,
-                      total: viewModel.totalCount,
-                      screenType: ScreenType.HOME,
-                      count: 0,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: PageHeader(
+                            isDashboard: true,
+                            total: viewModel.totalCount,
+                            screenType: ScreenType.HOME,
+                            count: 0,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 16, right:16),
+                          child: InsiteButton(
+                            fontSize: 13,
+                            width: 100,
+                            height: 40,
+                            bgColor: tuna,
+                            textColor: white,
+                            title: "Refresh",
+                            onTap: () {
+                              viewModel.refresh();
+                            },
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(
                       height: 16,
@@ -64,7 +87,9 @@ class _DashboardViewState extends State<DashboardView> {
                             await viewModel.onFilterSelected(value);
                             viewModel.gotoFleetPage();
                           },
-                          isLoading: viewModel.assetStatusloading),
+                          isLoading: viewModel.assetStatusloading,
+                          isRefreshing: viewModel.refreshing,
+                          ),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -80,6 +105,7 @@ class _DashboardViewState extends State<DashboardView> {
                           viewModel.gotoFleetPage();
                         },
                         isLoading: viewModel.assetFuelloading,
+                        isRefreshing: viewModel.refreshing,
                       ),
                     ),
                     SizedBox(
@@ -100,6 +126,7 @@ class _DashboardViewState extends State<DashboardView> {
                         averageGreatestNumber:
                             viewModel.utilizationAverageGreatestValue,
                         isLoading: viewModel.assetUtilizationLoading,
+                        isRefreshing: viewModel.refreshing,
                       ),
                     ),
                     SizedBox(
@@ -121,6 +148,7 @@ class _DashboardViewState extends State<DashboardView> {
                           viewModel.getIdlingLevelData(true);
                         },
                         isSwitching: viewModel.isSwitching,
+                        isRefreshing: viewModel.refreshing,
                       ),
                     ),
                     SizedBox(
@@ -138,6 +166,7 @@ class _DashboardViewState extends State<DashboardView> {
                           viewModel.gotoFaultPage();
                         },
                         loading: viewModel.faultCountloading,
+                        isRefreshing: viewModel.refreshing,
                       ),
                     ),
                     SizedBox(
@@ -145,7 +174,9 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GoogleMapHomeWidget(),
+                      child: GoogleMapHomeWidget(
+                        isRefreshing: viewModel.refreshing,
+                      ),
                     ),
                     SizedBox(
                       height: 20.0,

@@ -17,6 +17,8 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class GoogleMapHomeWidget extends StatefulWidget {
+  final bool isRefreshing;
+  GoogleMapHomeWidget({this.isRefreshing});
   @override
   _GoogleMapHomeWidgetState createState() => _GoogleMapHomeWidgetState();
 }
@@ -191,7 +193,7 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                         ),
                       ),
                     ),
-                    viewModel.loading
+                    (viewModel.loading || widget.isRefreshing)
                         ? Expanded(
                             child: Center(
                               child: CircularProgressIndicator(),
