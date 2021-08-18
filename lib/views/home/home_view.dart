@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
-            screenType: ScreenType.DASHBOARD,
+            screenType: ScreenType.HOME,
             onFilterApplied: () {},
             viewModel: viewModel,
             body: Container(

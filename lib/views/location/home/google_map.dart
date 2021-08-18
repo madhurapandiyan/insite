@@ -371,13 +371,16 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
             compassEnabled: true,
             zoomControlsEnabled: false,
             markers: viewModel.markers,
-            initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    viewModel.assetLocation.mapRecords.first
-                        .lastReportedLocationLatitude,
-                    viewModel.assetLocation.mapRecords.first
-                        .lastReportedLocationLongitude),
-                zoom: 5),
+            initialCameraPosition: viewModel.assetLocation != null &&
+                    viewModel.assetLocation.mapRecords.isNotEmpty
+                ? CameraPosition(
+                    target: LatLng(
+                        viewModel.assetLocation.mapRecords.first
+                            .lastReportedLocationLatitude,
+                        viewModel.assetLocation.mapRecords.first
+                            .lastReportedLocationLongitude),
+                    zoom: 5)
+                : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
           ),
           CustomInfoWindow(
             controller: viewModel.customInfoWindowController,

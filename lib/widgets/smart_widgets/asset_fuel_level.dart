@@ -160,11 +160,13 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                   label: Utils.getFuleLevelWidgetLabel(
                                       data.x, false),
                                   callBack: () {
-                                    widget.onFilterSelected(FilterData(
-                                        isSelected: true,
-                                        count: data.y.toString(),
-                                        title: data.x.toString(),
-                                        type: FilterType.FUEL_LEVEL));
+                                    if (data.y > 0) {
+                                      widget.onFilterSelected(FilterData(
+                                          isSelected: true,
+                                          count: data.y.toString(),
+                                          title: data.x.toString(),
+                                          type: FilterType.FUEL_LEVEL));
+                                    }
                                   },
                                 );
                               }),

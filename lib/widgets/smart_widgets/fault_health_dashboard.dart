@@ -109,13 +109,15 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                         Count countResponse = widget.countData[index];
                         return FaultWidget(
                           data: countResponse,
-                          screenType:widget.screenType,
+                          screenType: widget.screenType,
                           onSelected: () {
-                            widget.onFilterSelected(FilterData(
-                                isSelected: true,
-                                count: countResponse.assetCount.toString(),
-                                title: countResponse.countOf,
-                                type: FilterType.SEVERITY));
+                            if (countResponse.faultCount > 0) {
+                              widget.onFilterSelected(FilterData(
+                                  isSelected: true,
+                                  count: countResponse.assetCount.toString(),
+                                  title: countResponse.countOf,
+                                  type: FilterType.SEVERITY));
+                            }
                           },
                           buttonColor: buttonColor[index],
                           level: Utils.getFaultLabel(countResponse.countOf),

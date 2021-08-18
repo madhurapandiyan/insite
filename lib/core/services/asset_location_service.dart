@@ -101,11 +101,27 @@ class AssetLocationService extends BaseService {
       int pageNumber, int pageSize, String sort) async {
     try {
       if (pageNumber != null && pageSize != null && sort != null) {
-        AssetLocationData result = await MyApi()
-            .getClient()
-            .assetLocationWithOutFilter(
-                pageNumber, pageSize, sort, accountSelected.CustomerUID);
-        return result;
+        if (customerSelected != null) {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationWithOutFilterCustomerUID(pageNumber, pageSize, sort,
+                  customerSelected.CustomerUID, accountSelected.CustomerUID);
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
+        } else {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationWithOutFilter(
+                  pageNumber, pageSize, sort, accountSelected.CustomerUID);
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
+        }
       }
       return null;
     } catch (e) {

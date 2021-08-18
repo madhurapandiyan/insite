@@ -372,15 +372,24 @@ class _DateRangeViewState extends State<DateRangeView> {
                       height: 40,
                       onTap: () async {
                         if (fromDate != null && toDate != null) {
-                          if (toDate.isBefore(fromDate)) {
-                            Utils.showToast(
-                                "End date cannot be less than start date.");
-                          } else {
+                          if (viewModel.selectedDateRange ==
+                              DateRangeType.today) {
                             await viewModel.updateDateRange(
                                 '${fromDate.year}-${fromDate.month}-${fromDate.day}',
                                 '${toDate.year}-${toDate.month}-${toDate.day}',
                                 describeEnum(viewModel.selectedDateRange));
                             Navigator.pop(context, [fromDate, toDate]);
+                          } else {
+                            if (toDate.isBefore(fromDate)) {
+                              Utils.showToast(
+                                  "End date cannot be less than start date.");
+                            } else {
+                              await viewModel.updateDateRange(
+                                  '${fromDate.year}-${fromDate.month}-${fromDate.day}',
+                                  '${toDate.year}-${toDate.month}-${toDate.day}',
+                                  describeEnum(viewModel.selectedDateRange));
+                              Navigator.pop(context, [fromDate, toDate]);
+                            }
                           }
                         }
                       },

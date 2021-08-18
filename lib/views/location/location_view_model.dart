@@ -274,10 +274,12 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters);
-    _assetLocation = result;
-    _totalCount = result.pagination.totalCount;
-    clusterMarker();
-    manager.updateMap();
+    if (result != null) {
+      _assetLocation = result;
+      _totalCount = result.pagination.totalCount;
+      clusterMarker();
+      manager.updateMap();
+    }
     _loading = false;
     _refreshing = false;
     notifyListeners();
@@ -325,8 +327,10 @@ class LocationViewModel extends InsiteViewModel {
     AssetLocationData result =
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber, pageSize, '-lastlocationupdateutc');
-    _assetLocation = result;
-    clusterMarker();
+    if (result != null) {
+      _assetLocation = result;
+      clusterMarker();
+    }
     _loading = false;
     notifyListeners();
   }
@@ -342,9 +346,11 @@ class LocationViewModel extends InsiteViewModel {
       '-lastlocationupdateutc',
       appliedFilters,
     );
-    _assetLocation = result;
-    _totalCount = result.pagination.totalCount;
-    clusterMarker();
+    if (result != null) {
+      _assetLocation = result;
+      _totalCount = result.pagination.totalCount;
+      clusterMarker();
+    }
     _loading = false;
     _refreshing = false;
     notifyListeners();

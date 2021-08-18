@@ -149,13 +149,15 @@ class DashboardViewModel extends InsiteViewModel {
   getAssetStatusData() async {
     AssetCount result =
         await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
-    _assetStatusData = result;
-    statusChartData.clear();
-    for (var stausData in _assetStatusData.countData) {
-      statusChartData.add(ChartSampleData(
-        x: stausData.countOf,
-        y: stausData.count.round(),
-      ));
+    if (result != null) {
+      _assetStatusData = result;
+      statusChartData.clear();
+      for (var stausData in _assetStatusData.countData) {
+        statusChartData.add(ChartSampleData(
+          x: stausData.countOf,
+          y: stausData.count.round(),
+        ));
+      }
     }
     _assetStatusloading = false;
     notifyListeners();

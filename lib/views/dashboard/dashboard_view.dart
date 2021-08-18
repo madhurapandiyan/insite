@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';

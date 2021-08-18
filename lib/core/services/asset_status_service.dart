@@ -41,16 +41,26 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         AssetCount assetStatusResponse = key != null
-            ? await MyApi()
-                .getClient()
-                .assetCount(key, accountSelected.CustomerUID)
-            : await MyApi()
-                .getClient()
-                .assetCountAll(accountSelected.CustomerUID);
-        bool updated = await updateAssetCount(assetStatusResponse, type);
-        Logger().d("updated $updated");
-        if (updated) {
-          return assetStatusResponse;
+            ? customerSelected != null
+                ? await MyApi().getClient().assetCountcustomerUID(key,
+                    customerSelected.CustomerUID, accountSelected.CustomerUID)
+                : await MyApi()
+                    .getClient()
+                    .assetCount(key, accountSelected.CustomerUID)
+            : customerSelected != null
+                ? await MyApi().getClient().assetCountAllcustomerUID(
+                    customerSelected.CustomerUID, accountSelected.CustomerUID)
+                : await MyApi()
+                    .getClient()
+                    .assetCountAll(accountSelected.CustomerUID);
+        if (assetStatusResponse != null) {
+          bool updated = await updateAssetCount(assetStatusResponse, type);
+          Logger().d("updated $updated");
+          if (updated) {
+            return assetStatusResponse;
+          } else {
+            return null;
+          }
         } else {
           return null;
         }
@@ -84,7 +94,11 @@ class AssetStatusService extends DataBaseService {
                       appliedFilters,
                       screenType),
               accountSelected.CustomerUID);
-      return assetStatusResponse;
+      if (assetStatusResponse != null) {
+        return assetStatusResponse;
+      } else {
+        return null;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -169,7 +183,7 @@ class AssetStatusService extends DataBaseService {
       return true;
     } catch (e) {
       Logger().e(e);
-      return true;
+      return false;
     }
   }
 
@@ -182,12 +196,22 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        AssetCount fuelLevelDatarespone = await MyApi().getClient().fuelLevel(
-            "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
+        AssetCount fuelLevelDatarespone = customerSelected != null
+            ? await MyApi().getClient().fuelLevelCustomerUID(
+                "fuellevel",
+                "25-50-75-100",
+                customerSelected.CustomerUID,
+                accountSelected.CustomerUID)
+            : await MyApi().getClient().fuelLevel(
+                "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
         print('data:${fuelLevelDatarespone.toJson()}');
-        bool updated = await updateAssetCount(fuelLevelDatarespone, type);
-        if (updated) {
-          return fuelLevelDatarespone;
+        if (fuelLevelDatarespone != null) {
+          bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+          if (updated) {
+            return fuelLevelDatarespone;
+          } else {
+            return null;
+          }
         } else {
           return null;
         }
@@ -209,14 +233,26 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d(" from api");
-        AssetCount idlingLevelDataResponse = await MyApi()
-            .getClient()
-            .idlingLevel(startDate, "[0,10][10,15][15,25][25,]", endDate,
+        AssetCount idlingLevelDataResponse = customerSelected != null
+            ? await MyApi().getClient().idlingLevelCustomerUID(
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                endDate,
+                customerSelected.CustomerUID,
+                accountSelected.CustomerUID)
+            : await MyApi().getClient().idlingLevel(
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                endDate,
                 accountSelected.CustomerUID);
-        bool updated = await updateAssetCount(idlingLevelDataResponse, type);
-        Logger().d("updated $updated");
-        if (updated) {
-          return idlingLevelDataResponse;
+        if (idlingLevelDataResponse != null) {
+          bool updated = await updateAssetCount(idlingLevelDataResponse, type);
+          Logger().d("updated $updated");
+          if (updated) {
+            return idlingLevelDataResponse;
+          } else {
+            return null;
+          }
         } else {
           return null;
         }
@@ -229,12 +265,20 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getFaultCount(startDate, endDate) async {
     try {
-      AssetCount faultCountResponse = await MyApi().getClientThree().faultCount(
-          Urls.faultCountSummary,
-          startDate,
-          endDate,
-          accountSelected.CustomerUID);
-      return faultCountResponse;
+      AssetCount faultCountResponse = customerSelected != null
+          ? await MyApi().getClientThree().faultCountcustomerUID(
+              Urls.faultCountSummary,
+              startDate,
+              endDate,
+              customerSelected.CustomerUID,
+              accountSelected.CustomerUID)
+          : await MyApi().getClientThree().faultCount(Urls.faultCountSummary,
+              startDate, endDate, accountSelected.CustomerUID);
+      if (faultCountResponse != null) {
+        return faultCountResponse;
+      } else {
+        return null;
+      }
     } catch (e) {
       Logger().e(e);
       return null;

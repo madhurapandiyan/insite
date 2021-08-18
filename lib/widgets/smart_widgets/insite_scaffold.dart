@@ -45,7 +45,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         backgroundColor: bgcolor,
         appBar: InsiteAppBar(
           shouldShowAccount:
-              widget.screenType == ScreenType.DASHBOARD ? true : false,
+              widget.screenType == ScreenType.HOME ? true : false,
           shouldShowFilter: widget.screenType == ScreenType.FLEET ||
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
@@ -54,7 +54,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
-                  widget.screenType == ScreenType.DASHBOARD
+                  widget.screenType == ScreenType.HOME
               ? true
               : false,
           shouldShowSearch:

@@ -80,6 +80,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                                 ? viewModel.faultData
                                 : null,
                             loading: viewModel.loading,
+                            isRefreshing: viewModel.loading,
+                            onFilterSelected: (value) {},
                           ),
                         )
                       : SizedBox(),
