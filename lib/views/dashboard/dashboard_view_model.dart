@@ -1,11 +1,9 @@
-import 'package:flutter/scheduler.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
-import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
@@ -22,7 +20,6 @@ import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:quiver/iterables.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DashboardViewModel extends InsiteViewModel {

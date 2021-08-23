@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 
 class SingleAssetUsageTwo extends StatefulWidget {
   // const SingleAssetUsage({ Key? key }) : super(key: key);
@@ -12,6 +13,12 @@ class SingleAssetUsageTwo extends StatefulWidget {
 }
 
 class _SingleAssetUsageState extends State<SingleAssetUsageTwo> {
+  @override
+  void initState() {
+    super.initState();
+    Logger().d("SingleAssetUsageTwo");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -96,30 +103,30 @@ class _SingleAssetUsageState extends State<SingleAssetUsageTwo> {
                   ),
                   TableRow(children: [
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Economy",
+                      title: "Economy",
+                      content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Travel",
+                      title: "Travel",
+                      content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Auto Idle",
+                      title: "Auto Idle",
+                      content: "-",
                     ),
                   ]),
-                   TableRow(children: [
+                  TableRow(children: [
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Economy",
+                      title: "Economy",
+                      content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Travel",
+                      title: "Travel",
+                      content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "",
-                      content: "Auto Idle",
+                      title: "Auto Idle",
+                      content: "-",
                     ),
                   ])
                 ],

@@ -44,8 +44,9 @@ class _SingleAssetUtilizationViewState
                                 detail: widget.detail)),
                   ],
                 ),
-                Padding(
+                Container(
                   padding: EdgeInsets.all(16.0),
+                  margin: EdgeInsets.only(top: isListSelected ? 24 : 0),
                   child: Row(
                     children: [
                       ToggleButton(
@@ -57,7 +58,6 @@ class _SingleAssetUtilizationViewState
                             });
                           }),
                       Spacer(),
-                      
                     ],
                   ),
                 ),

@@ -4,8 +4,8 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'home_view_model.dart';
 
@@ -102,6 +102,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void buttontap(int index, Category category, HomeViewModel viewModel) {
+    Logger().d("buttontap ${category.screenType}");
     setState(() {
       selectedIndex = index;
     });

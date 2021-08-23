@@ -5,6 +5,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -63,10 +64,24 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () {
                     viewModel.onHomePressed();
                   }),
-              title: InsiteImage(
-                height: 65,
-                width: 65,
-                path: "assets/images/hitachi.png",
+              title: Row(
+                children: [
+                  InsiteImage(
+                    height: 65,
+                    width: 65,
+                    path: "assets/images/hitachi.png",
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  InsiteTextOverFlow(
+                    text: Utils.getPageTitle(screenType),
+                  color: Colors.black,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.bold,
+                    size: 16,
+                  )
+                ],
               ),
               actions: [
                 shouldShowAccount

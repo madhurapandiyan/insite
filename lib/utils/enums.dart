@@ -56,3 +56,4 @@ enum SingleAssetUtilizationGraphType {
 
 enum AccountType { ACCOUNT, CUSTOMER }
 
+enum ProductFamilyType { ALL, BACKHOE_LOADER, EXCAVATOR }

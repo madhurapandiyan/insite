@@ -37,7 +37,7 @@ class _DashboardViewState extends State<DashboardView> {
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
             viewModel: viewModel,
-            screenType: ScreenType.HOME,
+            screenType: ScreenType.DASHBOARD,
             onFilterApplied: () {},
             body: SingleChildScrollView(
               child: Container(
