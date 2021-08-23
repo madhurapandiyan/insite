@@ -12,10 +12,12 @@ class InsiteButton extends StatelessWidget {
   final Icon icon;
   final EdgeInsets padding;
   final EdgeInsets margin;
+  final bool isSelectable;
   const InsiteButton(
       {this.title,
       this.width,
       this.onTap,
+      this.isSelectable = false,
       this.margin,
       this.bgColor,
       this.padding,
@@ -53,6 +55,86 @@ class InsiteButton extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             ),
             icon != null ? icon : SizedBox()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InsiteButtonWithSelectable extends StatefulWidget {
+  final String title;
+  final Function(bool) onTap;
+  final Color bgColor;
+  final double fontSize;
+  final Color textColor;
+  final double width;
+  final double height;
+  final Icon icon;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final bool isSelectable;
+  const InsiteButtonWithSelectable(
+      {this.title,
+      this.width,
+      this.onTap,
+      this.isSelectable = false,
+      this.margin,
+      this.bgColor,
+      this.padding,
+      this.height,
+      this.fontSize,
+      this.icon,
+      this.textColor});
+
+  @override
+  _InsiteButtonWithSelectableState createState() =>
+      _InsiteButtonWithSelectableState();
+}
+
+class _InsiteButtonWithSelectableState
+    extends State<InsiteButtonWithSelectable> {
+  bool isSelected = false;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isSelected = !isSelected;
+        });
+        widget.onTap(isSelected);
+      },
+      child: Container(
+        padding: widget.padding != null ? widget.padding : EdgeInsets.all(8),
+        margin: widget.margin != null ? widget.margin : EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: widget.bgColor != null
+              ? isSelected
+                  ? tango
+                  : widget.bgColor
+              : tango,
+        ),
+        alignment: Alignment.center,
+        height: widget.height != null ? widget.height : null,
+        width: widget.width != null ? widget.width : null,
+        child: Row(
+          mainAxisAlignment: widget.icon != null
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              widget.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: widget.fontSize != null ? widget.fontSize : 12.0,
+                  color: widget.textColor != null
+                      ? widget.textColor
+                      : Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+            widget.icon != null ? widget.icon : SizedBox()
           ],
         ),
       ),

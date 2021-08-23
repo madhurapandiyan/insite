@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -213,6 +214,51 @@ class Utils {
     } else {
       return title;
     }
+  }
+
+  static String getPageTitle(ScreenType type) {
+    Logger().d("getPageTitle $type");
+    String title = "";
+    switch (type) {
+      case ScreenType.DASHBOARD:
+        title = "DASHBOARD";
+        break;
+      case ScreenType.FLEET:
+        title = "FLEET";
+        break;
+      case ScreenType.UTILIZATION:
+        title = "UTILIZATION";
+        break;
+      case ScreenType.ASSET_OPERATION:
+        title = "ASSET OPERATION";
+        break;
+      case ScreenType.LOCATION:
+        title = "LOCATION";
+        break;
+      case ScreenType.HEALTH:
+        title = "HEALTH";
+        break;
+      case ScreenType.MAINTENANCE:
+        title = "MAINTENANCE";
+        break;
+      case ScreenType.ADMINISTRATION:
+        title = "ADMINISTRATION";
+        break;
+      case ScreenType.PLANT:
+        title = "PLANT";
+        break;
+      case ScreenType.SUBSCRIPTION:
+        title = "SUBSCRIPTION";
+        break;
+      case ScreenType.NOTIFICATION:
+        title = "NOTIFICATION";
+        break;
+      case ScreenType.HOME:
+        title = "HOME";
+        break;
+      default:
+    }
+    return title;
   }
 
   static String getTitle(FilterType type) {
