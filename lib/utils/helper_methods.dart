@@ -41,6 +41,18 @@ class Utils {
     return outputDate;
   }
 
+  static String formatHHmm(s) {
+    if (s <= 0) {
+      return "-";
+    } else {
+      int mins = ((s / 60) % 60).toInt();
+      int hours = ((s / 60) / 60).toInt();
+      Logger().i("hours $hours");
+      Logger().i("mins $mins");
+      return "$hours h : $mins min";
+    }
+  }
+
   static String getLastReportedDateOneUTC(date) {
     DateTime parseDate =
         new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);

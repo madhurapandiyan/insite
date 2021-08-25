@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetUsageTwo extends StatefulWidget {
-  // const SingleAssetUsage({ Key? key }) : super(key: key);
+  final AssetResult utilizationData;
+  const SingleAssetUsageTwo({this.utilizationData});
 
   @override
   _SingleAssetUsageState createState() => _SingleAssetUsageState();
@@ -89,7 +92,10 @@ class _SingleAssetUsageState extends State<SingleAssetUsageTwo> {
                     children: [
                       InsiteTableRowItem(
                         title: "Date : ",
-                        content: "16/02/2021",
+                        content: widget.utilizationData.lastReportedTime != null
+                            ? Utils.getLastReportedDateTwo(
+                                widget.utilizationData.lastReportedTime)
+                            : "",
                       ),
                       InsiteTableRowItem(
                         title: "",
@@ -103,29 +109,29 @@ class _SingleAssetUsageState extends State<SingleAssetUsageTwo> {
                   ),
                   TableRow(children: [
                     InsiteTableRowItem(
-                      title: "Economy",
+                      title: "Backhoe Idle",
                       content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Travel",
+                      title: "Backhoe Working",
                       content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Auto Idle",
+                      title: "Backhoe Runtime",
                       content: "-",
                     ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
-                      title: "Economy",
+                      title: "Loader Idle",
                       content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Travel",
+                      title: "Loader Working",
                       content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Auto Idle",
+                      title: "Loader Runtime",
                       content: "-",
                     ),
                   ])

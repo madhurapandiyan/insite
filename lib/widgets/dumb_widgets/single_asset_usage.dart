@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetUsage extends StatefulWidget {
-  // const SingleAssetUsage({ Key? key }) : super(key: key);
+  final AssetResult utilizationData;
+  const SingleAssetUsage({this.utilizationData});
 
   @override
   _SingleAssetUsageState createState() => _SingleAssetUsageState();
@@ -89,25 +92,28 @@ class _SingleAssetUsageState extends State<SingleAssetUsage> {
                     children: [
                       InsiteTableRowItem(
                         title: "Date : ",
-                        content: "16/02/2021",
+                        content: widget.utilizationData.lastReportedTime != null
+                            ? Utils.getLastReportedDateTwo(
+                                widget.utilizationData.lastReportedTime)
+                            : "",
                       ),
                       InsiteTableRowItem(
-                        title: "Front 5",
+                        title: "Front & Swing",
                         content: "-",
                       ),
                       InsiteTableRowItem(
-                        title: "Power Monitor",
+                        title: "Travel Mode",
                         content: "-",
                       ),
                     ],
                   ),
                   TableRow(children: [
                     InsiteTableRowItem(
-                      title: "Economy",
+                      title: "Power Mode",
                       content: "-",
                     ),
                     InsiteTableRowItem(
-                      title: "Travel",
+                      title: "Economy Mode",
                       content: "-",
                     ),
                     InsiteTableRowItem(

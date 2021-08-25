@@ -19,6 +19,8 @@ class HealthAssetListItem extends StatefulWidget {
 }
 
 class _HealthAssetListItemState extends State<HealthAssetListItem> {
+
+  
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FaultListItemViewModel>.reactive(
@@ -208,48 +210,61 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               child: Scrollbar(
                                 isAlwaysShown: true,
                                 child: SingleChildScrollView(
-                                  child: Table(
-                                    columnWidths: {
-                                      0: FlexColumnWidth(1),
-                                      1: FlexColumnWidth(1),
-                                      2: FlexColumnWidth(1),
-                                      3: FlexColumnWidth(1),
-                                    },
-                                    border: TableBorder.all(),
-                                    children: List.generate(
-                                        viewModel.faults.length, (index) {
-                                      Fault fault = viewModel.faults[index];
-                                      return TableRow(children: [
-                                        InsiteTextWithPadding(
-                                          padding: EdgeInsets.all(8),
-                                          text: Utils.getLastReportedDateOne(
-                                              fault.faultOccuredUTC),
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                        InsiteButton(
-                                          title: fault.severityLabel,
-                                          padding: EdgeInsets.all(8),
-                                          margin: EdgeInsets.all(8),
-                                          bgColor: Utils.getFaultColor(
-                                              fault.severityLabel),
-                                          height: 30,
-                                          width: 40,
-                                        ),
-                                        InsiteTextWithPadding(
-                                          padding: EdgeInsets.all(8),
-                                          text: fault.source,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                        InsiteTextWithPadding(
-                                          padding: EdgeInsets.all(8),
-                                          text: fault.description,
-                                          color: Colors.white,
-                                          size: 12,
-                                        ),
-                                      ]);
-                                    }),
+                                  controller: viewModel.scrollController,
+                                  child: Column(
+                                    children: [
+                                      Table(
+                                        columnWidths: {
+                                          0: FlexColumnWidth(1),
+                                          1: FlexColumnWidth(1),
+                                          2: FlexColumnWidth(1),
+                                          3: FlexColumnWidth(1),
+                                        },
+                                        border: TableBorder.all(),
+                                        children: List.generate(
+                                            viewModel.faults.length, (index) {
+                                          Fault fault = viewModel.faults[index];
+                                          return TableRow(children: [
+                                            InsiteTextWithPadding(
+                                              padding: EdgeInsets.all(8),
+                                              text:
+                                                  Utils.getLastReportedDateOne(
+                                                      fault.faultOccuredUTC),
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            InsiteButton(
+                                              title: fault.severityLabel,
+                                              padding: EdgeInsets.all(8),
+                                              margin: EdgeInsets.all(8),
+                                              bgColor: Utils.getFaultColor(
+                                                  fault.severityLabel),
+                                              height: 30,
+                                              width: 40,
+                                            ),
+                                            InsiteTextWithPadding(
+                                              padding: EdgeInsets.all(8),
+                                              text: fault.source,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            InsiteTextWithPadding(
+                                              padding: EdgeInsets.all(8),
+                                              text: fault.description,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                          ]);
+                                        }),
+                                      ),
+                                      viewModel.loadingMore
+                                          ? Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : SizedBox(),
+                                    ],
                                   ),
                                 ),
                               ),

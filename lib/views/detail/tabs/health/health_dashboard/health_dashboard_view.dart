@@ -156,15 +156,15 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                       assetDetail: widget.detail,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                    ),
-                    child: Notifications(),
-                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(
+                  //     horizontal: 16.0,
+                  //   ),
+                  //   child: Notifications(),
+                  // ),
                   SizedBox(
                     height: 20.0,
                   ),

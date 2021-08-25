@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fault.dart';
@@ -26,39 +27,48 @@ class FaultListItemViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
+  ScrollController scrollController;
+  int pageNumber = 1;
+  int pageSize = 20;
+
   FaultListItemViewModel(this._fault) {
     Logger().d("FaultListItemViewModel ${fault.asset["uid"]}");
     setUp();
     _faultService.setUp();
+    scrollController = new ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
   }
 
   getFaultListItemData() async {
     Logger().d("getFaultViewList");
-    if (loaded) {
-      return;
-    }
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    _refreshing = true;
-    notifyListeners();
     Logger().d("start date " + startDate);
     Logger().d("end date " + endDate);
     FaultSummaryResponse result =
         await _faultService.getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            20,
-            1,
+            pageSize,
+            pageNumber,
             appliedFilters,
             fault.asset["uid"]);
     if (result != null && result.faults != null) {
       if (result.faults.isNotEmpty) {
         _faults.addAll(result.faults);
         _refreshing = false;
+        _loadingMore = false;
         notifyListeners();
       } else {
         _faults.addAll(result.faults);
         _refreshing = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
@@ -69,8 +79,27 @@ class FaultListItemViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  _loadMore() {
+    Logger().i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      Logger().i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getFaultListItemData();
+    }
+  }
+
   void onExpanded() {
     Logger().d("onExpanded");
+    if (loaded) {
+      return;
+    }
+    _refreshing = true;
+    notifyListeners();
     getFaultListItemData();
   }
 }

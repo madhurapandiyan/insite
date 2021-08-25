@@ -107,7 +107,7 @@ class _HealthListViewState extends State<HealthListView> {
                                 },
                               )
                             : EmptyView(
-                                title: "No Assets Found",
+                                title: "No faults found",
                               ),
                   ),
                   viewModel.loadingMore
