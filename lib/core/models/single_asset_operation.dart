@@ -63,7 +63,7 @@ class Asset {
   String productFamily;
   String customStateDescription;
   var distanceTravelledKilometers;
-  var dateRangeRuntimeDuration;
+  double dateRangeRuntimeDuration;
   dynamic lastKnownOperator;
   Capabilities capabilities;
   List<AssetLocalDate> assetLocalDates;

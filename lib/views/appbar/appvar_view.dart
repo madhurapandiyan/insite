@@ -76,7 +76,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   InsiteTextOverFlow(
                     text: Utils.getPageTitle(screenType),
-                  color: Colors.black,
+                    color: Colors.black,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.bold,
                     size: 16,
@@ -156,9 +156,16 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: InsiteTextOverFlow(
                       text: viewModel.accountSelected != null &&
-                              viewModel.accountSelected.DisplayName != null
-                          ? viewModel.accountSelected.DisplayName
-                          : "",
+                              viewModel.customerSelected != null
+                          ? viewModel.customerSelected.DisplayName != null
+                              ? viewModel.customerSelected.DisplayName
+                              : viewModel.accountSelected.DisplayName != null
+                                  ? viewModel.accountSelected.DisplayName
+                                  : ""
+                          : viewModel.accountSelected != null &&
+                                  viewModel.accountSelected.DisplayName != null
+                              ? viewModel.accountSelected.DisplayName
+                              : "",
                       color: Colors.white,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.normal,

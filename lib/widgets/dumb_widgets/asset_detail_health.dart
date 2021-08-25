@@ -59,7 +59,7 @@ class AssetDetailHealth extends StatelessWidget {
                     title: "Serial No.",
                     content: detail.assetSerialNumber,
                   ),
-                   InsiteTableRowItem(
+                  InsiteTableRowItem(
                     title: "Geofences",
                     content: "-",
                   )
@@ -97,14 +97,13 @@ class AssetDetailHealth extends StatelessWidget {
                         ? detail.hourMeter.round().toString() + "hrs"
                         : "-",
                   ),
-                   InsiteTableRowItem(
+                  InsiteTableRowItem(
                     title: "Last Reported time",
                     content: detail.lastReportedTimeUTC != null
                         ? Utils.getLastReportedDateOneUTC(
                             detail.lastReportedTimeUTC)
                         : "-",
                   )
-
                 ]),
                 TableRow(children: [
                   // InsiteTableRowItem(
@@ -118,41 +117,6 @@ class AssetDetailHealth extends StatelessWidget {
                     title: "Groups",
                     content: "-",
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        "Custom Asset State",
-                        style: TextStyle(
-                            color: textcolor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13.0),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      InsiteButton(
-                        width: 84,
-                        height: 32,
-                        title: "in Use",
-                        bgColor: bgcolor,
-                        textColor: textcolor,
-                        icon: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      )
-                    ],
-                  ),
-                  InsiteTableRowItem(
-                    title: "Service Plans",
-                    content: getServiceNames(),
-                  )
-                ]),
-                TableRow(children: [
                   InsiteTableRowItem(
                     title: "Service Plans",
                     content: getServiceNames(),
@@ -169,11 +133,62 @@ class AssetDetailHealth extends StatelessWidget {
                         ? detail.lastReportedLocation
                         : "-",
                   ),
-                  InsiteTableRowItem(
-                    title: "",
-                    content: "",
-                  ),
-                ])
+                  // Column(
+                  //   children: [
+                  //     SizedBox(
+                  //       height: 10.0,
+                  //     ),
+                  //     Text(
+                  //       "Custom Asset State",
+                  //       style: TextStyle(
+                  //           color: textcolor,
+                  //           fontWeight: FontWeight.w700,
+                  //           fontSize: 13.0),
+                  //     ),
+                  //     SizedBox(
+                  //       height: 5,
+                  //     ),
+                  //     InsiteButton(
+                  //       width: 84,
+                  //       height: 32,
+                  //       title: "in Use",
+                  //       bgColor: bgcolor,
+                  //       textColor: textcolor,
+                  //       icon: Icon(
+                  //         Icons.keyboard_arrow_down,
+                  //         color: Colors.white,
+                  //         size: 18,
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // InsiteTableRowItem(
+                  //   title: "",
+                  //   content: "",
+                  // ),
+                ]),
+                // TableRow(children: [
+                //   InsiteTableRowItem(
+                //     title: "Service Plans",
+                //     content: getServiceNames(),
+                //   ),
+                //   InsiteTableRowItem(
+                //     title: "Location",
+                //     content: detail.lastReportedLocationLatitude != null &&
+                //             detail.lastReportedLocationLongitude != null
+                //         ? detail.lastReportedLocationLatitude.toString() +
+                //             "/" +
+                //             detail.lastReportedLocationLongitude.toString()
+                //         : "-",
+                //     content: detail.lastReportedLocation != null
+                //         ? detail.lastReportedLocation
+                //         : "-",
+                //   ),
+                //   InsiteTableRowItem(
+                //     title: "",
+                //     content: "",
+                //   ),
+                // ])
               ],
             ),
           ),

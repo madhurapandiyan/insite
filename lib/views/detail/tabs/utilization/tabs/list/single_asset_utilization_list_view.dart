@@ -163,10 +163,15 @@ class _SingleAssetUtilizationListViewState
                                 return isProductFamilySelected
                                     ? productFamilyType ==
                                             ProductFamilyType.EXCAVATOR
-                                        ? SingleAssetUsage()
+                                        ? SingleAssetUsage(
+                                            utilizationData: utilizationData,
+                                          )
                                         : productFamilyType ==
                                                 ProductFamilyType.BACKHOE_LOADER
-                                            ? SingleAssetUsageTwo()
+                                            ? SingleAssetUsageTwo(
+                                                utilizationData:
+                                                    utilizationData,
+                                              )
                                             : UtilizationListItem(
                                                 utilizationData:
                                                     utilizationData,

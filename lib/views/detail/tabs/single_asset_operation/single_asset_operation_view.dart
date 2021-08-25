@@ -211,16 +211,18 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                 .assetOperations
                                                 .assets
                                                 .first
-                                                .assetLastReceivedEvent
-                                                .lastReceivedEventTimeLocal !=
+                                                .dateRangeRuntimeDuration !=
                                             null
-                                        ? Utils.getLastDurationOne(viewModel
-                                            .singleAssetOperation
-                                            .assetOperations
-                                            .assets
-                                            .first
-                                            .assetLastReceivedEvent
-                                            .lastReceivedEventTimeLocal)
+                                        ? Utils.formatHHmm(Duration(
+                                                    seconds: viewModel
+                                                        .singleAssetOperation
+                                                        .assetOperations
+                                                        .assets
+                                                        .first
+                                                        .dateRangeRuntimeDuration
+                                                        .toInt())
+                                                .inSeconds)
+                                            .toString()
                                         : "-",
                                   ),
                                 ],

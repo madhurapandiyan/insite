@@ -55,7 +55,8 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
     productFamily: json['productFamily'] as String,
     customStateDescription: json['customStateDescription'] as String,
     distanceTravelledKilometers: json['distanceTravelledKilometers'],
-    dateRangeRuntimeDuration: json['dateRangeRuntimeDuration'],
+    dateRangeRuntimeDuration:
+        (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
     lastKnownOperator: json['lastKnownOperator'],
     capabilities: json['capabilities'] == null
         ? null

@@ -407,9 +407,10 @@ class UtilizationListItem extends StatelessWidget {
                             TableRow(
                               children: [
                                 InsiteTableRowItem(
-                                  title: "RunTime",
-                                  content: utilizationData.targetRuntime!=null?
-                                  utilizationData.targetRuntime.toString():"-",
+                                  title: "Runtime Target",
+                                  content: utilizationData.targetRuntime != null
+                                      ? utilizationData.targetRuntime.toString()
+                                      : "-",
                                 ),
                                 Table(
                                   border: TableBorder(
@@ -433,15 +434,15 @@ class UtilizationListItem extends StatelessWidget {
                                                     .toString()
                                                 : "-",
                                       ),
-                                      InsiteTableRowItem(
-                                        title: "Target",
-                                        content:
-                                            utilizationData.targetRuntime !=
-                                                    null
-                                                ? utilizationData.targetRuntime
-                                                    .toString()
-                                                : "-",
-                                      ),
+                                      // InsiteTableRowItem(
+                                      //   title: "Target",
+                                      //   content:
+                                      //       utilizationData.targetRuntime !=
+                                      //               null
+                                      //           ? utilizationData.targetRuntime
+                                      //               .toString()
+                                      //           : "-",
+                                      // ),
                                       InsiteTableRowItem(
                                         title: "Performance",
                                         content: utilizationData
@@ -471,9 +472,10 @@ class UtilizationListItem extends StatelessWidget {
                             ),
                             TableRow(children: [
                               InsiteTableRowItem(
-                                title: "Idle",
-                                content: utilizationData.targetIdle!=null?
-                                utilizationData.targetIdle.toString():"-",
+                                title: "Idle Target",
+                                content: utilizationData.targetIdle != null
+                                    ? utilizationData.targetIdle.toString()
+                                    : "-",
                               ),
                               Table(
                                 border: TableBorder(
