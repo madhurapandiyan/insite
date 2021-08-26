@@ -329,9 +329,11 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithImage(
-                                title: utilizationData.manufacturer +
-                                    "\n" +
-                                    utilizationData.model,
+                                title: utilizationData.manufacturer != null
+                                    ? utilizationData.manufacturer
+                                    : "" + "\n" + utilizationData.model != null
+                                        ? utilizationData.model
+                                        : "",
                                 path: utilizationData == null
                                     ? "assets/images/EX210.png"
                                     : Utils().imageData(utilizationData.model),

@@ -49,7 +49,8 @@ class AssetUtilizationService extends BaseService {
               '-LastReportedUtilizationTime',
               accountSelected.CustomerUID,
               true,
-              true);
+              true,
+              Urls.vutilizationPrefix);
       return utilizationSummaryResponse.utilization;
     } catch (e) {
       Logger().e(e);
@@ -64,9 +65,12 @@ class AssetUtilizationService extends BaseService {
           assetUID.isNotEmpty &&
           date != null &&
           date.isNotEmpty) {
-        AssetUtilization result = await MyApi()
-            .getClient()
-            .assetUtilGraphData(assetUID, date, accountSelected.CustomerUID);
+        AssetUtilization result = await MyApi().getClient().assetUtilGraphData(
+            Urls.utilizationSummaryV1,
+            assetUID,
+            date,
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
         return result;
       }
       return null;
@@ -102,7 +106,8 @@ class AssetUtilizationService extends BaseService {
                             sort,
                             appliedFilters,
                             ScreenType.UTILIZATION),
-                    accountSelected.CustomerUID)
+                    accountSelected.CustomerUID,
+                    Urls.vfleetPrefix)
                 : await MyApi().getClient().utilization(
                     Urls.utlizationSummary +
                         FilterUtils.getFilterURL(
@@ -114,7 +119,8 @@ class AssetUtilizationService extends BaseService {
                             sort,
                             appliedFilters,
                             ScreenType.UTILIZATION),
-                    accountSelected.CustomerUID);
+                    accountSelected.CustomerUID,
+                    Urls.vfleetPrefix);
         return response;
       }
       return null;
@@ -140,7 +146,7 @@ class AssetUtilizationService extends BaseService {
         SingleAssetUtilization response = await MyApi()
             .getClient()
             .singleAssetUtilization(assetUID, sort, startDate, endDate,
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID, Urls.vutilizationPrefix);
         return response;
       }
       return null;
@@ -155,10 +161,16 @@ class AssetUtilizationService extends BaseService {
       if (date != null) {
         UtilizationSummary response = customerSelected != null
             ? await MyApi().getClient().getAssetUtilizationcustomerUID(
-                date, customerSelected.CustomerUID, accountSelected.CustomerUID)
-            : await MyApi()
-                .getClient()
-                .getAssetUtilization(date, accountSelected.CustomerUID);
+                Urls.utilizationSummaryV1,
+                date,
+                customerSelected.CustomerUID,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix)
+            : await MyApi().getClient().getAssetUtilization(
+                Urls.utilizationSummaryV1,
+                date,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
         if (response != null) {
           return response;
         } else {
@@ -177,10 +189,16 @@ class AssetUtilizationService extends BaseService {
     try {
       UtilizationSummary utilizationSummary = productFamilyKey != null
           ? await MyApi().getClient().utilizationSummaryFilterData(
-              endDate, productFamilyKey, accountSelected.CustomerUID)
-          : await MyApi()
-              .getClient()
-              .getAssetUtilization(endDate, accountSelected.CustomerUID);
+              Urls.utilizationSummaryV1,
+              endDate,
+              productFamilyKey,
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix)
+          : await MyApi().getClient().getAssetUtilization(
+              Urls.utilizationSummaryV1,
+              endDate,
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix);
       return utilizationSummary;
     } catch (e) {
       Logger().d(e);

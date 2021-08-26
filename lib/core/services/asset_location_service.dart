@@ -40,8 +40,15 @@ class AssetLocationService extends BaseService {
       if (pageNumber != null && pageSize != null && sort != null) {
         AssetLocationData result = await MyApi()
             .getClient()
-            .assetLocationWithCluster(latitude, longitude, pageNumber, pageSize,
-                radiusKm, sort, accountSelected.CustomerUID);
+            .assetLocationWithCluster(
+                Urls.locationSummary,
+                latitude,
+                longitude,
+                pageNumber,
+                pageSize,
+                radiusKm,
+                sort,
+                accountSelected.CustomerUID);
         return result;
       }
       return null;
@@ -71,7 +78,8 @@ class AssetLocationService extends BaseService {
                         sort,
                         appliedFilters,
                         ScreenType.LOCATION),
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID,
+                Urls.vfleetMapPrefix);
         return result;
       } else if (pageNumber != null && pageSize != null && sort != null) {
         AssetLocationData result = await MyApi()
@@ -87,7 +95,8 @@ class AssetLocationService extends BaseService {
                         sort,
                         appliedFilters,
                         ScreenType.LOCATION),
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID,
+                Urls.vfleetMapPrefix);
         return result;
       }
       return null;
@@ -104,8 +113,14 @@ class AssetLocationService extends BaseService {
         if (customerSelected != null) {
           AssetLocationData result = await MyApi()
               .getClient()
-              .assetLocationWithOutFilterCustomerUID(pageNumber, pageSize, sort,
-                  customerSelected.CustomerUID, accountSelected.CustomerUID);
+              .assetLocationWithOutFilterCustomerUID(
+                  Urls.locationSummary,
+                  pageNumber,
+                  pageSize,
+                  sort,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetMapPrefix);
           if (result != null) {
             return result;
           } else {
@@ -115,7 +130,12 @@ class AssetLocationService extends BaseService {
           AssetLocationData result = await MyApi()
               .getClient()
               .assetLocationWithOutFilter(
-                  pageNumber, pageSize, sort, accountSelected.CustomerUID);
+                  Urls.locationSummary,
+                  pageNumber,
+                  pageSize,
+                  sort,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetMapPrefix);
           if (result != null) {
             return result;
           } else {
@@ -150,17 +170,21 @@ class AssetLocationService extends BaseService {
     try {
       AssetLocationData assetLocationDataResponse = productFamilyKey != null
           ? await MyApi().getClient().locationFilterData(
+              Urls.locationSummary,
               pageNumber,
               pageSize,
               productFamilyKey,
               "-lastlocationupdateutc",
-              accountSelected.CustomerUID)
+              accountSelected.CustomerUID,
+              Urls.vfleetMapPrefix)
           : await MyApi().getClient().assetLocationWithOutFilterCustomerUID(
+              Urls.locationSummary,
               pageNumber,
               pageSize,
               "-lastlocationupdateutc",
               customerSelected.CustomerUID,
-              accountSelected.CustomerUID);
+              accountSelected.CustomerUID,
+              Urls.vfleetMapPrefix);
       return assetLocationDataResponse;
     } catch (e) {
       Logger().d(e.toString());

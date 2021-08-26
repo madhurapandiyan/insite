@@ -67,7 +67,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
   getNotes() async {
     List<Note> result =
         await _assetSingleHistoryService.getAssetNotes(assetDetail.assetUid);
-    _assetNotes = result;
+    if (result != null) {
+      _assetNotes = result;
+    }
     _loading = false;
     notifyListeners();
   }

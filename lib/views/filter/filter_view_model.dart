@@ -42,10 +42,10 @@ class FilterViewModel extends InsiteViewModel {
         await _assetService.getAssetCount("deviceType", FilterType.DEVICE_TYPE);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
-    AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
-        "subscriptiontype", FilterType.SUBSCRIPTION_DATE);
-    addData(filterDataSubscription, resultSubscriptiontype,
-        FilterType.SUBSCRIPTION_DATE);
+    // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
+    //     "subscriptiontype", FilterType.SUBSCRIPTION_DATE);
+    // addData(filterDataSubscription, resultSubscriptiontype,
+    //     FilterType.SUBSCRIPTION_DATE);
 
     AssetCount resultManufacturer =
         await _assetService.getAssetCount("manufacturer", FilterType.MAKE);

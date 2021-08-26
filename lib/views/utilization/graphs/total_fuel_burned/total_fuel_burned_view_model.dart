@@ -36,7 +36,7 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
     _isSwitching = true;
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _totalFuelBurned = null;
     else
       _totalFuelBurned = result;

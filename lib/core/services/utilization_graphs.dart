@@ -8,6 +8,7 @@ import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class UtilizationGraphsService extends BaseService {
@@ -37,8 +38,12 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         RunTimeCumulative response = await MyApi()
             .getClient()
-            .runtimeCumulative(startDate, endDate, accountSelected.CustomerUID);
-        return response;
+            .runtimeCumulative(startDate, endDate, accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        }
+        return null;
       }
       return null;
     } catch (e) {
@@ -56,9 +61,12 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         FuelBurnedCumulative response = await MyApi()
             .getClient()
-            .fuelBurnedCumulative(
-                startDate, endDate, accountSelected.CustomerUID);
-        return response;
+            .fuelBurnedCumulative(startDate, endDate,
+                accountSelected.CustomerUID, Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        }
+        return null;
       }
       return null;
     } catch (e) {
@@ -87,8 +95,12 @@ class UtilizationGraphsService extends BaseService {
             pageNumber,
             pageSize,
             includepagination,
-            accountSelected.CustomerUID);
-        return response;
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        }
+        return null;
       }
       return null;
     } catch (e) {
@@ -117,8 +129,12 @@ class UtilizationGraphsService extends BaseService {
             pageNumber,
             pageSize,
             includepagination,
-            accountSelected.CustomerUID);
-        return response;
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        }
+        return null;
       }
       return null;
     } catch (e) {
@@ -142,9 +158,19 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         IdlePercentTrend response = await MyApi()
             .getClient()
-            .getIdlePercentTrend(interval, startDate, endDate, pageNumber,
-                pageSize, includepagination, accountSelected.CustomerUID);
-        return response;
+            .getIdlePercentTrend(
+                interval,
+                startDate,
+                endDate,
+                pageNumber,
+                pageSize,
+                includepagination,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        }
+        return null;
       }
       return null;
     } catch (e) {
@@ -168,9 +194,20 @@ class UtilizationGraphsService extends BaseService {
           endDate.isNotEmpty) {
         FuelBurnRateTrend response = await MyApi()
             .getClient()
-            .getFuelBurnRateTrend(interval, startDate, endDate, pageNumber,
-                pageSize, includepagination, accountSelected.CustomerUID);
-        return response;
+            .getFuelBurnRateTrend(
+                interval,
+                startDate,
+                endDate,
+                pageNumber,
+                pageSize,
+                includepagination,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        } else {
+          return null;
+        }
       }
       return null;
     } catch (e) {

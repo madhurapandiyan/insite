@@ -89,4 +89,3 @@ class _UtilLizationViewState extends State<UtilLizationView> {
         viewModelBuilder: () => UtilLizationViewModel());
   }
 }
-
