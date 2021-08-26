@@ -433,6 +433,39 @@ abstract class RestClient {
       @Query("startDateTime") String startDate,
       @Query("endDateTime") String endDate,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> assetStatusFilterData(
+      @Query("grouping") String grouping,
+      @Query("productfamily") String productfamily,
+      @Header("x-visionlink-customeruid") customerId);
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> fuelLevelFilterData(
+      @Query("grouping") String grouping,
+      @Query("productfamily") String productfamily,
+      @Query("thresholds") String thresholds,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
+  Future<AssetCount> idlingLevelFilterData(
+      @Query("startDate") String startDate,
+      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
+      @Query("productfamily") String productfamily,
+      @Query("endDate") String endDate,
+      @Header("x-visionlink-customeruid") customerId);
+  @GET(
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1")
+  Future<UtilizationSummary> utilizationSummaryFilterData(
+      @Query("date") String endDate,
+      @Query("productfamily") String productfamily,
+      @Header("x-visionlink-customeruid") customerId);
+  @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
+  Future<AssetLocationData> locationFilterData(
+      @Query("pageNumber") int pageNumber,
+      @Query("pageSize") int pageSize,
+      @Query("productfamily") String productfamily,
+      @Query("sort") String sort,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

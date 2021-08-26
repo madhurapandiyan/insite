@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 
-class FaultDropDown extends StatefulWidget {
-  final String value;
-  final List<String> items;
-  final ValueChanged<String> onChanged;
-  FaultDropDown({this.items, this.value, this.onChanged});
+class FilterDropDownWidget extends StatefulWidget {
+  final List<FilterData> data;
+  final Function(String) onValueSelected;
+
+  FilterDropDownWidget({this.data, this.onValueSelected});
 
   @override
-  _FaultDropDownState createState() => _FaultDropDownState();
+  _FilterDropDownWidgetState createState() => _FilterDropDownWidgetState();
 }
 
-class _FaultDropDownState extends State<FaultDropDown> {
+class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
+  List<FilterData> _list = [];
+  List<FilterData> _displayList = [];
+  String dropDownvalue;
+
+  @override
+  void initState() {
+    super.initState();
+    _list = widget.data;
+    _displayList = _list;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height*.06,
+          height: MediaQuery.of(context).size.height * .06,
           decoration: BoxDecoration(
             border: Border.all(color: white),
             borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -30,7 +40,10 @@ class _FaultDropDownState extends State<FaultDropDown> {
               SizedBox(
                 width: 6,
               ),
-              Image.asset("assets/images/fault_world.png"),
+              Icon(
+                Icons.settings,
+                color: white,
+              ),
               VerticalDivider(
                 thickness: 1,
                 color: silver,
@@ -39,16 +52,28 @@ class _FaultDropDownState extends State<FaultDropDown> {
                 width: 10,
               ),
               DropdownButton(
+                  hint: Text(
+                    "Select",
+                    style: TextStyle(
+                        color: silver,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.normal),
+                  ),
                   elevation: 16,
                   dropdownColor: cardcolor,
-                  value: widget.value,
-                  onChanged: widget.onChanged,
-                  items: widget.items
-                      .map<DropdownMenuItem<String>>((String value) {
+                  value: dropDownvalue,
+                  onChanged: (value) {
+                    dropDownvalue = value;
+                    widget.onValueSelected(value);
+                    setState(() {});
+                  },
+                  items: _displayList
+                      .map<DropdownMenuItem<String>>((FilterData value) {
                     return DropdownMenuItem<String>(
-                      value: value,
+                      value: value.title,
                       child: Text(
-                        value,
+                        value.count + " " + value.title,
                         style: TextStyle(
                             color: silver,
                             fontSize: 11.0,
@@ -66,18 +91,6 @@ class _FaultDropDownState extends State<FaultDropDown> {
             ],
           ),
         ),
-        // Row(
-        //   children: [
-        //     SvgPicture.asset(
-        //       "assets/images/arrowdown.svg",
-        //       width: 10,
-        //       height: 10,
-        //     ),
-        //     SizedBox(
-        //       width: 10,
-        //     )
-        //   ],
-        // ),
       ],
     );
   }

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/home/google_map.dart';
+import 'package:insite/views/location/location_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/filter_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
+import 'package:insite/widgets/smart_widgets/fault_dropdown_widget.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:insite/widgets/smart_widgets/reusable_dropdown_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'dashboard_view_model.dart';
 
@@ -28,6 +34,9 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   Fleet selectedFleet;
+  String assetDropDown = "All Assets";
+  bool switchDropDownState = false;
+  final GlobalKey<GoogleMapHomeWidgetState> filterLocationKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +67,7 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 16, right:16),
+                          padding: EdgeInsets.only(top: 16, right: 16),
                           child: InsiteButton(
                             fontSize: 13,
                             width: 100,
@@ -74,21 +83,86 @@ class _DashboardViewState extends State<DashboardView> {
                       ],
                     ),
                     SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: FaultDropDown(
+                            value: assetDropDown,
+                            items: ["All Assets", "Product Family"],
+                            onChanged: (String value) {
+                              assetDropDown = value;
+                              switchDropDownState = !switchDropDownState;
+                              viewModel.getAssetStatusData();
+                              viewModel.getFuelLevelData();
+                              viewModel.getIdlingLevelData(true);
+                              viewModel.getUtilizationSummary();
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        switchDropDownState
+                            ? Flexible(
+                                child: viewModel.filterDataProductFamily != null
+                                    ? FilterDropDownWidget(
+                                        data: viewModel.filterDataProductFamily,
+                                        onValueSelected: (value) async {
+                                          viewModel.getAssetStatusFilterApplied(
+                                              value);
+                                          viewModel
+                                              .getFuelLevelFilterApplied(value);
+
+                                          viewModel
+                                              .getIdlingLevelFilterData(value);
+
+                                          viewModel
+                                              .getUtilizationSummaryFilterData(
+                                                  value);
+
+                                          filterLocationKey.currentState
+                                              .getLocationFilterData(value);
+                                        },
+                                      )
+                                    : SizedBox(),
+                              )
+                            : Expanded(
+                                flex: 1,
+                                child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        .06,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: white),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: ReusableDropDown(
+                                      title: viewModel.totalCount.toString(),
+                                      name: "All Assets",
+                                    )),
+                              ),
+                      ],
+                    ),
+                    SizedBox(
                       height: 16,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: AssetStatus(
-                          statusChartData: viewModel.statusChartData != null
-                              ? viewModel.statusChartData
-                              : null,
-                          onFilterSelected: (value) async {
-                            await viewModel.onFilterSelected(value);
-                            viewModel.gotoFleetPage();
-                          },
-                          isLoading: viewModel.assetStatusloading,
-                          isRefreshing: viewModel.refreshing,
-                          ),
+                        statusChartData: viewModel.statusChartData != null
+                            ? viewModel.statusChartData
+                            : null,
+                        onFilterSelected: (value) async {
+                          await viewModel.onFilterSelected(value);
+                          viewModel.gotoFleetPage();
+                        },
+                        isLoading: viewModel.assetStatusloading,
+                        isRefreshing: viewModel.refreshing,
+                      ),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -175,6 +249,7 @@ class _DashboardViewState extends State<DashboardView> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: GoogleMapHomeWidget(
                         isRefreshing: viewModel.refreshing,
+                        key: filterLocationKey,
                       ),
                     ),
                     SizedBox(

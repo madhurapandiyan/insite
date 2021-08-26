@@ -4,6 +4,7 @@ import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -78,7 +79,7 @@ class AssetStatusService extends DataBaseService {
     screenType,
     appliedFilters,
   ) async {
-    Logger().d("getAssetCountByFilter ");
+    Logger().d("getAssetCountByFilter");
     try {
       AssetCount assetStatusResponse = await MyApi()
           .getClient()
@@ -283,5 +284,59 @@ class AssetStatusService extends DataBaseService {
       Logger().e(e);
       return null;
     }
+  }
+
+  Future<AssetCount> getAssetStatusFilter(productFamilyKey, key) async {
+    try {
+      AssetCount assetStatusResponse = productFamilyKey != null
+          ? await MyApi().getClient().assetStatusFilterData(
+              key, productFamilyKey, accountSelected.CustomerUID)
+          : await MyApi()
+              .getClient()
+              .assetCount(key, accountSelected.CustomerUID);
+
+      return assetStatusResponse;
+    } catch (e) {
+      Logger().d(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetCount> getFuellevelFilterData(productFamilyKey, key) async {
+    try {
+      AssetCount assetStatusResponse = productFamilyKey != null
+          ? await MyApi().getClient().fuelLevelFilterData(key, productFamilyKey,
+              "25-50-75-100", accountSelected.CustomerUID)
+          : await MyApi().getClient().fuelLevel(
+              "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
+
+      return assetStatusResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  Future<AssetCount> getIdlingLevelFilterData(
+      startDate, productFamilyKey, endDate) async {
+    try {
+      AssetCount idlinglevelDataResponse = productFamilyKey != null
+          ? await MyApi().getClient().idlingLevelFilterData(
+              startDate,
+              "[0,10][10,15][15,25][25,]",
+              productFamilyKey,
+              endDate,
+              accountSelected.CustomerUID)
+          : await MyApi().getClient().idlingLevel(
+              startDate,
+              "[0,10][10,15][15,25][25,]",
+              endDate,
+              accountSelected.CustomerUID);
+
+      return idlinglevelDataResponse;
+    } catch (e) {
+      Logger().d(e);
+    }
+    return null;
   }
 }

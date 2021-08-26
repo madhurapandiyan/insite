@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as flutter_map;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
@@ -18,18 +19,23 @@ import 'package:stacked/stacked.dart';
 
 class GoogleMapHomeWidget extends StatefulWidget {
   final bool isRefreshing;
-  GoogleMapHomeWidget({this.isRefreshing});
+  GoogleMapHomeWidget({
+    this.isRefreshing,
+    Key key,
+  }) : super(key: key);
   @override
-  _GoogleMapHomeWidgetState createState() => _GoogleMapHomeWidgetState();
+  GoogleMapHomeWidgetState createState() => GoogleMapHomeWidgetState();
 }
 
-class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
+class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
+  var viewModel;
   MapType currentType = MapType.normal;
   @override
   void initState() {
     super.initState();
+    viewModel = LocationViewModel(ScreenType.DASHBOARD);
   }
 
   @override
@@ -328,7 +334,7 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
               ],
             ));
       },
-      viewModelBuilder: () => LocationViewModel(ScreenType.DASHBOARD),
+      viewModelBuilder: () => viewModel,
     );
   }
 
@@ -515,5 +521,9 @@ class _GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
       default:
         return MapType.normal;
     }
+  }
+
+  getLocationFilterData(dropDownValue) async {
+    await viewModel.getLocationFilterData(dropDownValue);
   }
 }
