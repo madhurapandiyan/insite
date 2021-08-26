@@ -254,6 +254,7 @@ class LocationViewModel extends InsiteViewModel {
     } else if (pageType == ScreenType.DASHBOARD) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocationHome();
+       
       });
     }
   }
@@ -404,5 +405,15 @@ class LocationViewModel extends InsiteViewModel {
   //utils
   double deg2rad(deg) {
     return deg * (Math.pi / 180);
+  }
+
+  getLocationFilterData(dropDownValue) async {
+    AssetLocationData result = await _assetLocationService.getLocationFilterData(dropDownValue, pageNumber, pageSize);
+    if (result != null) {
+      _assetLocation = result;
+      clusterMarker();
+    }
+    _loading = false;
+    notifyListeners();
   }
 }

@@ -81,6 +81,12 @@ class DashboardViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
+  String _dropDownValueFilter;
+  String get dropDownValueFilter => _dropDownValueFilter;
+
+
+  List<FilterData> filterDataProductFamily = [];
+
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
 
@@ -112,6 +118,7 @@ class DashboardViewModel extends InsiteViewModel {
       //  getAssetLocation();
       getUtilizationSummary();
       getFaultCoundData();
+      getFilterData();
     });
   }
 
@@ -173,6 +180,14 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  refreshWithFilter() async {
+    _refreshing = true;
+    notifyListeners();
+    await getFilterData();
+    _refreshing = false;
+    notifyListeners();
+  }
+
   getAssetCount() async {
     AssetCount result =
         await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
@@ -188,7 +203,6 @@ class DashboardViewModel extends InsiteViewModel {
     int totalAssetCount = 0;
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
-      AssetCount _fuelLevelData = result;
       fuelChartData.clear();
       for (int index = 0; index < result.countData.length; index++) {
         if (result.countData[index].countOf != "Not Reporting") {
@@ -325,5 +339,100 @@ class DashboardViewModel extends InsiteViewModel {
       default:
         return null;
     }
+  }
+
+  getFilterData() async {
+    AssetCount resultProductfamily = await _assetService.getAssetCount(
+        "productfamily", FilterType.PRODUCT_FAMILY);
+    addData(filterDataProductFamily, resultProductfamily,
+        FilterType.PRODUCT_FAMILY);
+  }
+
+  addData(filterData, AssetCount resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData.isNotEmpty) {
+      for (Count countData in resultModel.countData) {
+        // if (countData.countOf != "Not Reporting" && //enabling not reporting
+        if (countData.countOf != "Excluded") {
+          FilterData data = FilterData(
+              count: type == FilterType.SEVERITY
+                  ? countData.assetCount.toString()
+                  : countData.count.toString(),
+              title: countData.countOf,
+              isSelected: isAlreadSelected(countData.countOf, type),
+              extras: [],
+              type: type);
+          filterData.add(data);
+        }
+      }
+    }
+  }
+
+  getAssetStatusFilterApplied(dropDownValue) async {
+    AssetCount result =
+        await _assetService.getAssetStatusFilter(dropDownValue, "assetstatus");
+    if (result != null) {
+      _assetStatusData = result;
+      statusChartData.clear();
+      for (var stausData in _assetStatusData.countData) {
+        statusChartData.add(ChartSampleData(
+          x: stausData.countOf,
+          y: stausData.count.round(),
+        ));
+      }
+    }
+    _assetStatusloading = false;
+    notifyListeners();
+  }
+
+  getFuelLevelFilterApplied(dropDownValue) async {
+    int totalAssetCount = 0;
+    AssetCount result =
+        await _assetService.getFuellevelFilterData(dropDownValue, "fuellevel");
+    if (result != null) {
+      fuelChartData.clear();
+      for (int index = 0; index < result.countData.length; index++) {
+        if (result.countData[index].countOf != "Not Reporting") {
+          Logger().d("countOf ${result.countData[index].count}");
+          totalAssetCount = totalAssetCount + result.countData[index].count;
+          fuelChartData.add(ChartSampleData(
+              x: result.countData[index].countOf,
+              y: result.countData[index].count,
+              z: totalAssetCount.toString()));
+        }
+      }
+    }
+    _assetFuelloading = false;
+    notifyListeners();
+  }
+
+  getIdlingLevelFilterData(dropDownValue) async {
+    this._dropDownValueFilter = dropDownValue;
+    AssetCount result = await _assetService.getIdlingLevelFilterData(
+        getStartRange(), dropDownValueFilter, endDate);
+    if (result != null) {
+      _idlingLevelData = result;
+    }
+    _idlingLevelDataloading = false;
+    notifyListeners();
+  }
+
+  getUtilizationSummaryFilterData(dropDownValue) async {
+    UtilizationSummary result = await _assetUtilizationService
+        .getUtilizationFilterData(endDate, dropDownValue);
+    if (result != null) {
+      _utilizationSummary = result;
+      _utilizationTotalGreatestValue = Utils.greatestOfThree(
+          _utilizationSummary.totalDay.runtimeHours,
+          _utilizationSummary.totalWeek.runtimeHours,
+          _utilizationSummary.totalMonth.runtimeHours);
+      _utilizationAverageGreatestValue = Utils.greatestOfThree(
+          _utilizationSummary.averageDay.runtimeHours,
+          _utilizationSummary.averageWeek.runtimeHours,
+          _utilizationSummary.averageMonth.runtimeHours);
+    }
+    _assetUtilizationLoading = false;
+    notifyListeners();
   }
 }

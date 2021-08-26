@@ -171,4 +171,20 @@ class AssetUtilizationService extends BaseService {
       return null;
     }
   }
+
+  Future<UtilizationSummary> getUtilizationFilterData(
+      endDate, productFamilyKey) async {
+    try {
+      UtilizationSummary utilizationSummary = productFamilyKey != null
+          ? await MyApi().getClient().utilizationSummaryFilterData(
+              endDate, productFamilyKey, accountSelected.CustomerUID)
+          : await MyApi()
+              .getClient()
+              .getAssetUtilization(endDate, accountSelected.CustomerUID);
+      return utilizationSummary;
+    } catch (e) {
+      Logger().d(e);
+    }
+    return null;
+  }
 }

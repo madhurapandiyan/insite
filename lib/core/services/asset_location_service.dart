@@ -144,4 +144,27 @@ class AssetLocationService extends BaseService {
       return null;
     }
   }
+
+  Future<AssetLocationData> getLocationFilterData(
+      productFamilyKey, int pageNumber, int pageSize) async {
+    try {
+      AssetLocationData assetLocationDataResponse = productFamilyKey != null
+          ? await MyApi().getClient().locationFilterData(
+              pageNumber,
+              pageSize,
+              productFamilyKey,
+              "-lastlocationupdateutc",
+              accountSelected.CustomerUID)
+          : await MyApi().getClient().assetLocationWithOutFilterCustomerUID(
+              pageNumber,
+              pageSize,
+              "-lastlocationupdateutc",
+              customerSelected.CustomerUID,
+              accountSelected.CustomerUID);
+      return assetLocationDataResponse;
+    } catch (e) {
+      Logger().d(e.toString());
+    }
+    return null;
+  }
 }

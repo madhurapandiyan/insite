@@ -1556,4 +1556,139 @@ class _RestClient implements RestClient {
     final value = AssetCount.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetCount> assetStatusFilterData(
+      grouping, productfamily, customerId) async {
+    ArgumentError.checkNotNull(grouping, 'grouping');
+    ArgumentError.checkNotNull(productfamily, 'productfamily');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'grouping': grouping,
+      r'productfamily': productfamily
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCount.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetCount> fuelLevelFilterData(
+      grouping, productfamily, thresholds, customerId) async {
+    ArgumentError.checkNotNull(grouping, 'grouping');
+    ArgumentError.checkNotNull(productfamily, 'productfamily');
+    ArgumentError.checkNotNull(thresholds, 'thresholds');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'grouping': grouping,
+      r'productfamily': productfamily,
+      r'thresholds': thresholds
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCount.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetCount> idlingLevelFilterData(startDate, idleEfficiencyRanges,
+      productfamily, endDate, customerId) async {
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
+    ArgumentError.checkNotNull(productfamily, 'productfamily');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'startDate': startDate,
+      r'idleEfficiencyRanges': idleEfficiencyRanges,
+      r'productfamily': productfamily,
+      r'endDate': endDate
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCount.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<UtilizationSummary> utilizationSummaryFilterData(
+      endDate, productfamily, customerId) async {
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(productfamily, 'productfamily');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'date': endDate,
+      r'productfamily': productfamily
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UtilizationSummary.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetLocationData> locationFilterData(
+      pageNumber, pageSize, productfamily, sort, customerId) async {
+    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
+    ArgumentError.checkNotNull(pageSize, 'pageSize');
+    ArgumentError.checkNotNull(productfamily, 'productfamily');
+    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pageNumber': pageNumber,
+      r'pageSize': pageSize,
+      r'productfamily': productfamily,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetLocationData.fromJson(_result.data);
+    return value;
+  }
 }
