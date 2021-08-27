@@ -160,6 +160,11 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
+  removeAllSelectedFilter() async {
+    selectedFilterData.clear();
+    notifyListeners();
+  }
+
   removeSelectedFilter(value) async {
     Logger().d("removeFilter title " + value.title.toString());
     try {

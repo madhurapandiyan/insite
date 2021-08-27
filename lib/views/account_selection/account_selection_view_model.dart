@@ -1,5 +1,6 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/account.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
@@ -8,7 +9,6 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -57,6 +57,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
     getCustomerList();
     Future.delayed(Duration(seconds: 1), () {
       if (_subAccountSelected != null) {
+        _secondaryLoading = true;
+        notifyListeners();
         getSubCustomerList();
       }
     });
@@ -91,8 +93,14 @@ class AccountSelectionViewModel extends InsiteViewModel {
   getCustomerList() async {
     Logger().d("getCustomerList");
     List<Customer> result = await _loginService.getCustomers();
-    Logger().d("getCustomerList " + result.length.toString());
-    for (Customer customer in result) {
+    addCustomers(result);
+    Logger().d("getCustomerList " + _customers.length.toString());
+    _loading = false;
+    notifyListeners();
+  }
+
+  addCustomers(List<Customer> list) {
+    for (Customer customer in list) {
       if (_accountSelected != null &&
           _accountSelected.DisplayName == customer.DisplayName) {
         _customers.add(AccountData(
@@ -105,16 +113,37 @@ class AccountSelectionViewModel extends InsiteViewModel {
             selectionType: AccountType.ACCOUNT,
             value: customer));
       }
+      if (customer.Children.isNotEmpty) {
+        addCustomers(customer.Children);
+      }
     }
-    _loading = false;
-    notifyListeners();
+  }
+
+  addSubCustomers(List<Customer> list) {
+    for (Customer customer in list) {
+      if (_subAccountSelected != null &&
+          _subAccountSelected.DisplayName == customer.DisplayName) {
+        _subCustomers.add(AccountData(
+            isSelected: true,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      } else {
+        _subCustomers.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      }
+      if (customer.Children.isNotEmpty) {
+        addSubCustomers(customer.Children);
+      }
+    }
   }
 
   Future<List<Customer>> getSubCustomerList() async {
     Logger().d("getSubCustomerList");
     List<Customer> result =
         await _loginService.getSubCustomers(_accountSelected.CustomerUID);
-    Logger().d("getSubCustomerList result " + result.length.toString());
+
     if (result.isNotEmpty) {
       _subCustomers.clear();
       if (_subAccountSelected != null &&
@@ -139,24 +168,22 @@ class AccountSelectionViewModel extends InsiteViewModel {
                 DisplayName: "ALL ACCOUNTS",
                 Children: [])));
       }
-      for (Customer customer in result) {
-        if (_subAccountSelected != null &&
-            _subAccountSelected.DisplayName == customer.DisplayName) {
-          _subCustomers.add(AccountData(
-              isSelected: true,
-              selectionType: AccountType.CUSTOMER,
-              value: customer));
-        } else {
-          _subCustomers.add(AccountData(
-              isSelected: false,
-              selectionType: AccountType.CUSTOMER,
-              value: customer));
-        }
-      }
+      addSubCustomers(result);
     }
+    Logger().d("getSubCustomerList result " + _subCustomers.length.toString());
+    addSubCustomersToDb(_subCustomers);
+
     _loading = false;
+    _secondaryLoading = false;
     notifyListeners();
     return result;
+  }
+
+  addSubCustomersToDb(List<AccountData> list) {
+    if (_accountSelected.CustomerUID ==
+        "d7ac4554-05f9-e311-8d69-d067e5fd4637") {
+      _localStorageService.addCustomersToDb(list);
+    }
   }
 
   resetSelection() {

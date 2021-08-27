@@ -9,6 +9,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
+import 'package:insite/views/filter/refine.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/views/error/error_widget.dart' as error;
@@ -18,8 +19,13 @@ class InsiteScaffold extends StatefulWidget {
   final Widget body;
   final InsiteViewModel viewModel;
   final VoidCallback onFilterApplied;
+  final VoidCallback onRefineApplied;
   InsiteScaffold(
-      {this.screenType, this.body, this.viewModel, this.onFilterApplied});
+      {this.screenType,
+      this.body,
+      this.onRefineApplied,
+      this.viewModel,
+      this.onFilterApplied});
 
   @override
   _InsiteScaffoldState createState() => _InsiteScaffoldState();
@@ -28,6 +34,7 @@ class InsiteScaffold extends StatefulWidget {
 class _InsiteScaffoldState extends State<InsiteScaffold> {
   bool _isSearchSelected = false;
   bool _isFilterSelected = false;
+  bool _isRefineSelected = false;
   var _navigationService = locator<NavigationService>();
 
   @override
@@ -78,18 +85,35 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION
               ? true
               : false,
+          shouldShowRefine: widget.screenType == ScreenType.FLEET ||
+                  widget.screenType == ScreenType.ASSET_OPERATION ||
+                  widget.screenType == ScreenType.UTILIZATION ||
+                  widget.screenType == ScreenType.HEALTH ||
+                  widget.screenType == ScreenType.LOCATION
+              ? true
+              : false,
+          isRefineSelected: _isRefineSelected,
           isSearchSelected: _isSearchSelected,
           isFilterSelected: _isFilterSelected,
           onSearchTap: () {
             setState(() {
               _isFilterSelected = false;
+              _isRefineSelected = false;
               _isSearchSelected = !_isSearchSelected;
             });
           },
           onFilterTap: () {
             setState(() {
               _isSearchSelected = false;
+              _isRefineSelected = false;
               _isFilterSelected = !_isFilterSelected;
+            });
+          },
+          onRefineTap: () {
+            setState(() {
+              _isSearchSelected = false;
+              _isFilterSelected = false;
+              _isRefineSelected = !_isRefineSelected;
             });
           },
         ),
@@ -120,6 +144,14 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                         },
                         screenType: widget.screenType,
                       )
+                    : SizedBox(),
+                _isRefineSelected
+                    ? Refine(
+                        onRefineApplied: (bool) {
+                          onRefineApplied(bool);
+                        },
+                        screenType: widget.screenType,
+                      )
                     : SizedBox()
               ]),
       ),
@@ -138,6 +170,15 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     });
     if (bool) {
       widget.onFilterApplied();
+    }
+  }
+
+  onRefineApplied(bool) {
+    setState(() {
+      _isRefineSelected = !_isRefineSelected;
+    });
+    if (bool) {
+      widget.onRefineApplied();
     }
   }
 
@@ -163,6 +204,10 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     } else if (_isFilterSelected) {
       setState(() {
         _isFilterSelected = !_isFilterSelected;
+      });
+    } else if (_isRefineSelected) {
+      setState(() {
+        _isRefineSelected = !_isRefineSelected;
       });
     } else {
       return Future.value(true);

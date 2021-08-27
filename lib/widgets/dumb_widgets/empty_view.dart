@@ -3,12 +3,13 @@ import 'package:insite/theme/colors.dart';
 
 class EmptyView extends StatelessWidget {
   final String title;
-  const EmptyView({this.title});
+  final Color bg;
+  const EmptyView({this.title, this.bg});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: cod_grey,
+      color: bg != null ? bg : cod_grey,
       alignment: Alignment.center,
       child: Center(
         child: Text(title,

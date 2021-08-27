@@ -4,11 +4,9 @@ import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
-import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
-
 import '../locator.dart';
 import 'local_service.dart';
 

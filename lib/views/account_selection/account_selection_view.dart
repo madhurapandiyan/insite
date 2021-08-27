@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/account.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appvar_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';
+import 'account_search_view.dart';
 import 'account_selection_view_model.dart';
 
 class AccountSelectionView extends StatefulWidget {
@@ -126,7 +128,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                   : Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
-                                      child: AccountSelectionDropDownWidget(
+                                      child: AccountSearchView(
                                         selectionType: AccountType.ACCOUNT,
                                         onSelected: (AccountData value) {
                                           viewModel
@@ -149,7 +151,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                   ? Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
-                                      child: AccountSelectionDropDownWidget(
+                                      child: AccountSearchView(
                                         selectionType: AccountType.CUSTOMER,
                                         onSelected: (value) {
                                           viewModel.setSubAccountSelected(

@@ -3,6 +3,56 @@
 part of 'customer.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class CustomerAdapter extends TypeAdapter<Customer> {
+  @override
+  final int typeId = 5;
+
+  @override
+  Customer read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Customer(
+      CustomerUID: fields[0] as String,
+      Name: fields[1] as String,
+      CustomerType: fields[2] as String,
+      Children: (fields[4] as List)?.cast<Customer>(),
+      DisplayName: fields[3] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Customer obj) {
+    writer
+      ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.CustomerUID)
+      ..writeByte(1)
+      ..write(obj.Name)
+      ..writeByte(2)
+      ..write(obj.CustomerType)
+      ..writeByte(3)
+      ..write(obj.DisplayName)
+      ..writeByte(4)
+      ..write(obj.Children);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CustomerAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
