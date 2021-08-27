@@ -49,7 +49,7 @@ class Utils {
       int hours = ((s / 60) / 60).toInt();
       Logger().i("hours $hours");
       Logger().i("mins $mins");
-      return "$hours h : $mins min";
+      return "$hours hr : $mins min";
     }
   }
 

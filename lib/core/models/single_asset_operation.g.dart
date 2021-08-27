@@ -54,7 +54,8 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
         : AssetIcon.fromJson(json['assetIcon'] as Map<String, dynamic>),
     productFamily: json['productFamily'] as String,
     customStateDescription: json['customStateDescription'] as String,
-    distanceTravelledKilometers: json['distanceTravelledKilometers'],
+    distanceTravelledKilometers:
+        (json['distanceTravelledKilometers'] as num)?.toDouble(),
     dateRangeRuntimeDuration:
         (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
     lastKnownOperator: json['lastKnownOperator'],
