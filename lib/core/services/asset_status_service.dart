@@ -286,7 +286,7 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount> getAssetStatusFilter(productFamilyKey, key) async {
+  Future<AssetCount> getAssetStatusFilter( productFamilyKey, key) async {
     try {
       AssetCount assetStatusResponse = productFamilyKey != null
           ? await MyApi().getClient().assetStatusFilterData(

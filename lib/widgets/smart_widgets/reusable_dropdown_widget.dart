@@ -4,9 +4,9 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class ReusableDropDown extends StatelessWidget {
- final String title;
- final String name;
- ReusableDropDown({this.title,this.name});
+  final String title;
+  final String name;
+  ReusableDropDown({this.title, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,7 @@ class ReusableDropDown extends StatelessWidget {
           width: 10,
         ),
         InsiteButton(
-          width: 60,
-          height: 29,
+          height: 27,
           title: title,
           bgColor: cardcolor,
           textColor: silver,

@@ -369,7 +369,14 @@ class DashboardViewModel extends InsiteViewModel {
     }
   }
 
-  getAssetStatusFilterApplied(dropDownValue) async {
+ getFilterDataApplied(dropDownValue)async{
+ getAssetStatusFilterApplied(dropDownValue);
+ getFuelLevelFilterApplied(dropDownValue);
+ getIdlingLevelFilterData(dropDownValue);
+ getUtilizationSummaryFilterData(dropDownValue);
+
+}
+  getAssetStatusFilterApplied( dropDownValue) async {
     AssetCount result =
         await _assetService.getAssetStatusFilter(dropDownValue, "assetstatus");
     if (result != null) {

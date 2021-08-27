@@ -86,9 +86,10 @@ class _DashboardViewState extends State<DashboardView> {
                       height: 20,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
+                          padding: const EdgeInsets.only(left: 6.0),
                           child: FaultDropDown(
                             value: assetDropDown,
                             items: ["All Assets", "Product Family"],
@@ -112,29 +113,19 @@ class _DashboardViewState extends State<DashboardView> {
                                     ? FilterDropDownWidget(
                                         data: viewModel.filterDataProductFamily,
                                         onValueSelected: (value) async {
-                                          viewModel.getAssetStatusFilterApplied(
-                                              value);
-                                          viewModel
-                                              .getFuelLevelFilterApplied(value);
-
-                                          viewModel
-                                              .getIdlingLevelFilterData(value);
-
-                                          viewModel
-                                              .getUtilizationSummaryFilterData(
-                                                  value);
-
+                                          viewModel.getFilterDataApplied(value);
                                           filterLocationKey.currentState
                                               .getLocationFilterData(value);
                                         },
                                       )
                                     : SizedBox(),
                               )
-                            : Expanded(
-                                flex: 1,
+                            : Flexible(
                                 child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.46,
                                     height: MediaQuery.of(context).size.height *
-                                        .06,
+                                        0.062,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: white),
                                       borderRadius:
