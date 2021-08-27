@@ -1,16 +1,16 @@
-class Account {
-  final int id;
-  final String name;
-  Account({this.id, this.name});
-}
+import 'package:hive/hive.dart';
+import 'package:insite/utils/enums.dart';
 
-List<Account> accountList = [
-  Account(id: 0, name: "(1050)  TATA HITACHI CORPORATE"),
-  Account(id: 0, name: "(1235)  THCM Corporate"),
-  Account(id: 0, name: "(1080)  THCM Kharagpur Factory"),
-  Account(id: 0, name: "(1235)  THCM Dharwad Factory"),
-  Account(id: 0, name: "(1050)  TATA HITACHI CORPORATE"),
-  Account(id: 0, name: "(1235)  THCM Corporate"),
-  Account(id: 0, name: "(1080)  THCM Kharagpur Factory"),
-  Account(id: 0, name: "(1235)  THCM Dharwad Factory"),
-];
+import 'customer.dart';
+part 'account.g.dart';
+
+@HiveType(typeId: 6)
+class AccountData {
+  @HiveField(0)
+  final AccountType selectionType;
+  @HiveField(1)
+  final Customer value;
+  @HiveField(2)
+  bool isSelected;
+  AccountData({this.selectionType, this.value, this.isSelected});
+}

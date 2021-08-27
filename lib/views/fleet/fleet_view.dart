@@ -35,6 +35,9 @@ class _FleetViewState extends State<FleetView> {
             onFilterApplied: () {
               viewModel.refresh();
             },
+            onRefineApplied: () {
+              viewModel.refresh();
+            },
             body: Container(
               color: bgcolor,
               child: Stack(
