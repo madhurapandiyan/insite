@@ -60,6 +60,11 @@
             "file_path": "views/health/health_view.dart",
             "route_name": "healthViewRoute",
             "view_name": "HealthView"
+        },
+        {
+            "file_path": "views/login/login_page.dart",
+            "route_name": "loginPageRoute",
+            "view_name": "LoginPage"
         }
     ]
 }

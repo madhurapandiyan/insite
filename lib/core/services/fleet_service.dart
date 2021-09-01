@@ -48,12 +48,21 @@ class FleetService extends BaseService {
                           "assetid",
                           appliedFilters,
                           ScreenType.FLEET),
-                  accountSelected.CustomerUID)
+                  accountSelected.CustomerUID,
+                  "in-vfleet-uf-webapi")
               : await MyApi().getClient().fleetSummaryURL(
                   Urls.fleetSummary +
-                      FilterUtils.getFilterURL(startDate, endDate, pageNumber, pageSize,
-                          null, "assetid", appliedFilters, ScreenType.FLEET),
-                  accountSelected.CustomerUID);
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNumber,
+                          pageSize,
+                          null,
+                          "assetid",
+                          appliedFilters,
+                          ScreenType.FLEET),
+                  accountSelected.CustomerUID,
+                  "in-vfleet-uf-webapi");
       return fleetSummaryResponse;
     } catch (e) {
       Logger().e(e);

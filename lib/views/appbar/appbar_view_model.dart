@@ -60,7 +60,8 @@ class AppbarViewModel extends InsiteViewModel {
     _localService.clearAll();
     _localStorageService.clearAll();
     Future.delayed(Duration(seconds: 2), () {
-      _navigationService.replaceWith(loginViewRoute);
+      _navigationService.replaceWith(splashViewRoute);
+      // _navigationService.replaceWith(loginViewRoute);
     });
   }
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/home/google_map.dart';
-import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/filter_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
@@ -85,67 +82,75 @@ class _DashboardViewState extends State<DashboardView> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: FaultDropDown(
-                            value: assetDropDown,
-                            items: ["All Assets", "Product Family"],
-                            onChanged: (String value) {
-                              assetDropDown = value;
-                              switchDropDownState = !switchDropDownState;
-                              viewModel.getAssetStatusData();
-                              viewModel.getFuelLevelData();
-                              viewModel.getIdlingLevelData(true);
-                              viewModel.getUtilizationSummary();
-                              setState(() {});
-                            },
+                    Padding(
+                      padding: const EdgeInsets.only(right: 18.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: FaultDropDown(
+                              value: assetDropDown,
+                              items: ["All Assets", "Product Family"],
+                              onChanged: (String value) {
+                                assetDropDown = value;
+                                switchDropDownState = !switchDropDownState;
+                                viewModel.getAssetStatusData();
+                                viewModel.getFuelLevelData();
+                                viewModel.getIdlingLevelData(true);
+                                viewModel.getUtilizationSummary();
+                                setState(() {});
+                              },
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        switchDropDownState
-                            ? Flexible(
-                                child: viewModel.filterDataProductFamily != null
-                                    ? FilterDropDownWidget(
-                                        data: viewModel.filterDataProductFamily,
-                                        onValueSelected: (value) async {
-                                          viewModel.getAssetStatusFilterApplied(
-                                              value);
-                                          viewModel
-                                              .getFuelLevelFilterApplied(value);
+                          SizedBox(
+                            width: 10,
+                          ),
+                          switchDropDownState
+                              ? Flexible(
+                                  child: viewModel.filterDataProductFamily !=
+                                          null
+                                      ? FilterDropDownWidget(
+                                          data:
+                                              viewModel.filterDataProductFamily,
+                                          onValueSelected: (value) async {
+                                            viewModel
+                                                .getAssetStatusFilterApplied(
+                                                    value);
 
-                                          viewModel
-                                              .getIdlingLevelFilterData(value);
+                                            viewModel.getFuelLevelFilterApplied(
+                                                value);
 
-                                          viewModel
-                                              .getUtilizationSummaryFilterData(
-                                                  value);
+                                            viewModel.getIdlingLevelFilterData(
+                                                value);
 
-                                          filterLocationKey.currentState
-                                              .getLocationFilterData(value);
-                                        },
-                                      )
-                                    : SizedBox(),
-                              )
-                            : Expanded(
-                                flex: 1,
-                                child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        .06,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: white),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                    child: ReusableDropDown(
-                                      title: viewModel.totalCount.toString(),
-                                      name: "All Assets",
-                                    )),
-                              ),
-                      ],
+                                            viewModel
+                                                .getUtilizationSummaryFilterData(
+                                                    value);
+
+                                            filterLocationKey.currentState
+                                                .getLocationFilterData(value);
+                                          },
+                                        )
+                                      : SizedBox(),
+                                )
+                              : Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .06,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: white),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8)),
+                                      ),
+                                      child: ReusableDropDown(
+                                        title: viewModel.totalCount.toString(),
+                                        name: "All Assets",
+                                      )),
+                                ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 16,

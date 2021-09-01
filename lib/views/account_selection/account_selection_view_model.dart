@@ -139,6 +139,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
                 DisplayName: "ALL ACCOUNTS",
                 Children: [])));
       }
+      // addSubCustomers(result);
       for (Customer customer in result) {
         if (_subAccountSelected != null &&
             _subAccountSelected.DisplayName == customer.DisplayName) {
@@ -157,6 +158,26 @@ class AccountSelectionViewModel extends InsiteViewModel {
     _loading = false;
     notifyListeners();
     return result;
+  }
+
+  addSubCustomers(List<Customer> list) {
+    for (Customer customer in list) {
+      if (_subAccountSelected != null &&
+          _subAccountSelected.DisplayName == customer.DisplayName) {
+        _subCustomers.add(AccountData(
+            isSelected: true,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      } else {
+        _subCustomers.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      }
+      if (customer.Children.isNotEmpty) {
+        addSubCustomers(customer.Children);
+      }
+    }
   }
 
   resetSelection() {

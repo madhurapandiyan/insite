@@ -38,7 +38,8 @@ class AssetLocationHistoryService extends BaseService {
                   assetUid +
                   "/v2" +
                   getLocationHistoryUrl(startTimeLocal, endTimeLocal),
-              accountSelected.CustomerUID);
+              accountSelected.CustomerUID,
+              Urls.fleetMapPrefix);
       return locationHistoryResponse != null ? locationHistoryResponse : null;
     } catch (e) {
       Logger().e(e);

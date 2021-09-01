@@ -16,6 +16,7 @@ import 'package:insite/views/asset_operation/asset_operation_view.dart'
 import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
+import 'package:insite/views/login/login_page.dart' as view12;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -50,6 +51,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
+      case loginPageRoute:
+        return MaterialPageRoute(builder: (_) => view12.LoginPage());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

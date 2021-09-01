@@ -25,8 +25,6 @@ Asset _$AssetFromJson(Map<String, dynamic> json) {
             json['assetLastReceivedEvent'] as Map<String, dynamic>),
     json['customStateDescription'] as String,
     (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
-    json['lastKnownOperator'] as String,
-    json['capabilities'] as String,
     (json['distanceTravelledKilometers'] as num)?.toDouble(),
   );
 }
@@ -41,8 +39,6 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'distanceTravelledKilometers': instance.distanceTravelledKilometers,
       'customStateDescription': instance.customStateDescription,
       'dateRangeRuntimeDuration': instance.dateRangeRuntimeDuration,
-      'lastKnownOperator': instance.lastKnownOperator,
-      'capabilities': instance.capabilities,
       'assetLastReceivedEvent': instance.assetLastReceivedEvent,
       'assetLocalDates': instance.assetLocalDates,
     };

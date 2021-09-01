@@ -54,7 +54,8 @@ class AssetService extends BaseService {
                           menuFilterType,
                           appliedFilters,
                           ScreenType.ASSET_OPERATION),
-                  accountSelected.CustomerUID)
+                  accountSelected.CustomerUID,
+                  "in-vutilization-utz-webapi")
               : await MyApi().getClient().assetSummaryURL(
                   Urls.assetSummary +
                       FilterUtils.getFilterURL(
@@ -66,7 +67,8 @@ class AssetService extends BaseService {
                           menuFilterType,
                           appliedFilters,
                           ScreenType.ASSET_OPERATION),
-                  accountSelected.CustomerUID);
+                  accountSelected.CustomerUID,
+                  "in-vutilization-utz-webapi");
       return assetResponse.assetOperations;
     } catch (e) {
       Logger().e("getAssetSummaryList $e");
@@ -76,9 +78,11 @@ class AssetService extends BaseService {
 
   Future<AssetDetail> getAssetDetail(assetUID) async {
     try {
-      AssetDetail assetResponse = await MyApi()
-          .getClient()
-          .assetDetail(assetUID, accountSelected.CustomerUID);
+      AssetDetail assetResponse = await MyApi().getClient().assetDetail(
+          Urls.assetDetails,
+          assetUID,
+          accountSelected.CustomerUID,
+          Urls.vfleetPrefix);
       return assetResponse;
     } catch (e) {
       Logger().e("getAssetDetail $e");
@@ -100,10 +104,12 @@ class AssetService extends BaseService {
 
   Future<List<Note>> getAssetNotes(assetUID) async {
     try {
-      List<Note> notes = await MyApi()
-          .getClient()
-          .getAssetNotes(assetUID, accountSelected.CustomerUID);
-      return notes;
+      List<Note> notes = await MyApi().getClient().getAssetNotes(
+          Urls.notes, assetUID, accountSelected.CustomerUID, Urls.assetprefix);
+      if (notes != null) {
+        return notes;
+      }
+      return null;
     } catch (e) {
       Logger().e(e);
       return null;
@@ -112,9 +118,8 @@ class AssetService extends BaseService {
 
   postNotes(assetUID, note) async {
     try {
-      await MyApi()
-          .getClient()
-          .postNotes(PostNote(assetUID: assetUID, assetUserNote: note));
+      await MyApi().getClient().postNotes(Urls.notes,
+          PostNote(assetUID: assetUID, assetUserNote: note), Urls.assetprefix);
     } catch (e) {
       Logger().e(e);
       return null;

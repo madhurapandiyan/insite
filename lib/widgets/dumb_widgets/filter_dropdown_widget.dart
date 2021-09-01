@@ -60,13 +60,13 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal),
                   ),
+                  isExpanded: false,
                   elevation: 16,
                   dropdownColor: cardcolor,
                   value: dropDownvalue,
                   onChanged: (value) {
                     dropDownvalue = value;
                     widget.onValueSelected(value);
-                    setState(() {});
                   },
                   items: _displayList
                       .map<DropdownMenuItem<String>>((FilterData value) {
