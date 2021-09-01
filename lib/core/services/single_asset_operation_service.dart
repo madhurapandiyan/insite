@@ -36,8 +36,8 @@ class SingleAssetOperationService extends BaseService {
         Logger().d("single asset operation");
         SingleAssetOperation response = await MyApi()
             .getClient()
-            .singleAssetOperation(
-                startDate, endDate, assetUID, accountSelected.CustomerUID);
+            .singleAssetOperation(startDate, endDate, assetUID,
+                accountSelected.CustomerUID, "in-vutilization-utz-webapi");
         return response;
       }
       return null;

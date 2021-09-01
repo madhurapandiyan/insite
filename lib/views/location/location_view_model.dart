@@ -254,7 +254,6 @@ class LocationViewModel extends InsiteViewModel {
     } else if (pageType == ScreenType.DASHBOARD) {
       Future.delayed(Duration(seconds: 1), () {
         getAssetLocationHome();
-       
       });
     }
   }

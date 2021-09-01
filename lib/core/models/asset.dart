@@ -15,8 +15,6 @@ class Asset {
   final double distanceTravelledKilometers;
   final String customStateDescription;
   final double dateRangeRuntimeDuration;
-  final String lastKnownOperator;
-  final String capabilities;
   final AssetLastReceivedEvent assetLastReceivedEvent;
   final List<AssetLocalDate> assetLocalDates;
   Asset(
@@ -30,8 +28,6 @@ class Asset {
       this.assetLastReceivedEvent,
       this.customStateDescription,
       this.dateRangeRuntimeDuration,
-      this.lastKnownOperator,
-      this.capabilities,
       this.distanceTravelledKilometers);
 
   factory Asset.fromJson(dynamic json) {

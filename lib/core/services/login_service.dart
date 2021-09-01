@@ -6,6 +6,7 @@ import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
@@ -35,7 +36,7 @@ class LoginService extends BaseService {
     }
   }
 
-  void getUser(token, shouldRemovePreviousRoutes) async {
+  getUser(token, shouldRemovePreviousRoutes) async {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
@@ -65,12 +66,12 @@ class LoginService extends BaseService {
     }
   }
 
-  void saveExpiryTime(String expiryTime) {}
+  saveExpiryTime(String expiryTime) async {}
 
   Future<List<Customer>> getCustomers() async {
     try {
-      CustomersResponse response =
-          await MyApi().getClient().accountHierarchy(true);
+      CustomersResponse response = await MyApi().getClient().accountHierarchy(
+          Urls.accounthierarchy, true, "in-vlmasterdata-api-vlmd-customer");
       List<Customer> list = response.Customers;
       return list;
     } catch (e) {
@@ -81,8 +82,10 @@ class LoginService extends BaseService {
 
   Future<List<Customer>> getSubCustomers(customerId) async {
     try {
-      CustomersResponse response =
-          await MyApi().getClient().accountHierarchyChildren(customerId);
+      CustomersResponse response = await MyApi()
+          .getClient()
+          .accountHierarchyChildren(Urls.accounthierarchy, customerId,
+              "in-vlmasterdata-api-vlmd-customer");
       List<Customer> list = [];
       if (response.Customers.isNotEmpty) {
         list = response.Customers[0].Children;
@@ -96,12 +99,14 @@ class LoginService extends BaseService {
 
   Future<List<Permission>> getPermissions() async {
     try {
+      UserInfo userInfo = await _localService.getLoggedInUser();
       Customer customer = await _localService.getAccountInfo();
-      PermissionResponse response = await MyApi().getClient().getPermission(
+      PermissionResponse response = await MyApi().getClientFour().getPermission(
           10000,
-          "Prod-VLUnifiedFleet",
+          "Frame-Fleet-in",
           customer.CustomerUID,
-          customer.CustomerUID);
+          customer.CustomerUID,
+          userInfo.uuid);
       List<Permission> list = [];
       if (response != null && response.permission_list.isNotEmpty) {
         list = response.permission_list;
@@ -133,9 +138,9 @@ class LoginService extends BaseService {
     return null;
   }
 
-  saveToken(token, String expiryTime) {
+  saveToken(token, String expiryTime) async {
     Logger().i("saveToken from webview");
-    getUser(token, false);
-    saveExpiryTime(expiryTime);
+    await getUser(token, false);
+    await saveExpiryTime(expiryTime);
   }
 }

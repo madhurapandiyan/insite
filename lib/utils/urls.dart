@@ -1,5 +1,6 @@
 class Urls {
-  static String unifiedFleetBaseUrl = "https://unifiedfleet.myvisionlink.com";
+  static String unifiedFleetBaseUrl =
+      "https://cloud.api.trimble.com/CTSPulseIndiastg";
   static String unifiedServiceBaseUrl =
       "https://unifiedservice.myvisionlink.com";
   static String unifiedFleetloginUrlTataHitachi =
@@ -34,28 +35,40 @@ class Urls {
           "&type=samlsso&sessionDataKey=E294FEF4A64BF7E14940E2964F78E351" +
           "&commonAuthCallerPath=https://unifiedservice.myvisionlink.com/";
 
-  static String fleetSummary =
-      "https://unifiedfleet.myvisionlink.com/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2";
-  static String assetSummary =
-      "/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals";
+  static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
+  static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";
   static String utlizationSummary =
-      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization";
-  static String locationSummary =
-      "/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1";
+      "/npulse-fleet-in/1.0/UnifiedFleet/Utilization";
+  static String utilizationSummaryV1 =
+      "/npulse-fleet-in/1.0/UnifiedFleet/Utilization/Summary/v1";
+  static String locationSummary = "/npulse-fleet-in/1.0/location/maps/v1";
   static String locationHistory =
-      "/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/";
+      "/npulse-vassethistory-in/1.0/AssetLocationHistory/";
   static String assetCountSummary =
-      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
+      "/npulse-fleet-in/1.0/UnifiedFleet/AssetCount/v1";
   static String assetCountSubscriptionSummary =
-      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/Subscription/v1";
+      "/npulse-fleet-in/1.0/UnifiedFleet/AssetCount/Subscription/v1";
   static String faultViewSummary =
-      "/t/trimble.com/vss-service/1.0/health/Faults/Search";
+      "/npulse-unifiedservice-in/1.0/health/Faults/Search";
   static String assetViewSummary =
-      "/t/trimble.com/vss-service/1.0/health/Assets/FaultTotals";
+      "/npulse-unifiedservice-in/1.0/health/Assets/FaultTotals";
   static String assetHealthSummary =
-      "/t/trimble.com/vss-service/1.0/health/Assets";
+      "/npulse-unifiedservice-in/1.0/health/Assets";
   static String assetViewDetailSummaryV1 =
-      "/t/trimble.com/vss-service/1.0/health/FaultDetails/v1";
+      "/npulse-unifiedservice-in/1.0/health/FaultDetails/v1";
   static String faultCountSummary =
-      "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
+      "/npulse-unifiedservice-in/1.0/health/FaultCount/v1";
+  static String accounthierarchy =
+      "npulse-masterdataapi-in/1.0/v1/accounthierarchy";
+  static String assetDetails = "/npulse-fleet-in/1.0/api/v1/AssetDetails";
+  static String notes = "/npulse-fleetassetmeta-in/1.0/AssetMetadata/Notes/v1";
+  static String search = "/npulse-fleet-in/1.0/api/v1/Search";
+
+  static String vMasterdata = "in-vlmasterdata-api-vlmd-customer";
+  static String vfleetPrefix = "in-vfleet-uf-webapi";
+  static String vutilizationPrefix = "in-vutilization-utz-webapi";
+  static String vfleetMapPrefix = "in-vfleet-uf-map-api";
+  static String faultPrefix = "in-fault-us-fault-api";
+  static String fleetMapPrefix = "in-vassethistory-ah-webapi";
+  static String assetprefix = "in-vassetmetadata-am-webapi";
 }

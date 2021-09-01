@@ -43,6 +43,7 @@ dependencies:
   flutter_map: ^0.12.0
   flutter_map_marker_cluster: ^0.3.5 # or the latest version on Pub
   fluttertoast: ^7.1.8
+  graphql_flutter: any
 
 dev_dependencies:
   flutter_test:
