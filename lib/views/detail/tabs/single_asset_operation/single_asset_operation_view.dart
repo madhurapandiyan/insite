@@ -184,7 +184,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                 .distanceTravelledKilometers ==
                                             null
                                         ? '-'
-                                        : '${viewModel.singleAssetOperation.assetOperations.assets.first.distanceTravelledKilometers} km',
+                                        : '${viewModel.singleAssetOperation.assetOperations.assets.first.distanceTravelledKilometers.round()} km',
                                   ),
                                 ],
                               ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/account.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
-import 'customer_selection_dropdown.dart';
 
 class CustomerSelectableList extends StatefulWidget {
   final Function(AccountData) onSelected;

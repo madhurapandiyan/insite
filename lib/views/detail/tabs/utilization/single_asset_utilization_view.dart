@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view_model.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/list/single_asset_utilization_list_view.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SingleAssetUtilizationView extends StatefulWidget {
@@ -19,6 +21,17 @@ class SingleAssetUtilizationView extends StatefulWidget {
 class _SingleAssetUtilizationViewState
     extends State<SingleAssetUtilizationView> {
   bool isListSelected = true;
+  ProductFamilyType productFamilyType = ProductFamilyType.ALL;
+  @override
+  void initState() {
+    Logger().d("selected asset product familiy ${widget.detail.productFamily}");
+    if (widget.detail.productFamily == "BACKHOE LOADER") {
+      productFamilyType = ProductFamilyType.BACKHOE_LOADER;
+    } else if (widget.detail.productFamily == "EXCAVATOR") {
+      productFamilyType = ProductFamilyType.EXCAVATOR;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +59,11 @@ class _SingleAssetUtilizationViewState
                 ),
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  margin: EdgeInsets.only(top: isListSelected ? 24 : 0),
+                  margin: EdgeInsets.only(
+                      top: productFamilyType != ProductFamilyType.ALL &&
+                              isListSelected
+                          ? 24
+                          : 0),
                   child: Row(
                     children: [
                       ToggleButton(

@@ -18,18 +18,24 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isFilterSelected;
   final VoidCallback onSearchTap;
   final VoidCallback onFilterTap;
+  final VoidCallback onRefineTap;
   final bool shouldShowAccount;
   final bool shouldShowSearch;
   final bool shouldShowTitle;
   final bool shouldShowFilter;
+  final bool shouldShowRefine;
+  final bool isRefineSelected;
   final bool shouldShowLogout;
   InsiteAppBar({
     this.screenType,
     this.onFilterTap,
     this.isSearchSelected,
+    this.onRefineTap,
     this.shouldShowAccount,
     this.isFilterSelected,
+    this.isRefineSelected = false,
     this.shouldShowFilter,
+    this.shouldShowRefine = false,
     this.shouldShowTitle = false,
     this.shouldShowLogout,
     this.shouldShowSearch,
@@ -93,6 +99,30 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onPressed: () {
                           viewModel.onAccountPressed();
                         })
+                    : SizedBox(),
+                shouldShowRefine
+                    ? Container(
+                        color: isRefineSelected ? mediumgrey : appbarcolor,
+                        child: count != null && count > 0
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.filter_list,
+                                  color: isRefineSelected ? white : black,
+                                ),
+                                onPressed: () {
+                                  onRefineTap();
+                                },
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  Icons.filter_list,
+                                  color: isRefineSelected ? white : black,
+                                ),
+                                onPressed: () {
+                                  onRefineTap();
+                                },
+                              ),
+                      )
                     : SizedBox(),
                 shouldShowFilter
                     ? Container(

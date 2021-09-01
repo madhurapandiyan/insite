@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
+import 'core/models/account.dart';
 import 'core/models/db/asset_count_data.dart';
 import 'core/router.dart' as router;
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,6 +19,8 @@ void main() async {
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
+  Hive.registerAdapter<Customer>(CustomerAdapter());
+  Hive.registerAdapter<AccountData>(AccountDataAdapter());
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

@@ -49,7 +49,7 @@ class Utils {
       int hours = ((s / 60) / 60).toInt();
       Logger().i("hours $hours");
       Logger().i("mins $mins");
-      return "$hours h : $mins min";
+      return "$hours hr : $mins min";
     }
   }
 
@@ -242,7 +242,7 @@ class Utils {
         title = "UTILIZATION";
         break;
       case ScreenType.ASSET_OPERATION:
-        title = "ASSET OPERATION";
+        title = "OPERATION";
         break;
       case ScreenType.LOCATION:
         title = "LOCATION";

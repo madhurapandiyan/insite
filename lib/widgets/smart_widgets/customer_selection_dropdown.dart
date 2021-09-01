@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/account.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/custom_expansion_tile.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/core/models/customer.dart';
+import 'package:insite/widgets/dumb_widgets/loadmore_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
@@ -34,6 +35,7 @@ class _AccountSelectionDropDownWidgetState
   AccountData selected;
   List<AccountData> _list = [];
   List<AccountData> _displayList = [];
+  int showCount = 500;
 
   onSearchTextChanged(String text) async {
     Logger().i("query typeed " + text);
@@ -61,7 +63,11 @@ class _AccountSelectionDropDownWidgetState
     super.initState();
     selected = widget.selected != null ? widget.selected : null;
     _list.clear();
-    _list = widget.list;
+    if (widget.list.length > showCount) {
+      _list = widget.list.take(showCount).toList();
+    } else {
+      _list = widget.list;
+    }
     _displayList = _list;
     if (selected != null) {
       Logger().i(selected.value.DisplayName);
@@ -184,6 +190,14 @@ class _AccountSelectionDropDownWidgetState
                               },
                             )
                           : SizedBox(),
+                      LoadMoreText(
+                        onClick: () {
+                          showCount += 500;
+                          _list = widget.list.take(showCount).toList();
+                          _displayList = _list;
+                          setState(() {});
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -236,11 +250,4 @@ class _AccountSelectionDropDownWidgetState
       ],
     );
   }
-}
-
-class AccountData {
-  final AccountType selectionType;
-  final Customer value;
-  bool isSelected;
-  AccountData({this.selectionType, this.value, this.isSelected});
 }

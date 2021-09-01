@@ -1,12 +1,19 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'customer.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: 5)
 class Customer {
+  @HiveField(0)
   final String CustomerUID;
+  @HiveField(1)
   final String Name;
+  @HiveField(2)
   final String CustomerType;
+  @HiveField(3)
   final String DisplayName;
+  @HiveField(4)
   final List<Customer> Children;
   Customer(
       {this.CustomerUID,

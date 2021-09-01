@@ -76,10 +76,10 @@ class AssetOperationListItem extends StatelessWidget {
                         InsiteTableRowItem(
                           title: "Total Duration",
                           content: asset.dateRangeRuntimeDuration != null
-                              ? (asset.dateRangeRuntimeDuration / (60 * 60))
-                                      .roundToDouble()
-                                      .toString() +
-                                  " Hrs"
+                              ? Utils.formatHHmm(Duration(
+                                      seconds: asset.dateRangeRuntimeDuration
+                                          .toInt())
+                                  .inSeconds)
                               : "-",
                         ),
                       ],
@@ -97,7 +97,9 @@ class AssetOperationListItem extends StatelessWidget {
                           title: "Distance Travelled Kilometers",
                           content: asset != null &&
                                   asset.distanceTravelledKilometers != null
-                              ? asset.distanceTravelledKilometers.toString()
+                              ? asset.distanceTravelledKilometers
+                                  .round()
+                                  .toString()
                               : "-",
                         ),
                       ],

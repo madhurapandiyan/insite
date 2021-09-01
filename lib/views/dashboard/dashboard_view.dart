@@ -82,75 +82,58 @@ class _DashboardViewState extends State<DashboardView> {
                     SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 18.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18.0),
-                            child: FaultDropDown(
-                              value: assetDropDown,
-                              items: ["All Assets", "Product Family"],
-                              onChanged: (String value) {
-                                assetDropDown = value;
-                                switchDropDownState = !switchDropDownState;
-                                viewModel.getAssetStatusData();
-                                viewModel.getFuelLevelData();
-                                viewModel.getIdlingLevelData(true);
-                                viewModel.getUtilizationSummary();
-                                setState(() {});
-                              },
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6.0),
+                          child: FaultDropDown(
+                            value: assetDropDown,
+                            items: ["All Assets", "Product Family"],
+                            onChanged: (String value) {
+                              assetDropDown = value;
+                              switchDropDownState = !switchDropDownState;
+                              viewModel.getAssetStatusData();
+                              viewModel.getFuelLevelData();
+                              viewModel.getIdlingLevelData(true);
+                              viewModel.getUtilizationSummary();
+                              setState(() {});
+                            },
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          switchDropDownState
-                              ? Flexible(
-                                  child: viewModel.filterDataProductFamily !=
-                                          null
-                                      ? FilterDropDownWidget(
-                                          data:
-                                              viewModel.filterDataProductFamily,
-                                          onValueSelected: (value) async {
-                                            viewModel
-                                                .getAssetStatusFilterApplied(
-                                                    value);
-
-                                            viewModel.getFuelLevelFilterApplied(
-                                                value);
-
-                                            viewModel.getIdlingLevelFilterData(
-                                                value);
-
-                                            viewModel
-                                                .getUtilizationSummaryFilterData(
-                                                    value);
-
-                                            filterLocationKey.currentState
-                                                .getLocationFilterData(value);
-                                          },
-                                        )
-                                      : SizedBox(),
-                                )
-                              : Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              .06,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: white),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                      ),
-                                      child: ReusableDropDown(
-                                        title: viewModel.totalCount.toString(),
-                                        name: "All Assets",
-                                      )),
-                                ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        switchDropDownState
+                            ? Flexible(
+                                child: viewModel.filterDataProductFamily != null
+                                    ? FilterDropDownWidget(
+                                        data: viewModel.filterDataProductFamily,
+                                        onValueSelected: (value) async {
+                                          viewModel.getFilterDataApplied(value);
+                                          filterLocationKey.currentState
+                                              .getLocationFilterData(value);
+                                        },
+                                      )
+                                    : SizedBox(),
+                              )
+                            : Flexible(
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.46,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.062,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: white),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: ReusableDropDown(
+                                      title: viewModel.totalCount.toString(),
+                                      name: "All Assets",
+                                    )),
+                              ),
+                      ],
                     ),
                     SizedBox(
                       height: 16,

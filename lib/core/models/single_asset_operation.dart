@@ -62,7 +62,7 @@ class Asset {
   AssetIcon assetIcon;
   String productFamily;
   String customStateDescription;
-  var distanceTravelledKilometers;
+  double distanceTravelledKilometers;
   double dateRangeRuntimeDuration;
   dynamic lastKnownOperator;
   Capabilities capabilities;
