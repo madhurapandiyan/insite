@@ -3,6 +3,7 @@ class Urls {
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
   static String unifiedServiceBaseUrl =
       "https://unifiedservice.myvisionlink.com";
+  static String unifiedFleetV4BaseUrl = "https://d1pavvpktln7z7.cloudfront.net";
   static String unifiedFleetloginUrlTataHitachi =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedfleet.myvisionlink.com" +
@@ -21,6 +22,8 @@ class Urls {
           "&client_id=" +
           "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
           "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
+  static String unifiedFleetV4LoginUrl =
+      "https://id.trimble.com/oauth/authorize?response_type=code&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=BTgR2C5SWDzC5Aks6uITsxfOQ0zjW4e2LxjHkYCrY_j9H&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0&code_challenge=BFcqpQvuvRT_lww4fdo5U4JYrjxOQ6YgulP5O6yPOt4&code_challenge_method=S256&nonce=BTgR2C5SWDzC5Aks6uITsxfOQ0zjW4e2LxjHkYCrY_j9H&navigationRedirectUri=/";
 
   static String logoutUrl =
       "https://identity.trimble.com/i/commonauth?commonAuthLogout=true" +
@@ -34,6 +37,7 @@ class Urls {
       "https://identity.trimble.com/i/commonauth?commonAuthLogout=true" +
           "&type=samlsso&sessionDataKey=E294FEF4A64BF7E14940E2964F78E351" +
           "&commonAuthCallerPath=https://unifiedservice.myvisionlink.com/";
+  static String logoutURLV4 = "";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";

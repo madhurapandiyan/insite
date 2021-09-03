@@ -42,6 +42,7 @@ class HttpWrapper {
   final String _baseUrlOne = "https://identity.trimble.com";
   final String _baseUrlTwo = "https://singlesearch.alk.com";
   final String _baseUrlFour = "https://api.trimble.com";
+  final String _baseUrlFive = "https://id.trimble.com";
 
   final bool SHOW_LOGS = true;
   final _localService = locator<LocalService>();

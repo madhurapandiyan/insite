@@ -437,13 +437,24 @@ abstract class RestClient {
       @Header("service") serviceHeader);
 
   @POST("/token")
-  Future<LoginResponse> getLoginData(
+  Future<LoginResponse> getToken(
       @Query("username") String username,
       @Query("password") String password,
       @Query("grant_type") String granttype,
       @Query("client_id") String clientid,
       @Query("client_secret") String clientsecret,
       @Query("scope") String scope,
+      @Header("content-type") String contentType);
+
+  @POST("/oauth/token")
+  Future<LoginResponse> getTokenV4(
+      @Query("grant_type") String grant_type,
+      @Query("client_id") String client_id,
+      @Query("redirect_uri") String redirect_uri,
+      @Query("code") String code,
+      @Query("code_challenge") String code_challenge,
+      @Query("code_verifier") String code_verifier,
+      @Query("tenantDomain") String tenantDomain,
       @Header("content-type") String contentType);
 
   @POST('{url}')

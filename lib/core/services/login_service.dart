@@ -123,13 +123,32 @@ class LoginService extends BaseService {
     password,
   ) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientOne().getLoginData(
+      LoginResponse loginResponse = await MyApi().getClientOne().getToken(
           username,
           password,
           'password',
           'kk3nOJhfWo1_GkxiMnvQ8iHtax8a',
           '_bd5Ohhjft9AbrTANMeILT4sMBoa',
           'openid',
+          "application/x-www-form-urlencoded");
+      return loginResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  Future<LoginResponse> getLoginDataV4(
+      code, code_challenge, code_verifier) async {
+    try {
+      LoginResponse loginResponse = await MyApi().getClientOne().getTokenV4(
+          "authorization_code",
+          "fe148324-cca6-4342-9a28-d5de23a95005",
+          'https://d1pavvpktln7z7.cloudfront.net/auth',
+          code,
+          code_challenge,
+          code_verifier,
+          "Trimble.com",
           "application/x-www-form-urlencoded");
       return loginResponse;
     } catch (e) {

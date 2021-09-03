@@ -41,6 +41,25 @@ class LoginViewModel extends InsiteViewModel {
     print('data:$result');
   }
 
+  getLoginDataV4() async {
+    _loading = true;
+    notifyListeners();
+    LoginResponse result =
+        await _loginService.getLoginDataV4("username", "password", "");
+    if (result != null) {
+      await _loginService.saveToken(
+          result.access_token, result.expires_in.toString());
+    } else {
+      _snackbarService.showSnackbar(
+          message: "Something went wrong!", duration: Duration(seconds: 2));
+    }
+    Future.delayed(Duration(seconds: 1), () {
+      _loading = false;
+      notifyListeners();
+    });
+    print('data:$result');
+  }
+
   submit() {
     final isValid = formKey.currentState.validate();
     if (!isValid) {
