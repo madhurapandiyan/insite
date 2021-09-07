@@ -241,19 +241,19 @@ class AccountSelectionViewModel extends InsiteViewModel {
     Logger().d("checkPermission");
     _secondaryLoading = true;
     notifyListeners();
-    List<Permission> list = await _loginService.getPermissions();
-    if (list.isNotEmpty) {
+    // List<Permission> list = await _loginService.getPermissions();
+    // if (list.isNotEmpty) {
       _localService.setHasPermission(true);
       clearFilterDb();
       _secondaryLoading = false;
       notifyListeners();
       onHomeSelected();
-    } else {
-      _youDontHavePermission = true;
-      _secondaryLoading = false;
-      notifyListeners();
-      _localService.setHasPermission(false);
-    }
+    // } else {
+    //   _youDontHavePermission = true;
+    //   _secondaryLoading = false;
+    //   notifyListeners();
+    //   _localService.setHasPermission(false);
+    // }
   }
 
   showLoader() {

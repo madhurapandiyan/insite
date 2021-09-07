@@ -23,6 +23,8 @@ Map<String, dynamic> _$SampleToJson(Sample instance) => <String, dynamic>{
 UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
   return UserInfo(
     email: json['email'] as String,
+    family_name: json['family_name'] as String,
+    given_name: json['given_name'] as String,
     accountUserName: json['accountUserName'] as String,
     uuid: json['uuid'] as String,
     lastPwdSetTimeStamp: json['lastPwdSetTimeStamp'] as String,
@@ -32,7 +34,7 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
     sub: json['sub'] as String,
     firstname: json['firstname'] as String,
     lastname: json['lastname'] as String,
-    email_verified: json['email_verified'] as String,
+    email_verified: json['email_verified'] as bool,
   );
 }
 
@@ -48,6 +50,8 @@ Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
       'firstname': instance.firstname,
       'lastname': instance.lastname,
       'email_verified': instance.email_verified,
+      'given_name': instance.given_name,
+      'family_name': instance.family_name,
     };
 
 UserPayLoad _$UserPayLoadFromJson(Map<String, dynamic> json) {
@@ -135,6 +139,32 @@ class _RestClient implements RestClient {
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
+            headers: <String, dynamic>{
+              r'content-type': contentType,
+              r'Authorization': authorization
+            },
+            extra: _extra,
+            contentType: contentType,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UserInfo.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<UserInfo> getUserInfoV4(
+      contentType, authorization, accessToken) async {
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    ArgumentError.checkNotNull(authorization, 'authorization');
+    ArgumentError.checkNotNull(accessToken, 'accessToken');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(accessToken?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('/oauth/userinfo',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
             headers: <String, dynamic>{
               r'content-type': contentType,
               r'Authorization': authorization
@@ -1524,7 +1554,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<LoginResponse> getLoginData(username, password, granttype, clientid,
+  Future<LoginResponse> getToken(username, password, granttype, clientid,
       clientsecret, scope, contentType) async {
     ArgumentError.checkNotNull(username, 'username');
     ArgumentError.checkNotNull(password, 'password');
@@ -1544,6 +1574,27 @@ class _RestClient implements RestClient {
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/token',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'content-type': contentType},
+            extra: _extra,
+            contentType: contentType,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = LoginResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<LoginResponse> getTokenV4(tokenData, contentType) async {
+    ArgumentError.checkNotNull(tokenData, 'tokenData');
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(tokenData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('/oauth/token',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',

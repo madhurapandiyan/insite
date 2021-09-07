@@ -1,29 +1,55 @@
+import 'helper_methods.dart';
+
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
   static String unifiedServiceBaseUrl =
       "https://unifiedservice.myvisionlink.com";
   static String unifiedFleetV4BaseUrl = "https://d1pavvpktln7z7.cloudfront.net";
+  static String unifiedFleetV4IdTokenUrl = "https://id.trimble.com";
+
   static String unifiedFleetloginUrlTataHitachi =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedfleet.myvisionlink.com" +
           "&client_id=" +
           "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
           "&state=https://unifiedfleet.myvisionlink.com/tatahitachi/&nonce=1&t=DCCCF741-6BC4-436D-A4D5-68C6D3403573";
+
   static String unifiedFleetloginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedfleet.myvisionlink.com" +
           "&client_id=" +
           "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
           "&state=https://unifiedfleet.myvisionlink.com/&nonce=1";
+
   static String unifiedServiceloginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
           "https://unifiedservice.myvisionlink.com" +
           "&client_id=" +
           "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
           "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
+
   static String unifiedFleetV4LoginUrl =
-      "https://id.trimble.com/oauth/authorize?response_type=code&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=BTgR2C5SWDzC5Aks6uITsxfOQ0zjW4e2LxjHkYCrY_j9H&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0&code_challenge=BFcqpQvuvRT_lww4fdo5U4JYrjxOQ6YgulP5O6yPOt4&code_challenge_method=S256&nonce=BTgR2C5SWDzC5Aks6uITsxfOQ0zjW4e2LxjHkYCrY_j9H&navigationRedirectUri=/";
+      "https://id.trimble.com/oauth/authorize?response_type=code" +
+          "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
+          "&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0" +
+          "&code_challenge=sbJmXLvS3LhVV88tdkRx1HDXhLazEfUH3jhDsMyMRSw&code_challenge_method=S256" +
+          "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
+
+  static getV4LoginUrl(state, codeChallenge) {
+    String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
+        "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=$state" +
+        "&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0" +
+        "&code_challenge=$codeChallenge&code_challenge_method=S256" +
+        "&nonce=$state&navigationRedirectUri=/";
+    return url;
+  }
+
+  static getVRLogoutUrl(String token, redirecturi) {
+    String url = Urls.unifiedFleetV4IdTokenUrl +
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
+    return url;
+  }
 
   static String logoutUrl =
       "https://identity.trimble.com/i/commonauth?commonAuthLogout=true" +

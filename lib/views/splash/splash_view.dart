@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
@@ -40,7 +39,7 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    setupListeners();
+    // setupListeners();
   }
 
   @override
@@ -67,7 +66,8 @@ class _SplashViewState extends State<SplashView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+          state.url
+              .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
         print("STATE changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -75,21 +75,16 @@ class _SplashViewState extends State<SplashView> {
             print("url split list $list");
             if (list.isNotEmpty) {
               // _onUrlChanged.cancel();
-              //for vision link (oauth style login)
-              // String accessTokenString = list[1];
-              // String expiresTokenString = list[3];
-              // List<String> accessTokenList = accessTokenString.split("&");
-              // List<String> expiryList = expiresTokenString.split("&");
-              // print("accessToken split list $list");
-              // String accessToken = accessTokenList[0];
-              // String expiryTime = expiryList[0];
-              // print("accessToken $accessToken");
-              // print("expiryTime $expiryTime");
-              // saveToken(accessToken, expiryTime);
-
-              String codeString = list[1];
-              List<String> codeStringList = codeString.split("&");
-              getLoginDataV4(codeStringList[0], "", "");
+              String accessTokenString = list[1];
+              String expiresTokenString = list[3];
+              List<String> accessTokenList = accessTokenString.split("&");
+              List<String> expiryList = expiresTokenString.split("&");
+              print("accessToken split list $list");
+              String accessToken = accessTokenList[0];
+              String expiryTime = expiryList[0];
+              print("accessToken $accessToken");
+              print("expiryTime $expiryTime");
+              saveToken(accessToken, expiryTime);
             }
           }
           flutterWebviewPlugin.close();
@@ -105,7 +100,7 @@ class _SplashViewState extends State<SplashView> {
       if (mounted) {
         print("URL changed: $url");
         if (url != null &&
-            url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+            url.startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             if (url.contains("=")) {
@@ -113,21 +108,16 @@ class _SplashViewState extends State<SplashView> {
               print("url split list $list");
               if (list.isNotEmpty) {
                 // _onUrlChanged.cancel();
-                //for vision link (oauth style login)
-                // String accessTokenString = list[1];
-                // String expiresTokenString = list[3];
-                // List<String> accessTokenList = accessTokenString.split("&");
-                // List<String> expiryList = expiresTokenString.split("&");
-                // print("accessToken split list $list");
-                // String accessToken = accessTokenList[0];
-                // String expiryTime = expiryList[0];
-                // print("accessToken $accessToken");
-                // print("expiryTime $expiryTime");
-                // saveToken(accessToken, expiryTime);
-
-                String codeString = list[1];
-                List<String> codeStringList = codeString.split("&");
-                getLoginDataV4(codeStringList[0], "", "");
+                String accessTokenString = list[1];
+                String expiresTokenString = list[3];
+                List<String> accessTokenList = accessTokenString.split("&");
+                List<String> expiryList = expiresTokenString.split("&");
+                print("accessToken split list $list");
+                String accessToken = accessTokenList[0];
+                String expiryTime = expiryList[0];
+                print("accessToken $accessToken");
+                print("expiryTime $expiryTime");
+                saveToken(accessToken, expiryTime);
               }
             }
             flutterWebviewPlugin.close();
@@ -138,15 +128,6 @@ class _SplashViewState extends State<SplashView> {
         }
       }
     });
-  }
-
-  getLoginDataV4(code, code_challenge, code_verifier) async {
-    LoginResponse result =
-        await _loginService.getLoginDataV4(code, code_challenge, code_verifier);
-    if (result != null) {
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString());
-    }
   }
 
   saveToken(token, String expiryTime) {
@@ -166,7 +147,7 @@ class _SplashViewState extends State<SplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: Urls.unifiedFleetV4LoginUrl)
+                    ? WebviewScaffold(url: Urls.unifiedServiceloginUrl)
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(),

@@ -3,11 +3,13 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';
@@ -27,8 +29,10 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "eoltool://mobile");
-      UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
-          "application/json", "Bearer" + " " + await _localService.getToken());
+      UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
+          "application/x-www-form-urlencoded",
+          "Bearer" + " " + await _localService.getToken(),
+          AccessToken(access_token: await _localService.getToken()));
       return userInfo;
     } catch (e) {
       Logger().e(e.toString());
@@ -101,12 +105,23 @@ class LoginService extends BaseService {
     try {
       UserInfo userInfo = await _localService.getLoggedInUser();
       Customer customer = await _localService.getAccountInfo();
+      Logger().d("customer id ${customer.CustomerUID}");
+      String uuid;
+      await PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+        Logger().i("packageInfo ${packageInfo.packageName}");
+        if (packageInfo.packageName == "com.example.insite.indiastack") {
+          uuid = userInfo.sub != null ? userInfo.sub : "";
+        } else {
+          uuid = userInfo.uuid != null ? userInfo.uuid : "";
+        }
+      });
+      Logger().d("uuid ${uuid}");
       PermissionResponse response = await MyApi().getClientFour().getPermission(
           10000,
           "Frame-Fleet-in",
           customer.CustomerUID,
           customer.CustomerUID,
-          userInfo.uuid);
+          uuid);
       List<Permission> list = [];
       if (response != null && response.permission_list.isNotEmpty) {
         list = response.permission_list;
@@ -141,14 +156,15 @@ class LoginService extends BaseService {
   Future<LoginResponse> getLoginDataV4(
       code, code_challenge, code_verifier) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientOne().getTokenV4(
-          "authorization_code",
-          "fe148324-cca6-4342-9a28-d5de23a95005",
-          'https://d1pavvpktln7z7.cloudfront.net/auth',
-          code,
-          code_challenge,
-          code_verifier,
-          "Trimble.com",
+      LoginResponse loginResponse = await MyApi().getClientFive().getTokenV4(
+          GetTokenData(
+              code: code,
+              code_challenge: code_challenge,
+              code_verifier: code_verifier,
+              tenantDomain: "Trimble.com",
+              redirect_uri: "https://d1pavvpktln7z7.cloudfront.net/auth",
+              grant_type: "authorization_code",
+              client_id: "fe148324-cca6-4342-9a28-d5de23a95005"),
           "application/x-www-form-urlencoded");
       return loginResponse;
     } catch (e) {

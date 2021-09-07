@@ -22,6 +22,7 @@ import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
+import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/models/utilization.dart';
@@ -60,6 +61,12 @@ abstract class RestClient {
   @GET("/userinfo?schema=openid")
   Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
       @Header("Authorization") String authorization);
+
+  @POST("/oauth/userinfo")
+  Future<UserInfo> getUserInfoV4(
+      @Header("content-type") String contentType,
+      @Header("Authorization") String authorization,
+      @Body() AccessToken accessToken);
 
   @GET(
       "/t/trimble.com/authorization/1.0.0/users/{user_guid}/organizations/{customerId}/permissions")
@@ -447,14 +454,7 @@ abstract class RestClient {
       @Header("content-type") String contentType);
 
   @POST("/oauth/token")
-  Future<LoginResponse> getTokenV4(
-      @Query("grant_type") String grant_type,
-      @Query("client_id") String client_id,
-      @Query("redirect_uri") String redirect_uri,
-      @Query("code") String code,
-      @Query("code_challenge") String code_challenge,
-      @Query("code_verifier") String code_verifier,
-      @Query("tenantDomain") String tenantDomain,
+  Future<LoginResponse> getTokenV4(@Body() GetTokenData tokenData,
       @Header("content-type") String contentType);
 
   @POST('{url}')
@@ -501,8 +501,7 @@ abstract class RestClient {
       @Query("endDateTime") String endDate,
       @Query("startDateTime") String startDate,
       @Header("x-visionlink-customeruid") customerId,
-      @Header("service") serviceHeader
-      );
+      @Header("service") serviceHeader);
 
   @GET('{url}')
   Future<AssetCount> faultCountcustomerUID(
@@ -605,10 +604,14 @@ class UserInfo {
   String sub;
   String firstname;
   String lastname;
-  String email_verified;
+  bool email_verified;
+  String given_name;
+  String family_name;
 
   UserInfo(
       {this.email,
+      this.family_name,
+      this.given_name,
       this.accountUserName,
       this.uuid,
       this.lastPwdSetTimeStamp,

@@ -34,6 +34,14 @@ class MyApi {
   RestClient getClientFour() {
     return httpWrapper.clientFour;
   }
+
+  RestClient getClientFive() {
+    return httpWrapper.clientFive;
+  }
+
+    RestClient getClientSix() {
+    return httpWrapper.clientSix;
+  }
 }
 
 class HttpWrapper {
@@ -43,6 +51,7 @@ class HttpWrapper {
   final String _baseUrlTwo = "https://singlesearch.alk.com";
   final String _baseUrlFour = "https://api.trimble.com";
   final String _baseUrlFive = "https://id.trimble.com";
+  final String _baseUrlSix = "https://cloud.api.trimble.com";
 
   final bool SHOW_LOGS = true;
   final _localService = locator<LocalService>();
@@ -52,12 +61,16 @@ class HttpWrapper {
   Dio dioTwo = new Dio();
   Dio dioThree = new Dio();
   Dio dioFour = new Dio();
+  Dio dioFive = new Dio();
+  Dio dioSix = new Dio();
 
   var client;
   var clientOne;
   var clientTwo;
   var clientThree;
   var clientFour;
+  var clientFive;
+  var clientSix;
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
@@ -150,11 +163,42 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioFive.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers
+              .addAll({"Accept": "application/json", "timezoneoffset": -330});
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
+    dioSix.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "content-type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + await _localService.getToken(),
+          });
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: _baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
     clientThree = RestClient(dioThree, baseUrl: _baseUrlService);
     clientFour = RestClient(dioFour, baseUrl: _baseUrlFour);
+    clientFive = RestClient(dioFive, baseUrl: _baseUrlFive);
+    clientSix = RestClient(dioSix, baseUrl: _baseUrlSix);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

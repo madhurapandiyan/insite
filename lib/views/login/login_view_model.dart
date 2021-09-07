@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -11,6 +12,7 @@ class LoginViewModel extends InsiteViewModel {
   Logger log;
   var formKey = GlobalKey<FormState>();
   var _loginService = locator<LoginService>();
+  var _localService = locator<LocalService>();
   var _snackbarService = locator<SnackbarService>();
   var usernameController;
   var passwordController;
@@ -28,6 +30,7 @@ class LoginViewModel extends InsiteViewModel {
     notifyListeners();
     LoginResponse result = await _loginService.getLoginData(username, password);
     if (result != null) {
+      await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString());
     } else {
@@ -47,6 +50,7 @@ class LoginViewModel extends InsiteViewModel {
     LoginResponse result =
         await _loginService.getLoginDataV4("username", "password", "");
     if (result != null) {
+      await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString());
     } else {
