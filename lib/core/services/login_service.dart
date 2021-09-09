@@ -28,7 +28,7 @@ class LoginService extends BaseService {
       //     grant_type: "authorization_code",
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
-      //     redirect_uri: "eoltool://mobile");
+      //     redirect_uri: "insite://mobile");
       UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
           "application/x-www-form-urlencoded",
           "Bearer" + " " + await _localService.getToken(),
@@ -50,9 +50,11 @@ class LoginService extends BaseService {
           _localService.saveUserInfo(userInfo);
           Logger().i("launching home from login service");
           if (shouldRemovePreviousRoutes) {
+            Logger().i("true");
             _nagivationService.pushNamedAndRemoveUntil(
-                customerSelectionViewRoute,
-                predicate: (Route<dynamic> route) => false);
+                customerSelectionViewRoute, predicate: (Route<dynamic> route) {
+              return false;
+            });
           } else {
             _nagivationService.replaceWith(customerSelectionViewRoute);
           }
@@ -60,8 +62,9 @@ class LoginService extends BaseService {
       });
     } catch (e) {
       Logger().e(e);
-      Logger().i("launching home from login service");
+      Logger().i("exception launching home from login service");
       if (shouldRemovePreviousRoutes) {
+        Logger().i("true");
         _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
             predicate: (Route<dynamic> route) => false);
       } else {
@@ -173,9 +176,9 @@ class LoginService extends BaseService {
     return null;
   }
 
-  saveToken(token, String expiryTime) async {
+  saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
-    await getUser(token, false);
+    await getUser(token, shouldRemovePrevRoutes);
     await saveExpiryTime(expiryTime);
   }
 }

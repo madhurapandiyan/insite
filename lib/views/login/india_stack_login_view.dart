@@ -66,32 +66,34 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   void initState() {
     loginResponse = widget.arguments;
     Logger().d(
-        "pkce logout url ${Urls.getVRLogoutUrl(loginResponse.id_token, "https://d1pavvpktln7z7.cloudfront.net/auth")}");
-    Logger().d("codeVerifier $codeVerifier");
+        "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse.id_token, Urls.webRedirectUri)}");
+    Logger().d("IndiaStackLoginView codeVerifier $codeVerifier");
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
-    Logger().d("codeChallenge $codeChallenge");
-    Logger().d("state $state");
-    Logger().d("pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+    Logger().d("IndiaStackLoginView codeChallenge $codeChallenge");
+    Logger().d("IndiaStackLoginView state $state");
+    Logger().d(
+        "IndiaStackLoginView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
     super.initState();
-    flutterWebviewPlugin.close();
+    // flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
     _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("destroy");
+      print("IndiaStackLoginView destroy");
     });
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-      print("onStateChanged: ${state.type} ${state.url}");
+      print("IndiaStackLoginView onStateChanged: ${state.type} ${state.url}");
       if (state.url.startsWith(Urls.unifiedFleetV4IdTokenUrl +
           "/oauth/authorize?response_type=code&client_id=fe148324-cca6-4342-9a28-d5de23a95005")) {
-        print("STATE changed with logout redirect : ${state.url}");
+        print(
+            "IndiaStackLoginView STATE changed with logout redirect : ${state.url}");
         try {
           // Future.delayed(Duration(seconds: 2), () {
-          flutterWebviewPlugin.cleanCookies();
-          flutterWebviewPlugin.clearCache();
+          // flutterWebviewPlugin.cleanCookies();
+          // flutterWebviewPlugin.clearCache();
           Logger().d(
-              "pkce login url launch state ${Urls.getV4LoginUrl(state, codeChallenge)}");
+              "IndiaStackLoginView pkce login url launch state ${Urls.getV4LoginUrl(state, codeChallenge)}");
           // flutterWebviewPlugin.launch(Urls.getV4LoginUrl(state, codeChallenge));
           gotoSplashview();
           // _navigationService.replaceWith(logoutViewRoute);
@@ -104,10 +106,11 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
         }
       } else if (state.url
           .startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-        print("State URL changed with access token: $state.url");
+        print(
+            "IndiaStackLoginView State URL changed with access token: $state.url");
         try {
           List<String> list = state.url.split("=");
-          print("url split list $list");
+          print("IndiaStackLoginView url split list $list");
           if (list.isNotEmpty) {
             // _onUrlChanged.cancel();
             //for vision link (oauth style login)
@@ -121,14 +124,15 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             // print("accessToken $accessToken");
             // print("expiryTime $expiryTime");
             // saveToken(accessToken, expiryTime);
-            String codeString = list[1];
-            List<String> codeStringList = codeString.split("&");
-            if (codeStringList.isNotEmpty && !receivedToken) {
-              receivedToken = true;
-              getLoginDataV4(
-                codeStringList[0],
-              );
-            }
+
+            // String codeString = list[1];
+            // List<String> codeStringList = codeString.split("&");
+            // if (codeStringList.isNotEmpty && !receivedToken) {
+            //   receivedToken = true;
+            //   getLoginDataV4(
+            //     codeStringList[0],
+            //   );
+            // }
           }
           flutterWebviewPlugin.close();
         } catch (e) {
@@ -140,15 +144,15 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     // Add a listener to on url changed
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
-        print("URL changed: $url");
+        print("IndiaStackLoginView URL changed: $url");
         if (url.startsWith(
             Urls.unifiedFleetV4IdTokenUrl + "/oauth/logout?id_token_hint")) {
-          print("URL changed with logout redirect: $url");
+          print("IndiaStackLoginView URL changed with logout redirect: $url");
           // Future.delayed(Duration(seconds: 2), () {
-          flutterWebviewPlugin.cleanCookies();
-          flutterWebviewPlugin.clearCache();
+          // flutterWebviewPlugin.cleanCookies();
+          // flutterWebviewPlugin.clearCache();
           Logger().d(
-              "pkce login url launch URL ${Urls.getV4LoginUrl(state, codeChallenge)}");
+              "IndiaStackLoginView pkce login url launch URL ${Urls.getV4LoginUrl(state, codeChallenge)}");
           // flutterWebviewPlugin.launch(Urls.getV4LoginUrl(state, codeChallenge));
           gotoSplashview();
           // _navigationService.replaceWith(logoutViewRoute);
@@ -157,10 +161,10 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
           // });
           // flutterWebviewPlugin.close();
         } else if (url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-          print("URL changed with access token: $url");
+          print("IndiaStackLoginView URL changed with access token: $url");
           try {
             List<String> list = url.split("=");
-            print("url split list $list");
+            print("IndiaStackLoginView url split list $list");
             if (list.isNotEmpty) {
               // _onUrlChanged.cancel();
               //for vision link (oauth style login)
@@ -193,11 +197,13 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   }
 
   gotoSplashview() {
-    Logger().i("gotoSplashview");
+    Logger().i("IndiaStackLoginView gotoSplashview");
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      Logger().i("packageInfo ${packageInfo.packageName}");
+      Logger().i("IndiaStackLoginView packageInfo ${packageInfo.packageName}");
       if (packageInfo.packageName == "com.example.insite.indiastack") {
-        _navigationService.replaceWith(indiaStack.indiaStackSplashViewRoute);
+        // _navigationService.pushNamedAndRemoveUntil(indiaStack.indiaStackLogoutViewRoute,
+        //     predicate: (Route<dynamic> route) => false);
+        _navigationService.navigateTo(indiaStack.indiaStackLogoutViewRoute);
       } else {
         _navigationService.replaceWith(splashViewRoute);
       }
@@ -205,20 +211,20 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   }
 
   saveToken(token, String expiryTime) {
-    Logger().i("saveToken from webview");
+    Logger().i("IndiaStackLoginView saveToken from webview");
     _loginService.getUser(token, true);
     _loginService.saveExpiryTime(expiryTime);
   }
 
   getLoginDataV4(code) async {
-    Logger().i("getLoginDataV4 for code $code");
+    Logger().i("IndiaStackLoginView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
     LoginResponse result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
-          result.access_token, result.expires_in.toString());
+          result.access_token, result.expires_in.toString(), false);
     } else {
       receivedToken = false;
     }
@@ -233,8 +239,8 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url: Urls.getVRLogoutUrl(loginResponse.id_token,
-                      "https://d1pavvpktln7z7.cloudfront.net/auth"),
+                  url: Urls.getV4LogoutUrl(
+                      loginResponse.id_token, Urls.webRedirectUri),
                 ),
                 isLoading
                     ? Center(child: CircularProgressIndicator())

@@ -9,7 +9,7 @@ import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
 import 'package:insite/views/fleet/fleet_view.dart' as view3;
 import 'package:insite/views/login/india_stack_login_view.dart' as view4;
-import 'package:insite/views/logout/logout_view.dart' as view5;
+import 'package:insite/views/logout/india_stack_logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
 import 'package:insite/views/asset_operation/asset_operation_view.dart'
     as view8;
@@ -36,8 +36,8 @@ class Router {
                   arguments: loginArgs.response,
                 ));
         return MaterialPageRoute(builder: (_) => view4.IndiaStackLoginView());
-      case logoutViewRoute:
-        return MaterialPageRoute(builder: (_) => view5.LogoutView());
+      case indiaStackLogoutViewRoute:
+        return MaterialPageRoute(builder: (_) => view5.IndiaStackLogoutView());
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
       case dashboardViewRoute:

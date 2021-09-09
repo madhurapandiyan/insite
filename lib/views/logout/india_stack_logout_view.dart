@@ -1,46 +1,42 @@
 import 'dart:async';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
-import 'splash_view_model.dart';
+import 'logout_view_model.dart';
 
-class IndiaStackSplashView extends StatefulWidget {
+class IndiaStackLogoutView extends StatefulWidget {
   @override
-  _IndiaStackSplashViewState createState() => _IndiaStackSplashViewState();
+  _IndiaStackLogoutViewState createState() => _IndiaStackLogoutViewState();
 }
 
-class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
+class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-
   StreamSubscription _onDestroy;
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
 
   final _loginService = locator<LoginService>();
   final _localService = locator<LocalService>();
 
   @override
   void dispose() {
-    Logger().i("IndiaStackSplashView dispose state");
+    Logger().i("IndiaStackLogoutView dispose state");
     _onDestroy.cancel();
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
-
-  bool isLoading = false;
 
   bool receivedToken = false;
   String codeVerifier = randomAlphaNumeric(43);
@@ -49,11 +45,12 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
   @override
   void initState() {
-    Logger().d("IndiaStackSplashView codeVerifier $codeVerifier");
+    Logger().d("IndiaStackLogoutView  codeVerifier $codeVerifier");
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
-    Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
-    Logger().d("IndiaStackSplashView state $state");
-    Logger().d("IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+    Logger().d("IndiaStackLogoutView  codeChallenge $codeChallenge");
+    Logger().d("IndiaStackLogoutView  state $state");
+    Logger().d(
+        "IndiaStackLogoutView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
     super.initState();
     setupListeners();
   }
@@ -73,30 +70,31 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   }
 
   @override
-  void didUpdateWidget(IndiaStackSplashView oldWidget) {
-    print("IndiaStackSplashView didUpdateWidget called");
+  void didUpdateWidget(IndiaStackLogoutView oldWidget) {
+    print("IndiaStackLogoutView  didUpdateWidget called");
     super.didUpdateWidget(oldWidget);
   }
 
   setupListeners() {
-    Logger().i("IndiaStackSplashView init state splash view");
+    Logger().i("IndiaStackLogoutView  init logout logout view");
     // flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
     _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("IndiaStackSplashView destroy");
+      print("IndiaStackLogoutView destroy");
     });
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-      print("IndiaStackSplashView onStateChanged: ${state.type} ${state.url}");
+      print("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
+      print("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
           state.url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-        print("IndiaStackSplashView STATE changed with auth code: $state.url");
+        print("IndiaStackLogoutView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
             List<String> list = state.url.split("=");
-            print("IndiaStackSplashView url split list $list");
+            print("IndiaStackLogoutView url split list $list");
             if (list.isNotEmpty) {
               // _onUrlChanged.cancel();
               //for vision link (oauth style login)
@@ -122,7 +120,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
           }
           flutterWebviewPlugin.close();
         } catch (e) {
-          Logger().i("IndiaStackSplashView login exceptoion");
+          Logger().i("IndiaStackLogoutView login exceptoion");
           Logger().e(e);
         }
       }
@@ -131,14 +129,14 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     // Add a listener to on url changed
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
-        print("IndiaStackSplashView URL changed: $url");
+        print("IndiaStackLogoutView  URL changed: $url");
         if (url != null &&
             url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-          print("IndiaStackSplashView URL changed with auth code : $url");
+          print("IndiaStackLogoutView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
               List<String> list = url.split("=");
-              print("IndiaStackSplashView url split list $list");
+              print("IndiaStackLogoutView url split list $list");
               if (list.isNotEmpty) {
                 // _onUrlChanged.cancel();
                 //for vision link (oauth style login)
@@ -164,7 +162,6 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
             }
             flutterWebviewPlugin.close();
           } catch (e) {
-            Logger().i("IndiaStackSplashView login exceptoion");
             Logger().e(e);
           }
         }
@@ -172,47 +169,48 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     });
   }
 
+  saveToken(token, String expiryTime) {
+    Logger().i("IndiaStackLogoutView saveToken from webview");
+    _loginService.getUser(token, true);
+    _loginService.saveExpiryTime(expiryTime);
+  }
+
   getLoginDataV4(code) async {
-    Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
+    Logger().i("IndiaStackLogoutView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
     LoginResponse result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(),false);
+          result.access_token, result.expires_in.toString(), true);
     }
-  }
-
-  saveToken(token, String expiryTime) {
-    Logger().i("IndiaStackSplashView saveToken from webview");
-    _loginService.getUser(token, false);
-    _loginService.saveExpiryTime(expiryTime);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SplashViewModel>.reactive(
-      builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
-        // setupListeners();
-        return Scaffold(
-          backgroundColor: tango,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                viewModel.shouldLoadWebview
-                    ? WebviewScaffold(
-                        url: Urls.getV4LoginUrl(state, codeChallenge))
-                    : SizedBox(),
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ],
+    return ViewModelBuilder<LogoutViewModel>.reactive(
+      builder: (BuildContext context, LogoutViewModel viewModel, Widget _) {
+        return WillPopScope(
+          onWillPop: () {
+            return onBackPressed();
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: WebviewScaffold(
+                url: Urls.getV4LoginUrl(state, codeChallenge),
+                hidden: true,
+              ),
             ),
           ),
         );
       },
-      viewModelBuilder: () => SplashViewModel(),
+      viewModelBuilder: () => LogoutViewModel(),
     );
+  }
+
+  Future<bool> onBackPressed() {
+    SystemNavigator.pop();
+    return Future.value(false);
   }
 }

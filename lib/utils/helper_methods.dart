@@ -275,7 +275,7 @@ class Utils {
     return title;
   }
 
- static String generateCodeChallenge(String codeVerifier) {
+  static String generateCodeChallenge(String codeVerifier) {
     var bytes = utf8.encode(codeVerifier);
     var digest = sha256.convert(bytes);
     var codeChallenge = base64UrlEncode(digest.bytes);
@@ -283,6 +283,11 @@ class Utils {
       codeChallenge = codeChallenge.substring(0, codeChallenge.length - 1);
     }
     return codeChallenge;
+  }
+
+  static String generateCodeVerifier(String codeChallenge) {
+    var codeVerifier = base64Decode(codeChallenge);
+    return codeVerifier.toString();
   }
 
   static String getTitle(FilterType type) {

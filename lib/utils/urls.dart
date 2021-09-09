@@ -29,23 +29,27 @@ class Urls {
           "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
           "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
 
+  //sample
   static String unifiedFleetV4LoginUrl =
       "https://id.trimble.com/oauth/authorize?response_type=code" +
           "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
-          "&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0" +
+          "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
           "&code_challenge=sbJmXLvS3LhVV88tdkRx1HDXhLazEfUH3jhDsMyMRSw&code_challenge_method=S256" +
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=$state" +
-        "&redirect_uri=https://d1pavvpktln7z7.cloudfront.net/auth&scope=openid InsiteFleet-2.0" +
+        "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
         "&code_challenge=$codeChallenge&code_challenge_method=S256" +
         "&nonce=$state&navigationRedirectUri=/";
     return url;
   }
 
-  static getVRLogoutUrl(String token, redirecturi) {
+  static String mobileRedirectUri = "insite://mobile";
+  static String webRedirectUri = "https://d1pavvpktln7z7.cloudfront.net/auth";
+
+  static getV4LogoutUrl(String token, redirecturi) {
     String url = Urls.unifiedFleetV4IdTokenUrl +
         "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
     return url;
@@ -63,7 +67,8 @@ class Urls {
       "https://identity.trimble.com/i/commonauth?commonAuthLogout=true" +
           "&type=samlsso&sessionDataKey=E294FEF4A64BF7E14940E2964F78E351" +
           "&commonAuthCallerPath=https://unifiedservice.myvisionlink.com/";
-  static String logoutURLV4 = "";
+  static String logoutURLV4 =
+      "https://id.trimble.com/oauth/logout?id_token_hint=actual_token&post_logout_redirect_uri=insite://mobile";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";

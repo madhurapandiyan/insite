@@ -32,7 +32,7 @@ class LoginViewModel extends InsiteViewModel {
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
-          result.access_token, result.expires_in.toString());
+          result.access_token, result.expires_in.toString(),false);
     } else {
       _snackbarService.showSnackbar(
           message: "Something went wrong!", duration: Duration(seconds: 2));
@@ -52,7 +52,7 @@ class LoginViewModel extends InsiteViewModel {
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
-          result.access_token, result.expires_in.toString());
+          result.access_token, result.expires_in.toString(),false);
     } else {
       _snackbarService.showSnackbar(
           message: "Something went wrong!", duration: Duration(seconds: 2));

@@ -27,9 +27,9 @@
             "view_name": "IndiaStackLoginView"
         },
         {
-            "file_path": "views/logout/logout_view.dart",
-            "route_name": "logoutViewRoute",
-            "view_name": "LogoutView"
+            "file_path": "views/logout/india_stack_logout_view.dart",
+            "route_name": "indiaStackLogoutViewRoute",
+            "view_name": "IndiaStackLogoutView"
         },
         {
             "file_path": "views/global_search/global_search_view.dart",
