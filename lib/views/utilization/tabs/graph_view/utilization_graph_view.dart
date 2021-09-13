@@ -45,6 +45,20 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
   final GlobalKey<FuelBurnRateTrendViewState> fuelBurnTrendKey =
       new GlobalKey();
 
+  var viewModel;
+
+  @override
+  void initState() {
+    viewModel = UtilizationGraphViewModel();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilizationGraphViewModel>.reactive(
@@ -176,11 +190,12 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
           ],
         );
       },
-      viewModelBuilder: () => UtilizationGraphViewModel(),
+      viewModelBuilder: () => viewModel,
     );
   }
 
   onFilterApplied() {
+    viewModel.updateDateView();
     onDateChange();
   }
 

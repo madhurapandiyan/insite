@@ -75,7 +75,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   getSelectedFilterData() async {
     appliedFilters = await _filterService.getSelectedFilters();
-    Logger().d(appliedFilters.length.toString());
+    Logger().d("getSelectedFilterData ${appliedFilters.length.toString()}");
     notifyListeners();
   }
 
@@ -104,6 +104,10 @@ abstract class InsiteViewModel extends BaseViewModel {
       Logger().d("start date ", startDate);
       Logger().d("end date ", endDate);
       notifyListeners();
+    } else {
+      _startDate = DateFormat('yyyy-MM-dd').format(
+          DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
+      _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
   }
 

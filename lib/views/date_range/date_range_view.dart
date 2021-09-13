@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -336,7 +337,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 });
                               },
                               firstDay: DateTime.utc(2010, 10, 16),
-                              lastDay: DateTime.utc(2030, 3, 14),
+                              lastDay: DateTime.now(),
                               focusedDay: DateTime.now(),
                               selectedDayPredicate: (day) {
                                 return isSameDay(_selectedDay, day);
@@ -371,6 +372,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                       width: 75,
                       height: 40,
                       onTap: () async {
+                        Logger().i("fromdate todate $fromDate $toDate");
                         if (fromDate != null && toDate != null) {
                           if (viewModel.selectedDateRange ==
                               DateRangeType.today) {
@@ -378,17 +380,33 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 '${fromDate.year}-${fromDate.month}-${fromDate.day}',
                                 '${toDate.year}-${toDate.month}-${toDate.day}',
                                 describeEnum(viewModel.selectedDateRange));
-                            Navigator.pop(context, [fromDate, toDate]);
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              Navigator.pop(context, [fromDate, toDate]);
+                            });
                           } else {
-                            if (toDate.isBefore(fromDate)) {
-                              Utils.showToast(
-                                  "End date cannot be less than start date.");
-                            } else {
+                            if (DateUtil.isBothDateSame(fromDate, toDate)) {
+                              Logger().i("if date equal");
                               await viewModel.updateDateRange(
                                   '${fromDate.year}-${fromDate.month}-${fromDate.day}',
                                   '${toDate.year}-${toDate.month}-${toDate.day}',
                                   describeEnum(viewModel.selectedDateRange));
-                              Navigator.pop(context, [fromDate, toDate]);
+                              Future.delayed(Duration(milliseconds: 500), () {
+                                Navigator.pop(context, [fromDate, toDate]);
+                              });
+                            } else {
+                              Logger().i("if date not equal");
+                              if (toDate.isBefore(fromDate)) {
+                                Utils.showToast(
+                                    "End date cannot be less than start date.");
+                              } else {
+                                await viewModel.updateDateRange(
+                                    '${fromDate.year}-${fromDate.month}-${fromDate.day}',
+                                    '${toDate.year}-${toDate.month}-${toDate.day}',
+                                    describeEnum(viewModel.selectedDateRange));
+                                Future.delayed(Duration(milliseconds: 500), () {
+                                  Navigator.pop(context, [fromDate, toDate]);
+                                });
+                              }
                             }
                           }
                         }

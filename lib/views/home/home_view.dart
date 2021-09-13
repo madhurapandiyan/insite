@@ -26,6 +26,7 @@ class _HomeViewState extends State<HomeView> {
           child: InsiteScaffold(
             screenType: ScreenType.HOME,
             onFilterApplied: () {},
+            onRefineApplied: () {},
             viewModel: viewModel,
             body: Container(
               color: bgcolor,

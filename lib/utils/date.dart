@@ -27,4 +27,12 @@ class DateUtil {
         break;
     }
   }
+
+  static bool isBothDateSame(DateTime one, DateTime two) {
+    if (one.year == two.year && one.month == two.month && one.day == two.day) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

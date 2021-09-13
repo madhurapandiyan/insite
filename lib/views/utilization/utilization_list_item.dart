@@ -282,13 +282,13 @@ class UtilizationListItem extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Icon(Icons.arrow_drop_down, color: Colors.white),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // Icon(Icons.arrow_drop_down, color: Colors.white),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
                         // Container(
                         //     decoration: BoxDecoration(
                         //         color: Colors.black,

@@ -129,7 +129,7 @@ class FilterUtils {
         Logger().i("filter productDeviceTypeList " +
             productDeviceTypeList.length.toString());
         if (productDeviceTypeList.isNotEmpty) {
-          for (FilterData data in productAssetstatusList) {
+          for (FilterData data in productDeviceTypeList) {
             value.write(constructQuery("deviceType", data.title, false));
           }
         }
