@@ -37,19 +37,29 @@ class AssetLocationService extends BaseService {
     double radiusKm,
   ) async {
     try {
-      if (pageNumber != null && pageSize != null && sort != null) {
-        AssetLocationData result = await MyApi()
-            .getClient()
-            .assetLocationWithCluster(
-                Urls.locationSummary,
-                latitude,
-                longitude,
-                pageNumber,
-                pageSize,
-                radiusKm,
-                sort,
-                accountSelected.CustomerUID);
-        return result;
+      if (isVisionLink) {
+        if (pageNumber != null && pageSize != null && sort != null) {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationWithClusterVL(latitude, longitude, pageNumber,
+                  pageSize, radiusKm, sort, accountSelected.CustomerUID);
+          return result;
+        }
+      } else {
+        if (pageNumber != null && pageSize != null && sort != null) {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationWithCluster(
+                  Urls.locationSummary,
+                  latitude,
+                  longitude,
+                  pageNumber,
+                  pageSize,
+                  radiusKm,
+                  sort,
+                  accountSelected.CustomerUID);
+          return result;
+        }
       }
       return null;
     } catch (e) {
@@ -61,43 +71,82 @@ class AssetLocationService extends BaseService {
   Future<AssetLocationData> getAssetLocation(startDate, endDate, int pageNumber,
       int pageSize, String sort, appliedFilters) async {
     try {
-      if (pageNumber != null &&
-          pageSize != null &&
-          sort != null &&
-          customerSelected != null) {
-        AssetLocationData result = await MyApi()
-            .getClient()
-            .assetLocationSummary(
-                Urls.locationSummary +
-                    FilterUtils.getFilterURL(
-                        startDate,
-                        endDate,
-                        pageNumber,
-                        pageSize,
-                        customerSelected.CustomerUID,
-                        sort,
-                        appliedFilters,
-                        ScreenType.LOCATION),
-                accountSelected.CustomerUID,
-                Urls.vfleetMapPrefix);
-        return result;
-      } else if (pageNumber != null && pageSize != null && sort != null) {
-        AssetLocationData result = await MyApi()
-            .getClient()
-            .assetLocationSummary(
-                Urls.locationSummary +
-                    FilterUtils.getFilterURL(
-                        startDate,
-                        endDate,
-                        pageNumber,
-                        pageSize,
-                        null,
-                        sort,
-                        appliedFilters,
-                        ScreenType.LOCATION),
-                accountSelected.CustomerUID,
-                Urls.vfleetMapPrefix);
-        return result;
+      if (isVisionLink) {
+        if (pageNumber != null &&
+            pageSize != null &&
+            sort != null &&
+            customerSelected != null) {
+          AssetLocationData result =
+              await MyApi().getClient().assetLocationSummaryVL(
+                    Urls.locationSummaryVL +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNumber,
+                            pageSize,
+                            customerSelected.CustomerUID,
+                            sort,
+                            appliedFilters,
+                            ScreenType.LOCATION),
+                    accountSelected.CustomerUID,
+                  );
+          return result;
+        } else if (pageNumber != null && pageSize != null && sort != null) {
+          AssetLocationData result =
+              await MyApi().getClient().assetLocationSummaryVL(
+                    Urls.locationSummaryVL +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNumber,
+                            pageSize,
+                            null,
+                            sort,
+                            appliedFilters,
+                            ScreenType.LOCATION),
+                    accountSelected.CustomerUID,
+                  );
+          return result;
+        }
+      } else {
+        if (pageNumber != null &&
+            pageSize != null &&
+            sort != null &&
+            customerSelected != null) {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationSummary(
+                  Urls.locationSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNumber,
+                          pageSize,
+                          customerSelected.CustomerUID,
+                          sort,
+                          appliedFilters,
+                          ScreenType.LOCATION),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetMapPrefix);
+          return result;
+        } else if (pageNumber != null && pageSize != null && sort != null) {
+          AssetLocationData result = await MyApi()
+              .getClient()
+              .assetLocationSummary(
+                  Urls.locationSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNumber,
+                          pageSize,
+                          null,
+                          sort,
+                          appliedFilters,
+                          ScreenType.LOCATION),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetMapPrefix);
+          return result;
+        }
       }
       return null;
     } catch (e) {
@@ -110,36 +159,68 @@ class AssetLocationService extends BaseService {
       int pageNumber, int pageSize, String sort) async {
     try {
       if (pageNumber != null && pageSize != null && sort != null) {
-        if (customerSelected != null) {
-          AssetLocationData result = await MyApi()
-              .getClient()
-              .assetLocationWithOutFilterCustomerUID(
-                  Urls.locationSummary,
+        if (isVisionLink) {
+          if (customerSelected != null) {
+            AssetLocationData result = await MyApi()
+                .getClient()
+                .assetLocationWithOutFilterCustomerUIDVL(
                   pageNumber,
                   pageSize,
                   sort,
                   customerSelected.CustomerUID,
                   accountSelected.CustomerUID,
-                  Urls.vfleetMapPrefix);
-          if (result != null) {
-            return result;
+                );
+            if (result != null) {
+              return result;
+            } else {
+              return null;
+            }
           } else {
-            return null;
+            AssetLocationData result =
+                await MyApi().getClient().assetLocationWithOutFilterVL(
+                      pageNumber,
+                      pageSize,
+                      sort,
+                      accountSelected.CustomerUID,
+                    );
+            if (result != null) {
+              return result;
+            } else {
+              return null;
+            }
           }
         } else {
-          AssetLocationData result = await MyApi()
-              .getClient()
-              .assetLocationWithOutFilter(
-                  Urls.locationSummary,
-                  pageNumber,
-                  pageSize,
-                  sort,
-                  accountSelected.CustomerUID,
-                  Urls.vfleetMapPrefix);
-          if (result != null) {
-            return result;
+          if (customerSelected != null) {
+            AssetLocationData result = await MyApi()
+                .getClient()
+                .assetLocationWithOutFilterCustomerUID(
+                    Urls.locationSummary,
+                    pageNumber,
+                    pageSize,
+                    sort,
+                    customerSelected.CustomerUID,
+                    accountSelected.CustomerUID,
+                    Urls.vfleetMapPrefix);
+            if (result != null) {
+              return result;
+            } else {
+              return null;
+            }
           } else {
-            return null;
+            AssetLocationData result = await MyApi()
+                .getClient()
+                .assetLocationWithOutFilter(
+                    Urls.locationSummary,
+                    pageNumber,
+                    pageSize,
+                    sort,
+                    accountSelected.CustomerUID,
+                    Urls.vfleetMapPrefix);
+            if (result != null) {
+              return result;
+            } else {
+              return null;
+            }
           }
         }
       }
@@ -168,24 +249,43 @@ class AssetLocationService extends BaseService {
   Future<AssetLocationData> getLocationFilterData(
       productFamilyKey, int pageNumber, int pageSize) async {
     try {
-      AssetLocationData assetLocationDataResponse = productFamilyKey != null
-          ? await MyApi().getClient().locationFilterData(
-              Urls.locationSummary,
-              pageNumber,
-              pageSize,
-              productFamilyKey,
-              "-lastlocationupdateutc",
-              accountSelected.CustomerUID,
-              Urls.vfleetMapPrefix)
-          : await MyApi().getClient().assetLocationWithOutFilterCustomerUID(
-              Urls.locationSummary,
-              pageNumber,
-              pageSize,
-              "-lastlocationupdateutc",
-              customerSelected.CustomerUID,
-              accountSelected.CustomerUID,
-              Urls.vfleetMapPrefix);
-      return assetLocationDataResponse;
+      if (isVisionLink) {
+        AssetLocationData assetLocationDataResponse = productFamilyKey != null
+            ? await MyApi().getClient().locationFilterDataVL(
+                  pageNumber,
+                  pageSize,
+                  productFamilyKey,
+                  "-lastlocationupdateutc",
+                  accountSelected.CustomerUID,
+                )
+            : await MyApi().getClient().assetLocationWithOutFilterCustomerUIDVL(
+                  pageNumber,
+                  pageSize,
+                  "-lastlocationupdateutc",
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                );
+        return assetLocationDataResponse;
+      } else {
+        AssetLocationData assetLocationDataResponse = productFamilyKey != null
+            ? await MyApi().getClient().locationFilterData(
+                Urls.locationSummary,
+                pageNumber,
+                pageSize,
+                productFamilyKey,
+                "-lastlocationupdateutc",
+                accountSelected.CustomerUID,
+                Urls.vfleetMapPrefix)
+            : await MyApi().getClient().assetLocationWithOutFilterCustomerUID(
+                Urls.locationSummary,
+                pageNumber,
+                pageSize,
+                "-lastlocationupdateutc",
+                customerSelected.CustomerUID,
+                accountSelected.CustomerUID,
+                Urls.vfleetMapPrefix);
+        return assetLocationDataResponse;
+      }
     } catch (e) {
       Logger().d(e.toString());
     }

@@ -14,7 +14,7 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
-import 'package:insite/core/services/utilization_graphs.dart';
+import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';

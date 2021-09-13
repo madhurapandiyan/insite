@@ -39,36 +39,63 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        AssetCount assetStatusResponse = key != null
-            ? customerSelected != null
-                ? await MyApi().getClient().assetCountcustomerUID(
-                    Urls.assetCountSummary,
-                    key,
-                    customerSelected.CustomerUID,
-                    accountSelected.CustomerUID,
-                    Urls.vfleetPrefix)
-                : await MyApi().getClient().assetCount(Urls.assetCountSummary,
-                    key, accountSelected.CustomerUID, Urls.vfleetPrefix)
-            : customerSelected != null
-                ? await MyApi().getClient().assetCountAllcustomerUID(
-                    Urls.assetCountSummary,
-                    customerSelected.CustomerUID,
-                    accountSelected.CustomerUID,
-                    Urls.vfleetPrefix)
-                : await MyApi().getClient().assetCountAll(
-                    Urls.assetCountSummary,
-                    accountSelected.CustomerUID,
-                    Urls.vfleetPrefix);
-        if (assetStatusResponse != null) {
-          bool updated = await updateAssetCount(assetStatusResponse, type);
-          Logger().d("updated $updated");
-          if (updated) {
-            return assetStatusResponse;
+        if (isVisionLink) {
+          AssetCount assetStatusResponse = key != null
+              ? customerSelected != null
+                  ? await MyApi().getClient().assetCountcustomerUIDVL(key,
+                      customerSelected.CustomerUID, accountSelected.CustomerUID)
+                  : await MyApi()
+                      .getClient()
+                      .assetCountVL(key, accountSelected.CustomerUID)
+              : customerSelected != null
+                  ? await MyApi().getClient().assetCountAllcustomerUIDVL(
+                      customerSelected.CustomerUID, accountSelected.CustomerUID)
+                  : await MyApi()
+                      .getClient()
+                      .assetCountAllVL(accountSelected.CustomerUID);
+          if (assetStatusResponse != null) {
+            bool updated = await updateAssetCount(assetStatusResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return assetStatusResponse;
+            } else {
+              return null;
+            }
           } else {
             return null;
           }
         } else {
-          return null;
+          AssetCount assetStatusResponse = key != null
+              ? customerSelected != null
+                  ? await MyApi().getClient().assetCountcustomerUID(
+                      Urls.assetCountSummary,
+                      key,
+                      customerSelected.CustomerUID,
+                      accountSelected.CustomerUID,
+                      Urls.vfleetPrefix)
+                  : await MyApi().getClient().assetCount(Urls.assetCountSummary,
+                      key, accountSelected.CustomerUID, Urls.vfleetPrefix)
+              : customerSelected != null
+                  ? await MyApi().getClient().assetCountAllcustomerUID(
+                      Urls.assetCountSummary,
+                      customerSelected.CustomerUID,
+                      accountSelected.CustomerUID,
+                      Urls.vfleetPrefix)
+                  : await MyApi().getClient().assetCountAll(
+                      Urls.assetCountSummary,
+                      accountSelected.CustomerUID,
+                      Urls.vfleetPrefix);
+          if (assetStatusResponse != null) {
+            bool updated = await updateAssetCount(assetStatusResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return assetStatusResponse;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -86,25 +113,47 @@ class AssetStatusService extends DataBaseService {
   ) async {
     Logger().d("getAssetCountByFilter");
     try {
-      AssetCount assetStatusResponse = await MyApi()
-          .getClient()
-          .assetCountByFilter(
-              Urls.assetCountSubscriptionSummary +
-                  FilterUtils.getFilterURLForCount(
-                      startDate,
-                      endDate,
-                      accountSelected != null && customerSelected != null
-                          ? customerSelected.CustomerUID
-                          : null,
-                      sort,
-                      appliedFilters,
-                      screenType),
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix);
-      if (assetStatusResponse != null) {
-        return assetStatusResponse;
+      if (isVisionLink) {
+        AssetCount assetStatusResponse =
+            await MyApi().getClient().assetCountByFilterVL(
+                  Urls.assetCountSubscriptionSummaryVL +
+                      FilterUtils.getFilterURLForCount(
+                          startDate,
+                          endDate,
+                          accountSelected != null && customerSelected != null
+                              ? customerSelected.CustomerUID
+                              : null,
+                          sort,
+                          appliedFilters,
+                          screenType),
+                  accountSelected.CustomerUID,
+                );
+        if (assetStatusResponse != null) {
+          return assetStatusResponse;
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        AssetCount assetStatusResponse = await MyApi()
+            .getClient()
+            .assetCountByFilter(
+                Urls.assetCountSubscriptionSummary +
+                    FilterUtils.getFilterURLForCount(
+                        startDate,
+                        endDate,
+                        accountSelected != null && customerSelected != null
+                            ? customerSelected.CustomerUID
+                            : null,
+                        sort,
+                        appliedFilters,
+                        screenType),
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        if (assetStatusResponse != null) {
+          return assetStatusResponse;
+        } else {
+          return null;
+        }
       }
     } catch (e) {
       Logger().e(e);
@@ -203,30 +252,53 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        AssetCount fuelLevelDatarespone = customerSelected != null
-            ? await MyApi().getClient().fuelLevelCustomerUID(
-                Urls.assetCountSummary,
-                "fuellevel",
-                "25-50-75-100",
-                customerSelected.CustomerUID,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix)
-            : await MyApi().getClient().fuelLevel(
-                Urls.assetCountSummary,
-                "fuellevel",
-                "25-50-75-100",
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix);
-        print('data:${fuelLevelDatarespone.toJson()}');
-        if (fuelLevelDatarespone != null) {
-          bool updated = await updateAssetCount(fuelLevelDatarespone, type);
-          if (updated) {
-            return fuelLevelDatarespone;
+        if (isVisionLink) {
+          AssetCount fuelLevelDatarespone = customerSelected != null
+              ? await MyApi().getClient().fuelLevelCustomerUIDVL(
+                    "fuellevel",
+                    "25-50-75-100",
+                    customerSelected.CustomerUID,
+                    accountSelected.CustomerUID,
+                  )
+              : await MyApi().getClient().fuelLevelVL(
+                  "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
+          print('data:${fuelLevelDatarespone.toJson()}');
+          if (fuelLevelDatarespone != null) {
+            bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+            if (updated) {
+              return fuelLevelDatarespone;
+            } else {
+              return null;
+            }
           } else {
             return null;
           }
         } else {
-          return null;
+          AssetCount fuelLevelDatarespone = customerSelected != null
+              ? await MyApi().getClient().fuelLevelCustomerUID(
+                  Urls.assetCountSummary,
+                  "fuellevel",
+                  "25-50-75-100",
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix)
+              : await MyApi().getClient().fuelLevel(
+                  Urls.assetCountSummary,
+                  "fuellevel",
+                  "25-50-75-100",
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
+          print('data:${fuelLevelDatarespone.toJson()}');
+          if (fuelLevelDatarespone != null) {
+            bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+            if (updated) {
+              return fuelLevelDatarespone;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -246,32 +318,62 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d(" from api");
-        AssetCount idlingLevelDataResponse = customerSelected != null
-            ? await MyApi().getClient().idlingLevelCustomerUID(
-                Urls.assetCountSummary,
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                endDate,
-                customerSelected.CustomerUID,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix)
-            : await MyApi().getClient().idlingLevel(
-                Urls.assetCountSummary,
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                endDate,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix);
-        if (idlingLevelDataResponse != null) {
-          bool updated = await updateAssetCount(idlingLevelDataResponse, type);
-          Logger().d("updated $updated");
-          if (updated) {
-            return idlingLevelDataResponse;
+        if (isVisionLink) {
+          AssetCount idlingLevelDataResponse = customerSelected != null
+              ? await MyApi().getClient().idlingLevelCustomerUIDVL(
+                    startDate,
+                    "[0,10][10,15][15,25][25,]",
+                    endDate,
+                    customerSelected.CustomerUID,
+                    accountSelected.CustomerUID,
+                  )
+              : await MyApi().getClient().idlingLevelVL(
+                    startDate,
+                    "[0,10][10,15][15,25][25,]",
+                    endDate,
+                    accountSelected.CustomerUID,
+                  );
+          if (idlingLevelDataResponse != null) {
+            bool updated =
+                await updateAssetCount(idlingLevelDataResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return idlingLevelDataResponse;
+            } else {
+              return null;
+            }
           } else {
             return null;
           }
         } else {
-          return null;
+          AssetCount idlingLevelDataResponse = customerSelected != null
+              ? await MyApi().getClient().idlingLevelCustomerUID(
+                  Urls.assetCountSummary,
+                  startDate,
+                  "[0,10][10,15][15,25][25,]",
+                  endDate,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix)
+              : await MyApi().getClient().idlingLevel(
+                  Urls.assetCountSummary,
+                  startDate,
+                  "[0,10][10,15][15,25][25,]",
+                  endDate,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
+          if (idlingLevelDataResponse != null) {
+            bool updated =
+                await updateAssetCount(idlingLevelDataResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return idlingLevelDataResponse;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -282,24 +384,46 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getFaultCount(startDate, endDate) async {
     try {
-      AssetCount faultCountResponse = customerSelected != null
-          ? await MyApi().getClient().faultCountcustomerUID(
-              Urls.faultCountSummary,
-              startDate,
-              endDate,
-              customerSelected.CustomerUID,
-              accountSelected.CustomerUID,
-              Urls.faultPrefix)
-          : await MyApi().getClient().faultCount(
-              Urls.faultCountSummary,
-              startDate,
-              endDate,
-              accountSelected.CustomerUID,
-              Urls.faultPrefix);
-      if (faultCountResponse != null) {
-        return faultCountResponse;
+      if (isVisionLink) {
+        AssetCount faultCountResponse = customerSelected != null
+            ? await MyApi().getClient().faultCountcustomerUIDVL(
+                  Urls.faultCountSummaryVL,
+                  startDate,
+                  endDate,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                )
+            : await MyApi().getClient().faultCountVL(
+                  Urls.faultCountSummaryVL,
+                  startDate,
+                  endDate,
+                  accountSelected.CustomerUID,
+                );
+        if (faultCountResponse != null) {
+          return faultCountResponse;
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        AssetCount faultCountResponse = customerSelected != null
+            ? await MyApi().getClient().faultCountcustomerUID(
+                Urls.faultCountSummary,
+                startDate,
+                endDate,
+                customerSelected.CustomerUID,
+                accountSelected.CustomerUID,
+                Urls.faultPrefix)
+            : await MyApi().getClient().faultCount(
+                Urls.faultCountSummary,
+                startDate,
+                endDate,
+                accountSelected.CustomerUID,
+                Urls.faultPrefix);
+        if (faultCountResponse != null) {
+          return faultCountResponse;
+        } else {
+          return null;
+        }
       }
     } catch (e) {
       Logger().e(e);
@@ -307,18 +431,28 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount> getAssetStatusFilter( productFamilyKey, key) async {
+  Future<AssetCount> getAssetStatusFilter(productFamilyKey, key) async {
     try {
-      AssetCount assetStatusResponse = productFamilyKey != null
-          ? await MyApi().getClient().assetStatusFilterData(
-              Urls.assetCountSummary,
-              key,
-              productFamilyKey,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix)
-          : await MyApi().getClient().assetCount(Urls.assetCountSummary, key,
-              accountSelected.CustomerUID, Urls.vfleetPrefix);
-      return assetStatusResponse;
+      if (isVisionLink) {
+        AssetCount assetStatusResponse = productFamilyKey != null
+            ? await MyApi().getClient().assetStatusFilterDataVL(
+                key, productFamilyKey, accountSelected.CustomerUID)
+            : await MyApi()
+                .getClient()
+                .assetCountVL(key, accountSelected.CustomerUID);
+        return assetStatusResponse;
+      } else {
+        AssetCount assetStatusResponse = productFamilyKey != null
+            ? await MyApi().getClient().assetStatusFilterData(
+                Urls.assetCountSummary,
+                key,
+                productFamilyKey,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix)
+            : await MyApi().getClient().assetCount(Urls.assetCountSummary, key,
+                accountSelected.CustomerUID, Urls.vfleetPrefix);
+        return assetStatusResponse;
+      }
     } catch (e) {
       Logger().d(e.toString());
     }
@@ -327,21 +461,33 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getFuellevelFilterData(productFamilyKey, key) async {
     try {
-      AssetCount assetStatusResponse = productFamilyKey != null
-          ? await MyApi().getClient().fuelLevelFilterData(
-              Urls.assetCountSummary,
-              key,
-              productFamilyKey,
-              "25-50-75-100",
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix)
-          : await MyApi().getClient().fuelLevel(
-              Urls.assetCountSummary,
-              "fuellevel",
-              "25-50-75-100",
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix);
-      return assetStatusResponse;
+      if (isVisionLink) {
+        AssetCount assetStatusResponse = productFamilyKey != null
+            ? await MyApi().getClient().fuelLevelFilterDataVL(key,
+                productFamilyKey, "25-50-75-100", accountSelected.CustomerUID)
+            : await MyApi().getClient().fuelLevelVL(
+                  "fuellevel",
+                  "25-50-75-100",
+                  accountSelected.CustomerUID,
+                );
+        return assetStatusResponse;
+      } else {
+        AssetCount assetStatusResponse = productFamilyKey != null
+            ? await MyApi().getClient().fuelLevelFilterData(
+                Urls.assetCountSummary,
+                key,
+                productFamilyKey,
+                "25-50-75-100",
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix)
+            : await MyApi().getClient().fuelLevel(
+                Urls.assetCountSummary,
+                "fuellevel",
+                "25-50-75-100",
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        return assetStatusResponse;
+      }
     } catch (e) {
       Logger().e(e);
     }
@@ -351,23 +497,39 @@ class AssetStatusService extends DataBaseService {
   Future<AssetCount> getIdlingLevelFilterData(
       startDate, productFamilyKey, endDate) async {
     try {
-      AssetCount idlinglevelDataResponse = productFamilyKey != null
-          ? await MyApi().getClient().idlingLevelFilterData(
-              Urls.assetCountSummary,
-              startDate,
-              "[0,10][10,15][15,25][25,]",
-              productFamilyKey,
-              endDate,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix)
-          : await MyApi().getClient().idlingLevel(
-              Urls.assetCountSummary,
-              startDate,
-              "[0,10][10,15][15,25][25,]",
-              endDate,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix);
-      return idlinglevelDataResponse;
+      if (isVisionLink) {
+        AssetCount idlinglevelDataResponse = productFamilyKey != null
+            ? await MyApi().getClient().idlingLevelFilterDataVL(
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                productFamilyKey,
+                endDate,
+                accountSelected.CustomerUID)
+            : await MyApi().getClient().idlingLevelVL(
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                endDate,
+                accountSelected.CustomerUID);
+        return idlinglevelDataResponse;
+      } else {
+        AssetCount idlinglevelDataResponse = productFamilyKey != null
+            ? await MyApi().getClient().idlingLevelFilterData(
+                Urls.assetCountSummary,
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                productFamilyKey,
+                endDate,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix)
+            : await MyApi().getClient().idlingLevel(
+                Urls.assetCountSummary,
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                endDate,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        return idlinglevelDataResponse;
+      }
     } catch (e) {
       Logger().d(e);
     }
@@ -376,17 +538,26 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getIdlingLevel(startDate, endDate) async {
     try {
-      AssetCount idlingLevelDataResponse = await MyApi()
-          .getClient()
-          .idlingLevel(
-              Urls.assetCountSummary,
-              startDate,
-              "[0,10][10,15][15,25][25,]",
-              endDate,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix);
-      print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
-      return idlingLevelDataResponse;
+      if (isVisionLink) {
+        AssetCount idlingLevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevelVL(startDate, "[0,10][10,15][15,25][25,]", endDate,
+                accountSelected.CustomerUID);
+        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+        return idlingLevelDataResponse;
+      } else {
+        AssetCount idlingLevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevel(
+                Urls.assetCountSummary,
+                startDate,
+                "[0,10][10,15][15,25][25,]",
+                endDate,
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
+        return idlingLevelDataResponse;
+      }
     } catch (e) {
       Logger().e(e);
       return null;

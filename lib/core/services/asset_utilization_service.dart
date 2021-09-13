@@ -40,18 +40,32 @@ class AssetUtilizationService extends BaseService {
     String endDate,
   ) async {
     try {
-      UtilizationSummaryResponse utilizationSummaryResponse = await MyApi()
-          .getClient()
-          .utilLizationList(
-              assetUID,
-              startDate,
-              endDate,
-              '-LastReportedUtilizationTime',
-              accountSelected.CustomerUID,
-              true,
-              true,
-              Urls.vutilizationPrefix);
-      return utilizationSummaryResponse.utilization;
+      if (isVisionLink) {
+        UtilizationSummaryResponse utilizationSummaryResponse =
+            await MyApi().getClient().utilLizationListVL(
+                  assetUID,
+                  startDate,
+                  endDate,
+                  '-LastReportedUtilizationTime',
+                  accountSelected.CustomerUID,
+                  true,
+                  true,
+                );
+        return utilizationSummaryResponse.utilization;
+      } else {
+        UtilizationSummaryResponse utilizationSummaryResponse = await MyApi()
+            .getClient()
+            .utilLizationList(
+                assetUID,
+                startDate,
+                endDate,
+                '-LastReportedUtilizationTime',
+                accountSelected.CustomerUID,
+                true,
+                true,
+                Urls.vutilizationPrefix);
+        return utilizationSummaryResponse.utilization;
+      }
     } catch (e) {
       Logger().e(e);
       return [];
@@ -61,17 +75,28 @@ class AssetUtilizationService extends BaseService {
   Future<AssetUtilization> getAssetUtilGraphDate(
       String assetUID, String date) async {
     try {
-      if (assetUID != null &&
-          assetUID.isNotEmpty &&
-          date != null &&
-          date.isNotEmpty) {
-        AssetUtilization result = await MyApi().getClient().assetUtilGraphData(
-            Urls.utilizationSummaryV1,
-            assetUID,
-            date,
-            accountSelected.CustomerUID,
-            Urls.vfleetPrefix);
-        return result;
+      if (isVisionLink) {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            date != null &&
+            date.isNotEmpty) {
+          AssetUtilization result = await MyApi()
+              .getClient()
+              .assetUtilGraphDataVL(
+                  assetUID, date, accountSelected.CustomerUID);
+          return result;
+        }
+      } else {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            date != null &&
+            date.isNotEmpty) {
+          AssetUtilization result = await MyApi()
+              .getClient()
+              .assetUtilGraphData(Urls.utilizationSummaryV1, assetUID, date,
+                  accountSelected.CustomerUID, Urls.vfleetPrefix);
+          return result;
+        }
       }
       return null;
     } catch (e) {
@@ -89,39 +114,76 @@ class AssetUtilizationService extends BaseService {
     List<FilterData> appliedFilters,
   ) async {
     try {
-      if (startDate != null &&
-          startDate.isNotEmpty &&
-          endDate != null &&
-          endDate.isNotEmpty) {
-        Utilization response =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().utilization(
-                    Urls.utlizationSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNo,
-                            pageCount,
-                            customerSelected.CustomerUID,
-                            sort,
-                            appliedFilters,
-                            ScreenType.UTILIZATION),
-                    accountSelected.CustomerUID,
-                    Urls.vfleetPrefix)
-                : await MyApi().getClient().utilization(
-                    Urls.utlizationSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNo,
-                            pageCount,
-                            null,
-                            sort,
-                            appliedFilters,
-                            ScreenType.UTILIZATION),
-                    accountSelected.CustomerUID,
-                    Urls.vfleetPrefix);
-        return response;
+      if (isVisionLink) {
+        if (startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          Utilization response =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient().utilizationVL(
+                        Urls.utlizationSummaryVL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNo,
+                                pageCount,
+                                customerSelected.CustomerUID,
+                                sort,
+                                appliedFilters,
+                                ScreenType.UTILIZATION),
+                        accountSelected.CustomerUID,
+                      )
+                  : await MyApi().getClient().utilizationVL(
+                        Urls.utlizationSummaryVL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNo,
+                                pageCount,
+                                null,
+                                sort,
+                                appliedFilters,
+                                ScreenType.UTILIZATION),
+                        accountSelected.CustomerUID,
+                      );
+          return response;
+        }
+      } else {
+        if (startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          Utilization response = accountSelected != null &&
+                  customerSelected != null
+              ? await MyApi().getClient().utilization(
+                  Urls.utlizationSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNo,
+                          pageCount,
+                          customerSelected.CustomerUID,
+                          sort,
+                          appliedFilters,
+                          ScreenType.UTILIZATION),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix)
+              : await MyApi().getClient().utilization(
+                  Urls.utlizationSummary +
+                      FilterUtils.getFilterURL(
+                          startDate,
+                          endDate,
+                          pageNo,
+                          pageCount,
+                          null,
+                          sort,
+                          appliedFilters,
+                          ScreenType.UTILIZATION),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
+          return response;
+        }
       }
       return null;
     } catch (e) {
@@ -137,17 +199,32 @@ class AssetUtilizationService extends BaseService {
     String endDate,
   ) async {
     try {
-      if (assetUID != null &&
-          assetUID.isNotEmpty &&
-          startDate != null &&
-          startDate.isNotEmpty &&
-          endDate != null &&
-          endDate.isNotEmpty) {
-        SingleAssetUtilization response = await MyApi()
-            .getClient()
-            .singleAssetUtilization(assetUID, sort, startDate, endDate,
-                accountSelected.CustomerUID, Urls.vutilizationPrefix);
-        return response;
+      if (isVisionLink) {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          SingleAssetUtilization response = await MyApi()
+              .getClient()
+              .singleAssetUtilizationVL(assetUID, sort, startDate, endDate,
+                  accountSelected.CustomerUID);
+          return response;
+        }
+      } else {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          SingleAssetUtilization response = await MyApi()
+              .getClient()
+              .singleAssetUtilization(assetUID, sort, startDate, endDate,
+                  accountSelected.CustomerUID, Urls.vutilizationPrefix);
+          return response;
+        }
       }
       return null;
     } catch (e) {
@@ -158,23 +235,43 @@ class AssetUtilizationService extends BaseService {
 
   Future<UtilizationSummary> getUtilizationSummary(String date) async {
     try {
-      if (date != null) {
-        UtilizationSummary response = customerSelected != null
-            ? await MyApi().getClient().getAssetUtilizationcustomerUID(
-                Urls.utilizationSummaryV1,
-                date,
-                customerSelected.CustomerUID,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix)
-            : await MyApi().getClient().getAssetUtilization(
-                Urls.utilizationSummaryV1,
-                date,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix);
-        if (response != null) {
-          return response;
-        } else {
-          return null;
+      if (isVisionLink) {
+        if (date != null) {
+          UtilizationSummary response = customerSelected != null
+              ? await MyApi().getClient().getAssetUtilizationcustomerUIDVL(
+                    date,
+                    customerSelected.CustomerUID,
+                    accountSelected.CustomerUID,
+                  )
+              : await MyApi().getClient().getAssetUtilizationVL(
+                    date,
+                    accountSelected.CustomerUID,
+                  );
+          if (response != null) {
+            return response;
+          } else {
+            return null;
+          }
+        }
+      } else {
+        if (date != null) {
+          UtilizationSummary response = customerSelected != null
+              ? await MyApi().getClient().getAssetUtilizationcustomerUID(
+                  Urls.utilizationSummaryV1,
+                  date,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix)
+              : await MyApi().getClient().getAssetUtilization(
+                  Urls.utilizationSummaryV1,
+                  date,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
+          if (response != null) {
+            return response;
+          } else {
+            return null;
+          }
         }
       }
       return null;

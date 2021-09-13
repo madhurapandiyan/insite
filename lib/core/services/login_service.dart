@@ -8,7 +8,6 @@ import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';
@@ -70,7 +69,7 @@ class LoginService extends BaseService {
   saveExpiryTime(String expiryTime) async {}
 
   Future<List<Customer>> getCustomers() async {
-    if (packageName == "com.example.insite.visionlink") {
+    if (isVisionLink) {
       try {
         CustomersResponse response =
             await MyApi().getClient().accountHierarchyVL(true);
@@ -95,7 +94,7 @@ class LoginService extends BaseService {
 
   Future<List<Customer>> getSubCustomers(customerId) async {
     try {
-      if (packageName == "com.example.insite.visionlink") {
+      if (isVisionLink) {
         CustomersResponse response =
             await MyApi().getClient().accountHierarchyChildrenVL(customerId);
         List<Customer> list = [];
@@ -122,7 +121,7 @@ class LoginService extends BaseService {
 
   Future<List<Permission>> getPermissions() async {
     try {
-      if (packageName == "com.example.insite.visionlink") {
+      if (isVisionLink) {
         Customer customer = await _localService.getAccountInfo();
         PermissionResponse response = await MyApi().getClient().getPermissionVL(
             10000,

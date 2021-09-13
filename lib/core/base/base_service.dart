@@ -6,11 +6,13 @@ import '../logger.dart';
 
 class BaseService {
   Logger log;
-  String packageName;
+  bool isVisionLink = false;
   BaseService({String title}) {
     log = getLogger(title ?? this.runtimeType.toString());
-    PackageInfo.fromPlatform().then(
-        (PackageInfo packageInfo) => {packageName = packageInfo.packageName});
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+          if ("com.example.insite.visionlink" == packageInfo.packageName)
+            {isVisionLink = true}
+        });
   }
 
   String convertFilterToCommaSeparatedString(List<FilterData> appliedFilters) {
