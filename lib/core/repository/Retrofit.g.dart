@@ -148,6 +148,75 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<PermissionResponse> getPermissionVL(
+      limit, provider_id, customerId, xVisonLinkCustomerId) async {
+    ArgumentError.checkNotNull(limit, 'limit');
+    ArgumentError.checkNotNull(provider_id, 'provider_id');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(xVisonLinkCustomerId, 'xVisonLinkCustomerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'limit': limit,
+      r'provider_id': provider_id
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/authorization/1.0.0/users/organizations/$customerId/permissions',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'X-VisionLink-CustomerUid': xVisonLinkCustomerId
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = PermissionResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<CustomersResponse> accountHierarchyVL(toplevelsonly) async {
+    ArgumentError.checkNotNull(toplevelsonly, 'toplevelsonly');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'toplevelsonly': toplevelsonly};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CustomersResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<CustomersResponse> accountHierarchyChildrenVL(
+      targetcustomeruid) async {
+    ArgumentError.checkNotNull(targetcustomeruid, 'targetcustomeruid');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'targetcustomeruid': targetcustomeruid
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CustomersResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<PermissionResponse> getPermission(
       limit, provider_id, xVisonLinkCustomerId, customerId, user_guid) async {
     ArgumentError.checkNotNull(limit, 'limit');

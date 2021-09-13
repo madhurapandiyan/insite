@@ -8,6 +8,7 @@ import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';
@@ -69,28 +70,50 @@ class LoginService extends BaseService {
   saveExpiryTime(String expiryTime) async {}
 
   Future<List<Customer>> getCustomers() async {
-    try {
-      CustomersResponse response = await MyApi().getClient().accountHierarchy(
-          Urls.accounthierarchy, true, "in-vlmasterdata-api-vlmd-customer");
-      List<Customer> list = response.Customers;
-      return list;
-    } catch (e) {
-      Logger().e(e);
-      return [];
+    if (packageName == "com.example.insite.visionlink") {
+      try {
+        CustomersResponse response =
+            await MyApi().getClient().accountHierarchyVL(true);
+        List<Customer> list = response.Customers;
+        return list;
+      } catch (e) {
+        Logger().e(e);
+        return [];
+      }
+    } else {
+      try {
+        CustomersResponse response = await MyApi().getClient().accountHierarchy(
+            Urls.accounthierarchy, true, "in-vlmasterdata-api-vlmd-customer");
+        List<Customer> list = response.Customers;
+        return list;
+      } catch (e) {
+        Logger().e(e);
+        return [];
+      }
     }
   }
 
   Future<List<Customer>> getSubCustomers(customerId) async {
     try {
-      CustomersResponse response = await MyApi()
-          .getClient()
-          .accountHierarchyChildren(Urls.accounthierarchy, customerId,
-              "in-vlmasterdata-api-vlmd-customer");
-      List<Customer> list = [];
-      if (response.Customers.isNotEmpty) {
-        list = response.Customers[0].Children;
+      if (packageName == "com.example.insite.visionlink") {
+        CustomersResponse response =
+            await MyApi().getClient().accountHierarchyChildrenVL(customerId);
+        List<Customer> list = [];
+        if (response.Customers.isNotEmpty) {
+          list = response.Customers[0].Children;
+        }
+        return list;
+      } else {
+        CustomersResponse response = await MyApi()
+            .getClient()
+            .accountHierarchyChildren(Urls.accounthierarchy, customerId,
+                "in-vlmasterdata-api-vlmd-customer");
+        List<Customer> list = [];
+        if (response.Customers.isNotEmpty) {
+          list = response.Customers[0].Children;
+        }
+        return list;
       }
-      return list;
     } catch (e) {
       Logger().e(e);
       return [];
@@ -99,19 +122,31 @@ class LoginService extends BaseService {
 
   Future<List<Permission>> getPermissions() async {
     try {
-      UserInfo userInfo = await _localService.getLoggedInUser();
-      Customer customer = await _localService.getAccountInfo();
-      PermissionResponse response = await MyApi().getClientFour().getPermission(
-          10000,
-          "Frame-Fleet-in",
-          customer.CustomerUID,
-          customer.CustomerUID,
-          userInfo.uuid);
-      List<Permission> list = [];
-      if (response != null && response.permission_list.isNotEmpty) {
-        list = response.permission_list;
+      if (packageName == "com.example.insite.visionlink") {
+        Customer customer = await _localService.getAccountInfo();
+        PermissionResponse response = await MyApi().getClient().getPermissionVL(
+            10000,
+            "Prod-VLUnifiedFleet",
+            customer.CustomerUID,
+            customer.CustomerUID);
+        List<Permission> list = [];
+        if (response != null && response.permission_list.isNotEmpty) {
+          list = response.permission_list;
+        }
+        return list;
+      } else {
+        UserInfo userInfo = await _localService.getLoggedInUser();
+        Customer customer = await _localService.getAccountInfo();
+        PermissionResponse response = await MyApi()
+            .getClientFour()
+            .getPermission(10000, "Frame-Fleet-in", customer.CustomerUID,
+                customer.CustomerUID, userInfo.uuid);
+        List<Permission> list = [];
+        if (response != null && response.permission_list.isNotEmpty) {
+          list = response.permission_list;
+        }
+        return list;
       }
-      return list;
     } catch (e) {
       Logger().e(e);
       return [];

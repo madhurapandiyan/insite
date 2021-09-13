@@ -62,11 +62,11 @@ class SplashViewModel extends BaseViewModel {
         // Logger().i("login result %s" + result);
         Logger().i("show webview");
 //below three lines decides to show web view or not for login
-        // shouldLoadWebview = true;
-        // Future.delayed(Duration(seconds: 2), () {
-        //   notifyListeners();
-        // });
-        _nagivationService.replaceWith(loginPageRoute);
+        shouldLoadWebview = true;
+        Future.delayed(Duration(seconds: 2), () {
+          notifyListeners();
+        });
+        // _nagivationService.replaceWith(loginPageRoute);
       } else {
         if (!isProcessing) {
           Logger().i("checking for permission");
@@ -92,11 +92,11 @@ class SplashViewModel extends BaseViewModel {
         //below three lines decides to show web view or not for login
         _localService.setHasPermission(false);
         _localService.clearAll();
-        // shouldLoadWebview = true;
-        // Future.delayed(Duration(seconds: 1), () {
-        //   notifyListeners();
-        // });
-        _nagivationService.replaceWith(loginPageRoute);
+        shouldLoadWebview = true;
+        Future.delayed(Duration(seconds: 1), () {
+          notifyListeners();
+        });
+        // _nagivationService.replaceWith(loginPageRoute);
 
         // // below lines for redirecting inside app
         // if (account != null) {

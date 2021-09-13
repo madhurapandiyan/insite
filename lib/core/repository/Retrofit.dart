@@ -62,6 +62,22 @@ abstract class RestClient {
       @Header("Authorization") String authorization);
 
   @GET(
+      "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
+  Future<PermissionResponse> getPermissionVL(
+      @Query("limit") int limit,
+      @Query("provider_id") String provider_id,
+      @Path() String customerId,
+      @Header("X-VisionLink-CustomerUid") xVisonLinkCustomerId);
+
+  @GET("/t/trimble.com/vss-customerservice/1.0/accounthierarchy")
+  Future<CustomersResponse> accountHierarchyVL(
+      @Query("toplevelsonly") bool toplevelsonly);
+
+  @GET("/t/trimble.com/vss-customerservice/1.0/accounthierarchy")
+  Future<CustomersResponse> accountHierarchyChildrenVL(
+      @Query("targetcustomeruid") String targetcustomeruid);
+
+  @GET(
       "/t/trimble.com/authorization/1.0.0/users/{user_guid}/organizations/{customerId}/permissions")
   Future<PermissionResponse> getPermission(
     @Query("limit") int limit,
@@ -490,8 +506,7 @@ abstract class RestClient {
       @Query("endDateTime") String endDate,
       @Query("startDateTime") String startDate,
       @Header("x-visionlink-customeruid") customerId,
-      @Header("service") serviceHeader
-      );
+      @Header("service") serviceHeader);
 
   @GET('{url}')
   Future<AssetCount> faultCountcustomerUID(
