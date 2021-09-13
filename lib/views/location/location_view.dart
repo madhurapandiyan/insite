@@ -46,6 +46,9 @@ class _LocationViewState extends State<LocationView> {
             onFilterApplied: () {
               viewModel.refresh();
             },
+            onRefineApplied: () {
+              viewModel.refresh();
+            },
             body: viewModel.loading
                 ? Center(
                     child: CircularProgressIndicator(),

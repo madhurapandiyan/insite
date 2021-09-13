@@ -44,6 +44,10 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                 viewModel.refresh();
                 refreshWithFilter();
               },
+              onRefineApplied: () {
+                viewModel.refresh();
+                refreshWithFilter();
+              },
               body: Container(
                 color: bgcolor,
                 child: Stack(

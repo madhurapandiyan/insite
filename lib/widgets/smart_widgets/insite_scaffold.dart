@@ -6,7 +6,7 @@ import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/views/appbar/appvar_view.dart';
+import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/filter/refine.dart';

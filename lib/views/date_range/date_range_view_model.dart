@@ -5,6 +5,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+
 class DateRangeViewModel extends BaseViewModel {
   var _dateRangeService = locator<DateRangeService>();
 
@@ -66,6 +67,10 @@ class DateRangeViewModel extends BaseViewModel {
       Logger().d("label ", appliedFilters[2]);
       _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();
+    } else {
+      startDate = DateFormat('yyyy-MM-dd').format(
+          DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
+      endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     }
   }
 

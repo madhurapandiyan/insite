@@ -26,6 +26,7 @@ class UtilizationGraphViewModel extends InsiteViewModel {
   int get count => _count;
 
   getAssetCount() async {
+    await getDateRangeFilterData();
     Logger().d("getAssetCount");
     AssetCount result =
         await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
@@ -36,6 +37,12 @@ class UtilizationGraphViewModel extends InsiteViewModel {
       Logger().d("result ${result.toJson()}");
     }
     _count = 0;
+    notifyListeners();
+  }
+
+  updateDateView() async {
+    Logger().d("updateDateView");
+    await getDateRangeFilterData();
     notifyListeners();
   }
 

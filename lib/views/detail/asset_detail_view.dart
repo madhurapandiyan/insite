@@ -97,6 +97,7 @@ class _TabPageState extends State<AssetDetailView> {
           screenType: ScreenType.ASSET_DETAIL,
           viewModel: viewModel,
           onFilterApplied: () {},
+          onRefineApplied: () {},
           body: viewModel.loading
               ? Center(
                   child: CircularProgressIndicator(),

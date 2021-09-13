@@ -37,6 +37,9 @@ class _AssetOperationViewState extends State<AssetOperationView> {
               onFilterApplied: () {
                 viewModel.refresh();
               },
+              onRefineApplied: () {
+                viewModel.refresh();
+              },
               body: Stack(
                 children: [
                   Column(
