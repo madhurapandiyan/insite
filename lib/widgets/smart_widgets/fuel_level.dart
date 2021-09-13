@@ -56,8 +56,8 @@ class FuelLevel extends StatelessWidget {
                       child: Container(),
                     ),
                     // Icon(
-                      // Icons.more_vert,
-                      // color: white,
+                    // Icons.more_vert,
+                    // color: white,
                     // ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class FuelLevel extends StatelessWidget {
                                 valueColor: AlwaysStoppedAnimation(liquidColor),
                                 value: value / 100,
                                 center: Text(
-                                  percentage,
+                                  percentage + "%",
                                   style: TextStyle(
                                       color: white,
                                       fontWeight: FontWeight.bold,

@@ -45,7 +45,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                       // SizedBox(
                       //   height: 20,
                       // ),
-                      Icon(Icons.arrow_drop_down, color: Colors.white),
+                      // Icon(Icons.arrow_drop_down, color: Colors.white),
                       // SizedBox(
                       //   height: 20,
                       // ),
@@ -85,7 +85,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               title: "Date/Time",
                               content: widget.fault.asset != null &&
                                       widget.fault.asset["dynamic"] != null
-                                  ? Utils.getLastReportedDateOne(
+                                  ? Utils.getLastReportedDateOneUTC(
                                       widget.fault.asset["dynamic"]
                                           ["locationReportedTimeUTC"])
                                   : "-",
@@ -130,7 +130,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               title: "Last Reported Time : ",
                               content: widget.fault.asset != null &&
                                       widget.fault.asset["dynamic"] != null
-                                  ? Utils.getLastReportedDateOne(
+                                  ? Utils.getLastReportedDateOneUTC(
                                       widget.fault.asset["dynamic"]
                                           ["locationReportedTimeUTC"])
                                   : "-",
@@ -228,7 +228,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
                                               text:
-                                                  Utils.getLastReportedDateOne(
+                                                  Utils.getLastReportedDateOneUTC(
                                                       fault.faultOccuredUTC),
                                               color: Colors.white,
                                               size: 12,

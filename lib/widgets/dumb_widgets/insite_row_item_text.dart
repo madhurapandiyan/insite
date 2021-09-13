@@ -212,15 +212,15 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
                             title: text.count.toString(),
                             padding: EdgeInsets.all(0),
                             height: 25,
-                            width: 60,
-                            fontSize: 12,
+                            width: 40,
+                            fontSize: 10,
                           ),
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 4),
                           child: InsiteText(
-                            text: " - ",
+                            text: "  -  ",
                             color: athenGrey,
                             size: 14,
                             fontWeight: FontWeight.bold,

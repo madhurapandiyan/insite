@@ -45,6 +45,7 @@ class _DashboardViewState extends State<DashboardView> {
             viewModel: viewModel,
             screenType: ScreenType.DASHBOARD,
             onFilterApplied: () {},
+            onRefineApplied: () {},
             body: SingleChildScrollView(
               child: Container(
                 color: bgcolor,

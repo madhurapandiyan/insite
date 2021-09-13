@@ -35,6 +35,8 @@ class GlobalSearchViewModel extends InsiteViewModel {
         await _searchService.getSearchResult(_searchKeyword, type);
     if (result != null) {
       _searchData = result;
+    } else {
+      _searchData = null;
     }
     _loading = false;
     notifyListeners();
@@ -48,7 +50,6 @@ class GlobalSearchViewModel extends InsiteViewModel {
             fleet: Fleet(
                 assetSerialNumber: fleet.serialNumber,
                 assetId: fleet.assetUID,
-                assetIdentifier: fleet.assetID)
-                ));
+                assetIdentifier: fleet.assetID)));
   }
 }

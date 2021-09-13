@@ -10,5 +10,6 @@ class UtilLizationViewModel extends InsiteViewModel {
 
   void refresh() async {
     await getSelectedFilterData();
+    notifyListeners();
   }
 }

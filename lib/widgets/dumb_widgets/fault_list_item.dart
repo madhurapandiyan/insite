@@ -32,7 +32,7 @@ class FaultListItem extends StatelessWidget {
                   // SizedBox(
                   //   height: 20,
                   // ),
-                  Icon(Icons.arrow_drop_down, color: Colors.white),
+                  // Icon(Icons.arrow_drop_down, color: Colors.white),
                   // SizedBox(
                   //   height: 20,
                   // ),
