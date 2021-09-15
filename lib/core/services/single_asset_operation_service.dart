@@ -27,18 +27,34 @@ class SingleAssetOperationService extends BaseService {
   Future<SingleAssetOperation> getSingleAssetOperation(
       String startDate, String endDate, String assetUID) async {
     try {
-      if (assetUID != null &&
-          assetUID.isNotEmpty &&
-          startDate != null &&
-          startDate.isNotEmpty &&
-          endDate != null &&
-          endDate.isNotEmpty) {
-        Logger().d("single asset operation");
-        SingleAssetOperation response = await MyApi()
-            .getClient()
-            .singleAssetOperation(startDate, endDate, assetUID,
-                accountSelected.CustomerUID, "in-vutilization-utz-webapi");
-        return response;
+      if (isVisionLink) {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          Logger().d("single asset operation");
+          SingleAssetOperation response = await MyApi()
+              .getClient()
+              .singleAssetOperationVL(
+                  startDate, endDate, assetUID, accountSelected.CustomerUID);
+          return response;
+        }
+      } else {
+        if (assetUID != null &&
+            assetUID.isNotEmpty &&
+            startDate != null &&
+            startDate.isNotEmpty &&
+            endDate != null &&
+            endDate.isNotEmpty) {
+          Logger().d("single asset operation");
+          SingleAssetOperation response = await MyApi()
+              .getClient()
+              .singleAssetOperation(startDate, endDate, assetUID,
+                  accountSelected.CustomerUID, "in-vutilization-utz-webapi");
+          return response;
+        }
       }
       return null;
     } catch (e) {

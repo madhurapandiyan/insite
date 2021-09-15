@@ -70,6 +70,31 @@ class Urls {
   static String logoutURLV4 =
       "https://id.trimble.com/oauth/logout?id_token_hint=actual_token&post_logout_redirect_uri=insite://mobile";
 
+  static String fleetSummaryVL =
+      "https://unifiedfleet.myvisionlink.com/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2";
+  static String assetSummaryVL =
+      "/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals";
+  static String utlizationSummaryVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization";
+  static String locationSummaryVL =
+      "/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1";
+  static String locationHistoryVL =
+      "/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/";
+  static String assetCountSummaryVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
+  static String assetCountSubscriptionSummaryVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/Subscription/v1";
+  static String faultViewSummaryVL =
+      "/t/trimble.com/vss-service/1.0/health/Faults/Search";
+  static String assetViewSummaryVL =
+      "/t/trimble.com/vss-service/1.0/health/Assets/FaultTotals";
+  static String assetHealthSummaryVL =
+      "/t/trimble.com/vss-service/1.0/health/Assets";
+  static String assetViewDetailSummaryV1VL =
+      "/t/trimble.com/vss-service/1.0/health/FaultDetails/v1";
+  static String faultCountSummaryVL =
+      "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
+
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";
   static String utlizationSummary =

@@ -31,16 +31,28 @@ class AssetLocationHistoryService extends BaseService {
     String assetUid,
   ) async {
     try {
-      AssetLocationHistory locationHistoryResponse = await MyApi()
-          .getClient()
-          .assetLocationHistory(
-              Urls.locationHistory +
-                  assetUid +
-                  "/v2" +
-                  getLocationHistoryUrl(startTimeLocal, endTimeLocal),
-              accountSelected.CustomerUID,
-              Urls.fleetMapPrefix);
-      return locationHistoryResponse != null ? locationHistoryResponse : null;
+      if (isVisionLink) {
+        AssetLocationHistory locationHistoryResponse =
+            await MyApi().getClient().assetLocationHistoryVL(
+                  Urls.locationHistoryVL +
+                      assetUid +
+                      "/v2" +
+                      getLocationHistoryUrl(startTimeLocal, endTimeLocal),
+                  accountSelected.CustomerUID,
+                );
+        return locationHistoryResponse != null ? locationHistoryResponse : null;
+      } else {
+        AssetLocationHistory locationHistoryResponse = await MyApi()
+            .getClient()
+            .assetLocationHistory(
+                Urls.locationHistory +
+                    assetUid +
+                    "/v2" +
+                    getLocationHistoryUrl(startTimeLocal, endTimeLocal),
+                accountSelected.CustomerUID,
+                Urls.fleetMapPrefix);
+        return locationHistoryResponse != null ? locationHistoryResponse : null;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
