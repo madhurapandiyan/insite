@@ -10,7 +10,7 @@ class BaseService {
   BaseService({String title}) {
     log = getLogger(title ?? this.runtimeType.toString());
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-          if ("com.example.insite.visionlink" == packageInfo.packageName)
+          if ("com.trimble.insite.visionlink" == packageInfo.packageName)
             {isVisionLink = true}
         });
   }
