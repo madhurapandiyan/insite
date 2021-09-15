@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ class LocalService extends BaseService {
   final SharedPreferences preferences;
   LocalService(this.preferences);
   static const String USER_INFO = "userInfo";
+  static const String TOKEN_INFO = "tokenInfo";
   static const String ACCOUNT_INFO = "accountInfo";
   static const String CUSTOMER_INFO = "customerInfo";
   static const String TOKEN = "token";
@@ -66,6 +68,20 @@ class LocalService extends BaseService {
     return Customer.fromJson(json.decode(data));
   }
 
+  Future<bool> saveTokenInfo(LoginResponse userInfo) async {
+    Logger().d("save token info " + userInfo.id_token);
+    return await preferences.setString(TOKEN_INFO, jsonEncode(userInfo));
+  }
+
+  Future<LoginResponse> getTokenInfo() async {
+    Logger().d("get token info ");
+    String data = preferences.getString(TOKEN_INFO);
+    if (data == null) {
+      return null;
+    }
+    return LoginResponse.fromJson(json.decode(data));
+  }
+
   Future<bool> saveCustomerInfo(Customer customer) async {
     Logger().d("save customer info ");
     return await preferences.setString(
@@ -90,6 +106,7 @@ class LocalService extends BaseService {
 
   void clearAll() async {
     await preferences.remove(CUSTOMER_INFO);
+    await preferences.remove(TOKEN_INFO);
     await preferences.remove(ACCOUNT_INFO);
     await preferences.remove(TOKEN);
     await preferences.remove(EXPIREY_TIME);

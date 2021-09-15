@@ -1,7 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
-import 'package:insite/core/services/utilization_graphs.dart';
+import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -36,7 +36,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
     _isSwitching = true;
     IdlePercentTrend result = await _utilizationGraphService
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _idlePercentTrend = null;
     else
       _idlePercentTrend = result;
@@ -56,7 +56,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     IdlePercentTrend result = await _utilizationGraphService
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _idlePercentTrend = null;
     else
       _idlePercentTrend = result;

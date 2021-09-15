@@ -84,7 +84,6 @@ class DashboardViewModel extends InsiteViewModel {
   String _dropDownValueFilter;
   String get dropDownValueFilter => _dropDownValueFilter;
 
-
   List<FilterData> filterDataProductFamily = [];
 
   bool _faultCountloading = true;

@@ -147,7 +147,7 @@ class _SplashViewState extends State<SplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: Urls.unifiedServiceloginUrl)
+                    ? WebviewScaffold(url: Urls.unifiedServiceloginUrl,)
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(),

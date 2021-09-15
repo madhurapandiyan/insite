@@ -61,10 +61,12 @@ class SplashViewModel extends BaseViewModel {
         // String result = await _nativeService.openLogin();
         // Logger().i("login result %s" + result);
         Logger().i("show webview");
+//below three lines decides to show web view or not for login
         shouldLoadWebview = true;
         Future.delayed(Duration(seconds: 2), () {
           notifyListeners();
         });
+        // _nagivationService.replaceWith(loginPageRoute);
       } else {
         if (!isProcessing) {
           Logger().i("checking for permission");
@@ -87,12 +89,21 @@ class SplashViewModel extends BaseViewModel {
           _nagivationService.replaceWith(customerSelectionViewRoute);
         }
       } else {
+        //below three lines decides to show web view or not for login
         _localService.setHasPermission(false);
         _localService.clearAll();
         shouldLoadWebview = true;
         Future.delayed(Duration(seconds: 1), () {
           notifyListeners();
         });
+        // _nagivationService.replaceWith(loginPageRoute);
+
+        // // below lines for redirecting inside app
+        // if (account != null) {
+        //   _nagivationService.replaceWith(dashboardViewRoute);
+        // } else {
+        //   _nagivationService.replaceWith(customerSelectionViewRoute);
+        // }
       }
     } catch (e) {
       Logger().e(e);

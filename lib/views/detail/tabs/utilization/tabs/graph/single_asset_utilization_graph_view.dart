@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
@@ -233,256 +234,299 @@ class _SingleAssetUtilizationGraphViewState
                       )
                     : Container(),
                 Flexible(
-                  child: ListView.builder(
-                    itemCount: getCount(viewModel.singleAssetUtilization),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (selectedGraph ==
-                          SingleAssetUtilizationGraphType
-                              .IDLETIMEIDLEPERCENTAGE)
-                        return PercentageWidget(
-                            color: sandyBrown,
-                            isTwoLineLabel: true,
-                            label: rangeChoice == 1
-                                ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
-                                : rangeChoice == 2
-                                    ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
-                                    : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                            percentage: rangeChoice == 1
-                                ? getValues(
-                                    viewModel.singleAssetUtilization
-                                        .daily[index].data.idleEfficiency,
-                                    100,
-                                    true)
-                                : rangeChoice == 2
-                                    ? getValues(
-                                        viewModel.singleAssetUtilization
-                                            .weekly[index].data.idleEfficiency,
-                                        100,
-                                        true)
-                                    : getValues(
-                                        viewModel.singleAssetUtilization
-                                            .monthly[index].data.idleEfficiency,
-                                        100,
-                                        true));
-                      else if (selectedGraph ==
-                          SingleAssetUtilizationGraphType
-                              .RUNTIMEPERFORMANCEPERCENT)
-                        return PercentageWidget(
-                          color: bermudaGrey,
-                          label:
-                              '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}',
-                          percentage: viewModel
-                                      .singleAssetUtilization
-                                      .daily[index]
-                                      .data
-                                      .targetRuntimePerformance ==
-                                  null
-                              ? null
-                              : viewModel.singleAssetUtilization.daily[index]
-                                              .data.targetRuntimePerformance *
-                                          100 >
-                                      100
-                                  ? 100
-                                  : viewModel
-                                          .singleAssetUtilization
-                                          .daily[index]
-                                          .data
-                                          .targetRuntimePerformance *
-                                      100,
-                          value: viewModel.singleAssetUtilization.daily[index]
-                                      .data.targetRuntimePerformance ==
-                                  null
-                              ? ""
-                              : viewModel.singleAssetUtilization.daily[index]
-                                              .data.targetRuntimePerformance *
-                                          100 >
-                                      100
-                                  ? (viewModel
-                                                  .singleAssetUtilization
-                                                  .daily[index]
-                                                  .data
-                                                  .targetRuntimePerformance *
-                                              100)
-                                          .toStringAsFixed(1) +
-                                      "%"
-                                  : null,
-                        );
-                      else if (selectedGraph ==
-                          SingleAssetUtilizationGraphType.RUNTIMEHOURS)
-                        return IdleWorkingGraphWidget(
-                          idleLength: rangeChoice == 1
-                              ? viewModel.singleAssetUtilization.daily[index]
-                                          .data.idleHours !=
-                                      null
-                                  ? viewModel.singleAssetUtilization
-                                      .daily[index].data.idleHours
-                                  : 0
-                              : rangeChoice == 2
-                                  ? viewModel.singleAssetUtilization
-                                              .weekly[index].data.idleHours !=
-                                          null
-                                      ? viewModel.singleAssetUtilization
-                                          .weekly[index].data.idleHours
-                                      : 0
-                                  : viewModel.singleAssetUtilization
-                                              .monthly[index].data.idleHours !=
-                                          null
-                                      ? viewModel.singleAssetUtilization
-                                          .monthly[index].data.idleHours
-                                      : 0,
-                          workingLength: rangeChoice == 1
-                              ? viewModel.singleAssetUtilization.daily[index]
-                                          .data.workingHours !=
-                                      null
-                                  ? viewModel.singleAssetUtilization
-                                      .daily[index].data.workingHours
-                                  : 0
-                              : rangeChoice == 2
-                                  ? viewModel
-                                              .singleAssetUtilization
-                                              .weekly[index]
-                                              .data
-                                              .workingHours !=
-                                          null
-                                      ? viewModel.singleAssetUtilization
-                                          .weekly[index].data.workingHours
-                                      : 0
-                                  : viewModel
-                                              .singleAssetUtilization
-                                              .monthly[index]
-                                              .data
-                                              .workingHours !=
-                                          null
-                                      ? viewModel.singleAssetUtilization
-                                          .monthly[index].data.workingHours
-                                      : 0,
-                          label: rangeChoice == 1
-                              ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}   \n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
-                              : rangeChoice == 2
-                                  ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
-                                  : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                        );
-                      else
-                        return PercentageWidget(
-                          isPercentage: false,
-                          color: periwinkleGrey,
-                          label: rangeChoice == 1
-                              ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
-                              : rangeChoice == 2
-                                  ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
-                                  : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
-                          percentage: rangeChoice == 1
-                              ? viewModel.singleAssetUtilization.daily[index]
-                                          .data.distanceTravelledKilometers !=
-                                      null
-                                  ? ((viewModel
-                                              .singleAssetUtilization
-                                              .daily[index]
-                                              .data
-                                              .distanceTravelledKilometers) >
-                                          100
-                                      ? 100
-                                      : (viewModel
-                                          .singleAssetUtilization
-                                          .daily[index]
-                                          .data
-                                          .distanceTravelledKilometers))
-                                  : 0
-                              : rangeChoice == 2
-                                  ? viewModel
-                                              .singleAssetUtilization
-                                              .weekly[index]
-                                              .data
-                                              .distanceTravelledKilometers !=
-                                          null
-                                      ? ((viewModel
+                  child: viewModel.singleAssetUtilization != null
+                      ? ListView.builder(
+                          itemCount: getCount(viewModel.singleAssetUtilization),
+                          itemBuilder: (BuildContext context, int index) {
+                            if (selectedGraph ==
+                                SingleAssetUtilizationGraphType
+                                    .IDLETIMEIDLEPERCENTAGE)
+                              return PercentageWidget(
+                                  color: sandyBrown,
+                                  isTwoLineLabel: true,
+                                  label: rangeChoice == 1
+                                      ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
+                                      : rangeChoice == 2
+                                          ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
+                                          : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                                  percentage: rangeChoice == 1
+                                      ? getValues(
+                                          viewModel.singleAssetUtilization
+                                              .daily[index].data.idleEfficiency,
+                                          100,
+                                          true)
+                                      : rangeChoice == 2
+                                          ? getValues(
+                                              viewModel
                                                   .singleAssetUtilization
                                                   .weekly[index]
                                                   .data
-                                                  .distanceTravelledKilometers) >
-                                              100
-                                          ? 100
-                                          : viewModel
-                                              .singleAssetUtilization
-                                              .weekly[index]
-                                              .data
-                                              .distanceTravelledKilometers)
-                                      : 0
-                                  : viewModel
-                                              .singleAssetUtilization
-                                              .monthly[index]
-                                              .data
-                                              .distanceTravelledKilometers !=
-                                          null
-                                      ? ((viewModel
+                                                  .idleEfficiency,
+                                              100,
+                                              true)
+                                          : getValues(
+                                              viewModel
                                                   .singleAssetUtilization
                                                   .monthly[index]
                                                   .data
-                                                  .distanceTravelledKilometers) >
-                                              100
-                                          ? 100
-                                          : viewModel
-                                              .singleAssetUtilization
-                                              .monthly[index]
-                                              .data
-                                              .distanceTravelledKilometers)
-                                      : 0,
-                          value: rangeChoice == 1
-                              ? viewModel.singleAssetUtilization.daily[index].data.distanceTravelledKilometers !=
-                                      null
-                                  ? (viewModel
-                                              .singleAssetUtilization
-                                              .daily[index]
-                                              .data
-                                              .distanceTravelledKilometers) >
-                                          100
-                                      ? (viewModel
-                                              .singleAssetUtilization
-                                              .daily[index]
-                                              .data
-                                              .distanceTravelledKilometers)
-                                          .toStringAsFixed(1)
-                                      : null
-                                  : 0
-                              : rangeChoice == 2
-                                  ? viewModel
-                                              .singleAssetUtilization
-                                              .weekly[index]
-                                              .data
-                                              .distanceTravelledKilometers !=
-                                          null
-                                      ? (viewModel
-                                                  .singleAssetUtilization
-                                                  .weekly[index]
-                                                  .data
-                                                  .distanceTravelledKilometers) >
-                                              100
-                                          ? viewModel
-                                              .singleAssetUtilization
-                                              .weekly[index]
-                                              .data
-                                              .distanceTravelledKilometers
-                                              .toStringAsFixed(1)
-                                          : null
-                                      : 0
-                                  : viewModel
-                                              .singleAssetUtilization
-                                              .monthly[index]
-                                              .data
-                                              .distanceTravelledKilometers !=
-                                          null
-                                      ? ((viewModel.singleAssetUtilization.monthly[index].data.distanceTravelledKilometers) > 100
-                                          ? viewModel
-                                              .singleAssetUtilization
-                                              .monthly[index]
-                                              .data
-                                              .distanceTravelledKilometers
-                                              .toStringAsFixed(1)
-                                          : null)
-                                      : null,
-                        );
-                    },
-                  ),
+                                                  .idleEfficiency,
+                                              100,
+                                              true));
+                            else if (selectedGraph ==
+                                SingleAssetUtilizationGraphType
+                                    .RUNTIMEPERFORMANCEPERCENT)
+                              return PercentageWidget(
+                                color: bermudaGrey,
+                                label:
+                                    '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}',
+                                percentage: viewModel
+                                            .singleAssetUtilization
+                                            .daily[index]
+                                            .data
+                                            .targetRuntimePerformance ==
+                                        null
+                                    ? null
+                                    : viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .targetRuntimePerformance *
+                                                100 >
+                                            100
+                                        ? 100
+                                        : viewModel
+                                                .singleAssetUtilization
+                                                .daily[index]
+                                                .data
+                                                .targetRuntimePerformance *
+                                            100,
+                                value: viewModel
+                                            .singleAssetUtilization
+                                            .daily[index]
+                                            .data
+                                            .targetRuntimePerformance ==
+                                        null
+                                    ? ""
+                                    : viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .targetRuntimePerformance *
+                                                100 >
+                                            100
+                                        ? (viewModel
+                                                        .singleAssetUtilization
+                                                        .daily[index]
+                                                        .data
+                                                        .targetRuntimePerformance *
+                                                    100)
+                                                .toStringAsFixed(1) +
+                                            "%"
+                                        : null,
+                              );
+                            else if (selectedGraph ==
+                                SingleAssetUtilizationGraphType.RUNTIMEHOURS)
+                              return IdleWorkingGraphWidget(
+                                idleLength: rangeChoice == 1
+                                    ? viewModel.singleAssetUtilization
+                                                .daily[index].data.idleHours !=
+                                            null
+                                        ? viewModel.singleAssetUtilization
+                                            .daily[index].data.idleHours
+                                        : 0
+                                    : rangeChoice == 2
+                                        ? viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .idleHours !=
+                                                null
+                                            ? viewModel.singleAssetUtilization
+                                                .weekly[index].data.idleHours
+                                            : 0
+                                        : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .idleHours !=
+                                                null
+                                            ? viewModel.singleAssetUtilization
+                                                .monthly[index].data.idleHours
+                                            : 0,
+                                workingLength: rangeChoice == 1
+                                    ? viewModel
+                                                .singleAssetUtilization
+                                                .daily[index]
+                                                .data
+                                                .workingHours !=
+                                            null
+                                        ? viewModel.singleAssetUtilization
+                                            .daily[index].data.workingHours
+                                        : 0
+                                    : rangeChoice == 2
+                                        ? viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .workingHours !=
+                                                null
+                                            ? viewModel.singleAssetUtilization
+                                                .weekly[index].data.workingHours
+                                            : 0
+                                        : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .workingHours !=
+                                                null
+                                            ? viewModel
+                                                .singleAssetUtilization
+                                                .monthly[index]
+                                                .data
+                                                .workingHours
+                                            : 0,
+                                label: rangeChoice == 1
+                                    ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}   \n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
+                                    : rangeChoice == 2
+                                        ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
+                                        : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                              );
+                            else
+                              return PercentageWidget(
+                                isPercentage: false,
+                                color: periwinkleGrey,
+                                label: rangeChoice == 1
+                                    ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
+                                    : rangeChoice == 2
+                                        ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.weekly[index].endDate)}'
+                                        : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].startDate)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.monthly[index].endDate)}',
+                                percentage: rangeChoice == 1
+                                    ? viewModel
+                                                .singleAssetUtilization
+                                                .daily[index]
+                                                .data
+                                                .distanceTravelledKilometers !=
+                                            null
+                                        ? ((viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .distanceTravelledKilometers) >
+                                                100
+                                            ? 100
+                                            : (viewModel
+                                                .singleAssetUtilization
+                                                .daily[index]
+                                                .data
+                                                .distanceTravelledKilometers))
+                                        : 0
+                                    : rangeChoice == 2
+                                        ? viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers !=
+                                                null
+                                            ? ((viewModel
+                                                        .singleAssetUtilization
+                                                        .weekly[index]
+                                                        .data
+                                                        .distanceTravelledKilometers) >
+                                                    100
+                                                ? 100
+                                                : viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers)
+                                            : 0
+                                        : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers !=
+                                                null
+                                            ? ((viewModel
+                                                        .singleAssetUtilization
+                                                        .monthly[index]
+                                                        .data
+                                                        .distanceTravelledKilometers) >
+                                                    100
+                                                ? 100
+                                                : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers)
+                                            : 0,
+                                value: rangeChoice == 1
+                                    ? viewModel
+                                                .singleAssetUtilization
+                                                .daily[index]
+                                                .data
+                                                .distanceTravelledKilometers !=
+                                            null
+                                        ? (viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .distanceTravelledKilometers) >
+                                                100
+                                            ? (viewModel
+                                                    .singleAssetUtilization
+                                                    .daily[index]
+                                                    .data
+                                                    .distanceTravelledKilometers)
+                                                .toStringAsFixed(1)
+                                            : null
+                                        : 0
+                                    : rangeChoice == 2
+                                        ? viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers !=
+                                                null
+                                            ? (viewModel
+                                                        .singleAssetUtilization
+                                                        .weekly[index]
+                                                        .data
+                                                        .distanceTravelledKilometers) >
+                                                    100
+                                                ? viewModel
+                                                    .singleAssetUtilization
+                                                    .weekly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers
+                                                    .toStringAsFixed(1)
+                                                : null
+                                            : 0
+                                        : viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers !=
+                                                null
+                                            ? ((viewModel
+                                                        .singleAssetUtilization
+                                                        .monthly[index]
+                                                        .data
+                                                        .distanceTravelledKilometers) >
+                                                    100
+                                                ? viewModel
+                                                    .singleAssetUtilization
+                                                    .monthly[index]
+                                                    .data
+                                                    .distanceTravelledKilometers
+                                                    .toStringAsFixed(1)
+                                                : null)
+                                            : null,
+                              );
+                          },
+                        )
+                      : EmptyView(
+                          title: "No Results",
+                        ),
                 ),
               ],
             ),

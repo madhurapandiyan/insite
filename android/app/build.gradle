@@ -26,8 +26,8 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 30
+    buildToolsVersion '29.0.3'
     ndkVersion "22.0.7026061"
 
     sourceSets {
@@ -36,12 +36,13 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        checkReleaseBuilds false //Insert this line
     }
 
     defaultConfig {
         applicationId "com.example.insite"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -53,6 +54,21 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "flavors"
+    productFlavors {
+        visionlink {
+            dimension "flavors"
+            applicationIdSuffix ".visionlink"
+            versionNameSuffix "-visionlink"
+        }
+        indiastack {
+            dimension "flavors"
+            applicationIdSuffix ".indiastack"
+            versionNameSuffix "-indiastack"
+        }
+    }
+
 }
 
 flutter {

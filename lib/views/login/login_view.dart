@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/urls.dart';
@@ -52,14 +51,14 @@ class _LoginViewState extends State<LoginView> {
           "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
         print("STATE changed with access token: $state.url");
         try {
-          // Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 2), () {
           flutterWebviewPlugin.cleanCookies();
           flutterWebviewPlugin.clearCache();
           flutterWebviewPlugin.launch(Urls.unifiedServiceloginUrl);
           // _navigationService.replaceWith(logoutViewRoute);
           // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
           //     predicate: (Route<dynamic> route) => false);
-          // });
+          });
           // flutterWebviewPlugin.close();
         } catch (e) {
           Logger().e(e);
@@ -97,14 +96,14 @@ class _LoginViewState extends State<LoginView> {
         if (url.startsWith(Urls.unifiedServiceBaseUrl +
             "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
           print("URL changed with session data key");
-          // Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 2), () {
           flutterWebviewPlugin.cleanCookies();
           flutterWebviewPlugin.clearCache();
           flutterWebviewPlugin.launch(Urls.unifiedServiceloginUrl);
           // _navigationService.replaceWith(logoutViewRoute);
           // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
           //     predicate: (Route<dynamic> route) => false);
-          // });
+          });
           // flutterWebviewPlugin.close();
         } else if (url
             .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {

@@ -1,7 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
-import 'package:insite/core/services/utilization_graphs.dart';
+import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -36,7 +36,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
     _isSwitching = true;
     FuelBurnRateTrend result = await _utilizationGraphService
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _fuelBurnRateTrend = null;
     else
       _fuelBurnRateTrend = result;
@@ -50,7 +50,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
     notifyListeners();
     FuelBurnRateTrend result = await _utilizationGraphService
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _fuelBurnRateTrend = null;
     else
       _fuelBurnRateTrend = result;

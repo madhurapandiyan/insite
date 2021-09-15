@@ -1,0 +1,70 @@
+{
+    "last_updated": "Wed, 04 Aug 2021 09:55:17 GMT",
+    "routes": [
+        {
+            "file_path": "views/splash/india_stack_splash_view.dart",
+            "route_name": "indiaStackSplashViewRoute",
+            "view_name": "IndiaStackSplashView"
+        },
+        {
+            "file_path": "views/customer_selection/customer_selection_view.dart",
+            "route_name": "customer_selectionViewRoute",
+            "view_name": "CustomerSelectionView"
+        },
+        {
+            "file_path": "views/home/home_view.dart",
+            "route_name": "homeViewRoute",
+            "view_name": "HomeView"
+        },
+        {
+            "file_path": "views/fleet/fleet_view.dart",
+            "route_name": "fleetViewRoute",
+            "view_name": "FleetView"
+        },
+        {
+            "file_path": "views/login/india_stack_login_view.dart",
+            "route_name": "indiaStackLoginViewRoute",
+            "view_name": "IndiaStackLoginView"
+        },
+        {
+            "file_path": "views/logout/india_stack_logout_view.dart",
+            "route_name": "indiaStackLogoutViewRoute",
+            "view_name": "IndiaStackLogoutView"
+        },
+        {
+            "file_path": "views/global_search/global_search_view.dart",
+            "route_name": "globalSearchViewRoute",
+            "view_name": "GlobalSearchView"
+        },
+        {
+            "file_path": "views/dashboard/dashboard_view.dart",
+            "route_name": "dashboardViewRoute",
+            "view_name": "DashboardView"
+        },
+        {
+            "file_path": "views/asset/asset_view.dart",
+            "route_name": "assetViewRoute",
+            "view_name": "AssetView"
+        },
+        {
+            "file_path": "views/detail/asset_detail_view.dart",
+            "route_name": "assetDetailViewRoute",
+            "view_name": "AssetDetailView"
+        },
+        {
+            "file_path": "views/location/location_view.dart",
+            "route_name": "locationViewRoute",
+            "view_name": "LocationView"
+        },
+        {
+            "file_path": "views/health/health_view.dart",
+            "route_name": "healthViewRoute",
+            "view_name": "HealthView"
+        },
+        {
+            "file_path": "views/login/login_page.dart",
+            "route_name": "loginPageRoute",
+            "view_name": "LoginPage"
+        }
+    ]
+}

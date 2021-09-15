@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends InsiteViewModel {
   Logger log;
   var formKey = GlobalKey<FormState>();
   var _loginService = locator<LoginService>();
+  var _localService = locator<LocalService>();
+  var _snackbarService = locator<SnackbarService>();
   var usernameController;
   var passwordController;
   bool _loading = false;
@@ -22,10 +26,41 @@ class LoginViewModel extends InsiteViewModel {
   }
 
   getLoginData(String username, String password) async {
-    LoginResponse result = await _loginService.getLoginData(username, password);
-    _loginService.saveToken(result.access_token, result.expires_in.toString());
     _loading = true;
     notifyListeners();
+    LoginResponse result = await _loginService.getLoginData(username, password);
+    if (result != null) {
+      await _localService.saveTokenInfo(result);
+      await _loginService.saveToken(
+          result.access_token, result.expires_in.toString(),false);
+    } else {
+      _snackbarService.showSnackbar(
+          message: "Something went wrong!", duration: Duration(seconds: 2));
+    }
+    Future.delayed(Duration(seconds: 1), () {
+      _loading = false;
+      notifyListeners();
+    });
+    print('data:$result');
+  }
+
+  getLoginDataV4() async {
+    _loading = true;
+    notifyListeners();
+    LoginResponse result =
+        await _loginService.getLoginDataV4("username", "password", "");
+    if (result != null) {
+      await _localService.saveTokenInfo(result);
+      await _loginService.saveToken(
+          result.access_token, result.expires_in.toString(),false);
+    } else {
+      _snackbarService.showSnackbar(
+          message: "Something went wrong!", duration: Duration(seconds: 2));
+    }
+    Future.delayed(Duration(seconds: 1), () {
+      _loading = false;
+      notifyListeners();
+    });
     print('data:$result');
   }
 

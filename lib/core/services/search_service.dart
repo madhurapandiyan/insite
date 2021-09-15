@@ -4,6 +4,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class SearchService extends BaseService {
@@ -34,22 +35,35 @@ class SearchService extends BaseService {
           Logger().i("searchByIDWithCI");
           SearchData searchResponse = await MyApi()
               .getClient()
-              .searchByIDWithCI(searchKeyword, customerSelected.CustomerUID,
-                  accountSelected.CustomerUID);
+              .searchByIDWithCI(
+                  Urls.search,
+                  searchKeyword,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
           return searchResponse;
         } else if (type == "S/N") {
           Logger().i("searchBySNWithCI");
           SearchData searchResponse = await MyApi()
               .getClient()
-              .searchBySNWithCI(searchKeyword, customerSelected.CustomerUID,
-                  accountSelected.CustomerUID);
+              .searchBySNWithCI(
+                  Urls.search,
+                  searchKeyword,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
           return searchResponse;
         } else {
           Logger().i("searchByAllWithCI");
           SearchData searchResponse = await MyApi()
               .getClient()
-              .searchByAllWithCI(searchKeyword, searchKeyword,
-                  customerSelected.CustomerUID, accountSelected.CustomerUID);
+              .searchByAllWithCI(
+                  Urls.search,
+                  searchKeyword,
+                  searchKeyword,
+                  customerSelected.CustomerUID,
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
           return searchResponse;
         }
       } else if (searchKeyword != null &&
@@ -57,20 +71,28 @@ class SearchService extends BaseService {
           accountSelected != null) {
         if (type == "ID") {
           Logger().i("searchByID");
-          SearchData searchResponse = await MyApi()
-              .getClient()
-              .searchByID(searchKeyword, accountSelected.CustomerUID);
+          SearchData searchResponse = await MyApi().getClient().searchByID(
+              Urls.search,
+              searchKeyword,
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix);
           return searchResponse;
         } else if (type == "S/N") {
           Logger().i("searchBySN");
-          SearchData searchResponse = await MyApi()
-              .getClient()
-              .searchBySN(searchKeyword, accountSelected.CustomerUID);
+          SearchData searchResponse = await MyApi().getClient().searchBySN(
+              Urls.search,
+              searchKeyword,
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix);
           return searchResponse;
         } else {
           Logger().i("searchByAll");
           SearchData searchResponse = await MyApi().getClient().searchByAll(
-              searchKeyword, searchKeyword, accountSelected.CustomerUID);
+              Urls.search,
+              searchKeyword,
+              searchKeyword,
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix);
           return searchResponse;
         }
       }

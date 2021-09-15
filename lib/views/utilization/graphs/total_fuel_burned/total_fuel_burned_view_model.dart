@@ -1,7 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
-import 'package:insite/core/services/utilization_graphs.dart';
+import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -36,7 +36,7 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
     _isSwitching = true;
     TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
-    if (result.cumulatives == null)
+    if (result == null || result.cumulatives == null)
       _totalFuelBurned = null;
     else
       _totalFuelBurned = result;

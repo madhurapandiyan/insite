@@ -19,10 +19,6 @@ class AssetService extends BaseService {
   Customer accountSelected;
   Customer customerSelected;
 
-  AssetService() {
-    setUp();
-  }
-
   setUp() async {
     try {
       accountSelected = await _localService.getAccountInfo();
@@ -41,33 +37,66 @@ class AssetService extends BaseService {
     List<FilterData> appliedFilters,
   ) async {
     try {
-      AssetResponse assetResponse =
-          accountSelected != null && customerSelected != null
-              ? await MyApi().getClient().assetSummaryURL(
-                  Urls.assetSummary +
-                      FilterUtils.getFilterURL(
-                          startDate,
-                          endDate,
-                          pageNumber,
-                          pageSize,
-                          customerSelected.CustomerUID,
-                          menuFilterType,
-                          appliedFilters,
-                          ScreenType.ASSET_OPERATION),
-                  accountSelected.CustomerUID)
-              : await MyApi().getClient().assetSummaryURL(
-                  Urls.assetSummary +
-                      FilterUtils.getFilterURL(
-                          startDate,
-                          endDate,
-                          pageNumber,
-                          pageSize,
-                          null,
-                          menuFilterType,
-                          appliedFilters,
-                          ScreenType.ASSET_OPERATION),
-                  accountSelected.CustomerUID);
-      return assetResponse.assetOperations;
+      if (isVisionLink) {
+        AssetResponse assetResponse =
+            accountSelected != null && customerSelected != null
+                ? await MyApi().getClient().assetSummaryURLVL(
+                    Urls.assetSummaryVL +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNumber,
+                            pageSize,
+                            customerSelected.CustomerUID,
+                            menuFilterType,
+                            appliedFilters,
+                            ScreenType.ASSET_OPERATION),
+                    accountSelected.CustomerUID)
+                : await MyApi().getClient().assetSummaryURLVL(
+                      Urls.assetSummaryVL +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              null,
+                              menuFilterType,
+                              appliedFilters,
+                              ScreenType.ASSET_OPERATION),
+                      accountSelected.CustomerUID,
+                    );
+        return assetResponse.assetOperations;
+      } else {
+        AssetResponse assetResponse =
+            accountSelected != null && customerSelected != null
+                ? await MyApi().getClient().assetSummaryURL(
+                    Urls.assetSummary +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNumber,
+                            pageSize,
+                            customerSelected.CustomerUID,
+                            menuFilterType,
+                            appliedFilters,
+                            ScreenType.ASSET_OPERATION),
+                    accountSelected.CustomerUID,
+                    "in-vutilization-utz-webapi")
+                : await MyApi().getClient().assetSummaryURL(
+                    Urls.assetSummary +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNumber,
+                            pageSize,
+                            null,
+                            menuFilterType,
+                            appliedFilters,
+                            ScreenType.ASSET_OPERATION),
+                    accountSelected.CustomerUID,
+                    "in-vutilization-utz-webapi");
+        return assetResponse.assetOperations;
+      }
     } catch (e) {
       Logger().e("getAssetSummaryList $e");
       return null;
@@ -76,10 +105,20 @@ class AssetService extends BaseService {
 
   Future<AssetDetail> getAssetDetail(assetUID) async {
     try {
-      AssetDetail assetResponse = await MyApi()
-          .getClient()
-          .assetDetail(assetUID, accountSelected.CustomerUID);
-      return assetResponse;
+      if (isVisionLink) {
+        AssetDetail assetResponse = await MyApi().getClient().assetDetailVL(
+              assetUID,
+              accountSelected.CustomerUID,
+            );
+        return assetResponse;
+      } else {
+        AssetDetail assetResponse = await MyApi().getClient().assetDetail(
+            Urls.assetDetails,
+            assetUID,
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
+        return assetResponse;
+      }
     } catch (e) {
       Logger().e("getAssetDetail $e");
       return null;
@@ -100,10 +139,22 @@ class AssetService extends BaseService {
 
   Future<List<Note>> getAssetNotes(assetUID) async {
     try {
-      List<Note> notes = await MyApi()
-          .getClient()
-          .getAssetNotes(assetUID, accountSelected.CustomerUID);
-      return notes;
+      if (isVisionLink) {
+        List<Note> notes = await MyApi().getClient().getAssetNotesVL(
+              assetUID,
+              accountSelected.CustomerUID,
+            );
+        if (notes != null) {
+          return notes;
+        }
+      } else {
+        List<Note> notes = await MyApi().getClient().getAssetNotes(Urls.notes,
+            assetUID, accountSelected.CustomerUID, Urls.assetprefix);
+        if (notes != null) {
+          return notes;
+        }
+      }
+      return null;
     } catch (e) {
       Logger().e(e);
       return null;
@@ -112,9 +163,16 @@ class AssetService extends BaseService {
 
   postNotes(assetUID, note) async {
     try {
-      await MyApi()
-          .getClient()
-          .postNotes(PostNote(assetUID: assetUID, assetUserNote: note));
+      if (isVisionLink) {
+        await MyApi().getClient().postNotesVL(
+              PostNote(assetUID: assetUID, assetUserNote: note),
+            );
+      } else {
+        await MyApi().getClient().postNotes(
+            Urls.notes,
+            PostNote(assetUID: assetUID, assetUserNote: note),
+            Urls.assetprefix);
+      }
     } catch (e) {
       Logger().e(e);
       return null;

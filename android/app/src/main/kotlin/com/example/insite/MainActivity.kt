@@ -33,7 +33,7 @@ methodChannel.setMethodCallHandler {
     }
 
     private fun openLogin(){
-            val loginUrl=  "https://identity-stg.trimble.com/i/oauth2/authorize?scope=openid&response_type=code&redirect_uri="+"eoltool://mobile"+"&client_id="+"r9GxbyX4uNMjpB1yZge6fiWSGQ4a"
+            val loginUrl=  "https://identity-stg.trimble.com/i/oauth2/authorize?scope=openid&response_type=code&redirect_uri="+"insite://mobile"+"&client_id="+"r9GxbyX4uNMjpB1yZge6fiWSGQ4a"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(loginUrl))
             startActivity(intent)
     }
@@ -60,7 +60,7 @@ methodChannel.setMethodCallHandler {
     }
 
     fun getCodeFromURI(uri: Uri): String? {
-        if (uri.toString().startsWith("eoltool://mobile")) {
+        if (uri.toString().startsWith("insite://mobile")) {
             if (uri.toString().contains("code")) {
                 val code = uri.getQueryParameter("code")
                                 Log.d("code", code.toString())

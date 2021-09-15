@@ -3,10 +3,13 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';
@@ -25,9 +28,11 @@ class LoginService extends BaseService {
       //     grant_type: "authorization_code",
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
-      //     redirect_uri: "eoltool://mobile");
-      UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
-          "application/json", "Bearer" + " " + await _localService.getToken());
+      //     redirect_uri: "insite://mobile");
+      UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
+          "application/x-www-form-urlencoded",
+          "Bearer" + " " + await _localService.getToken(),
+          AccessToken(access_token: await _localService.getToken()));
       return userInfo;
     } catch (e) {
       Logger().e(e.toString());
@@ -35,7 +40,7 @@ class LoginService extends BaseService {
     }
   }
 
-  void getUser(token, shouldRemovePreviousRoutes) async {
+  getUser(token, shouldRemovePreviousRoutes) async {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
@@ -45,9 +50,11 @@ class LoginService extends BaseService {
           _localService.saveUserInfo(userInfo);
           Logger().i("launching home from login service");
           if (shouldRemovePreviousRoutes) {
+            Logger().i("true");
             _nagivationService.pushNamedAndRemoveUntil(
-                customerSelectionViewRoute,
-                predicate: (Route<dynamic> route) => false);
+                customerSelectionViewRoute, predicate: (Route<dynamic> route) {
+              return false;
+            });
           } else {
             _nagivationService.replaceWith(customerSelectionViewRoute);
           }
@@ -55,8 +62,9 @@ class LoginService extends BaseService {
       });
     } catch (e) {
       Logger().e(e);
-      Logger().i("launching home from login service");
+      Logger().i("exception launching home from login service");
       if (shouldRemovePreviousRoutes) {
+        Logger().i("true");
         _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
             predicate: (Route<dynamic> route) => false);
       } else {
@@ -65,29 +73,53 @@ class LoginService extends BaseService {
     }
   }
 
-  void saveExpiryTime(String expiryTime) {}
+  saveExpiryTime(String expiryTime) async {}
 
   Future<List<Customer>> getCustomers() async {
-    try {
-      CustomersResponse response =
-          await MyApi().getClient().accountHierarchy(true);
-      List<Customer> list = response.Customers;
-      return list;
-    } catch (e) {
-      Logger().e(e);
-      return [];
+    if (isVisionLink) {
+      try {
+        CustomersResponse response =
+            await MyApi().getClient().accountHierarchyVL(true);
+        List<Customer> list = response.Customers;
+        return list;
+      } catch (e) {
+        Logger().e(e);
+        return [];
+      }
+    } else {
+      try {
+        CustomersResponse response = await MyApi().getClient().accountHierarchy(
+            Urls.accounthierarchy, true, "in-vlmasterdata-api-vlmd-customer");
+        List<Customer> list = response.Customers;
+        return list;
+      } catch (e) {
+        Logger().e(e);
+        return [];
+      }
     }
   }
 
   Future<List<Customer>> getSubCustomers(customerId) async {
     try {
-      CustomersResponse response =
-          await MyApi().getClient().accountHierarchyChildren(customerId);
-      List<Customer> list = [];
-      if (response.Customers.isNotEmpty) {
-        list = response.Customers[0].Children;
+      if (isVisionLink) {
+        CustomersResponse response =
+            await MyApi().getClient().accountHierarchyChildrenVL(customerId);
+        List<Customer> list = [];
+        if (response.Customers.isNotEmpty) {
+          list = response.Customers[0].Children;
+        }
+        return list;
+      } else {
+        CustomersResponse response = await MyApi()
+            .getClient()
+            .accountHierarchyChildren(Urls.accounthierarchy, customerId,
+                "in-vlmasterdata-api-vlmd-customer");
+        List<Customer> list = [];
+        if (response.Customers.isNotEmpty) {
+          list = response.Customers[0].Children;
+        }
+        return list;
       }
-      return list;
     } catch (e) {
       Logger().e(e);
       return [];
@@ -96,17 +128,31 @@ class LoginService extends BaseService {
 
   Future<List<Permission>> getPermissions() async {
     try {
-      Customer customer = await _localService.getAccountInfo();
-      PermissionResponse response = await MyApi().getClient().getPermission(
-          10000,
-          "Prod-VLUnifiedFleet",
-          customer.CustomerUID,
-          customer.CustomerUID);
-      List<Permission> list = [];
-      if (response != null && response.permission_list.isNotEmpty) {
-        list = response.permission_list;
+      if (isVisionLink) {
+        Customer customer = await _localService.getAccountInfo();
+        PermissionResponse response = await MyApi().getClient().getPermissionVL(
+            10000,
+            "Prod-VLUnifiedFleet",
+            customer.CustomerUID,
+            customer.CustomerUID);
+        List<Permission> list = [];
+        if (response != null && response.permission_list.isNotEmpty) {
+          list = response.permission_list;
+        }
+        return list;
+      } else {
+        UserInfo userInfo = await _localService.getLoggedInUser();
+        Customer customer = await _localService.getAccountInfo();
+        PermissionResponse response = await MyApi()
+            .getClientFour()
+            .getPermission(10000, "Frame-Fleet-in", customer.CustomerUID,
+                customer.CustomerUID, userInfo.uuid);
+        List<Permission> list = [];
+        if (response != null && response.permission_list.isNotEmpty) {
+          list = response.permission_list;
+        }
+        return list;
       }
-      return list;
     } catch (e) {
       Logger().e(e);
       return [];
@@ -118,7 +164,7 @@ class LoginService extends BaseService {
     password,
   ) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientOne().getLoginData(
+      LoginResponse loginResponse = await MyApi().getClientOne().getToken(
           username,
           password,
           'password',
@@ -133,9 +179,29 @@ class LoginService extends BaseService {
     return null;
   }
 
-  saveToken(token, String expiryTime) {
+  Future<LoginResponse> getLoginDataV4(
+      code, code_challenge, code_verifier) async {
+    try {
+      LoginResponse loginResponse = await MyApi().getClientFive().getTokenV4(
+          GetTokenData(
+              code: code,
+              code_challenge: code_challenge,
+              code_verifier: code_verifier,
+              tenantDomain: "Trimble.com",
+              redirect_uri: "https://d1pavvpktln7z7.cloudfront.net/auth",
+              grant_type: "authorization_code",
+              client_id: "fe148324-cca6-4342-9a28-d5de23a95005"),
+          "application/x-www-form-urlencoded");
+      return loginResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
-    getUser(token, false);
-    saveExpiryTime(expiryTime);
+    await getUser(token, shouldRemovePrevRoutes);
+    await saveExpiryTime(expiryTime);
   }
 }
