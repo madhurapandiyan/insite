@@ -2383,9 +2383,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-<<<<<<< HEAD
-  Future<LoginResponse> getToken(username, password, granttype, clientid,
-=======
   Future<UtilizationSummary> getAssetUtilizationVL(date, customerId) async {
     ArgumentError.checkNotNull(date, 'date');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -2431,8 +2428,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<LoginResponse> getLoginData(username, password, granttype, clientid,
->>>>>>> d7ef7e1214ca5daedee4ba91741c4db6c21110b6
+  Future<LoginResponse> getToken(username, password, granttype, clientid,
       clientsecret, scope, contentType) async {
     ArgumentError.checkNotNull(username, 'username');
     ArgumentError.checkNotNull(password, 'password');
@@ -2452,6 +2448,27 @@ class _RestClient implements RestClient {
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/token',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'content-type': contentType},
+            extra: _extra,
+            contentType: contentType,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = LoginResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<LoginResponse> getTokenV4(tokenData, contentType) async {
+    ArgumentError.checkNotNull(tokenData, 'tokenData');
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(tokenData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('/oauth/token',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -2507,27 +2524,6 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = FaultSummaryResponse.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<LoginResponse> getTokenV4(tokenData, contentType) async {
-    ArgumentError.checkNotNull(tokenData, 'tokenData');
-    ArgumentError.checkNotNull(contentType, 'contentType');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(tokenData?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request<Map<String, dynamic>>('/oauth/token',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{r'content-type': contentType},
-            extra: _extra,
-            contentType: contentType,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = LoginResponse.fromJson(_result.data);
     return value;
   }
 

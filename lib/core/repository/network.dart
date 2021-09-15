@@ -45,7 +45,7 @@ class MyApi {
 }
 
 class HttpWrapper {
-  final String _baseUrl = "https://unifiedfleet.myvisionlink.com";
+  final String _baseUrl = "https://cloud.api.trimble.com/CTSPulseIndiastg";
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
   final String _baseUrlTwo = "https://singlesearch.alk.com";
