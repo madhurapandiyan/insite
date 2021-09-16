@@ -336,21 +336,6 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> assetCount(
       @Path() String url,
-      @Query("grouping") String grouping,
-      @Header("x-visionlink-customeruid") customerId,
-      @Header("service") service);
-
-  @GET('{url}')
-  Future<AssetCount> assetCountAll(
-      @Path() String url,
-      @Header("x-visionlink-customeruid") customerId,
-      @Header("service") service);
-
-  @GET('{url}')
-  Future<AssetCount> assetCountcustomerUID(
-      @Path() String url,
-      @Query("grouping") String grouping,
-      @Query("customerUID") String customerUID,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
 
@@ -778,44 +763,15 @@ abstract class RestClient {
   );
 
   @GET('{url}')
-  Future<AssetCount> faultCountcustomerUID(
-      @Path() String url,
-      @Query("startDateTime") String startDate,
-      @Query("endDateTime") String endDate,
-      @Query("customerUid") String customerUid,
-      @Header("x-visionlink-customeruid") customerId,
-      @Header("service") service);
-
-  @GET('{url}')
   Future<AssetCount> faultCount(
       @Path() String url,
-      @Query("startDateTime") String startDate,
-      @Query("endDateTime") String endDate,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
-
-  @GET('{url}')
-  Future<AssetCount> faultCountcustomerUIDVL(
-      @Path() String url,
-      @Query("startDateTime") String startDate,
-      @Query("endDateTime") String endDate,
-      @Query("customerUid") String customerUid,
-      @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
   Future<AssetCount> faultCountVL(
       @Path() String url,
-      @Query("startDateTime") String startDate,
-      @Query("endDateTime") String endDate,
       @Header("x-visionlink-customeruid") customerId);
-
-  @GET('{url}')
-  Future<AssetCount> assetStatusFilterData(
-      @Path() String url,
-      @Query("grouping") String grouping,
-      @Query("productfamily") String productfamily,
-      @Header("x-visionlink-customeruid") customerId,
-      @Header("service") service);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> assetStatusFilterDataVL(
@@ -826,9 +782,6 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> fuelLevelFilterData(
       @Path() String url,
-      @Query("grouping") String grouping,
-      @Query("productfamily") String productfamily,
-      @Query("thresholds") String thresholds,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
 

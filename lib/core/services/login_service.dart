@@ -9,7 +9,6 @@ import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';

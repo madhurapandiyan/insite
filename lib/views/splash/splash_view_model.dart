@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/permission.dart';
@@ -10,10 +11,9 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SplashViewModel extends BaseViewModel {
+class SplashViewModel extends InsiteViewModel {
   Logger log;
   final _nagivationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
@@ -61,7 +61,7 @@ class SplashViewModel extends BaseViewModel {
         // String result = await _nativeService.openLogin();
         // Logger().i("login result %s" + result);
         Logger().i("show webview");
-//below three lines decides to show web view or not for login
+        //below three lines decides to show web view or not for login
         shouldLoadWebview = true;
         Future.delayed(Duration(seconds: 2), () {
           notifyListeners();
@@ -80,30 +80,38 @@ class SplashViewModel extends BaseViewModel {
 
   checkPermission(Customer account) async {
     try {
-      List<Permission> list = await _loginService.getPermissions();
-      if (list.isNotEmpty) {
+      if (isVisionLink) {
+        List<Permission> list = await _loginService.getPermissions();
+        if (list.isNotEmpty) {
+          _localService.setHasPermission(true);
+          if (account != null) {
+            _nagivationService.replaceWith(dashboardViewRoute);
+          } else {
+            _nagivationService.replaceWith(customerSelectionViewRoute);
+          }
+        } else {
+          //below three lines decides to show web view or not for login
+          _localService.setHasPermission(false);
+          _localService.clearAll();
+          shouldLoadWebview = true;
+          Future.delayed(Duration(seconds: 1), () {
+            notifyListeners();
+          });
+          // _nagivationService.replaceWith(loginPageRoute);
+          // // below lines for redirecting inside app
+          // if (account != null) {
+          //   _nagivationService.replaceWith(dashboardViewRoute);
+          // } else {
+          //   _nagivationService.replaceWith(customerSelectionViewRoute);
+          // }
+        }
+      } else {
         _localService.setHasPermission(true);
         if (account != null) {
           _nagivationService.replaceWith(dashboardViewRoute);
         } else {
           _nagivationService.replaceWith(customerSelectionViewRoute);
         }
-      } else {
-        //below three lines decides to show web view or not for login
-        _localService.setHasPermission(false);
-        _localService.clearAll();
-        shouldLoadWebview = true;
-        Future.delayed(Duration(seconds: 1), () {
-          notifyListeners();
-        });
-        // _nagivationService.replaceWith(loginPageRoute);
-
-        // // below lines for redirecting inside app
-        // if (account != null) {
-        //   _nagivationService.replaceWith(dashboardViewRoute);
-        // } else {
-        //   _nagivationService.replaceWith(customerSelectionViewRoute);
-        // }
       }
     } catch (e) {
       Logger().e(e);

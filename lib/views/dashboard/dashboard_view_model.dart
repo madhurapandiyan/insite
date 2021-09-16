@@ -111,13 +111,8 @@ class DashboardViewModel extends InsiteViewModel {
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetCount();
-      getAssetStatusData();
-      getFuelLevelData();
-      getIdlingLevelData(false);
-      //  getAssetLocation();
-      getUtilizationSummary();
-      getFaultCoundData();
       getFilterData();
+      getData();
     });
   }
 
@@ -127,15 +122,6 @@ class DashboardViewModel extends InsiteViewModel {
 
   int pageNumber = 1;
   int pageSize = 2500;
-
-  // getAssetLocation() async {
-  //   AssetLocationData result =
-  //       await _assetLocationService.getAssetLocationWithoutFilter(
-  //           pageNumber, pageSize, '-lastlocationupdateutc');
-  //   _assetLocation = result;
-  //   _assetLocationloading = false;
-  //   notifyListeners();
-  // }
 
   void logout() {
     _localService.clearAll();
@@ -173,7 +159,7 @@ class DashboardViewModel extends InsiteViewModel {
     await getAssetStatusData();
     await getFuelLevelData();
     await getUtilizationSummary();
-    await getFaultCoundData();
+    await getFaultCountData();
     await getIdlingLevelData(false);
     _refreshing = false;
     notifyListeners();
@@ -232,7 +218,7 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getFaultCoundData() async {
+  getFaultCountData() async {
     _faultCountloading = true;
     notifyListeners();
     AssetCount count = await _assetService.getFaultCount(
@@ -368,14 +354,23 @@ class DashboardViewModel extends InsiteViewModel {
     }
   }
 
- getFilterDataApplied(dropDownValue)async{
- getAssetStatusFilterApplied(dropDownValue);
- getFuelLevelFilterApplied(dropDownValue);
- getIdlingLevelFilterData(dropDownValue);
- getUtilizationSummaryFilterData(dropDownValue);
+  getData() {
+    getAssetStatusData();
+    getFuelLevelData();
+    getIdlingLevelData(false);
+    getUtilizationSummary();
+    getFaultCountData();
+  }
 
-}
-  getAssetStatusFilterApplied( dropDownValue) async {
+  getFilterDataApplied(dropDownValue) async {
+    getAssetStatusFilterApplied(dropDownValue);
+    getFuelLevelFilterApplied(dropDownValue);
+    getUtilizationSummaryFilterData(dropDownValue);
+    getIdlingLevelFilterData(dropDownValue);
+    getFaultCountDataFilterData(dropDownValue);
+  }
+
+  getAssetStatusFilterApplied(dropDownValue) async {
     AssetCount result =
         await _assetService.getAssetStatusFilter(dropDownValue, "assetstatus");
     if (result != null) {
@@ -421,6 +416,20 @@ class DashboardViewModel extends InsiteViewModel {
       _idlingLevelData = result;
     }
     _idlingLevelDataloading = false;
+    notifyListeners();
+  }
+
+  getFaultCountDataFilterData(dropDownValue) async {
+    _faultCountloading = true;
+    notifyListeners();
+    AssetCount count = await _assetService.getFaultCountFilterApplied(
+        dropDownValue,
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
+    if (count != null) {
+      _faultCountData = count;
+    }
+    _faultCountloading = false;
     notifyListeners();
   }
 

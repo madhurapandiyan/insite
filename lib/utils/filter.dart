@@ -192,14 +192,13 @@ class FilterUtils {
             }
           }
         }
-        
+
         if (screenType == ScreenType.HEALTH) {
           // severity
           List<FilterData> severityList = appliedFilters
               .where((element) => element.type == FilterType.SEVERITY)
               .toList();
-          Logger().i(
-              "filter severityList " + severityList.length.toString());
+          Logger().i("filter severityList " + severityList.length.toString());
           if (severityList.isNotEmpty) {
             for (FilterData data in severityList) {
               value.write(constructQuery("severity", data.title, false));
@@ -512,5 +511,17 @@ class FilterUtils {
     } else {
       return "&" + key + "=" + value;
     }
+  }
+
+  static String justConstructQuery(key, value) {
+    return "&" + key + "=" + value;
+  }
+
+  static String constructQueryFromMap(Map<String, String> map) {
+    StringBuffer urlString = StringBuffer();
+    map.forEach((key, value) {
+      urlString.write(justConstructQuery(key, value));
+    });
+    return urlString.toString();
   }
 }
