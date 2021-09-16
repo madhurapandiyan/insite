@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -16,6 +17,7 @@ import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/reusable_dropdown_widget.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'dashboard_view_model.dart';
 
@@ -92,13 +94,23 @@ class _DashboardViewState extends State<DashboardView> {
                             value: assetDropDown,
                             items: ["All Assets", "Product Family"],
                             onChanged: (String value) {
+                              Logger().i("all assets dropdown change $value");
                               assetDropDown = value;
                               switchDropDownState = !switchDropDownState;
-                              viewModel.getAssetStatusData();
-                              viewModel.getFuelLevelData();
-                              viewModel.getIdlingLevelData(true);
-                              viewModel.getUtilizationSummary();
-                              setState(() {});
+                              if (value != "All Assets") {
+                                // "BACKHOE LOADER"
+                                FilterData filterData =
+                                    viewModel.filterDataProductFamily[0];
+                                viewModel
+                                    .getFilterDataApplied(filterData.title);
+                                filterLocationKey.currentState
+                                    .getAssetLocationHomeFilterData(
+                                        filterData.title);
+                              } else {
+                                viewModel.getData();
+                                filterLocationKey.currentState
+                                    .getAssetLocationHomeData();
+                              }
                             },
                           ),
                         ),
@@ -111,9 +123,12 @@ class _DashboardViewState extends State<DashboardView> {
                                     ? FilterDropDownWidget(
                                         data: viewModel.filterDataProductFamily,
                                         onValueSelected: (value) async {
+                                          Logger().i(
+                                              "product family dropdown change $value");
                                           viewModel.getFilterDataApplied(value);
                                           filterLocationKey.currentState
-                                              .getLocationFilterData(value);
+                                              .getAssetLocationHomeFilterData(
+                                                  value);
                                         },
                                       )
                                     : SizedBox(),

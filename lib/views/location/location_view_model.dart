@@ -58,36 +58,42 @@ class LocationViewModel extends InsiteViewModel {
   clusterMarker() {
     int index = 1;
     List<MapRecord> assetLocationList = assetLocation.mapRecords;
+    Logger().i("map records size ${assetLocationList.length}");
     clusterMarkers.clear();
     latlngs.clear();
+    allMarkers.clear();
     for (var assetLocation in assetLocationList) {
-      allMarkers.add(
-        flutter_map.Marker(
-          point: latlng.LatLng(
-            assetLocation.lastReportedLocationLatitude,
-            assetLocation.lastReportedLocationLongitude,
+      if (assetLocation.lastReportedLocationLatitude != null &&
+          assetLocation.lastReportedLocationLongitude != null) {
+        allMarkers.add(
+          flutter_map.Marker(
+            point: latlng.LatLng(
+              assetLocation.lastReportedLocationLatitude,
+              assetLocation.lastReportedLocationLongitude,
+            ),
+            builder: (context) => const Icon(
+              Icons.location_on,
+              color: Colors.red,
+              size: 24.0,
+            ),
           ),
-          builder: (context) => const Icon(
-            Icons.location_on,
-            color: Colors.red,
-            size: 24.0,
-          ),
-        ),
-      );
-      latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
-          assetLocation.lastReportedLocationLongitude));
-      clusterMarkers.add(
-        ClusterItem(
-            LatLng(assetLocation.lastReportedLocationLatitude,
-                assetLocation.lastReportedLocationLongitude),
-            item: InsiteMarker(
-              markerId: MarkerId('${index++}'),
-              mapData: assetLocation,
-              position: LatLng(assetLocation.lastReportedLocationLatitude,
+        );
+        latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
+            assetLocation.lastReportedLocationLongitude));
+        clusterMarkers.add(
+          ClusterItem(
+              LatLng(assetLocation.lastReportedLocationLatitude,
                   assetLocation.lastReportedLocationLongitude),
-            )),
-      );
+              item: InsiteMarker(
+                markerId: MarkerId('${index++}'),
+                mapData: assetLocation,
+                position: LatLng(assetLocation.lastReportedLocationLatitude,
+                    assetLocation.lastReportedLocationLongitude),
+              )),
+        );
+      }
     }
+    Logger().i("all markers size ${allMarkers.length}");
   }
 
   ClusterManager initClusterManager() {
@@ -407,10 +413,12 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   getLocationFilterData(dropDownValue) async {
-    AssetLocationData result = await _assetLocationService.getLocationFilterData(dropDownValue, pageNumber, pageSize);
+    AssetLocationData result = await _assetLocationService
+        .getLocationFilterData(dropDownValue, pageNumber, pageSize);
     if (result != null) {
       _assetLocation = result;
       clusterMarker();
+      manager.updateMap();
     }
     _loading = false;
     notifyListeners();

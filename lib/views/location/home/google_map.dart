@@ -5,10 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart' as flutter_map;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
@@ -523,7 +521,11 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
     }
   }
 
-  getLocationFilterData(dropDownValue) async {
+  getAssetLocationHomeData() async {
+    await viewModel.getAssetLocationHome();
+  }
+
+  getAssetLocationHomeFilterData(dropDownValue) async {
     await viewModel.getLocationFilterData(dropDownValue);
   }
 }

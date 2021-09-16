@@ -6,6 +6,7 @@ import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -15,7 +16,15 @@ abstract class InsiteViewModel extends BaseViewModel {
   set is401(value) {
     _is401 = value;
   }
+  bool isVisionLink = false;
 
+  InsiteViewModel() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+          if ("com.trimble.insite.visionlink" == packageInfo.packageName)
+            {isVisionLink = true}
+        });
+  }
+  
   var _navigationService = locator<NavigationService>();
   var _filterService = locator<FilterService>();
   var _dateRangeService = locator<DateRangeService>();

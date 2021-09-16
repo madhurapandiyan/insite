@@ -1170,13 +1170,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> assetCount(url, grouping, customerId, service) async {
+  Future<AssetCount> assetCount(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'grouping': grouping};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2792,20 +2791,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> faultCountcustomerUID(
-      url, startDate, endDate, customerUid, customerId, service) async {
+  Future<AssetCount> faultCount(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerUid, 'customerUid');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDateTime': startDate,
-      r'endDateTime': endDate,
-      r'customerUid': customerUid
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2823,107 +2814,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> faultCount(
-      url, startDate, endDate, customerId, service) async {
+  Future<AssetCount> faultCountVL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDateTime': startDate,
-      r'endDateTime': endDate
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> faultCountcustomerUIDVL(
-      url, startDate, endDate, customerUid, customerId) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerUid, 'customerUid');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDateTime': startDate,
-      r'endDateTime': endDate,
-      r'customerUid': customerUid
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> faultCountVL(url, startDate, endDate, customerId) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDateTime': startDate,
-      r'endDateTime': endDate
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetStatusFilterData(
-      url, grouping, productfamily, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'productfamily': productfamily
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
@@ -2957,20 +2858,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> fuelLevelFilterData(
-      url, grouping, productfamily, thresholds, customerId, service) async {
+  Future<AssetCount> fuelLevelFilterData(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'productfamily': productfamily,
-      r'thresholds': thresholds
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
