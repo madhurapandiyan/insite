@@ -40,7 +40,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.insite"
+        applicationId "com.trimble.insite"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

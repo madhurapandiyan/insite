@@ -68,7 +68,7 @@ class AppbarViewModel extends InsiteViewModel {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       //   Logger().i("packageInfo ${packageInfo.packageName}");
-      //   if (packageInfo.packageName == "com.example.insite.indiastack") {
+      //   if (packageInfo.packageName == "com.trimble.insite.indiastack") {
       // _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
       //     arguments: LoginArguments(response: response));
       //   } else {
@@ -79,7 +79,7 @@ class AppbarViewModel extends InsiteViewModel {
       //if oauth style login used below line should be called on logout
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
         Logger().i("packageInfo ${packageInfo.packageName}");
-        if (packageInfo.packageName == "com.example.insite.indiastack") {
+        if (packageInfo.packageName == "com.trimble.insite.indiastack") {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));
         } else {

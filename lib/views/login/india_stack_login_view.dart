@@ -200,7 +200,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     Logger().i("IndiaStackLoginView gotoSplashview");
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       Logger().i("IndiaStackLoginView packageInfo ${packageInfo.packageName}");
-      if (packageInfo.packageName == "com.example.insite.indiastack") {
+      if (packageInfo.packageName == "com.trimble.insite.indiastack") {
         // _navigationService.pushNamedAndRemoveUntil(indiaStack.indiaStackLogoutViewRoute,
         //     predicate: (Route<dynamic> route) => false);
         _navigationService.navigateTo(indiaStack.indiaStackLogoutViewRoute);
