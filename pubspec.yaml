@@ -102,6 +102,11 @@ flutter:
     - assets/images/hitachi_font.png
     - assets/images/font_login.png
     - assets/images/fault_world.png
+    - assets/images/users.svg
+    - assets/images/gear_icon.svg
+    - assets/images/geofence.svg
+    - assets/images/reports.svg
+    - assets/images/delete_icon.svg
 
   fonts:
     - family: Roboto

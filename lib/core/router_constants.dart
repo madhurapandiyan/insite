@@ -13,3 +13,5 @@ const String assetDetailViewRoute = 'assetDetailViewRoute';
 const String locationViewRoute = 'locationViewRoute';
 const String healthViewRoute = 'healthViewRoute';
 const String loginPageRoute = 'loginPageRoute';
+const String administrationViewPageRoute='adminViewPageRoute';
+
