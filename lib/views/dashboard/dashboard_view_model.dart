@@ -81,11 +81,6 @@ class DashboardViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  String _dropDownValueFilter;
-  String get dropDownValueFilter => _dropDownValueFilter;
-
-  List<FilterData> filterDataProductFamily = [];
-
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
 
@@ -95,6 +90,14 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   String get endDayRange => _endDayRange;
+
+  bool _isFilterApplied = false;
+  bool get isFilterApplied => _isFilterApplied;
+
+  String _currentFilterSelected = "";
+  String get currentFilterSelected => _currentFilterSelected;
+
+  List<FilterData> filterDataProductFamily = [];
 
   UtilizationSummary _utilizationSummary;
   UtilizationSummary get utilizationSummary => _utilizationSummary;
@@ -165,14 +168,6 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  refreshWithFilter() async {
-    _refreshing = true;
-    notifyListeners();
-    await getFilterData();
-    _refreshing = false;
-    notifyListeners();
-  }
-
   getAssetCount() async {
     AssetCount result =
         await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
@@ -208,12 +203,28 @@ class DashboardViewModel extends InsiteViewModel {
   getIdlingLevelData(bool switching) async {
     _isSwitching = switching;
     notifyListeners();
-    AssetCount result = await _assetService.getIdlingLevelData(getStartRange(),
-        endDayRange, FilterType.IDLING_LEVEL, getFilterRange());
-    if (result != null) {
-      _idlingLevelData = result;
-      _isSwitching = false;
+    if (isFilterApplied) {
+      AssetCount result = await _assetService.getIdlingLevelFilterData(
+        getStartRange(),
+        currentFilterSelected,
+        endDayRange,
+      );
+      if (result != null) {
+        _idlingLevelData = result;
+        _isSwitching = false;
+      }
+    } else {
+      AssetCount result = await _assetService.getIdlingLevelData(
+          getStartRange(),
+          endDayRange,
+          FilterType.IDLING_LEVEL,
+          getFilterRange());
+      if (result != null) {
+        _idlingLevelData = result;
+        _isSwitching = false;
+      }
     }
+
     _idlingLevelDataloading = false;
     notifyListeners();
   }
@@ -355,6 +366,8 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getData() {
+    this._isFilterApplied = false;
+    this._currentFilterSelected = "";
     getAssetStatusData();
     getFuelLevelData();
     getIdlingLevelData(false);
@@ -363,11 +376,17 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFilterDataApplied(dropDownValue) async {
-    getAssetStatusFilterApplied(dropDownValue);
-    getFuelLevelFilterApplied(dropDownValue);
-    getUtilizationSummaryFilterData(dropDownValue);
-    getIdlingLevelFilterData(dropDownValue);
-    getFaultCountDataFilterData(dropDownValue);
+    this._isFilterApplied = true;
+    this._currentFilterSelected = dropDownValue;
+    _refreshing = true;
+    notifyListeners();
+    await getAssetStatusFilterApplied(dropDownValue);
+    await getFuelLevelFilterApplied(dropDownValue);
+    await getUtilizationSummaryFilterData(dropDownValue);
+    await getIdlingLevelFilterData(dropDownValue);
+    await getFaultCountDataFilterData(dropDownValue);
+    _refreshing = false;
+    notifyListeners();
   }
 
   getAssetStatusFilterApplied(dropDownValue) async {
@@ -409,9 +428,8 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelFilterData(dropDownValue) async {
-    this._dropDownValueFilter = dropDownValue;
     AssetCount result = await _assetService.getIdlingLevelFilterData(
-        getStartRange(), dropDownValueFilter, endDate);
+        getStartRange(), dropDownValue, endDate);
     if (result != null) {
       _idlingLevelData = result;
     }

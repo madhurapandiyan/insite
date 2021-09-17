@@ -34,7 +34,7 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
     sub: json['sub'] as String,
     firstname: json['firstname'] as String,
     lastname: json['lastname'] as String,
-    email_verified: json['email_verified'] as bool,
+    email_verified: json['email_verified'],
   );
 }
 
@@ -740,20 +740,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SearchData> searchByAllWithCI(url, snContains, assetIDContains,
-      customerUID, customerId, serviceHeader) async {
+  Future<SearchData> search(url, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(snContains, 'snContains');
-    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'snContains': snContains,
-      r'assetIDContains': assetIDContains,
-      r'customerUID': customerUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -771,137 +763,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SearchData> searchByIDWithCI(
-      url, assetIDContains, customerUID, customerId, serviceHeader) async {
+  Future<SearchData> searchVL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetIDContains': assetIDContains,
-      r'customerUID': customerUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
-            headers: <String, dynamic>{
-              r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SearchData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<SearchData> searchBySNWithCI(
-      url, snContains, customerUID, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(snContains, 'snContains');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'snContains': snContains,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SearchData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<SearchData> searchByAll(
-      url, assetIDContains, snContains, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
-    ArgumentError.checkNotNull(snContains, 'snContains');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetIDContains': assetIDContains,
-      r'snContains': snContains
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SearchData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<SearchData> searchByID(
-      url, assetIDContains, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetIDContains, 'assetIDContains');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetIDContains': assetIDContains
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SearchData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<SearchData> searchBySN(
-      url, snContains, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(snContains, 'snContains');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'snContains': snContains};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
-            },
+            headers: <String, dynamic>{r'X-VisionLink-CustomerUid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
@@ -1176,58 +1048,6 @@ class _RestClient implements RestClient {
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetCountAll(url, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetCountcustomerUID(
-      url, grouping, customerUID, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'customerUID': customerUID
-    };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -1687,20 +1507,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> idlingLevel(url, startDate, idleEfficiencyRanges, endDate,
-      customerId, serviceHeader) async {
+  Future<AssetCount> idlingLevel(url, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
-    ArgumentError.checkNotNull(endDate, 'endDate');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'endDate': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -1718,89 +1530,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> idlingLevelCustomerUID(
-      url,
-      startDate,
-      idleEfficiencyRanges,
-      endDate,
-      customerUID,
-      customerId,
-      serviceHeader) async {
+  Future<AssetCount> idlingLevelVL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'endDate': endDate,
-      r'customerUID': customerUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': serviceHeader
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> idlingLevelVL(
-      startDate, idleEfficiencyRanges, endDate, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'endDate': endDate
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> idlingLevelCustomerUIDVL(
-      startDate, idleEfficiencyRanges, endDate, customerUID, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'endDate': endDate,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -2941,20 +2677,10 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> idlingLevelFilterDataVL(startDate, idleEfficiencyRanges,
-      productfamily, endDate, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(idleEfficiencyRanges, 'idleEfficiencyRanges');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(endDate, 'endDate');
+  Future<AssetCount> idlingLevelFilterDataVL(customerId) async {
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'idleEfficiencyRanges': idleEfficiencyRanges,
-      r'productfamily': productfamily,
-      r'endDate': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
         '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',

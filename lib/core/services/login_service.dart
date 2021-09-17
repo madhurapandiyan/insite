@@ -28,11 +28,18 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "insite://mobile");
-      UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
-          "application/x-www-form-urlencoded",
-          "Bearer" + " " + await _localService.getToken(),
-          AccessToken(access_token: await _localService.getToken()));
-      return userInfo;
+      if (isVisionLink) {
+        UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
+            "application/json",
+            "Bearer" + " " + await _localService.getToken());
+        return userInfo;
+      } else {
+        UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
+            "application/x-www-form-urlencoded",
+            "Bearer" + " " + await _localService.getToken(),
+            AccessToken(access_token: await _localService.getToken()));
+        return userInfo;
+      }
     } catch (e) {
       Logger().e(e.toString());
       return null;

@@ -47,6 +47,7 @@ class _HealthViewState extends State<HealthView> {
             },
             onRefineApplied: () {
               viewModel.refresh();
+              refreshWithFilter();
             },
             screenType: ScreenType.HEALTH,
             body: Container(

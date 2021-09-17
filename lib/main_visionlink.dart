@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
@@ -17,7 +18,7 @@ void main() async {
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
-
+  AppConfig(baseUrl: "https://unifiedfleet.myvisionlink.com");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
 }

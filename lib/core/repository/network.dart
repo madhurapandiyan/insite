@@ -1,6 +1,7 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/services/local_service.dart';
 import '../locator.dart';
 import 'Retrofit.dart';
@@ -39,13 +40,12 @@ class MyApi {
     return httpWrapper.clientFive;
   }
 
-    RestClient getClientSix() {
+  RestClient getClientSix() {
     return httpWrapper.clientSix;
   }
 }
 
 class HttpWrapper {
-  final String _baseUrl = "https://cloud.api.trimble.com/CTSPulseIndiastg/";
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
   final String _baseUrlTwo = "https://singlesearch.alk.com";
@@ -74,7 +74,7 @@ class HttpWrapper {
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
-      baseUrl: _baseUrl,
+      baseUrl: AppConfig.instance.baseUrl,
       connectTimeout: 30000,
       receiveTimeout: 30000,
     );
@@ -192,7 +192,7 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
-    client = RestClient(dio, baseUrl: _baseUrl);
+    client = RestClient(dio, baseUrl: AppConfig.instance.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
     clientThree = RestClient(dioThree, baseUrl: _baseUrlService);

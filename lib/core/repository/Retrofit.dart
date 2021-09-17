@@ -206,51 +206,14 @@ abstract class RestClient {
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
-  Future<SearchData> searchByAllWithCI(
+  Future<SearchData> search(
       @Path() String url,
-      @Query("snContains") String snContains,
-      @Query("assetIDContains") String assetIDContains,
-      @Query("customerUID") String customerUID,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET('{url}')
-  Future<SearchData> searchByIDWithCI(
-      @Path() String url,
-      @Query("assetIDContains") String assetIDContains,
-      @Query("customerUID") String customerUID,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
-
-  @GET('{url}')
-  Future<SearchData> searchBySNWithCI(
-      @Path() String url,
-      @Query("snContains") String snContains,
-      @Query("customerUID") String customerUID,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
-
-  @GET('{url}')
-  Future<SearchData> searchByAll(
-      @Path() String url,
-      @Query("assetIDContains") String assetIDContains,
-      @Query("snContains") String snContains,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
-
-  @GET('{url}')
-  Future<SearchData> searchByID(
-      @Path() String url,
-      @Query("assetIDContains") String assetIDContains,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
-
-  @GET('{url}')
-  Future<SearchData> searchBySN(
-      @Path() String url,
-      @Query("snContains") String snContains,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
+  Future<SearchData> searchVL(
+      @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
   Future<AssetLocationHistory> assetLocationHistory(
@@ -457,36 +420,12 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> idlingLevel(
       @Path() String url,
-      @Query("startDate") String startDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-      @Query("endDate") String endDate,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
   @GET('{url}')
-  Future<AssetCount> idlingLevelCustomerUID(
-      @Path() String url,
-      @Query("startDate") String startDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-      @Query("endDate") String endDate,
-      @Query("customerUID") String customerUID,
-      @Header("x-visionlink-customeruid") customerId,
-      @Header("service") serviceHeader);
-
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> idlingLevelVL(
-      @Query("startDate") String startDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-      @Query("endDate") String endDate,
-      @Header("x-visionlink-customeruid") customerId);
-
-  @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
-  Future<AssetCount> idlingLevelCustomerUIDVL(
-      @Query("startDate") String startDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-      @Query("endDate") String endDate,
-      @Query("customerUID") String customerUID,
-      @Header("x-visionlink-customeruid") customerId);
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-notification/1.0/Notification/Count")
   Future<IdlingLevelData> notificationData(
@@ -770,8 +709,7 @@ abstract class RestClient {
 
   @GET('{url}')
   Future<AssetCount> faultCountVL(
-      @Path() String url,
-      @Header("x-visionlink-customeruid") customerId);
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> assetStatusFilterDataVL(
@@ -804,10 +742,6 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1")
   Future<AssetCount> idlingLevelFilterDataVL(
-      @Query("startDate") String startDate,
-      @Query("idleEfficiencyRanges") String idleEfficiencyRanges,
-      @Query("productfamily") String productfamily,
-      @Query("endDate") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
@@ -875,7 +809,7 @@ class UserInfo {
   String sub;
   String firstname;
   String lastname;
-  bool email_verified;
+  dynamic email_verified;
   String given_name;
   String family_name;
 

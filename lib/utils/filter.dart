@@ -513,15 +513,25 @@ class FilterUtils {
     }
   }
 
-  static String justConstructQuery(key, value) {
-    return "&" + key + "=" + value;
+  static String justConstructQuery(key, value, isFirst) {
+    if (isFirst) {
+      return "?" + key + "=" + value;
+    } else {
+      return "&" + key + "=" + value;
+    }
   }
 
   static String constructQueryFromMap(Map<String, String> map) {
     StringBuffer urlString = StringBuffer();
-    map.forEach((key, value) {
-      urlString.write(justConstructQuery(key, value));
-    });
+    if (map.isNotEmpty) {
+      map.forEach((key, value) {
+        if (map.keys.first == key) {
+          urlString.write(justConstructQuery(key, value, true));
+        } else {
+          urlString.write(justConstructQuery(key, value, false));
+        }
+      });
+    }
     return urlString.toString();
   }
 }

@@ -42,6 +42,11 @@ class GlobalSearchViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  updateSearchDataToEmpty() {
+    _searchData = null;
+    notifyListeners();
+  }
+
   onDetailPageSelected(TopMatch fleet) {
     Logger().d("message $fleet");
     _navigationService.navigateTo(assetDetailViewRoute,

@@ -21,6 +21,7 @@ class AssetViewState extends State<AssetView> {
   onFilterApplied() {
     viewModel.refresh();
   }
+
   var viewModel;
   List<DateTime> dateRange = [];
 
@@ -116,6 +117,7 @@ class AssetViewState extends State<AssetView> {
                               itemBuilder: (context, index) {
                                 Fault fault = viewModel.faults[index];
                                 return HealthAssetListItem(
+                                  key: UniqueKey(),
                                   fault: fault,
                                   onCallback: () {
                                     viewModel.onDetailPageSelected(fault);

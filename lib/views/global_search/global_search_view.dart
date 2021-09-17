@@ -54,6 +54,8 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                             if (searchText.isNotEmpty) {
                               viewModel.searchKeyword = searchText;
                               viewModel.getSearchResult(dropdownValue);
+                            } else {
+                              viewModel.updateSearchDataToEmpty();
                             }
                           },
                           decoration: InputDecoration(
