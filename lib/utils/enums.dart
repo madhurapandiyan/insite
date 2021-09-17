@@ -57,3 +57,14 @@ enum SingleAssetUtilizationGraphType {
 enum AccountType { ACCOUNT, CUSTOMER }
 
 enum ProductFamilyType { ALL, BACKHOE_LOADER, EXCAVATOR }
+
+enum AdminAssetsButtonType {
+  ADDNEWUSER,
+  MANAGEUSER,
+  ADDNEWGROUPS,
+  MANAGEGROUPS,
+  ADDNEWGEOFENCES,
+  MANAGEGEOFENCES,
+  ADDNEWREPORT,
+  MANAGEREPORTS
+}

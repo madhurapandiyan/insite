@@ -65,6 +65,12 @@
             "file_path": "views/login/login_page.dart",
             "route_name": "loginPageRoute",
             "view_name": "LoginPage"
+        },
+        {
+            "file_path": "views/administration/administration_view.dart",
+            "route_name": "administrationViewPageRoute",
+            "view_name": "AdminstrationView"
+
         }
     ]
 }
