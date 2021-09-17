@@ -18,10 +18,8 @@ class AccountSearchViewModel extends InsiteViewModel {
   var _localStorageService = locator<LocalStorageService>();
   TextEditingController textEditingController = TextEditingController();
   AccountData selected;
-  List<AccountData> totallist = [];
   List<AccountData> list = [];
   List<AccountData> displayList = [];
-  int pageCount = 500;
 
   deSelect() {
     for (var i = 0; i < displayList.length; i++) {
@@ -33,15 +31,10 @@ class AccountSearchViewModel extends InsiteViewModel {
 
   AccountSearchViewModel(AccountData accountSelected, List<AccountData> data) {
     selected = accountSelected != null ? accountSelected : null;
-    totallist = data;
     list.clear();
-    if (totallist.length > pageCount) {
-      list = totallist.take(pageCount).toList();
-    } else {
-      list = totallist;
-      _shouldLoadmore = false;
-    }
+    list = data;
     displayList = list;
+    Logger().i("total list length ${list.length}");
     if (selected != null) {
       Logger().i(selected.value.DisplayName);
     }
@@ -74,24 +67,24 @@ class AccountSearchViewModel extends InsiteViewModel {
   }
 
   getSubcustomersList() {
-    if (list.length == totallist.length) {
-      Future.delayed(Duration(seconds: 1), () {
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-        notifyListeners();
-      });
-    } else {
-      Logger().i("pageCount $pageCount");
-      pageCount += 500;
-      list = totallist.take(pageCount).toList();
-      displayList = list;
-      Future.delayed(Duration(seconds: 2), () {
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
-      });
-    }
+    // if (list.length == totallist.length) {
+    //   Future.delayed(Duration(seconds: 1), () {
+    //     _loading = false;
+    //     _loadingMore = false;
+    //     _shouldLoadmore = false;
+    //     notifyListeners();
+    //   });
+    // } else {
+    //   Logger().i("pageCount $pageCount");
+    //   pageCount += 500;
+    //   list = totallist.take(pageCount).toList();
+    //   displayList = list;
+    //   Future.delayed(Duration(seconds: 2), () {
+    //     _loading = false;
+    //     _loadingMore = false;
+    //     notifyListeners();
+    //   });
+    // }
   }
 
   onSearchTextChanged(String text) async {

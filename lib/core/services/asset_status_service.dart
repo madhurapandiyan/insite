@@ -74,7 +74,6 @@ class AssetStatusService extends DataBaseService {
           }
           AssetCount assetStatusResponse = await MyApi().getClient().assetCount(
               Urls.assetCountSummary +
-                  "?" +
                   FilterUtils.constructQueryFromMap(queryMap),
               accountSelected.CustomerUID,
               Urls.vfleetPrefix);
@@ -194,9 +193,12 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<bool> updateAssetCount(AssetCount assetCount, FilterType type) async {
-    Logger().d("updateAssetCount $type");
+    Logger().d("updateAssetCount $assetCount $type");
     List<CountData> counts = [];
     try {
+      if (assetCount == null) {
+        return false;
+      }
       for (Count countData in assetCount.countData) {
         counts
             .add(CountData(count: countData.count, countOf: countData.countOf));
@@ -312,18 +314,17 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d(" from api");
         if (isVisionLink) {
-          AssetCount idlingLevelDataResponse = customerSelected != null
-              ? await MyApi().getClient().idlingLevelCustomerUIDVL(
-                    startDate,
-                    "[0,10][10,15][15,25][25,]",
-                    endDate,
-                    customerSelected.CustomerUID,
-                    accountSelected.CustomerUID,
-                  )
-              : await MyApi().getClient().idlingLevelVL(
-                    startDate,
-                    "[0,10][10,15][15,25][25,]",
-                    endDate,
+          Map<String, String> queryMap = Map();
+          queryMap["startDate"] = startDate;
+          queryMap["endDate"] = endDate;
+          queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
+          if (customerSelected != null) {
+            queryMap["customerUID"] = customerSelected.CustomerUID;
+          }
+          AssetCount idlingLevelDataResponse =
+              await MyApi().getClient().idlingLevelVL(
+                    Urls.assetCountSummaryVL +
+                        FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected.CustomerUID,
                   );
           if (idlingLevelDataResponse != null) {
@@ -339,20 +340,18 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          AssetCount idlingLevelDataResponse = customerSelected != null
-              ? await MyApi().getClient().idlingLevelCustomerUID(
-                  Urls.assetCountSummary,
-                  startDate,
-                  "[0,10][10,15][15,25][25,]",
-                  endDate,
-                  customerSelected.CustomerUID,
-                  accountSelected.CustomerUID,
-                  Urls.vfleetPrefix)
-              : await MyApi().getClient().idlingLevel(
-                  Urls.assetCountSummary,
-                  startDate,
-                  "[0,10][10,15][15,25][25,]",
-                  endDate,
+          Map<String, String> queryMap = Map();
+          queryMap["startDate"] = startDate;
+          queryMap["endDate"] = endDate;
+          queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
+          if (customerSelected != null) {
+            queryMap["customerUID"] = customerSelected.CustomerUID;
+          }
+          AssetCount idlingLevelDataResponse = await MyApi()
+              .getClient()
+              .idlingLevel(
+                  Urls.assetCountSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected.CustomerUID,
                   Urls.vfleetPrefix);
           if (idlingLevelDataResponse != null) {
@@ -386,7 +385,6 @@ class AssetStatusService extends DataBaseService {
         }
         AssetCount faultCountResponse = await MyApi().getClient().faultCountVL(
               Urls.faultCountSummaryVL +
-                  "?" +
                   FilterUtils.constructQueryFromMap(queryMap),
               accountSelected.CustomerUID,
             );
@@ -404,7 +402,6 @@ class AssetStatusService extends DataBaseService {
         }
         AssetCount faultCountResponse = await MyApi().getClient().faultCount(
             Urls.faultCountSummary +
-                "?" +
                 FilterUtils.constructQueryFromMap(queryMap),
             accountSelected.CustomerUID,
             Urls.faultPrefix);
@@ -433,7 +430,6 @@ class AssetStatusService extends DataBaseService {
         }
         AssetCount faultCountResponse = await MyApi().getClient().faultCountVL(
               Urls.faultCountSummaryVL +
-                  "?" +
                   FilterUtils.constructQueryFromMap(queryMap),
               accountSelected.CustomerUID,
             );
@@ -452,7 +448,6 @@ class AssetStatusService extends DataBaseService {
         }
         AssetCount faultCountResponse = await MyApi().getClient().faultCount(
             Urls.faultCountSummary +
-                "?" +
                 FilterUtils.constructQueryFromMap(queryMap),
             accountSelected.CustomerUID,
             Urls.faultPrefix);
@@ -488,7 +483,6 @@ class AssetStatusService extends DataBaseService {
         }
         AssetCount assetStatusResponse = await MyApi().getClient().assetCount(
             Urls.assetCountSummary +
-                "?" +
                 FilterUtils.constructQueryFromMap(queryMap),
             accountSelected.CustomerUID,
             Urls.vfleetPrefix);
@@ -523,7 +517,6 @@ class AssetStatusService extends DataBaseService {
             .getClient()
             .fuelLevelFilterData(
                 Urls.assetCountSummary +
-                    "?" +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
                 Urls.vfleetPrefix);
@@ -536,37 +529,32 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount> getIdlingLevelFilterData(
-      startDate, productFamilyKey, endDate) async {
+      startDate, String productFamilyKey, endDate) async {
     try {
+      Map<String, String> queryMap = Map();
+      queryMap["startDate"] = startDate;
+      queryMap["endDate"] = endDate;
+      queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
+      if (productFamilyKey != null && productFamilyKey.isNotEmpty) {
+        queryMap["productfamily"] = productFamilyKey;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUid"] = customerSelected.CustomerUID;
+      }
       if (isVisionLink) {
-        AssetCount idlinglevelDataResponse = productFamilyKey != null
-            ? await MyApi().getClient().idlingLevelFilterDataVL(
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                productFamilyKey,
-                endDate,
-                accountSelected.CustomerUID)
-            : await MyApi().getClient().idlingLevelVL(
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                endDate,
+        AssetCount idlinglevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevelVL(
+                Urls.assetCountSummaryVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return idlinglevelDataResponse;
       } else {
-        AssetCount idlinglevelDataResponse = productFamilyKey != null
-            ? await MyApi().getClient().idlingLevelFilterData(
-                Urls.assetCountSummary,
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                productFamilyKey,
-                endDate,
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix)
-            : await MyApi().getClient().idlingLevel(
-                Urls.assetCountSummary,
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                endDate,
+        AssetCount idlinglevelDataResponse = await MyApi()
+            .getClient()
+            .idlingLevel(
+                Urls.assetCountSummary +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
                 Urls.vfleetPrefix);
         return idlinglevelDataResponse;
@@ -579,10 +567,16 @@ class AssetStatusService extends DataBaseService {
 
   Future<AssetCount> getIdlingLevel(startDate, endDate) async {
     try {
+      Map<String, String> queryMap = Map();
+      queryMap["startDate"] = startDate;
+      queryMap["endDate"] = endDate;
+      queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
       if (isVisionLink) {
         AssetCount idlingLevelDataResponse = await MyApi()
             .getClient()
-            .idlingLevelVL(startDate, "[0,10][10,15][15,25][25,]", endDate,
+            .idlingLevelVL(
+                Urls.assetCountSummaryVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         print('idlingdata:${idlingLevelDataResponse.countData[0].count}');
         return idlingLevelDataResponse;
@@ -590,10 +584,8 @@ class AssetStatusService extends DataBaseService {
         AssetCount idlingLevelDataResponse = await MyApi()
             .getClient()
             .idlingLevel(
-                Urls.assetCountSummary,
-                startDate,
-                "[0,10][10,15][15,25][25,]",
-                endDate,
+                Urls.assetCountSummary +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
                 Urls.vfleetPrefix);
         print('idlingdata:${idlingLevelDataResponse.countData[0].count}');

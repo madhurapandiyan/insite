@@ -117,8 +117,7 @@ class UtilizationListItem extends StatelessWidget {
                                                 null
                                             ? utilizationData
                                                 .lastRuntimeHourMeter
-                                                .roundToDouble()
-                                                .toString()
+                                                .toStringAsFixed(1)
                                             : "-",
                                       ),
                                       InsiteTableRowItem(
@@ -126,7 +125,7 @@ class UtilizationListItem extends StatelessWidget {
                                         content:
                                             utilizationData.runtimeHours != null
                                                 ? utilizationData.runtimeHours
-                                                    .toString()
+                                                    .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
@@ -135,7 +134,7 @@ class UtilizationListItem extends StatelessWidget {
                                             utilizationData.targetRuntime !=
                                                     null
                                                 ? utilizationData.targetRuntime
-                                                    .toString()
+                                                    .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
@@ -203,8 +202,7 @@ class UtilizationListItem extends StatelessWidget {
                                                     .lastIdleHourMeter !=
                                                 null
                                             ? utilizationData.lastIdleHourMeter
-                                                .roundToDouble()
-                                                .toString()
+                                                .toStringAsFixed(1)
                                             : "",
                                       ),
                                       InsiteTableRowItem(
@@ -212,7 +210,7 @@ class UtilizationListItem extends StatelessWidget {
                                         content:
                                             utilizationData.idleHours != null
                                                 ? utilizationData.idleHours
-                                                    .toString()
+                                                    .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
@@ -220,7 +218,7 @@ class UtilizationListItem extends StatelessWidget {
                                         content:
                                             utilizationData.targetIdle != null
                                                 ? utilizationData.targetIdle
-                                                    .toString()
+                                                    .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
@@ -245,13 +243,15 @@ class UtilizationListItem extends StatelessWidget {
                                 InsiteTableRowItem(
                                   title: "Working",
                                   content: utilizationData.workingHours != null
-                                      ? utilizationData.workingHours.toString()
+                                      ? utilizationData.workingHours
+                                          .toStringAsFixed(1)
                                       : "-",
                                 ),
                                 InsiteTableRowItem(
                                   title: "Daily",
                                   content: utilizationData.workingHours != null
-                                      ? utilizationData.workingHours.toString()
+                                      ? utilizationData.workingHours
+                                          .toStringAsFixed(1)
                                       : "-",
                                 ),
                               ],

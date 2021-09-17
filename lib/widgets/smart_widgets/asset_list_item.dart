@@ -38,11 +38,11 @@ class AssetOperationListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   // SizedBox(
-                    // height: 20,
+                  // height: 20,
                   // ),
                   // Icon(Icons.arrow_drop_down, color: Colors.white),
                   // SizedBox(
-                    // height: 20,
+                  // height: 20,
                   // ),
                   // Container(
                   //     decoration: BoxDecoration(
@@ -129,8 +129,7 @@ class AssetOperationListItem extends StatelessWidget {
           date: time.day.toString(),
           value: getMatchingDate(time) != null
               ? (getMatchingDate(time).totalRuntimeDurationSeconds / (60 * 60))
-                  .roundToDouble()
-                  .toString()
+                  .toStringAsFixed(1)
               : "-");
       list.add(data);
     }

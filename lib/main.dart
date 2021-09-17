@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
@@ -21,6 +22,7 @@ void main() async {
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   Hive.registerAdapter<Customer>(CustomerAdapter());
   Hive.registerAdapter<AccountData>(AccountDataAdapter());
+  AppConfig(baseUrl: "https://unifiedfleet.myvisionlink.com");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

@@ -12,15 +12,15 @@ import 'insite_text.dart';
 class HealthAssetListItem extends StatefulWidget {
   final Fault fault;
   final VoidCallback onCallback;
-  const HealthAssetListItem({this.fault, this.onCallback});
+  final Key key;
+  const HealthAssetListItem({this.key, this.fault, this.onCallback})
+      : super(key: key);
 
   @override
   _HealthAssetListItemState createState() => _HealthAssetListItemState();
 }
 
 class _HealthAssetListItemState extends State<HealthAssetListItem> {
-
-  
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FaultListItemViewModel>.reactive(
@@ -116,6 +116,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                     onExpansionChanged: (value) {
                       viewModel.onExpanded();
                     },
+                    initiallyExpanded: false,
                     tilePadding: EdgeInsets.all(0),
                     children: [
                       Table(
@@ -227,8 +228,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                           return TableRow(children: [
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
-                                              text:
-                                                  Utils.getLastReportedDateOneUTC(
+                                              text: Utils
+                                                  .getLastReportedDateOneUTC(
                                                       fault.faultOccuredUTC),
                                               color: Colors.white,
                                               size: 12,

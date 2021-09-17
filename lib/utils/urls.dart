@@ -1,4 +1,3 @@
-
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
@@ -93,6 +92,7 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/FaultDetails/v1";
   static String faultCountSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
+  static String searchVL = "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";
@@ -118,7 +118,7 @@ class Urls {
   static String faultCountSummary =
       "/npulse-unifiedservice-in/1.0/health/FaultCount/v1";
   static String accounthierarchy =
-      "npulse-masterdataapi-in/1.0/v1/accounthierarchy";
+      "/npulse-masterdataapi-in/1.0/v1/accounthierarchy";
   static String assetDetails = "/npulse-fleet-in/1.0/api/v1/AssetDetails";
   static String notes = "/npulse-fleetassetmeta-in/1.0/AssetMetadata/Notes/v1";
   static String search = "/npulse-fleet-in/1.0/api/v1/Search";

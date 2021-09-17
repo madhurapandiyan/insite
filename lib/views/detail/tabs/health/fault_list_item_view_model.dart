@@ -42,6 +42,11 @@ class FaultListItemViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
+    Future.delayed(Duration(seconds: 1), () {
+      _faults.clear();
+      _loaded = false;
+      notifyListeners();
+    });
   }
 
   getFaultListItemData() async {
