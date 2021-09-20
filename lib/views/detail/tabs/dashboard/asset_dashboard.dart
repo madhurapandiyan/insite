@@ -72,7 +72,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: burntSienna,
+                          liquidColor: tango,
                           title: "Fuel Level",
                           value: widget.detail != null &&
                                   widget.detail.fuelLevelLastReported != null
@@ -125,7 +125,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: mustard,
+                          liquidColor: tango,
                           value: widget.detail != null &&
                                   widget.detail.percentDEFRemaining != null
                               ? widget.detail.percentDEFRemaining.toDouble()
