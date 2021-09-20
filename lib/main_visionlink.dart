@@ -18,7 +18,8 @@ void main() async {
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
-  AppConfig(baseUrl: "https://unifiedfleet.myvisionlink.com");
+  AppConfig(
+      baseUrl: "https://unifiedfleet.myvisionlink.com", flavor: "visionlink");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
 }

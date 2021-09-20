@@ -18,7 +18,9 @@ void main() async {
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
-  AppConfig(baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg");
+  AppConfig(
+      baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
+      flavor: "indiastack");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

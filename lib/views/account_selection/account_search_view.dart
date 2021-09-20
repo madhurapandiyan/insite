@@ -135,11 +135,11 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                             },
                           ),
                         ),
-                        viewModel.loadingMore
-                            ? Padding(
-                                padding: EdgeInsets.all(8),
-                                child: CircularProgressIndicator())
-                            : SizedBox()
+                        // viewModel.loadingMore
+                        //     ? Padding(
+                        //         padding: EdgeInsets.all(8),
+                        //         child: CircularProgressIndicator())
+                        //     : SizedBox()
                       ],
                     ),
                   ),

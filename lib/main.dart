@@ -22,7 +22,8 @@ void main() async {
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   Hive.registerAdapter<Customer>(CustomerAdapter());
   Hive.registerAdapter<AccountData>(AccountDataAdapter());
-  AppConfig(baseUrl: "https://unifiedfleet.myvisionlink.com");
+  AppConfig(
+      baseUrl: "https://unifiedfleet.myvisionlink.com", flavor: "visionlink");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
