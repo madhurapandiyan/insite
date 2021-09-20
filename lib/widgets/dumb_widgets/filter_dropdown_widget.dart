@@ -66,7 +66,7 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            value.title.toLowerCase(),
+                            value.title,
                             style: TextStyle(
                                 color: silver,
                                 fontSize: 11.0,

@@ -222,7 +222,7 @@ class _TabPageState extends State<AssetDetailView> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(children: [
-                            Text("UCID NAME : ",
+                            Text("CUSTOMER NAME : ",
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w700,

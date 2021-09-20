@@ -44,6 +44,8 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getSingleAssetOperation();
     });
+    Logger().i(
+        "single asset operation view start date, end date ${startDate} ${endDate}");
   }
 
   getSingleAssetOperation() async {

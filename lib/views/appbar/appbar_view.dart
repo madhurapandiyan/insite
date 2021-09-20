@@ -9,8 +9,6 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 
 class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -135,7 +133,9 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     style: TextStyle(
                                       color: Colors.white,
                                     )),
-                                position: BadgePosition.topStart(start: 25),
+                                badgeColor: tango,
+                                position:
+                                    BadgePosition.topStart(start: 25, top: 1),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     "assets/images/filter.svg",
