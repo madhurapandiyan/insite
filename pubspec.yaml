@@ -107,6 +107,9 @@ flutter:
     - assets/images/geofence.svg
     - assets/images/reports.svg
     - assets/images/delete_icon.svg
+    - assets/images/add_user_icon_one.png
+    - assets/images/add_user_icon_two.png
+    - assets/images/add_user_icon_three.png
 
   fonts:
     - family: Roboto

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/views/add_new_user/add_new_user_view.dart'as view14;
 import 'package:insite/views/adminstration/adminstration_view.dart'as view13;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
@@ -56,6 +57,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view12.LoginPage());
         case administrationViewPageRoute:
         return MaterialPageRoute(builder: (_)=>view13.AdminstrationView());
+        case addNewUserViewRoute:
+        return MaterialPageRoute(builder: (_)=>view14.AddNewUserView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
