@@ -94,7 +94,7 @@ class AccountSearchViewModel extends InsiteViewModel {
         List<AccountData> tempList = [];
         tempList.clear();
         list.forEach((item) {
-          if (item.value.DisplayName.toLowerCase().contains(text))
+          if (item.value.DisplayName.toLowerCase().contains(text.toLowerCase()))
             tempList.add(item);
         });
         displayList = tempList;

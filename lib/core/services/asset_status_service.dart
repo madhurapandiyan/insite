@@ -40,19 +40,19 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (isVisionLink) {
-          AssetCount assetStatusResponse = key != null
-              ? customerSelected != null
-                  ? await MyApi().getClient().assetCountcustomerUIDVL(key,
-                      customerSelected.CustomerUID, accountSelected.CustomerUID)
-                  : await MyApi()
-                      .getClient()
-                      .assetCountVL(key, accountSelected.CustomerUID)
-              : customerSelected != null
-                  ? await MyApi().getClient().assetCountAllcustomerUIDVL(
-                      customerSelected.CustomerUID, accountSelected.CustomerUID)
-                  : await MyApi()
-                      .getClient()
-                      .assetCountAllVL(accountSelected.CustomerUID);
+          Map<String, String> queryMap = Map();
+          if (key != null) {
+            queryMap["grouping"] = key;
+          }
+          if (customerSelected != null) {
+            queryMap["customerUID"] = customerSelected.CustomerUID;
+          }
+          AssetCount assetStatusResponse = await MyApi()
+              .getClient()
+              .assetCountVL(
+                  Urls.assetCountSummaryVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected.CustomerUID);
           if (assetStatusResponse != null) {
             bool updated = await updateAssetCount(assetStatusResponse, type);
             Logger().d("updated $updated");
@@ -106,41 +106,38 @@ class AssetStatusService extends DataBaseService {
     Logger().d("getAssetCountByFilter");
     try {
       if (isVisionLink) {
-        AssetCount assetStatusResponse =
-            await MyApi().getClient().assetCountByFilterVL(
-                  Urls.assetCountSubscriptionSummaryVL +
-                      FilterUtils.getFilterURLForCount(
-                          startDate,
-                          endDate,
-                          accountSelected != null && customerSelected != null
-                              ? customerSelected.CustomerUID
-                              : null,
-                          sort,
-                          appliedFilters,
-                          screenType),
-                  accountSelected.CustomerUID,
-                );
+        AssetCount assetStatusResponse = await MyApi().getClient().assetCountVL(
+              Urls.assetCountSubscriptionSummaryVL +
+                  FilterUtils.getFilterURLForCount(
+                      startDate,
+                      endDate,
+                      accountSelected != null && customerSelected != null
+                          ? customerSelected.CustomerUID
+                          : null,
+                      sort,
+                      appliedFilters,
+                      screenType),
+              accountSelected.CustomerUID,
+            );
         if (assetStatusResponse != null) {
           return assetStatusResponse;
         } else {
           return null;
         }
       } else {
-        AssetCount assetStatusResponse = await MyApi()
-            .getClient()
-            .assetCountByFilter(
-                Urls.assetCountSubscriptionSummary +
-                    FilterUtils.getFilterURLForCount(
-                        startDate,
-                        endDate,
-                        accountSelected != null && customerSelected != null
-                            ? customerSelected.CustomerUID
-                            : null,
-                        sort,
-                        appliedFilters,
-                        screenType),
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix);
+        AssetCount assetStatusResponse = await MyApi().getClient().assetCount(
+            Urls.assetCountSubscriptionSummary +
+                FilterUtils.getFilterURLForCount(
+                    startDate,
+                    endDate,
+                    accountSelected != null && customerSelected != null
+                        ? customerSelected.CustomerUID
+                        : null,
+                    sort,
+                    appliedFilters,
+                    screenType),
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
         if (assetStatusResponse != null) {
           return assetStatusResponse;
         } else {
@@ -248,15 +245,23 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (isVisionLink) {
+          Map<String, String> queryMap = Map();
+          queryMap["grouping"] = "fuellevel";
+          queryMap["thresholds"] = "25-50-75-100";
+          if (customerSelected != null) {
+            queryMap["customerUID"] = customerSelected.CustomerUID;
+          }
           AssetCount fuelLevelDatarespone = customerSelected != null
-              ? await MyApi().getClient().fuelLevelCustomerUIDVL(
-                    "fuellevel",
-                    "25-50-75-100",
-                    customerSelected.CustomerUID,
+              ? await MyApi().getClient().assetCountVL(
+                    Urls.assetCountSummaryVL +
+                        FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected.CustomerUID,
                   )
-              : await MyApi().getClient().fuelLevelVL(
-                  "fuellevel", "25-50-75-100", accountSelected.CustomerUID);
+              : await MyApi().getClient().assetCountVL(
+                    Urls.assetCountSummaryVL +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected.CustomerUID,
+                  );
           print('data:${fuelLevelDatarespone.toJson()}');
           if (fuelLevelDatarespone != null) {
             bool updated = await updateAssetCount(fuelLevelDatarespone, type);
@@ -269,20 +274,17 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          AssetCount fuelLevelDatarespone = customerSelected != null
-              ? await MyApi().getClient().fuelLevelCustomerUID(
-                  Urls.assetCountSummary,
-                  "fuellevel",
-                  "25-50-75-100",
-                  customerSelected.CustomerUID,
-                  accountSelected.CustomerUID,
-                  Urls.vfleetPrefix)
-              : await MyApi().getClient().fuelLevel(
-                  Urls.assetCountSummary,
-                  "fuellevel",
-                  "25-50-75-100",
-                  accountSelected.CustomerUID,
-                  Urls.vfleetPrefix);
+          Map<String, String> queryMap = Map();
+          queryMap["grouping"] = "fuellevel";
+          queryMap["thresholds"] = "25-50-75-100";
+          if (customerSelected != null) {
+            queryMap["customerUID"] = customerSelected.CustomerUID;
+          }
+          AssetCount fuelLevelDatarespone = await MyApi().getClient().fuelLevel(
+              Urls.assetCountSummary +
+                  FilterUtils.constructQueryFromMap(queryMap),
+              accountSelected.CustomerUID,
+              Urls.vfleetPrefix);
           print('data:${fuelLevelDatarespone.toJson()}');
           if (fuelLevelDatarespone != null) {
             bool updated = await updateAssetCount(fuelLevelDatarespone, type);
@@ -466,12 +468,21 @@ class AssetStatusService extends DataBaseService {
   Future<AssetCount> getAssetStatusFilter(productFamilyKey, key) async {
     try {
       if (isVisionLink) {
-        AssetCount assetStatusResponse = productFamilyKey != null
-            ? await MyApi().getClient().assetStatusFilterDataVL(
-                key, productFamilyKey, accountSelected.CustomerUID)
-            : await MyApi()
-                .getClient()
-                .assetCountVL(key, accountSelected.CustomerUID);
+        Map<String, String> queryMap = Map();
+
+        if (key != null) {
+          queryMap["grouping"] = key;
+        }
+        if (productFamilyKey != null) {
+          queryMap["productfamily"] = productFamilyKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
+        AssetCount assetStatusResponse = await MyApi().getClient().assetCountVL(
+            Urls.assetCountSummaryVL +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected.CustomerUID);
         return assetStatusResponse;
       } else {
         Map<String, String> queryMap = Map();
@@ -480,6 +491,9 @@ class AssetStatusService extends DataBaseService {
         }
         if (productFamilyKey != null) {
           queryMap["productfamily"] = productFamilyKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
         }
         AssetCount assetStatusResponse = await MyApi().getClient().assetCount(
             Urls.assetCountSummary +
@@ -497,14 +511,20 @@ class AssetStatusService extends DataBaseService {
   Future<AssetCount> getFuellevelFilterData(productFamilyKey, key) async {
     try {
       if (isVisionLink) {
-        AssetCount assetStatusResponse = productFamilyKey != null
-            ? await MyApi().getClient().fuelLevelFilterDataVL(key,
-                productFamilyKey, "25-50-75-100", accountSelected.CustomerUID)
-            : await MyApi().getClient().fuelLevelVL(
-                  "fuellevel",
-                  "25-50-75-100",
-                  accountSelected.CustomerUID,
-                );
+        Map<String, String> queryMap = Map();
+        queryMap["grouping"] = key;
+        if (productFamilyKey != null) {
+          queryMap["productfamily"] = productFamilyKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
+        queryMap["thresholds"] = "25-50-75-100";
+        AssetCount assetStatusResponse = await MyApi().getClient().fuelLevelVL(
+              Urls.assetCountSummaryVL +
+                  FilterUtils.constructQueryFromMap(queryMap),
+              accountSelected.CustomerUID,
+            );
         return assetStatusResponse;
       } else {
         Map<String, String> queryMap = Map();
@@ -512,14 +532,15 @@ class AssetStatusService extends DataBaseService {
         if (productFamilyKey != null) {
           queryMap["productfamily"] = productFamilyKey;
         }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
         queryMap["thresholds"] = "25-50-75-100";
-        AssetCount assetStatusResponse = await MyApi()
-            .getClient()
-            .fuelLevelFilterData(
-                Urls.assetCountSummary +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
-                Urls.vfleetPrefix);
+        AssetCount assetStatusResponse = await MyApi().getClient().fuelLevel(
+            Urls.assetCountSummary +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
         return assetStatusResponse;
       }
     } catch (e) {
