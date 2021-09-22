@@ -290,17 +290,12 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetUtilization> assetUtilGraphData(
       @Path() String url,
-      @Query("assetUid") String assetUID,
-      @Query("date") String date,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
 
-  @GET(
-      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1")
+  @GET('{url}')
   Future<AssetUtilization> assetUtilGraphDataVL(
-      @Query("assetUid") String assetUID,
-      @Query("date") String date,
-      @Header("x-visionlink-customeruid") customerId);
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
   Future<AssetCount> idlingLevel(
@@ -318,20 +313,15 @@ abstract class RestClient {
     @Query("notificationUserStatus") int userStatus,
   );
 
-  @GET("/npulse-utilization-in/1.0/assetoperationsegments")
+  @GET('{url}')
   Future<SingleAssetOperation> singleAssetOperation(
-      @Query("startDate") String startDate,
-      @Query("endDate") String endDate,
-      @Query("assetUid") String assetUID,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
-  @GET("/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments")
+  @GET('{url}')
   Future<SingleAssetOperation> singleAssetOperationVL(
-      @Query("startDate") String startDate,
-      @Query("endDate") String endDate,
-      @Query("assetUid") String assetUID,
-      @Header("x-visionlink-customeruid") customerId);
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @POST(
       "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives")

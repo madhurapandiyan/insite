@@ -1083,18 +1083,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetUtilization> assetUtilGraphData(
-      url, assetUID, date, customerId, service) async {
+  Future<AssetUtilization> assetUtilGraphData(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(date, 'date');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'date': date
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -1112,19 +1106,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetUtilization> assetUtilGraphDataVL(
-      assetUID, date, customerId) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(date, 'date');
+  Future<AssetUtilization> assetUtilGraphDataVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'date': date
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1203,21 +1191,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetOperation> singleAssetOperation(
-      startDate, endDate, assetUID, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'assetUid': assetUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-utilization-in/1.0/assetoperationsegments',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1233,21 +1214,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SingleAssetOperation> singleAssetOperationVL(
-      startDate, endDate, assetUID, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
+  Future<SingleAssetOperation> singleAssetOperationVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'assetUid': assetUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

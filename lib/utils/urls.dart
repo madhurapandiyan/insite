@@ -76,10 +76,14 @@ class Urls {
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization";
   static String utlizationDetailsVL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1";
+  static String utlizationDetailsSummaryVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1";
   static String utilizationAggregateVL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1";
   static String utilizationSummaryV1VL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1";
+  static String assetoperationsegmentsVL =
+      "/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments";
   static String locationSummaryVL =
       "/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1";
   static String locationHistoryVL =
@@ -111,6 +115,8 @@ class Urls {
       "/npulse-utilization-in/1.0/api/v1/Utilization/Details";
   static String utilizationAggregate =
       "/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate";
+  static String assetoperationsegments =
+      "/npulse-utilization-in/1.0/assetoperationsegments";
   static String locationSummary = "/npulse-fleet-in/1.0/location/maps/v1";
   static String locationHistory =
       "/npulse-vassethistory-in/1.0/AssetLocationHistory/";
