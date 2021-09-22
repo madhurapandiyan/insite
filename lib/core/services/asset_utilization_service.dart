@@ -40,29 +40,37 @@ class AssetUtilizationService extends BaseService {
     String endDate,
   ) async {
     try {
+      Map<String, String> queryMap = Map();
+      if (assetUID != null) {
+        queryMap["assetUid"] = assetUID.toString();
+      }
+      if (startDate != null) {
+        queryMap["startDate"] = startDate;
+      }
+      if (endDate != null) {
+        queryMap["endDate"] = endDate;
+      }
+      queryMap["sort"] = "-LastReportedUtilizationTime";
+      queryMap["includeNonReportedDays"] = true.toString();
+      queryMap["includeOutsideLastReportedDay"] = true.toString();
+      if (customerSelected != null) {
+        queryMap["customerUID"] = customerSelected.CustomerUID;
+      }
       if (isVisionLink) {
         UtilizationSummaryResponse utilizationSummaryResponse =
             await MyApi().getClient().utilLizationListVL(
-                  assetUID,
-                  startDate,
-                  endDate,
-                  '-LastReportedUtilizationTime',
+                  Urls.utlizationDetailsVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected.CustomerUID,
-                  true,
-                  true,
                 );
         return utilizationSummaryResponse.utilization;
       } else {
         UtilizationSummaryResponse utilizationSummaryResponse = await MyApi()
             .getClient()
             .utilLizationList(
-                assetUID,
-                startDate,
-                endDate,
-                '-LastReportedUtilizationTime',
+                Urls.utilizationDetails +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-                true,
-                true,
                 Urls.vutilizationPrefix);
         return utilizationSummaryResponse.utilization;
       }
@@ -74,31 +82,31 @@ class AssetUtilizationService extends BaseService {
 
   Future<AssetUtilization> getAssetUtilGraphDate(
       String assetUID, String date) async {
+    Logger().i("getAssetUtilGraphDate");
     try {
-      if (isVisionLink) {
-        if (assetUID != null &&
-            assetUID.isNotEmpty &&
-            date != null &&
-            date.isNotEmpty) {
-          AssetUtilization result = await MyApi()
-              .getClient()
-              .assetUtilGraphDataVL(
-                  assetUID, date, accountSelected.CustomerUID);
-          return result;
-        }
-      } else {
-        if (assetUID != null &&
-            assetUID.isNotEmpty &&
-            date != null &&
-            date.isNotEmpty) {
-          AssetUtilization result = await MyApi()
-              .getClient()
-              .assetUtilGraphData(Urls.utilizationSummaryV1, assetUID, date,
-                  accountSelected.CustomerUID, Urls.vfleetPrefix);
-          return result;
-        }
+      Map<String, String> queryMap = Map();
+      if (assetUID != null) {
+        queryMap["assetUid"] = assetUID.toString();
       }
-      return null;
+      if (date != null && date.isNotEmpty) {
+        queryMap["date"] = date;
+      }
+      if (isVisionLink) {
+        AssetUtilization result = await MyApi()
+            .getClient()
+            .assetUtilGraphDataVL(
+                Urls.utlizationDetailsSummaryVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return result;
+      } else {
+        AssetUtilization result = await MyApi().getClient().assetUtilGraphData(
+            Urls.utilizationSummaryV1 +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected.CustomerUID,
+            Urls.vfleetPrefix);
+        return result;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -199,34 +207,37 @@ class AssetUtilizationService extends BaseService {
     String endDate,
   ) async {
     try {
-      if (isVisionLink) {
-        if (assetUID != null &&
-            assetUID.isNotEmpty &&
-            startDate != null &&
-            startDate.isNotEmpty &&
-            endDate != null &&
-            endDate.isNotEmpty) {
-          SingleAssetUtilization response = await MyApi()
-              .getClient()
-              .singleAssetUtilizationVL(assetUID, sort, startDate, endDate,
-                  accountSelected.CustomerUID);
-          return response;
-        }
-      } else {
-        if (assetUID != null &&
-            assetUID.isNotEmpty &&
-            startDate != null &&
-            startDate.isNotEmpty &&
-            endDate != null &&
-            endDate.isNotEmpty) {
-          SingleAssetUtilization response = await MyApi()
-              .getClient()
-              .singleAssetUtilization(assetUID, sort, startDate, endDate,
-                  accountSelected.CustomerUID, Urls.vutilizationPrefix);
-          return response;
-        }
+      Map<String, String> queryMap = Map();
+      if (assetUID != null) {
+        queryMap["assetUid"] = assetUID;
       }
-      return null;
+      if (startDate != null) {
+        queryMap["startDate"] = startDate;
+      }
+      if (endDate != null) {
+        queryMap["endDate"] = endDate;
+      }
+      if (sort != null) {
+        queryMap["sort"] = sort;
+      }
+      if (isVisionLink) {
+        SingleAssetUtilization response = await MyApi()
+            .getClient()
+            .singleAssetUtilizationVL(
+                Urls.utilizationAggregateVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return response;
+      } else {
+        SingleAssetUtilization response = await MyApi()
+            .getClient()
+            .singleAssetUtilization(
+                Urls.utilizationAggregate +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID,
+                Urls.vutilizationPrefix);
+        return response;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -234,47 +245,41 @@ class AssetUtilizationService extends BaseService {
   }
 
   Future<UtilizationSummary> getUtilizationSummary(String date) async {
+    Logger().i("getUtilizationSummary");
     try {
+      Map<String, String> queryMap = Map();
+      if (date != null) {
+        queryMap["date"] = date;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUID"] = customerSelected.CustomerUID;
+      }
       if (isVisionLink) {
-        if (date != null) {
-          UtilizationSummary response = customerSelected != null
-              ? await MyApi().getClient().getAssetUtilizationcustomerUIDVL(
-                    date,
-                    customerSelected.CustomerUID,
-                    accountSelected.CustomerUID,
-                  )
-              : await MyApi().getClient().getAssetUtilizationVL(
-                    date,
-                    accountSelected.CustomerUID,
-                  );
-          if (response != null) {
-            return response;
-          } else {
-            return null;
-          }
+        UtilizationSummary response =
+            await MyApi().getClient().getAssetUtilizationVL(
+                  Urls.utilizationSummaryV1VL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected.CustomerUID,
+                );
+        if (response != null) {
+          return response;
+        } else {
+          return null;
         }
       } else {
-        if (date != null) {
-          UtilizationSummary response = customerSelected != null
-              ? await MyApi().getClient().getAssetUtilizationcustomerUID(
-                  Urls.utilizationSummaryV1,
-                  date,
-                  customerSelected.CustomerUID,
-                  accountSelected.CustomerUID,
-                  Urls.vfleetPrefix)
-              : await MyApi().getClient().getAssetUtilization(
-                  Urls.utilizationSummaryV1,
-                  date,
-                  accountSelected.CustomerUID,
-                  Urls.vfleetPrefix);
-          if (response != null) {
-            return response;
-          } else {
-            return null;
-          }
+        UtilizationSummary response = await MyApi()
+            .getClient()
+            .getAssetUtilization(
+                Urls.utilizationSummaryV1 +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        if (response != null) {
+          return response;
+        } else {
+          return null;
         }
       }
-      return null;
     } catch (e) {
       Logger().e(e);
       return null;
@@ -283,20 +288,33 @@ class AssetUtilizationService extends BaseService {
 
   Future<UtilizationSummary> getUtilizationFilterData(
       endDate, productFamilyKey) async {
+    Logger().i("getUtilizationFilterData");
     try {
-      UtilizationSummary utilizationSummary = productFamilyKey != null
-          ? await MyApi().getClient().utilizationSummaryFilterData(
-              Urls.utilizationSummaryV1,
-              endDate,
-              productFamilyKey,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix)
-          : await MyApi().getClient().getAssetUtilization(
-              Urls.utilizationSummaryV1,
-              endDate,
-              accountSelected.CustomerUID,
-              Urls.vfleetPrefix);
-      return utilizationSummary;
+      Map<String, String> queryMap = Map();
+      if (productFamilyKey != null) {
+        queryMap["productfamily"] = productFamilyKey;
+      }
+      if (endDate != null) {
+        queryMap["date"] = endDate;
+      }
+      if (isVisionLink) {
+        UtilizationSummary utilizationSummary = await MyApi()
+            .getClient()
+            .utilizationSummaryVL(
+                Urls.utilizationSummaryV1VL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return utilizationSummary;
+      } else {
+        UtilizationSummary utilizationSummary = await MyApi()
+            .getClient()
+            .utilizationSummary(
+                Urls.utilizationSummaryV1 +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID,
+                Urls.vfleetPrefix);
+        return utilizationSummary;
+      }
     } catch (e) {
       Logger().d(e);
     }

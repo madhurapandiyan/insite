@@ -826,36 +826,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummaryResponse> utilLizationList(
-      assetUID,
-      startDate,
-      endDate,
-      sort,
-      customerId,
-      includeNonReportedDays,
-      includeOutsideLastReportedDay,
-      serviceHeader) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(sort, 'sort');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(
-        includeNonReportedDays, 'includeNonReportedDays');
-    ArgumentError.checkNotNull(
-        includeOutsideLastReportedDay, 'includeOutsideLastReportedDay');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'sort': sort,
-      r'includeNonReportedDays': includeNonReportedDays,
-      r'includeOutsideLastReportedDay': includeOutsideLastReportedDay
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-utilization-in/1.0/api/v1/Utilization/Details',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -871,35 +849,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UtilizationSummaryResponse> utilLizationListVL(
-      assetUID,
-      startDate,
-      endDate,
-      sort,
-      customerId,
-      includeNonReportedDays,
-      includeOutsideLastReportedDay) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(sort, 'sort');
+  Future<UtilizationSummaryResponse> utilLizationListVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(
-        includeNonReportedDays, 'includeNonReportedDays');
-    ArgumentError.checkNotNull(
-        includeOutsideLastReportedDay, 'includeOutsideLastReportedDay');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'sort': sort,
-      r'includeNonReportedDays': includeNonReportedDays,
-      r'includeOutsideLastReportedDay': includeOutsideLastReportedDay
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -913,23 +869,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilization(
-      assetUID, sort, startDate, endDate, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'sort': sort,
-      r'startDate': startDate,
-      r'endDate': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -946,22 +893,13 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilizationVL(
-      assetUID, sort, startDate, endDate, customerId) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
+      url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'sort': sort,
-      r'startDate': startDate,
-      r'endDate': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1065,86 +1003,16 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> assetCountVL(grouping, customerId) async {
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'grouping': grouping};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetCountAllVL(customerId) async {
+  Future<AssetCount> assetCountVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetCountAllcustomerUID(
-      url, customerUID, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customerUID': customerUID};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> assetCountcustomerUIDVL(
-      grouping, customerUID, customerId) async {
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -1154,14 +1022,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> assetCountAllcustomerUIDVL(customerUID, customerId) async {
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
+  Future<AssetLocationData> assetLocationVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'customerUID': customerUID};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1169,12 +1036,12 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetCount.fromJson(_result.data);
+    final value = AssetLocationData.fromJson(_result.data);
     return value;
   }
 
   @override
-  Future<AssetCount> assetCountByFilter(url, customerId, service) async {
+  Future<AssetCount> fuelLevel(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
@@ -1197,7 +1064,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> assetCountByFilterVL(url, customerId) async {
+  Future<AssetCount> fuelLevelVL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
@@ -1216,255 +1083,12 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetLocationData> assetLocationWithOutFilter(
-      url, pageNumber, pageSize, sort, customerId, service) async {
+  Future<AssetUtilization> assetUtilGraphData(url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetLocationData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetLocationData> assetLocationWithOutFilterVL(
-      pageNumber, pageSize, sort, customerId) async {
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetLocationData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetLocationData> assetLocationWithOutFilterCustomerUID(
-      url,
-      pageNumber,
-      pageSize,
-      sort,
-      customerIdentifier,
-      customerId,
-      service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(customerIdentifier, 'customerIdentifier');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort,
-      r'customerIdentifier': customerIdentifier
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetLocationData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetLocationData> assetLocationWithOutFilterCustomerUIDVL(
-      pageNumber, pageSize, sort, customerIdentifier, customerId) async {
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(sort, 'sort');
-    ArgumentError.checkNotNull(customerIdentifier, 'customerIdentifier');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'sort': sort,
-      r'customerIdentifier': customerIdentifier
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetLocationData.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> fuelLevel(
-      url, grouping, thresholds, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'thresholds': thresholds
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> fuelLevelVL(grouping, thresholds, customerId) async {
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'thresholds': thresholds
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> fuelLevelCustomerUID(
-      url, grouping, thresholds, customerUID, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'thresholds': thresholds,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> fuelLevelCustomerUIDVL(
-      grouping, thresholds, customerUID, customerId) async {
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'thresholds': thresholds,
-      r'customerUID': customerUID
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetUtilization> assetUtilGraphData(
-      url, assetUID, date, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(date, 'date');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'date': date
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -1482,19 +1106,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetUtilization> assetUtilGraphDataVL(
-      assetUID, date, customerId) async {
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(date, 'date');
+  Future<AssetUtilization> assetUtilGraphDataVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUID,
-      r'date': date
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1573,21 +1191,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetOperation> singleAssetOperation(
-      startDate, endDate, assetUID, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'assetUid': assetUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-utilization-in/1.0/assetoperationsegments',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -1603,21 +1214,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SingleAssetOperation> singleAssetOperationVL(
-      startDate, endDate, assetUID, customerId) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(assetUID, 'assetUID');
+  Future<SingleAssetOperation> singleAssetOperationVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startDate': startDate,
-      r'endDate': endDate,
-      r'assetUid': assetUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -2065,13 +1668,12 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummary> getAssetUtilization(
-      url, date, customerId, serviceHeader) async {
+      url, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(date, 'date');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'date': date};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2090,17 +1692,12 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummary> getAssetUtilizationcustomerUID(
-      url, date, customerUID, customerId, serviceHeader) async {
+      url, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(date, 'date');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'date': date,
-      r'customerUID': customerUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2118,14 +1715,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UtilizationSummary> getAssetUtilizationVL(date, customerId) async {
-    ArgumentError.checkNotNull(date, 'date');
+  Future<UtilizationSummary> getAssetUtilizationVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'date': date};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -2139,18 +1735,13 @@ class _RestClient implements RestClient {
 
   @override
   Future<UtilizationSummary> getAssetUtilizationcustomerUIDVL(
-      date, customerUID, customerId) async {
-    ArgumentError.checkNotNull(date, 'date');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
+      url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'date': date,
-      r'customerUID': customerUID
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -2594,56 +2185,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCount> fuelLevelFilterData(url, customerId, service) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(service, 'service');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'x-visionlink-customeruid': customerId,
-              r'service': service
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetCount> fuelLevelFilterDataVL(
-      grouping, productfamily, thresholds, customerId) async {
-    ArgumentError.checkNotNull(grouping, 'grouping');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(thresholds, 'thresholds');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'grouping': grouping,
-      r'productfamily': productfamily,
-      r'thresholds': thresholds
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = AssetCount.fromJson(_result.data);
-    return value;
-  }
-
-  @override
   Future<AssetCount> idlingLevelFilterData(url, startDate, idleEfficiencyRanges,
       productfamily, endDate, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
@@ -2696,18 +2237,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UtilizationSummary> utilizationSummaryFilterData(
-      url, endDate, productfamily, customerId, service) async {
+  Future<UtilizationSummary> utilizationSummary(
+      url, customerId, service) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'date': endDate,
-      r'productfamily': productfamily
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2725,22 +2261,31 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetLocationData> locationFilterData(url, pageNumber, pageSize,
-      productfamily, sort, customerId, service) async {
+  Future<UtilizationSummary> utilizationSummaryVL(url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UtilizationSummary.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetLocationData> locationFilterData(url, customerId, service) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(service, 'service');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'productfamily': productfamily,
-      r'sort': sort
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
@@ -2758,23 +2303,13 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetLocationData> locationFilterDataVL(
-      pageNumber, pageSize, productfamily, sort, customerId) async {
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(productfamily, 'productfamily');
-    ArgumentError.checkNotNull(sort, 'sort');
+  Future<AssetLocationData> locationFilterDataVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'productfamily': productfamily,
-      r'sort': sort
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

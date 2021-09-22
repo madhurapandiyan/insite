@@ -318,10 +318,12 @@ class LocationViewModel extends InsiteViewModel {
             smallLatLng.latitude,
             largeLatLng.longitude,
             radiusKm);
-    _assetLocation = result;
-    _totalCount = result.pagination.totalCount;
-    clusterMarker();
-    manager.updateMap();
+    if (result != null) {
+      _assetLocation = result;
+      _totalCount = result.pagination.totalCount;
+      clusterMarker();
+      manager.updateMap();
+    }
     _loading = false;
     _refreshing = false;
     notifyListeners();
@@ -413,14 +415,18 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   getLocationFilterData(dropDownValue) async {
+    _refreshing = true;
+    notifyListeners();
     AssetLocationData result = await _assetLocationService
         .getLocationFilterData(dropDownValue, pageNumber, pageSize);
     if (result != null) {
       _assetLocation = result;
+      _totalCount = result.pagination.totalCount;
       clusterMarker();
       manager.updateMap();
     }
     _loading = false;
+    _refreshing = false;
     notifyListeners();
   }
 }

@@ -74,6 +74,16 @@ class Urls {
       "/t/trimble.com/vss-assetutilization/1.1/AssetOperationDailyTotals";
   static String utlizationSummaryVL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization";
+  static String utlizationDetailsVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/v1";
+  static String utlizationDetailsSummaryVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Summary/v1";
+  static String utilizationAggregateVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Details/Aggregate/v1";
+  static String utilizationSummaryV1VL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/Summary/v1";
+  static String assetoperationsegmentsVL =
+      "/t/trimble.com/vss-assetutilization/1.1/assetoperationsegments";
   static String locationSummaryVL =
       "/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1";
   static String locationHistoryVL =
@@ -92,7 +102,8 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/FaultDetails/v1";
   static String faultCountSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
-  static String searchVL = "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1";
+  static String searchVL =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";
@@ -100,6 +111,12 @@ class Urls {
       "/npulse-fleet-in/1.0/UnifiedFleet/Utilization";
   static String utilizationSummaryV1 =
       "/npulse-fleet-in/1.0/UnifiedFleet/Utilization/Summary/v1";
+  static String utilizationDetails =
+      "/npulse-utilization-in/1.0/api/v1/Utilization/Details";
+  static String utilizationAggregate =
+      "/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate";
+  static String assetoperationsegments =
+      "/npulse-utilization-in/1.0/assetoperationsegments";
   static String locationSummary = "/npulse-fleet-in/1.0/location/maps/v1";
   static String locationHistory =
       "/npulse-vassethistory-in/1.0/AssetLocationHistory/";

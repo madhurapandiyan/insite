@@ -197,7 +197,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                         ),
                       ),
                     ),
-                    (viewModel.loading || widget.isRefreshing)
+                    (viewModel.loading)
                         ? Expanded(
                             child: Center(
                               child: CircularProgressIndicator(),
@@ -208,7 +208,202 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                             child: Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.45,
-                                child: _googleMap(currentType, viewModel)
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.28,
+                                  decoration: BoxDecoration(
+                                    color: tuna,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      GoogleMap(
+                                        onCameraMove: (position) {
+                                          viewModel.customInfoWindowController
+                                              .onCameraMove();
+                                          viewModel.manager != null
+                                              ? viewModel.manager
+                                                  .onCameraMove(position)
+                                              : SizedBox();
+                                        },
+                                        gestureRecognizers: <
+                                            Factory<
+                                                OneSequenceGestureRecognizer>>[
+                                          new Factory<
+                                              OneSequenceGestureRecognizer>(
+                                            () => new EagerGestureRecognizer(),
+                                          ),
+                                        ].toSet(),
+                                        onMapCreated: (GoogleMapController
+                                            controller) async {
+                                          viewModel.customInfoWindowController
+                                              .googleMapController = controller;
+                                          viewModel.controller
+                                              .complete(controller);
+                                          viewModel.manager != null
+                                              ? viewModel.manager
+                                                  .setMapController(controller)
+                                              : SizedBox();
+                                          viewModel.zoomToMarkers();
+                                        },
+                                        onTap: (argument) {
+                                          viewModel.customInfoWindowController
+                                              .hideInfoWindow();
+                                        },
+                                        onCameraIdle: viewModel.manager != null
+                                            ? viewModel.manager.updateMap
+                                            : null,
+                                        mapType: _changemap(),
+                                        compassEnabled: true,
+                                        zoomControlsEnabled: false,
+                                        markers: viewModel.markers,
+                                        initialCameraPosition: viewModel
+                                                        .assetLocation !=
+                                                    null &&
+                                                viewModel.assetLocation
+                                                    .mapRecords.isNotEmpty
+                                            ? CameraPosition(
+                                                target: LatLng(
+                                                    viewModel
+                                                        .assetLocation
+                                                        .mapRecords
+                                                        .first
+                                                        .lastReportedLocationLatitude,
+                                                    viewModel
+                                                        .assetLocation
+                                                        .mapRecords
+                                                        .first
+                                                        .lastReportedLocationLongitude),
+                                                zoom: 5)
+                                            : CameraPosition(
+                                                target: LatLng(30.666, 76.8127),
+                                                zoom: 4),
+                                      ),
+                                      CustomInfoWindow(
+                                        controller: viewModel
+                                            .customInfoWindowController,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.42,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.36,
+                                        offset: 1,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 28.0,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                print("button is tapped");
+                                                viewModel
+                                                    .customInfoWindowController
+                                                    .hideInfoWindow();
+                                                zoomVal++;
+                                                _plus(
+                                                    zoomVal,
+                                                    LatLng(
+                                                        viewModel
+                                                            .assetLocation
+                                                            .mapRecords
+                                                            .first
+                                                            .lastReportedLocationLatitude,
+                                                        viewModel
+                                                            .assetLocation
+                                                            .mapRecords
+                                                            .first
+                                                            .lastReportedLocationLongitude),
+                                                    viewModel);
+                                              },
+                                              child: Container(
+                                                width: 27.47,
+                                                height: 26.97,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 1.0,
+                                                      color: darkhighlight,
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                      width: 1.0,
+                                                      color: darkhighlight),
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/plus.svg",
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("button is tapped");
+                                                  viewModel
+                                                      .customInfoWindowController
+                                                      .hideInfoWindow();
+                                                  zoomVal--;
+                                                  _minus(
+                                                      zoomVal,
+                                                      LatLng(
+                                                        viewModel
+                                                            .assetLocation
+                                                            .mapRecords
+                                                            .first
+                                                            .lastReportedLocationLatitude,
+                                                        viewModel
+                                                            .assetLocation
+                                                            .mapRecords
+                                                            .first
+                                                            .lastReportedLocationLongitude,
+                                                      ),
+                                                      viewModel);
+                                                },
+                                                child: Container(
+                                                  width: 27.47,
+                                                  height: 26.97,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0)),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 1.0,
+                                                        color: darkhighlight,
+                                                      ),
+                                                    ],
+                                                    border: Border.all(
+                                                        width: 1.0,
+                                                        color: darkhighlight),
+                                                    shape: BoxShape.rectangle,
+                                                  ),
+                                                  child: SvgPicture.asset(
+                                                    "assets/images/minus.svg",
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                      viewModel.refreshing
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : SizedBox()
+                                    ],
+                                  ),
+                                )
                                 // child: flutter_map.FlutterMap(
                                 //   options: flutter_map.MapOptions(
                                 //     center: latlng.LatLng(50, 20),
@@ -333,146 +528,6 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
             ));
       },
       viewModelBuilder: () => viewModel,
-    );
-  }
-
-  Widget _googleMap(type, LocationViewModel viewModel) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.28,
-      decoration: BoxDecoration(
-        color: tuna,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Stack(
-        children: [
-          GoogleMap(
-            onCameraMove: (position) {
-              viewModel.customInfoWindowController.onCameraMove();
-              viewModel.manager != null
-                  ? viewModel.manager.onCameraMove(position)
-                  : SizedBox();
-            },
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-              new Factory<OneSequenceGestureRecognizer>(
-                () => new EagerGestureRecognizer(),
-              ),
-            ].toSet(),
-            onMapCreated: (GoogleMapController controller) async {
-              viewModel.customInfoWindowController.googleMapController =
-                  controller;
-              viewModel.controller.complete(controller);
-              viewModel.manager != null
-                  ? viewModel.manager.setMapController(controller)
-                  : SizedBox();
-              viewModel.zoomToMarkers();
-            },
-            onTap: (argument) {
-              viewModel.customInfoWindowController.hideInfoWindow();
-            },
-            onCameraIdle:
-                viewModel.manager != null ? viewModel.manager.updateMap : null,
-            mapType: _changemap(),
-            compassEnabled: true,
-            zoomControlsEnabled: false,
-            markers: viewModel.markers,
-            initialCameraPosition: viewModel.assetLocation != null &&
-                    viewModel.assetLocation.mapRecords.isNotEmpty
-                ? CameraPosition(
-                    target: LatLng(
-                        viewModel.assetLocation.mapRecords.first
-                            .lastReportedLocationLatitude,
-                        viewModel.assetLocation.mapRecords.first
-                            .lastReportedLocationLongitude),
-                    zoom: 5)
-                : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
-          ),
-          CustomInfoWindow(
-            controller: viewModel.customInfoWindowController,
-            width: MediaQuery.of(context).size.width * 0.42,
-            height: MediaQuery.of(context).size.height * 0.36,
-            offset: 1,
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 28.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print("button is tapped");
-                    viewModel.customInfoWindowController.hideInfoWindow();
-                    zoomVal++;
-                    _plus(
-                        zoomVal,
-                        LatLng(
-                            viewModel.assetLocation.mapRecords.first
-                                .lastReportedLocationLatitude,
-                            viewModel.assetLocation.mapRecords.first
-                                .lastReportedLocationLongitude),
-                        viewModel);
-                  },
-                  child: Container(
-                    width: 27.47,
-                    height: 26.97,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 1.0,
-                          color: darkhighlight,
-                        ),
-                      ],
-                      border: Border.all(width: 1.0, color: darkhighlight),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: SvgPicture.asset(
-                      "assets/images/plus.svg",
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      print("button is tapped");
-                      viewModel.customInfoWindowController.hideInfoWindow();
-                      zoomVal--;
-                      _minus(
-                          zoomVal,
-                          LatLng(
-                            viewModel.assetLocation.mapRecords.first
-                                .lastReportedLocationLatitude,
-                            viewModel.assetLocation.mapRecords.first
-                                .lastReportedLocationLongitude,
-                          ),
-                          viewModel);
-                    },
-                    child: Container(
-                      width: 27.47,
-                      height: 26.97,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 1.0,
-                            color: darkhighlight,
-                          ),
-                        ],
-                        border: Border.all(width: 1.0, color: darkhighlight),
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: SvgPicture.asset(
-                        "assets/images/minus.svg",
-                      ),
-                    )),
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 
