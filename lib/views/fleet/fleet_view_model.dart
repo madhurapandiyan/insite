@@ -88,7 +88,7 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   onHomeSelected() {
-    _navigationService.replaceWith(dashboardViewRoute);
+    _navigationService.replaceWith(homeViewRoute);
   }
 
   _loadMore() {

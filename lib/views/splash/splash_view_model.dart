@@ -85,7 +85,7 @@ class SplashViewModel extends InsiteViewModel {
         if (list.isNotEmpty) {
           _localService.setHasPermission(true);
           if (account != null) {
-            _nagivationService.replaceWith(dashboardViewRoute);
+            _nagivationService.replaceWith(homeViewRoute);
           } else {
             _nagivationService.replaceWith(customerSelectionViewRoute);
           }
@@ -100,17 +100,27 @@ class SplashViewModel extends InsiteViewModel {
           // _nagivationService.replaceWith(loginPageRoute);
           // // below lines for redirecting inside app
           // if (account != null) {
-          //   _nagivationService.replaceWith(dashboardViewRoute);
+          //   _nagivationService.replaceWith(homeViewRoute);
           // } else {
           //   _nagivationService.replaceWith(customerSelectionViewRoute);
           // }
         }
       } else {
-        _localService.setHasPermission(true);
-        if (account != null) {
-          _nagivationService.replaceWith(dashboardViewRoute);
+        UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+        if (userInfo == null) {
+          _localService.setHasPermission(false);
+          _localService.clearAll();
+          shouldLoadWebview = true;
+          Future.delayed(Duration(seconds: 1), () {
+            notifyListeners();
+          });
         } else {
-          _nagivationService.replaceWith(customerSelectionViewRoute);
+          _localService.setHasPermission(true);
+          if (account != null) {
+            _nagivationService.replaceWith(homeViewRoute);
+          } else {
+            _nagivationService.replaceWith(customerSelectionViewRoute);
+          }
         }
       }
     } catch (e) {
@@ -123,8 +133,11 @@ class SplashViewModel extends InsiteViewModel {
       UserInfo userInfo = await _loginService.getLoggedInUserInfo();
       _localService.saveUserInfo(userInfo);
       Logger().i("launching home get logged in user detail");
-      _nagivationService.replaceWith(dashboardViewRoute);
+      _nagivationService.replaceWith(homeViewRoute);
       isProcessing = false;
-    } catch (e) {}
+    } catch (e) {
+      Logger().i("getLoggedInUserDetails");
+      Logger().e(e);
+    }
   }
 }

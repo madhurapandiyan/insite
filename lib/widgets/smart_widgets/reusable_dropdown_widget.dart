@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
@@ -31,18 +31,20 @@ class ReusableDropDown extends StatelessWidget {
             name,
             style: TextStyle(
                 color: silver,
-                fontSize: 11.0,
+                fontSize: 10.0,
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: SvgPicture.asset(
-            "assets/images/arrowdown.svg",
-            width: 10,
-            height: 10,
-          ),
+        // Padding(
+        //   padding: const EdgeInsets.all(5.0),
+        //   child: Icon(
+        //     Icons.arrow_drop_down,
+        //     color: Colors.grey,
+        //   ),
+        // ),
+        SizedBox(
+          width: 10,
         ),
       ],
     );

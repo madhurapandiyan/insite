@@ -50,7 +50,7 @@ class _FaultDropDownState extends State<FaultDropDown> {
                         value,
                         style: TextStyle(
                             color: silver,
-                            fontSize: 11.0,
+                            fontSize: 10.0,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal),
                       ),

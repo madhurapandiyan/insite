@@ -88,34 +88,31 @@ class _DashboardViewState extends State<DashboardView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: FaultDropDown(
-                            value: assetDropDown,
-                            items: ["All Assets", "Product Family"],
-                            onChanged: (String value) {
-                              Logger().i("all assets dropdown change $value");
-                              assetDropDown = value;
-                              switchDropDownState = !switchDropDownState;
-                              if (value != "All Assets") {
-                                // "BACKHOE LOADER"
-                                FilterData filterData =
-                                    viewModel.filterDataProductFamily[0];
-                                viewModel
-                                    .getFilterDataApplied(filterData.title);
-                                filterLocationKey.currentState
-                                    .getAssetLocationHomeFilterData(
-                                        filterData.title);
-                              } else {
-                                viewModel.getData();
-                                filterLocationKey.currentState
-                                    .getAssetLocationHomeData();
-                              }
-                            },
-                          ),
+                        FaultDropDown(
+                          value: assetDropDown,
+                          items: ["All Assets", "Product Family"],
+                          onChanged: (String value) {
+                            Logger().i("all assets dropdown change $value");
+                            assetDropDown = value;
+                            switchDropDownState = !switchDropDownState;
+                            if (value != "All Assets") {
+                              // "BACKHOE LOADER"
+                              FilterData filterData =
+                                  viewModel.filterDataProductFamily[0];
+                              viewModel
+                                  .getFilterDataApplied(filterData.title);
+                              filterLocationKey.currentState
+                                  .getAssetLocationHomeFilterData(
+                                      filterData.title);
+                            } else {
+                              viewModel.getData();
+                              filterLocationKey.currentState
+                                  .getAssetLocationHomeData();
+                            }
+                          },
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 5,
                         ),
                         switchDropDownState
                             ? Flexible(

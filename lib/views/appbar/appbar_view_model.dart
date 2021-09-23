@@ -50,8 +50,8 @@ class AppbarViewModel extends InsiteViewModel {
       _snackbarService.showSnackbar(
           message: "Account not selected", duration: Duration(seconds: 2));
     } else {
-      if (screenType != ScreenType.DASHBOARD) {
-        _navigationService.replaceWith(dashboardViewRoute);
+      if (screenType != ScreenType.HOME) {
+        _navigationService.replaceWith(homeViewRoute);
       }
     }
   }

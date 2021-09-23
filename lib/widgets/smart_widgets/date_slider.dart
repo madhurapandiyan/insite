@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:flutter/src/painting/basic_types.dart' as axis;
 
@@ -10,7 +11,7 @@ class DateSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
+      height: 140,
       child: ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
@@ -42,15 +43,24 @@ class DateSlider extends StatelessWidget {
                 width: 50,
               ),
               Padding(padding: EdgeInsets.all(2)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InsiteText(
-                  size: 14,
-                  text: data.value,
-                  fontWeight: FontWeight.w700,
-                  color: athenGrey,
-                ),
-              ),
+              data.value.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InsiteText(
+                        size: 14,
+                        text: "-",
+                        fontWeight: FontWeight.w700,
+                        color: athenGrey,
+                      ),
+                    )
+                  : InsiteButton(
+                      title: data.value,
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      bgColor: tango,
+                      height: 30,
+                      width: 40,
+                    ),
             ],
           );
         },

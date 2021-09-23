@@ -234,7 +234,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   onHomeSelected() async {
     Logger().d("onHomeSelected");
     await _localStorageService.clearAll();
-    _navigationService.replaceWith(dashboardViewRoute);
+    _navigationService.replaceWith(homeViewRoute);
   }
 
   checkPermission() async {
