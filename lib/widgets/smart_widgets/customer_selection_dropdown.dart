@@ -35,7 +35,7 @@ class _AccountSelectionDropDownWidgetState
   AccountData selected;
   List<AccountData> _list = [];
   List<AccountData> _displayList = [];
-  int showCount = 500;
+  // int showCount = 500;
 
   onSearchTextChanged(String text) async {
     Logger().i("query typeed " + text);
@@ -63,11 +63,11 @@ class _AccountSelectionDropDownWidgetState
     super.initState();
     selected = widget.selected != null ? widget.selected : null;
     _list.clear();
-    if (widget.list.length > showCount) {
-      _list = widget.list.take(showCount).toList();
-    } else {
-      _list = widget.list;
-    }
+    // if (widget.list.length > showCount) {
+    // _list = widget.list.take(showCount).toList();
+    // } else {
+    _list = widget.list;
+    // }
     _displayList = _list;
     if (selected != null) {
       Logger().i(selected.value.DisplayName);
@@ -190,14 +190,14 @@ class _AccountSelectionDropDownWidgetState
                               },
                             )
                           : SizedBox(),
-                      LoadMoreText(
-                        onClick: () {
-                          showCount += 500;
-                          _list = widget.list.take(showCount).toList();
-                          _displayList = _list;
-                          setState(() {});
-                        },
-                      )
+                      // LoadMoreText(
+                      //   onClick: () {
+                      //     showCount += 500;
+                      //     _list = widget.list.take(showCount).toList();
+                      //     _displayList = _list;
+                      //     setState(() {});
+                      //   },
+                      // )
                     ],
                   ),
                 ),

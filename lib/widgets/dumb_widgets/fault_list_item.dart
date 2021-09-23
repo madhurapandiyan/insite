@@ -70,7 +70,7 @@ class FaultListItem extends StatelessWidget {
                           title: "Date/Time :",
                           content: fault.basic != null &&
                                   fault.basic.faultOccuredUTC != null
-                              ? Utils.getLastReportedDateOne(
+                              ? Utils.getLastReportedDateOneUTC(
                                   fault.basic.faultOccuredUTC)
                               : "-",
                         )

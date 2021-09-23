@@ -115,7 +115,7 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 5,
                         ),
                         switchDropDownState
                             ? Flexible(

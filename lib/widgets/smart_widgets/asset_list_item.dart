@@ -130,7 +130,7 @@ class AssetOperationListItem extends StatelessWidget {
           value: getMatchingDate(time) != null
               ? (getMatchingDate(time).totalRuntimeDurationSeconds / (60 * 60))
                   .toStringAsFixed(1)
-              : "-");
+              : "");
       list.add(data);
     }
     return list;

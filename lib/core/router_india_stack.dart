@@ -26,7 +26,7 @@ class Router {
       case customerSelectionViewRoute:
         return MaterialPageRoute(builder: (_) => view1.AccountSelectionView());
       case homeViewRoute:
-        return MaterialPageRoute(builder: (_) => view2.DashboardView());
+        return MaterialPageRoute(builder: (_) => view7.HomeView());
       case fleetViewRoute:
         return MaterialPageRoute(builder: (_) => view3.FleetView());
       case indiaStackLoginViewRoute:
@@ -41,7 +41,7 @@ class Router {
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
       case dashboardViewRoute:
-        return MaterialPageRoute(builder: (_) => view7.HomeView());
+        return MaterialPageRoute(builder: (_) => view2.DashboardView());
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:

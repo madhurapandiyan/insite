@@ -36,55 +36,53 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
         borderRadius: BorderRadius.all(Radius.circular(8)),
         // color: cardcolor
       ),
-      child: Row(
-        children: [
-          DropdownButton(
-              elevation: 16,
-              dropdownColor: cardcolor,
-              value: dropDownvalue,
-              onChanged: (FilterData value) {
-                dropDownvalue = value;
-                widget.onValueSelected(value.title);
-                setState(() {});
-              },
-              items: _displayList
-                  .map<DropdownMenuItem<FilterData>>((FilterData value) {
-                return DropdownMenuItem<FilterData>(
-                    value: value,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: InsiteButton(
-                            height: 27,
-                            title: value.count,
-                            bgColor: cardcolor,
-                            textColor: silver,
-                            fontSize: 10,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            value.title,
-                            style: TextStyle(
-                                color: silver,
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal),
-                          ),
-                        ),
-                      ],
-                    ));
-              }).toList(),
-              underline: Container(
-                  height: 1.0,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: Colors.transparent, width: 0.0))))),
-        ],
-      ),
+      child: DropdownButton(
+          elevation: 16,
+          dropdownColor: cardcolor,
+          value: dropDownvalue,
+          onChanged: (FilterData value) {
+            dropDownvalue = value;
+            widget.onValueSelected(value.title);
+            setState(() {});
+          },
+          // selectedItemBuilder: (context) {},
+          items: _displayList
+              .map<DropdownMenuItem<FilterData>>((FilterData value) {
+            return DropdownMenuItem<FilterData>(
+                value: value,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: InsiteButton(
+                        height: 27,
+                        width: 50,
+                        title: value.count,
+                        bgColor: cardcolor,
+                        textColor: silver,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        value.title,
+                        style: TextStyle(
+                            color: silver,
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal),
+                      ),
+                    ),
+                  ],
+                ));
+          }).toList(),
+          underline: Container(
+              height: 1.0,
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom:
+                          BorderSide(color: Colors.transparent, width: 0.0))))),
     );
   }
 }
