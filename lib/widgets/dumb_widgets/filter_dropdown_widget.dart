@@ -63,16 +63,16 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                         fontSize: 10,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        value.title,
-                        style: TextStyle(
-                            color: silver,
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
-                      ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      value.title,
+                      style: TextStyle(
+                          color: silver,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal),
                     ),
                   ],
                 ));

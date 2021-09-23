@@ -53,9 +53,9 @@ class AssetUtilizationService extends BaseService {
       queryMap["sort"] = "-LastReportedUtilizationTime";
       queryMap["includeNonReportedDays"] = true.toString();
       queryMap["includeOutsideLastReportedDay"] = true.toString();
-      if (customerSelected != null) {
-        queryMap["customerUID"] = customerSelected.CustomerUID;
-      }
+      // if (customerSelected != null) {
+      //   queryMap["customerUID"] = customerSelected.CustomerUID;
+      // }
       if (isVisionLink) {
         UtilizationSummaryResponse utilizationSummaryResponse =
             await MyApi().getClient().utilLizationListVL(
