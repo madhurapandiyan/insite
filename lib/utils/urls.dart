@@ -1,8 +1,12 @@
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
-  static String unifiedServiceBaseUrl =
-      "https://unifiedservice.myvisionlink.com";
+
+  // redirecting to adminstration url
+  // static String unifiedServiceBaseUrl =
+  //     "https://unifiedservice.myvisionlink.com";
+
+  static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String unifiedFleetV4BaseUrl = "https://d1pavvpktln7z7.cloudfront.net";
   static String unifiedFleetV4IdTokenUrl = "https://id.trimble.com";
 
@@ -19,13 +23,21 @@ class Urls {
           "&client_id=" +
           "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
           "&state=https://unifiedfleet.myvisionlink.com/&nonce=1";
+  // redirecting to adminstration url
 
-  static String unifiedServiceloginUrl =
+  // static String unifiedServiceloginUrl =
+  //     "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
+  //         "https://unifiedservice.myvisionlink.com" +
+  //         "&client_id=" +
+  //         "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
+  //         "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
+
+  static String administratorloginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
-          "https://unifiedservice.myvisionlink.com" +
+          "https://administrator.myvisionlink.com" +
           "&client_id=" +
-          "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
-          "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
+          "h3siCLfKlDG1Tzf0OTGBCgeldj0a" +
+          "&state=https://administrator.myvisionlink.com/&nonce=1";
 
   //sample
   static String unifiedFleetV4LoginUrl =
@@ -104,6 +116,9 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
   static String searchVL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1";
+
+  static String adminManagerUserSumaryVL =
+      "/t/trimble.com/vss-identityapi/2.0/Users";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";

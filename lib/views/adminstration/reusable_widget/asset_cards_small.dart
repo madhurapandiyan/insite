@@ -77,23 +77,15 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
                     textColor: appbarcolor,
                     fontSize: 14,
                     onTap: () {
-                      widget
-                          .onCallbackSelected(AdminAssetsButtonType.ADDNEWUSER);
-                      widget
-                          .onCallbackSelected(AdminAssetsButtonType.MANAGEUSER);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWGROUPS);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEGROUPS);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWGEOFENCES);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEGEOFENCES);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWREPORT);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEREPORTS);
+                      if (index == 0) {
+                        widget.onCallbackSelected(
+                            AdminAssetsButtonType.ADDNEWUSER);
+                      } else if (index == 1) {
+                        widget.onCallbackSelected(
+                            AdminAssetsButtonType.MANAGEUSER);
+                      }
                     },
+                    
                   );
                 }),
           )

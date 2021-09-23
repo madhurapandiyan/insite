@@ -7,6 +7,7 @@ import 'package:insite/views/adminstration/reusable_widget/manage_card_widget.da
 import 'package:insite/views/adminstration/reusable_widget/manage_geofence_widet.dart';
 import 'package:insite/views/adminstration/reusable_widget/new_report_template_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/notification_widget.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'adminstration_view_model.dart';
 
@@ -16,7 +17,11 @@ class AdminstrationView extends StatelessWidget {
     return ViewModelBuilder<AdminstrationViewModel>.reactive(
       builder:
           (BuildContext context, AdminstrationViewModel viewModel, Widget _) {
-        return Scaffold(
+        return InsiteScaffold(
+          viewModel: viewModel,
+          screenType: ScreenType.ADMINISTRATION,
+          onFilterApplied: (){},
+          onRefineApplied: (){},
           body: Container(
               height: MediaQuery.of(context).size.height,
               color: bgcolor,
@@ -37,7 +42,7 @@ class AdminstrationView extends StatelessWidget {
                             AdminAssetsButtonType.values[1]
                           ],
                           onCallbackSelected: (value) {
-                            print("button is tapped");
+                             viewModel.onRespectiveButtonClicked(value);
                           },
                         ),
                         AssetCardsSmall(

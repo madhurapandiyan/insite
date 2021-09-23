@@ -54,13 +54,15 @@ class InsiteTextOverFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
-        overflow: overflow != null ? overflow : TextOverflow.ellipsis,
-        style: TextStyle(
-          color: color,
-          fontWeight: fontWeight,
-          fontSize: size,
-        ));
+    return Flexible(
+      child: Text(text,
+          overflow: overflow != null ? overflow : TextOverflow.ellipsis,
+          style: TextStyle(
+            color: color,
+            fontWeight: fontWeight,
+            fontSize: size,
+          )),
+    );
   }
 }
 

@@ -79,7 +79,7 @@ class _LogoutViewState extends State<LogoutView> {
       if (mounted) {
         print("URL changed: $url");
         if (url != null &&
-            url.startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
+            url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             if (url.contains("=")) {
@@ -126,7 +126,7 @@ class _LogoutViewState extends State<LogoutView> {
             body: SafeArea(
               child: Stack(
                 children: [
-                  WebviewScaffold(url: Urls.unifiedServiceloginUrl),
+                  WebviewScaffold(url: Urls.administratorloginUrl),
                   isLoading
                       ? Center(child: CircularProgressIndicator())
                       : SizedBox()
