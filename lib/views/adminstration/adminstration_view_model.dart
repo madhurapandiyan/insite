@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/utils/enums.dart';
@@ -15,12 +16,11 @@ class AdminstrationViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
   }
 
-  onRespectiveButtonClicked(AdminAssetsButtonType  value) {
-    print("@@@:$value");
-    if(value==AdminAssetsButtonType.ADDNEWUSER){
-     print("button is tapped");
-    }
-    else if (value == AdminAssetsButtonType.MANAGEUSER) {
+  onRespectiveButtonClicked(AdminAssetsButtonType value) {
+    Logger().d("selectedValue:$value");
+    if (value == AdminAssetsButtonType.ADDNEWUSER) {
+      print("button is tapped");
+    } else if (value == AdminAssetsButtonType.MANAGEUSER) {
       _navigationService.navigateWithTransition(ManageUserView(),
           transition: "fade");
     }

@@ -29,7 +29,7 @@ class AssetAdminManagerUserService extends BaseService {
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
-        queryMap["pageNumber: "] = pageNumber.toString();
+        queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sort"] = "";
 
         AdminManageUser adminManageUserResponse = await MyApi()

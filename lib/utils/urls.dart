@@ -2,9 +2,8 @@ class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
 
-  // redirecting to adminstration url
-  // static String unifiedServiceBaseUrl =
-  //     "https://unifiedservice.myvisionlink.com";
+  static String unifiedServiceBaseUrl =
+      "https://unifiedservice.myvisionlink.com";
 
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String unifiedFleetV4BaseUrl = "https://d1pavvpktln7z7.cloudfront.net";
@@ -23,14 +22,13 @@ class Urls {
           "&client_id=" +
           "2JkDsLlgBWwDEdRHkUiaO9TRWMYa" +
           "&state=https://unifiedfleet.myvisionlink.com/&nonce=1";
-  // redirecting to adminstration url
 
-  // static String unifiedServiceloginUrl =
-  //     "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
-  //         "https://unifiedservice.myvisionlink.com" +
-  //         "&client_id=" +
-  //         "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
-  //         "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
+  static String unifiedServiceloginUrl =
+      "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
+          "https://unifiedservice.myvisionlink.com" +
+          "&client_id=" +
+          "bdt0z_P8GGeiQERDwrksFxRHBvQa" +
+          "&state=https://unifiedservice.myvisionlink.com/&nonce=1";
 
   static String administratorloginUrl =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
