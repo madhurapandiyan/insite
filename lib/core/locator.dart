@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_service.dart';
@@ -67,5 +69,8 @@ class LocatorInjector {
     locator.registerLazySingleton(() => LocalStorageService());
     log.d("Registering Fault Service");
     locator.registerLazySingleton(() => FaultService());
+    log.d("Registering ManageUserService");
+    locator.registerLazySingleton(() => AssetAdminManagerUserService());
+    
   }
 }

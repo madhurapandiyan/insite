@@ -67,7 +67,7 @@ class _SplashViewState extends State<SplashView> {
       print("onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
           state.url
-              .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
+              .startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
         print("STATE changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -100,7 +100,7 @@ class _SplashViewState extends State<SplashView> {
       if (mounted) {
         print("URL changed: $url");
         if (url != null &&
-            url.startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
+            url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             if (url.contains("=")) {
@@ -147,7 +147,7 @@ class _SplashViewState extends State<SplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: Urls.unifiedServiceloginUrl,)
+                    ? WebviewScaffold(url: Urls.administratorloginUrl,)
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(),

@@ -8,7 +8,7 @@ class AssetCardsSmall extends StatefulWidget {
   final String icon;
   final String headerText;
   final List<AdminAssetsButtonType> buttonTitle;
-  final Function(AdminAssetsButtonType) onCallbackSelected;
+  final Function(AdminAssetsButtonType value) onCallbackSelected;
 
   AssetCardsSmall(
       {this.icon, this.headerText, this.buttonTitle, this.onCallbackSelected});
@@ -17,12 +17,14 @@ class AssetCardsSmall extends StatefulWidget {
   State<AssetCardsSmall> createState() => _AssetCardsSmallState();
 }
 
+String value;
+
 class _AssetCardsSmallState extends State<AssetCardsSmall> {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.43,
-      height: MediaQuery.of(context).size.height * 0.28,
+      height: MediaQuery.of(context).size.height * 0.25,
       decoration: BoxDecoration(
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: tuna)],
         border: Border.all(width: 2.5, color: tuna),
@@ -67,34 +69,20 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
           ),
           Flexible(
             child: ListView.builder(
-                itemCount: 2,
+                itemCount: widget.buttonTitle.length,
                 itemBuilder: (builder, index) {
                   return InsiteButton(
-                    height: MediaQuery.of(context).size.height * 0.043,
-                    bgColor: tango,
-                    margin: EdgeInsets.all(5),
-                    title: widget.buttonTitle[index].toString().split('.').last,
-                    textColor: appbarcolor,
-                    fontSize: 14,
-                    onTap: () {
-                      widget
-                          .onCallbackSelected(AdminAssetsButtonType.ADDNEWUSER);
-                      widget
-                          .onCallbackSelected(AdminAssetsButtonType.MANAGEUSER);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWGROUPS);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEGROUPS);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWGEOFENCES);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEGEOFENCES);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.ADDNEWREPORT);
-                      widget.onCallbackSelected(
-                          AdminAssetsButtonType.MANAGEREPORTS);
-                    },
-                  );
+                      height: MediaQuery.of(context).size.height * 0.043,
+                      bgColor: tango,
+                      margin: EdgeInsets.all(5),
+                      title:
+                          widget.buttonTitle[index].toString().split('.').last,
+                      textColor: appbarcolor,
+                      fontSize: 14,
+                      onTap: () {
+                        AdminAssetsButtonType value = widget.buttonTitle[index];
+                        widget.onCallbackSelected(value);
+                      });
                 }),
           )
         ],

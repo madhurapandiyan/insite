@@ -47,14 +47,14 @@ class _LoginViewState extends State<LoginView> {
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
-      if (state.url.startsWith(Urls.unifiedServiceBaseUrl +
+      if (state.url.startsWith(Urls.administratorBaseUrl +
           "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
         print("STATE changed with access token: $state.url");
         try {
           Future.delayed(Duration(seconds: 2), () {
           flutterWebviewPlugin.cleanCookies();
           flutterWebviewPlugin.clearCache();
-          flutterWebviewPlugin.launch(Urls.unifiedServiceloginUrl);
+          flutterWebviewPlugin.launch(Urls.administratorloginUrl);
           // _navigationService.replaceWith(logoutViewRoute);
           // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
           //     predicate: (Route<dynamic> route) => false);
@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
           Logger().e(e);
         }
       } else if (state.url
-          .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
+          .startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
         print("State URL changed with access token: $state.url");
         try {
           List<String> list = state.url.split("=");
@@ -93,20 +93,20 @@ class _LoginViewState extends State<LoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("URL changed: $url");
-        if (url.startsWith(Urls.unifiedServiceBaseUrl +
+        if (url.startsWith(Urls.administratorBaseUrl +
             "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
           print("URL changed with session data key");
           Future.delayed(Duration(seconds: 2), () {
           flutterWebviewPlugin.cleanCookies();
           flutterWebviewPlugin.clearCache();
-          flutterWebviewPlugin.launch(Urls.unifiedServiceloginUrl);
+          flutterWebviewPlugin.launch(Urls.administratorloginUrl);
           // _navigationService.replaceWith(logoutViewRoute);
           // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
           //     predicate: (Route<dynamic> route) => false);
           });
           // flutterWebviewPlugin.close();
         } else if (url
-            .startsWith(Urls.unifiedServiceBaseUrl + "/#access_token=")) {
+            .startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
             List<String> list = url.split("=");

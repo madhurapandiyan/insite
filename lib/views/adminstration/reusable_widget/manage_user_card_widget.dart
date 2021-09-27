@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 

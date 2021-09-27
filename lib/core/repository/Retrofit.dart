@@ -1,3 +1,4 @@
+import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
@@ -620,6 +621,10 @@ abstract class RestClient {
 
   @GET('{url}')
   Future<AssetLocationData> locationFilterDataVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AdminManageUser> getAdminManagerUserListDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 }
 
