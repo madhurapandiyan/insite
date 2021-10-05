@@ -8,48 +8,30 @@ part of 'admin_manage_user.dart';
 
 AdminManageUser _$AdminManageUserFromJson(Map<String, dynamic> json) {
   return AdminManageUser(
-    users: (json['users'] as List)
-        ?.map(
-            (e) => e == null ? null : User.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
     links: json['links'] == null
         ? null
         : Links.fromJson(json['links'] as Map<String, dynamic>),
     total: json['total'] == null
         ? null
         : Total.fromJson(json['total'] as Map<String, dynamic>),
+    users: (json['users'] as List)
+        ?.map(
+            (e) => e == null ? null : Users.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
 Map<String, dynamic> _$AdminManageUserToJson(AdminManageUser instance) =>
     <String, dynamic>{
-      'users': instance.users,
       'links': instance.links,
       'total': instance.total,
-    };
-
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(
-    first_name: json['first_name'] as String,
-    last_name: json['last_name'] as String,
-    loginId: json['loginId'] as String,
-    job_type: json['job_type'] as String,
-    user_type: json['user_type'] as String,
-  );
-}
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'first_name': instance.first_name,
-      'last_name': instance.last_name,
-      'loginId': instance.loginId,
-      'job_type': instance.job_type,
-      'user_type': instance.user_type,
+      'users': instance.users,
     };
 
 Links _$LinksFromJson(Map<String, dynamic> json) {
   return Links(
-    last: json['last'] as String,
     next: json['next'] as String,
+    last: json['last'] as String,
   );
 }
 
@@ -68,4 +50,77 @@ Total _$TotalFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$TotalToJson(Total instance) => <String, dynamic>{
       'items': instance.items,
       'pages': instance.pages,
+    };
+
+Users _$UsersFromJson(Map<String, dynamic> json) {
+  return Users(
+    userUid: json['userUid'] as String,
+    first_name: json['first_name'] as String,
+    last_name: json['last_name'] as String,
+    loginId: json['loginId'] as String,
+    job_type: json['job_type'] as String,
+    job_title: json['job_title'] as String,
+    user_type: json['user_type'] as String,
+    address: json['address'] == null
+        ? null
+        : Address.fromJson(json['address'] as Map<String, dynamic>),
+    application_access: (json['application_access'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ApplicationAccess.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    createdOn: json['createdOn'] as String,
+    lastLoginDate: json['lastLoginDate'] as String,
+    createdBy: json['createdBy'] as String,
+    emailVerified: json['emailVerified'] as String,
+    phone: json['phone'] as String,
+  );
+}
+
+Map<String, dynamic> _$UsersToJson(Users instance) => <String, dynamic>{
+      'userUid': instance.userUid,
+      'first_name': instance.first_name,
+      'last_name': instance.last_name,
+      'loginId': instance.loginId,
+      'job_type': instance.job_type,
+      'job_title': instance.job_title,
+      'user_type': instance.user_type,
+      'address': instance.address,
+      'application_access': instance.application_access,
+      'createdOn': instance.createdOn,
+      'lastLoginDate': instance.lastLoginDate,
+      'createdBy': instance.createdBy,
+      'emailVerified': instance.emailVerified,
+      'phone': instance.phone,
+    };
+
+Address _$AddressFromJson(Map<String, dynamic> json) {
+  return Address(
+    country: json['country'] as String,
+    zipcode: json['zipcode'] as String,
+    city: json['city'] as String,
+  );
+}
+
+Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
+      'country': instance.country,
+      'zipcode': instance.zipcode,
+      'city': instance.city,
+    };
+
+ApplicationAccess _$ApplicationAccessFromJson(Map<String, dynamic> json) {
+  return ApplicationAccess(
+    userUID: json['userUID'] as String,
+    roleName: json['roleName'] as String,
+    applicationIconUrl: json['applicationIconUrl'] as String,
+    applicationName: json['applicationName'] as String,
+  );
+}
+
+Map<String, dynamic> _$ApplicationAccessToJson(ApplicationAccess instance) =>
+    <String, dynamic>{
+      'userUID': instance.userUID,
+      'roleName': instance.roleName,
+      'applicationIconUrl': instance.applicationIconUrl,
+      'applicationName': instance.applicationName,
     };

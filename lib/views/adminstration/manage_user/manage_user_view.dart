@@ -38,9 +38,13 @@ class ManageUserView extends StatelessWidget {
                                       itemCount: viewModel.assets.length,
                                       controller: viewModel.scrollController,
                                       itemBuilder: (context, index) {
-                                        User user = viewModel.assets[index];
+                                        Users user = viewModel.assets[index];
                                         return ManageUserWidget(
                                           user: user,
+                                          callback: () {
+                                            viewModel
+                                                .onCardButtonSelected(user);
+                                          },
                                         );
                                       }),
                                 )
