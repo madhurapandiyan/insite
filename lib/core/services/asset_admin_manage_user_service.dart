@@ -2,6 +2,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -41,7 +42,7 @@ class AssetAdminManagerUserService extends BaseService {
         return adminManageUserResponse;
       } else {
         Map<String, String> queryMap = Map();
-        queryMap["pageNumber: "] = pageNumber.toString();
+        queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
@@ -50,6 +51,44 @@ class AssetAdminManagerUserService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<UpdateResponse> getSaveUserData(
+      firstName, lastName, email, jobTitle, jobType, userType) async {
+    try {
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()
+            .getSaveUserData(
+                Urls.adminManagerUserSumaryVL,
+                accountSelected.CustomerUID,
+                UpdateUserData(
+                    fname: firstName,
+                    lname: lastName,
+                    email: email,
+                    isCatssoUserCreation: false,
+                    src: "VisionLink",
+                    roles: [
+                      Role(roleId: 86, applicationName: "Prod-VLUnifiedFleet")
+                    ],
+                   // address: Address(),
+                    details: Details(
+                        jobTitle: jobTitle,
+                        jobType: jobType,
+                        userType: userType)));
+
+        return updateResponse;
+      } else {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()
+            .getSaveUserData(Urls.adminManagerUserSumaryVL,
+                accountSelected.CustomerUID, UpdateUserData());
+        return updateResponse;
       }
     } catch (e) {
       Logger().e(e.toString());

@@ -17,8 +17,6 @@ class AssetCardsSmall extends StatefulWidget {
   State<AssetCardsSmall> createState() => _AssetCardsSmallState();
 }
 
-String value;
-
 class _AssetCardsSmallState extends State<AssetCardsSmall> {
   @override
   Widget build(BuildContext context) {
