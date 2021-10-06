@@ -16,15 +16,20 @@ abstract class InsiteViewModel extends BaseViewModel {
   set is401(value) {
     _is401 = value;
   }
+
   bool isVisionLink = false;
 
   InsiteViewModel() {
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-          if ("com.trimble.insite.visionlink" == packageInfo.packageName)
-            {isVisionLink = true}
-        });
+    try {
+      PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+            if ("com.trimble.insite.visionlink" == packageInfo.packageName)
+              {isVisionLink = true}
+          });
+    } catch (e) {
+      Logger().e(e);
+    }
   }
-  
+
   var _navigationService = locator<NavigationService>();
   var _filterService = locator<FilterService>();
   var _dateRangeService = locator<DateRangeService>();
