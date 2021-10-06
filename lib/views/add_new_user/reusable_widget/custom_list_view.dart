@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
 
 class CustomListView extends StatefulWidget {

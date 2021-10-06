@@ -1,39 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/add_new_user/add_new_user_view.dart';
+import 'package:logger/logger.dart';
 
 class AppAvatar extends StatefulWidget {
-  final ApplicationAccess applicationAccess;
-  final Function(bool value) isSelected;
-  final bool isDataRemoved;
-  final bool isBtnSelected;
+  final ApplicationAccessData accessData;
+  final Function() onSelect;
+  final bool isSelected;
 
-  AppAvatar({this.isSelected, this.applicationAccess, this.isDataRemoved,this.isBtnSelected});
+  AppAvatar({this.isSelected, this.accessData, this.onSelect});
 
   @override
   _AppAvatarState createState() => _AppAvatarState();
 }
 
 class _AppAvatarState extends State<AppAvatar> {
-  bool isSelected = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        isSelected = !widget.isBtnSelected;
-        isDataRemoved=false;
-        print("isSelected:$isSelected");
-        print("isDataRemoved:$isDataRemoved");
-        
-
-        widget.isSelected(isSelected);
-        setState(() {});
+        if (!widget.accessData.isPermissionSelected) {
+          widget.onSelect();
+        }
       },
       child: Row(
         children: [
-          isSelected && !isDataRemoved
+          widget.isSelected
               ? Container(
                   width: 43,
                   height: 43,
@@ -44,11 +41,15 @@ class _AppAvatarState extends State<AppAvatar> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
                     child: FadeInImage(
-                      image: NetworkImage(
-                          widget.applicationAccess.applicationIconUrl),
+                      image: NetworkImage(widget.accessData.application.applicationIconUrl,
+                          headers: {
+                            "Authorization":
+                                "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
+                          }),
                       placeholder:
                           AssetImage("assets/images/add_user_icon_one.png"),
                       imageErrorBuilder: (context, error, stackTrace) {
+                        Logger().e(error);
                         return Image.asset(
                             "assets/images/add_user_icon_one.png",
                             fit: BoxFit.fitWidth);
@@ -58,12 +59,13 @@ class _AppAvatarState extends State<AppAvatar> {
                   ),
                 )
               : ClipRRect(
-                
-                
                   borderRadius: BorderRadius.circular(30.0),
                   child: FadeInImage(
-                    image: NetworkImage(
-                        widget.applicationAccess.applicationIconUrl),
+                    image: NetworkImage(widget.accessData.application.applicationIconUrl,
+                        headers: {
+                          "Authorization":
+                              "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
+                        }),
                     placeholder:
                         AssetImage("assets/images/add_user_icon_one.png"),
                     imageErrorBuilder: (context, error, stackTrace) {

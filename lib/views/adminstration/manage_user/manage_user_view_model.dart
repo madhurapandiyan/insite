@@ -89,6 +89,7 @@ class ManageUserViewModel extends InsiteViewModel {
     _navigationService.navigateWithTransition(
         AddNewUserView(
           user: user,
+          isEdit: true,
         ),
         transition: "fade");
   }

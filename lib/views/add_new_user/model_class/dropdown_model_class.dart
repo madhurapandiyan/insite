@@ -1,7 +1,7 @@
-class DropDownModelClass {
-  int index;
+import 'package:insite/core/models/admin_manage_user.dart';
+
+class ApplicationSelectedDropDown {
+  ApplicationAccessData accessData;
   String value;
-  DropDownModelClass({this.index, this.value});
+  ApplicationSelectedDropDown({this.accessData, this.value});
 }
-
-

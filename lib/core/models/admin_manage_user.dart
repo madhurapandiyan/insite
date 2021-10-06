@@ -1,3 +1,4 @@
+import 'package:insite/core/models/application.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'admin_manage_user.g.dart';
 
@@ -97,7 +98,6 @@ class ApplicationAccess {
   String roleName;
   String applicationIconUrl;
   String applicationName;
-
   ApplicationAccess({
     this.userUID,
     this.roleName,
@@ -109,4 +109,14 @@ class ApplicationAccess {
       _$ApplicationAccessFromJson(json);
 
   Map<String, dynamic> toJson() => _$ApplicationAccessToJson(this);
+}
+
+class ApplicationAccessData {
+  ApplicationAccess application;
+  bool isSelected;
+  bool isPermissionSelected;
+  ApplicationAccessData(
+      {this.application,
+      this.isSelected = false,
+      this.isPermissionSelected = false});
 }

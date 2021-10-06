@@ -1,6 +1,7 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
@@ -13,6 +14,7 @@ class AssetAdminManagerUserService extends BaseService {
   var _localService = locator<LocalService>();
 
   Customer accountSelected;
+  Customer customerSelected;
 
   AssetAdminManagerUserService() {
     setUp();
@@ -21,6 +23,7 @@ class AssetAdminManagerUserService extends BaseService {
   setUp() async {
     try {
       accountSelected = await _localService.getAccountInfo();
+      customerSelected = await _localService.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
@@ -32,7 +35,6 @@ class AssetAdminManagerUserService extends BaseService {
         Map<String, String> queryMap = Map();
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sort"] = "";
-
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
             .getAdminManagerUserListDataVL(
@@ -48,6 +50,39 @@ class AssetAdminManagerUserService extends BaseService {
             .getClientSeven()
             .getAdminManagerUserListDataVL(
                 Urls.adminManagerUserSumaryVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return adminManageUserResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<ApplicationData> getApplicationsData() async {
+    try {
+      if (isVisionLink) {
+        Map<String, String> queryMap = Map();
+        if (accountSelected != null) {
+          queryMap["CustomerUID"] = accountSelected.CustomerUID;
+        }
+        ApplicationData adminManageUserResponse = await MyApi()
+            .getClientSeven()
+            .getApplicationsData(
+                Urls.applicationsUrlVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return adminManageUserResponse;
+      } else {
+        Map<String, String> queryMap = Map();
+        if (accountSelected != null) {
+          queryMap["CustomerUID"] = accountSelected.CustomerUID;
+        }
+        ApplicationData adminManageUserResponse = await MyApi()
+            .getClientSeven()
+            .getApplicationsData(
+                Urls.applicationsUrlVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
@@ -76,7 +111,7 @@ class AssetAdminManagerUserService extends BaseService {
                     roles: [
                       Role(roleId: 86, applicationName: "Prod-VLUnifiedFleet")
                     ],
-                   // address: Address(),
+                    // address: Address(),
                     details: Details(
                         jobTitle: jobTitle,
                         jobType: jobType,
