@@ -124,3 +124,16 @@ Map<String, dynamic> _$ApplicationAccessToJson(ApplicationAccess instance) =>
       'applicationIconUrl': instance.applicationIconUrl,
       'applicationName': instance.applicationName,
     };
+
+ManageUser _$ManageUserFromJson(Map<String, dynamic> json) {
+  return ManageUser(
+    user: json['user'] == null
+        ? null
+        : Users.fromJson(json['user'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$ManageUserToJson(ManageUser instance) =>
+    <String, dynamic>{
+      'user': instance.user,
+    };

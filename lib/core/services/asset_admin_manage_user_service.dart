@@ -60,6 +60,27 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
+  Future<ManageUser> getUser(String userId) async {
+    try {
+      if (isVisionLink) {
+        ManageUser adminManageUserResponse = await MyApi()
+            .getClientSeven()
+            .getUser(Urls.adminManagerUserSumaryVL + "/" + userId,
+                accountSelected.CustomerUID);
+        return adminManageUserResponse;
+      } else {
+        ManageUser adminManageUserResponse = await MyApi()
+            .getClientSeven()
+            .getUser(Urls.adminManagerUserSumaryVL + "/" + userId,
+                accountSelected.CustomerUID);
+        return adminManageUserResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
   Future<ApplicationData> getApplicationsData() async {
     try {
       if (isVisionLink) {
@@ -111,7 +132,6 @@ class AssetAdminManagerUserService extends BaseService {
                     roles: [
                       Role(roleId: 86, applicationName: "Prod-VLUnifiedFleet")
                     ],
-                    // address: Address(),
                     details: Details(
                         jobTitle: jobTitle,
                         jobType: jobType,

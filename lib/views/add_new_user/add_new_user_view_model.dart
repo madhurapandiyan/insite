@@ -35,9 +35,11 @@ class AddNewUserViewModel extends BaseViewModel {
     this.user = user;
     _manageUserService.setUp();
     this.log = getLogger(this.runtimeType.toString());
-    Future.delayed(Duration(seconds: 1), () {
-      getApplicationAccessData();
-    });
+    if (user != null) {
+      Future.delayed(Duration(seconds: 1), () {
+        getApplicationAccessData();
+      });
+    }
   }
 
   onApplicationAccessSelection(int index) {
@@ -93,16 +95,13 @@ class AddNewUserViewModel extends BaseViewModel {
     //   }
     // }
 
-    AdminManageUser result =
-        await _manageUserService.getAdminManageUserListData(pageNumber);
+    ManageUser result = await _manageUserService.getUser(user.userUid);
     if (result != null) {
-      for (var data in result.users) {
-        _assetsData.clear();
-        for (var asset in data.application_access) {
-          Logger().i("data application access $asset");
-          _assetsData.add(ApplicationAccessData(
-              application: asset, isSelected: false));
-        }
+      _assetsData.clear();
+      for (var asset in result.user.application_access) {
+        Logger().i("data application access $asset");
+        _assetsData
+            .add(ApplicationAccessData(application: asset, isSelected: false));
       }
     }
     notifyListeners();

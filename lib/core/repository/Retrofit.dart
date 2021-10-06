@@ -630,6 +630,10 @@ abstract class RestClient {
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
+  Future<ManageUser> getUser(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
   Future<ApplicationData> getApplicationsData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 

@@ -120,3 +120,15 @@ class ApplicationAccessData {
       this.isSelected = false,
       this.isPermissionSelected = false});
 }
+
+@JsonSerializable()
+class ManageUser {
+  Users user;
+
+  ManageUser({this.user});
+
+  factory ManageUser.fromJson(Map<String, dynamic> json) =>
+      _$ManageUserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ManageUserToJson(this);
+}
