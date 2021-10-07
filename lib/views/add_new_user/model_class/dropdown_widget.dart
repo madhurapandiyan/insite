@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 
-class CustomDropDownWidget extends StatelessWidget {
-  final String value;
-  final List<String> items;
-  final ValueChanged<String> onChanged;
-  CustomDropDownWidget({this.value, this.items, this.onChanged});
+class DropDownWidget extends StatelessWidget {
+  final ApplicationSelectedDropDown value;
+  final List<ApplicationSelectedDropDown> items;
+  final ValueChanged<ApplicationSelectedDropDown> onChanged;
+
+  DropDownWidget({Key key, this.value, this.items, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +22,22 @@ class CustomDropDownWidget extends StatelessWidget {
               "Select",
               style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Roboto',
                   color: appbarcolor,
                   fontStyle: FontStyle.normal),
             ),
             onChanged: onChanged,
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
+            items: items.map<DropdownMenuItem<ApplicationSelectedDropDown>>(
+                (ApplicationSelectedDropDown value) {
+              return DropdownMenuItem<ApplicationSelectedDropDown>(
                 value: value,
                 child: Text(
-                  value,
+                  value.value,
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Roboto',
                       color: appbarcolor,
                       fontStyle: FontStyle.normal),
                 ),
@@ -46,15 +51,13 @@ class CustomDropDownWidget extends StatelessWidget {
                             color: Colors.transparent, width: 0.0))))),
         Positioned(
           top: 12,
-          right: 8,
+          right: 20,
           child: Align(
             alignment: Alignment.topRight,
-            child: GestureDetector(
-              child: SvgPicture.asset(
-                "assets/images/arrowdown.svg",
-                width: 10,
-                height: 10,
-              ),
+            child: SvgPicture.asset(
+              "assets/images/arrowdown.svg",
+              width: 10,
+              height: 10,
             ),
           ),
         ),

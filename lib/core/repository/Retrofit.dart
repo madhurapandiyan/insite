@@ -1,4 +1,5 @@
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
@@ -26,6 +27,7 @@ import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
+import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
@@ -626,6 +628,20 @@ abstract class RestClient {
   @GET('{url}')
   Future<AdminManageUser> getAdminManagerUserListDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<ManageUser> getUser(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<ApplicationData> getApplicationsData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<UpdateResponse> getSaveUserData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Body() UpdateUserData updateUserData);
 }
 
 @JsonSerializable()

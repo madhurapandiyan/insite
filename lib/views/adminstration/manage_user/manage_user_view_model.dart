@@ -3,16 +3,23 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/views/add_new_user/add_new_user_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class ManageUserViewModel extends InsiteViewModel {
   Logger log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
 
-  List<User> _assets = [];
-  List<User> get assets => _assets;
+  var _navigationService = locator<NavigationService>();
+
+  List<Users> _assets = [];
+  List<Users> get assets => _assets;
+
+  Users _user;
+  Users get userData => _user;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -78,6 +85,15 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
+  onCardButtonSelected(Users user) {
+    _navigationService.navigateWithTransition(
+        AddNewUserView(
+          user: user,
+          isEdit: true,
+        ),
+        transition: "fade");
+  }
+
   // void refresh() async {
   //   pageNumber = 1;
 
@@ -104,4 +120,5 @@ class ManageUserViewModel extends InsiteViewModel {
   //   }
   //   Logger().i("list of assets " + result.users.length.toString());
   // }
+
 }
