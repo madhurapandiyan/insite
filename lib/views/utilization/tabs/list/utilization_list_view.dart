@@ -83,16 +83,19 @@ class UtilizationListViewState extends State<UtilizationListView> {
                             width: 90,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: cardcolor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
+                                color: Theme.of(context).backgroundColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color)),
                             child: Center(
                               child: Text(
                                 'Date Range',
                                 style: TextStyle(
-                                  color: white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -115,7 +118,6 @@ class UtilizationListViewState extends State<UtilizationListView> {
                     child: Text(
                       'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
                       style: TextStyle(
-                        color: white,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),

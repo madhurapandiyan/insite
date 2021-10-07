@@ -50,7 +50,6 @@ class _DashboardViewState extends State<DashboardView> {
             onRefineApplied: () {},
             body: SingleChildScrollView(
               child: Container(
-                color: bgcolor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -99,8 +98,7 @@ class _DashboardViewState extends State<DashboardView> {
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel
-                                  .getFilterDataApplied(filterData.title);
+                              viewModel.getFilterDataApplied(filterData.title);
                               filterLocationKey.currentState
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);

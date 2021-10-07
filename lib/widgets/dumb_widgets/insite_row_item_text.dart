@@ -24,7 +24,6 @@ class InsiteTableRowItem extends StatelessWidget {
         children: [
           InsiteText(
             text: title,
-            color: athenGrey,
             size: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -32,7 +31,6 @@ class InsiteTableRowItem extends StatelessWidget {
             text: content,
             size: 12,
             fontWeight: FontWeight.normal,
-            color: textcolor,
           )
         ],
       ),
@@ -56,7 +54,9 @@ class InsiteTableRowItemWithImage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).backgroundColor,
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 borderRadius: BorderRadius.all(Radius.circular(4))),
             child: InsiteImage(
               height: 30,
@@ -68,7 +68,6 @@ class InsiteTableRowItemWithImage extends StatelessWidget {
             child: InsiteText(
               text: title,
               size: 14,
-              color: athenGrey,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -121,7 +120,6 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
               text: title,
               size: 14,
               fontWeight: FontWeight.normal,
-              color: textcolor,
             ),
           )
         ],
@@ -149,7 +147,6 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
         children: [
           InsiteText(
             text: title,
-            color: athenGrey,
             size: 14,
             fontWeight: FontWeight.bold,
           ),

@@ -31,24 +31,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
-      themeData: LoadingThemeData(
-        loadingBackgroundColor: Colors.white,
-        backgroundColor: tango,
-        loadingPadding: EdgeInsets.all(24),
-        loadingSize: Size(80, 80),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: locator<NavigationService>().navigatorKey,
-        onGenerateRoute: router.Router.generateRoute,
-        initialRoute: indiaStackSplashViewRoute,
-        theme: ThemeData(
-            backgroundColor: cod_grey,
-            fontFamily: 'Roboto',
-            appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-            accentColor: Colors.white),
-      ),
-    );
+        themeData: LoadingThemeData(
+          loadingBackgroundColor: Colors.white,
+          backgroundColor: tango,
+          loadingPadding: EdgeInsets.all(24),
+          loadingSize: Size(80, 80),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          navigatorKey: locator<NavigationService>().navigatorKey,
+          onGenerateRoute: router.Router.generateRoute,
+          initialRoute: indiaStackSplashViewRoute,
+          theme: ThemeData(
+              cardColor: cardBackgroundColor1,
+              backgroundColor: backgroundColor1,
+              fontFamily: 'Roboto',
+              buttonColor: buttonColor1,
+              dividerColor: dividerColor1,
+              iconTheme: IconThemeData(color: iconColor1),
+              buttonTheme: ButtonThemeData(
+                buttonColor: buttonColor1,
+              ),
+              textTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
+              appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+              accentColor: Colors.white),
+        ));
   }
 }

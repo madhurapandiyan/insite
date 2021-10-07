@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultHealthDashboard extends StatefulWidget {
   final ScreenType screenType;
@@ -14,7 +14,11 @@ class FaultHealthDashboard extends StatefulWidget {
   final bool loading;
   final Function(FilterData) onFilterSelected;
   FaultHealthDashboard(
-      {this.countData, this.loading, this.onFilterSelected,this.screenType,this.isRefreshing});
+      {this.countData,
+      this.loading,
+      this.onFilterSelected,
+      this.screenType,
+      this.isRefreshing});
 
   @override
   _FaultHealthDashboardState createState() => _FaultHealthDashboardState();
@@ -29,11 +33,11 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
           ? MediaQuery.of(context).size.height * 0.38
           : MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        border:
+            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -49,15 +53,10 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                     SizedBox(
                       width: 10,
                     ),
-                    new Text(
-                      "FAULT CODES",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 11.0),
-                    ),
+                    InsiteText(
+                        text: "FAULT CODES",
+                        fontWeight: FontWeight.w900,
+                        size: 11.0),
                   ],
                 ),
                 // Row(
@@ -77,7 +76,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
           ),
           Divider(
             thickness: 1.0,
-            color: black,
+            color: Theme.of(context).dividerColor,
           ),
           // Container(
           //     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -94,7 +93,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
           SizedBox(
             height: 10,
           ),
-          (widget.loading|| widget.isRefreshing)
+          (widget.loading || widget.isRefreshing)
               ? Expanded(
                   child: Center(
                   child: CircularProgressIndicator(),
@@ -124,7 +123,6 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                         );
                       }),
                 ),
-
           SizedBox(
             height: 10,
           ),
@@ -135,21 +133,18 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10.0),
                   bottomRight: Radius.circular(10.0)),
-              boxShadow: [new BoxShadow(blurRadius: 1.0, color: black)],
-              border: Border.all(width: 2.5, color: black),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(width: 1, color: black),
               shape: BoxShape.rectangle,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text("VIEWING DATA FOR 7 DAYS",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontFamily: 'Roboto',
-                      color: textcolor,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 11.0)),
-            ),
+                padding: const EdgeInsets.all(10.0),
+                child: InsiteTextAlign(
+                    text: "VIEWING DATA FOR 7 DAYS",
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.w900,
+                    color: textcolor,
+                    size: 11.0)),
           ),
         ],
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 
 class InsiteText extends StatelessWidget {
   final String text;
@@ -9,11 +8,39 @@ class InsiteText extends StatelessWidget {
   final FontWeight fontWeight;
   const InsiteText({this.text, this.color, this.fontWeight, this.size});
 
+  const InsiteText.overflow(
+      {this.text, this.color, this.fontWeight, this.size});
+
   @override
   Widget build(BuildContext context) {
     return Text(text,
         style: TextStyle(
-          color: color,
+          color: color != null
+              ? color
+              : Theme.of(context).textTheme.bodyText1.color,
+          fontWeight: fontWeight,
+          fontSize: size,
+        ));
+  }
+}
+
+class InsiteTextAlign extends StatelessWidget {
+  final String text;
+  final Color color;
+  final double size;
+  final TextAlign textAlign;
+  final FontWeight fontWeight;
+  const InsiteTextAlign(
+      {this.text, this.textAlign, this.color, this.fontWeight, this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text,
+        textAlign: textAlign,
+        style: TextStyle(
+          color: color != null
+              ? color
+              : Theme.of(context).textTheme.bodyText1.color,
           fontWeight: fontWeight,
           fontSize: size,
         ));
@@ -35,7 +62,9 @@ class InsiteTextWithPadding extends StatelessWidget {
       padding: padding,
       child: Text(text,
           style: TextStyle(
-            color: color,
+            color: color != null
+                ? color
+                : Theme.of(context).textTheme.bodyText1.color,
             fontWeight: fontWeight,
             fontSize: size,
           )),
@@ -58,7 +87,9 @@ class InsiteTextOverFlow extends StatelessWidget {
       child: Text(text,
           overflow: overflow != null ? overflow : TextOverflow.ellipsis,
           style: TextStyle(
-            color: color,
+            color: color != null
+                ? color
+                : Theme.of(context).textTheme.bodyText1.color,
             fontWeight: fontWeight,
             fontSize: size,
           )),
@@ -81,7 +112,11 @@ class InsiteRichText extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: RichText(
           text: TextSpan(children: [
-        TextSpan(text: title),
+        TextSpan(
+            text: title,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyText1.color,
+            )),
         TextSpan(
           text: content,
           recognizer: TapGestureRecognizer()
@@ -94,7 +129,9 @@ class InsiteRichText extends StatelessWidget {
                   decoration: TextDecoration.underline,
                   fontSize: 13.0,
                   fontWeight: FontWeight.bold,
-                  color: textColor != null ? textColor : tango),
+                  color: textColor != null
+                      ? textColor
+                      : Theme.of(context).buttonColor),
         )
       ])),
     );

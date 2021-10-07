@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
+import 'insite_text.dart';
+
 class ToggleButton extends StatefulWidget {
   final String label1;
   final String label2;
@@ -39,7 +41,9 @@ class _ToggleButtonState extends State<ToggleButton> {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: isOptionOneSelected ? tango : cardcolor,
+                color: isOptionOneSelected
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(4),
                   topLeft: Radius.circular(4),
@@ -47,13 +51,11 @@ class _ToggleButtonState extends State<ToggleButton> {
               ),
               padding: EdgeInsets.all(4),
               child: Center(
-                child: Text(
-                  widget.label1.toUpperCase(),
-                  style: TextStyle(
-                    color: white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: InsiteText(
+                  text: widget.label1.toUpperCase(),
+                  color: isOptionOneSelected ? white : null,
+                  size: 12,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -67,7 +69,11 @@ class _ToggleButtonState extends State<ToggleButton> {
             },
             child: Container(
               decoration: BoxDecoration(
-                color: isOptionOneSelected ? cardcolor : tango,
+                color: isOptionOneSelected
+                    ? Theme.of(context).backgroundColor
+                    : Theme.of(context).buttonColor,
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(4),
                   topRight: Radius.circular(4),
@@ -75,18 +81,15 @@ class _ToggleButtonState extends State<ToggleButton> {
               ),
               padding: EdgeInsets.all(4),
               child: Center(
-                child: Text(
-                  widget.label2.toUpperCase(),
-                  style: TextStyle(
-                    color: white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: InsiteText(
+                  text: widget.label2.toUpperCase(),
+                  color: isOptionOneSelected ? null : white,
+                  size: 12,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          
         ],
       ),
     );

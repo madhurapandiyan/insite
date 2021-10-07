@@ -35,7 +35,9 @@ class InsiteButton extends StatelessWidget {
         margin: margin != null ? margin : EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: bgColor != null ? bgColor : tango,
+          border:
+              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+          color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
         ),
         alignment: Alignment.center,
         height: height != null ? height : null,
@@ -51,7 +53,9 @@ class InsiteButton extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: fontSize != null ? fontSize : 12.0,
-                  color: textColor != null ? textColor : Colors.white,
+                  color: textColor != null
+                      ? textColor
+                      : Theme.of(context).textTheme.bodyText1.color,
                   fontWeight: FontWeight.w700),
             ),
             icon != null ? icon : SizedBox()

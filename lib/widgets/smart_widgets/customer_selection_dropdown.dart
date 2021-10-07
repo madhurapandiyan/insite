@@ -4,7 +4,6 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/custom_expansion_tile.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/dumb_widgets/loadmore_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
@@ -102,7 +101,7 @@ class _AccountSelectionDropDownWidgetState
   @override
   Widget build(BuildContext context) {
     return AppExpansionTile(
-      backgroundColor: ship_grey,
+      backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
         selected != null
             ? selected.value.DisplayName
@@ -111,14 +110,16 @@ class _AccountSelectionDropDownWidgetState
                 : "Search and Select",
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            color: Theme.of(context).textTheme.bodyText1.color,
+            fontWeight: FontWeight.bold,
+            fontSize: 18),
       ),
       key: expansionTile,
       children: [
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: bgcolor,
+            color: Theme.of(context).backgroundColor,
           ),
           height: _displayList.isNotEmpty && selected != null
               ? MediaQuery.of(context).size.height * 0.4

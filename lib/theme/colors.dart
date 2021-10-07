@@ -54,10 +54,20 @@ const Color cardBackgroundOne = Color(0xff303238);
 const Color buttonColorFive = Color(0xffEB5757);
 
 // borderLineColor
-
-const Color borderLineColor=Color(0xFF282828);
+const Color borderLineColor = Color(0xFF282828);
 
 //addUserbgColor
+const addUserBgColor = Color(0XFF0C0B0B);
 
-const addUserBgColor=Color(0XFF0C0B0B);
-
+//blue/white theme
+const backgroundColor1 = Color(0XFFFFFFFF);
+const appBarbackgroundColor1 = Color(0XFF0C0B0B);
+const cardBackgroundColor1 = Color(0XFFFFFFFF);
+const cardSelectedBackgroundColor1 = Color(0XFFFFFFFF);
+const textColor1 = Color(0XFF000000);
+const iconColor1 = Color(0XFF000000);
+const textSelectedColor1 = Color(0XFF000000);
+const buttonColor1 = Color(0XFF00437A);
+const buttonColor2 = Color(0XFFFFFFFF);
+const buttonSelectedColor1 = Color(0XFF00437A);
+const dividerColor1 = Color(0XFF000000);

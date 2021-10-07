@@ -4,6 +4,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -37,9 +38,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
       height: height,
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        border:
+            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
         shape: BoxShape.rectangle,
       ),
       child: Stack(
@@ -57,15 +60,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                         SizedBox(
                           width: 10,
                         ),
-                        new Text(
-                          "IDLING LEVEL",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 12.0),
-                        ),
+                        InsiteText(
+                            text: "IDLING LEVEL",
+                            fontWeight: FontWeight.w900,
+                            size: 12.0),
                       ],
                     ),
                     Row(
@@ -90,7 +88,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 thickness: 1.0,
                 color: black,
               ),
-              (widget.isLoading||widget.isRefreshing)
+              (widget.isLoading || widget.isRefreshing)
                   ? Expanded(
                       child: Center(
                       child: CircularProgressIndicator(),
@@ -109,7 +107,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 plotAreaBorderWidth: 0,
                                 primaryXAxis: CategoryAxis(
                                   labelStyle: TextStyle(
-                                      color: textcolor,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color,
                                       fontSize: 10.0,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: 'Roboto',
@@ -161,7 +162,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                     majorGridLines:
                                         MajorGridLines(width: 2, color: silver),
                                     labelStyle: TextStyle(
-                                        color: textcolor,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color,
                                         fontSize: 10.0,
                                         fontWeight: FontWeight.w700,
                                         fontFamily: 'Roboto',
@@ -188,7 +192,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                     fontSize: 9.0,
                                     fontWeight: FontWeight.w700,
                                     fontStyle: FontStyle.normal,
-                                    color: textcolor),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color),
                               )
                             ],
                           )
@@ -212,7 +219,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
       width: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: bgcolor)],
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+        boxShadow: [
+          new BoxShadow(
+              blurRadius: 1.0, color: Theme.of(context).backgroundColor)
+        ],
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -225,24 +236,23 @@ class _IdlingLevelState extends State<IdlingLevel> {
               });
             },
             child: Container(
-              width: 55,
-              height: 30,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color:
-                    idlingLevelRange == IdlingLevelRange.DAY ? tango : bgcolor,
-                shape: BoxShape.rectangle,
-              ),
-              child: Text("DAY",
+                width: 55,
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: idlingLevelRange == IdlingLevelRange.DAY
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).backgroundColor,
+                  shape: BoxShape.rectangle,
+                ),
+                child: InsiteTextAlign(
+                  text: "DAY",
                   textAlign: TextAlign.center,
-                  style: new TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Roboto',
-                      color: textcolor,
-                      fontStyle: FontStyle.normal)),
-            ),
+                  size: 11.0,
+                  fontWeight: FontWeight.w700,
+                  color: textcolor,
+                )),
           ),
           Container(
               width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
@@ -255,12 +265,13 @@ class _IdlingLevelState extends State<IdlingLevel> {
             },
             child: Container(
               width: 55,
-              height: 30,
+              padding: EdgeInsets.all(8),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color:
-                    idlingLevelRange == IdlingLevelRange.WEEK ? tango : bgcolor,
+                color: idlingLevelRange == IdlingLevelRange.WEEK
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).backgroundColor,
                 shape: BoxShape.rectangle,
               ),
               child: Text("WEEK",
@@ -283,26 +294,24 @@ class _IdlingLevelState extends State<IdlingLevel> {
               });
             },
             child: Container(
-              width: 55,
-              height: 30,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: idlingLevelRange == IdlingLevelRange.MONTH
-                    ? tango
-                    : bgcolor,
-                shape: BoxShape.rectangle,
-              ),
-              child: Text("MONTH",
+                width: 55,
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: idlingLevelRange == IdlingLevelRange.MONTH
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).backgroundColor,
+                  shape: BoxShape.rectangle,
+                ),
+                child: InsiteTextAlign(
+                  text: "MONTH",
                   textAlign: TextAlign.center,
-                  style: new TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Roboto',
-                      color: textcolor,
-                      fontStyle: FontStyle.normal)),
-            ),
-          )
+                  size: 10.0,
+                  fontWeight: FontWeight.w700,
+                  color: textcolor,
+                )),
+          ),
         ],
       ),
     );
@@ -365,7 +374,6 @@ class _IdlingLevelState extends State<IdlingLevel> {
         return null;
     }
   }
-
 }
 
 class IdlingLevelSampleData {

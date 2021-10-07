@@ -8,6 +8,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/bar_chart.dart';
 import 'package:insite/widgets/dumb_widgets/bar_wdiget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:logger/logger.dart';
@@ -43,9 +44,12 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
       height: MediaQuery.of(context).size.height * 0.4,
       margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: Theme.of(context).backgroundColor,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
+        border:
+            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
+        shape: BoxShape.rectangle,
       ),
       child: Column(
         children: [
@@ -60,11 +64,10 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  'Asset Utilization'.toUpperCase(),
-                  style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 15),
-                ),
+                InsiteText(
+                    text: 'Asset Utilization'.toUpperCase(),
+                    fontWeight: FontWeight.bold,
+                    size: 15),
                 Expanded(
                   child: Container(),
                 ),
@@ -79,10 +82,10 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
             padding: EdgeInsets.only(bottom: 10),
             child: Divider(
               color: shark,
-              thickness: 2,
+              thickness: 1,
             ),
           ),
-          (widget.isLoading||widget.isRefreshing)
+          (widget.isLoading || widget.isRefreshing)
               ? Expanded(
                   child: Center(
                     child: CircularProgressIndicator(),

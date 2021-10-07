@@ -4,6 +4,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -29,7 +30,6 @@ class _HomeViewState extends State<HomeView> {
             onRefineApplied: () {},
             viewModel: viewModel,
             body: Container(
-              color: bgcolor,
               padding: EdgeInsets.all(16),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,8 +73,8 @@ class _HomeViewState extends State<HomeView> {
         child: Card(
           semanticContainer: true,
           color: selectedIndex != null && selectedIndex == index
-              ? tango
-              : cardcolor,
+              ? buttonSelectedColor1
+              : Theme.of(context).cardColor,
           elevation: 10.0,
           margin: EdgeInsets.all(1.0),
           shape: RoundedRectangleBorder(
@@ -83,17 +83,20 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SvgPicture.asset(category.image),
+              SvgPicture.asset(
+                category.image,
+                color: selectedIndex != null && selectedIndex == index
+                    ? Colors.white
+                    : Theme.of(context).iconTheme.color,
+              ),
               SizedBox(height: 8.0),
-              Text(
-                category.name,
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: textcolor),
-                textAlign: TextAlign.center,
+              InsiteText(
+                color: selectedIndex != null && selectedIndex == index
+                    ? Colors.white
+                    : null,
+                fontWeight: FontWeight.bold,
+                size: 12,
+                text: category.name,
               ),
             ],
           ),

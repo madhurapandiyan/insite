@@ -45,7 +45,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
       builder:
           (BuildContext context, AccountSearchViewModel viewModel, Widget _) {
         return AppExpansionTile(
-          backgroundColor: ship_grey,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: Text(
             viewModel.selected != null
                 ? viewModel.selected.value.DisplayName
@@ -54,15 +54,17 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                     : "Search and Select",
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                color: Theme.of(context).textTheme.bodyText1.color,
+                fontWeight: FontWeight.bold,
+                fontSize: 18),
           ),
           key: expansionTile,
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                color: bgcolor,
-              ),
+                  color: Theme.of(context).backgroundColor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1.color)),
               height:
                   viewModel.displayList.isNotEmpty && viewModel.selected != null
                       ? MediaQuery.of(context).size.height * 0.4
@@ -104,8 +106,8 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                 },
                                 child: Container(
                                   color: viewModel.displayList[index].isSelected
-                                      ? tango
-                                      : bgcolor,
+                                      ? buttonSelectedColor1
+                                      : Theme.of(context).backgroundColor,
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
                                   child: Row(
@@ -117,7 +119,14 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                           data.value.DisplayName,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: viewModel
+                                                      .displayList[index]
+                                                      .isSelected
+                                                  ? Colors.white
+                                                  : Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
@@ -151,7 +160,6 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                               widget.selectionType == AccountType.CUSTOMER
                                   ? InsiteButton(
                                       bgColor: Colors.white,
-                                      textColor: ship_grey,
                                       onTap: () {
                                         viewModel.deSelect();
                                         viewModel.selected = null;
@@ -168,7 +176,6 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                 width: 40,
                               ),
                               InsiteButton(
-                                bgColor: tango,
                                 height: 48,
                                 width: 100,
                                 textColor: Colors.white,

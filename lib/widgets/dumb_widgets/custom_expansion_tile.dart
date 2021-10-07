@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 
 const Duration _kExpand = const Duration(milliseconds: 200);
 
@@ -119,7 +118,10 @@ class AppExpansionTileState extends State<AppExpansionTile>
             data:
                 new IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
             child: Container(
-              color: ship_grey,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1.color)),
               child: new ListTile(
                 onTap: toggle,
                 leading: widget.leading,

@@ -4,6 +4,7 @@ import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetStatus extends StatefulWidget {
@@ -11,7 +12,11 @@ class AssetStatus extends StatefulWidget {
   final bool isLoading;
   final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
-  AssetStatus({this.statusChartData, this.isLoading, this.onFilterSelected,this.isRefreshing});
+  AssetStatus(
+      {this.statusChartData,
+      this.isLoading,
+      this.onFilterSelected,
+      this.isRefreshing});
 
   @override
   _AssetStatusState createState() => _AssetStatusState();
@@ -37,9 +42,11 @@ class _AssetStatusState extends State<AssetStatus> {
       // width: width,
       height: height,
       decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        border:
+            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -55,15 +62,10 @@ class _AssetStatusState extends State<AssetStatus> {
                     SizedBox(
                       width: 10,
                     ),
-                    new Text(
-                      "ASSET STATUS",
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
-                    ),
+                    new InsiteText(
+                        text: "ASSET STATUS",
+                        fontWeight: FontWeight.w900,
+                        size: 12.0),
                     SizedBox(
                       width: 60.0,
                     ),
@@ -71,14 +73,10 @@ class _AssetStatusState extends State<AssetStatus> {
                 ),
                 Row(
                   children: [
-                    new Text(
-                      'ALL ASSETS',
-                      style: new TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Roboto',
-                          color: textcolor,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 12.0),
+                    InsiteText(
+                      fontWeight: FontWeight.w900,
+                      text: "ALL ASSETS",
+                      size: 12,
                     ),
                     SizedBox(
                       width: 35.0,
@@ -98,7 +96,7 @@ class _AssetStatusState extends State<AssetStatus> {
           ),
           Divider(
             thickness: 1.0,
-            color: black,
+            color: Theme.of(context).dividerColor,
           ),
           (widget.isLoading || widget.isRefreshing)
               ? Expanded(child: Center(child: CircularProgressIndicator()))
@@ -190,10 +188,9 @@ class _AssetStatusState extends State<AssetStatus> {
               connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
               textStyle: new TextStyle(
-                  color: textcolor,
+                  color: Theme.of(context).textTheme.bodyText1.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
-                  fontFamily: 'Roboto',
                   fontStyle: FontStyle.normal),
               isVisible: true,
               labelPosition: ChartDataLabelPosition.outside,
