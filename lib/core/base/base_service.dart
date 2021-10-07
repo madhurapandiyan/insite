@@ -9,10 +9,12 @@ class BaseService {
   bool isVisionLink = false;
   BaseService({String title}) {
     log = getLogger(title ?? this.runtimeType.toString());
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-          if ("com.trimble.insite.visionlink" == packageInfo.packageName)
-            {isVisionLink = true}
-        });
+    try {
+      PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+            if ("com.trimble.insite.visionlink" == packageInfo.packageName)
+              {isVisionLink = true}
+          });
+    } catch (e) {}
   }
 
   String convertFilterToCommaSeparatedString(List<FilterData> appliedFilters) {
