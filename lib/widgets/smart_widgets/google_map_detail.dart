@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class GoogleMapDetailWidget extends StatefulWidget {
@@ -53,8 +54,9 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
       height: MediaQuery.of(context).size.height * 0.50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
         shape: BoxShape.rectangle,
       ),
       child: Stack(
@@ -73,15 +75,10 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                         SizedBox(
                           width: 10,
                         ),
-                        Text(
-                          "LOCATION",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Roboto',
-                              color: textcolor,
-                              fontStyle: FontStyle.normal,
-                              fontSize: 15.0),
-                        ),
+                        InsiteText(
+                            text: "LOCATION",
+                            fontWeight: FontWeight.w900,
+                            size: 15.0),
                       ],
                     ),
                     Row(
@@ -90,6 +87,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                           width: 118.23,
                           height: 35.18,
                           decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(5.0)),
                             boxShadow: [
@@ -109,7 +107,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                               Expanded(
                                 flex: 1,
                                 child: DropdownButton(
-                                  dropdownColor: cardcolor,
+                                  dropdownColor:
+                                      Theme.of(context).backgroundColor,
                                   icon: Padding(
                                     padding: EdgeInsets.only(right: 8.0),
                                     child: Container(
@@ -117,31 +116,34 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                                         "assets/images/arrowdown.svg",
                                         width: 10,
                                         height: 10,
+                                        color:
+                                            Theme.of(context).iconTheme.color,
                                       ),
                                     ),
                                   ),
                                   isExpanded: true,
                                   hint: Text(
                                     _currentSelectedItem,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
                                   ),
-                                  items: [
-                                    'MAP',
-                                    'TERRAIN',
-                                    'SATELLITE',
-                                    'HYBRID'
-                                  ]
-                                      .map((map) => DropdownMenuItem(
-                                            value: map,
-                                            child: Text(map,
-                                                style: TextStyle(
-                                                    fontSize: 11.0,
+                                  items:
+                                      ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
+                                          .map((map) => DropdownMenuItem(
+                                                value: map,
+                                                child: InsiteText(
+                                                    text: map,
+                                                    size: 11.0,
                                                     fontWeight: FontWeight.bold,
-                                                    color: textcolor,
-                                                    fontFamily: 'Roboto',
-                                                    fontStyle:
-                                                        FontStyle.normal)),
-                                          ))
-                                      .toList(),
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color),
+                                              ))
+                                          .toList(),
                                   value: _currentSelectedItem,
                                   onChanged: (value) {
                                     setState(() {

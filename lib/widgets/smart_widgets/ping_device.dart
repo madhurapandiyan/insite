@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PingDevice extends StatelessWidget {
   final AssetDetail assetDetail;
@@ -17,8 +18,9 @@ class PingDevice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
@@ -38,13 +40,10 @@ class PingDevice extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Device Details'.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
+                    InsiteText(
+                        text: 'Device Details'.toUpperCase(),
+                        fontWeight: FontWeight.bold,
+                        size: 15),
                   ],
                 ),
                 // Button be removed frp client side till now

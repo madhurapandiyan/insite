@@ -4,6 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Notes extends StatelessWidget {
   const Notes({
@@ -31,8 +32,9 @@ class Notes extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: Padding(
@@ -48,11 +50,10 @@ class Notes extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  'NOTES',
-                  style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 15),
-                ),
+                InsiteText(
+                    text: 'NOTES',
+                    fontWeight: FontWeight.bold,
+                    size: 15),
               ],
             ),
             SizedBox(
@@ -134,7 +135,6 @@ class Notes extends StatelessWidget {
                       width: 90,
                       height: 40,
                       onTap: onTap,
-                      bgColor: tango,
                       textColor: white,
                     ),
                   ),

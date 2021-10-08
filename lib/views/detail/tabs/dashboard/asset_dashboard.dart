@@ -46,10 +46,14 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
         } else {
           return Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16)),
-                color: mediumgrey),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(
+                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+              shape: BoxShape.rectangle,
+            ),
             child: SingleChildScrollView(
               child: Container(
                 child: Column(
@@ -73,7 +77,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: tango,
+                          liquidColor: Theme.of(context).buttonColor,
                           title: "Fuel Level",
                           value: widget.detail != null &&
                                   widget.detail.fuelLevelLastReported != null

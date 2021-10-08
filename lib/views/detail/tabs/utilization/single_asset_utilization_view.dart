@@ -40,8 +40,10 @@ class _SingleAssetUtilizationViewState
             SingleAssetUtilizationViewModel viewModel, Widget _) {
           return Container(
             decoration: BoxDecoration(
-              color: mediumgrey,
-              border: Border.all(color: black, width: 0.0),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(
+                  color: Theme.of(context).textTheme.bodyText1.color,
+                  width: 0.0),
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),
             child: Stack(

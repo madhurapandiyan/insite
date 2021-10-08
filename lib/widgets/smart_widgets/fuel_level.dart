@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class FuelLevel extends StatelessWidget {
@@ -26,9 +27,13 @@ class FuelLevel extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+        shape: BoxShape.rectangle,
       ),
       child: Column(
         children: [
@@ -45,13 +50,10 @@ class FuelLevel extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      title.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
+                    InsiteText(
+                        text: title.toUpperCase(),
+                        fontWeight: FontWeight.bold,
+                        size: 15),
                     Expanded(
                       child: Container(),
                     ),
@@ -64,7 +66,7 @@ class FuelLevel extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Divider(
-                    color: shark,
+                    color: Theme.of(context).dividerColor,
                     thickness: 2,
                   ),
                 ),
@@ -72,13 +74,10 @@ class FuelLevel extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        lifeTimeFuel.toUpperCase(),
-                        style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      ),
+                      child: InsiteText(
+                          text: lifeTimeFuel.toUpperCase(),
+                          fontWeight: FontWeight.bold,
+                          size: 14),
                     ),
                     value != null && percentage != null
                         ? Padding(
@@ -89,15 +88,14 @@ class FuelLevel extends StatelessWidget {
                               child: LiquidCircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation(liquidColor),
                                 value: value / 100,
-                                center: Text(
-                                  percentage + "%",
-                                  style: TextStyle(
-                                      color: white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                ),
-                                backgroundColor: tuna,
-                                borderColor: shark,
+                                center: InsiteText(
+                                    text: percentage + "%",
+                                    fontWeight: FontWeight.bold,
+                                    size: 25),
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                borderColor:
+                                    Theme.of(context).textTheme.bodyText1.color,
                                 borderWidth: 5.0,
                                 direction: Axis.vertical,
                               ),
@@ -116,17 +114,16 @@ class FuelLevel extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: shark,
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1.color),
+                color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(16),
                     bottomRight: Radius.circular(16)),
               ),
               child: Center(
-                child: Text(
-                  lastReported,
-                  style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 14),
-                ),
+                child: InsiteText(
+                    text: lastReported, fontWeight: FontWeight.bold, size: 14),
               ),
             ),
           ),

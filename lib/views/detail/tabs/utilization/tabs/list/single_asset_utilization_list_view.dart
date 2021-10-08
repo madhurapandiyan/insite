@@ -10,6 +10,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/single_asset_usage.dart';
 import 'package:insite/widgets/dumb_widgets/single_asset_usage_two.dart';
 import 'package:logger/logger.dart';
@@ -58,15 +59,14 @@ class _SingleAssetUtilizationListViewState
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                          " - " +
-                          Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11),
-                    ),
+                    InsiteText(
+                        text: Utils.getDateInFormatddMMyyyy(
+                                viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        color: white,
+                        fontWeight: FontWeight.bold,
+                        size: 11),
                     SizedBox(
                       width: 4,
                     ),
@@ -75,7 +75,12 @@ class _SingleAssetUtilizationListViewState
                           ? const EdgeInsets.only(
                               top: 12.0, left: 12, right: 12)
                           : const EdgeInsets.all(12.0),
-                      child: GestureDetector(
+                      child: InsiteButton(
+                        title: "Date Range",
+                        width: 90,
+                        height: 30,
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1.color,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -88,26 +93,6 @@ class _SingleAssetUtilizationListViewState
                             viewModel.refresh();
                           }
                         },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: cardcolor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -122,8 +107,8 @@ class _SingleAssetUtilizationListViewState
                                 isProductFamilySelected = value;
                               });
                             },
-                            bgColor: cardcolor,
                             textColor: Colors.white,
+                            bgColor: Colors.white,
                             isSelectable: true,
                             height: 30,
                             fontSize: 12,

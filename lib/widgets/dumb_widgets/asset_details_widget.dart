@@ -18,8 +18,9 @@ class AssetDetailWidgt extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -33,7 +34,6 @@ class AssetDetailWidgt extends StatelessWidget {
                   width: 20,
                 ),
                 InsiteText(
-                  color: Colors.white,
                   size: 12,
                   text: "DETAILS",
                   fontWeight: FontWeight.bold,

@@ -29,23 +29,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingProvider(
-      themeData: LoadingThemeData(
-        loadingBackgroundColor: Colors.white,
-        loadingPadding: EdgeInsets.all(24),
-        loadingSize: Size(80, 80),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: locator<NavigationService>().navigatorKey,
-        onGenerateRoute: router.Router.generateRoute,
-        initialRoute: splashViewRoute,
-        theme: ThemeData(
-            backgroundColor: cod_grey,
-            fontFamily: 'Roboto',
-            appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-            accentColor: Colors.white),
-      ),
-    );
+        themeData: LoadingThemeData(
+          loadingBackgroundColor: Colors.white,
+          loadingPadding: EdgeInsets.all(24),
+          loadingSize: Size(80, 80),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          navigatorKey: locator<NavigationService>().navigatorKey,
+          onGenerateRoute: router.Router.generateRoute,
+          initialRoute: splashViewRoute,
+          theme: indiaStackOrangeBlack,
+        ));
   }
 }

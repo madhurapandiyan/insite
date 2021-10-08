@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/service_plan.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -18,8 +17,13 @@ class AssetDetailHealth extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border: Border.all(width: 2.5, color: cardcolor),
+        color: Theme.of(context).backgroundColor,
+        boxShadow: [
+          new BoxShadow(
+              blurRadius: 1.0, color: Theme.of(context).backgroundColor)
+        ],
+        border: Border.all(
+            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
         shape: BoxShape.rectangle,
       ),
       child: Column(
@@ -28,12 +32,12 @@ class AssetDetailHealth extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
             child: Row(
               children: [
-                Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                Icon(Icons.keyboard_arrow_down,
+                    color: Theme.of(context).iconTheme.color),
                 SizedBox(
                   width: 20,
                 ),
                 InsiteText(
-                  color: Colors.white,
                   size: 12,
                   text: "DETAILS",
                   fontWeight: FontWeight.bold,

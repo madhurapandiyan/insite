@@ -215,7 +215,6 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   viewModel.accountSelected.DisplayName != null
                               ? viewModel.accountSelected.DisplayName
                               : "",
-                      color: Colors.white,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.normal,
                       size: 12,

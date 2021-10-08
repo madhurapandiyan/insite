@@ -113,11 +113,13 @@ class _InsiteButtonWithSelectableState
         margin: widget.margin != null ? widget.margin : EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
+          border:
+              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
           color: widget.bgColor != null
               ? isSelected
-                  ? tango
+                  ? Theme.of(context).buttonColor
                   : widget.bgColor
-              : tango,
+              : Theme.of(context).buttonColor,
         ),
         alignment: Alignment.center,
         height: widget.height != null ? widget.height : null,
@@ -134,8 +136,10 @@ class _InsiteButtonWithSelectableState
               style: TextStyle(
                   fontSize: widget.fontSize != null ? widget.fontSize : 12.0,
                   color: widget.textColor != null
-                      ? widget.textColor
-                      : Colors.white,
+                      ? isSelected
+                          ? widget.textColor
+                          : Theme.of(context).textTheme.bodyText1.color
+                      : Theme.of(context).textTheme.bodyText1.color,
                   fontWeight: FontWeight.w700),
             ),
             widget.icon != null ? widget.icon : SizedBox()
@@ -172,8 +176,10 @@ class InsiteButtonWithLoader extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
+          border:
+              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
           borderRadius: BorderRadius.circular(4),
-          color: bgColor,
+          color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
         ),
         alignment: Alignment.center,
         height: height != null ? height : null,
