@@ -76,7 +76,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   InsiteImage(
                     height: 65,
                     width: 65,
-                    path: "assets/images/hitachi.png",
+                    path: "assets/images/ic_eol_launcher.png",
                   ),
                   SizedBox(
                     width: 20,
