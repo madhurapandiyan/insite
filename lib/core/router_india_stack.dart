@@ -30,7 +30,7 @@ class Router {
       case fleetViewRoute:
         return MaterialPageRoute(builder: (_) => view3.FleetView());
       case indiaStackLoginViewRoute:
-              var loginArgs = settings.arguments as view4.LoginArguments;
+        var loginArgs = settings.arguments as view4.LoginArguments;
         return MaterialPageRoute(
             builder: (_) => view4.IndiaStackLoginView(
                   arguments: loginArgs.response,

@@ -99,8 +99,7 @@ class _DashboardViewState extends State<DashboardView> {
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel
-                                  .getFilterDataApplied(filterData.title);
+                              viewModel.getFilterDataApplied(filterData.title);
                               filterLocationKey.currentState
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);

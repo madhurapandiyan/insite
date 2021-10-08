@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
 class AddressCustomTextBox extends StatelessWidget {
- final String title;
+  final String title;
   final TextEditingController controller;
 
-  AddressCustomTextBox({this.controller,this.title});
+  AddressCustomTextBox({this.controller, this.title});
 
   @override
   Widget build(BuildContext context) {

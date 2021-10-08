@@ -97,63 +97,62 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
           widget.isLoading
               ? Expanded(child: Center(child: CircularProgressIndicator()))
               : new Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      child: SfCircularChart(
-                        palette: <Color>[
-                          emerald,
-                          burntSienna,
-                          mustard,
-                          textcolor,
-                          lightRose,
-                          persianIndigo,
-                          maptextcolor,
-                          sandyBrown
-                        ],
-                        legend: Legend(
-                            isVisible: false,
-                            overflowMode: LegendItemOverflowMode.wrap),
-                        centerX:
-                            (MediaQuery.of(context).size.width * 0.18)
-                                .toStringAsFixed(0),
-                        series: _getLegendDefaultSeries(),
-                        tooltipBehavior: TooltipBehavior(enable: true),
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        child: SfCircularChart(
+                          palette: <Color>[
+                            emerald,
+                            burntSienna,
+                            mustard,
+                            textcolor,
+                            lightRose,
+                            persianIndigo,
+                            maptextcolor,
+                            sandyBrown
+                          ],
+                          legend: Legend(
+                              isVisible: false,
+                              overflowMode: LegendItemOverflowMode.wrap),
+                          centerX: (MediaQuery.of(context).size.width * 0.18)
+                              .toStringAsFixed(0),
+                          series: _getLegendDefaultSeries(),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height*0.20,
-                      child: ListView.separated(
-                          separatorBuilder: (context, index) {
-                            return Container(
-                                width: 127.29,
-                                child: Divider(
-                                    thickness: 1.0, color: athenGrey));
-                          },
-                          itemCount: widget.statusChartData.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: ClampingScrollPhysics(),
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          itemBuilder: (context, index) {
-                            ChartSampleData assetStatusData =
-                                widget.statusChartData[index];
-                            return AssetStatusUsageWidget(
-                              chartHrsData: chartHrsData[index],
-                              chartColor: colors[index],
-                              assetStatusData: assetStatusData,
-                            );
-                          }),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.20,
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return Container(
+                                  width: 127.29,
+                                  child: Divider(
+                                      thickness: 1.0, color: athenGrey));
+                            },
+                            itemCount: widget.statusChartData.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: ClampingScrollPhysics(),
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            itemBuilder: (context, index) {
+                              ChartSampleData assetStatusData =
+                                  widget.statusChartData[index];
+                              return AssetStatusUsageWidget(
+                                chartHrsData: chartHrsData[index],
+                                chartColor: colors[index],
+                                assetStatusData: assetStatusData,
+                              );
+                            }),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
         ],
       ),
     );

@@ -90,7 +90,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 thickness: 1.0,
                 color: black,
               ),
-              (widget.isLoading||widget.isRefreshing)
+              (widget.isLoading || widget.isRefreshing)
                   ? Expanded(
                       child: Center(
                       child: CircularProgressIndicator(),
@@ -365,7 +365,6 @@ class _IdlingLevelState extends State<IdlingLevel> {
         return null;
     }
   }
-
 }
 
 class IdlingLevelSampleData {

@@ -31,7 +31,8 @@ class HomeViewModel extends InsiteViewModel {
 
   openRespectivePage(ScreenType type) {
     if (type == ScreenType.DASHBOARD) {
-      _navigationService.navigateWithTransition(DashboardView(), transition: "fade");
+      _navigationService.navigateWithTransition(DashboardView(),
+          transition: "fade");
     } else if (type == ScreenType.FLEET) {
       _navigationService.navigateWithTransition(FleetView(),
           transition: "fade");
@@ -47,10 +48,9 @@ class HomeViewModel extends InsiteViewModel {
     } else if (type == ScreenType.HEALTH) {
       _navigationService.navigateWithTransition(HealthView(),
           transition: "fade");
-    }
-    else if(type==ScreenType.ADMINISTRATION){
+    } else if (type == ScreenType.ADMINISTRATION) {
       _navigationService.navigateWithTransition(AdminstrationView(),
-      transition: "fade");
+          transition: "fade");
     }
   }
 

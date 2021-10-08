@@ -30,9 +30,7 @@ class GetTokenData {
 class AccessToken {
   final String access_token;
 
-  AccessToken(
-      {
-      this.access_token});
+  AccessToken({this.access_token});
 
   factory AccessToken.fromJson(Map<String, dynamic> json) =>
       _$AccessTokenFromJson(json);

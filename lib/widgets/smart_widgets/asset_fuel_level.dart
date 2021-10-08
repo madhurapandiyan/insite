@@ -23,7 +23,7 @@ class AssetFuelLevel extends StatefulWidget {
 }
 
 class _AssetFuelLevelState extends State<AssetFuelLevel> {
-  var colors = [burntSienna, lightRose, mustard, emerald,emerald];
+  var colors = [burntSienna, lightRose, mustard, emerald, emerald];
 
   @override
   void initState() {

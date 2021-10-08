@@ -55,8 +55,8 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-               "Bearer" + " " + await _localService.getToken(),
-               ( await _localService.getLoggedInUser()).sub);
+                "Bearer" + " " + await _localService.getToken(),
+                (await _localService.getLoggedInUser()).sub);
         return adminManageUserResponse;
       }
     } catch (e) {

@@ -31,7 +31,7 @@ class _SingleAssetUtilizationListViewState
   List<DateTime> dateRange = [];
   ProductFamilyType productFamilyType = ProductFamilyType.ALL;
   bool isProductFamilySelected = false;
-  
+
   @override
   void initState() {
     Logger().d("selected asset product familiy ${widget.detail.productFamily}");

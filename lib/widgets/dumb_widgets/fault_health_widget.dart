@@ -25,7 +25,6 @@ class FaultWidget extends StatefulWidget {
 }
 
 class _FaultWidgetState extends State<FaultWidget> {
-  
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -35,14 +34,16 @@ class _FaultWidgetState extends State<FaultWidget> {
         },
         child: Row(
           children: [
-           widget.screenType==ScreenType.DASHBOARD? InsiteButton(
-              textColor: silver,
-              padding: EdgeInsets.all(4),
-              bgColor: darkGrey,
-              title: widget.data.assetCount.toString(),
-              width: 51,
-              height: 27,
-            ):Container(),
+            widget.screenType == ScreenType.DASHBOARD
+                ? InsiteButton(
+                    textColor: silver,
+                    padding: EdgeInsets.all(4),
+                    bgColor: darkGrey,
+                    title: widget.data.assetCount.toString(),
+                    width: 51,
+                    height: 27,
+                  )
+                : Container(),
             SizedBox(
               width: 20,
             ),

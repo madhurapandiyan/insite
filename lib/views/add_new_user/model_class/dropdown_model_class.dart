@@ -4,5 +4,5 @@ class ApplicationSelectedDropDown {
   ApplicationAccessData accessData;
   String value;
   String key;
-  ApplicationSelectedDropDown({this.accessData, this.value,this.key});
+  ApplicationSelectedDropDown({this.accessData, this.value, this.key});
 }

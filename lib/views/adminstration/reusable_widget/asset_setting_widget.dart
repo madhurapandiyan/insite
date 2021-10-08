@@ -6,7 +6,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 class AssetSettingWidget extends StatelessWidget {
   final String headerText;
   final VoidCallback onButtonClicked;
-  const AssetSettingWidget({this.headerText,this.onButtonClicked});
+  const AssetSettingWidget({this.headerText, this.onButtonClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class AssetSettingWidget extends StatelessWidget {
             title: "manage asset configurations".toUpperCase(),
             textColor: appbarcolor,
             fontSize: 14,
-            onTap: (){
+            onTap: () {
               onButtonClicked();
             },
             margin: EdgeInsets.all(5),

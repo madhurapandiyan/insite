@@ -47,7 +47,6 @@ class Notifications extends StatelessWidget {
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    
                     decoration: BoxDecoration(
                       color: mediumgrey,
                       border: Border.all(color: black, width: 0.0),

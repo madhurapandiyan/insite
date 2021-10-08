@@ -51,7 +51,7 @@ class AddressData {
   String country;
   String state;
   String zipcode;
-  AddressData({this.address,this.country,this.state,this.zipcode});
+  AddressData({this.address, this.country, this.state, this.zipcode});
 
   factory AddressData.fromJson(Map<String, dynamic> json) =>
       _$AddressDataFromJson(json);

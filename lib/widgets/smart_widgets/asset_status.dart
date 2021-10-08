@@ -11,7 +11,11 @@ class AssetStatus extends StatefulWidget {
   final bool isLoading;
   final bool isRefreshing;
   final Function(FilterData) onFilterSelected;
-  AssetStatus({this.statusChartData, this.isLoading, this.onFilterSelected,this.isRefreshing});
+  AssetStatus(
+      {this.statusChartData,
+      this.isLoading,
+      this.onFilterSelected,
+      this.isRefreshing});
 
   @override
   _AssetStatusState createState() => _AssetStatusState();

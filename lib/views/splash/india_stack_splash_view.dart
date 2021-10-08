@@ -52,7 +52,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
-    Logger().d("IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+    Logger().d(
+        "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
     super.initState();
     setupListeners();
   }
@@ -179,7 +180,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(),false);
+          result.access_token, result.expires_in.toString(), false);
     }
   }
 

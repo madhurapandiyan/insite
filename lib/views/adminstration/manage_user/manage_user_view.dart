@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_user_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_user_view_model.dart';
@@ -25,6 +28,81 @@ class ManageUserView extends StatelessWidget {
                 children: [
                   Column(
                     children: [
+                      SizedBox(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 21.0),
+                              child: InsiteText(
+                                text: "manage users".toUpperCase(),
+                                color: textcolor,
+                                size: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                    child: InsiteButton(
+                                        title: "",
+                                        bgColor: tuna,
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: appbarcolor,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                    child: InsiteButton(
+                                        title: "",
+                                        bgColor: tuna,
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: appbarcolor,
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                    child: InsiteButton(
+                                        title: "",
+                                        bgColor: tuna,
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: appbarcolor,
+                                        )),
+                                  )
+                                ],
+                              ),
+                            )
+                          ]),
+                      SizedBox(
+                        height: 20,
+                      ),
                       viewModel.loading
                           ? Padding(
                               padding: const EdgeInsets.only(top: 60.0),

@@ -18,7 +18,6 @@ class NewReportTemplateWidget extends StatelessWidget {
         shape: BoxShape.rectangle,
       ),
       child: Column(
-        
         children: [
           Container(
             margin: EdgeInsets.all(8),
@@ -72,28 +71,26 @@ class NewReportTemplateWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               InsiteButton(
-            width: MediaQuery.of(context).size.width * 0.40,
-            height: MediaQuery.of(context).size.height * 0.05,
-            title: "View Sample",
-            fontSize: 14,
-            textColor: appbarcolor,
-            bgColor: ship_grey,
-            onTap: (){},
-          ),
-           InsiteButton(
-            width: MediaQuery.of(context).size.width * 0.40,
-            height: MediaQuery.of(context).size.height * 0.05,
-            title: "Email Report",
-            fontSize: 14,
-            textColor: appbarcolor,
-            bgColor: tango,
-            onTap: (){},
-          )
-
+              InsiteButton(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: MediaQuery.of(context).size.height * 0.05,
+                title: "View Sample",
+                fontSize: 14,
+                textColor: appbarcolor,
+                bgColor: ship_grey,
+                onTap: () {},
+              ),
+              InsiteButton(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: MediaQuery.of(context).size.height * 0.05,
+                title: "Email Report",
+                fontSize: 14,
+                textColor: appbarcolor,
+                bgColor: tango,
+                onTap: () {},
+              )
             ],
           )
-         
         ],
       ),
     );

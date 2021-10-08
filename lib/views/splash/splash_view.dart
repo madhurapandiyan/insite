@@ -66,8 +66,7 @@ class _SplashViewState extends State<SplashView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url
-              .startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
+          state.url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
         print("STATE changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -147,7 +146,9 @@ class _SplashViewState extends State<SplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: Urls.administratorloginUrl,)
+                    ? WebviewScaffold(
+                        url: Urls.administratorloginUrl,
+                      )
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(),

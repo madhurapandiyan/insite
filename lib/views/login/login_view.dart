@@ -52,12 +52,12 @@ class _LoginViewState extends State<LoginView> {
         print("STATE changed with access token: $state.url");
         try {
           Future.delayed(Duration(seconds: 2), () {
-          flutterWebviewPlugin.cleanCookies();
-          flutterWebviewPlugin.clearCache();
-          flutterWebviewPlugin.launch(Urls.administratorloginUrl);
-          // _navigationService.replaceWith(logoutViewRoute);
-          // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
-          //     predicate: (Route<dynamic> route) => false);
+            flutterWebviewPlugin.cleanCookies();
+            flutterWebviewPlugin.clearCache();
+            flutterWebviewPlugin.launch(Urls.administratorloginUrl);
+            // _navigationService.replaceWith(logoutViewRoute);
+            // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
+            //     predicate: (Route<dynamic> route) => false);
           });
           // flutterWebviewPlugin.close();
         } catch (e) {
@@ -97,12 +97,12 @@ class _LoginViewState extends State<LoginView> {
             "/?sessionDataKey=E294FEF4A64BF7E14940E2964F78E351")) {
           print("URL changed with session data key");
           Future.delayed(Duration(seconds: 2), () {
-          flutterWebviewPlugin.cleanCookies();
-          flutterWebviewPlugin.clearCache();
-          flutterWebviewPlugin.launch(Urls.administratorloginUrl);
-          // _navigationService.replaceWith(logoutViewRoute);
-          // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
-          //     predicate: (Route<dynamic> route) => false);
+            flutterWebviewPlugin.cleanCookies();
+            flutterWebviewPlugin.clearCache();
+            flutterWebviewPlugin.launch(Urls.administratorloginUrl);
+            // _navigationService.replaceWith(logoutViewRoute);
+            // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
+            //     predicate: (Route<dynamic> route) => false);
           });
           // flutterWebviewPlugin.close();
         } else if (url

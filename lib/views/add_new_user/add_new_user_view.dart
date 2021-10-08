@@ -247,7 +247,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       itemBuilder: (context, index) {
                         ApplicationSelectedDropDown value =
                             viewModel.applicationSelectedDropDownList[index];
-                            
+
                         return CustomListView(
                             applicationAccessData: value.accessData,
                             text: value.value,

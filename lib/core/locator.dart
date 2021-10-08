@@ -71,6 +71,5 @@ class LocatorInjector {
     locator.registerLazySingleton(() => FaultService());
     log.d("Registering ManageUserService");
     locator.registerLazySingleton(() => AssetAdminManagerUserService());
-    
   }
 }

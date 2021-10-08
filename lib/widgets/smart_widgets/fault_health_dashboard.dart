@@ -14,7 +14,11 @@ class FaultHealthDashboard extends StatefulWidget {
   final bool loading;
   final Function(FilterData) onFilterSelected;
   FaultHealthDashboard(
-      {this.countData, this.loading, this.onFilterSelected,this.screenType,this.isRefreshing});
+      {this.countData,
+      this.loading,
+      this.onFilterSelected,
+      this.screenType,
+      this.isRefreshing});
 
   @override
   _FaultHealthDashboardState createState() => _FaultHealthDashboardState();
@@ -94,7 +98,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
           SizedBox(
             height: 10,
           ),
-          (widget.loading|| widget.isRefreshing)
+          (widget.loading || widget.isRefreshing)
               ? Expanded(
                   child: Center(
                   child: CircularProgressIndicator(),

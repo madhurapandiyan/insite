@@ -163,4 +163,3 @@ class CumulativeChartData {
 
   CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }
-

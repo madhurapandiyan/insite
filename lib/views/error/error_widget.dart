@@ -58,4 +58,3 @@ class ErrorWidget extends StatelessWidget {
     );
   }
 }
-

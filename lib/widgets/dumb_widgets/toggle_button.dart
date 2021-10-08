@@ -86,7 +86,6 @@ class _ToggleButtonState extends State<ToggleButton> {
               ),
             ),
           ),
-          
         ],
       ),
     );

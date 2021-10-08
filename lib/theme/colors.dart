@@ -55,9 +55,8 @@ const Color buttonColorFive = Color(0xffEB5757);
 
 // borderLineColor
 
-const Color borderLineColor=Color(0xFF282828);
+const Color borderLineColor = Color(0xFF282828);
 
 //addUserbgColor
 
-const addUserBgColor=Color(0XFF0C0B0B);
-
+const addUserBgColor = Color(0XFF0C0B0B);

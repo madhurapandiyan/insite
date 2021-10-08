@@ -82,7 +82,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
               thickness: 2,
             ),
           ),
-          (widget.isLoading||widget.isRefreshing)
+          (widget.isLoading || widget.isRefreshing)
               ? Expanded(
                   child: Center(
                     child: CircularProgressIndicator(),

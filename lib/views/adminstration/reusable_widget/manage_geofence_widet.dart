@@ -70,7 +70,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         print("button is tapped");
                       },
                       child: Container(

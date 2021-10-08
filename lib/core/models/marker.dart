@@ -10,7 +10,7 @@ class InsiteMarker {
   });
 
   MarkerId markerId;
-  MapRecord mapData;   
+  MapRecord mapData;
   LatLng position;
   Function onTapInfoWindow;
 }
