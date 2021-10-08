@@ -22,10 +22,11 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
     fname: json['fname'] as String,
     lname: json['lname'] as String,
     email: json['email'] as String,
+    phone: json['phone'] as String,
     isCatssoUserCreation: json['isCatssoUserCreation'] as bool,
     address: json['address'] == null
         ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>),
+        : AddressData.fromJson(json['address'] as Map<String, dynamic>),
     details: json['details'] == null
         ? null
         : Details.fromJson(json['details'] as Map<String, dynamic>),
@@ -42,6 +43,7 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'fname': instance.fname,
       'lname': instance.lname,
       'email': instance.email,
+      'phone': instance.phone,
       'isCatssoUserCreation': instance.isCatssoUserCreation,
       'address': instance.address,
       'details': instance.details,
@@ -49,24 +51,35 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'src': instance.src,
     };
 
-Address _$AddressFromJson(Map<String, dynamic> json) {
-  return Address();
+AddressData _$AddressDataFromJson(Map<String, dynamic> json) {
+  return AddressData(
+    address: json['address'] as String,
+    country: json['country'] as String,
+    state: json['state'] as String,
+    zipcode: json['zipcode'] as String,
+  );
 }
 
-Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{};
+Map<String, dynamic> _$AddressDataToJson(AddressData instance) =>
+    <String, dynamic>{
+      'address': instance.address,
+      'country': instance.country,
+      'state': instance.state,
+      'zipcode': instance.zipcode,
+    };
 
 Details _$DetailsFromJson(Map<String, dynamic> json) {
   return Details(
     jobTitle: json['jobTitle'] as String,
     jobType: json['jobType'] as String,
-    userType: json['userType'] as String,
+    user_type: json['user_type'] as String,
   );
 }
 
 Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
       'jobTitle': instance.jobTitle,
       'jobType': instance.jobType,
-      'userType': instance.userType,
+      'user_type': instance.user_type,
     };
 
 Role _$RoleFromJson(Map<String, dynamic> json) {

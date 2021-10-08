@@ -1,59 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/add_new_user/model_class/application_name_model.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/app_avatar.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widgte.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_list_view.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
-import 'package:insite/widgets/smart_widgets/reusable_dropdown_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'add_new_user_view_model.dart';
 
 class AddNewUserView extends StatefulWidget {
   final Users user;
-
-  AddNewUserView({this.user});
+  final bool isEdit;
+  AddNewUserView({this.user, this.isEdit});
 
   @override
   State<AddNewUserView> createState() => _AddNewUserViewState();
 }
 
-List<ApplicationAccess> selectedList;
-int selectedListIndex;
-String assetDropDown;
-bool isDataSelected = true;
-String jobTypeValue;
-String jobTitleValue;
-String languageTypeValue;
-TextEditingController _emailController = new TextEditingController();
-TextEditingController _firstNameController = new TextEditingController();
-TextEditingController _lastNameController = new TextEditingController();
-TextEditingController _phoneNumberController = new TextEditingController();
-TextEditingController _addressController = new TextEditingController();
-TextEditingController _pinCodeController = new TextEditingController();
-var viewModel;
-bool isSelected = false;
-bool isDataRemoved = false;
-
 class _AddNewUserViewState extends State<AddNewUserView> {
+  List<ApplicationAccess> selectedList;
+  String jobTypeValue;
+  String jobTitleValue;
+  String languageTypeValue;
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _firstNameController = new TextEditingController();
+  TextEditingController _lastNameController = new TextEditingController();
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _addressController = new TextEditingController();
+  TextEditingController _pinCodeController = new TextEditingController();
+  TextEditingController _stateController = new TextEditingController();
+  TextEditingController _countryController = new TextEditingController();
+
+  var viewModel;
+
   @override
   void initState() {
-    viewModel = AddNewUserViewModel();
-    _emailController.text = widget.user.loginId;
-    _firstNameController.text = widget.user.first_name;
-    _lastNameController.text = widget.user.last_name;
-    _phoneNumberController.text = widget.user.phone;
-    _addressController.text = widget.user.address.country;
-    _pinCodeController.text = widget.user.address.zipcode;
-    selectedList = [];
+    viewModel = AddNewUserViewModel(widget.user);
+    if (widget.user != null) {
+      _emailController.text = widget.user.loginId;
+      _firstNameController.text = widget.user.first_name;
+      _lastNameController.text = widget.user.last_name;
+      _phoneNumberController.text = widget.user.phone;
+      _addressController.text = widget.user.address.country;
+      _pinCodeController.text = widget.user.address.zipcode;
+      selectedList = [];
+    } else {
+      _emailController.text = "";
+      _firstNameController.text = "";
+      _lastNameController.text = "";
+      _phoneNumberController.text = "";
+      _addressController.text = "";
+      _pinCodeController.text = "";
+      _countryController.text = "";
+      _stateController.text = "";
 
+      selectedList = [];
+    }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _phoneNumberController.clear();
+    _addressController.clear();
+    _pinCodeController.clear();
+    super.dispose();
   }
 
   @override
@@ -74,17 +94,26 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       Expanded(
                         flex: 1,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 23.0),
-                          child: Text(
-                            "Add New User",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: textcolor,
-                                fontSize: 14,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: "Roboto"),
-                          ),
-                        ),
+                            padding: const EdgeInsets.only(left: 23.0),
+                            child: widget.user != null
+                                ? Text(
+                                    "Manage user",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: textcolor,
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: "Roboto"),
+                                  )
+                                : Text(
+                                    "Add New User",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: textcolor,
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: "Roboto"),
+                                  )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 15.0),
@@ -108,8 +137,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: MediaQuery.of(context).size.height * 0.05,
-                    child:
-                        CustomTextBox(title: "", controller: _emailController),
+                    child: CustomTextBox(
+                        title: "Email", controller: _emailController),
                   ),
                   SizedBox(
                     height: 20,
@@ -118,7 +147,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       width: MediaQuery.of(context).size.width * 0.75,
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: CustomTextBox(
-                          title: "", controller: _firstNameController)),
+                          title: "First name",
+                          controller: _firstNameController)),
                   SizedBox(
                     height: 20,
                   ),
@@ -126,7 +156,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       width: MediaQuery.of(context).size.width * 0.75,
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: CustomTextBox(
-                        title: "",
+                        title: "Last name",
                         controller: _lastNameController,
                       )),
                   SizedBox(
@@ -137,7 +167,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     height: MediaQuery.of(context).size.height * 0.05,
                     child: CustomTextBoxWithName(
                       controller: _phoneNumberController,
-                      title: "",
+                      title: "Phone number",
                       text: "Optional",
                     ),
                   ),
@@ -167,21 +197,19 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.06,
                       child: ListView.builder(
-                          itemCount: viewModel.assetData.length,
+                          itemCount: viewModel.assetsData.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
+                            ApplicationAccessData accessData =
+                                viewModel.assetsData[index];
                             return Center(
                               child: AppAvatar(
-                                isBtnSelected: isSelected,
-                                isDataRemoved: isDataRemoved,
-                                applicationAccess: viewModel.assetData[index],
-                                isSelected: (bool value) {
-                                  selectedListIndex = index;
-                                  onMultiSelecrButtonClicked(value, index);
-                                  print("$selectedListIndex : $value");
-                                  setState(() {});
-                                },
-                              ),
+                                  onSelect: () {
+                                    viewModel
+                                        .onApplicationAccessSelection(index);
+                                  },
+                                  accessData: accessData,
+                                  isSelected: accessData.isSelected),
                             );
                           }),
                     ),
@@ -189,74 +217,43 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 10,
                   ),
-                  isSelected
-                      ? Container(
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(width: 1, color: black),
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: CustomDropDownWidget(
-                              items: [
-                                "Administrator",
-                                "Contributor",
-                                "Creator",
-                                "Viewer"
-                              ],
-                              onChanged: (String value) {
-                                assetDropDown = value;
-                                //isSelected = !isSelected;
-                                if (isSelected == true) {
-                                  viewModel.listDropDownValue.add(
-                                      DropDownModelClass(
-                                          index: selectedListIndex,
-                                          value: value));
-                                }
-
-                                setState(() {});
-                              },
-                              value: assetDropDown,
-                            ),
-                          ))
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            child: CustomTextBox(
-                              title: "Select",
-                            ),
-                          ),
+                  Container(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(width: 1, color: black),
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: CustomDropDownWidget(
+                          items: viewModel.dropDownlist,
+                          onChanged: (String value) {
+                            viewModel.onPermissionSelected(value);
+                            viewModel.onParticularItemSelected(value);
+                          },
+                          value: viewModel.dropDownValue,
                         ),
+                      )),
                   SizedBox(
                     height: 10,
                   ),
                   ListView.builder(
-                      itemCount: viewModel.listDropDownValues.length,
+                      itemCount:
+                          viewModel.applicationSelectedDropDownList.length,
                       shrinkWrap: true,
                       padding: EdgeInsets.only(left: 53),
                       itemBuilder: (context, index) {
-                        DropDownModelClass value =
-                            viewModel.listDropDownValues[index];
-                        return Column(
-                          children: [
-                            CustomListView(
-                                text: value.value,
-                                voidCallback: () {
-                                  viewModel.listDropDownValues.removeAt(index);
-                                  isDataRemoved = true;
-                                  isSelected = false;
-                                  print("SSSS:$isSelected");
-                                  print("SSS:$isDataRemoved");
-
-                                  setState(() {});
-                                })
-                          ],
-                        );
+                        ApplicationSelectedDropDown value =
+                            viewModel.applicationSelectedDropDownList[index];
+                            
+                        return CustomListView(
+                            applicationAccessData: value.accessData,
+                            text: value.value,
+                            voidCallback: () {
+                              viewModel.onPermissionRemoved(value, index);
+                            });
                       }),
                   SizedBox(
                     height: 15,
@@ -437,6 +434,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: CustomTextBox(
                         title: "Country",
+                        controller: _countryController,
                       )),
                   SizedBox(
                     height: 20,
@@ -450,6 +448,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             height: MediaQuery.of(context).size.height * 0.05,
                             child: CustomTextBox(
                               title: "State",
+                              controller: _stateController,
                             )),
                       ),
                       SizedBox(
@@ -571,7 +570,60 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         height: MediaQuery.of(context).size.height * 0.050,
                         title: "save".toUpperCase(),
                         fontSize: 14,
-                        onTap: () {},
+                        onTap: () {
+                          if (widget.user != null) {
+                            if (_emailController != null &&
+                                _firstNameController != null &&
+                                _lastNameController != null &&
+                                _phoneNumberController != null &&
+                                _addressController != null &&
+                                _stateController != null &&
+                                _countryController != null &&
+                                _pinCodeController != null) {
+                              viewModel.getEditUserData(
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _emailController.text,
+                                  jobTitleValue,
+                                  _phoneNumberController.text,
+                                  jobTypeValue,
+                                  "SSO",
+                                  viewModel.tPassNameData,
+                                  _addressController.text,
+                                  _stateController.text,
+                                  _countryController.text,
+                                  _pinCodeController.text);
+                            } else {
+                              print("Not a valid user");
+                            }
+                          } else {
+                            if (_emailController != null &&
+                                _firstNameController != null &&
+                                _lastNameController != null &&
+                                _phoneNumberController != null &&
+                                _addressController != null &&
+                                _stateController != null &&
+                                _countryController != null &&
+                                _pinCodeController != null) {
+                              viewModel.getAddUserData(
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _emailController.text,
+                                  jobTitleValue,
+                                  _phoneNumberController.text,
+                                  jobTypeValue,
+                                  "SSO",
+                                  "sivaprajee",
+                                  viewModel.tPassNameData,
+                                  _addressController.text,
+                                  _stateController.text,
+                                  _countryController.text,
+                                  _pinCodeController.text);
+                            } else {
+                              print("Not a valid user");
+                            }
+                          }
+                        },
                         bgColor: tango,
                         textColor: appbarcolor,
                       ),
@@ -586,19 +638,5 @@ class _AddNewUserViewState extends State<AddNewUserView> {
       },
       viewModelBuilder: () => viewModel,
     );
-  }
-
-  onMultiSelecrButtonClicked(bool value, int index) {
-    if (value) {
-      selectedList.add(viewModel.assetData[index]);
-      isSelected = value;
-    } else {
-      print("button is tapped");
-
-      if (index == 0) {
-        isSelected = value;
-      }
-      selectedList.remove(viewModel.assetData[index]);
-    }
   }
 }
