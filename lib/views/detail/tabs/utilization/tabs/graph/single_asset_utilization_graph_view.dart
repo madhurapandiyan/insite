@@ -7,6 +7,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
@@ -46,8 +47,7 @@ class _SingleAssetUtilizationGraphViewState
     return ViewModelBuilder<SingleAssetUtilizationGraphViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetUtilizationGraphViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
 
         return Stack(
           children: [
@@ -530,11 +530,7 @@ class _SingleAssetUtilizationGraphViewState
                 ),
               ],
             ),
-            viewModel.refreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
+            viewModel.refreshing ? InsiteProgressBar() : SizedBox()
           ],
         );
       },

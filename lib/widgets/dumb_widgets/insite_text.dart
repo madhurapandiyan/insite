@@ -18,7 +18,7 @@ class InsiteText extends StatelessWidget {
           color: color != null
               ? color
               : Theme.of(context).textTheme.bodyText1.color,
-          fontWeight: fontWeight,
+          fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
           fontSize: size,
         ));
   }
@@ -41,7 +41,7 @@ class InsiteTextAlign extends StatelessWidget {
           color: color != null
               ? color
               : Theme.of(context).textTheme.bodyText1.color,
-          fontWeight: fontWeight,
+          fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
           fontSize: size,
         ));
   }
@@ -65,7 +65,7 @@ class InsiteTextWithPadding extends StatelessWidget {
             color: color != null
                 ? color
                 : Theme.of(context).textTheme.bodyText1.color,
-            fontWeight: fontWeight,
+            fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
             fontSize: size,
           )),
     );
@@ -90,7 +90,7 @@ class InsiteTextOverFlow extends StatelessWidget {
             color: color != null
                 ? color
                 : Theme.of(context).textTheme.bodyText1.color,
-            fontWeight: fontWeight,
+            fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
             fontSize: size,
           )),
     );

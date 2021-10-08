@@ -12,6 +12,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart'
     as cluster;
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -197,9 +198,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                 ),
                 (viewModel.loading)
                     ? Expanded(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                        child: InsiteProgressBar(),
                       )
                     : Expanded(
                         flex: 1,
@@ -382,9 +381,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                     ),
                                   ),
                                   viewModel.refreshing
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
+                                      ? InsiteProgressBar()
                                       : SizedBox()
                                 ],
                               ),

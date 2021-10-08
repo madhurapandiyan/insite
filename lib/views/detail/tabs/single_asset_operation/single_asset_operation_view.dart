@@ -6,6 +6,7 @@ import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:intl/intl.dart';
@@ -37,9 +38,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
       builder: (BuildContext context, SingleAssetOperationViewModel viewModel,
           Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(
@@ -346,11 +345,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                     ),
                   ],
                 ),
-                viewModel.refreshing
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox()
+                viewModel.refreshing ? InsiteProgressBar() : SizedBox()
               ],
             ),
           );

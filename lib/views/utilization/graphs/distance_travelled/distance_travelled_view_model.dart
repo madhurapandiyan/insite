@@ -34,6 +34,7 @@ class DistanceTravelledViewModel extends InsiteViewModel {
   ScrollController scrollController;
 
   DistanceTravelledViewModel() {
+    _utilizationService.setUp();
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
     scrollController.addListener(() {

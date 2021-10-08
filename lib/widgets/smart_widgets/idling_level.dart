@@ -4,6 +4,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -89,10 +90,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 color: black,
               ),
               (widget.isLoading || widget.isRefreshing)
-                  ? Expanded(
-                      child: Center(
-                      child: CircularProgressIndicator(),
-                    ))
+                  ? Expanded(child: InsiteProgressBar())
                   : Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
@@ -205,9 +203,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
             ],
           ),
           widget.isSwitching
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? InsiteProgressBar()
               : SizedBox()
         ],
       ),

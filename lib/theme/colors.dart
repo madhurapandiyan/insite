@@ -71,3 +71,48 @@ const buttonColor1 = Color(0XFF00437A);
 const buttonColor2 = Color(0XFFFFFFFF);
 const buttonSelectedColor1 = Color(0XFF00437A);
 const dividerColor1 = Color(0XFF000000);
+
+//orange/white theme
+const backgroundColor2 = Color(0XFF000000);
+const appBarbackgroundColor2 = Color(0XFFFFFFFF);
+const cardBackgroundColor2 = Color(0XFF000000);
+const cardSelectedBackgroundColor2 = Color(0XFF000000);
+const textColor2 = Color(0XFFFFFFFF);
+const iconColor2 = Color(0XFFFFFFFF);
+const textSelectedColor2 = Color(0XFFFFFFFF);
+const buttonColor21 = Color(0xffF37021);
+const buttonColor22 = Color(0XFF000000);
+const buttonSelectedColor2 = Color(0xffF37021);
+const dividerColor2 = Color(0XFF000000);
+
+var indiaStackBlueWhite = ThemeData(
+    cardColor: cardBackgroundColor1,
+    backgroundColor: backgroundColor1,
+    fontFamily: 'Roboto',
+    buttonColor: buttonColor1,
+    dividerColor: dividerColor1,
+    iconTheme: IconThemeData(
+      color: iconColor1,
+    ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: buttonColor1,
+    ),
+    textTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+    accentColor: Colors.white);
+
+var indiaStackOrangeBlack = ThemeData(
+    cardColor: cardBackgroundColor2,
+    backgroundColor: backgroundColor2,
+    fontFamily: 'Roboto',
+    buttonColor: buttonColor21,
+    dividerColor: dividerColor2,
+    iconTheme: IconThemeData(
+      color: iconColor2,
+    ),
+    buttonTheme: ButtonThemeData(
+      buttonColor: buttonColor2,
+    ),
+    textTheme: TextTheme(bodyText1: TextStyle(color: textColor2)),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+    accentColor: Colors.white);

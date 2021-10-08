@@ -6,6 +6,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/health_list_item.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:stacked/stacked.dart';
 import 'health_list_view_model.dart';
 
@@ -91,8 +92,7 @@ class _HealthListViewState extends State<HealthListView> {
                   ),
                   Expanded(
                     child: viewModel.loading
-                        ? Container(
-                            child: Center(child: CircularProgressIndicator()))
+                        ? Container(child: InsiteProgressBar())
                         : viewModel.faults.isNotEmpty
                             ? ListView.builder(
                                 shrinkWrap: true,
@@ -113,16 +113,12 @@ class _HealthListViewState extends State<HealthListView> {
                   viewModel.loadingMore
                       ? Padding(
                           padding: EdgeInsets.all(8),
-                          child: CircularProgressIndicator(),
+                          child: InsiteProgressBar(),
                         )
                       : SizedBox(),
                 ],
               ),
-              viewModel.refreshing
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SizedBox()
+              viewModel.refreshing ? InsiteProgressBar() : SizedBox()
             ],
           ),
         );

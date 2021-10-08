@@ -43,19 +43,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: indiaStackSplashViewRoute,
-          theme: ThemeData(
-              cardColor: cardBackgroundColor1,
-              backgroundColor: backgroundColor1,
-              fontFamily: 'Roboto',
-              buttonColor: buttonColor1,
-              dividerColor: dividerColor1,
-              iconTheme: IconThemeData(color: iconColor1),
-              buttonTheme: ButtonThemeData(
-                buttonColor: buttonColor1,
-              ),
-              textTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
-              appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-              accentColor: Colors.white),
+          theme: indiaStackBlueWhite,
         ));
   }
 }

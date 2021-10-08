@@ -69,7 +69,14 @@ class _FilterViewState extends State<FilterView> {
         return viewModel.loading
             ? Container(
                 height: MediaQuery.of(context).size.height * 0.8,
-                color: tuna,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                    border: Border.all(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 child: InsiteProgressBar())
             : Stack(
                 children: [
@@ -353,9 +360,7 @@ class _FilterViewState extends State<FilterView> {
                     ),
                   ),
                   viewModel.isRefreshing
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
+                      ? InsiteProgressBar()
                       : SizedBox()
                 ],
               );

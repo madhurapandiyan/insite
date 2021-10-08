@@ -10,6 +10,7 @@ import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/filter/refine.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/views/error/error_widget.dart' as error;
 
@@ -198,6 +199,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   }
 
   Future<bool> onBackPressed() {
+    Logger().i("onBackPressed");
     if (_isSearchSelected) {
       setState(() {
         _isSearchSelected = !_isSearchSelected;

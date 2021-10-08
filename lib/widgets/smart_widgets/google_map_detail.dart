@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 
 class GoogleMapDetailWidget extends StatefulWidget {
@@ -195,7 +196,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
               //   ),
               // ),
               widget.isLoading
-                  ? Expanded(child: Center(child: CircularProgressIndicator()))
+                  ? Expanded(child: InsiteProgressBar())
                   : Flexible(
                       child: Container(
                           height: MediaQuery.of(context).size.height * 0.45,

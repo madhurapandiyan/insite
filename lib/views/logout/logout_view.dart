@@ -7,6 +7,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'logout_view_model.dart';
@@ -127,9 +128,7 @@ class _LogoutViewState extends State<LogoutView> {
               child: Stack(
                 children: [
                   WebviewScaffold(url: Urls.administratorloginUrl),
-                  isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : SizedBox()
+                  isLoading ? InsiteProgressBar() : SizedBox()
                 ],
               ),
             ),

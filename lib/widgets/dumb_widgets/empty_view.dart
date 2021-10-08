@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class EmptyView extends StatelessWidget {
   final String title;
@@ -9,16 +9,14 @@ class EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: bg != null ? bg : cod_grey,
+      color: bg != null ? bg : Theme.of(context).backgroundColor,
       alignment: Alignment.center,
       child: Center(
-        child: Text(title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18)),
-      ),
+          child: InsiteTextAlign(
+              text: title,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+              size: 18)),
     );
   }
 }

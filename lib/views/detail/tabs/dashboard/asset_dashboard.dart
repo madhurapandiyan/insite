@@ -5,6 +5,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
@@ -41,7 +42,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
       builder:
           (BuildContext context, AssetDashboardViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(child: CircularProgressIndicator());
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(

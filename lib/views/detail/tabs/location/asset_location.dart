@@ -9,6 +9,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -41,9 +42,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
       builder:
           (BuildContext context, AssetLocationViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             width: double.infinity,
@@ -272,11 +271,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ],
                         ),
                       ),
-                      viewModel.refreshing
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : SizedBox()
+                      viewModel.refreshing ? InsiteProgressBar() : SizedBox()
                     ],
                   ),
                 )

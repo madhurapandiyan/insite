@@ -8,6 +8,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/bar_chart.dart';
 import 'package:insite/widgets/dumb_widgets/bar_wdiget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
@@ -87,9 +88,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
           ),
           (widget.isLoading || widget.isRefreshing)
               ? Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: InsiteProgressBar(),
                 )
               : Column(
                   children: [

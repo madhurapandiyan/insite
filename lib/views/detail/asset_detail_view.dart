@@ -11,6 +11,7 @@ import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
@@ -99,9 +100,7 @@ class _TabPageState extends State<AssetDetailView> {
           onFilterApplied: () {},
           onRefineApplied: () {},
           body: viewModel.loading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? InsiteProgressBar()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

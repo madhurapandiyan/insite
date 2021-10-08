@@ -9,6 +9,7 @@ import 'package:insite/views/utilization/utilization_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/single_asset_usage.dart';
 import 'package:insite/widgets/dumb_widgets/single_asset_usage_two.dart';
 import 'package:logger/logger.dart';
@@ -31,7 +32,7 @@ class _SingleAssetUtilizationListViewState
   List<DateTime> dateRange = [];
   ProductFamilyType productFamilyType = ProductFamilyType.ALL;
   bool isProductFamilySelected = false;
-  
+
   @override
   void initState() {
     Logger().d("selected asset product familiy ${widget.detail.productFamily}");
@@ -48,8 +49,7 @@ class _SingleAssetUtilizationListViewState
     return ViewModelBuilder<SingleAssetUtilizationListViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetUtilizationListViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -146,9 +146,7 @@ class _SingleAssetUtilizationListViewState
                 Flexible(
                   child: viewModel.loading
                       ? Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                          child: InsiteProgressBar(),
                         )
                       : viewModel.utilLizationList.isNotEmpty
                           ? ListView.separated(
@@ -191,11 +189,7 @@ class _SingleAssetUtilizationListViewState
                 ),
               ],
             ),
-            viewModel.refreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
+            viewModel.refreshing ? InsiteProgressBar() : SizedBox()
           ],
         );
       },

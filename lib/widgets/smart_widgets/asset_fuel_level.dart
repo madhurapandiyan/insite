@@ -4,6 +4,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -105,7 +106,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
           color: Theme.of(context).dividerColor,
         ),
         (widget.isLoading || widget.isRefreshing)
-            ? Expanded(child: Center(child: CircularProgressIndicator()))
+            ? Expanded(child: InsiteProgressBar())
             : Row(
                 children: [
                   Expanded(

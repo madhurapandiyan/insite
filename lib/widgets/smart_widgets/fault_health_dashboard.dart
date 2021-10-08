@@ -5,6 +5,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultHealthDashboard extends StatefulWidget {
@@ -94,10 +95,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
             height: 10,
           ),
           (widget.loading || widget.isRefreshing)
-              ? Expanded(
-                  child: Center(
-                  child: CircularProgressIndicator(),
-                ))
+              ? Expanded(child: InsiteProgressBar())
               : Expanded(
                   child: ListView.builder(
                       itemCount: widget.countData.length,

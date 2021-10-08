@@ -4,6 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_detail_health.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
@@ -42,9 +43,7 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
       builder:
           (BuildContext context, HealthDashboardViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(

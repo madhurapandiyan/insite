@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/idle_trend_graph.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -43,8 +44,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
     return ViewModelBuilder<IdlePercentTrendViewModel>.reactive(
       builder: (BuildContext context, IdlePercentTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -80,9 +80,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
               ],
             ),
             (viewModel.isRefreshing || viewModel.isSwitching)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? InsiteProgressBar()
                 : SizedBox()
           ],
         );

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'test_router_view_model.dart';
@@ -41,9 +42,7 @@ class _TestRouterViewState extends State<TestRouterView> {
     return ViewModelBuilder<TestRouterViewModel>.reactive(
       builder: (BuildContext context, TestRouterViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           int index = 1;
           List<AssetLocation> assetLocationList =

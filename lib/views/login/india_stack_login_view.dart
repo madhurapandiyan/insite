@@ -7,6 +7,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:random_string/random_string.dart';
@@ -242,9 +243,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
                   url: Urls.getV4LogoutUrl(
                       loginResponse.id_token, Urls.webRedirectUri),
                 ),
-                isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : SizedBox()
+                isLoading ? InsiteProgressBar() : SizedBox()
               ],
             ),
           ),
