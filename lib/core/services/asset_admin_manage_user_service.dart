@@ -48,13 +48,15 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         Map<String, String> queryMap = Map();
         queryMap["pageNumber"] = pageNumber.toString();
-        queryMap["sort"] = "";
+        // queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()
-            .getAdminManagerUserListDataVL(
-                Urls.adminManagerUserSumaryVL +
+            .getClient()
+            .getAdminManagerUserListData(
+                Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID,
+               "Bearer" + " " + await _localService.getToken(),
+               ( await _localService.getLoggedInUser()).sub);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -106,7 +108,7 @@ class AssetAdminManagerUserService extends BaseService {
         ApplicationData adminManageUserResponse = await MyApi()
             .getClientSeven()
             .getApplicationsData(
-                Urls.applicationsUrlVL +
+                Urls.applicationsUrl +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
@@ -221,8 +223,9 @@ class AssetAdminManagerUserService extends BaseService {
                     zipcode: zipcode),
                 roles: [Role(roleId: 86, applicationName: applicationName)],
                 details: Details(
-                    jobTitle: jobTitle, jobType: jobType,
-                     user_type: userType)));
+                    jobTitle: jobTitle,
+                    jobType: jobType,
+                    user_type: userType)));
         return addUserResponse;
       } else {
         AddUser addUserResponse = await MyApi().getClientSeven().getAddUserData(
@@ -243,7 +246,9 @@ class AssetAdminManagerUserService extends BaseService {
                     zipcode: zipcode),
                 roles: [Role(roleId: 86, applicationName: applicationName)],
                 details: Details(
-                    jobTitle: jobTitle, jobType: jobType, user_type: userType)));
+                    jobTitle: jobTitle,
+                    jobType: jobType,
+                    user_type: userType)));
         return addUserResponse;
       }
     } catch (e) {

@@ -649,6 +649,12 @@ abstract class RestClient {
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Body() UpdateUserData updateUserData);
+  @GET('{url}')
+  Future<AdminManageUser> getAdminManagerUserListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-JWT-Assertion") xJWTAssertion,
+      @Header("X-VisionLink-UserUid") userId);
 }
 
 @JsonSerializable()

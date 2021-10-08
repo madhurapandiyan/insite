@@ -22,6 +22,7 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
     fname: json['fname'] as String,
     lname: json['lname'] as String,
     email: json['email'] as String,
+    sso_id: json['sso_id'] as String,
     phone: json['phone'] as String,
     isCatssoUserCreation: json['isCatssoUserCreation'] as bool,
     address: json['address'] == null
@@ -44,6 +45,7 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'lname': instance.lname,
       'email': instance.email,
       'phone': instance.phone,
+      'sso_id': instance.sso_id,
       'isCatssoUserCreation': instance.isCatssoUserCreation,
       'address': instance.address,
       'details': instance.details,
