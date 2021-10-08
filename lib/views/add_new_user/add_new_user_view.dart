@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/add_new_user/model_class/application_name_model.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/app_avatar.dart';
@@ -32,6 +34,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _addressController = new TextEditingController();
   TextEditingController _pinCodeController = new TextEditingController();
+  TextEditingController _stateController = new TextEditingController();
+  TextEditingController _countryController = new TextEditingController();
+
   var viewModel;
 
   @override
@@ -52,6 +57,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
       _phoneNumberController.text = "";
       _addressController.text = "";
       _pinCodeController.text = "";
+      _countryController.text = "";
+      _stateController.text = "";
+
       selectedList = [];
     }
     super.initState();
@@ -86,17 +94,26 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       Expanded(
                         flex: 1,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 23.0),
-                          child: Text(
-                            "Add New User",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: textcolor,
-                                fontSize: 14,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: "Roboto"),
-                          ),
-                        ),
+                            padding: const EdgeInsets.only(left: 23.0),
+                            child: widget.user != null
+                                ? Text(
+                                    "Manage user",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: textcolor,
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: "Roboto"),
+                                  )
+                                : Text(
+                                    "Add New User",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: textcolor,
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: "Roboto"),
+                                  )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 15.0),
@@ -214,6 +231,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                           items: viewModel.dropDownlist,
                           onChanged: (String value) {
                             viewModel.onPermissionSelected(value);
+                            viewModel.onParticularItemSelected(value);
                           },
                           value: viewModel.dropDownValue,
                         ),
@@ -229,7 +247,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       itemBuilder: (context, index) {
                         ApplicationSelectedDropDown value =
                             viewModel.applicationSelectedDropDownList[index];
+                            
                         return CustomListView(
+                            applicationAccessData: value.accessData,
                             text: value.value,
                             voidCallback: () {
                               viewModel.onPermissionRemoved(value, index);
@@ -414,6 +434,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       height: MediaQuery.of(context).size.height * 0.05,
                       child: CustomTextBox(
                         title: "Country",
+                        controller: _countryController,
                       )),
                   SizedBox(
                     height: 20,
@@ -427,6 +448,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             height: MediaQuery.of(context).size.height * 0.05,
                             child: CustomTextBox(
                               title: "State",
+                              controller: _stateController,
                             )),
                       ),
                       SizedBox(
@@ -548,7 +570,60 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         height: MediaQuery.of(context).size.height * 0.050,
                         title: "save".toUpperCase(),
                         fontSize: 14,
-                        onTap: () {},
+                        onTap: () {
+                          if (widget.user != null) {
+                            if (_emailController != null &&
+                                _firstNameController != null &&
+                                _lastNameController != null &&
+                                _phoneNumberController != null &&
+                                _addressController != null &&
+                                _stateController != null &&
+                                _countryController != null &&
+                                _pinCodeController != null) {
+                              viewModel.getEditUserData(
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _emailController.text,
+                                  jobTitleValue,
+                                  _phoneNumberController.text,
+                                  jobTypeValue,
+                                  "SSO",
+                                  viewModel.tPassNameData.toString(),
+                                  _addressController.text,
+                                  _stateController.text,
+                                  _countryController.text,
+                                  _pinCodeController.text);
+                            } else {
+                              print("Not a valid user");
+                            }
+                          } else {
+                            if (_emailController != null &&
+                                _firstNameController != null &&
+                                _lastNameController != null &&
+                                _phoneNumberController != null &&
+                                _addressController != null &&
+                                _stateController != null &&
+                                _countryController != null &&
+                                _pinCodeController != null) {
+                              viewModel.getAddUserData(
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _emailController.text,
+                                  jobTitleValue,
+                                  _phoneNumberController.text,
+                                  jobTypeValue,
+                                  "SSO",
+                                  "sivaprajee",
+                                  viewModel.tPassNameData.toString(),
+                                  _addressController.text,
+                                  _stateController.text,
+                                  _countryController.text,
+                                  _pinCodeController.text);
+                            } else {
+                              print("Not a valid user");
+                            }
+                          }
+                        },
                         bgColor: tango,
                         textColor: appbarcolor,
                       ),

@@ -18,6 +18,8 @@ class UpdateUserData {
     this.fname,
     this.lname,
     this.email,
+    this.sso_id,
+    this.phone,
     this.isCatssoUserCreation,
     this.address,
     this.details,
@@ -28,8 +30,10 @@ class UpdateUserData {
   String fname;
   String lname;
   String email;
+  String phone;
+  String sso_id;
   bool isCatssoUserCreation;
-  Address address;
+  AddressData address;
   Details details;
   List<Role> roles;
   String src;
@@ -41,13 +45,18 @@ class UpdateUserData {
 }
 
 @JsonSerializable()
-class Address {
-  Address();
+class AddressData {
+  String address;
 
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      _$AddressFromJson(json);
+  String country;
+  String state;
+  String zipcode;
+  AddressData({this.address,this.country,this.state,this.zipcode});
 
-  Map<String, dynamic> toJson() => _$AddressToJson(this);
+  factory AddressData.fromJson(Map<String, dynamic> json) =>
+      _$AddressDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AddressDataToJson(this);
 }
 
 @JsonSerializable()
@@ -55,12 +64,12 @@ class Details {
   Details({
     this.jobTitle,
     this.jobType,
-    this.userType,
+    this.user_type,
   });
 
   String jobTitle;
   String jobType;
-  String userType;
+  String user_type;
 
   factory Details.fromJson(Map<String, dynamic> json) =>
       _$DetailsFromJson(json);

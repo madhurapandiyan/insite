@@ -19,7 +19,7 @@ class _AppAvatarState extends State<AppAvatar> {
   void initState() {
     super.initState();
     Logger()
-        .i("app avatar ${widget.accessData.application.applicationIconUrl}");
+        .i("app avatar ${widget.accessData.application.iconUrl}");
   }
 
   @override
@@ -44,7 +44,7 @@ class _AppAvatarState extends State<AppAvatar> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: FadeInImage(
                       image: NetworkImage(
-                          widget.accessData.application.applicationIconUrl +
+                          widget.accessData.application.iconUrl +
                               "active.png",
                           headers: {
                             "Authorization":
@@ -69,7 +69,7 @@ class _AppAvatarState extends State<AppAvatar> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: FadeInImage(
                       image: NetworkImage(
-                        widget.accessData.application.applicationIconUrl +
+                        widget.accessData.application.iconUrl +
                             "active.png",
                       ),
                       placeholder:

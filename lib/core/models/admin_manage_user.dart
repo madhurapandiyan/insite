@@ -112,7 +112,7 @@ class ApplicationAccess {
 }
 
 class ApplicationAccessData {
-  ApplicationAccess application;
+  Application application;
   bool isSelected;
   bool isPermissionSelected;
   ApplicationAccessData(

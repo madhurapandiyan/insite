@@ -2399,4 +2399,51 @@ class _RestClient implements RestClient {
     final value = UpdateResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AddUser> getAddUserData(url, customerId, updateUserData) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(updateUserData, 'updateUserData');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddUser.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AdminManageUser> getAdminManagerUserListData(
+      url, customerId, xJWTAssertion, userId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(xJWTAssertion, 'xJWTAssertion');
+    ArgumentError.checkNotNull(userId, 'userId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'X-JWT-Assertion': xJWTAssertion,
+              r'X-VisionLink-UserUid': userId
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AdminManageUser.fromJson(_result.data);
+    return value;
+  }
 }

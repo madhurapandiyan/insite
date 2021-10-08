@@ -1,3 +1,4 @@
+import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
@@ -642,6 +643,18 @@ abstract class RestClient {
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Body() UpdateUserData updateUserData);
+
+  @POST("{url}")
+  Future<AddUser> getAddUserData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Body() UpdateUserData updateUserData);
+  @GET('{url}')
+  Future<AdminManageUser> getAdminManagerUserListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-JWT-Assertion") xJWTAssertion,
+      @Header("X-VisionLink-UserUid") userId);
 }
 
 @JsonSerializable()
