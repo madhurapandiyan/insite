@@ -4,6 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';
@@ -82,7 +83,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                   height: 10,
                 ),
                 viewModel.loading
-                    ? CircularProgressIndicator()
+                    ? InsiteProgressBar()
                     : Stack(
                         children: [
                           Column(
@@ -178,9 +179,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                               ? Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.5,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
+                                  child: InsiteProgressBar(),
                                 )
                               : SizedBox(),
                           viewModel.youDontHavePermission

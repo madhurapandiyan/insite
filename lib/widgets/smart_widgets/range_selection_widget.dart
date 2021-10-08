@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class RangeSelectionWidget extends StatefulWidget {
   final String label1;
@@ -27,7 +28,6 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
       width: MediaQuery.of(context).size.width * 0.4,
       height: 35,
       decoration: BoxDecoration(
-        color: white,
         borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
@@ -45,20 +45,24 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: rangeChoice == 1 ? tango : cardcolor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1.color),
+                  color: rangeChoice == 1
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(4),
                     topLeft: Radius.circular(4),
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    widget.label1.toUpperCase(),
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: InsiteText(
+                    text: widget.label1.toUpperCase(),
+                    color: rangeChoice == 1
+                        ? white
+                        : Theme.of(context).textTheme.bodyText1.color,
+                    size: 10,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -74,7 +78,11 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: rangeChoice == 2 ? tango : cardcolor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1.color),
+                  color: rangeChoice == 2
+                      ? Theme.of(context).buttonColor
+                      : Theme.of(context).backgroundColor,
                   borderRadius: widget.label3 == null
                       ? BorderRadius.only(
                           bottomRight: Radius.circular(4),
@@ -83,13 +91,13 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                       : BorderRadius.only(),
                 ),
                 child: Center(
-                  child: Text(
-                    widget.label2.toUpperCase(),
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: InsiteText(
+                    text: widget.label2.toUpperCase(),
+                    color: rangeChoice == 2
+                        ? white
+                        : Theme.of(context).textTheme.bodyText1.color,
+                    size: 10,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -107,20 +115,24 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: rangeChoice == 3 ? tango : cardcolor,
+                        color: rangeChoice == 3
+                            ? Theme.of(context).buttonColor
+                            : Theme.of(context).backgroundColor,
+                        border: Border.all(
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(4),
                           topRight: Radius.circular(4),
                         ),
                       ),
                       child: Center(
-                        child: Text(
-                          widget.label3.toUpperCase(),
-                          style: TextStyle(
-                            color: white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: InsiteText(
+                          text: widget.label3.toUpperCase(),
+                          color: rangeChoice == 3
+                              ? white
+                              : Theme.of(context).textTheme.bodyText1.color,
+                          size: 10,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

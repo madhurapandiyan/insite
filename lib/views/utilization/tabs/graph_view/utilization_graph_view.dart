@@ -12,6 +12,8 @@ import 'package:insite/views/utilization/graphs/total_fuel_burned/total_fuel_bur
 import 'package:insite/views/utilization/graphs/total_hours/total_hours_view.dart';
 import 'package:insite/views/utilization/tabs/graph_view/utilization_graph_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/util_graph_dropdown.dart';
 import 'package:intl/intl.dart';
@@ -74,19 +76,21 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                        " - " +
-                        Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                    style: TextStyle(
-                        color: white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11),
-                  ),
+                  InsiteText(
+                      text: Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                          " - " +
+                          Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                      fontWeight: FontWeight.bold,
+                      size: 11),
                   SizedBox(
                     width: 4,
                   ),
-                  GestureDetector(
+                  InsiteButton(
+                    title: "Date Range",
+                    width: 90,
+                    height: 30,
+                    bgColor: Theme.of(context).backgroundColor,
+                    textColor: Theme.of(context).textTheme.bodyText1.color,
                     onTap: () async {
                       dateRange = [];
                       dateRange = await showDialog(
@@ -99,26 +103,6 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                         onFilterApplied();
                       }
                     },
-                    child: Container(
-                      width: 90,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: cardcolor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(4),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Date Range',
-                          style: TextStyle(
-                            color: white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),
@@ -135,20 +119,18 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: InsiteText(
+                text:
+                    'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
+                size: 12,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Container(
               width: MediaQuery.of(context).size.width * 1,
               margin: const EdgeInsets.only(left: 12.0, right: 12),
               decoration: BoxDecoration(
-                color: cardcolor,
+                color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
               child: Padding(
@@ -156,8 +138,10 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.75,
                   decoration: BoxDecoration(
-                    color: cardcolor,
-                    border: Border.all(color: black, width: 0.0),
+                    color: Theme.of(context).backgroundColor,
+                    border: Border.all(
+                        color: Theme.of(context).textTheme.bodyText1.color,
+                        width: 0.0),
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Padding(

@@ -143,7 +143,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                     text: "VIEWING DATA FOR 7 DAYS",
                     textAlign: TextAlign.center,
                     fontWeight: FontWeight.w900,
-                    color: textcolor,
+                    color: Theme.of(context).textTheme.bodyText1.color,
                     size: 11.0)),
           ),
         ],

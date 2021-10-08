@@ -18,7 +18,7 @@ class FaultListItem extends StatelessWidget {
         onCallback();
       },
       child: Card(
-        color: cardcolor,
+        color: Theme.of(context).backgroundColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(color: cardcolor)),

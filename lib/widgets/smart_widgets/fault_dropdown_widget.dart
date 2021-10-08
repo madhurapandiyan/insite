@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 
 class FaultDropDown extends StatefulWidget {
   final String value;
@@ -20,26 +19,29 @@ class _FaultDropDownState extends State<FaultDropDown> {
         Container(
           height: MediaQuery.of(context).size.height * .06,
           decoration: BoxDecoration(
-            border: Border.all(color: white),
+            border:
+                Border.all(color: Theme.of(context).textTheme.bodyText1.color),
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            // color: cardcolor
           ),
           child: Row(
             children: [
               SizedBox(
                 width: 6,
               ),
-              Image.asset("assets/images/fault_world.png"),
+              Image.asset(
+                "assets/images/fault_world.png",
+                color: Theme.of(context).iconTheme.color,
+              ),
               VerticalDivider(
                 thickness: 1,
-                color: silver,
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(
                 width: 10,
               ),
               DropdownButton(
                   elevation: 16,
-                  dropdownColor: cardcolor,
+                  dropdownColor: Theme.of(context).backgroundColor,
                   value: widget.value,
                   onChanged: widget.onChanged,
                   items: widget.items
@@ -49,7 +51,7 @@ class _FaultDropDownState extends State<FaultDropDown> {
                       child: Text(
                         value,
                         style: TextStyle(
-                            color: silver,
+                            color: Theme.of(context).textTheme.bodyText1.color,
                             fontSize: 10.0,
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal),

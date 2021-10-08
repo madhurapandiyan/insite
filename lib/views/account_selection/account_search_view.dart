@@ -67,8 +67,8 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                       color: Theme.of(context).textTheme.bodyText1.color)),
               height:
                   viewModel.displayList.isNotEmpty && viewModel.selected != null
-                      ? MediaQuery.of(context).size.height * 0.4
-                      : MediaQuery.of(context).size.height * 0.3,
+                      ? MediaQuery.of(context).size.height * 0.42
+                      : MediaQuery.of(context).size.height * 0.32,
               child: Column(
                 children: [
                   Container(
@@ -155,6 +155,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                   viewModel.displayList.isNotEmpty && viewModel.selected != null
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.1,
+                          padding: EdgeInsets.all(10),
                           child: Row(
                             children: [
                               widget.selectionType == AccountType.CUSTOMER

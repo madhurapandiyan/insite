@@ -71,7 +71,6 @@ class _DashboardViewState extends State<DashboardView> {
                             fontSize: 13,
                             width: 100,
                             height: 40,
-                            bgColor: tuna,
                             textColor: white,
                             title: "Refresh",
                             onTap: () {

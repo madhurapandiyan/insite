@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class AssetCardsSmall extends StatefulWidget {
   final String icon;
@@ -24,8 +25,8 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
       width: MediaQuery.of(context).size.width * 0.43,
       height: MediaQuery.of(context).size.height * 0.25,
       decoration: BoxDecoration(
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: tuna)],
-        border: Border.all(width: 2.5, color: tuna),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(width: 1, color: tuna),
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
       ),
@@ -39,19 +40,17 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
               SizedBox(
                 width: 10,
               ),
-              SvgPicture.asset("assets/images/arrowdown.svg"),
+              SvgPicture.asset(
+                "assets/images/arrowdown.svg",
+                color: Theme.of(context).iconTheme.color,
+              ),
               SizedBox(
                 width: 15,
               ),
-              Text(
-                widget.headerText.toUpperCase(),
-                style: new TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Roboto',
-                    color: textcolor,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 14.0),
-              ),
+              InsiteText(
+                  text: widget.headerText.toUpperCase(),
+                  fontWeight: FontWeight.w700,
+                  size: 14.0),
             ],
           ),
           Divider(
@@ -61,7 +60,10 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
           SizedBox(
             height: 8,
           ),
-          SvgPicture.asset(widget.icon),
+          SvgPicture.asset(
+            widget.icon,
+            color: Theme.of(context).iconTheme.color,
+          ),
           SizedBox(
             height: 10,
           ),
@@ -71,11 +73,10 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
                 itemBuilder: (builder, index) {
                   return InsiteButton(
                       height: MediaQuery.of(context).size.height * 0.043,
-                      bgColor: tango,
                       margin: EdgeInsets.all(5),
                       title:
                           widget.buttonTitle[index].toString().split('.').last,
-                      textColor: appbarcolor,
+                      textColor: white,
                       fontSize: 14,
                       onTap: () {
                         AdminAssetsButtonType value = widget.buttonTitle[index];

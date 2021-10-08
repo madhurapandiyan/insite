@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:insite/widgets/smart_widgets/total_hours_chart.dart';
@@ -41,8 +42,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalHoursViewModel>.reactive(
       builder: (BuildContext context, TotalHoursViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -94,9 +94,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
               ],
             ),
             (viewModel.isRefreshing || viewModel.isSwitching)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? InsiteProgressBar()
                 : SizedBox()
           ],
         );

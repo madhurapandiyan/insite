@@ -6,6 +6,7 @@ import 'package:insite/views/filter/filter_item.dart';
 import 'package:insite/views/filter/filter_view_model.dart';
 import 'package:insite/views/location/location_search_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
 
@@ -69,13 +70,13 @@ class _FilterViewState extends State<FilterView> {
             ? Container(
                 height: MediaQuery.of(context).size.height * 0.8,
                 color: tuna,
-                child: Center(child: CircularProgressIndicator()))
+                child: InsiteProgressBar())
             : Stack(
                 children: [
                   Container(
                     child: SingleChildScrollView(
                       child: Container(
-                        color: tuna,
+                        color: Theme.of(context).backgroundColor,
                         padding: EdgeInsets.all(16),
                         child: Column(
                           children: [
@@ -103,7 +104,6 @@ class _FilterViewState extends State<FilterView> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 InsiteButton(
-                                  bgColor: tango,
                                   textColor: Colors.white,
                                   onTap: () {
                                     viewModel.onFilterApplied();
@@ -120,8 +120,7 @@ class _FilterViewState extends State<FilterView> {
                                   width: 20,
                                 ),
                                 InsiteButton(
-                                  bgColor: ship_grey,
-                                  textColor: Colors.white,
+                                  bgColor: Theme.of(context).backgroundColor,
                                   onTap: () {
                                     widget.onFilterApplied(false);
                                   },

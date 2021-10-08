@@ -41,6 +41,8 @@ class _ToggleButtonState extends State<ToggleButton> {
             },
             child: Container(
               decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 color: isOptionOneSelected
                     ? Theme.of(context).buttonColor
                     : Theme.of(context).backgroundColor,

@@ -3,6 +3,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -88,9 +89,7 @@ class _FleetViewState extends State<FleetView> {
                     //     : SizedBox(),
                     Expanded(
                       child: viewModel.loading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
+                          ? InsiteProgressBar()
                           : viewModel.assets.isNotEmpty
                               ? ListView.builder(
                                   itemCount: viewModel.assets.length,
@@ -111,15 +110,11 @@ class _FleetViewState extends State<FleetView> {
                     viewModel.loadingMore
                         ? Padding(
                             padding: EdgeInsets.all(8),
-                            child: CircularProgressIndicator())
+                            child: InsiteProgressBar())
                         : SizedBox()
                   ],
                 ),
-                viewModel.isRefreshing
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox()
+                viewModel.isRefreshing ? InsiteProgressBar() : SizedBox()
               ],
             ),
           ),
