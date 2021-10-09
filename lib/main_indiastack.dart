@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:load/load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/flavor/flavor.dart';
 import 'core/locator.dart';
@@ -29,16 +30,25 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: locator<NavigationService>().navigatorKey,
-      onGenerateRoute: router.Router.generateRoute,
-      initialRoute: indiaStackSplashViewRoute,
-      theme: ThemeData(
-          backgroundColor: cod_grey,
-          fontFamily: 'Roboto',
-          appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-          accentColor: Colors.white),
+    return LoadingProvider(
+      themeData: LoadingThemeData(
+        loadingBackgroundColor: Colors.white,
+        backgroundColor: tango,
+        loadingPadding: EdgeInsets.all(24),
+        loadingSize: Size(80, 80),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: locator<NavigationService>().navigatorKey,
+        onGenerateRoute: router.Router.generateRoute,
+        initialRoute: indiaStackSplashViewRoute,
+        theme: ThemeData(
+            backgroundColor: cod_grey,
+            fontFamily: 'Roboto',
+            appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+            accentColor: Colors.white),
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/application_name_model.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -34,6 +35,43 @@ class AddNewUserViewModel extends BaseViewModel {
     "Creator",
     "Viewer"
   ];
+
+  List<String> jobTypeList = [
+    "Employee",
+    "Non Employee",
+  ];
+
+  List<String> jobTitleList = [
+    "Equipment Manager",
+    "Maintenance Manager",
+    "Project Manager",
+    "Machine Operator",
+    "Maintenance Technician",
+    "Others"
+  ];
+
+  List<String> languageTypeValueList = ["Tamil", "English"];
+
+  String jobTypeValue;
+
+  onJobTypeSelected(value) {
+    jobTypeValue = value;
+    notifyListeners();
+  }
+
+  onJobTitleSelected(value) {
+    jobTitleValue = value;
+    notifyListeners();
+  }
+
+  onlanguageTypeValueSelected(value) {
+    languageTypeValue = value;
+    notifyListeners();
+  }
+
+  String jobTitleValue;
+  String languageTypeValue;
+
   int lastApplicationAccessSelectedIndex;
   String dropDownValue;
 
@@ -41,13 +79,18 @@ class AddNewUserViewModel extends BaseViewModel {
     this.user = user;
     _manageUserService.setUp();
     this.log = getLogger(this.runtimeType.toString());
-
+    showLoadingDialog();
     Future.delayed(Duration(seconds: 1), () {
-      getApplicationAccessData();
-      if (user != null) {
-        getUser();
-      }
+      getData();
     });
+  }
+
+  getData() async {
+    await getApplicationAccessData();
+    if (user != null) {
+      await getUser();
+    }
+    hideLoadingDialog();
   }
 
   onApplicationAccessSelection(int index) {
@@ -83,7 +126,6 @@ class AddNewUserViewModel extends BaseViewModel {
         if (value.key == data.application.appUID) {
           if (data.isPermissionSelected) {
             assetsData[i].isSelected = false;
-
             assetsData[i].isPermissionSelected = false;
           }
         }
@@ -95,7 +137,6 @@ class AddNewUserViewModel extends BaseViewModel {
 
   getApplicationAccessData() async {
     Logger().i("getApplicationAccessData");
-    int pageNumber = 1;
     ApplicationData applicationData =
         await _manageUserService.getApplicationsData();
     if (applicationData != null) {
@@ -106,15 +147,38 @@ class AddNewUserViewModel extends BaseViewModel {
         }
       }
     }
-
     notifyListeners();
   }
 
   getUser() async {
+    Logger().i("getUser ");
     ManageUser result = await _manageUserService.getUser(user.userUid);
-    if (result != null) {
-      this.user = result.user;
-    }
+    try {
+      if (result != null) {
+        this.user = result.user;
+        jobTypeValue = result.user.job_type;
+        jobTitleValue = result.user.job_title;
+        Logger().i("getUser ${result.user.application_access.length}");
+        for (var applicationAccess in result.user.application_access) {
+          for (int i = 0; i < assetsData.length; i++) {
+            var data = assetsData[i];
+            if (data.application.tpaasAppName ==
+                applicationAccess.applicationName) {
+              assetsData[i].isSelected = true;
+              assetsData[i].isPermissionSelected = true;
+              Logger().i("getUser ${applicationAccess.role_name}");
+              var applicationData = ApplicationSelectedDropDown(
+                  accessData: data,
+                  value: applicationAccess.role_name,
+                  key: data.application.appUID);
+              applicationSelectedDropDownList.add(applicationData);
+            }
+          }
+        }
+        Logger().i("getUser ${applicationSelectedDropDownList.length}");
+      }
+    } catch (e) {}
+    notifyListeners();
   }
 
   getEditUserData(
@@ -131,22 +195,28 @@ class AddNewUserViewModel extends BaseViewModel {
     country,
     zipcode,
   ) async {
-    UpdateResponse updateResponse = await _manageUserService.getSaveUserData(
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      jobTitle,
-      jobType,
-      userType,
-      applicationName,
-      address,
-      state,
-      country,
-      zipcode,
-    );
-    print("updateResponse:${updateResponse.isUpdated}");
-    print("role:$this.applicationName");
+    showLoadingDialog();
+    try {
+      UpdateResponse updateResponse = await _manageUserService.getSaveUserData(
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        jobTitle,
+        jobType,
+        userType,
+        applicationName,
+        address,
+        state,
+        country,
+        zipcode,
+      );
+      print("updateResponse:${updateResponse.isUpdated}");
+      print("role:$this.applicationName");
+      hideLoadingDialog();
+    } catch (e) {
+      hideLoadingDialog();
+    }
   }
 
   onParticularItemSelected(String value) {
@@ -175,21 +245,27 @@ class AddNewUserViewModel extends BaseViewModel {
       state,
       country,
       zipcode) async {
-    AddUser result = await _manageUserService.getAddUserData(
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        sso_id,
-        jobTitle,
-        jobType,
-        address,
-        state,
-        country,
-        zipcode,
-        userType,
-        applicationName);
-    print("result:$result");
-    print("@@@:$applicationName");
+    try {
+      showLoadingDialog();
+      AddUser result = await _manageUserService.getAddUserData(
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          jobTitle,
+          jobType,
+          address,
+          state,
+          country,
+          zipcode,
+          userType,
+          sso_id,
+          applicationName);
+      hideLoadingDialog();
+      print("result:$result");
+      print("@@@:$applicationName");
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 }

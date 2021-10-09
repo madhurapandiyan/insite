@@ -638,17 +638,24 @@ abstract class RestClient {
   Future<ApplicationData> getApplicationsData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
-  @GET('{url}')
-  Future<UpdateResponse> getSaveUserData(
+  @PUT('{url}')
+  Future<UpdateResponse> updateUserData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Body() UpdateUserData updateUserData);
 
-  @POST("{url}")
-  Future<AddUser> getAddUserData(
+  @PUT('{url}')
+  Future<UpdateResponse> deleteUsersData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Body() UpdateUserData updateUserData);
+      @Body() DeleteUserData updateUserData);
+
+  @POST("{url}")
+  Future<AddUser> addUserData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Body() AddUserData updateUserData);
+
   @GET('{url}')
   Future<AdminManageUser> getAdminManagerUserListData(
       @Path() String url,

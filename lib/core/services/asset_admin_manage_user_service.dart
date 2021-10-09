@@ -2,9 +2,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
-
 import 'package:insite/core/models/application.dart';
-import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
@@ -55,8 +53,8 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-               "Bearer" + " " + await _localService.getToken(),
-               ( await _localService.getLoggedInUser()).sub);
+                "Bearer" + " " + await _localService.getToken(),
+                (await _localService.getLoggedInUser()).sub);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -136,7 +134,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()
-            .getSaveUserData(
+            .updateUserData(
                 Urls.adminManagerUserSumaryVL,
                 accountSelected.CustomerUID,
                 UpdateUserData(
@@ -146,22 +144,25 @@ class AssetAdminManagerUserService extends BaseService {
                     phone: phoneNumber,
                     isCatssoUserCreation: false,
                     src: "VisionLink",
-                    address: AddressData(
-                        address: address,
-                        state: state,
-                        country: country,
-                        zipcode: zipcode),
-                    roles: [Role(roleId: 86, applicationName: applicationName)],
+                    address:
+                        AddressData(
+                            address: address,
+                            state: state,
+                            country: country,
+                            zipcode: zipcode),
+                    roles: [
+                      Role(role_id: 86, application_name: applicationName)
+                    ],
                     details: Details(
-                        jobTitle: jobTitle,
-                        jobType: jobType,
+                        job_title: jobTitle,
+                        job_type: jobType,
                         user_type: userType)));
 
         return updateResponse;
       } else {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()
-            .getSaveUserData(
+            .updateUserData(
                 Urls.adminManagerUserSumaryVL,
                 accountSelected.CustomerUID,
                 UpdateUserData(
@@ -171,15 +172,18 @@ class AssetAdminManagerUserService extends BaseService {
                     phone: phoneNumber,
                     isCatssoUserCreation: false,
                     src: "VisionLink",
-                    address: AddressData(
-                        address: address,
-                        state: state,
-                        country: country,
-                        zipcode: zipcode),
-                    roles: [Role(roleId: 86, applicationName: applicationName)],
+                    address:
+                        AddressData(
+                            address: address,
+                            state: state,
+                            country: country,
+                            zipcode: zipcode),
+                    roles: [
+                      Role(role_id: 86, application_name: applicationName)
+                    ],
                     details: Details(
-                        jobTitle: jobTitle,
-                        jobType: jobType,
+                        job_title: jobTitle,
+                        job_type: jobType,
                         user_type: userType)));
         return updateResponse;
       }
@@ -205,49 +209,53 @@ class AssetAdminManagerUserService extends BaseService {
       applicationName) async {
     try {
       if (isVisionLink) {
-        AddUser addUserResponse = await MyApi().getClientSeven().getAddUserData(
+        AddUser addUserResponse = await MyApi().getClientSeven().addUserData(
             Urls.addUserSummaryVL,
             accountSelected.CustomerUID,
-            UpdateUserData(
+            AddUserData(
                 fname: firstName,
                 lname: lastName,
-                email: email,
+                cwsEmail: email,
                 sso_id: sso_id,
                 phone: phoneNumber,
-                isCatssoUserCreation: false,
+                isCATSSOUserCreation: true,
                 src: "VisionLink",
+                company: "NYL",
+                language: "en-US",
                 address: AddressData(
                     address: address,
                     state: state,
                     country: country,
                     zipcode: zipcode),
-                roles: [Role(roleId: 86, applicationName: applicationName)],
+                roles: [Role(role_id: 86, application_name: applicationName)],
                 details: Details(
-                    jobTitle: jobTitle,
-                    jobType: jobType,
+                    job_title: jobTitle,
+                    job_type: jobType,
                     user_type: userType)));
         return addUserResponse;
       } else {
-        AddUser addUserResponse = await MyApi().getClientSeven().getAddUserData(
+        AddUser addUserResponse = await MyApi().getClientSeven().addUserData(
             Urls.addUserSummaryVL,
             accountSelected.CustomerUID,
-            UpdateUserData(
+            AddUserData(
                 fname: firstName,
                 lname: lastName,
-                email: email,
+                cwsEmail: email,
                 sso_id: sso_id,
                 phone: phoneNumber,
-                isCatssoUserCreation: false,
+                isCATSSOUserCreation: true,
                 src: "VisionLink",
+                company: "NYL",
+                language: "en-US",
                 address: AddressData(
                     address: address,
                     state: state,
                     country: country,
                     zipcode: zipcode),
-                roles: [Role(roleId: 86, applicationName: applicationName)],
+                roles: [Role(role_id: 86, application_name: applicationName)],
                 details: Details(
-                    jobTitle: jobTitle,
-                    jobType: jobType,
+                    job_title: jobTitle,
+                    job_type: jobType,
                     user_type: userType)));
         return addUserResponse;
       }
@@ -255,5 +263,13 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().e(e.toString());
     }
     return null;
+  }
+
+  Future<dynamic> deleteUsers(users) async {
+    var result = await MyApi().getClientSeven().deleteUsersData(
+        Urls.adminManagerUserSumaryVL,
+        accountSelected.CustomerUID,
+        DeleteUserData(users: users));
+    return result;
   }
 }

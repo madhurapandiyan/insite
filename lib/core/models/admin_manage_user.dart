@@ -95,12 +95,12 @@ class Address {
 @JsonSerializable()
 class ApplicationAccess {
   String userUID;
-  String roleName;
+  String role_name;
   String applicationIconUrl;
   String applicationName;
   ApplicationAccess({
     this.userUID,
-    this.roleName,
+    this.role_name,
     this.applicationIconUrl,
     this.applicationName,
   });
@@ -131,4 +131,10 @@ class ManageUser {
       _$ManageUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$ManageUserToJson(this);
+}
+
+class UserRow {
+  final Users user;
+  bool isSelected;
+  UserRow({this.user, this.isSelected = false});
 }
