@@ -1,3 +1,4 @@
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
@@ -11,7 +12,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class AddNewUserViewModel extends BaseViewModel {
+class AddNewUserViewModel extends InsiteViewModel {
   Logger log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
 
@@ -235,8 +236,8 @@ class AddNewUserViewModel extends BaseViewModel {
       firstName,
       lastName,
       email,
-      jobTitle,
       phoneNumber,
+      jobTitle,
       jobType,
       sso_id,
       userType,

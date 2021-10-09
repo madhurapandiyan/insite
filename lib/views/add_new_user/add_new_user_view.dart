@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/app_avatar.dart';
@@ -9,6 +10,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_list_view.dart'
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_new_user_view_model.dart';
@@ -80,14 +82,17 @@ class _AddNewUserViewState extends State<AddNewUserView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddNewUserViewModel>.reactive(
       builder: (BuildContext context, AddNewUserViewModel viewModel, Widget _) {
-        return Scaffold(
-            backgroundColor: thunder,
+        return InsiteScaffold(
+            viewModel: viewModel,
+            screenType: ScreenType.USER_MANAGEMENT,
+            onFilterApplied: () {},
+            onRefineApplied: () {},
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 70,
+                    height: 20,
                   ),
                   Row(
                     children: [
@@ -97,7 +102,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             padding: const EdgeInsets.only(left: 23.0),
                             child: widget.user != null
                                 ? Text(
-                                    "Manage user",
+                                    "Edit user",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: textcolor,
@@ -115,24 +120,24 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         fontFamily: "Roboto"),
                                   )),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: InsiteButton(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            height: MediaQuery.of(context).size.height * 0.052,
-                            title: "manage users".toUpperCase(),
-                            fontSize: 14,
-                            textColor: appbarcolor,
-                            bgColor: tango,
-                          ),
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 15.0),
+                      //   child: ClipRRect(
+                      //     borderRadius: BorderRadius.circular(5),
+                      //     child: InsiteButton(
+                      //       width: MediaQuery.of(context).size.width * 0.40,
+                      //       height: MediaQuery.of(context).size.height * 0.052,
+                      //       title: "manage users".toUpperCase(),
+                      //       fontSize: 14,
+                      //       textColor: appbarcolor,
+                      //       bgColor: tango,
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
@@ -564,6 +569,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                           Logger().i("on save click");
                           try {
                             if (widget.user != null) {
+                              Logger().i("editing user");
                               if (_emailController != null &&
                                   _firstNameController != null &&
                                   _lastNameController != null &&
@@ -602,8 +608,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     _firstNameController.text,
                                     _lastNameController.text,
                                     _emailController.text,
-                                    viewModel.jobTitleValue,
                                     _phoneNumberController.text,
+                                    viewModel.jobTitleValue,
                                     viewModel.jobTypeValue,
                                     _emailController.text,
                                     "SSO",

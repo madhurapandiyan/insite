@@ -57,9 +57,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION||
-                  widget.screenType==ScreenType.ADMINISTRATION
-                  
+                  widget.screenType == ScreenType.LOCATION
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -75,8 +73,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HOME ||
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
-                  widget.screenType == ScreenType.LOCATION||
-                  widget.screenType==ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.LOCATION ||
+                  widget.screenType == ScreenType.ADMINISTRATION
               ? 80
               : 56,
           shouldShowTitle: widget.screenType == ScreenType.FLEET ||
@@ -85,16 +83,15 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HOME ||
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
-                  widget.screenType == ScreenType.LOCATION||
-                  widget.screenType==ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.LOCATION ||
+                  widget.screenType == ScreenType.ADMINISTRATION
               ? true
               : false,
           shouldShowRefine: widget.screenType == ScreenType.FLEET ||
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION||
-                  widget.screenType==ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.LOCATION
               ? true
               : false,
           isRefineSelected: _isRefineSelected,

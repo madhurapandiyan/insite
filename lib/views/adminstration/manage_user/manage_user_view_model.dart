@@ -180,13 +180,14 @@ class ManageUserViewModel extends InsiteViewModel {
       if (userIds.isNotEmpty) {
         showLoadingDialog();
         var result = await _manageUserService.deleteUsers(userIds);
+        await deleteUsersFromList(userIds);
         hideLoadingDialog();
-        getManagerUserAssetList();
+        // getManagerUserAssetList();
       }
     }
   }
 
-  deleteUsersFromList(List<String> ids) {
+  deleteUsersFromList(List<String> ids) async {
     for (int i = 0; i < assets.length; i++) {
       var data = assets[i];
       for (int j = 0; j < ids.length; j++) {
@@ -196,6 +197,7 @@ class ManageUserViewModel extends InsiteViewModel {
       }
     }
     notifyListeners();
+    checkEditAndDeleteVisibility();
   }
 
   checkEditAndDeleteVisibility() {
