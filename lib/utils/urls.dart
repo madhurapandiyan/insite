@@ -119,11 +119,12 @@ class Urls {
       "/t/trimble.com/vss-identityapi/2.0/Users";
   static String applicationsUrlVL =
       "/t/trimble.com/vss-applicationapi/v1/applications";
-      static String addUserSummaryVL="/t/trimble.com/vss-identityapi/2.0/Users";
-      static String applicationsUrl =
+  static String addUserSummaryVL = "/t/trimble.com/vss-identityapi/2.0/Users";
+  static String applicationsUrl =
       "/t/trimble.com/vss-applicationapi/v1/applications";
-       static String adminManagerUserSumary =
+  static String adminManagerUserSumary =
       "/npulse-identitymanager-in/1.0/2.0/Users";
+  static String adminRolesVL = "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
 
   static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
   static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";

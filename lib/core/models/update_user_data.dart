@@ -60,22 +60,23 @@ class AddUserData {
 
 @JsonSerializable()
 class UpdateUserData {
-  UpdateUserData({
-    this.fname,
-    this.lname,
-    this.email,
-    this.sso_id,
-    this.phone,
-    this.isCatssoUserCreation,
-    this.address,
-    this.details,
-    this.roles,
-    this.src,
-  });
+  UpdateUserData(
+      {this.fname,
+      this.lname,
+      this.cwsEmail,
+      this.sso_id,
+      this.phone,
+      this.isCatssoUserCreation,
+      this.address,
+      this.details,
+      this.roles,
+      this.src,
+      this.company,
+      this.language});
 
   String fname;
   String lname;
-  String email;
+  String cwsEmail;
   String phone;
   String sso_id;
   bool isCatssoUserCreation;
@@ -83,6 +84,8 @@ class UpdateUserData {
   Details details;
   List<Role> roles;
   String src;
+  String company;
+  String language;
 
   factory UpdateUserData.fromJson(Map<String, dynamic> json) =>
       _$UpdateUserDataFromJson(json);
@@ -92,11 +95,17 @@ class UpdateUserData {
 
 @JsonSerializable()
 class AddressData {
-  String address;
+  String addressline1;
+  String addressline2;
   String country;
   String state;
   String zipcode;
-  AddressData({this.address, this.country, this.state, this.zipcode});
+  AddressData(
+      {this.addressline1,
+      this.addressline2,
+      this.country,
+      this.state,
+      this.zipcode});
 
   factory AddressData.fromJson(Map<String, dynamic> json) =>
       _$AddressDataFromJson(json);

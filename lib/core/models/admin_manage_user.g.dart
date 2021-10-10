@@ -125,6 +125,25 @@ Map<String, dynamic> _$ApplicationAccessToJson(ApplicationAccess instance) =>
       'applicationName': instance.applicationName,
     };
 
+ApplicationAccessData _$ApplicationAccessDataFromJson(
+    Map<String, dynamic> json) {
+  return ApplicationAccessData(
+    application: json['application'] == null
+        ? null
+        : Application.fromJson(json['application'] as Map<String, dynamic>),
+    isSelected: json['isSelected'] as bool,
+    isPermissionSelected: json['isPermissionSelected'] as bool,
+  );
+}
+
+Map<String, dynamic> _$ApplicationAccessDataToJson(
+        ApplicationAccessData instance) =>
+    <String, dynamic>{
+      'application': instance.application,
+      'isSelected': instance.isSelected,
+      'isPermissionSelected': instance.isPermissionSelected,
+    };
+
 ManageUser _$ManageUserFromJson(Map<String, dynamic> json) {
   return ManageUser(
     user: json['user'] == null

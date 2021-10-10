@@ -111,6 +111,7 @@ class ApplicationAccess {
   Map<String, dynamic> toJson() => _$ApplicationAccessToJson(this);
 }
 
+@JsonSerializable()
 class ApplicationAccessData {
   Application application;
   bool isSelected;
@@ -119,6 +120,10 @@ class ApplicationAccessData {
       {this.application,
       this.isSelected = false,
       this.isPermissionSelected = false});
+  factory ApplicationAccessData.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationAccessDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ApplicationAccessDataToJson(this);
 }
 
 @JsonSerializable()

@@ -30,9 +30,10 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
-  var _navigationService = locator<NavigationService>();
+  var navigationService = locator<NavigationService>();
   var _filterService = locator<FilterService>();
   var _dateRangeService = locator<DateRangeService>();
+  var snackbarService = locator<SnackbarService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;
@@ -75,7 +76,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   login() {
     Future.delayed(Duration(seconds: 2), () {
-      _navigationService.replaceWith(logoutViewRoute);
+      navigationService.replaceWith(logoutViewRoute);
     });
   }
 

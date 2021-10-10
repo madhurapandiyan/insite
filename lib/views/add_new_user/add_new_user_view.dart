@@ -237,7 +237,6 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                           onChanged: (String value) {
                             unfocus();
                             viewModel.onPermissionSelected(value);
-                            viewModel.onParticularItemSelected(value);
                           },
                           value: viewModel.dropDownValue,
                         ),
@@ -245,21 +244,23 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 10,
                   ),
-                  ListView.builder(
-                      itemCount:
-                          viewModel.applicationSelectedDropDownList.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(left: 53),
-                      itemBuilder: (context, index) {
-                        ApplicationSelectedDropDown value =
-                            viewModel.applicationSelectedDropDownList[index];
-                        return CustomListView(
-                            applicationAccessData: value.accessData,
-                            text: value.value,
-                            voidCallback: () {
-                              viewModel.onPermissionRemoved(value, index);
-                            });
-                      }),
+                  Container(
+                    margin: EdgeInsets.only(left: 50, right: 20),
+                    child: ListView.builder(
+                        itemCount:
+                            viewModel.applicationSelectedDropDownList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          ApplicationSelectedDropDown value =
+                              viewModel.applicationSelectedDropDownList[index];
+                          return CustomListView(
+                              applicationAccessData: value.accessData,
+                              text: value.value,
+                              voidCallback: () {
+                                viewModel.onPermissionRemoved(value, index);
+                              });
+                        }),
+                  ),
                   SizedBox(
                     height: 15,
                   ),
@@ -566,6 +567,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         title: "save".toUpperCase(),
                         fontSize: 14,
                         onTap: () async {
+                          unfocus();
                           Logger().i("on save click");
                           try {
                             if (widget.user != null) {
@@ -586,7 +588,6 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     _phoneNumberController.text,
                                     viewModel.jobTypeValue,
                                     "SSO",
-                                    viewModel.tPassNameData.toString(),
                                     _addressController.text,
                                     _stateController.text,
                                     _countryController.text,
@@ -605,19 +606,19 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                   _countryController != null &&
                                   _pinCodeController != null) {
                                 await viewModel.getAddUserData(
-                                    _firstNameController.text,
-                                    _lastNameController.text,
-                                    _emailController.text,
-                                    _phoneNumberController.text,
-                                    viewModel.jobTitleValue,
-                                    viewModel.jobTypeValue,
-                                    _emailController.text,
-                                    "SSO",
-                                    viewModel.tPassNameData.toString(),
-                                    _addressController.text,
-                                    _stateController.text,
-                                    _countryController.text,
-                                    _pinCodeController.text);
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _emailController.text,
+                                  _phoneNumberController.text,
+                                  viewModel.jobTitleValue,
+                                  viewModel.jobTypeValue,
+                                  _addressController.text,
+                                  _stateController.text,
+                                  _countryController.text,
+                                  _pinCodeController.text,
+                                  "SSO",
+                                  _emailController.text,
+                                );
                               } else {
                                 print("Not a valid user while adding");
                               }

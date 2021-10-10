@@ -72,7 +72,7 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
   return UpdateUserData(
     fname: json['fname'] as String,
     lname: json['lname'] as String,
-    email: json['email'] as String,
+    cwsEmail: json['cwsEmail'] as String,
     sso_id: json['sso_id'] as String,
     phone: json['phone'] as String,
     isCatssoUserCreation: json['isCatssoUserCreation'] as bool,
@@ -87,6 +87,8 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
             (e) => e == null ? null : Role.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     src: json['src'] as String,
+    company: json['company'] as String,
+    language: json['language'] as String,
   );
 }
 
@@ -94,7 +96,7 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
     <String, dynamic>{
       'fname': instance.fname,
       'lname': instance.lname,
-      'email': instance.email,
+      'cwsEmail': instance.cwsEmail,
       'phone': instance.phone,
       'sso_id': instance.sso_id,
       'isCatssoUserCreation': instance.isCatssoUserCreation,
@@ -102,11 +104,14 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'details': instance.details,
       'roles': instance.roles,
       'src': instance.src,
+      'company': instance.company,
+      'language': instance.language,
     };
 
 AddressData _$AddressDataFromJson(Map<String, dynamic> json) {
   return AddressData(
-    address: json['address'] as String,
+    addressline1: json['addressline1'] as String,
+    addressline2: json['addressline2'] as String,
     country: json['country'] as String,
     state: json['state'] as String,
     zipcode: json['zipcode'] as String,
@@ -115,7 +120,8 @@ AddressData _$AddressDataFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$AddressDataToJson(AddressData instance) =>
     <String, dynamic>{
-      'address': instance.address,
+      'addressline1': instance.addressline1,
+      'addressline2': instance.addressline2,
       'country': instance.country,
       'state': instance.state,
       'zipcode': instance.zipcode,

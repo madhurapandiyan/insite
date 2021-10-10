@@ -21,6 +21,7 @@ import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
@@ -655,6 +656,12 @@ abstract class RestClient {
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Body() AddUserData updateUserData);
+
+  @GET("{url}")
+  Future<RoleDataResponse> roles(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 
   @GET('{url}')
   Future<AdminManageUser> getAdminManagerUserListData(
