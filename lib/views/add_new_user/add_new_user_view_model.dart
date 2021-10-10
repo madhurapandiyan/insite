@@ -271,8 +271,9 @@ class AddNewUserViewModel extends InsiteViewModel {
         for (int j = 0; j < roleDataResponse.role_list.length; j++) {
           RoleData roleData = roleDataResponse.role_list[j];
           if (data.value == roleData.role_name) {
-            roles.add(
-                Role(role_id: roleData.role_id, application_name: data.applicationName));
+            roles.add(Role(
+                role_id: roleData.role_id,
+                application_name: data.applicationName));
             break;
           }
         }

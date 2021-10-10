@@ -67,8 +67,12 @@ android {
             applicationIdSuffix ".indiastack"
             versionNameSuffix "-indiastack"
         }
+        trimble {
+            dimension "flavors"
+            applicationIdSuffix ".trimble"
+            versionNameSuffix "-trimble"
+        }
     }
-
 }
 
 flutter {

@@ -22,7 +22,8 @@ abstract class InsiteViewModel extends BaseViewModel {
   InsiteViewModel() {
     try {
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-            if ("com.trimble.insite.visionlink" == packageInfo.packageName)
+            if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
+                "com.trimble.insite.trimble" == packageInfo.packageName)
               {isVisionLink = true}
           });
     } catch (e) {
