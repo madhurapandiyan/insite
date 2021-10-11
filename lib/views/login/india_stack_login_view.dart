@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -9,7 +10,6 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -199,16 +199,21 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
 
   gotoSplashview() {
     Logger().i("IndiaStackLoginView gotoSplashview");
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      Logger().i("IndiaStackLoginView packageInfo ${packageInfo.packageName}");
-      if (packageInfo.packageName == "com.trimble.insite.indiastack") {
-        // _navigationService.pushNamedAndRemoveUntil(indiaStack.indiaStackLogoutViewRoute,
-        //     predicate: (Route<dynamic> route) => false);
-        _navigationService.navigateTo(indiaStack.indiaStackLogoutViewRoute);
-      } else {
-        _navigationService.replaceWith(splashViewRoute);
-      }
-    });
+    // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+    //   Logger().i("IndiaStackLoginView packageInfo ${packageInfo.packageName}");
+    //   if (packageInfo.packageName == "com.trimble.insite.indiastack") {
+    //     // _navigationService.pushNamedAndRemoveUntil(indiaStack.indiaStackLogoutViewRoute,
+    //     //     predicate: (Route<dynamic> route) => false);
+    //     _navigationService.navigateTo(indiaStack.indiaStackLogoutViewRoute);
+    //   } else {
+    //     _navigationService.replaceWith(splashViewRoute);
+    //   }
+    // });
+    if (AppConfig.instance.flavor == "indiastack") {
+      _navigationService.navigateTo(indiaStack.indiaStackLogoutViewRoute);
+    } else {
+      _navigationService.replaceWith(splashViewRoute);
+    }
   }
 
   saveToken(token, String expiryTime) {
