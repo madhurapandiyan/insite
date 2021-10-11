@@ -16,7 +16,6 @@ class AppbarViewModel extends InsiteViewModel {
   var _navigationService = locator<NavigationService>();
   var _localService = locator<LocalService>();
   var _localStorageService = locator<LocalStorageService>();
-  var _snackbarService = locator<SnackbarService>();
 
   Customer _accountSelected;
   Customer get accountSelected => _accountSelected;
@@ -47,7 +46,7 @@ class AppbarViewModel extends InsiteViewModel {
   onHomePressed() {
     if (accountSelected == null) {
       Logger().i("account not selected");
-      _snackbarService.showSnackbar(
+      snackbarService.showSnackbar(
           message: "Account not selected", duration: Duration(seconds: 2));
     } else {
       if (screenType != ScreenType.HOME) {

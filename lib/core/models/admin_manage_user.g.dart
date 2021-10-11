@@ -111,7 +111,7 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
 ApplicationAccess _$ApplicationAccessFromJson(Map<String, dynamic> json) {
   return ApplicationAccess(
     userUID: json['userUID'] as String,
-    roleName: json['roleName'] as String,
+    role_name: json['role_name'] as String,
     applicationIconUrl: json['applicationIconUrl'] as String,
     applicationName: json['applicationName'] as String,
   );
@@ -120,9 +120,28 @@ ApplicationAccess _$ApplicationAccessFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ApplicationAccessToJson(ApplicationAccess instance) =>
     <String, dynamic>{
       'userUID': instance.userUID,
-      'roleName': instance.roleName,
+      'role_name': instance.role_name,
       'applicationIconUrl': instance.applicationIconUrl,
       'applicationName': instance.applicationName,
+    };
+
+ApplicationAccessData _$ApplicationAccessDataFromJson(
+    Map<String, dynamic> json) {
+  return ApplicationAccessData(
+    application: json['application'] == null
+        ? null
+        : Application.fromJson(json['application'] as Map<String, dynamic>),
+    isSelected: json['isSelected'] as bool,
+    isPermissionSelected: json['isPermissionSelected'] as bool,
+  );
+}
+
+Map<String, dynamic> _$ApplicationAccessDataToJson(
+        ApplicationAccessData instance) =>
+    <String, dynamic>{
+      'application': instance.application,
+      'isSelected': instance.isSelected,
+      'isPermissionSelected': instance.isPermissionSelected,
     };
 
 ManageUser _$ManageUserFromJson(Map<String, dynamic> json) {

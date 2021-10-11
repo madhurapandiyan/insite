@@ -28,7 +28,9 @@ class ManageUserView extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      SizedBox(height: 20),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -41,60 +43,94 @@ class ManageUserView extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(right: 10.0),
                               child: Row(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                    ),
-                                    child: InsiteButton(
-                                        title: "",
-                                        bgColor: tuna,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: appbarcolor,
-                                        )),
-                                  ),
+                                  viewModel.showEdit
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                          child: InsiteButton(
+                                              title: "",
+                                              bgColor: tuna,
+                                              onTap: () {
+                                                viewModel.onEditClicked();
+                                              },
+                                              icon: Icon(
+                                                Icons.edit,
+                                                color: appbarcolor,
+                                              )),
+                                        )
+                                      : SizedBox(),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                    ),
-                                    child: InsiteButton(
-                                        title: "",
-                                        bgColor: tuna,
-                                        icon: Icon(
-                                          Icons.delete_outline,
-                                          color: appbarcolor,
-                                        )),
-                                  ),
+                                  viewModel.showDelete
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                          child: InsiteButton(
+                                              title: "",
+                                              onTap: () {
+                                                viewModel
+                                                    .onDeleteClicked(context);
+                                              },
+                                              bgColor: tuna,
+                                              icon: Icon(
+                                                Icons.delete_outline,
+                                                color: appbarcolor,
+                                              )),
+                                        )
+                                      : SizedBox(),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                    ),
-                                    child: InsiteButton(
-                                        title: "",
-                                        bgColor: tuna,
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: appbarcolor,
-                                        )),
+                                  viewModel.showDeSelect
+                                      ? ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                          ),
+                                          child: InsiteButton(
+                                              title: "",
+                                              bgColor: tuna,
+                                              onTap: () {
+                                                viewModel.onItemDeselect();
+                                              },
+                                              icon: Icon(
+                                                Icons.close,
+                                                color: appbarcolor,
+                                              )),
+                                        )
+                                      : SizedBox(),
+                                  !viewModel.showDeSelect &&
+                                          !viewModel.showDelete &&
+                                          !viewModel.showEdit
+                                      ? InsiteButton(
+                                          title: "Add User",
+                                          bgColor: tango,
+                                          textColor: Colors.white,
+                                          onTap: () {
+                                            viewModel.onAddNewUserClicked();
+                                          },
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(
+                                    width: 10,
                                   )
                                 ],
                               ),
@@ -116,12 +152,11 @@ class ManageUserView extends StatelessWidget {
                                       itemCount: viewModel.assets.length,
                                       controller: viewModel.scrollController,
                                       itemBuilder: (context, index) {
-                                        Users user = viewModel.assets[index];
+                                        UserRow user = viewModel.assets[index];
                                         return ManageUserWidget(
                                           user: user,
                                           callback: () {
-                                            viewModel
-                                                .onCardButtonSelected(user);
+                                            viewModel.onItemSelected(index);
                                           },
                                         );
                                       }),

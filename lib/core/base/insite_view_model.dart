@@ -22,7 +22,8 @@ abstract class InsiteViewModel extends BaseViewModel {
   InsiteViewModel() {
     try {
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-            if ("com.trimble.insite.visionlink" == packageInfo.packageName)
+            if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
+                "com.trimble.insite.trimble" == packageInfo.packageName)
               {isVisionLink = true}
           });
     } catch (e) {
@@ -30,9 +31,10 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
-  var _navigationService = locator<NavigationService>();
+  var navigationService = locator<NavigationService>();
   var _filterService = locator<FilterService>();
   var _dateRangeService = locator<DateRangeService>();
+  var snackbarService = locator<SnackbarService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;
@@ -75,7 +77,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   login() {
     Future.delayed(Duration(seconds: 2), () {
-      _navigationService.replaceWith(logoutViewRoute);
+      navigationService.replaceWith(logoutViewRoute);
     });
   }
 

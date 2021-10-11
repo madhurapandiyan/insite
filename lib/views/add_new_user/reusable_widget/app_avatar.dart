@@ -48,12 +48,15 @@ class _AppAvatarState extends State<AppAvatar> {
                             "Authorization":
                                 "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
                           }),
-                      placeholder:
-                          AssetImage("assets/images/add_user_icon_one.png"),
+                      placeholder: AssetImage(
+                        "assets/images/add_user_icon_one.png",
+                      ),
                       imageErrorBuilder: (context, error, stackTrace) {
                         Logger().e(error);
                         return Image.asset(
                             "assets/images/add_user_icon_one.png",
+                            width: 43,
+                            height: 43,
                             fit: BoxFit.fitWidth);
                       },
                       fit: BoxFit.cover,
@@ -74,6 +77,8 @@ class _AppAvatarState extends State<AppAvatar> {
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                             "assets/images/add_user_icon_one.png",
+                            width: 43,
+                            height: 43,
                             fit: BoxFit.fitWidth);
                       },
                       fit: BoxFit.cover,

@@ -2379,7 +2379,28 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UpdateResponse> getSaveUserData(
+  Future<UpdateResponse> updateUserData(url, customerId, updateUserData) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(updateUserData, 'updateUserData');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UpdateResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<UpdateResponse> deleteUsersData(
       url, customerId, updateUserData) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -2391,7 +2412,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
-            method: 'GET',
+            method: 'PUT',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
             extra: _extra,
             baseUrl: baseUrl),
@@ -2401,7 +2422,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddUser> getAddUserData(url, customerId, updateUserData) async {
+  Future<AddUser> addUserData(url, customerId, updateUserData) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(updateUserData, 'updateUserData');
@@ -2418,6 +2439,25 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = AddUser.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<RoleDataResponse> roles(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = RoleDataResponse.fromJson(_result.data);
     return value;
   }
 

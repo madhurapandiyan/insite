@@ -95,12 +95,12 @@ class Address {
 @JsonSerializable()
 class ApplicationAccess {
   String userUID;
-  String roleName;
+  String role_name;
   String applicationIconUrl;
   String applicationName;
   ApplicationAccess({
     this.userUID,
-    this.roleName,
+    this.role_name,
     this.applicationIconUrl,
     this.applicationName,
   });
@@ -111,6 +111,7 @@ class ApplicationAccess {
   Map<String, dynamic> toJson() => _$ApplicationAccessToJson(this);
 }
 
+@JsonSerializable()
 class ApplicationAccessData {
   Application application;
   bool isSelected;
@@ -119,6 +120,10 @@ class ApplicationAccessData {
       {this.application,
       this.isSelected = false,
       this.isPermissionSelected = false});
+  factory ApplicationAccessData.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationAccessDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ApplicationAccessDataToJson(this);
 }
 
 @JsonSerializable()
@@ -131,4 +136,10 @@ class ManageUser {
       _$ManageUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$ManageUserToJson(this);
+}
+
+class UserRow {
+  final Users user;
+  bool isSelected;
+  UserRow({this.user, this.isSelected = false});
 }

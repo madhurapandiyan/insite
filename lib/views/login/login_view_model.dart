@@ -6,14 +6,12 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends InsiteViewModel {
   Logger log;
   var formKey = GlobalKey<FormState>();
   var _loginService = locator<LoginService>();
   var _localService = locator<LocalService>();
-  var _snackbarService = locator<SnackbarService>();
   var usernameController;
   var passwordController;
   bool _loading = false;
@@ -34,7 +32,7 @@ class LoginViewModel extends InsiteViewModel {
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
     } else {
-      _snackbarService.showSnackbar(
+      snackbarService.showSnackbar(
           message: "Something went wrong!", duration: Duration(seconds: 2));
     }
     Future.delayed(Duration(seconds: 1), () {
@@ -54,7 +52,7 @@ class LoginViewModel extends InsiteViewModel {
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
     } else {
-      _snackbarService.showSnackbar(
+      snackbarService.showSnackbar(
           message: "Something went wrong!", duration: Duration(seconds: 2));
     }
     Future.delayed(Duration(seconds: 1), () {

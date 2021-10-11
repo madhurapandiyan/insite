@@ -57,8 +57,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.LOCATION
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -92,8 +91,12 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
+<<<<<<< HEAD
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION
+=======
+                  widget.screenType == ScreenType.LOCATION
+>>>>>>> dc0f6266c8ec583faeb594151700dc82c1ea6337
               ? true
               : false,
           isRefineSelected: _isRefineSelected,

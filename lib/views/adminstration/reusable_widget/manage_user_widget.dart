@@ -5,7 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ManageUserWidget extends StatelessWidget {
-  final Users user;
+  final UserRow user;
   final VoidCallback callback;
 
   const ManageUserWidget({this.user, this.callback});
@@ -36,11 +36,11 @@ class ManageUserWidget extends StatelessWidget {
                   ),
                   Container(
                       decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: user.isSelected ? tango : Colors.black,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Icon(
                         Icons.crop_square,
-                        color: Colors.black,
+                        color: user.isSelected ? tango : Colors.black,
                       )),
                 ],
               ),
@@ -58,21 +58,21 @@ class ManageUserWidget extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Name :',
-                      content: user.first_name + " " + user.last_name,
+                      content: user.user.first_name + " " + user.user.last_name,
                     ),
                     InsiteTableRowItem(
                       title: 'User Type:',
-                      content: user.user_type.toString(),
+                      content: user.user.user_type.toString(),
                     ),
                     InsiteTableRowItem(
                       title: 'Job Type :',
-                      content: user.job_type.toString(),
+                      content: user.user.job_type.toString(),
                     ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Email ID :',
-                      content: user.loginId,
+                      content: user.user.loginId,
                     ),
                     InsiteTableRowItem(
                       title: 'Job Title:',
