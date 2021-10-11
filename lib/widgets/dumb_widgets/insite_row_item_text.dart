@@ -188,7 +188,6 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
         children: [
           InsiteText(
             text: title,
-            color: athenGrey,
             size: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -218,7 +217,6 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
                               vertical: 8.0, horizontal: 4),
                           child: InsiteText(
                             text: "  -  ",
-                            color: athenGrey,
                             size: 14,
                             fontWeight: FontWeight.bold,
                           ),

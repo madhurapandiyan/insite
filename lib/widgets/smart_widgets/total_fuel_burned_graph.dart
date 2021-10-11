@@ -21,23 +21,32 @@ class TotalFuelBurnedGraph extends StatelessWidget {
       child: totalFuelBurned == null
           ? SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: rangeSelection == 1
                       ? 'Daily average: NA'
                       : rangeSelection == 2
                           ? 'Weekly average: NA'
                           : 'Monthly average: NA'),
               primaryXAxis: CategoryAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-                labelStyle: TextStyle(color: white),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),
@@ -46,23 +55,32 @@ class TotalFuelBurnedGraph extends StatelessWidget {
             )
           : SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: rangeSelection == 1
                       ? 'Daily average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
                       : rangeSelection == 2
                           ? 'Weekly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
                           : 'Monthly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'),
               primaryXAxis: CategoryAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-                labelStyle: TextStyle(color: white),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),

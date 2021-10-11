@@ -29,7 +29,7 @@ class LoadMoreText extends StatelessWidget {
       child: Container(
         height: 48,
         child: InsiteText(
-          color: tango,
+          color: Theme.of(context).buttonColor,
           fontWeight: FontWeight.bold,
           text: "LOAD MORE",
         ),

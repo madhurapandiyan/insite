@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         return Scaffold(
           body: Container(
             height: MediaQuery.of(context).size.height,
-            color: tango,
+            color: Theme.of(context).buttonColor,
             child: SingleChildScrollView(
               child: Form(
                 key: viewModel.formKey,
@@ -138,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                                         viewModel.submit();
                                       },
                                       //width: MediaQuery.of(context).size.width*0.350,
-                                      bgColor: tango,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.05,

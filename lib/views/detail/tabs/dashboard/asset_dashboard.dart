@@ -130,7 +130,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: tango,
+                          liquidColor: Theme.of(context).buttonColor,
                           value: widget.detail != null &&
                                   widget.detail.percentDEFRemaining != null
                               ? widget.detail.percentDEFRemaining.toDouble()

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
@@ -27,8 +28,10 @@ class _SingleAssetUtilizationWidgetState
       width: MediaQuery.of(context).size.width * 0.95,
       height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            width: 1.5, color: Theme.of(context).textTheme.bodyText1.color),
+        shape: BoxShape.rectangle,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
@@ -46,13 +49,10 @@ class _SingleAssetUtilizationWidgetState
                     SizedBox(
                       width: 10,
                     ),
-                    Text(
-                      'Asset Utilization'.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
+                    InsiteText(
+                        text: 'Asset Utilization'.toUpperCase(),
+                        fontWeight: FontWeight.bold,
+                        size: 15),
                     Expanded(
                       child: Container(),
                     ),
@@ -65,7 +65,7 @@ class _SingleAssetUtilizationWidgetState
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Divider(
-                    color: shark,
+                    color: Theme.of(context).dividerColor,
                     thickness: 2,
                   ),
                 ),
@@ -131,18 +131,19 @@ class _SingleAssetUtilizationWidgetState
         width: MediaQuery.of(context).size.width * 0.25,
         height: MediaQuery.of(context).size.height * 0.22,
         decoration: BoxDecoration(
-          color: ship_grey,
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
-          ),
-        ),
+            color: Theme.of(context).backgroundColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+            border:
+                Border.all(color: Theme.of(context).textTheme.bodyText1.color)),
         child: Column(
           children: [
             Expanded(
               flex: 4,
               child: Container(
                 decoration: BoxDecoration(
-                  color: ship_grey,
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
                   ),
@@ -166,24 +167,25 @@ class _SingleAssetUtilizationWidgetState
                 ),
               ),
             ),
+            Divider(
+              height: 1,
+              color: Theme.of(context).textTheme.bodyText1.color,
+            ),
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.25,
                 decoration: BoxDecoration(
-                  color: black,
+                  color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(8),
                     bottomRight: Radius.circular(8),
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    title.toUpperCase(),
-                    style: TextStyle(
-                        color: white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  child: InsiteText(
+                      text: title.toUpperCase(),
+                      size: 10,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -201,11 +203,10 @@ class _SingleAssetUtilizationWidgetState
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(
-          '${value.toStringAsFixed(1)}',
-          style: TextStyle(
-              color: white, fontSize: 12, fontWeight: FontWeight.bold),
-        ),
+        InsiteText(
+            text: '${value.toStringAsFixed(1)}',
+            size: 12,
+            fontWeight: FontWeight.bold),
         SizedBox(
           height: 10,
         ),

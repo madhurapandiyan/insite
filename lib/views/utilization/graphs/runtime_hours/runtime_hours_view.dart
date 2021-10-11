@@ -105,7 +105,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                                           index]
                                                       .idleHours /
                                                   10),
-                                      color: sandyBrown);
+                                      color: Theme.of(context).buttonColor);
                                 })
                             : EmptyView(
                                 title: "No Assets Found",

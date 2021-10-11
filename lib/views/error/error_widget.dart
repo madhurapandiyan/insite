@@ -46,7 +46,7 @@ class ErrorWidget extends StatelessWidget {
                 onTap: () {
                   onTap(ErrorAction.LOGIN);
                 },
-                bgColor: tango,
+                bgColor: Theme.of(context).buttonColor,
                 textColor: Colors.white,
                 height: 48,
                 width: 100,
@@ -56,4 +56,3 @@ class ErrorWidget extends StatelessWidget {
     ));
   }
 }
-

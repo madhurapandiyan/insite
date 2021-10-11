@@ -312,21 +312,32 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                             width: 27.47,
                                             height: 26.97,
                                             decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .backgroundColor,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5.0)),
                                               boxShadow: [
                                                 BoxShadow(
                                                   blurRadius: 1.0,
-                                                  color: darkhighlight,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color,
                                                 ),
                                               ],
                                               border: Border.all(
                                                   width: 1.0,
-                                                  color: darkhighlight),
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color),
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
                                               "assets/images/plus.svg",
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
                                             ),
                                           ),
                                         ),
@@ -365,16 +376,27 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                 boxShadow: [
                                                   BoxShadow(
                                                     blurRadius: 1.0,
-                                                    color: darkhighlight,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color,
                                                   ),
                                                 ],
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
                                                 border: Border.all(
                                                     width: 1.0,
-                                                    color: darkhighlight),
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color),
                                                 shape: BoxShape.rectangle,
                                               ),
                                               child: SvgPicture.asset(
                                                 "assets/images/minus.svg",
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color,
                                               ),
                                             )),
                                       ],

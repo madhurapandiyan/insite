@@ -212,7 +212,7 @@ class _TestRouterViewState extends State<TestRouterView> {
           }
 
           return Scaffold(
-            backgroundColor: bgcolor,
+            backgroundColor: Theme.of(context).backgroundColor,
             body: Center(
               child: Container(
                 margin: EdgeInsets.all(4.0),

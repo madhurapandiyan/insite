@@ -91,12 +91,13 @@ class FuelLevel extends StatelessWidget {
                                 center: InsiteText(
                                     text: percentage + "%",
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                     size: 25),
                                 backgroundColor:
                                     Theme.of(context).backgroundColor,
                                 borderColor:
                                     Theme.of(context).textTheme.bodyText1.color,
-                                borderWidth: 5.0,
+                                borderWidth: 2.0,
                                 direction: Axis.vertical,
                               ),
                             ),

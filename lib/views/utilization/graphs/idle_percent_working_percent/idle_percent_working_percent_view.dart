@@ -110,7 +110,7 @@ class IdlePercentWorkingPercentViewState
                                                       .workingEfficiency *
                                                   100,
                                       color: rangeChoice == 1
-                                          ? sandyBrown
+                                          ? Theme.of(context).buttonColor
                                           : olivine);
                                 })
                             : EmptyView(

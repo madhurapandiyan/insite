@@ -122,14 +122,12 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                                     ),
                                   ),
                                   isExpanded: true,
-                                  hint: Text(
-                                    _currentSelectedItem,
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .color),
-                                  ),
+                                  hint: InsiteText(
+                                      text: _currentSelectedItem,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color),
                                   items:
                                       ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
                                           .map((map) => DropdownMenuItem(
@@ -210,14 +208,10 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                 child: Container(
                   width: 290.5,
                   height: 22.57,
-                  child: Text(
-                    widget.status,
-                    style: TextStyle(
-                        fontSize: 10.0,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal,
-                        fontFamily: 'Roboto',
-                        color: textcolor),
+                  child: InsiteText(
+                    text: widget.status,
+                    size: 10.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               )
@@ -275,15 +269,18 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       boxShadow: [
                         BoxShadow(
-                          blurRadius: 1.0,
-                          color: darkhighlight,
-                        ),
+                            blurRadius: 1.0,
+                            color: Theme.of(context).textTheme.bodyText1.color),
                       ],
-                      border: Border.all(width: 1.0, color: darkhighlight),
+                      color: Theme.of(context).backgroundColor,
+                      border: Border.all(
+                          width: 1.0,
+                          color: Theme.of(context).textTheme.bodyText1.color),
                       shape: BoxShape.rectangle,
                     ),
                     child: SvgPicture.asset(
                       "assets/images/plus.svg",
+                      color: Theme.of(context).iconTheme.color,
                     ),
                   ),
                 ),
@@ -301,17 +298,21 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                       height: 26.97,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: Theme.of(context).backgroundColor,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 1.0,
-                            color: darkhighlight,
+                            color: Theme.of(context).textTheme.bodyText1.color,
                           ),
                         ],
-                        border: Border.all(width: 1.0, color: darkhighlight),
+                        border: Border.all(
+                            width: 1.0,
+                            color: Theme.of(context).textTheme.bodyText1.color),
                         shape: BoxShape.rectangle,
                       ),
                       child: SvgPicture.asset(
                         "assets/images/minus.svg",
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     )),
               ],

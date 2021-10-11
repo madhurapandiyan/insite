@@ -81,14 +81,13 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   SizedBox(
                     width: 20,
                   ),
-                  Flexible(
-                      child: InsiteTextOverFlow(
+                  InsiteTextOverFlow(
                     text: Utils.getPageTitle(screenType),
                     color: Theme.of(context).buttonColor,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.bold,
                     size: 16,
-                  ))
+                  )
                 ],
               ),
               actions: [
@@ -204,24 +203,22 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
             shouldShowTitle
                 ? Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Flexible(
-                      child: InsiteTextOverFlow(
-                        text: viewModel.accountSelected != null &&
-                                viewModel.customerSelected != null
-                            ? viewModel.customerSelected.DisplayName != null
-                                ? viewModel.customerSelected.DisplayName
-                                : viewModel.accountSelected.DisplayName != null
-                                    ? viewModel.accountSelected.DisplayName
-                                    : ""
-                            : viewModel.accountSelected != null &&
-                                    viewModel.accountSelected.DisplayName !=
-                                        null
-                                ? viewModel.accountSelected.DisplayName
-                                : "",
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.normal,
-                        size: 12,
-                      ),
+                    child: InsiteTextOverFlow(
+                      text: viewModel.accountSelected != null &&
+                              viewModel.customerSelected != null
+                          ? viewModel.customerSelected.DisplayName != null
+                              ? viewModel.customerSelected.DisplayName
+                              : viewModel.accountSelected.DisplayName != null
+                                  ? viewModel.accountSelected.DisplayName
+                                  : ""
+                          : viewModel.accountSelected != null &&
+                                  viewModel.accountSelected.DisplayName !=
+                                      null
+                              ? viewModel.accountSelected.DisplayName
+                              : "",
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.normal,
+                      size: 12,
                     ),
                   )
                 : SizedBox()

@@ -110,9 +110,14 @@ var indiaStackOrangeBlack = ThemeData(
     iconTheme: IconThemeData(
       color: iconColor2,
     ),
+    cardTheme: CardTheme(
+      color: cardBackgroundColor2,
+    ),
     buttonTheme: ButtonThemeData(
       buttonColor: buttonColor21,
     ),
-    textTheme: TextTheme(bodyText1: TextStyle(color: textColor2)),
+    textTheme: TextTheme(
+      bodyText1: TextStyle(color: textColor2),
+    ),
     appBarTheme: AppBarTheme(backgroundColor: appBarbackgroundColor2),
     accentColor: Colors.white);

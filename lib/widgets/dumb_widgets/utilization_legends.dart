@@ -47,8 +47,7 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 statusWidget(widget.color1, shouldShowLabel[0]),
-                InsiteText(
-                    text: widget.label1.toUpperCase(), color: white, size: 10),
+                InsiteText(text: widget.label1.toUpperCase(), size: 10),
               ],
             ),
           ),

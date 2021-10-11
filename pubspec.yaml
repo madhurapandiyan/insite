@@ -111,8 +111,9 @@ flutter:
     - assets/images/add_user_icon_one.png
     - assets/images/add_user_icon_two.png
     - assets/images/add_user_icon_three.png
-    - assets/images/ic_trimble_logo.svg
+    - assets/images/ic_trimble_logo.png
     - assets/images/ic_eol_launcher.png
+    - assets/images/trimble.svg
 
   fonts:
     - family: Roboto

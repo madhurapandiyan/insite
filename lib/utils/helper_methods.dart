@@ -270,6 +270,9 @@ class Utils {
       case ScreenType.HOME:
         title = "HOME";
         break;
+      case ScreenType.USER_MANAGEMENT:
+        title = "USER";
+        break;
       default:
     }
     return title;
