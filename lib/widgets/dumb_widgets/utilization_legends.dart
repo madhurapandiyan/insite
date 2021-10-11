@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class UtilizationLegends extends StatefulWidget {
   final String label1;
@@ -46,10 +47,8 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 statusWidget(widget.color1, shouldShowLabel[0]),
-                Text(
-                  widget.label1.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 10),
-                ),
+                InsiteText(
+                    text: widget.label1.toUpperCase(), color: white, size: 10),
               ],
             ),
           ),
@@ -69,9 +68,10 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 statusWidget(widget.color2, shouldShowLabel[1]),
-                Text(
-                  widget.label2.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 10),
+                InsiteText(
+                  fontWeight: FontWeight.normal,
+                  size: 10,
+                  text: widget.label2.toUpperCase(),
                 ),
               ],
             ),
@@ -92,9 +92,10 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 statusWidget(widget.color3, shouldShowLabel[2]),
-                Text(
-                  widget.label3.toUpperCase(),
-                  style: TextStyle(color: white, fontSize: 10),
+                InsiteText(
+                  text: widget.label3.toUpperCase(),
+                  fontWeight: FontWeight.normal,
+                  size: 10,
                 ),
               ],
             ),

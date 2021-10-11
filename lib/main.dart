@@ -24,7 +24,9 @@ void main() async {
   Hive.registerAdapter<Customer>(CustomerAdapter());
   Hive.registerAdapter<AccountData>(AccountDataAdapter());
   AppConfig(
-      baseUrl: "https://unifiedfleet.myvisionlink.com", flavor: "visionlink");
+      baseUrl: "https://unifiedfleet.myvisionlink.com",
+      flavor: "visionlink",
+      iconPath: "assets/images/hitachi.png");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

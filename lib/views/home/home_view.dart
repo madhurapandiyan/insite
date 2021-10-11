@@ -30,8 +30,9 @@ class _HomeViewState extends State<HomeView> {
             onRefineApplied: () {},
             viewModel: viewModel,
             body: Container(
-              padding: EdgeInsets.all(16),
+              color: Theme.of(context).backgroundColor,
               child: GridView.builder(
+                padding: EdgeInsets.all(16),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: MediaQuery.of(context).size.width > 1000
                         ? 7
@@ -73,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
         child: Card(
           semanticContainer: true,
           color: selectedIndex != null && selectedIndex == index
-              ? buttonSelectedColor1
+              ? Theme.of(context).buttonColor
               : Theme.of(context).cardColor,
           elevation: 10.0,
           margin: EdgeInsets.all(1.0),

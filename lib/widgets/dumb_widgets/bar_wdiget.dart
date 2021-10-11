@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class BarWidget extends StatelessWidget {
   final double value;
@@ -28,13 +29,12 @@ class BarWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              value < 1000
-                  ? '${value.toStringAsFixed(1)}'
-                  : '${(value / 1000).toStringAsFixed(1)}K',
-              style: TextStyle(
-                  color: white, fontSize: 8, fontWeight: FontWeight.bold),
-            ),
+            InsiteText(
+                text: value < 1000
+                    ? '${value.toStringAsFixed(1)}'
+                    : '${(value / 1000).toStringAsFixed(1)}K',
+                size: 8,
+                fontWeight: FontWeight.bold),
             SizedBox(
               height: 10,
             ),

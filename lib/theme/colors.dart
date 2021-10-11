@@ -73,7 +73,7 @@ const buttonSelectedColor1 = Color(0XFF00437A);
 const dividerColor1 = Color(0XFF000000);
 
 //orange/white theme
-const backgroundColor2 = Color(0XFF000000);
+const backgroundColor2 = Color(0xFF211F20);
 const appBarbackgroundColor2 = Color(0XFFFFFFFF);
 const cardBackgroundColor2 = Color(0XFF000000);
 const cardSelectedBackgroundColor2 = Color(0XFF000000);
@@ -111,8 +111,8 @@ var indiaStackOrangeBlack = ThemeData(
       color: iconColor2,
     ),
     buttonTheme: ButtonThemeData(
-      buttonColor: buttonColor2,
+      buttonColor: buttonColor21,
     ),
     textTheme: TextTheme(bodyText1: TextStyle(color: textColor2)),
-    appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+    appBarTheme: AppBarTheme(backgroundColor: appBarbackgroundColor2),
     accentColor: Colors.white);

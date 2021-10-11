@@ -134,7 +134,12 @@ class _DashboardViewState extends State<DashboardView> {
                                     height: MediaQuery.of(context).size.height *
                                         0.062,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: white),
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color),
+                                      color: Theme.of(context).backgroundColor,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(8)),
                                     ),

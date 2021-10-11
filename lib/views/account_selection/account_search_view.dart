@@ -106,7 +106,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                 },
                                 child: Container(
                                   color: viewModel.displayList[index].isSelected
-                                      ? buttonSelectedColor1
+                                      ? Theme.of(context).buttonColor
                                       : Theme.of(context).backgroundColor,
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
@@ -160,7 +160,8 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                             children: [
                               widget.selectionType == AccountType.CUSTOMER
                                   ? InsiteButton(
-                                      bgColor: Colors.white,
+                                      bgColor:
+                                          Theme.of(context).backgroundColor,
                                       onTap: () {
                                         viewModel.deSelect();
                                         viewModel.selected = null;

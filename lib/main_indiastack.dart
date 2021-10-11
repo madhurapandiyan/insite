@@ -21,6 +21,7 @@ void main() async {
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
+      iconPath: "assets/images/hitachi.png",
       flavor: "indiastack");
 
   await LocatorInjector.setUpLocator();
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: indiaStackSplashViewRoute,
-          theme: indiaStackBlueWhite,
+          theme: indiaStackOrangeBlack,
         ));
   }
 }

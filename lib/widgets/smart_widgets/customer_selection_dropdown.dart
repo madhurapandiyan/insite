@@ -103,16 +103,18 @@ class _AccountSelectionDropDownWidgetState
   Widget build(BuildContext context) {
     return AppExpansionTile(
       backgroundColor: Theme.of(context).backgroundColor,
-      title: InsiteTextOverFlow(
-          text: selected != null
-              ? selected.value.DisplayName
-              : widget.selectionType == AccountType.ACCOUNT
-                  ? "Select"
-                  : "Search and Select",
-          overflow: TextOverflow.ellipsis,
-          color: Theme.of(context).textTheme.bodyText1.color,
-          fontWeight: FontWeight.bold,
-          size: 18),
+      title: Text(
+        selected != null
+            ? selected.value.DisplayName
+            : widget.selectionType == AccountType.ACCOUNT
+                ? "Select"
+                : "Search and Select",
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color: Theme.of(context).textTheme.bodyText1.color,
+            fontWeight: FontWeight.bold,
+            fontSize: 18),
+      ),
       key: expansionTile,
       children: [
         Container(
@@ -168,12 +170,14 @@ class _AccountSelectionDropDownWidgetState
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
-                                          child: InsiteTextOverFlow(
-                                              text: data.value.DisplayName,
-                                              overflow: TextOverflow.ellipsis,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              size: 16),
+                                          child: Text(
+                                            data.value.DisplayName,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
                                         ),
                                         IconButton(
                                             icon: Icon(
