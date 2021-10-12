@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 
 class AppAvatar extends StatefulWidget {
@@ -37,7 +36,8 @@ class _AppAvatarState extends State<AppAvatar> {
                   height: 43,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(width: 2, color: textcolor),
+                    border: Border.all(
+                        width: 2, color: Theme.of(context).backgroundColor),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),

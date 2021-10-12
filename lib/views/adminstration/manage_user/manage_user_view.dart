@@ -22,7 +22,6 @@ class ManageUserView extends StatelessWidget {
             onFilterApplied: () {},
             onRefineApplied: () {},
             body: Container(
-              color: bgcolor,
               height: MediaQuery.of(context).size.height,
               child: Stack(
                 children: [
@@ -38,7 +37,6 @@ class ManageUserView extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 21.0),
                               child: InsiteText(
                                 text: "manage users".toUpperCase(),
-                                color: textcolor,
                                 size: 14,
                                 fontWeight: FontWeight.w700,
                               ),

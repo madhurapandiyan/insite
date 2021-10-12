@@ -23,7 +23,6 @@ void main() async {
       baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
       iconPath: "assets/images/ic_trimble_logo.png",
       flavor: "indiastack");
-
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
 }
@@ -34,7 +33,6 @@ class MyApp extends StatelessWidget {
     return LoadingProvider(
         themeData: LoadingThemeData(
           loadingBackgroundColor: Colors.white,
-          backgroundColor: tango,
           loadingPadding: EdgeInsets.all(24),
           loadingSize: Size(80, 80),
           borderRadius: BorderRadius.circular(4),

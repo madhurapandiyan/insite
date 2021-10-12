@@ -278,6 +278,39 @@ class Utils {
     return title;
   }
 
+  static String getAdminModuleMenuTitle(AdminAssetsButtonType type) {
+    Logger().d("getAdminModuleMenuTitle $type");
+    String title = "";
+    switch (type) {
+      case AdminAssetsButtonType.ADDNEWUSER:
+        title = "ADD NEW USER";
+        break;
+      case AdminAssetsButtonType.MANAGEUSER:
+        title = "MANAGE USER";
+        break;
+      case AdminAssetsButtonType.ADDNEWGROUPS:
+        title = "ADD NEW GROUPS";
+        break;
+      case AdminAssetsButtonType.MANAGEGROUPS:
+        title = "MANAGER NEW GROUPS";
+        break;
+      case AdminAssetsButtonType.ADDNEWGEOFENCES:
+        title = "ADD NEW GEOFENCES";
+        break;
+      case AdminAssetsButtonType.MANAGEGEOFENCES:
+        title = "MANAGE GEOFENCES";
+        break;
+      case AdminAssetsButtonType.MANAGEREPORTS:
+        title = "MANAGE REPORTS";
+        break;
+      case AdminAssetsButtonType.ADDNEWREPORT:
+        title = "ADD NEW REPORT";
+        break;
+      default:
+    }
+    return title;
+  }
+
   static String generateCodeChallenge(String codeVerifier) {
     var bytes = utf8.encode(codeVerifier);
     var digest = sha256.convert(bytes);

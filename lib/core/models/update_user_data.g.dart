@@ -28,6 +28,21 @@ Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) =>
       'users': instance.users,
     };
 
+DeleteUserDataIndStack _$DeleteUserDataIndStackFromJson(
+    Map<String, dynamic> json) {
+  return DeleteUserDataIndStack(
+    users: (json['users'] as List)?.map((e) => e as String)?.toList(),
+    customerUid: json['customerUid'] as String,
+  );
+}
+
+Map<String, dynamic> _$DeleteUserDataIndStackToJson(
+        DeleteUserDataIndStack instance) =>
+    <String, dynamic>{
+      'users': instance.users,
+      'customerUid': instance.customerUid,
+    };
+
 AddUserData _$AddUserDataFromJson(Map<String, dynamic> json) {
   return AddUserData(
     fname: json['fname'] as String,
@@ -66,6 +81,47 @@ Map<String, dynamic> _$AddUserDataToJson(AddUserData instance) =>
       'roles': instance.roles,
       'src': instance.src,
       'language': instance.language,
+    };
+
+AddUserDataIndStack _$AddUserDataIndStackFromJson(Map<String, dynamic> json) {
+  return AddUserDataIndStack(
+    fname: json['fname'] as String,
+    lname: json['lname'] as String,
+    email: json['email'] as String,
+    phone: json['phone'] as String,
+    address: json['address'] == null
+        ? null
+        : AddressData.fromJson(json['address'] as Map<String, dynamic>),
+    details: json['details'] == null
+        ? null
+        : Details.fromJson(json['details'] as Map<String, dynamic>),
+    roles: (json['roles'] as List)
+        ?.map(
+            (e) => e == null ? null : Role.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    src: json['src'] as String,
+    isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool,
+    company: json['company'] as String,
+    language: json['language'] as String,
+    customerUid: json['customerUid'] as String,
+  );
+}
+
+Map<String, dynamic> _$AddUserDataIndStackToJson(
+        AddUserDataIndStack instance) =>
+    <String, dynamic>{
+      'fname': instance.fname,
+      'lname': instance.lname,
+      'email': instance.email,
+      'phone': instance.phone,
+      'company': instance.company,
+      'address': instance.address,
+      'details': instance.details,
+      'roles': instance.roles,
+      'src': instance.src,
+      'language': instance.language,
+      'customerUid': instance.customerUid,
+      'isAssetSecurityEnabled': instance.isAssetSecurityEnabled,
     };
 
 UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
