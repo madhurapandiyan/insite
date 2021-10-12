@@ -25,7 +25,6 @@ class FilterChipView extends StatelessWidget {
             FilterData data = filters[index];
             return FilterChipItem(
               label: Utils.getFilterTitleForChipView(data),
-              backgroundColor: backgroundColor,
               onClose: () {
                 onClosed(data);
               },

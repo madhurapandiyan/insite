@@ -21,23 +21,32 @@ class TotalHoursChart extends StatelessWidget {
       child: totalHours == null
           ? SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: rangeSelection == 1
                       ? 'Daily average: NA'
                       : rangeSelection == 2
                           ? 'Weekly average: NA'
                           : 'Monthly average: NA'),
               primaryXAxis: CategoryAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-                labelStyle: TextStyle(color: white),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),
@@ -46,23 +55,32 @@ class TotalHoursChart extends StatelessWidget {
             )
           : SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: rangeSelection == 1
                       ? 'Daily average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
                       : rangeSelection == 2
                           ? 'Weekly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'
                           : 'Monthly average: ${totalHours.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
               primaryXAxis: CategoryAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-                labelStyle: TextStyle(color: white),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
               primaryYAxis: NumericAxis(
-                title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
+                title: AxisTitle(
+                    text: '',
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),

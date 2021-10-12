@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
+import 'insite_progressbar.dart';
+
 class LoadMore extends StatelessWidget {
   const LoadMore({Key key}) : super(key: key);
 
@@ -9,7 +11,7 @@ class LoadMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 48,
-      child: CircularProgressIndicator(),
+      child: InsiteProgressBar(),
     );
   }
 }
@@ -27,7 +29,7 @@ class LoadMoreText extends StatelessWidget {
       child: Container(
         height: 48,
         child: InsiteText(
-          color: tango,
+          color: Theme.of(context).buttonColor,
           fontWeight: FontWeight.bold,
           text: "LOAD MORE",
         ),

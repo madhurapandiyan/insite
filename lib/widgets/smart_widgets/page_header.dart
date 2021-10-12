@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
@@ -22,8 +21,9 @@ class PageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          // border: Border.all(width: 1, color: Colors.black),
-          color: cardcolor,
+          color: Theme.of(context).backgroundColor,
+          border:
+              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       margin: margin != null
           ? margin
@@ -40,7 +40,6 @@ class PageHeader extends StatelessWidget {
                     ? "$total assets"
                     : "$count of $total assets",
             fontWeight: FontWeight.bold,
-            color: Colors.white,
             size: 15,
           ),
         ],

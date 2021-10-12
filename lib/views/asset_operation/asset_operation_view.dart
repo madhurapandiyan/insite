@@ -6,6 +6,8 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/asset_list_item.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -95,17 +97,14 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                             //     },
                             //   ),
                             // ),
-                            Text(
-                              Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
-                                  " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
-                              style: TextStyle(
-                                  color: white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12),
-                            ),
+                            InsiteText(
+                                text: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                                fontWeight: FontWeight.bold,
+                                size: 12),
                             SizedBox(
                               width: 10,
                             ),
@@ -127,9 +126,10 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                   viewModel.refresh();
                                 }
                               },
-                              textColor: Colors.white,
+                              textColor:
+                                  Theme.of(context).textTheme.bodyText1.color,
                               width: 100,
-                              bgColor: tuna,
+                              bgColor: Theme.of(context).backgroundColor,
                             ),
                           ],
                         ),
@@ -139,16 +139,15 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Text(
-                          "Data displayed here is only an indicative figure. For viewing actual Asset usage per day, visit Asset Utilization - Single Asset View ",
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        ),
+                        child: InsiteText(
+                            text:
+                                "Data displayed here is only an indicative figure. For viewing actual Asset usage per day, visit Asset Utilization - Single Asset View ",
+                            color: Theme.of(context).textTheme.bodyText1.color,
+                            size: 12),
                       ),
                       Expanded(
                           child: viewModel.loading
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
+                              ? InsiteProgressBar()
                               : viewModel.assets.isNotEmpty
                                   ? ListView.builder(
                                       itemCount: viewModel.assets.length,
@@ -172,15 +171,11 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                       viewModel.loadingMore
                           ? Padding(
                               padding: EdgeInsets.all(8),
-                              child: CircularProgressIndicator())
+                              child: InsiteProgressBar())
                           : SizedBox()
                     ],
                   ),
-                  viewModel.refreshing
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SizedBox()
+                  viewModel.refreshing ? InsiteProgressBar() : SizedBox()
                 ],
               )),
         );

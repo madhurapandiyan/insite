@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class UtilGraphDropdownWidget extends StatefulWidget {
   final Function graphType;
@@ -18,14 +19,12 @@ class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
   Widget build(BuildContext context) {
     return DropdownButton(
       value: dropdownValue,
-      dropdownColor: cardcolor,
-      icon: Icon(
-        Icons.keyboard_arrow_down,
-        color: white,
-      ),
+      dropdownColor: Theme.of(context).backgroundColor,
+      icon: Icon(Icons.keyboard_arrow_down,
+          color: Theme.of(context).iconTheme.color),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: white),
+      style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
       underline: Container(
         height: 0,
       ),
@@ -70,8 +69,10 @@ class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                value,
+              InsiteText(
+                text: value,
+                fontWeight: FontWeight.normal,
+                size: 14,
               ),
               // Icon(
               //   Icons.check,

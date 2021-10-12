@@ -179,14 +179,16 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
 
   Color getColor(customer, index) {
     if (selectedIndex != null && selected != null) {
-      return selectedIndex == index ? tango : tuna;
+      return selectedIndex == index
+          ? Theme.of(context).buttonColor
+          : Theme.of(context).backgroundColor;
     } else {
       return selectedIndex != null && selectedIndex == index
-          ? tango
+          ? Theme.of(context).buttonColor
           : selected != null &&
                   selected.value.CustomerUID == customer.CustomerUID
-              ? tango
-              : tuna;
+              ? Theme.of(context).buttonColor
+              : Theme.of(context).backgroundColor;
     }
   }
 }

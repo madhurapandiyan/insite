@@ -5,6 +5,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
@@ -41,14 +42,18 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
       builder:
           (BuildContext context, AssetDashboardViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(child: CircularProgressIndicator());
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16)),
-                color: mediumgrey),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
+              ),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(
+                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+              shape: BoxShape.rectangle,
+            ),
             child: SingleChildScrollView(
               child: Container(
                 child: Column(
@@ -72,7 +77,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: tango,
+                          liquidColor: Theme.of(context).buttonColor,
                           title: "Fuel Level",
                           value: widget.detail != null &&
                                   widget.detail.fuelLevelLastReported != null
@@ -125,7 +130,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         horizontal: 16.0,
                       ),
                       child: FuelLevel(
-                          liquidColor: tango,
+                          liquidColor: Theme.of(context).buttonColor,
                           value: widget.detail != null &&
                                   widget.detail.percentDEFRemaining != null
                               ? widget.detail.percentDEFRemaining.toDouble()

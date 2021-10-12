@@ -196,7 +196,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
         // setupListeners();
         return Scaffold(
-          backgroundColor: tango,
+          backgroundColor: Theme.of(context).buttonColor,
           body: SafeArea(
             child: Stack(
               children: [
@@ -205,7 +205,9 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                         url: Urls.getV4LoginUrl(state, codeChallenge))
                     : SizedBox(),
                 Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),

@@ -6,6 +6,9 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/health_list_item.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 import 'health_list_view_model.dart';
 
@@ -26,8 +29,9 @@ class _HealthListViewState extends State<HealthListView> {
       builder: (BuildContext context, HealthListViewModel viewModel, Widget _) {
         return Container(
           decoration: BoxDecoration(
-            color: mediumgrey,
-            border: Border.all(color: black, width: 0.0),
+            color: Theme.of(context).backgroundColor,
+            border: Border.all(
+                color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Stack(
@@ -40,19 +44,24 @@ class _HealthListViewState extends State<HealthListView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                          style: TextStyle(
-                              color: white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12),
-                        ),
+                        InsiteText(
+                            text: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
+                            fontWeight: FontWeight.bold,
+                            size: 12),
                         SizedBox(
                           width: 10,
                         ),
-                        GestureDetector(
+                        InsiteButton(
+                          title: "Date Range",
+                          width: 90,
+                          height: 30,
+                          bgColor: Theme.of(context).backgroundColor,
+                          textColor:
+                              Theme.of(context).textTheme.bodyText1.color,
                           onTap: () async {
                             dateRange = [];
                             dateRange = await showDialog(
@@ -65,34 +74,13 @@ class _HealthListViewState extends State<HealthListView> {
                               viewModel.refresh();
                             }
                           },
-                          child: Container(
-                            width: 90,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: cardcolor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Date Range',
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ],
                     ),
                   ),
                   Expanded(
                     child: viewModel.loading
-                        ? Container(
-                            child: Center(child: CircularProgressIndicator()))
+                        ? Container(child: InsiteProgressBar())
                         : viewModel.faults.isNotEmpty
                             ? ListView.builder(
                                 shrinkWrap: true,
@@ -113,16 +101,12 @@ class _HealthListViewState extends State<HealthListView> {
                   viewModel.loadingMore
                       ? Padding(
                           padding: EdgeInsets.all(8),
-                          child: CircularProgressIndicator(),
+                          child: InsiteProgressBar(),
                         )
                       : SizedBox(),
                 ],
               ),
-              viewModel.refreshing
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SizedBox()
+              viewModel.refreshing ? InsiteProgressBar() : SizedBox()
             ],
           ),
         );

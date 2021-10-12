@@ -51,7 +51,6 @@ class _HealthViewState extends State<HealthView> {
             },
             screenType: ScreenType.HEALTH,
             body: Container(
-              color: bgcolor,
               child: Stack(
                 children: [
                   Column(

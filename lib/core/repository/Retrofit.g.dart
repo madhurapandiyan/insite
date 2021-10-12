@@ -2422,6 +2422,34 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<UpdateResponse> deleteUsers(
+      url, updateUserData, customerId, userId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(updateUserData, 'updateUserData');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(userId, 'userId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'X-VisionLink-UserUid': userId,
+              r'service': serviceHeader
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UpdateResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<AddUser> addUserData(url, customerId, updateUserData) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -2435,6 +2463,34 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'POST',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddUser.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AddUser> inviteUser(
+      url, updateUserData, customerId, userId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(updateUserData, 'updateUserData');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(userId, 'userId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'X-VisionLink-UserUid': userId,
+              r'service': serviceHeader
+            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
@@ -2463,11 +2519,11 @@ class _RestClient implements RestClient {
 
   @override
   Future<AdminManageUser> getAdminManagerUserListData(
-      url, customerId, xJWTAssertion, userId) async {
+      url, customerId, userId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(xJWTAssertion, 'xJWTAssertion');
     ArgumentError.checkNotNull(userId, 'userId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -2477,8 +2533,8 @@ class _RestClient implements RestClient {
             method: 'GET',
             headers: <String, dynamic>{
               r'x-visionlink-customeruid': customerId,
-              r'X-JWT-Assertion': xJWTAssertion,
-              r'X-VisionLink-UserUid': userId
+              r'X-VisionLink-UserUid': userId,
+              r'service': serviceHeader
             },
             extra: _extra,
             baseUrl: baseUrl),

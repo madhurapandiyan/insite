@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -141,7 +140,7 @@ class _SplashViewState extends State<SplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
         // setupListeners();
         return Scaffold(
-          backgroundColor: tango,
+          backgroundColor: Theme.of(context).buttonColor,
           body: SafeArea(
             child: Stack(
               children: [
@@ -151,7 +150,9 @@ class _SplashViewState extends State<SplashView> {
                       )
                     : SizedBox(),
                 Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),

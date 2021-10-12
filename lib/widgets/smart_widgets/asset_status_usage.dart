@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/asset_status_usage.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetStatusUsage extends StatefulWidget {
@@ -95,7 +96,7 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
             color: black,
           ),
           widget.isLoading
-              ? Expanded(child: Center(child: CircularProgressIndicator()))
+              ? Expanded(child: InsiteProgressBar())
               : new Row(
                   children: [
                     Expanded(

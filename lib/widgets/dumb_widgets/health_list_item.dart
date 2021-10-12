@@ -13,10 +13,6 @@ class HealthListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardcolor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          side: BorderSide(color: cardcolor)),
       child: Row(
         children: [
           Container(

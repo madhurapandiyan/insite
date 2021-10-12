@@ -1,3 +1,4 @@
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
@@ -21,11 +22,14 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   InsiteViewModel() {
     try {
-      PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-            if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
-                "com.trimble.insite.trimble" == packageInfo.packageName)
-              {isVisionLink = true}
-          });
+      if (AppConfig.instance.flavor == "visionlink") {
+        isVisionLink = true;
+      }
+      // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+      //       if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
+      //           "com.trimble.insite.trimble" == packageInfo.packageName)
+      //         {isVisionLink = true}
+      //     });
     } catch (e) {
       Logger().e(e);
     }

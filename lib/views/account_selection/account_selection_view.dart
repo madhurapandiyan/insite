@@ -4,6 +4,8 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
 import 'package:stacked/stacked.dart';
 import 'account_search_view.dart';
@@ -27,7 +29,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
       builder: (BuildContext context, AccountSelectionViewModel viewModel,
           Widget _) {
         return Scaffold(
-          backgroundColor: cod_grey,
+          backgroundColor: Theme.of(context).backgroundColor,
           appBar: InsiteAppBar(
               screenType: ScreenType.ACCOUNT,
               height: 56,
@@ -50,13 +52,10 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "LOGGED IN AS : ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
+                        child: InsiteText(
+                            text: "LOGGED IN AS : ",
+                            fontWeight: FontWeight.bold,
+                            size: 18),
                       ),
                       SizedBox(
                         height: 5,
@@ -67,7 +66,8 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                           viewModel.loggedInUserMail,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: Colors.white,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                         ),
@@ -83,7 +83,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                   height: 10,
                 ),
                 viewModel.loading
-                    ? CircularProgressIndicator()
+                    ? InsiteProgressBar()
                     : Stack(
                         children: [
                           Column(
@@ -179,9 +179,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                               ? Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.5,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
+                                  child: InsiteProgressBar(),
                                 )
                               : SizedBox(),
                           viewModel.youDontHavePermission

@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
@@ -63,10 +64,10 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
         return Column(
           children: [
             AppBar(
-              backgroundColor: appbarcolor,
               titleSpacing: 0,
               leading: IconButton(
-                  icon: SvgPicture.asset("assets/images/menubar.svg"),
+                  icon: SvgPicture.asset("assets/images/menubar.svg",
+                      color: Theme.of(context).buttonColor),
                   onPressed: () {
                     viewModel.onHomePressed();
                   }),
@@ -75,14 +76,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   InsiteImage(
                     height: 65,
                     width: 65,
-                    path: "assets/images/hitachi.png",
+                    path: AppConfig.instance.iconPath,
                   ),
                   SizedBox(
                     width: 20,
                   ),
                   InsiteTextOverFlow(
                     text: Utils.getPageTitle(screenType),
-                    color: Colors.black,
+                    color: Theme.of(context).buttonColor,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.bold,
                     size: 16,
@@ -94,7 +95,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ? IconButton(
                         icon: Icon(
                           Icons.account_circle_rounded,
-                          color: Colors.black,
+                          color: Theme.of(context).buttonColor,
                         ),
                         onPressed: () {
                           viewModel.onAccountPressed();
@@ -102,12 +103,16 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : SizedBox(),
                 shouldShowRefine
                     ? Container(
-                        color: isRefineSelected ? mediumgrey : appbarcolor,
+                        color: isRefineSelected
+                            ? Theme.of(context).buttonColor
+                            : appbarcolor,
                         child: count != null && count > 0
                             ? IconButton(
                                 icon: Icon(
                                   Icons.filter_list,
-                                  color: isRefineSelected ? white : black,
+                                  color: isRefineSelected
+                                      ? white
+                                      : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
                                   onRefineTap();
@@ -116,7 +121,9 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                             : IconButton(
                                 icon: Icon(
                                   Icons.filter_list,
-                                  color: isRefineSelected ? white : black,
+                                  color: isRefineSelected
+                                      ? white
+                                      : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
                                   onRefineTap();
@@ -126,20 +133,24 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : SizedBox(),
                 shouldShowFilter
                     ? Container(
-                        color: isFilterSelected ? mediumgrey : appbarcolor,
+                        color: isFilterSelected
+                            ? Theme.of(context).buttonColor
+                            : appbarcolor,
                         child: count != null && count > 0
                             ? Badge(
                                 badgeContent: Text(count.toString(),
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).buttonColor,
                                     )),
-                                badgeColor: tango,
+                                badgeColor: white,
                                 position:
                                     BadgePosition.topStart(start: 25, top: 1),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     "assets/images/filter.svg",
-                                    color: isFilterSelected ? white : black,
+                                    color: isFilterSelected
+                                        ? white
+                                        : Theme.of(context).buttonColor,
                                   ),
                                   onPressed: () {
                                     onFilterTap();
@@ -149,7 +160,9 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                             : IconButton(
                                 icon: SvgPicture.asset(
                                   "assets/images/filter.svg",
-                                  color: isFilterSelected ? white : black,
+                                  color: isFilterSelected
+                                      ? white
+                                      : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
                                   onFilterTap();
@@ -159,11 +172,15 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     : SizedBox(),
                 shouldShowSearch
                     ? Container(
-                        color: isSearchSelected ? mediumgrey : appbarcolor,
+                        color: isSearchSelected
+                            ? Theme.of(context).buttonColor
+                            : appbarcolor,
                         child: IconButton(
                           icon: SvgPicture.asset(
                             "assets/images/searchs.svg",
-                            color: isSearchSelected ? white : black,
+                            color: isSearchSelected
+                                ? white
+                                : Theme.of(context).buttonColor,
                           ),
                           onPressed: () {
                             onSearchTap();
@@ -175,7 +192,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ? IconButton(
                         icon: Icon(
                           Icons.logout,
-                          color: Colors.black,
+                          color: Theme.of(context).buttonColor,
                         ),
                         onPressed: () {
                           showLogoutPrompt(viewModel, context);
@@ -195,10 +212,10 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   ? viewModel.accountSelected.DisplayName
                                   : ""
                           : viewModel.accountSelected != null &&
-                                  viewModel.accountSelected.DisplayName != null
+                                  viewModel.accountSelected.DisplayName !=
+                                      null
                               ? viewModel.accountSelected.DisplayName
                               : "",
-                      color: Colors.white,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.normal,
                       size: 12,

@@ -15,11 +15,24 @@ class UpdateResponse {
 @JsonSerializable()
 class DeleteUserData {
   List<String> users;
-  DeleteUserData({this.users});
+  DeleteUserData({
+    this.users,
+  });
   factory DeleteUserData.fromJson(Map<String, dynamic> json) =>
       _$DeleteUserDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$DeleteUserDataToJson(this);
+}
+
+@JsonSerializable()
+class DeleteUserDataIndStack {
+  List<String> users;
+  String customerUid;
+  DeleteUserDataIndStack({this.users, this.customerUid});
+  factory DeleteUserDataIndStack.fromJson(Map<String, dynamic> json) =>
+      _$DeleteUserDataIndStackFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeleteUserDataIndStackToJson(this);
 }
 
 @JsonSerializable()
@@ -56,6 +69,40 @@ class AddUserData {
       _$AddUserDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$AddUserDataToJson(this);
+}
+
+@JsonSerializable()
+class AddUserDataIndStack {
+  AddUserDataIndStack(
+      {this.fname,
+      this.lname,
+      this.email,
+      this.phone,
+      this.address,
+      this.details,
+      this.roles,
+      this.src,
+      this.isAssetSecurityEnabled,
+      this.company,
+      this.language,
+      this.customerUid});
+
+  String fname;
+  String lname;
+  String email;
+  String phone;
+  String company;
+  AddressData address;
+  Details details;
+  List<Role> roles;
+  String src;
+  String language;
+  String customerUid;
+  bool isAssetSecurityEnabled;
+  factory AddUserDataIndStack.fromJson(Map<String, dynamic> json) =>
+      _$AddUserDataIndStackFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AddUserDataIndStackToJson(this);
 }
 
 @JsonSerializable()

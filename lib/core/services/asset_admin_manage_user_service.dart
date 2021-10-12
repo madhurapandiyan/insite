@@ -56,14 +56,14 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-                "Bearer" + " " + await _localService.getToken(),
-                (await _localService.getLoggedInUser()).sub);
+                (await _localService.getLoggedInUser()).sub,
+                "in-identitymanager-identitywebapi");
         return adminManageUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<ManageUser> getUser(String userId) async {
@@ -271,16 +271,15 @@ class AssetAdminManagerUserService extends BaseService {
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
             "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
-        AddUser addUserResponse = await MyApi().getClientSeven().addUserData(
-            Urls.addUserSummaryVL,
-            accountSelected.CustomerUID,
-            AddUserData(
+        AddUser addUserResponse = await MyApi().getClientSeven().inviteUser(
+            Urls.adminManagerUserSumary + "/Invite",
+            AddUserDataIndStack(
                 fname: firstName,
+                customerUid: accountSelected.CustomerUID,
                 lname: lastName,
-                cwsEmail: email,
-                sso_id: sso_id,
+                email: email,
                 phone: phoneNumber,
-                isCATSSOUserCreation: true,
+                isAssetSecurityEnabled: true,
                 src: "VisionLink",
                 company: "NYL",
                 language: "en-US",
@@ -294,7 +293,10 @@ class AssetAdminManagerUserService extends BaseService {
                 details: Details(
                     job_title: jobTitle,
                     job_type: jobType,
-                    user_type: userType)));
+                    user_type: "Standard")),
+            accountSelected.CustomerUID,
+            (await _localService.getLoggedInUser()).sub,
+            "in-identitymanager-identitywebapi");
         return addUserResponse;
       }
     } catch (e) {
@@ -304,10 +306,23 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<dynamic> deleteUsers(users) async {
-    var result = await MyApi().getClientSeven().deleteUsersData(
-        Urls.adminManagerUserSumaryVL,
-        accountSelected.CustomerUID,
-        DeleteUserData(users: users));
-    return result;
+    if (isVisionLink) {
+      var result = await MyApi().getClientSeven().deleteUsersData(
+          Urls.adminManagerUserSumaryVL,
+          accountSelected.CustomerUID,
+          DeleteUserData(users: users));
+      return result;
+    } else {
+      var result = await MyApi().getClientSeven().deleteUsers(
+          Urls.adminManagerUserSumary,
+          DeleteUserDataIndStack(
+            users: users,
+            customerUid: accountSelected.CustomerUID,
+          ),
+          accountSelected.CustomerUID,
+          (await _localService.getLoggedInUser()).sub,
+          "in-identitymanager-identitywebapi");
+      return result;
+    }
   }
 }

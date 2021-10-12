@@ -4,13 +4,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/router_constants.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/filter/refine.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/views/error/error_widget.dart' as error;
 
@@ -49,7 +49,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
-        backgroundColor: bgcolor,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(
           shouldShowAccount:
               widget.screenType == ScreenType.HOME ? true : false,
@@ -91,12 +91,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-<<<<<<< HEAD
-                  widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.ADMINISTRATION
-=======
                   widget.screenType == ScreenType.LOCATION
->>>>>>> dc0f6266c8ec583faeb594151700dc82c1ea6337
               ? true
               : false,
           isRefineSelected: _isRefineSelected,
@@ -204,6 +199,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   }
 
   Future<bool> onBackPressed() {
+    Logger().i("onBackPressed");
     if (_isSearchSelected) {
       setState(() {
         _isSearchSelected = !_isSearchSelected;

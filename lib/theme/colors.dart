@@ -54,9 +54,81 @@ const Color cardBackgroundOne = Color(0xff303238);
 const Color buttonColorFive = Color(0xffEB5757);
 
 // borderLineColor
-
 const Color borderLineColor = Color(0xFF282828);
 
 //addUserbgColor
-
 const addUserBgColor = Color(0XFF0C0B0B);
+
+//blue/white theme
+const backgroundColor1 = Color(0XFFFFFFFF);
+const appBarbackgroundColor1 = Color(0XFF0C0B0B);
+const cardBackgroundColor1 = Color(0XFFFFFFFF);
+const cardSelectedBackgroundColor1 = Color(0XFFFFFFFF);
+const textColor1 = Color(0XFF000000);
+const iconColor1 = Color(0XFF000000);
+const textSelectedColor1 = Color(0XFF000000);
+const buttonColor1 = Color(0XFF00437A);
+const buttonColor2 = Color(0XFFFFFFFF);
+const buttonSelectedColor1 = Color(0XFF00437A);
+const dividerColor1 = Color(0XFF000000);
+
+//orange/white theme
+const backgroundColor2 = Color(0xFF211F20);
+const appBarbackgroundColor2 = Color(0XFFFFFFFF);
+const cardBackgroundColor2 = Color(0XFF303238);
+const cardSelectedBackgroundColor2 = Color(0XFF000000);
+const textColor2 = Color(0XFFFFFFFF);
+const iconColor2 = Color(0XFFFFFFFF);
+const textSelectedColor2 = Color(0XFFFFFFFF);
+const buttonColor21 = Color(0xffF37021);
+const buttonColor22 = Color(0XFF000000);
+const buttonSelectedColor2 = Color(0xffF37021);
+const dividerColor2 = Color(0XFF000000);
+
+var indiaStackBlueWhite = ThemeData(
+    cardColor: cardBackgroundColor1,
+    backgroundColor: backgroundColor1,
+    fontFamily: 'Roboto',
+    buttonColor: buttonColor1,
+    dividerColor: dividerColor1,
+    iconTheme: IconThemeData(
+      color: iconColor1,
+    ),
+    cardTheme: CardTheme(
+        color: cardBackgroundColor1,
+        elevation: 10.0,
+        shadowColor: cardBackgroundColor1,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: Colors.white, width: 1))),
+    buttonTheme: ButtonThemeData(
+      buttonColor: buttonColor1,
+    ),
+    textTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
+    appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+    accentColor: Colors.white);
+
+var indiaStackOrangeBlack = ThemeData(
+    cardColor: cardBackgroundColor2,
+    backgroundColor: backgroundColor2,
+    fontFamily: 'Roboto',
+    buttonColor: buttonColor21,
+    dividerColor: dividerColor2,
+    iconTheme: IconThemeData(
+      color: iconColor2,
+    ),
+    cardTheme: CardTheme(
+        color: cardBackgroundColor2,
+        elevation: 10.0,
+        shadowColor: cardBackgroundColor2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: cardBackgroundColor2, width: 1))),
+    buttonTheme: ButtonThemeData(
+      buttonColor: buttonColor21,
+    ),
+    textTheme: TextTheme(
+      bodyText1: TextStyle(color: textColor2),
+    ),
+    appBarTheme: AppBarTheme(backgroundColor: appBarbackgroundColor2),
+    accentColor: Colors.white);

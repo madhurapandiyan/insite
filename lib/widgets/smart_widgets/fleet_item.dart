@@ -18,10 +18,6 @@ class FleetListItem extends StatelessWidget {
         onCallback();
       },
       child: Card(
-        color: cardcolor,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(color: cardcolor)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

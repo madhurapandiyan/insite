@@ -4,6 +4,8 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
+import 'insite_text.dart';
+
 class LocationInfoWindowWidget extends StatelessWidget {
   final int assetCount;
   final String infoText;
@@ -26,7 +28,9 @@ class LocationInfoWindowWidget extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.30,
           decoration: BoxDecoration(
-            color: cardcolor,
+            color: Theme.of(context).backgroundColor,
+            border:
+                Border.all(color: Theme.of(context).textTheme.bodyText1.color),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -36,37 +40,33 @@ class LocationInfoWindowWidget extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Cluster Info",
-                      style: new TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w700,
-                          color: silver),
+                    child: InsiteText(
+                      text: "Cluster Info",
+                      size: 13.0,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   GestureDetector(
                       onTap: onCustomWindowClose,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.asset("assets/images/mapclose.png"),
+                        child: Image.asset(
+                          "assets/images/mapclose.png",
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                       ))
                 ],
               ),
               Container(
                 width: 216,
-                color: thunder,
                 child: Padding(
                   padding: EdgeInsets.only(left: 38, top: 5.0, bottom: 5.0),
-                  child: Text(
-                    assetCount > 1
+                  child: InsiteText(
+                    text: assetCount > 1
                         ? assetCount.toString() + " " + "Assets"
                         : "Serialnumber \n $infoText",
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w700,
-                        color: silver),
+                    size: 13.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -77,7 +77,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.30,
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
-                  bgColor: tango,
+                  bgColor: Theme.of(context).buttonColor,
                   title: assetCount > 1
                       ? type == ScreenType.DASHBOARD
                           ? "  Fleet List  "
@@ -92,7 +92,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.30,
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
-                  bgColor: tango,
+                  bgColor: Theme.of(context).buttonColor,
                   title: assetCount > 1
                       ? type == ScreenType.DASHBOARD
                           ? " Location "

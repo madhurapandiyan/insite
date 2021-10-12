@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 import 'global_search_view_model.dart';
 
@@ -15,33 +17,33 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
   final searchController = TextEditingController();
   String dropdownValue = 'All';
 
-  var searchBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(16.0)),
-    borderSide: BorderSide(
-      color: Colors.transparent,
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GlobalSearchViewModel>.reactive(
       builder:
           (BuildContext context, GlobalSearchViewModel viewModel, Widget _) {
         return Container(
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+              border: Border.all(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
           height: MediaQuery.of(context).size.height * 0.4,
           child: viewModel.loading
               ? Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.35,
-                  color: tuna,
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: InsiteProgressBar(),
                   ),
                 )
               : Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.35,
-                  color: tuna,
                   child: Column(
                     children: [
                       Padding(
@@ -61,8 +63,22 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: white,
-                            border: searchBorder,
-                            focusedBorder: searchBorder,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0)),
+                              borderSide: BorderSide(
+                                color:
+                                    Theme.of(context).textTheme.bodyText1.color,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0)),
+                              borderSide: BorderSide(
+                                color:
+                                    Theme.of(context).textTheme.bodyText1.color,
+                              ),
+                            ),
                             // hiding drop down menu for global search
                             // prefixIcon: Padding(
                             //   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -86,7 +102,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               },
                               child: Icon(
                                 Icons.close,
-                                color: mediumgrey,
+                                color: Theme.of(context).iconTheme.color,
                               ),
                             ),
                           ),
@@ -115,19 +131,17 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                                           .size
                                                           .width *
                                                       0.1),
-                                              child: Text(
-                                                match.serialNumber,
-                                                style: TextStyle(
-                                                    color: white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
-                                              ),
+                                              child: InsiteText(
+                                                  text: match.serialNumber,
+                                                  fontWeight: FontWeight.bold,
+                                                  size: 18),
                                             ),
                                           ),
                                           Divider(
                                             height: 30,
-                                            thickness: 3,
-                                            color: mediumgrey,
+                                            thickness: 1,
+                                            color:
+                                                Theme.of(context).dividerColor,
                                           ),
                                         ],
                                       ),
@@ -141,10 +155,11 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(
-                                  'Showing ${viewModel.searchData.topMatches.length} out of ${viewModel.searchData.totalCount} Assets',
-                                  style: TextStyle(color: white, fontSize: 12),
-                                ),
+                                InsiteText(
+                                    text:
+                                        'Showing ${viewModel.searchData.topMatches.length} out of ${viewModel.searchData.totalCount} Assets',
+                                    color: white,
+                                    size: 12),
                                 // TextButton(
                                 //   onPressed: () {},
                                 //   child: Text(

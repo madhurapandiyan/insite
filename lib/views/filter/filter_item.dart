@@ -88,16 +88,18 @@ class FilterItemState extends State<FilterItem> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text(
-        Utils.getTitle(widget.filterType),
-        style: TextStyle(color: Colors.white),
+      title: InsiteText(
+        text: Utils.getTitle(widget.filterType),
+        size: 14,
+        fontWeight: FontWeight.normal,
       ),
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: bgcolor,
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
           child: Column(
             children: [
               list.isNotEmpty
@@ -111,9 +113,11 @@ class FilterItemState extends State<FilterItem> {
                     )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Not available",
-                        style: TextStyle(color: Colors.white),
+                      child: InsiteText(
+                        text: "Not available",
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                        size: 14,
                       ),
                     ),
               _displayList.where((element) => element.isSelected).length > 0
@@ -126,7 +130,7 @@ class FilterItemState extends State<FilterItem> {
                           InsiteRichText(
                             title: "",
                             content: "CLEAR FILTERS",
-                            textColor: Colors.white,
+                            textColor: Theme.of(context).buttonColor,
                             onTap: () {
                               Logger().d("clear filter");
                               clearFilter();
@@ -171,29 +175,27 @@ class FilterItemState extends State<FilterItem> {
                           .toList());
                     },
                     child: Container(
-                      color: data.isSelected ? tango : bgcolor,
+                      color: data.isSelected
+                          ? Theme.of(context).buttonColor
+                          : Theme.of(context).backgroundColor,
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "(" + data.count + ") ",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          Expanded(
-                            child: Text(
-                              Utils.getFilterTitleForList(data),
+                          InsiteTextOverFlow(
+                              text: "(" + data.count + ") ",
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                            ),
+                              color: data.isSelected ? white : null,
+                              fontWeight: FontWeight.bold,
+                              size: 16),
+                          Expanded(
+                            child: InsiteText(
+                                text: Utils.getFilterTitleForList(data),
+                                // overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.bold,
+                                color: data.isSelected ? white : null,
+                                size: 16),
                           ),
                           IconButton(
                               icon: Icon(

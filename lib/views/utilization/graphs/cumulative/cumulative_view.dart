@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/cumulative_chart.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
@@ -39,8 +40,7 @@ class CumulativeViewState extends State<CumulativeView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<CumulativeViewModel>.reactive(
       builder: (BuildContext context, CumulativeViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -95,11 +95,7 @@ class CumulativeViewState extends State<CumulativeView> {
                 ),
               ],
             ),
-            viewModel.isRefreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
+            viewModel.isRefreshing ? InsiteProgressBar() : SizedBox()
           ],
         );
       },

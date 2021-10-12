@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class FuelLevel extends StatelessWidget {
@@ -22,115 +23,107 @@ class FuelLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.35,
-      decoration: BoxDecoration(
-        color: tuna,
-        border: Border.all(color: black, width: 0.0),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    // Icon(
-                    //   Icons.keyboard_arrow_down,
-                    //   color: white,
-                    // ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      title.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    // Icon(
-                    // Icons.more_vert,
-                    // color: white,
-                    // ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Divider(
-                    color: shark,
-                    thickness: 2,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        lifeTimeFuel.toUpperCase(),
-                        style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
+    return Card(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.height * 0.38,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      // Icon(
+                      //   Icons.keyboard_arrow_down,
+                      //   color: white,
+                      // ),
+                      SizedBox(
+                        width: 10,
                       ),
+                      InsiteText(
+                          text: title.toUpperCase(),
+                          fontWeight: FontWeight.bold,
+                          size: 15),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      // Icon(
+                      // Icons.more_vert,
+                      // color: white,
+                      // ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(
+                      color: Theme.of(context).dividerColor,
+                      thickness: 1,
                     ),
-                    value != null && percentage != null
-                        ? Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Container(
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: InsiteText(
+                            text: lifeTimeFuel.toUpperCase(),
+                            fontWeight: FontWeight.bold,
+                            size: 14),
+                      ),
+                      value != null && percentage != null
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Container(
+                                height: 175,
+                                width: 175,
+                                child: LiquidCircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(liquidColor),
+                                  value: value / 100,
+                                  center: InsiteText(
+                                      text: percentage + "%",
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      size: 25),
+                                  backgroundColor:
+                                      Theme.of(context).backgroundColor,
+                                  borderColor: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
+                                  borderWidth: 2.0,
+                                  direction: Axis.vertical,
+                                ),
+                              ),
+                            )
+                          : SizedBox(
                               height: 175,
                               width: 175,
-                              child: LiquidCircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(liquidColor),
-                                value: value / 100,
-                                center: Text(
-                                  percentage + "%",
-                                  style: TextStyle(
-                                      color: white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                ),
-                                backgroundColor: tuna,
-                                borderColor: shark,
-                                borderWidth: 5.0,
-                                direction: Axis.vertical,
-                              ),
                             ),
-                          )
-                        : SizedBox(
-                            height: 175,
-                            width: 175,
-                          ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: shark,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16)),
+                    ],
+                  ),
+                ],
               ),
-              child: Center(
-                child: Text(
-                  lastReported,
-                  style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            Divider(
+              color: Theme.of(context).dividerColor,
+              thickness: 1,
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(8),
+                width: double.infinity,
+                child: Center(
+                  child: InsiteText(
+                      text: lastReported,
+                      fontWeight: FontWeight.bold,
+                      size: 14),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

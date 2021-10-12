@@ -8,6 +8,8 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
@@ -50,9 +52,7 @@ class _LocationViewState extends State<LocationView> {
               viewModel.refresh();
             },
             body: viewModel.loading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? InsiteProgressBar()
                 : viewModel.assetLocation != null
                     ? Column(
                         children: [
@@ -67,32 +67,20 @@ class _LocationViewState extends State<LocationView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
+                                InsiteButton(
+                                  title: "Refresh",
+                                  width: 90,
+                                  height: 30,
+                                  bgColor: Theme.of(context).backgroundColor,
+                                  textColor: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
                                   onTap: () {
                                     viewModel.customInfoWindowController
                                         .hideInfoWindow();
                                     viewModel.refresh();
                                   },
-                                  child: Container(
-                                    width: 90,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: tuna,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(4),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Refresh',
-                                        style: TextStyle(
-                                          color: white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -240,21 +228,32 @@ class _LocationViewState extends State<LocationView> {
                                           width: 27.47,
                                           height: 26.97,
                                           decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .backgroundColor,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5.0)),
                                             boxShadow: [
                                               BoxShadow(
                                                 blurRadius: 1.0,
-                                                color: darkhighlight,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color,
                                               ),
                                             ],
                                             border: Border.all(
                                                 width: 1.0,
-                                                color: darkhighlight),
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color),
                                             shape: BoxShape.rectangle,
                                           ),
                                           child: SvgPicture.asset(
                                             "assets/images/plus.svg",
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
                                           ),
                                         ),
                                       ),
@@ -283,30 +282,39 @@ class _LocationViewState extends State<LocationView> {
                                             width: 27.47,
                                             height: 26.97,
                                             decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .backgroundColor,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5.0)),
                                               boxShadow: [
                                                 BoxShadow(
                                                   blurRadius: 1.0,
-                                                  color: darkhighlight,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color,
                                                 ),
                                               ],
                                               border: Border.all(
                                                   width: 1.0,
-                                                  color: darkhighlight),
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color),
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
                                               "assets/images/minus.svg",
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
                                             ),
                                           )),
                                     ],
                                   ),
                                 ),
                                 viewModel.refreshing
-                                    ? Center(
-                                        child: CircularProgressIndicator(),
-                                      )
+                                    ? InsiteProgressBar()
                                     : SizedBox()
                               ],
                             ),

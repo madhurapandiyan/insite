@@ -6,8 +6,11 @@ import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -37,9 +40,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
       builder: (BuildContext context, SingleAssetOperationViewModel viewModel,
           Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(
@@ -47,7 +48,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                color: mediumgrey),
+                color: Theme.of(context).backgroundColor),
             child: Stack(
               children: [
                 Column(
@@ -57,48 +58,37 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
+                          InsiteButton(
+                            title: "Refresh",
+                            width: 90,
+                            height: 30,
+                            bgColor: Theme.of(context).backgroundColor,
+                            textColor:
+                                Theme.of(context).textTheme.bodyText1.color,
                             onTap: () {
                               viewModel.refresh();
                             },
-                            child: Container(
-                              width: 90,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: tuna,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(4),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Refresh',
-                                  style: TextStyle(
-                                    color: white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
                           ),
                           Row(
                             children: [
-                              Text(
-                                Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                                style: TextStyle(
-                                    color: white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12),
-                              ),
+                              InsiteText(
+                                  text: Utils.getDateInFormatddMMyyyy(
+                                          viewModel.startDate) +
+                                      " - " +
+                                      Utils.getDateInFormatddMMyyyy(
+                                          viewModel.endDate),
+                                  fontWeight: FontWeight.bold,
+                                  size: 12),
                               SizedBox(
                                 width: 10,
                               ),
-                              GestureDetector(
+                              InsiteButton(
+                                title: "Date Range",
+                                width: 90,
+                                height: 30,
+                                bgColor: Theme.of(context).backgroundColor,
+                                textColor:
+                                    Theme.of(context).textTheme.bodyText1.color,
                                 onTap: () async {
                                   dateRange = await showDialog(
                                     context: context,
@@ -114,26 +104,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                     viewModel.refresh();
                                   }
                                 },
-                                child: Container(
-                                  width: 90,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: tuna,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(4),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Date Range',
-                                      style: TextStyle(
-                                        color: white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ),
                             ],
                           ),
@@ -236,18 +206,27 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                               children: [
                                 SfCalendar(
                                   showNavigationArrow: false,
-                                  backgroundColor: ship_grey,
+                                  backgroundColor:
+                                      Theme.of(context).backgroundColor,
                                   cellBorderColor: black,
                                   showCurrentTimeIndicator: false,
                                   controller: calendarController,
                                   view: CalendarView.week,
-                                  todayTextStyle: TextStyle(color: ship_grey),
+                                  todayTextStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color),
                                   timeSlotViewSettings: TimeSlotViewSettings(
                                     dateFormat: 'd',
                                     dayFormat: 'MMM',
                                     timeIntervalHeight:
                                         sfCalendarTimeIntervalHeight,
-                                    timeTextStyle: TextStyle(color: white),
+                                    timeTextStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
                                   ),
                                   minDate: DateFormat("yyyy-MM-dd")
                                       .parse(viewModel.startDate),
@@ -255,9 +234,18 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                       .parse(viewModel.endDate),
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
-                                    dayTextStyle: TextStyle(color: white),
-                                    dateTextStyle: TextStyle(color: white),
-                                    backgroundColor: tuna,
+                                    dayTextStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
+                                    dateTextStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
+                                    backgroundColor:
+                                        Theme.of(context).backgroundColor,
                                   ),
                                   dataSource: AppointmentDataSource(
                                     getRecursiveAppointments(
@@ -346,11 +334,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                     ),
                   ],
                 ),
-                viewModel.refreshing
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SizedBox()
+                viewModel.refreshing ? InsiteProgressBar() : SizedBox()
               ],
             ),
           );
@@ -382,7 +366,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
           final Appointment chartPlot = Appointment(
               startTime: item.startTime.toLocal(),
               endTime: item.endTime.toLocal(),
-              color: tango,
+              color: Theme.of(context).buttonColor,
               subject: ""
               //making subject empty
               // subject: item.segmentType,

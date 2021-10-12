@@ -19,10 +19,17 @@ class FuelBurnRateGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: SfCartesianChart(
-        title: ChartTitle(textStyle: TextStyle(color: white), text: ''),
+        title: ChartTitle(
+            textStyle:
+                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+            text: ''),
         primaryXAxis: CategoryAxis(
-          title: AxisTitle(text: '', textStyle: TextStyle(color: white)),
-          labelStyle: TextStyle(color: white),
+          title: AxisTitle(
+              text: '',
+              textStyle: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
+          labelStyle:
+              TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
           majorGridLines: MajorGridLines(width: 0),
           labelRotation: 270,
         ),
@@ -30,10 +37,12 @@ class FuelBurnRateGraph extends StatelessWidget {
         primaryYAxis: NumericAxis(
           title: AxisTitle(
               text: 'Fuel Burned Rate (Liters per hour)',
-              textStyle: TextStyle(color: white)),
+              textStyle: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
           numberFormat: NumberFormat.compact(),
           axisLine: AxisLine(width: 1),
-          labelStyle: TextStyle(color: white),
+          labelStyle:
+              TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
           majorGridLines: MajorGridLines(width: 0),
         ),
         tooltipBehavior: TooltipBehavior(),

@@ -11,6 +11,8 @@ import 'package:insite/views/detail/tabs/location/asset_location.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
@@ -99,108 +101,98 @@ class _TabPageState extends State<AssetDetailView> {
           onFilterApplied: () {},
           onRefineApplied: () {},
           body: viewModel.loading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? InsiteProgressBar()
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: double.maxFinite,
+                      width: 385,
+                      height: 83,
                       margin:
                           EdgeInsets.only(left: 14.0, right: 15.0, top: 20.0),
-                      child: Container(
-                        width: 385,
-                        height: 83,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 1.0, color: cardcolor)
-                          ],
-                          border: Border.all(width: 2.5, color: cardcolor),
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Table(children: [
-                          TableRow(children: [
-                            Column(
-                              children: [
-                                Row(children: [
-                                  // Padding(
-                                  //   padding: EdgeInsets.only(
-                                  //       left: 2.0, bottom: 15.0),
-                                  //   child: SvgPicture.asset(
-                                  //       "assets/images/arrowdown.svg"),
-                                  // ),
-                                  SizedBox(width: 10.0),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 13.0),
-                                    child: Container(
-                                      width: 58.7,
-                                      height: 54,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              blurRadius: 1.0,
-                                              color: containercolor)
-                                        ],
-                                        border: Border.all(
-                                            width: 2.5, color: containercolor),
-                                        shape: BoxShape.rectangle,
-                                      ),
-                                      child: Image.asset(
-                                          "assets/images/truck.png"),
-                                    ),
-                                  ),
-                                  SizedBox(width: 15.0),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 38.0),
-                                              child: RichText(
-                                                  text: TextSpan(children: [
-                                                TextSpan(
-                                                  text: viewModel.assetDetail
-                                                      .assetSerialNumber,
-                                                  style: TextStyle(
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                      fontSize: 13.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: tango),
-                                                )
-                                              ])),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 15.0),
-                                        Text(
-                                          viewModel.assetDetail.dealerName,
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w700,
-                                              color: textcolor,
-                                              fontSize: 12.0),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ]),
-                              ],
-                            ),
-                          ]),
-                        ]),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: 1.0,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color)
+                        ],
+                        color: Theme.of(context).backgroundColor,
+                        border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).textTheme.bodyText1.color),
+                        shape: BoxShape.rectangle,
                       ),
+                      child: Table(children: [
+                        TableRow(children: [
+                          Column(
+                            children: [
+                              Row(children: [
+                                // Padding(
+                                //   padding: EdgeInsets.only(
+                                //       left: 2.0, bottom: 15.0),
+                                //   child: SvgPicture.asset(
+                                //       "assets/images/arrowdown.svg"),
+                                // ),
+                                SizedBox(width: 10.0),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 13.0),
+                                  child: Container(
+                                    width: 58.7,
+                                    height: 54,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      border: Border.all(
+                                          width: 1, color: containercolor),
+                                      shape: BoxShape.rectangle,
+                                    ),
+                                    child:
+                                        Image.asset("assets/images/truck.png"),
+                                  ),
+                                ),
+                                SizedBox(width: 15.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            child: InsiteRichText(
+                                              title: "",
+                                              onTap: () {},
+                                              content: viewModel.assetDetail
+                                                  .assetSerialNumber,
+                                            ),
+                                            padding:
+                                                EdgeInsets.only(right: 38.0),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15.0),
+                                      Text(
+                                        viewModel.assetDetail.dealerName,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color,
+                                            fontSize: 12.0),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ]),
+                      ]),
                     ),
                     SizedBox(
                       height: 10.0,
@@ -213,10 +205,11 @@ class _TabPageState extends State<AssetDetailView> {
                         height: 41,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 1.0, color: cardcolor)
-                          ],
-                          border: Border.all(width: 2.5, color: cardcolor),
+                          color: Theme.of(context).backgroundColor,
+                          border: Border.all(
+                              width: 1,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color),
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
@@ -226,7 +219,10 @@ class _TabPageState extends State<AssetDetailView> {
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w700,
-                                    color: textcolor,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 11.0)),
                             SizedBox(width: 15.0),
@@ -243,7 +239,10 @@ class _TabPageState extends State<AssetDetailView> {
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w700,
-                                    color: textcolor,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color,
                                     fontStyle: FontStyle.normal,
                                     fontSize: 11.0),
                               ),
@@ -333,10 +332,13 @@ class _TabPageState extends State<AssetDetailView> {
             width: 80,
             height: 80,
             child: Card(
-              color:
-                  selectedTabIndex == index ? mediumgrey : Colors.transparent,
+              color: selectedTabIndex == index
+                  ? Theme.of(context).buttonColor
+                  : Theme.of(context).backgroundColor,
               semanticContainer: true,
               shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
@@ -348,14 +350,25 @@ class _TabPageState extends State<AssetDetailView> {
               height: 60,
               child: Card(
                 semanticContainer: true,
-                color: selectedTabIndex == index ? tango : cardcolor,
+                color: selectedTabIndex == index
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).backgroundColor,
                 elevation: 10.0,
                 shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: selectedTabIndex == index
+                          ? Theme.of(context).backgroundColor
+                          : Theme.of(context).textTheme.bodyText1.color),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [SvgPicture.asset(category.image)],
+                  children: [
+                    SvgPicture.asset(category.image,
+                        color: selectedTabIndex == index
+                            ? Theme.of(context).backgroundColor
+                            : Theme.of(context).iconTheme.color)
+                  ],
                 ),
               )),
         ],

@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_user_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -22,7 +23,6 @@ class ManageUserView extends StatelessWidget {
             onFilterApplied: () {},
             onRefineApplied: () {},
             body: Container(
-              color: bgcolor,
               height: MediaQuery.of(context).size.height,
               child: Stack(
                 children: [
@@ -38,7 +38,6 @@ class ManageUserView extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 21.0),
                               child: InsiteText(
                                 text: "manage users".toUpperCase(),
-                                color: textcolor,
                                 size: 14,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -142,9 +141,7 @@ class ManageUserView extends StatelessWidget {
                       viewModel.loading
                           ? Padding(
                               padding: const EdgeInsets.only(top: 60.0),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
+                              child: InsiteProgressBar(),
                             )
                           : viewModel.assets.isNotEmpty
                               ? Expanded(
@@ -167,7 +164,7 @@ class ManageUserView extends StatelessWidget {
                       viewModel.loadingMore
                           ? Padding(
                               padding: EdgeInsets.all(8),
-                              child: CircularProgressIndicator())
+                              child: InsiteProgressBar())
                           : SizedBox()
                     ],
                   )

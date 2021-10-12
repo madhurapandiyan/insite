@@ -10,6 +10,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_list_view.dart'
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -101,23 +102,15 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         child: Padding(
                             padding: const EdgeInsets.only(left: 23.0),
                             child: widget.user != null
-                                ? Text(
-                                    "Edit user",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: textcolor,
-                                        fontSize: 14,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: "Roboto"),
+                                ? InsiteText(
+                                    text: "Edit user",
+                                    fontWeight: FontWeight.w700,
+                                    size: 14,
                                   )
-                                : Text(
-                                    "Add New User",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: textcolor,
-                                        fontSize: 14,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: "Roboto"),
+                                : InsiteText(
+                                    text: "Add New User",
+                                    fontWeight: FontWeight.w700,
+                                    size: 14,
                                   )),
                       ),
                       // Padding(
@@ -183,14 +176,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Application Permissions : (Definitions)",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          fontStyle: FontStyle.normal,
-                          color: silver,
-                        ),
+                      child: InsiteText(
+                        text: "Application Permissions : (Definitions)",
+                        fontWeight: FontWeight.w700,
+                        size: 14,
                       ),
                     ),
                   ),
@@ -268,13 +257,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Asset Security",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: silver,
-                            fontSize: 14,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: "Asset Security",
+                        fontWeight: FontWeight.w700,
+                        size: 14,
                       ),
                     ),
                   ),
@@ -307,13 +293,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       SizedBox(
                         width: 20,
                       ),
-                      Text(
-                        "Allow access to asset security",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            color: silver,
-                            fontStyle: FontStyle.normal),
+                      InsiteText(
+                        text: "Allow access to asset security",
+                        fontWeight: FontWeight.w700,
+                        size: 14,
                       )
                     ],
                   ),
@@ -324,13 +307,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Job Type :",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: silver,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: "Job Type :",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -363,13 +343,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Job Title :",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: silver,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: "Job Title :",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -402,13 +379,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Address :",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: silver,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: "Address :",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -454,7 +428,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                           width: MediaQuery.of(context).size.width * 0.38,
                           height: MediaQuery.of(context).size.height * 0.05,
                           child: CustomTextBox(
-                            title: "",
+                            title: "Pin code",
                             controller: _pinCodeController,
                           )),
                     ],
@@ -466,13 +440,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "Language :",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: silver,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: "Language :",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -504,14 +475,12 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   Padding(
                     padding: const EdgeInsets.only(left: 53.0),
                     child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Preferences",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: silver,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal)),
-                    ),
+                        alignment: Alignment.topLeft,
+                        child: InsiteText(
+                          text: "Preferences",
+                          size: 14,
+                          fontWeight: FontWeight.w700,
+                        )),
                   ),
                   SizedBox(
                     height: 20,
@@ -533,25 +502,27 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             height: 11,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(width: 1, color: tango),
+                                border: Border.all(
+                                    width: 1,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color),
                                 shape: BoxShape.rectangle,
-                                color: tango),
+                                color: Theme.of(context).buttonColor),
                           ),
                         ),
                       ),
                       SizedBox(
                         width: 20,
                       ),
-                      Text(
-                        "Click here to set this user's default" +
+                      InsiteText(
+                        text: "Click here to set this user's default" +
                             "\n" +
                             "preferences . ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            color: silver,
-                            fontStyle: FontStyle.normal),
-                      )
+                        fontWeight: FontWeight.w700,
+                        size: 14,
+                      ),
                     ],
                   ),
                   SizedBox(

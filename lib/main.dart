@@ -24,7 +24,9 @@ void main() async {
   Hive.registerAdapter<Customer>(CustomerAdapter());
   Hive.registerAdapter<AccountData>(AccountDataAdapter());
   AppConfig(
-      baseUrl: "https://unifiedfleet.myvisionlink.com", flavor: "visionlink");
+      baseUrl: "https://unifiedfleet.myvisionlink.com",
+      flavor: "visionlink",
+      iconPath: "assets/images/hitachi.png");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
@@ -41,16 +43,11 @@ class MyApp extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: locator<NavigationService>().navigatorKey,
-        onGenerateRoute: router.Router.generateRoute,
-        initialRoute: splashViewRoute,
-        theme: ThemeData(
-            backgroundColor: cod_grey,
-            fontFamily: 'Roboto',
-            appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-            accentColor: Colors.white),
-      ),
+          debugShowCheckedModeBanner: false,
+          navigatorKey: locator<NavigationService>().navigatorKey,
+          onGenerateRoute: router.Router.generateRoute,
+          initialRoute: splashViewRoute,
+          theme: indiaStackOrangeBlack),
     );
   }
 }

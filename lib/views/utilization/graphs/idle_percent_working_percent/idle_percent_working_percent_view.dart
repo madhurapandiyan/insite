@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -51,7 +52,7 @@ class IdlePercentWorkingPercentViewState
           });
         }
         return viewModel.loading
-            ? Center(child: CircularProgressIndicator())
+            ? InsiteProgressBar()
             : Stack(
                 children: [
                   Column(
@@ -109,7 +110,7 @@ class IdlePercentWorkingPercentViewState
                                                       .workingEfficiency *
                                                   100,
                                       color: rangeChoice == 1
-                                          ? sandyBrown
+                                          ? Theme.of(context).buttonColor
                                           : olivine);
                                 })
                             : EmptyView(
@@ -119,16 +120,12 @@ class IdlePercentWorkingPercentViewState
                       viewModel.loadingMore
                           ? Padding(
                               padding: EdgeInsets.all(8),
-                              child: CircularProgressIndicator(),
+                              child: InsiteProgressBar(),
                             )
                           : SizedBox(),
                     ],
                   ),
-                  viewModel.isRefreshing
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SizedBox()
+                  viewModel.isRefreshing ? InsiteProgressBar() : SizedBox()
                 ],
               );
       },

@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultWidget extends StatefulWidget {
   final Count data;
@@ -36,9 +37,8 @@ class _FaultWidgetState extends State<FaultWidget> {
           children: [
             widget.screenType == ScreenType.DASHBOARD
                 ? InsiteButton(
-                    textColor: silver,
+                    textColor: Colors.white,
                     padding: EdgeInsets.all(4),
-                    bgColor: darkGrey,
                     title: widget.data.assetCount.toString(),
                     width: 51,
                     height: 27,
@@ -49,15 +49,8 @@ class _FaultWidgetState extends State<FaultWidget> {
             ),
             Expanded(
               flex: 1,
-              child: Text(
-                widget.level,
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Roboto',
-                    color: textcolor,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 14.0),
-              ),
+              child: InsiteText(
+                  text: widget.level, fontWeight: FontWeight.w700, size: 14.0),
             ),
             InsiteButton(
               bgColor: widget.buttonColor,
