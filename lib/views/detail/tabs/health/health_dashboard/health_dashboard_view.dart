@@ -4,10 +4,10 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_detail_health.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
-import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
 import 'package:stacked/stacked.dart';
 import 'health_dashboard_view_model.dart';
@@ -42,15 +42,15 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
       builder:
           (BuildContext context, HealthDashboardViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(
+              border: Border.all(
+                  color: Theme.of(context).textTheme.bodyText1.color),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-              color: mediumgrey,
+              color: Theme.of(context).backgroundColor,
             ),
             child: SingleChildScrollView(
               child: Column(

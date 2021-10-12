@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/login/login_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/login_text_editors.dart';
 import 'package:stacked/stacked.dart';
@@ -19,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         return Scaffold(
           body: Container(
             height: MediaQuery.of(context).size.height,
-            color: tango,
+            color: Theme.of(context).buttonColor,
             child: SingleChildScrollView(
               child: Form(
                 key: viewModel.formKey,
@@ -120,11 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                                             width: 2.5, color: tango),
                                         shape: BoxShape.rectangle,
                                       ),
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: white,
-                                        ),
-                                      ),
+                                      child: InsiteProgressBar(),
                                     ),
                                   )
                                 : Padding(
@@ -141,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
                                         viewModel.submit();
                                       },
                                       //width: MediaQuery.of(context).size.width*0.350,
-                                      bgColor: tango,
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.05,

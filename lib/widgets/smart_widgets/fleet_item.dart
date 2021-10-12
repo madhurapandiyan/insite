@@ -18,10 +18,6 @@ class FleetListItem extends StatelessWidget {
         onCallback();
       },
       child: Card(
-        color: cardcolor,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(color: cardcolor)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,17 +95,17 @@ class FleetListItem extends StatelessWidget {
                     children: [
                       TableRow(
                         children: [
-                           InsiteTableRowItem(
-                          title: "Location                 ",
-                          //changing to location text
-                          // content: fleet.lastReportedLocationLatitude
-                          //         .toString() +
-                          //     "/" +
-                          //     fleet.lastReportedLocationLongitude.toString(),
-                          content: fleet.lastReportedLocation != null
-                              ? fleet.lastReportedLocation
-                              : "-",
-                        ),
+                          InsiteTableRowItem(
+                            title: "Location                 ",
+                            //changing to location text
+                            // content: fleet.lastReportedLocationLatitude
+                            //         .toString() +
+                            //     "/" +
+                            //     fleet.lastReportedLocationLongitude.toString(),
+                            content: fleet.lastReportedLocation != null
+                                ? fleet.lastReportedLocation
+                                : "-",
+                          ),
                           InsiteTableRowItem(
                             title: "Location - Last Reported",
                             content: fleet.lastReportedUTC != null
@@ -133,7 +129,7 @@ class FleetListItem extends StatelessWidget {
                         ],
                       ),
                       TableRow(children: [
-                         InsiteTableRowItem(
+                        InsiteTableRowItem(
                           title: "Fuel Level%",
                           content: fleet.fuelLevelLastReported != null
                               ? fleet.fuelLevelLastReported.toString()
@@ -146,23 +142,21 @@ class FleetListItem extends StatelessWidget {
                                   fleet.lastPercentFuelRemainingUTC)
                               : "-",
                         ),
-                        
-                       
                       ]),
                       TableRow(children: [
-                         InsiteTableRowItem(
+                        InsiteTableRowItem(
                           title: "Hr Meter",
                           content: fleet.hourMeter != null
                               ? fleet.hourMeter.round().toString() + " hrs"
                               : "-",
                         ),
-                         InsiteTableRowItem(
+                        InsiteTableRowItem(
                           title: "Asset Commissioning Date  ",
                           content: "-",
                         ),
                       ]),
                       TableRow(children: [
-                         InsiteTableRowItem(
+                        InsiteTableRowItem(
                           title: "Signal Strength          ",
                           content: "-",
                         ),
@@ -170,7 +164,6 @@ class FleetListItem extends StatelessWidget {
                           title: "Network Provider         ",
                           content: "-",
                         ),
-                        
                       ]),
                       TableRow(children: [
                         // InsiteTableRowItem(

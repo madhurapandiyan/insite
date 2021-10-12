@@ -4,6 +4,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -29,9 +30,9 @@ class _HomeViewState extends State<HomeView> {
             onRefineApplied: () {},
             viewModel: viewModel,
             body: Container(
-              color: bgcolor,
-              padding: EdgeInsets.all(16),
+              color: Theme.of(context).backgroundColor,
               child: GridView.builder(
+                padding: EdgeInsets.all(16),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: MediaQuery.of(context).size.width > 1000
                         ? 7
@@ -67,33 +68,32 @@ class _HomeViewState extends State<HomeView> {
       onTap: () {
         buttontap(index, category, viewModel);
       },
-      child: Container(
-        width: 118.71,
-        height: 111,
-        child: Card(
-          semanticContainer: true,
-          color: selectedIndex != null && selectedIndex == index
-              ? tango
-              : cardcolor,
-          elevation: 10.0,
-          margin: EdgeInsets.all(1.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      child: Card(
+        semanticContainer: true,
+        color: selectedIndex != null && selectedIndex == index
+            ? Theme.of(context).buttonColor
+            : Theme.of(context).cardColor,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SvgPicture.asset(category.image),
+              SvgPicture.asset(
+                category.image,
+                color: selectedIndex != null && selectedIndex == index
+                    ? Colors.white
+                    : Theme.of(context).iconTheme.color,
+              ),
               SizedBox(height: 8.0),
-              Text(
-                category.name,
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontFamily: 'Roboto',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                    color: textcolor),
+              InsiteTextAlign(
                 textAlign: TextAlign.center,
+                color: selectedIndex != null && selectedIndex == index
+                    ? Colors.white
+                    : null,
+                fontWeight: FontWeight.bold,
+                size: 12,
+                text: category.name,
               ),
             ],
           ),

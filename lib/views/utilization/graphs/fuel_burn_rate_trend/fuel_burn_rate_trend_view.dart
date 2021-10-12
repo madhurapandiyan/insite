@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/fuel_burn_rate_graph.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
@@ -42,8 +43,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
     return ViewModelBuilder<FuelBurnRateTrendViewModel>.reactive(
       builder: (BuildContext context, FuelBurnRateTrendViewModel viewModel,
           Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -95,9 +95,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
               ],
             ),
             (viewModel.isRefreshing || viewModel.isSwitching)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? InsiteProgressBar()
                 : SizedBox()
           ],
         );

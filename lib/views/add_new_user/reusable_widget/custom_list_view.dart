@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
-import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class CustomListView extends StatefulWidget {
@@ -46,20 +46,17 @@ class _CustomListViewState extends State<CustomListView> {
         ),
         Expanded(
             flex: 1,
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: silver,
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal),
+            child: InsiteText(
+              text: widget.text,
+              fontWeight: FontWeight.w700,
+              size: 14,
             )),
         Padding(
           padding: const EdgeInsets.only(right: 30.0),
           child: IconButton(
               icon: Icon(
                 Icons.close,
-                color: silver,
+                color: Theme.of(context).iconTheme.color,
               ),
               onPressed: () {
                 widget.voidCallback();

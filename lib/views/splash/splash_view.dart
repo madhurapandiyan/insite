@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -66,8 +65,7 @@ class _SplashViewState extends State<SplashView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url
-              .startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
+          state.url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
         print("STATE changed with access token: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -142,15 +140,19 @@ class _SplashViewState extends State<SplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
         // setupListeners();
         return Scaffold(
-          backgroundColor: tango,
+          backgroundColor: Theme.of(context).buttonColor,
           body: SafeArea(
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview
-                    ? WebviewScaffold(url: Urls.administratorloginUrl,)
+                    ? WebviewScaffold(
+                        url: Urls.administratorloginUrl,
+                      )
                     : SizedBox(),
                 Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),

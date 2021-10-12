@@ -20,42 +20,39 @@ class ErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),
-          ),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          showAction
-              ? InsiteButton(
-                  title: "Login",
-                  onTap: () {
-                    onTap(ErrorAction.LOGIN);
-                  },
-                  bgColor: tango,
-                  textColor: Colors.white,
-                  height: 48,
-                  width: 100,
-                )
-              : SizedBox()
-        ],
-      )),
-    );
+    return Center(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),
+        ),
+        Text(
+          description,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        showAction
+            ? InsiteButton(
+                title: "Login",
+                onTap: () {
+                  onTap(ErrorAction.LOGIN);
+                },
+                bgColor: Theme.of(context).buttonColor,
+                textColor: Colors.white,
+                height: 48,
+                width: 100,
+              )
+            : SizedBox()
+      ],
+    ));
   }
 }
-

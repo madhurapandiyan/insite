@@ -50,7 +50,6 @@ class _DashboardViewState extends State<DashboardView> {
             onRefineApplied: () {},
             body: SingleChildScrollView(
               child: Container(
-                color: bgcolor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -72,7 +71,6 @@ class _DashboardViewState extends State<DashboardView> {
                             fontSize: 13,
                             width: 100,
                             height: 40,
-                            bgColor: tuna,
                             textColor: white,
                             title: "Refresh",
                             onTap: () {
@@ -99,8 +97,7 @@ class _DashboardViewState extends State<DashboardView> {
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel
-                                  .getFilterDataApplied(filterData.title);
+                              viewModel.getFilterDataApplied(filterData.title);
                               filterLocationKey.currentState
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
@@ -137,7 +134,12 @@ class _DashboardViewState extends State<DashboardView> {
                                     height: MediaQuery.of(context).size.height *
                                         0.062,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: white),
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color),
+                                      color: Theme.of(context).backgroundColor,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(8)),
                                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
 import 'package:insite/widgets/smart_widgets/total_fuel_burned_graph.dart';
@@ -43,8 +44,7 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
     return ViewModelBuilder<TotalFuelBurnedViewModel>.reactive(
       builder:
           (BuildContext context, TotalFuelBurnedViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
             Column(
@@ -96,7 +96,7 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
               ],
             ),
             (viewModel.isRefreshing || viewModel.isSwitching)
-                ? Center(child: CircularProgressIndicator())
+                ? InsiteProgressBar()
                 : SizedBox()
           ],
         );

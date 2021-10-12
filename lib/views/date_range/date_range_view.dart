@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -36,8 +37,9 @@ class _DateRangeViewState extends State<DateRangeView> {
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.95,
           decoration: BoxDecoration(
-            color: tuna,
-            border: Border.all(color: black, width: 0.0),
+            color: Theme.of(context).backgroundColor,
+            border: Border.all(
+                color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Padding(
@@ -46,31 +48,25 @@ class _DateRangeViewState extends State<DateRangeView> {
               children: [
                 Row(
                   children: [
-                    Text(
-                      'Date Range'.toUpperCase(),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
+                    InsiteText(
+                        text: 'Date Range'.toUpperCase(),
+                        fontWeight: FontWeight.bold,
+                        size: 14),
                     Expanded(
                       child: Container(),
                     ),
-                    Text(
-                      (fromDate == null || toDate == null)
-                          ? ''
-                          : '${Utils.parseDate(fromDate)} - ${Utils.parseDate(toDate)}',
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14),
-                    ),
+                    InsiteText(
+                        text: (fromDate == null || toDate == null)
+                            ? ''
+                            : '${Utils.parseDate(fromDate)} - ${Utils.parseDate(toDate)}',
+                        fontWeight: FontWeight.bold,
+                        size: 14),
                   ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Divider(
-                    color: ship_grey,
+                    color: Theme.of(context).dividerColor,
                     thickness: 3,
                   ),
                 ),
@@ -209,19 +205,19 @@ class _DateRangeViewState extends State<DateRangeView> {
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                'From:'.toUpperCase(),
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: InsiteText(
+                                text: 'From:'.toUpperCase(),
+                                size: 12,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            GestureDetector(
+                            InsiteButton(
+                              width: double.infinity,
+                              height: 40,
+                              textColor: white,
                               onTap: () {
                                 setState(() {
                                   fromDate = null;
@@ -233,28 +229,10 @@ class _DateRangeViewState extends State<DateRangeView> {
                                       CustomDatePick.customFromDate;
                                 });
                               },
-                              child: Container(
-                                width: double.infinity,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: ship_grey,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    customFromDate == null
-                                        ? 'dd-mm-yyyy'.toUpperCase()
-                                        : Utils.parseDate(customFromDate)
-                                            .toUpperCase(),
-                                    style: TextStyle(
-                                      color: white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              title: customFromDate == null
+                                  ? 'dd-mm-yyyy'.toUpperCase()
+                                  : Utils.parseDate(customFromDate)
+                                      .toUpperCase(),
                             ),
                           ],
                         ),
@@ -270,19 +248,19 @@ class _DateRangeViewState extends State<DateRangeView> {
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                'To:'.toUpperCase(),
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: InsiteText(
+                                text: 'To:'.toUpperCase(),
+                                size: 12,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            GestureDetector(
+                            InsiteButton(
+                              width: double.infinity,
+                              height: 40,
+                              textColor: white,
                               onTap: () {
                                 setState(() {
                                   toDate = null;
@@ -294,28 +272,9 @@ class _DateRangeViewState extends State<DateRangeView> {
                                       CustomDatePick.customToDate;
                                 });
                               },
-                              child: Container(
-                                width: double.infinity,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: ship_grey,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    customToDate == null
-                                        ? 'dd-mm-yyyy'.toUpperCase()
-                                        : Utils.parseDate(customToDate)
-                                            .toUpperCase(),
-                                    style: TextStyle(
-                                      color: white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              title: customToDate == null
+                                  ? 'dd-mm-yyyy'.toUpperCase()
+                                  : Utils.parseDate(customToDate).toUpperCase(),
                             ),
                           ],
                         ),
@@ -411,7 +370,6 @@ class _DateRangeViewState extends State<DateRangeView> {
                           }
                         }
                       },
-                      bgColor: tango,
                       textColor: white,
                       title: 'Apply',
                     ),
@@ -424,8 +382,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      bgColor: ship_grey,
-                      textColor: white,
+                      bgColor: Theme.of(context).backgroundColor,
                       title: 'Cancel',
                     )
                   ],
@@ -488,8 +445,11 @@ class RangeLabel extends StatelessWidget {
         width: MediaQuery.of(context).size.width * width,
         height: 40,
         decoration: BoxDecoration(
-          color: (defaultDateRange == selectedDateRange) ? tango : black,
-          border: Border.all(color: transparent, width: 0.0),
+          color: (defaultDateRange == selectedDateRange)
+              ? Theme.of(context).buttonColor
+              : Theme.of(context).backgroundColor,
+          border: Border.all(
+              color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
           borderRadius: BorderRadius.all(
             Radius.circular(8),
           ),
@@ -499,18 +459,16 @@ class RangeLabel extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label.toUpperCase(),
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
+              InsiteText(
+                text: label.toUpperCase(),
+                size: 12,
+                color: defaultDateRange == selectedDateRange ? white : null,
+                fontWeight: FontWeight.bold,
               ),
               (defaultDateRange == selectedDateRange)
                   ? Icon(
                       Icons.check,
-                      color: white,
+                      color: Theme.of(context).iconTheme.color,
                     )
                   : Container(),
             ],

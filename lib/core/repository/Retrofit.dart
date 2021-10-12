@@ -651,11 +651,27 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId,
       @Body() DeleteUserData updateUserData);
 
+  @PUT('{url}')
+  Future<UpdateResponse> deleteUsers(
+      @Path() String url,
+      @Body() DeleteUserDataIndStack updateUserData,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-VisionLink-UserUid") userId,
+      @Header("service") String serviceHeader);
+
   @POST("{url}")
   Future<AddUser> addUserData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Body() AddUserData updateUserData);
+
+  @POST("{url}")
+  Future<AddUser> inviteUser(
+      @Path() String url,
+      @Body() AddUserDataIndStack updateUserData,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-VisionLink-UserUid") userId,
+      @Header("service") String serviceHeader);
 
   @GET("{url}")
   Future<RoleDataResponse> roles(
@@ -667,8 +683,8 @@ abstract class RestClient {
   Future<AdminManageUser> getAdminManagerUserListData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Header("X-JWT-Assertion") xJWTAssertion,
-      @Header("X-VisionLink-UserUid") userId);
+      @Header("X-VisionLink-UserUid") userId,
+      @Header("service") String serviceHeader);
 }
 
 @JsonSerializable()

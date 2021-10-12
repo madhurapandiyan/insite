@@ -13,12 +13,12 @@ class CustomTextBoxWithName extends StatelessWidget {
     return Stack(children: [
       TextField(
         controller: controller,
-        cursorColor: black,
+        cursorColor: Theme.of(context).textTheme.bodyText1.color,
         style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 14,
           fontStyle: FontStyle.normal,
-          color: textcolor,
+          color: Theme.of(context).textTheme.bodyText1.color,
         ),
         decoration: InputDecoration(
             fillColor: black,
@@ -26,21 +26,28 @@ class CustomTextBoxWithName extends StatelessWidget {
             contentPadding: EdgeInsets.only(left: 12, top: 8),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(color: black, width: 1)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1)),
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(color: black, width: 1)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(color: black, width: 1)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(color: black)),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color)),
             hintStyle: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 14,
               fontStyle: FontStyle.normal,
-              color: textcolor,
+              color: Theme.of(context).textTheme.bodyText1.color,
             )),
       ),
       Positioned(
@@ -54,7 +61,7 @@ class CustomTextBoxWithName extends StatelessWidget {
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.italic,
               fontSize: 14,
-              color: textcolor,
+              color: Theme.of(context).textTheme.bodyText1.color,
             ),
           ),
         ),

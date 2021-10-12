@@ -4,7 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/custom_expansion_tile.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/dumb_widgets/loadmore_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
@@ -102,7 +102,7 @@ class _AccountSelectionDropDownWidgetState
   @override
   Widget build(BuildContext context) {
     return AppExpansionTile(
-      backgroundColor: ship_grey,
+      backgroundColor: Theme.of(context).cardColor,
       title: Text(
         selected != null
             ? selected.value.DisplayName
@@ -111,14 +111,16 @@ class _AccountSelectionDropDownWidgetState
                 : "Search and Select",
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            color: Theme.of(context).textTheme.bodyText1.color,
+            fontWeight: FontWeight.bold,
+            fontSize: 18),
       ),
       key: expansionTile,
       children: [
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: bgcolor,
+            color: Theme.of(context).cardColor,
           ),
           height: _displayList.isNotEmpty && selected != null
               ? MediaQuery.of(context).size.height * 0.4
@@ -159,8 +161,8 @@ class _AccountSelectionDropDownWidgetState
                                   },
                                   child: Container(
                                     color: _displayList[index].isSelected
-                                        ? tango
-                                        : bgcolor,
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).backgroundColor,
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 4),
                                     child: Row(
@@ -180,7 +182,9 @@ class _AccountSelectionDropDownWidgetState
                                         IconButton(
                                             icon: Icon(
                                               Icons.check,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
                                             ),
                                             onPressed: () {})
                                       ],
@@ -209,8 +213,7 @@ class _AccountSelectionDropDownWidgetState
                         children: [
                           widget.selectionType == AccountType.CUSTOMER
                               ? InsiteButton(
-                                  bgColor: Colors.white,
-                                  textColor: ship_grey,
+                                  bgColor: Theme.of(context).backgroundColor,
                                   onTap: () {
                                     deSelect();
                                     selected = null;
@@ -227,7 +230,6 @@ class _AccountSelectionDropDownWidgetState
                             width: 40,
                           ),
                           InsiteButton(
-                            bgColor: tango,
                             height: 48,
                             width: 100,
                             textColor: Colors.white,

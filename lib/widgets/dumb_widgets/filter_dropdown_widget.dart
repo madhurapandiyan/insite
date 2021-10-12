@@ -32,13 +32,12 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
       width: MediaQuery.of(context).size.width * 0.46,
       height: MediaQuery.of(context).size.height * 0.062,
       decoration: BoxDecoration(
-        border: Border.all(color: white),
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
         borderRadius: BorderRadius.all(Radius.circular(8)),
-        // color: cardcolor
       ),
       child: DropdownButton(
           elevation: 16,
-          dropdownColor: cardcolor,
+          dropdownColor: Theme.of(context).backgroundColor,
           value: dropDownvalue,
           onChanged: (FilterData value) {
             dropDownvalue = value;
@@ -53,13 +52,12 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 8),
+                      padding:
+                          const EdgeInsets.only(left: 8, top: 8, bottom: 8),
                       child: InsiteButton(
-                        height: 27,
                         width: 50,
                         title: value.count,
-                        bgColor: cardcolor,
-                        textColor: silver,
+                        bgColor: Theme.of(context).backgroundColor,
                         fontSize: 10,
                       ),
                     ),
@@ -69,7 +67,7 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                     Text(
                       value.title,
                       style: TextStyle(
-                          color: silver,
+                          color: Theme.of(context).textTheme.bodyText1.color,
                           fontSize: 10.0,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal),

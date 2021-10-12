@@ -5,6 +5,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/location/location_search_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
@@ -32,16 +33,17 @@ class _LocationSearchState extends State<LocationSearch> {
     return ViewModelBuilder<LocationSearchViewModel>.reactive(
       builder: (context, viewModel, _) {
         return ExpansionTile(
-          title: Text(
-            Utils.getTitle(widget.filterType),
-            style: TextStyle(color: Colors.white),
+          title: InsiteText(
+            text: Utils.getTitle(widget.filterType),
+            size: 14,
           ),
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                color: bgcolor,
-              ),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  color: Theme.of(context).backgroundColor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1.color)),
               child: Column(
                 children: [
                   Padding(
@@ -65,7 +67,6 @@ class _LocationSearchState extends State<LocationSearch> {
                               InsiteRichText(
                                 title: "",
                                 content: "CLEAR FILTERS",
-                                textColor: Colors.white,
                                 onTap: () {
                                   Logger().d("clear filter");
                                   viewModel.clearFilter();
@@ -78,6 +79,7 @@ class _LocationSearchState extends State<LocationSearch> {
                                       .where((element) => element.isSelected)
                                       .toList());
                                 },
+                                textColor: Colors.white,
                                 width: 100,
                                 height: 40,
                                 title: "APPLY",
@@ -90,7 +92,7 @@ class _LocationSearchState extends State<LocationSearch> {
                     height: 8,
                   ),
                   viewModel.loading
-                      ? CircularProgressIndicator()
+                      ? InsiteProgressBar()
                       : viewModel.filterLocations.isNotEmpty
                           ? ListView.builder(
                               itemCount: viewModel.filterLocations.length,
@@ -106,32 +108,31 @@ class _LocationSearchState extends State<LocationSearch> {
                                     setState(() {});
                                   },
                                   child: Container(
-                                    color: data.isSelected ? tango : bgcolor,
+                                    color: data.isSelected
+                                        ? Theme.of(context).buttonColor
+                                        : Theme.of(context).backgroundColor,
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 4),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          data.count.isNotEmpty
-                                              ? "(${data.count}) "
-                                              : "",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
-                                        ),
+                                        InsiteText(
+                                            text: data.count.isNotEmpty
+                                                ? "(${data.count}) "
+                                                : "",
+                                            color:
+                                                data.isSelected ? white : null,
+                                            fontWeight: FontWeight.bold,
+                                            size: 16),
                                         Expanded(
-                                          child: Text(
-                                            data.title,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          ),
+                                          child: InsiteText(
+                                              text: data.title,
+                                              color: data.isSelected
+                                                  ? white
+                                                  : null,
+                                              fontWeight: FontWeight.bold,
+                                              size: 16),
                                         ),
                                         IconButton(
                                             icon: Icon(

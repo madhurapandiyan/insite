@@ -63,21 +63,27 @@ class ManageUserViewModel extends InsiteViewModel {
   getManagerUserAssetList() async {
     AdminManageUser result =
         await _manageUserService.getAdminManageUserListData(pageNumber);
-    if (result.users.isNotEmpty) {
-      Logger().i("list of assets " + result.users.length.toString());
-      for (var user in result.users) {
-        _assets.add(UserRow(user: user, isSelected: false));
+    if (result != null) {
+      if (result.users.isNotEmpty) {
+        Logger().i("list of assets " + result.users.length.toString());
+        for (var user in result.users) {
+          _assets.add(UserRow(user: user, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      } else {
+        for (var user in result.users) {
+          _assets.add(UserRow(user: user, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
       }
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
     } else {
-      for (var user in result.users) {
-        _assets.add(UserRow(user: user, isSelected: false));
-      }
       _loading = false;
       _loadingMore = false;
-      _shouldLoadmore = false;
       notifyListeners();
     }
   }

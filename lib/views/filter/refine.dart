@@ -3,6 +3,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
@@ -24,15 +25,32 @@ class _RefineState extends State<Refine> {
       builder: (BuildContext context, FilterViewModel viewModel, Widget _) {
         return viewModel.loading
             ? Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                    border: Border.all(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 height: MediaQuery.of(context).size.height * 0.8,
-                color: tuna,
-                child: Center(child: CircularProgressIndicator()))
+                child: Center(child: InsiteProgressBar()))
             : Stack(
                 children: [
                   Container(
                     child: SingleChildScrollView(
                       child: Container(
-                        color: tuna,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8),
+                            ),
+                            border: Border.all(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color)),
                         padding: EdgeInsets.all(16),
                         child: Column(
                           children: [
@@ -46,10 +64,8 @@ class _RefineState extends State<Refine> {
                                   text: "Current Filters:",
                                   fontWeight: FontWeight.bold,
                                   size: 18,
-                                  color: Colors.white,
                                 ),
                                 InsiteButton(
-                                  bgColor: tango,
                                   textColor: Colors.white,
                                   onTap: () {
                                     viewModel.removeAllSelectedFilter();
@@ -75,11 +91,11 @@ class _RefineState extends State<Refine> {
                                         top: 8.0, bottom: 8.0),
                                   )
                                 : Container(
+                                    color: Theme.of(context).backgroundColor,
                                     height: MediaQuery.of(context).size.height *
                                         0.1,
                                     child: EmptyView(
                                       title: "No Filter Selected",
-                                      bg: tuna,
                                     ),
                                   ),
                             viewModel.selectedFilterData.isNotEmpty
@@ -91,7 +107,6 @@ class _RefineState extends State<Refine> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 InsiteButton(
-                                  bgColor: tango,
                                   textColor: Colors.white,
                                   onTap: () {
                                     viewModel.onFilterApplied();
@@ -108,8 +123,7 @@ class _RefineState extends State<Refine> {
                                   width: 20,
                                 ),
                                 InsiteButton(
-                                  bgColor: ship_grey,
-                                  textColor: Colors.white,
+                                  bgColor: Theme.of(context).backgroundColor,
                                   onTap: () {
                                     widget.onRefineApplied(false);
                                   },

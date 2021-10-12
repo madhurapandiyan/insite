@@ -7,6 +7,9 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/utilization/tabs/graph/single_asset_utilization_graph_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
@@ -46,8 +49,7 @@ class _SingleAssetUtilizationGraphViewState
     return ViewModelBuilder<SingleAssetUtilizationGraphViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetUtilizationGraphViewModel viewModel, Widget _) {
-        if (viewModel.loading)
-          return Center(child: CircularProgressIndicator());
+        if (viewModel.loading) return InsiteProgressBar();
 
         return Stack(
           children: [
@@ -57,21 +59,25 @@ class _SingleAssetUtilizationGraphViewState
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                          " - " +
-                          Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                      style: TextStyle(
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11),
-                    ),
+                    InsiteText(
+                        text: Utils.getDateInFormatddMMyyyy(
+                                viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        color: white,
+                        fontWeight: FontWeight.bold,
+                        size: 11),
                     SizedBox(
                       width: 4,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: GestureDetector(
+                      child: InsiteButton(
+                        title: "Date Range",
+                        width: 90,
+                        height: 30,
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1.color,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -84,26 +90,6 @@ class _SingleAssetUtilizationGraphViewState
                             viewModel.refresh();
                           }
                         },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: cardcolor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -114,14 +100,14 @@ class _SingleAssetUtilizationGraphViewState
                       padding: EdgeInsets.only(left: 16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: cardcolor,
+                          color: Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(16)),
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(6.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: cardcolor,
+                              color: Theme.of(context).backgroundColor,
                               border: Border.all(color: black, width: 0.0),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16)),
@@ -130,14 +116,18 @@ class _SingleAssetUtilizationGraphViewState
                               padding: EdgeInsets.symmetric(horizontal: 16),
                               child: DropdownButton(
                                 value: dropdownValue,
-                                dropdownColor: cardcolor,
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: white,
-                                ),
+                                dropdownColor:
+                                    Theme.of(context).backgroundColor,
+                                icon: Icon(Icons.keyboard_arrow_down,
+                                    color: Theme.of(context).iconTheme.color),
                                 iconSize: 20,
                                 elevation: 16,
-                                style: TextStyle(color: white, fontSize: 12),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color,
+                                    fontSize: 12),
                                 underline: Container(
                                   height: 0,
                                 ),
@@ -242,7 +232,7 @@ class _SingleAssetUtilizationGraphViewState
                                 SingleAssetUtilizationGraphType
                                     .IDLETIMEIDLEPERCENTAGE)
                               return PercentageWidget(
-                                  color: sandyBrown,
+                                  color: Theme.of(context).buttonColor,
                                   isTwoLineLabel: true,
                                   label: rangeChoice == 1
                                       ? '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization.daily[index].startDate)}\n${DateFormat('h:mm a').format(viewModel.singleAssetUtilization.daily[index].data.lastReportedTime)}'
@@ -530,11 +520,7 @@ class _SingleAssetUtilizationGraphViewState
                 ),
               ],
             ),
-            viewModel.refreshing
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox()
+            viewModel.refreshing ? InsiteProgressBar() : SizedBox()
           ],
         );
       },

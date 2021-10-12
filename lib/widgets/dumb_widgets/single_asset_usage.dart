@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:insite/core/models/utilization.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
@@ -25,10 +24,6 @@ class _SingleAssetUsageState extends State<SingleAssetUsage> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardcolor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          side: BorderSide(color: cardcolor)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,7 +35,8 @@ class _SingleAssetUsageState extends State<SingleAssetUsage> {
                 SizedBox(
                   height: 20,
                 ),
-                Icon(Icons.arrow_drop_down, color: Colors.white),
+                Icon(Icons.arrow_drop_down,
+                    color: Theme.of(context).iconTheme.color),
                 SizedBox(
                   height: 20,
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomDropDownWidget extends StatelessWidget {
   final String value;
@@ -14,27 +15,19 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),
         dropdownColor: thunder,
         value: value,
-        hint: Text(
-          "Select",
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Roboto',
-              color: appbarcolor,
-              fontStyle: FontStyle.normal),
+        hint: InsiteText(
+          text: "Select",
+          size: 14,
+          fontWeight: FontWeight.w700,
         ),
         onChanged: onChanged,
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(
-              value,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Roboto',
-                  color: appbarcolor,
-                  fontStyle: FontStyle.normal),
+            child: InsiteText(
+              text: value,
+              size: 14,
+              fontWeight: FontWeight.w700,
             ),
           );
         }).toList(),

@@ -9,6 +9,8 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -41,17 +43,15 @@ class _AssetLocationViewState extends State<AssetLocationView> {
       builder:
           (BuildContext context, AssetLocationViewModel viewModel, Widget _) {
         if (viewModel.loading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return InsiteProgressBar();
         } else {
           return Container(
             width: double.infinity,
             height: 510,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [BoxShadow(blurRadius: 1.0, color: mediumgrey)],
-              border: Border.all(width: 2.5, color: cardcolor),
+              border: Border.all(
+                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
               shape: BoxShape.rectangle,
             ),
             child: Column(
@@ -61,8 +61,13 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      InsiteButton(
+                        title: "Refresh",
+                        width: 90,
+                        height: 30,
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1.color,
+                        onTap: () async {
                           viewModel.customInfoWindowController.hideInfoWindow();
                           if (widget.screenType == ScreenType.HEALTH) {
                             viewModel.refreshForAssetView();
@@ -70,26 +75,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             viewModel.refresh();
                           }
                         },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Refresh',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                       SizedBox(
                         width: 20,
@@ -103,7 +88,12 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             fontWeight: FontWeight.bold,
                             fontSize: 12),
                       ),
-                      GestureDetector(
+                      InsiteButton(
+                        title: "Date Range",
+                        width: 90,
+                        height: 30,
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1.color,
                         onTap: () async {
                           dateRange = await showDialog(
                             context: context,
@@ -120,26 +110,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             viewModel.refresh();
                           }
                         },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: tuna,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -215,20 +185,30 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 width: 27.47,
                                 height: 26.97,
                                 decoration: BoxDecoration(
+                                  color: Theme.of(context).backgroundColor,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5.0)),
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 1.0,
-                                      color: darkhighlight,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color,
                                     ),
                                   ],
                                   border: Border.all(
-                                      width: 1.0, color: darkhighlight),
+                                    width: 1.0,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color,
+                                  ),
                                   shape: BoxShape.rectangle,
                                 ),
                                 child: SvgPicture.asset(
                                   "assets/images/plus.svg",
+                                  color: Theme.of(context).iconTheme.color,
                                 ),
                               ),
                             ),
@@ -253,30 +233,36 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   width: 27.47,
                                   height: 26.97,
                                   decoration: BoxDecoration(
+                                    color: Theme.of(context).backgroundColor,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5.0)),
                                     boxShadow: [
                                       BoxShadow(
                                         blurRadius: 1.0,
-                                        color: darkhighlight,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color,
                                       ),
                                     ],
                                     border: Border.all(
-                                        width: 1.0, color: darkhighlight),
+                                      width: 1.0,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          .color,
+                                    ),
                                     shape: BoxShape.rectangle,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/images/minus.svg",
+                                    color: Theme.of(context).iconTheme.color,
                                   ),
                                 )),
                           ],
                         ),
                       ),
-                      viewModel.refreshing
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : SizedBox()
+                      viewModel.refreshing ? InsiteProgressBar() : SizedBox()
                     ],
                   ),
                 )

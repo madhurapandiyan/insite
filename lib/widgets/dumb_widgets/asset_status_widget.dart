@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
+import 'insite_text.dart';
 
 class AssetStatusWidget extends StatefulWidget {
   final Color chartColor;
   final String label;
   final VoidCallback callBack;
-  AssetStatusWidget({this.label, 
-  this.chartColor, 
-  this.callBack});
+  AssetStatusWidget({this.label, this.chartColor, this.callBack});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
 }
@@ -40,16 +38,11 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
               width: 5,
             ),
             Expanded(
-              child: new Text(
-                widget.label.toUpperCase(),
-                textAlign: TextAlign.start,
-                style: new TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Roboto',
-                    color: textcolor,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 11.0),
-              ),
+              child: new InsiteTextAlign(
+                  text: widget.label.toUpperCase(),
+                  textAlign: TextAlign.start,
+                  fontWeight: FontWeight.w700,
+                  size: 11.0),
             ),
             SizedBox(
               width: 5,
@@ -57,7 +50,10 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
             new Container(
               width: 15,
               height: 20,
-              child: Image.asset("assets/images/arrows.png"),
+              child: Image.asset(
+                "assets/images/arrows.png",
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
           ],
         ),

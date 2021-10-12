@@ -1,3 +1,4 @@
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
@@ -10,11 +11,14 @@ class BaseService {
   BaseService({String title}) {
     log = getLogger(title ?? this.runtimeType.toString());
     try {
-      PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
-            if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
-                "com.trimble.insite.trimble" == packageInfo.packageName)
-              {isVisionLink = true}
-          });
+      if (AppConfig.instance.flavor == "visionlink") {
+        isVisionLink = true;
+      }
+      // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+      //       if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
+      //           "com.trimble.insite.trimble" == packageInfo.packageName)
+      //         {isVisionLink = true}
+      //     });
     } catch (e) {}
   }
 

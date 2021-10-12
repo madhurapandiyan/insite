@@ -1,4 +1,3 @@
-
 import 'package:insite/utils/enums.dart';
 
 class Category {

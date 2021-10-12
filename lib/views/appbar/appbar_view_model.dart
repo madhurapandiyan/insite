@@ -76,15 +76,21 @@ class AppbarViewModel extends InsiteViewModel {
       // });
 
       //if oauth style login used below line should be called on logout
-      PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-        Logger().i("packageInfo ${packageInfo.packageName}");
-        if (packageInfo.packageName == "com.trimble.insite.indiastack") {
-          _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
-              arguments: LoginArguments(response: response));
-        } else {
-          _navigationService.replaceWith(loginViewRoute);
-        }
-      });
+      // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      //   Logger().i("packageInfo ${packageInfo.packageName}");
+      //   if (packageInfo.packageName == "com.trimble.insite.indiastack") {
+      //     _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+      //         arguments: LoginArguments(response: response));
+      //   } else {
+      //     _navigationService.replaceWith(loginViewRoute);
+      //   }
+      // });
+      if (isVisionLink) {
+        _navigationService.replaceWith(loginViewRoute);
+      } else {
+        _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+            arguments: LoginArguments(response: response));
+      }
     });
   }
 }

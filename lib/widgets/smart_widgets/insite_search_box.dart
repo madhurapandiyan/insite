@@ -14,7 +14,7 @@ class SearchBox extends StatelessWidget {
       onChanged: (vale) {
         // onTextChanged(vale);
       },
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
       cursorColor: Colors.white,
       decoration: InputDecoration(
           fillColor: black,
@@ -22,17 +22,25 @@ class SearchBox extends StatelessWidget {
           contentPadding: EdgeInsets.all(16),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(color: Colors.white, width: 1)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).textTheme.bodyText1.color,
+                  width: 1)),
           disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(color: Colors.white, width: 1)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).textTheme.bodyText1.color,
+                  width: 1)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(color: Colors.white, width: 1)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).textTheme.bodyText1.color,
+                  width: 1)),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(color: Colors.white)),
-          hintStyle: TextStyle(color: Colors.white)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
+          hintStyle:
+              TextStyle(color: Theme.of(context).textTheme.bodyText1.color)),
     );
   }
 }

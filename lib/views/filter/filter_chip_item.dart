@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FilterChipItem extends StatelessWidget {
   const FilterChipItem(
@@ -15,8 +15,11 @@ class FilterChipItem extends StatelessWidget {
     return Container(
       height: 40,
       decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border.all(color: transparent, width: 0.0),
+        color: backgroundColor != null
+            ? backgroundColor
+            : Theme.of(context).backgroundColor,
+        border: Border.all(
+            color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
         borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
@@ -27,12 +30,11 @@ class FilterChipItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(label.toUpperCase(),
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                )),
+            InsiteText(
+              text: label.toUpperCase(),
+              size: 12,
+              fontWeight: FontWeight.bold,
+            ),
             SizedBox(
               width: 12,
             ),
@@ -42,7 +44,7 @@ class FilterChipItem extends StatelessWidget {
               },
               child: Icon(
                 Icons.close,
-                color: white,
+                color: Theme.of(context).iconTheme.color,
               ),
             )
           ],

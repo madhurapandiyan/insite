@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -25,7 +26,8 @@ class CumulativeChart extends StatelessWidget {
       child: (runTimeCumulative == null && fuelBurnedCumulative == null)
           ? SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: cumulativeChartType == CumulativeChartType.FUELBURNED
                       ? 'Daily average: NA'
                       : 'Daily average: NA'),
@@ -34,7 +36,8 @@ class CumulativeChart extends StatelessWidget {
                     text: cumulativeChartType == CumulativeChartType.FUELBURNED
                         ? 'Total Fuel Burned: NA'
                         : 'Total Hours: NA',
-                    textStyle: TextStyle(color: white)),
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: cumulativeChartType == CumulativeChartType.FUELBURNED
@@ -45,9 +48,11 @@ class CumulativeChart extends StatelessWidget {
                     text: cumulativeChartType == CumulativeChartType.FUELBURNED
                         ? 'Cumulative Fuel Burned (Liters)'
                         : 'Cumulative Runtime (Hours)',
-                    textStyle: TextStyle(color: white)),
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 numberFormat: NumberFormat.compact(),
                 majorGridLines: MajorGridLines(width: 0),
               ),
@@ -56,7 +61,8 @@ class CumulativeChart extends StatelessWidget {
             )
           : SfCartesianChart(
               title: ChartTitle(
-                  textStyle: TextStyle(color: white),
+                  textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText1.color),
                   text: cumulativeChartType == CumulativeChartType.FUELBURNED
                       ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
                       : 'Daily average: ${runTimeCumulative.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
@@ -65,7 +71,8 @@ class CumulativeChart extends StatelessWidget {
                     text: cumulativeChartType == CumulativeChartType.FUELBURNED
                         ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
                         : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
-                    textStyle: TextStyle(color: white)),
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: cumulativeChartType == CumulativeChartType.FUELBURNED
@@ -76,9 +83,11 @@ class CumulativeChart extends StatelessWidget {
                     text: cumulativeChartType == CumulativeChartType.FUELBURNED
                         ? 'Cumulative Fuel Burned (Liters)'
                         : 'Cumulative Runtime (Hours)',
-                    textStyle: TextStyle(color: white)),
+                    textStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color)),
                 axisLine: AxisLine(width: 1),
-                labelStyle: TextStyle(color: white),
+                labelStyle: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText1.color),
                 numberFormat: NumberFormat.compact(),
                 majorGridLines: MajorGridLines(width: 0),
               ),
@@ -163,4 +172,3 @@ class CumulativeChartData {
 
   CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }
-

@@ -7,6 +7,9 @@ import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/views/health/fault/fault_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/fault_list_item.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 
@@ -47,19 +50,22 @@ class FaultViewState extends State<FaultView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                            " - " +
-                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        style: TextStyle(
-                            color: white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12),
-                      ),
+                      InsiteText(
+                          text: Utils.getDateInFormatddMMyyyy(
+                                  viewModel.startDate) +
+                              " - " +
+                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                          fontWeight: FontWeight.bold,
+                          size: 12),
                       SizedBox(
                         width: 4,
                       ),
-                      GestureDetector(
+                      InsiteButton(
+                        width: 90,
+                        height: 30,
+                        title: "Date Range",
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1.color,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -72,26 +78,6 @@ class FaultViewState extends State<FaultView> {
                             viewModel.refresh();
                           }
                         },
-                        child: Container(
-                          width: 90,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: cardcolor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Date Range',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -104,8 +90,7 @@ class FaultViewState extends State<FaultView> {
                 ),
                 Expanded(
                   child: viewModel.loading
-                      ? Container(
-                          child: Center(child: CircularProgressIndicator()))
+                      ? Container(child: InsiteProgressBar())
                       : viewModel.faults.isNotEmpty
                           ? ListView.builder(
                               controller: viewModel.scrollController,
@@ -130,14 +115,14 @@ class FaultViewState extends State<FaultView> {
                 viewModel.loadingMore
                     ? Padding(
                         padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(),
+                        child: InsiteProgressBar(),
                       )
                     : SizedBox(),
               ],
             ),
             viewModel.refreshing
                 ? Center(
-                    child: CircularProgressIndicator(),
+                    child: InsiteProgressBar(),
                   )
                 : SizedBox()
           ],

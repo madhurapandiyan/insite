@@ -26,89 +26,86 @@ class _AdminstrationViewState extends State<AdminstrationView> {
           screenType: ScreenType.ADMINISTRATION,
           onFilterApplied: () {},
           onRefineApplied: () {},
-          body: Container(
-              height: MediaQuery.of(context).size.height,
-              color: bgcolor,
-              child: SingleChildScrollView(
-                child: Column(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        AssetCardsSmall(
-                            headerText: "users",
-                            icon: "assets/images/users.svg",
-                            buttonTitle: [
-                              AdminAssetsButtonType.values[0],
-                              AdminAssetsButtonType.values[1],
-                            ],
-                            onCallbackSelected: (value) {
-                              viewModel.onRespectiveButtonClicked(value);
-                            }),
-                        AssetCardsSmall(
-                            headerText: "groups",
-                            icon: "assets/images/gear_icon.svg",
-                            buttonTitle: [
-                              AdminAssetsButtonType.values[2],
-                              AdminAssetsButtonType.values[3]
-                            ],
-                            onCallbackSelected: (value) {
-                              viewModel.onRespectiveButtonClicked(value);
-                            }),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    AssetSettingWidget(
-                      headerText: "asset settings",
-                      onButtonClicked: () {
-                        print("button is tapped");
-                      },
-                    ),
-                    SizedBox(
-                      height: 21,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          AssetCardsSmall(
-                              headerText: "geofences".toUpperCase(),
-                              icon: "assets/images/geofence.svg",
-                              buttonTitle: [
-                                AdminAssetsButtonType.values[4],
-                                AdminAssetsButtonType.values[5]
-                              ],
-                              onCallbackSelected: (value) {}),
-                          AssetCardsSmall(
-                              headerText: "reports".toUpperCase(),
-                              icon: "assets/images/reports.svg",
-                              buttonTitle: [
-                                AdminAssetsButtonType.values[6],
-                                AdminAssetsButtonType.values[7]
-                              ],
-                              onCallbackSelected: (value) {
-                                viewModel.onRespectiveButtonClicked(value);
-                              })
-                        ]),
-                    SizedBox(
-                      height: 21,
-                    ),
-                    NotificationWidget(
-                      headerText: "notifications".toUpperCase(),
-                      onButtonClicked: () {
-                        print("button is tapped");
-                      },
-                    ),
-                    SizedBox(
-                      height: 30,
-                    )
+                    AssetCardsSmall(
+                        headerText: "users",
+                        icon: "assets/images/users.svg",
+                        buttonTitle: [
+                          AdminAssetsButtonType.values[0],
+                          AdminAssetsButtonType.values[1],
+                        ],
+                        onCallbackSelected: (value) {
+                          viewModel.onRespectiveButtonClicked(value);
+                        }),
+                    AssetCardsSmall(
+                        headerText: "groups",
+                        icon: "assets/images/gear_icon.svg",
+                        buttonTitle: [
+                          AdminAssetsButtonType.values[2],
+                          AdminAssetsButtonType.values[3]
+                        ],
+                        onCallbackSelected: (value) {
+                          viewModel.onRespectiveButtonClicked(value);
+                        }),
                   ],
                 ),
-              )),
+                SizedBox(
+                  height: 20,
+                ),
+                AssetSettingWidget(
+                  headerText: "asset settings",
+                  onButtonClicked: () {
+                    print("button is tapped");
+                  },
+                ),
+                SizedBox(
+                  height: 21,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      AssetCardsSmall(
+                          headerText: "geofences".toUpperCase(),
+                          icon: "assets/images/geofence.svg",
+                          buttonTitle: [
+                            AdminAssetsButtonType.values[4],
+                            AdminAssetsButtonType.values[5]
+                          ],
+                          onCallbackSelected: (value) {}),
+                      AssetCardsSmall(
+                          headerText: "reports".toUpperCase(),
+                          icon: "assets/images/reports.svg",
+                          buttonTitle: [
+                            AdminAssetsButtonType.values[6],
+                            AdminAssetsButtonType.values[7]
+                          ],
+                          onCallbackSelected: (value) {
+                            viewModel.onRespectiveButtonClicked(value);
+                          })
+                    ]),
+                SizedBox(
+                  height: 21,
+                ),
+                NotificationWidget(
+                  headerText: "notifications".toUpperCase(),
+                  onButtonClicked: () {
+                    print("button is tapped");
+                  },
+                ),
+                SizedBox(
+                  height: 30,
+                )
+              ],
+            ),
+          ),
         );
       },
       viewModelBuilder: () => AdminstrationViewModel(),
