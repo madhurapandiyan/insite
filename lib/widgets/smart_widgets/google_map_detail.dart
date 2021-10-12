@@ -50,174 +50,174 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: Theme.of(context).backgroundColor,
-        border: Border.all(
-            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
-        shape: BoxShape.rectangle,
-      ),
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding:
-                    EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        // SvgPicture.asset("assets/images/arrowdown.svg"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        InsiteText(
-                            text: "LOCATION",
-                            fontWeight: FontWeight.w900,
-                            size: 15.0),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 118.23,
-                          height: 35.18,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 1.0,
-                                color: cardcolor,
-                              ),
-                            ],
-                            border: Border.all(width: 1.0, color: Colors.white),
-                            shape: BoxShape.rectangle,
+    return Card(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.50,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding:
+                      EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          // SvgPicture.asset("assets/images/arrowdown.svg"),
+                          SizedBox(
+                            width: 10,
                           ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 8.0,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: DropdownButton(
-                                  dropdownColor:
-                                      Theme.of(context).backgroundColor,
-                                  icon: Padding(
-                                    padding: EdgeInsets.only(right: 8.0),
-                                    child: Container(
-                                      child: SvgPicture.asset(
-                                        "assets/images/arrowdown.svg",
-                                        width: 10,
-                                        height: 10,
-                                        color:
-                                            Theme.of(context).iconTheme.color,
+                          InsiteText(
+                              text: "LOCATION",
+                              fontWeight: FontWeight.w900,
+                              size: 15.0),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 118.23,
+                            height: 35.18,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).backgroundColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 1.0,
+                                  color: cardcolor,
+                                ),
+                              ],
+                              border:
+                                  Border.all(width: 1.0, color: Colors.white),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 8.0,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: DropdownButton(
+                                    dropdownColor:
+                                        Theme.of(context).backgroundColor,
+                                    icon: Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "assets/images/arrowdown.svg",
+                                          width: 10,
+                                          height: 10,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                        ),
                                       ),
                                     ),
+                                    isExpanded: true,
+                                    hint: InsiteText(
+                                        text: _currentSelectedItem,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
+                                    items: [
+                                      'MAP',
+                                      'TERRAIN',
+                                      'SATELLITE',
+                                      'HYBRID'
+                                    ]
+                                        .map((map) => DropdownMenuItem(
+                                              value: map,
+                                              child: InsiteText(
+                                                  text: map,
+                                                  size: 11.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color),
+                                            ))
+                                        .toList(),
+                                    value: _currentSelectedItem,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _currentSelectedItem = value;
+                                      });
+                                    },
+                                    underline: Container(
+                                        height: 1.0,
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 0.0)))),
                                   ),
-                                  isExpanded: true,
-                                  hint: InsiteText(
-                                      text: _currentSelectedItem,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .color),
-                                  items:
-                                      ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
-                                          .map((map) => DropdownMenuItem(
-                                                value: map,
-                                                child: InsiteText(
-                                                    text: map,
-                                                    size: 11.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        .color),
-                                              ))
-                                          .toList(),
-                                  value: _currentSelectedItem,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _currentSelectedItem = value;
-                                    });
-                                  },
-                                  underline: Container(
-                                      height: 1.0,
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                              bottom: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 0.0)))),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 40.0,
-                        ),
-                        // GestureDetector(
-                        //   onTap: () => print("button is tapped"),
-                        //   child: SvgPicture.asset(
-                        //     "assets/images/menu.svg",
-                        //     width: 20,
-                        //     height: 20,
-                        //   ),
-                        // )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              // Container(
-              //   height: MediaQuery.of(context).size.height * 0.10,
-              //   color: greencolor,
-              //   child: Padding(
-              //     padding: EdgeInsets.only(left: 5.0, top: 8.0),
-              //     child: Text(
-              //       "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-              //       style: TextStyle(
-              //           fontSize: 11.0,
-              //           fontWeight: FontWeight.w500,
-              //           fontFamily: 'Roboto',
-              //           fontStyle: FontStyle.normal,
-              //           color: maptextcolor),
-              //     ),
-              //   ),
-              // ),
-              widget.isLoading
-                  ? Expanded(child: InsiteProgressBar())
-                  : Flexible(
-                      child: Container(
-                          height: MediaQuery.of(context).size.height * 0.45,
-                          child: _googleMap(currentType)),
-                    ),
-              Divider(),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                child: Container(
-                  width: 290.5,
-                  height: 22.57,
-                  child: InsiteText(
-                    text: widget.status,
-                    size: 10.0,
-                    fontWeight: FontWeight.bold,
+                          SizedBox(
+                            width: 40.0,
+                          ),
+                          // GestureDetector(
+                          //   onTap: () => print("button is tapped"),
+                          //   child: SvgPicture.asset(
+                          //     "assets/images/menu.svg",
+                          //     width: 20,
+                          //     height: 20,
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
-        ],
+                SizedBox(
+                  height: 5.0,
+                ),
+                // Container(
+                //   height: MediaQuery.of(context).size.height * 0.10,
+                //   color: greencolor,
+                //   child: Padding(
+                //     padding: EdgeInsets.only(left: 5.0, top: 8.0),
+                //     child: Text(
+                //       "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+                //       style: TextStyle(
+                //           fontSize: 11.0,
+                //           fontWeight: FontWeight.w500,
+                //           fontFamily: 'Roboto',
+                //           fontStyle: FontStyle.normal,
+                //           color: maptextcolor),
+                //     ),
+                //   ),
+                // ),
+                widget.isLoading
+                    ? Expanded(child: InsiteProgressBar())
+                    : Flexible(
+                        child: Container(
+                            height: MediaQuery.of(context).size.height * 0.45,
+                            child: _googleMap(currentType)),
+                      ),
+                Divider(),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0, top: 5.0),
+                  child: Container(
+                    width: 290.5,
+                    height: 22.57,
+                    child: InsiteText(
+                      text: widget.status,
+                      size: 10.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

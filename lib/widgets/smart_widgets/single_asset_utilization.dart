@@ -24,103 +24,98 @@ class _SingleAssetUtilizationWidgetState
   List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.4,
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        border: Border.all(
-            width: 1.5, color: Theme.of(context).textTheme.bodyText1.color),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    // Icon(
-                    //   Icons.keyboard_arrow_down,
-                    //   color: white,
-                    // ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    InsiteText(
-                        text: 'Asset Utilization'.toUpperCase(),
-                        fontWeight: FontWeight.bold,
-                        size: 15),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    // Icon(
-                    // Icons.more_vert,
-                    // color: white,
-                    // ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Divider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 2,
-                  ),
-                ),
-                UtilizationLegends(
-                  label1: 'Working',
-                  label2: 'Idle',
-                  label3: 'Running',
-                  color1: emerald,
-                  color2: burntSienna,
-                  color3: creamCan,
-                  shouldShowLabel: (List<bool> value) {
-                    setState(() {
-                      shouldShowLabel = value;
-                    });
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Card(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      barChart(
-                        'Today',
-                        Utils.checkNull(
-                            widget.assetUtilization.totalDay.workingHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalDay.idleHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalDay.runtimeHours),
+                      // Icon(
+                      //   Icons.keyboard_arrow_down,
+                      //   color: white,
+                      // ),
+                      SizedBox(
+                        width: 10,
                       ),
-                      barChart(
-                        'Current Week',
-                        Utils.checkNull(
-                            widget.assetUtilization.totalWeek.workingHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalWeek.idleHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalWeek.runtimeHours),
+                      InsiteText(
+                          text: 'Asset Utilization'.toUpperCase(),
+                          fontWeight: FontWeight.bold,
+                          size: 15),
+                      Expanded(
+                        child: Container(),
                       ),
-                      barChart(
-                        'Current Month',
-                        Utils.checkNull(
-                            widget.assetUtilization.totalMonth.workingHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalMonth.idleHours),
-                        Utils.checkNull(
-                            widget.assetUtilization.totalMonth.runtimeHours),
-                      ),
+                      // Icon(
+                      // Icons.more_vert,
+                      // color: white,
+                      // ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(
+                      color: Theme.of(context).dividerColor,
+                      thickness: 2,
+                    ),
+                  ),
+                  UtilizationLegends(
+                    label1: 'Working',
+                    label2: 'Idle',
+                    label3: 'Running',
+                    color1: emerald,
+                    color2: burntSienna,
+                    color3: creamCan,
+                    shouldShowLabel: (List<bool> value) {
+                      setState(() {
+                        shouldShowLabel = value;
+                      });
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        barChart(
+                          'Today',
+                          Utils.checkNull(
+                              widget.assetUtilization.totalDay.workingHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalDay.idleHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalDay.runtimeHours),
+                        ),
+                        barChart(
+                          'Current Week',
+                          Utils.checkNull(
+                              widget.assetUtilization.totalWeek.workingHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalWeek.idleHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalWeek.runtimeHours),
+                        ),
+                        barChart(
+                          'Current Month',
+                          Utils.checkNull(
+                              widget.assetUtilization.totalMonth.workingHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalMonth.idleHours),
+                          Utils.checkNull(
+                              widget.assetUtilization.totalMonth.runtimeHours),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

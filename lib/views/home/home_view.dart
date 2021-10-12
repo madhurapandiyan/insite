@@ -68,21 +68,16 @@ class _HomeViewState extends State<HomeView> {
       onTap: () {
         buttontap(index, category, viewModel);
       },
-      child: Container(
-        width: 118.71,
-        height: 111,
-        child: Card(
-          semanticContainer: true,
-          color: selectedIndex != null && selectedIndex == index
-              ? Theme.of(context).buttonColor
-              : Theme.of(context).cardColor,
-          elevation: 10.0,
-          margin: EdgeInsets.all(1.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      child: Card(
+        semanticContainer: true,
+        color: selectedIndex != null && selectedIndex == index
+            ? Theme.of(context).buttonColor
+            : Theme.of(context).cardColor,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SvgPicture.asset(
                 category.image,
@@ -91,7 +86,8 @@ class _HomeViewState extends State<HomeView> {
                     : Theme.of(context).iconTheme.color,
               ),
               SizedBox(height: 8.0),
-              InsiteText(
+              InsiteTextAlign(
+                textAlign: TextAlign.center,
                 color: selectedIndex != null && selectedIndex == index
                     ? Colors.white
                     : null,

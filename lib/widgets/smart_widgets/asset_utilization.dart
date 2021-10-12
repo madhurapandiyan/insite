@@ -41,226 +41,231 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+    return Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border:
-            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
-        shape: BoxShape.rectangle,
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-            child: Row(
-              children: [
-                // Icon(
-                //   Icons.keyboard_arrow_down,
-                //   color: white,
-                // ),
-                SizedBox(
-                  width: 10,
-                ),
-                InsiteText(
-                    text: 'Asset Utilization'.toUpperCase(),
-                    fontWeight: FontWeight.bold,
-                    size: 15),
-                Expanded(
-                  child: Container(),
-                ),
-                // Icon(
-                //   Icons.more_vert,
-                //   color: white,
-                // ),
-              ],
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              child: Row(
+                children: [
+                  // Icon(
+                  //   Icons.keyboard_arrow_down,
+                  //   color: white,
+                  // ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  InsiteText(
+                      text: 'Asset Utilization'.toUpperCase(),
+                      fontWeight: FontWeight.bold,
+                      size: 15),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  // Icon(
+                  //   Icons.more_vert,
+                  //   color: white,
+                  // ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Divider(
-              color: shark,
-              thickness: 1,
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Divider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1,
+              ),
             ),
-          ),
-          (widget.isLoading || widget.isRefreshing)
-              ? Expanded(
-                  child: InsiteProgressBar(),
-                )
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          ToggleButton(
-                              label1: 'average',
-                              label2: 'total',
-                              optionSelected: (bool value) {
-                                setState(() {
-                                  isAverageButtonSelected = value;
-                                });
-                              }),
-                          Expanded(
-                            child: UtilizationLegends(
-                              label1: 'Working',
-                              label2: 'Idle',
-                              label3: 'Running',
-                              color1: emerald,
-                              color2: burntSienna,
-                              color3: creamCan,
-                              shouldShowLabel: (List<bool> value) {
-                                setState(() {
-                                  shouldShowLabel = value;
-                                });
-                              },
+            (widget.isLoading || widget.isRefreshing)
+                ? Expanded(
+                    child: InsiteProgressBar(),
+                  )
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            ToggleButton(
+                                label1: 'average',
+                                label2: 'total',
+                                optionSelected: (bool value) {
+                                  setState(() {
+                                    isAverageButtonSelected = value;
+                                  });
+                                }),
+                            Expanded(
+                              child: UtilizationLegends(
+                                label1: 'Working',
+                                label2: 'Idle',
+                                label3: 'Running',
+                                color1: emerald,
+                                color2: burntSienna,
+                                color3: creamCan,
+                                shouldShowLabel: (List<bool> value) {
+                                  setState(() {
+                                    shouldShowLabel = value;
+                                  });
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          isAverageButtonSelected
-                              ? BarChartWidget(
-                                  title: 'Today',
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageDay
-                                      .workingHours),
-                                  onTap: () {
-                                    onFilterSelected(DateRangeType.today);
-                                  },
-                                  idleValue: Utils.checkNull(widget
-                                      .assetUtilization.averageDay.idleHours),
-                                  runningValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageDay
-                                      .runtimeHours))
-                              : BarChartWidget(
-                                  title: 'Today',
-                                  onTap: () {
-                                    onFilterSelected(DateRangeType.today);
-                                  },
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization.totalDay.workingHours),
-                                  idleValue: Utils.checkNull(widget
-                                      .assetUtilization.totalDay.idleHours),
-                                  runningValue: Utils.checkNull(widget.assetUtilization.totalDay.runtimeHours)),
-                          isAverageButtonSelected
-                              ? BarChartWidget(
-                                  title: 'Current Week',
-                                  onTap: () {
-                                    onFilterSelected(DateRangeType.currentWeek);
-                                  },
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageWeek
-                                      .workingHours),
-                                  idleValue: Utils.checkNull(widget
-                                      .assetUtilization.averageWeek.idleHours),
-                                  runningValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageWeek
-                                      .runtimeHours))
-                              : BarChartWidget(
-                                  title: 'Current Week',
-                                  onTap: () {
-                                    onFilterSelected(DateRangeType.currentWeek);
-                                  },
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization.totalWeek.workingHours),
-                                  idleValue: Utils.checkNull(
-                                      widget.assetUtilization.totalWeek.idleHours),
-                                  runningValue: Utils.checkNull(widget.assetUtilization.totalWeek.runtimeHours)),
-                          isAverageButtonSelected
-                              ? BarChartWidget(
-                                  title: 'Current Month',
-                                  onTap: () {
-                                    onFilterSelected(
-                                        DateRangeType.currentMonth);
-                                  },
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageMonth
-                                      .workingHours),
-                                  idleValue: Utils.checkNull(widget
-                                      .assetUtilization.averageMonth.idleHours),
-                                  runningValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .averageMonth
-                                      .runtimeHours))
-                              : BarChartWidget(
-                                  title: 'Current Month',
-                                  onTap: () {
-                                    onFilterSelected(
-                                        DateRangeType.currentMonth);
-                                  },
-                                  averageGreatestNumber:
-                                      widget.averageGreatestNumber,
-                                  isAverageButtonSelected:
-                                      isAverageButtonSelected,
-                                  totalGreatestNumber:
-                                      widget.totalGreatestNumber,
-                                  shouldShowLabel: shouldShowLabel,
-                                  workingValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .totalMonth
-                                      .workingHours),
-                                  idleValue: Utils.checkNull(widget
-                                      .assetUtilization.totalMonth.idleHours),
-                                  runningValue: Utils.checkNull(widget
-                                      .assetUtilization
-                                      .totalMonth
-                                      .runtimeHours),
-                                )
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            isAverageButtonSelected
+                                ? BarChartWidget(
+                                    title: 'Today',
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageDay
+                                        .workingHours),
+                                    onTap: () {
+                                      onFilterSelected(DateRangeType.today);
+                                    },
+                                    idleValue: Utils.checkNull(widget
+                                        .assetUtilization.averageDay.idleHours),
+                                    runningValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageDay
+                                        .runtimeHours))
+                                : BarChartWidget(
+                                    title: 'Today',
+                                    onTap: () {
+                                      onFilterSelected(DateRangeType.today);
+                                    },
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .totalDay
+                                        .workingHours),
+                                    idleValue: Utils.checkNull(
+                                        widget.assetUtilization.totalDay.idleHours),
+                                    runningValue: Utils.checkNull(widget.assetUtilization.totalDay.runtimeHours)),
+                            isAverageButtonSelected
+                                ? BarChartWidget(
+                                    title: 'Current Week',
+                                    onTap: () {
+                                      onFilterSelected(
+                                          DateRangeType.currentWeek);
+                                    },
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageWeek
+                                        .workingHours),
+                                    idleValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageWeek
+                                        .idleHours),
+                                    runningValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageWeek
+                                        .runtimeHours))
+                                : BarChartWidget(
+                                    title: 'Current Week',
+                                    onTap: () {
+                                      onFilterSelected(
+                                          DateRangeType.currentWeek);
+                                    },
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .totalWeek
+                                        .workingHours),
+                                    idleValue: Utils.checkNull(
+                                        widget.assetUtilization.totalWeek.idleHours),
+                                    runningValue: Utils.checkNull(widget.assetUtilization.totalWeek.runtimeHours)),
+                            isAverageButtonSelected
+                                ? BarChartWidget(
+                                    title: 'Current Month',
+                                    onTap: () {
+                                      onFilterSelected(
+                                          DateRangeType.currentMonth);
+                                    },
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageMonth
+                                        .workingHours),
+                                    idleValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageMonth
+                                        .idleHours),
+                                    runningValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .averageMonth
+                                        .runtimeHours))
+                                : BarChartWidget(
+                                    title: 'Current Month',
+                                    onTap: () {
+                                      onFilterSelected(
+                                          DateRangeType.currentMonth);
+                                    },
+                                    averageGreatestNumber:
+                                        widget.averageGreatestNumber,
+                                    isAverageButtonSelected:
+                                        isAverageButtonSelected,
+                                    totalGreatestNumber:
+                                        widget.totalGreatestNumber,
+                                    shouldShowLabel: shouldShowLabel,
+                                    workingValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .totalMonth
+                                        .workingHours),
+                                    idleValue: Utils.checkNull(widget
+                                        .assetUtilization.totalMonth.idleHours),
+                                    runningValue: Utils.checkNull(widget
+                                        .assetUtilization
+                                        .totalMonth
+                                        .runtimeHours),
+                                  )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-        ],
+                    ],
+                  ),
+          ],
+        ),
       ),
     );
   }

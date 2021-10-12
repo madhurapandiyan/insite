@@ -45,128 +45,122 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
       sandyBrown,
     ];
     double height = MediaQuery.of(context).size.height * 0.32;
-    return Container(
+    return Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
-      height: height,
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [new BoxShadow(blurRadius: 1.0, color: cardcolor)],
-        border:
-            Border.all(width: 1.5, color: Theme.of(context).backgroundColor),
-        shape: BoxShape.rectangle,
-      ),
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  // SvgPicture.asset("assets/images/arrowdown.svg"),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  InsiteText(
-                    text: "FUEL LEVEL",
-                    fontWeight: FontWeight.w900,
-                    size: 12,
-                  ),
-                  SizedBox(
-                    width: 60,
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  InsiteText(
-                    text: 'ALL ASSETS',
-                    fontWeight: FontWeight.w900,
-                    size: 12,
-                  ),
-                  SizedBox(
-                    width: 35.0,
-                  ),
-                  // GestureDetector(
-                  //   onTap: () => print("button is tapped"),
-                  //   child: SvgPicture.asset(
-                  //     "assets/images/menu.svg",
-                  //     width: 20,
-                  //     height: 20,
-                  //   ),
-                  // ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          thickness: 1.0,
-          color: Theme.of(context).dividerColor,
-        ),
-        (widget.isLoading || widget.isRefreshing)
-            ? Expanded(child: InsiteProgressBar())
-            : Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width * 0.20,
-                        height: MediaQuery.of(context).size.height * 0.20,
-                        child: SfCircularChart(
-                          centerX: (MediaQuery.of(context).size.width * 0.24)
-                              .toStringAsFixed(0),
-                          centerY: (MediaQuery.of(context).size.height * 0.12)
-                              .toStringAsFixed(0),
-                          palette: <Color>[
-                            burntSienna,
-                            lightRose,
-                            mustard,
-                            emerald
-                          ],
-                          legend: Legend(isVisible: false),
-                          series: _getSemiDoughnutSeries(),
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                        )),
-                  ),
-                  Flexible(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.20,
-                      child: ListView.separated(
-                          separatorBuilder: (context, index) {
-                            return Container(
-                                width: 127.29,
-                                child:
-                                    Divider(thickness: 1.0, color: athenGrey));
-                          },
-                          itemCount: widget.chartData.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          itemBuilder: (context, index) {
-                            ChartSampleData data = widget.chartData[index];
-                            return AssetStatusWidget(
-                              chartColor: color[index],
-                              label:
-                                  Utils.getFuleLevelWidgetLabel(data.x, false),
-                              callBack: () {
-                                if (data.y > 0) {
-                                  widget.onFilterSelected(FilterData(
-                                      isSelected: true,
-                                      count: data.y.toString(),
-                                      title: data.x.toString(),
-                                      type: FilterType.FUEL_LEVEL));
-                                }
-                              },
-                            );
-                          }),
+      child: Container(
+        height: height,
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    // SvgPicture.asset("assets/images/arrowdown.svg"),
+                    SizedBox(
+                      width: 10,
                     ),
-                  ),
-                ],
-              ),
-      ]),
+                    InsiteText(
+                      text: "FUEL LEVEL",
+                      fontWeight: FontWeight.w900,
+                      size: 12,
+                    ),
+                    SizedBox(
+                      width: 60,
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    InsiteText(
+                      text: 'ALL ASSETS',
+                      fontWeight: FontWeight.w900,
+                      size: 12,
+                    ),
+                    SizedBox(
+                      width: 35.0,
+                    ),
+                    // GestureDetector(
+                    //   onTap: () => print("button is tapped"),
+                    //   child: SvgPicture.asset(
+                    //     "assets/images/menu.svg",
+                    //     width: 20,
+                    //     height: 20,
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            thickness: 1.0,
+            color: Theme.of(context).dividerColor,
+          ),
+          (widget.isLoading || widget.isRefreshing)
+              ? Expanded(child: InsiteProgressBar())
+              : Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.20,
+                          height: MediaQuery.of(context).size.height * 0.20,
+                          child: SfCircularChart(
+                            centerX: (MediaQuery.of(context).size.width * 0.24)
+                                .toStringAsFixed(0),
+                            centerY: (MediaQuery.of(context).size.height * 0.12)
+                                .toStringAsFixed(0),
+                            palette: <Color>[
+                              burntSienna,
+                              lightRose,
+                              mustard,
+                              emerald
+                            ],
+                            legend: Legend(isVisible: false),
+                            series: _getSemiDoughnutSeries(),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                          )),
+                    ),
+                    Flexible(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.20,
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return Container(
+                                  width: 127.29,
+                                  child: Divider(
+                                      thickness: 1.0, color: athenGrey));
+                            },
+                            itemCount: widget.chartData.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            itemBuilder: (context, index) {
+                              ChartSampleData data = widget.chartData[index];
+                              return AssetStatusWidget(
+                                chartColor: color[index],
+                                label: Utils.getFuleLevelWidgetLabel(
+                                    data.x, false),
+                                callBack: () {
+                                  if (data.y > 0) {
+                                    widget.onFilterSelected(FilterData(
+                                        isSelected: true,
+                                        count: data.y.toString(),
+                                        title: data.x.toString(),
+                                        type: FilterType.FUEL_LEVEL));
+                                  }
+                                },
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+        ]),
+      ),
     );
   }
 

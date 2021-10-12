@@ -24,10 +24,6 @@ class _SingleAssetUsageState extends State<SingleAssetUsage> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).backgroundColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          side: BorderSide(color: Theme.of(context).textTheme.bodyText1.color)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

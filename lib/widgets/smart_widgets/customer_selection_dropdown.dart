@@ -102,7 +102,7 @@ class _AccountSelectionDropDownWidgetState
   @override
   Widget build(BuildContext context) {
     return AppExpansionTile(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).cardColor,
       title: Text(
         selected != null
             ? selected.value.DisplayName
@@ -120,7 +120,7 @@ class _AccountSelectionDropDownWidgetState
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).cardColor,
           ),
           height: _displayList.isNotEmpty && selected != null
               ? MediaQuery.of(context).size.height * 0.4

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
@@ -16,13 +15,7 @@ class PingDevice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        border: Border.all(
-            color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
+    return Card(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         child: Column(

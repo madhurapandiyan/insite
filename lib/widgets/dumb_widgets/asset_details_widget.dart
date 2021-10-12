@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/service_plan.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -13,16 +12,7 @@ class AssetDetailWidgt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-        color: Theme.of(context).backgroundColor,
-        border: Border.all(
-            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
-        shape: BoxShape.rectangle,
-      ),
+    return Card(
       child: Column(
         children: [
           Padding(
@@ -41,7 +31,13 @@ class AssetDetailWidgt extends StatelessWidget {
               ],
             ),
           ),
+          Divider(
+            color: Theme.of(context).dividerColor,
+            thickness: 1,
+          ),
           Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            padding: EdgeInsets.all(8),
             child: Table(
               border: TableBorder.all(),
               children: [
