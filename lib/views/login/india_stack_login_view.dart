@@ -86,7 +86,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("IndiaStackLoginView onStateChanged: ${state.type} ${state.url}");
       if (state.url.startsWith(Urls.unifiedFleetV4IdTokenUrl +
-          "/oauth/authorize?response_type=code&client_id=fe148324-cca6-4342-9a28-d5de23a95005")) {
+          "/oauth/authorize?response_type=code&client_id=${Urls.indiaStackClientId}")) {
         print(
             "IndiaStackLoginView STATE changed with logout redirect : ${state.url}");
         try {

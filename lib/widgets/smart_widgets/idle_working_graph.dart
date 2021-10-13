@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -23,14 +24,11 @@ class IdleWorkingGraphWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16.0),
       child: Row(
         children: [
-          Text(
+          InsiteText(
             // label.length > 10 ? label.substring(0, 7) + '...' : label,
-            label,
-            style: TextStyle(
-              color: white,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
+            text: label,
+            size: 10,
+            fontWeight: FontWeight.bold,
           ),
           Container(
             width: 2,
@@ -46,10 +44,8 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             padding: EdgeInsets.all(0),
             isRTL: true,
             width: width,
-            center: Text(
-              "${idleLength.toStringAsFixed(1)}",
-              style: TextStyle(fontSize: 12),
-            ),
+            center:
+                InsiteText(text: "${idleLength.toStringAsFixed(1)}", size: 12),
             lineHeight: 20.0,
             percent: (idleLength * 10 / 100) > 1 ? 1 : (idleLength * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
@@ -70,11 +66,10 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             animationDuration: 1000,
             lineHeight: 20.0,
             width: width,
-            center: Text(
-              // "${(idleLength + workingLength).toStringAsFixed(1)}",
-              "${(workingLength).toStringAsFixed(1)}",
-              style: TextStyle(fontSize: 12),
-            ),
+            center: InsiteText(
+                // "${(idleLength + workingLength).toStringAsFixed(1)}",
+                text: "${(workingLength).toStringAsFixed(1)}",
+                size: 12),
             // percent: ((idleLength + workingLength) * 10 / 100) > 1
             //     ? 1
             //     : ((idleLength + workingLength) * 10 / 100),

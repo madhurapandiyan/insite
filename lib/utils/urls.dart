@@ -40,14 +40,23 @@ class Urls {
   //sample
   static String unifiedFleetV4LoginUrl =
       "https://id.trimble.com/oauth/authorize?response_type=code" +
-          "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
+          "&client_id=$indiaStackClientId&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
           "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
           "&code_challenge=sbJmXLvS3LhVV88tdkRx1HDXhLazEfUH3jhDsMyMRSw&code_challenge_method=S256" +
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
-        "&client_id=fe148324-cca6-4342-9a28-d5de23a95005&state=$state" +
+        "&client_id=a2f1b5a5-5b42-4488-9c19-555944c54578&state=$state" +
+        "&redirect_uri=$localRedirectUri&scope=openid InsiteFleet-2.0" +
+        "&code_challenge=$codeChallenge&code_challenge_method=S256" +
+        "&nonce=$state&navigationRedirectUri=/";
+    return url;
+  }
+
+  static getV4LoginUrl1(state, codeChallenge) {
+    String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
+        "&client_id=$indiaStackUsermoduleAppClientId&state=$state" +
         "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
         "&code_challenge=$codeChallenge&code_challenge_method=S256" +
         "&nonce=$state&navigationRedirectUri=/";
@@ -56,10 +65,23 @@ class Urls {
 
   static String mobileRedirectUri = "insite://mobile";
   static String webRedirectUri = "https://d1pavvpktln7z7.cloudfront.net/auth";
+  static String localRedirectUri = "http://localhost:4200/auth";
+  static String localHost = "http://localhost:4200";
+  static String localHostAuth = "http://localhost:4200/auth";
+  static String indiaStackUsermoduleAppClientId =
+      "a2f1b5a5-5b42-4488-9c19-555944c54578";
+  static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
 
+  static String tenantDomai = "Trimble.com";
   static getV4LogoutUrl(String token, redirecturi) {
     String url = Urls.unifiedFleetV4IdTokenUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$localRedirectUri";
+    return url;
+  }
+
+  static getV4LogoutUrl1(String token, redirecturi) {
+    String url = Urls.unifiedFleetV4IdTokenUrl +
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$localRedirectUri";
     return url;
   }
 

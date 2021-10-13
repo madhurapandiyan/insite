@@ -237,6 +237,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 child: InsiteTextAlign(
                   text: "DAY",
                   textAlign: TextAlign.center,
+                  color: idlingLevelRange == IdlingLevelRange.DAY
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   size: 11.0,
                   fontWeight: FontWeight.w700,
                 )),
@@ -265,6 +268,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   text: "WEEK",
                   textAlign: TextAlign.center,
                   size: 11.0,
+                  color: idlingLevelRange == IdlingLevelRange.WEEK
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   fontWeight: FontWeight.w700,
                 )),
           ),
@@ -291,6 +297,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 child: InsiteTextAlign(
                   text: "MONTH",
                   textAlign: TextAlign.center,
+                  color: idlingLevelRange == IdlingLevelRange.MONTH
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   size: 10.0,
                   fontWeight: FontWeight.w700,
                 )),

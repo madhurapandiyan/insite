@@ -56,7 +56,6 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-                (await _localService.getLoggedInUser()).sub,
                 "in-identitymanager-identitywebapi");
         return adminManageUserResponse;
       }

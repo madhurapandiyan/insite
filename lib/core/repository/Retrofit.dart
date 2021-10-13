@@ -683,7 +683,6 @@ abstract class RestClient {
   Future<AdminManageUser> getAdminManagerUserListData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Header("X-VisionLink-UserUid") userId,
       @Header("service") String serviceHeader);
 }
 
