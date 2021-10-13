@@ -130,20 +130,23 @@ class ManageUserViewModel extends InsiteViewModel {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text("Delete User",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                          color: Theme.of(context).textTheme.bodyText1.color,
+                          fontWeight: FontWeight.bold)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     "Are you sure you want to permanently remove this user account?",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1.color),
                   ),
                 ),
                 ButtonBar(children: [
                   TextButton(
                     child: Text(
                       "NO",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText1.color),
                     ),
                     onPressed: () async {
                       Navigator.pop(context, false);
@@ -155,7 +158,8 @@ class ManageUserViewModel extends InsiteViewModel {
                   TextButton(
                     child: Text(
                       'YES',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText1.color),
                     ),
                     onPressed: () async {
                       Navigator.pop(context, true);

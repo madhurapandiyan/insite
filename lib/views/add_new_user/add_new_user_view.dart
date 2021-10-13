@@ -392,7 +392,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AddressCustomTextBox(
-                      title: "",
+                      title: "Address",
                       controller: _addressController,
                     ),
                   ),

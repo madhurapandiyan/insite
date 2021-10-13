@@ -58,7 +58,6 @@ class ManageUserView extends StatelessWidget {
                                           ),
                                           child: InsiteButton(
                                               title: "",
-                                              bgColor: tuna,
                                               onTap: () {
                                                 viewModel.onEditClicked();
                                               },
@@ -85,7 +84,6 @@ class ManageUserView extends StatelessWidget {
                                                 viewModel
                                                     .onDeleteClicked(context);
                                               },
-                                              bgColor: tuna,
                                               icon: Icon(
                                                 Icons.delete_outline,
                                                 color: appbarcolor,
@@ -105,7 +103,6 @@ class ManageUserView extends StatelessWidget {
                                           ),
                                           child: InsiteButton(
                                               title: "",
-                                              bgColor: tuna,
                                               onTap: () {
                                                 viewModel.onItemDeselect();
                                               },
@@ -120,7 +117,6 @@ class ManageUserView extends StatelessWidget {
                                           !viewModel.showEdit
                                       ? InsiteButton(
                                           title: "Add User",
-                                          bgColor: tango,
                                           textColor: Colors.white,
                                           onTap: () {
                                             viewModel.onAddNewUserClicked();
