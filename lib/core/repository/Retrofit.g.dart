@@ -2519,10 +2519,9 @@ class _RestClient implements RestClient {
 
   @override
   Future<AdminManageUser> getAdminManagerUserListData(
-      url, customerId, userId, serviceHeader) async {
+      url, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
-    ArgumentError.checkNotNull(userId, 'userId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2533,7 +2532,6 @@ class _RestClient implements RestClient {
             method: 'GET',
             headers: <String, dynamic>{
               r'x-visionlink-customeruid': customerId,
-              r'X-VisionLink-UserUid': userId,
               r'service': serviceHeader
             },
             extra: _extra,
