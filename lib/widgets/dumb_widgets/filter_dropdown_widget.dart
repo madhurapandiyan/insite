@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FilterDropDownWidget extends StatefulWidget {
@@ -57,6 +56,7 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                       child: InsiteButton(
                         width: 50,
                         title: value.count,
+                        padding: EdgeInsets.all(4),
                         bgColor: Theme.of(context).backgroundColor,
                         fontSize: 10,
                       ),

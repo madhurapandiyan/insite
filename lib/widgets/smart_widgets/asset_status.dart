@@ -25,8 +25,8 @@ class AssetStatus extends StatefulWidget {
 
 class _AssetStatusState extends State<AssetStatus> {
   var colors = [
-    emerald,
     burntSienna,
+    emerald,
     mustard,
     textcolor,
     lightRose,
@@ -104,8 +104,8 @@ class _AssetStatusState extends State<AssetStatus> {
                           alignment: Alignment.center,
                           child: SfCircularChart(
                             palette: <Color>[
-                              emerald,
                               burntSienna,
+                              emerald,
                               mustard,
                               textcolor,
                               lightRose,
@@ -127,7 +127,6 @@ class _AssetStatusState extends State<AssetStatus> {
                       ),
                       Flexible(
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.20,
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: ListView.separated(
@@ -136,6 +135,7 @@ class _AssetStatusState extends State<AssetStatus> {
                                     thickness: 1.0, color: athenGrey);
                               },
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: widget.statusChartData.length,
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.symmetric(horizontal: 5.0),

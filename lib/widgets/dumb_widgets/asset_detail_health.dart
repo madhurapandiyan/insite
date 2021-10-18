@@ -12,20 +12,7 @@ class AssetDetailHealth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-        color: Theme.of(context).backgroundColor,
-        boxShadow: [
-          new BoxShadow(
-              blurRadius: 1.0, color: Theme.of(context).backgroundColor)
-        ],
-        border: Border.all(
-            width: 1, color: Theme.of(context).textTheme.bodyText1.color),
-        shape: BoxShape.rectangle,
-      ),
+    return Card(
       child: Column(
         children: [
           Padding(
@@ -45,7 +32,12 @@ class AssetDetailHealth extends StatelessWidget {
               ],
             ),
           ),
+          Divider(
+            color: Theme.of(context).dividerColor,
+            thickness: 1,
+          ),
           Container(
+            padding: EdgeInsets.all(8),
             child: Table(
               border: TableBorder.all(),
               children: [

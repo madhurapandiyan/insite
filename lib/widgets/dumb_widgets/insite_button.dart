@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 
 class InsiteButton extends StatelessWidget {
   final String title;

@@ -64,7 +64,6 @@ class _SingleAssetUtilizationListViewState
                                 viewModel.startDate) +
                             " - " +
                             Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        color: white,
                         fontWeight: FontWeight.bold,
                         size: 11),
                     SizedBox(

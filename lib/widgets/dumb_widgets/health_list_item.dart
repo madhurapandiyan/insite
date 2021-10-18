@@ -78,10 +78,10 @@ class HealthListItem extends StatelessWidget {
                   Column(
                     children: [
                       InsiteText(
-                          text: "Severity",
-                          size: 13,
-                          fontWeight: FontWeight.w700,
-                          color: textcolor),
+                        text: "Severity",
+                        size: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
                       SizedBox(
                         height: 5,
                       ),

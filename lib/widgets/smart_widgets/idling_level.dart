@@ -151,7 +151,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                   },
                                   primaryYAxis: NumericAxis(
                                       majorGridLines: MajorGridLines(
-                                          width: 2, color: silver),
+                                          width: 2,
+                                          color: Theme.of(context)
+                                              .backgroundColor),
                                       labelStyle: TextStyle(
                                           color: Theme.of(context)
                                               .textTheme

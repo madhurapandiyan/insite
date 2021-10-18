@@ -15,6 +15,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/location/single_location_info_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -319,25 +320,15 @@ class AssetLocationViewModel extends InsiteViewModel {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Source :",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontFamily: 'Roboto',
-                                        color: textcolor,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    assetLocation.source != null
-                                        ? assetLocation.source
-                                        : "",
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        color: textcolor,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 8.0),
-                                  ),
+                                  InsiteText(
+                                      text: "Source :",
+                                      fontWeight: FontWeight.w900,
+                                      size: 10.0),
+                                  InsiteText(
+                                      text: assetLocation.source != null
+                                          ? assetLocation.source
+                                          : "",
+                                      size: 8.0),
                                 ],
                               ),
                             ),
