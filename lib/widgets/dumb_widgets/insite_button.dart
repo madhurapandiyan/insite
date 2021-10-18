@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 
 class InsiteButton extends StatelessWidget {
   final String title;
@@ -119,7 +118,7 @@ class _InsiteButtonWithSelectableState
               ? isSelected
                   ? Theme.of(context).buttonColor
                   : widget.bgColor
-              : Theme.of(context).buttonColor,
+              : widget.bgColor,
         ),
         alignment: Alignment.center,
         height: widget.height != null ? widget.height : null,

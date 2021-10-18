@@ -226,7 +226,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
-        color: tuna,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Stack(

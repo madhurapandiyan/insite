@@ -4,6 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class HealthListItem extends StatelessWidget {
@@ -76,12 +77,10 @@ class HealthListItem extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Text(
-                        "Severity",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: textcolor),
+                      InsiteText(
+                        text: "Severity",
+                        size: 13,
+                        fontWeight: FontWeight.w700,
                       ),
                       SizedBox(
                         height: 5,

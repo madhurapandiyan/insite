@@ -41,6 +41,9 @@ class LocationViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
+  bool _showLabel = true;
+  bool get showLabel => _showLabel;
+
   ScreenType _pageType = ScreenType.LOCATION;
   ScreenType get pageType => _pageType;
 
@@ -427,6 +430,11 @@ class LocationViewModel extends InsiteViewModel {
     }
     _loading = false;
     _refreshing = false;
+    notifyListeners();
+  }
+
+  updateLabelVisibility(bool show) {
+    _showLabel = show;
     notifyListeners();
   }
 }

@@ -32,7 +32,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
     return Card(
       child: Container(
         height: widget.countData.length >= 3
-            ? MediaQuery.of(context).size.height * 0.38
+            ? MediaQuery.of(context).size.height * 0.35
             : MediaQuery.of(context).size.height * 0.28,
         child: Column(
           children: [
@@ -93,12 +93,14 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                     child: ListView.builder(
                         itemCount: widget.countData.length,
                         shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         itemBuilder: (context, index) {
                           Count countResponse = widget.countData[index];
                           return FaultWidget(
                             data: countResponse,
+                            showAssetCount: false,
                             screenType: widget.screenType,
                             onSelected: () {
                               if (countResponse.faultCount > 0) {
@@ -114,9 +116,6 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                           );
                         }),
                   ),
-            SizedBox(
-              height: 10,
-            ),
             Divider(
               thickness: 1.0,
               color: Theme.of(context).dividerColor,
@@ -130,8 +129,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                       text: "VIEWING DATA FOR 7 DAYS",
                       textAlign: TextAlign.center,
                       fontWeight: FontWeight.w900,
-                      color: Theme.of(context).textTheme.bodyText1.color,
-                      size: 11.0)),
+                      size: 10.0)),
             ),
           ],
         ),

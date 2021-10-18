@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultDropDown extends StatefulWidget {
   final String value;
@@ -43,18 +44,19 @@ class _FaultDropDownState extends State<FaultDropDown> {
                   elevation: 16,
                   dropdownColor: Theme.of(context).backgroundColor,
                   value: widget.value,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onChanged: widget.onChanged,
                   items: widget.items
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyText1.color,
-                            fontSize: 10.0,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal),
+                      child: InsiteText(
+                        text: value,
+                        size: 10.0,
+                        fontWeight: FontWeight.w700,
                       ),
                     );
                   }).toList(),

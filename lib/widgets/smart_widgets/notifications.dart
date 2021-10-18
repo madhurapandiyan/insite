@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Notifications extends StatelessWidget {
   const Notifications({
@@ -28,11 +29,11 @@ class Notifications extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  'NOTIFICATIONS',
-                  style: TextStyle(
-                      color: white, fontWeight: FontWeight.bold, fontSize: 15),
-                ),
+                InsiteText(
+                    text: 'NOTIFICATIONS',
+                    color: white,
+                    fontWeight: FontWeight.bold,
+                    size: 15),
               ],
             ),
             Padding(
@@ -47,7 +48,6 @@ class Notifications extends StatelessWidget {
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    
                     decoration: BoxDecoration(
                       color: mediumgrey,
                       border: Border.all(color: black, width: 0.0),
@@ -58,13 +58,10 @@ class Notifications extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: EdgeInsets.only(left: 20),
-                          child: Text(
-                            'No Notifications',
-                            style: TextStyle(
-                                color: white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                          ),
+                          child: InsiteText(
+                              text: 'No Notifications',
+                              fontWeight: FontWeight.bold,
+                              size: 15),
                         ),
                       ),
                     ),

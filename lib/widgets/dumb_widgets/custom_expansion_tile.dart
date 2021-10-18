@@ -135,7 +135,8 @@ class AppExpansionTileState extends State<AppExpansionTile>
                 trailing: widget.trailing ??
                     new RotationTransition(
                       turns: _iconTurns,
-                      child: const Icon(Icons.expand_more),
+                      child: Icon(Icons.expand_more,
+                          color: Theme.of(context).iconTheme.color),
                     ),
               ),
             ),

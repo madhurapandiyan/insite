@@ -64,8 +64,14 @@ class _TabPageState extends State<AssetDetailView> {
     Category(
       4,
       "LOCATION",
-      "assets/images/loca.svg",
+      "assets/images/location.svg",
       ScreenType.LOCATION,
+    ),
+    Category(
+      5,
+      "HEALTH",
+      "assets/images/health.svg",
+      ScreenType.HEALTH,
     ),
   ];
 
@@ -79,13 +85,13 @@ class _TabPageState extends State<AssetDetailView> {
     Category(
       2,
       "HEALTH",
-      "assets/images/supportmanager.svg",
+      "assets/images/health.svg",
       ScreenType.HEALTH,
     ),
     Category(
       3,
       "LOCATION",
-      "assets/images/loca.svg",
+      "assets/images/location.svg",
       ScreenType.LOCATION,
     ),
   ];
@@ -215,37 +221,23 @@ class _TabPageState extends State<AssetDetailView> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(children: [
-                            Text("CUSTOMER NAME : ",
-                                style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w700,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 11.0)),
+                            InsiteText(
+                                text: "CUSTOMER NAME : ",
+                                fontWeight: FontWeight.w700,
+                                size: 11.0),
                             SizedBox(width: 15.0),
                             Expanded(
-                              child: Text(
-                                viewModel.assetDetail != null
-                                    ? viewModel.assetDetail
-                                                .universalCustomerName !=
-                                            null
-                                        ? viewModel
-                                            .assetDetail.universalCustomerName
-                                        : "-"
-                                    : "-",
-                                style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w700,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 11.0),
-                              ),
+                              child: InsiteText(
+                                  text: viewModel.assetDetail != null
+                                      ? viewModel.assetDetail
+                                                  .universalCustomerName !=
+                                              null
+                                          ? viewModel
+                                              .assetDetail.universalCustomerName
+                                          : "-"
+                                      : "-",
+                                  fontWeight: FontWeight.w700,
+                                  size: 11.0),
                             )
                           ]),
                         ),
@@ -306,11 +298,15 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
                                         )
-                                      : Container(
-                                          child: EmptyView(
-                                            title: "Coming soon",
-                                          ),
-                                        ),
+                                      : selectedTabIndex == 4
+                                          ? HealthListView(
+                                              detail: viewModel.assetDetail,
+                                            )
+                                          : Container(
+                                              child: EmptyView(
+                                                title: "Coming soon",
+                                              ),
+                                            ),
                     ),
                   ],
                 ),

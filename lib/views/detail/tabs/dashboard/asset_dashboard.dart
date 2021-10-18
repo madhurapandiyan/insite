@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
@@ -51,7 +50,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
               ),
               color: Theme.of(context).backgroundColor,
               border: Border.all(
-                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+                    width: 1,
+                    color: Theme.of(context).textTheme.bodyText1.color,
+              ),
               shape: BoxShape.rectangle,
             ),
             child: SingleChildScrollView(

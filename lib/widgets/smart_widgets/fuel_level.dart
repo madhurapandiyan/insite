@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
@@ -84,7 +83,6 @@ class FuelLevel extends StatelessWidget {
                                   center: InsiteText(
                                       text: percentage + "%",
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white,
                                       size: 25),
                                   backgroundColor:
                                       Theme.of(context).backgroundColor,

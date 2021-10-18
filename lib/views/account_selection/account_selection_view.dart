@@ -92,13 +92,10 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                 children: [
                                   Container(
                                     padding: EdgeInsets.all(16),
-                                    child: Text(
-                                      "ACCOUNT SELECTION :",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
+                                    child: InsiteText(
+                                        text: "ACCOUNT SELECTION :",
+                                        fontWeight: FontWeight.bold,
+                                        size: 18),
                                   ),
                                 ],
                               ),

@@ -188,11 +188,12 @@ class DashboardViewModel extends InsiteViewModel {
         if (result.countData[index].countOf != "Not Reporting") {
           Logger().d("countOf ${result.countData[index].count}");
           totalAssetCount = totalAssetCount + result.countData[index].count;
-
           fuelChartData.add(ChartSampleData(
-              x: result.countData[index].countOf,
-              y: result.countData[index].count,
-              z: totalAssetCount.toString()));
+            x: result.countData[index].countOf,
+            y: result.countData[index].count,
+            z: result.countData[index].count.toString(),
+            // z: totalAssetCount.toString() //un comment when cumaltive count needs to be shown
+          ));
         }
       }
     }
@@ -244,7 +245,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   onFilterSelected(FilterData data) async {
     Logger().d("onFilterSelected $data");
-    // await clearFilterDb();
+    await clearFilterDb();
     await addFilter(data);
     // Future.delayed(Duration(seconds: 1), () {
     // gotoFleetPage();

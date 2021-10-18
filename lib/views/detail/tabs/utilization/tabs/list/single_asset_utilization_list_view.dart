@@ -64,7 +64,6 @@ class _SingleAssetUtilizationListViewState
                                 viewModel.startDate) +
                             " - " +
                             Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        color: white,
                         fontWeight: FontWeight.bold,
                         size: 11),
                     SizedBox(
@@ -108,7 +107,7 @@ class _SingleAssetUtilizationListViewState
                               });
                             },
                             textColor: Colors.white,
-                            bgColor: Colors.white,
+                            bgColor: Theme.of(context).backgroundColor,
                             isSelectable: true,
                             height: 30,
                             fontSize: 12,

@@ -126,7 +126,6 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                     ),
                     Flexible(
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.20,
                         child: ListView.separated(
                             separatorBuilder: (context, index) {
                               return Container(
@@ -136,6 +135,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             },
                             itemCount: widget.chartData.length,
                             shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             padding: EdgeInsets.symmetric(horizontal: 5.0),
                             itemBuilder: (context, index) {

@@ -88,6 +88,7 @@ class FilterItemState extends State<FilterItem> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      iconColor: Theme.of(context).iconTheme.color,
       title: InsiteText(
         text: Utils.getTitle(widget.filterType),
         size: 14,

@@ -10,37 +10,53 @@ import 'package:crypto/crypto.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastReportedDateOne(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastReportedDateTwo(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastReportedDateUTC(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String formatHHmm(s) {
@@ -56,30 +72,43 @@ class Utils {
   }
 
   static String getLastReportedDateOneUTC(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
-    var inputDate = DateTime.parse(parseDate.toLocal().toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toLocal().toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastReportedDateOneLocalUTC(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String formatCurrentSystemTime(date) {
     Logger().d("formatCurrentSystemTime $date");
-    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss.zzzz").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd HH:mm:ss.zzzz").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd-MM-yyyy hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getDateInFormatddMMyyyy(date) {
@@ -146,28 +175,41 @@ class Utils {
   }
 
   static String getLastDuration(date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('hh:mm');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastDurationOne(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('hh:mm');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('hh:mm');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getLastReportedTime(date) {
-    DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date, true);
-    var inputDate = DateTime.parse(parseDate.toLocal().toString());
-    var outputFormat = DateFormat('hh:mm a');
-    var outputDate = outputFormat.format(inputDate);
-    return outputDate;
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toLocal().toString());
+      var outputFormat = DateFormat('hh:mm a');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static String getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(date) {
