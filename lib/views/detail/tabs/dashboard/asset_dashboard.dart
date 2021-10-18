@@ -50,7 +50,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
               ),
               color: Theme.of(context).backgroundColor,
               border: Border.all(
-                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+                    width: 1,
+                    color: Theme.of(context).textTheme.bodyText1.color,
+              ),
               shape: BoxShape.rectangle,
             ),
             child: SingleChildScrollView(
