@@ -8,6 +8,7 @@ import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
@@ -212,8 +213,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   ? viewModel.accountSelected.DisplayName
                                   : ""
                           : viewModel.accountSelected != null &&
-                                  viewModel.accountSelected.DisplayName !=
-                                      null
+                                  viewModel.accountSelected.DisplayName != null
                               ? viewModel.accountSelected.DisplayName
                               : "",
                       overflow: TextOverflow.ellipsis,
@@ -233,51 +233,15 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    "Logout",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    "Are you sure you want to logout?",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                ButtonBar(children: [
-                  TextButton(
-                    child: Text(
-                      "NO",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context, false);
-                    },
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  TextButton(
-                    child: Text(
-                      'YES',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                ]),
-              ],
-            ),
+          child: InsiteDialog(
+            title: "Logout",
+            message: "Are you sure you want to logout?",
+            onNegativeActionClicked: () {
+              Navigator.pop(context, false);
+            },
+            onPositiveActionClicked: () {
+              Navigator.pop(context, true);
+            },
           ),
         );
       },

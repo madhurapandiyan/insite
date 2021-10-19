@@ -213,8 +213,6 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           bottomRight: Radius.circular(10)),
                                       child: GoogleMap(
                                         onCameraMove: (position) {
-                                          viewModel
-                                              .updateLabelVisibility(false);
                                           viewModel.customInfoWindowController
                                               .onCameraMove();
                                           viewModel.manager != null
@@ -243,6 +241,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           viewModel.zoomToMarkers();
                                         },
                                         onTap: (argument) {
+                                          viewModel
+                                              .updateLabelVisibility(false);
                                           viewModel.customInfoWindowController
                                               .hideInfoWindow();
                                         },

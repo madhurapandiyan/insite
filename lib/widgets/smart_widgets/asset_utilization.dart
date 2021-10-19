@@ -363,13 +363,10 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    title.toUpperCase(),
-                    style: TextStyle(
-                        color: white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  child: InsiteText(
+                      text: title.toUpperCase(),
+                      size: 10,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),

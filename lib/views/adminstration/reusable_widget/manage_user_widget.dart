@@ -26,7 +26,7 @@ class ManageUserWidget extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Icon(Icons.arrow_drop_down, color: Colors.white),
+              Icon(Icons.arrow_drop_down),
               SizedBox(
                 height: 20,
               ),
