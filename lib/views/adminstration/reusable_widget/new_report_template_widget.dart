@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class NewReportTemplateWidget extends StatelessWidget {
   // const NewReportTemplateWidget({ Key? key }) : super(key: key);
@@ -18,7 +19,6 @@ class NewReportTemplateWidget extends StatelessWidget {
         shape: BoxShape.rectangle,
       ),
       child: Column(
-        
         children: [
           Container(
             margin: EdgeInsets.all(8),
@@ -38,14 +38,10 @@ class NewReportTemplateWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
-                  child: Text(
-                    "Asset Event Count",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: textcolor,
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
-                        fontStyle: FontStyle.normal),
+                  child: InsiteText(
+                    text: "Asset Event Count",
+                    fontWeight: FontWeight.w700,
+                    size: 18,
                   ),
                 ),
                 SizedBox(
@@ -53,17 +49,14 @@ class NewReportTemplateWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
-                  child: Text(
-                    "The Asset event count report provides a " +
+                  child: InsiteText(
+                    text: "The Asset event count report provides a " +
                         "\n" +
                         "summary of all the events over a 31 day" +
                         "\n" +
                         "period for a single asset .",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w400,
-                        color: textcolor),
+                    size: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 )
               ],
@@ -72,28 +65,26 @@ class NewReportTemplateWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               InsiteButton(
-            width: MediaQuery.of(context).size.width * 0.40,
-            height: MediaQuery.of(context).size.height * 0.05,
-            title: "View Sample",
-            fontSize: 14,
-            textColor: appbarcolor,
-            bgColor: ship_grey,
-            onTap: (){},
-          ),
-           InsiteButton(
-            width: MediaQuery.of(context).size.width * 0.40,
-            height: MediaQuery.of(context).size.height * 0.05,
-            title: "Email Report",
-            fontSize: 14,
-            textColor: appbarcolor,
-            bgColor: tango,
-            onTap: (){},
-          )
-
+              InsiteButton(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: MediaQuery.of(context).size.height * 0.05,
+                title: "View Sample",
+                fontSize: 14,
+                textColor: appbarcolor,
+                bgColor: ship_grey,
+                onTap: () {},
+              ),
+              InsiteButton(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: MediaQuery.of(context).size.height * 0.05,
+                title: "Email Report",
+                fontSize: 14,
+                textColor: appbarcolor,
+                bgColor: tango,
+                onTap: () {},
+              )
             ],
           )
-         
         ],
       ),
     );

@@ -12,8 +12,8 @@ class CustomDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton(
         isExpanded: true,
+        dropdownColor: Theme.of(context).backgroundColor,
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),
-        dropdownColor: thunder,
         value: value,
         hint: InsiteText(
           text: "Select",

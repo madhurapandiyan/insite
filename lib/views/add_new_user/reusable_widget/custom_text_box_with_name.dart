@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomTextBoxWithName extends StatelessWidget {
   final String title;
@@ -55,14 +56,10 @@ class CustomTextBoxWithName extends StatelessWidget {
         top: 12,
         child: Align(
           alignment: Alignment.topRight,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.italic,
-              fontSize: 14,
-              color: Theme.of(context).textTheme.bodyText1.color,
-            ),
+          child: InsiteText(
+            text: text,
+            fontWeight: FontWeight.w300,
+            size: 14,
           ),
         ),
       )

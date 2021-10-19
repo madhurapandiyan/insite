@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -120,56 +121,17 @@ class ManageUserViewModel extends InsiteViewModel {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text("Delete User",
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText1.color,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    "Are you sure you want to permanently remove this user account?",
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color),
-                  ),
-                ),
-                ButtonBar(children: [
-                  TextButton(
-                    child: Text(
-                      "NO",
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText1.color),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context, false);
-                    },
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  TextButton(
-                    child: Text(
-                      'YES',
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText1.color),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                ]),
-              ],
-            ),
-          ),
-        );
+            child: InsiteDialog(
+          title: "Delete User",
+          message:
+              "Are you sure you want to permanently remove this user account?",
+          onPositiveActionClicked: () {
+            Navigator.pop(context, true);
+          },
+          onNegativeActionClicked: () {
+            Navigator.pop(context, false);
+          },
+        ));
       },
     );
     if (value != null && value) {

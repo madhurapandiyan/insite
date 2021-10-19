@@ -9,7 +9,6 @@ import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AppbarViewModel extends InsiteViewModel {
