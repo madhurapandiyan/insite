@@ -106,8 +106,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         fontWeight: FontWeight.w700,
                                         fontFamily: 'Roboto',
                                         fontStyle: FontStyle.normal),
-                                    majorGridLines:
-                                        MajorGridLines(width: 0, color: silver),
+                                    majorGridLines: MajorGridLines(
+                                        width: 0,
+                                        color:
+                                            Theme.of(context).backgroundColor),
                                   ),
                                   onAxisLabelTapped: (axisLabelTapArgs) {
                                     Logger().d("onAxisLabelTapped " +
@@ -151,7 +153,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                   },
                                   primaryYAxis: NumericAxis(
                                       majorGridLines: MajorGridLines(
-                                          width: 2,
+                                          width: 0,
                                           color: Theme.of(context)
                                               .backgroundColor),
                                       labelStyle: TextStyle(
@@ -174,22 +176,15 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                new Text(
-                                  widget.data[0].count.toString() +
+                                new InsiteText(
+                                  text: widget.data[0].count.toString() +
                                       "\n" +
                                       "assets" +
                                       "\n" +
                                       "excluded",
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 9.0,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .color),
-                                )
+                                  size: 9.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ],
                             )
                           ],

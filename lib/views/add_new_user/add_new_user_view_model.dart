@@ -22,6 +22,12 @@ class AddNewUserViewModel extends InsiteViewModel {
   List<ApplicationSelectedDropDown> get applicationSelectedDropDownList =>
       _applicationSelectedDropDownList;
 
+  bool _allowAccessToSecurity = false;
+  bool get allowAccessToSecurity => _allowAccessToSecurity;
+
+  bool _setDefaultPreferenceToUser = false;
+  bool get setDefaultPreferenceToUser => _setDefaultPreferenceToUser;
+
   Users user;
   List<String> dropDownlist = [
     "Administrator",
@@ -244,6 +250,16 @@ class AddNewUserViewModel extends InsiteViewModel {
         assetsData[i].isPermissionSelected = true;
       }
     }
+    notifyListeners();
+  }
+
+  onDefaultPreferenceClicked() {
+    _setDefaultPreferenceToUser = !_setDefaultPreferenceToUser;
+    notifyListeners();
+  }
+
+  allowAccessToSecurityClicked() {
+    _allowAccessToSecurity = !_allowAccessToSecurity;
     notifyListeners();
   }
 

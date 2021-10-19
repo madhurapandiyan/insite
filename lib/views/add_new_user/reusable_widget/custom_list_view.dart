@@ -25,6 +25,8 @@ class _CustomListViewState extends State<CustomListView> {
         ClipRRect(
           borderRadius: BorderRadius.circular(30.0),
           child: FadeInImage(
+            width: 36,
+            height: 36,
             image: NetworkImage(
                 widget.applicationAccessData.application.iconUrl + "active.png",
                 headers: {
@@ -36,7 +38,7 @@ class _CustomListViewState extends State<CustomListView> {
             imageErrorBuilder: (context, error, stackTrace) {
               Logger().e(error);
               return Image.asset("assets/images/add_user_icon_one.png",
-                  fit: BoxFit.fitWidth);
+                  width: 36, height: 36, fit: BoxFit.fitWidth);
             },
             fit: BoxFit.cover,
           ),

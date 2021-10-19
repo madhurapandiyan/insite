@@ -136,7 +136,9 @@ class FaultListItem extends StatelessWidget {
                           onTap: () {
                             onCallback();
                           },
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color),
                         ),
                       ]),
                     ],

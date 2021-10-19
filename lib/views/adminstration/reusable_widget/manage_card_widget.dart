@@ -9,10 +9,6 @@ class ManageCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardcolor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          side: BorderSide(color: cardcolor)),
       child: Row(
         children: [
           Container(
@@ -23,7 +19,8 @@ class ManageCardWidget extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Icon(Icons.arrow_drop_down, color: Colors.white),
+                Icon(Icons.arrow_drop_down,
+                    color: Theme.of(context).iconTheme.color),
                 SizedBox(
                   height: 20,
                 ),
@@ -41,7 +38,7 @@ class ManageCardWidget extends StatelessWidget {
           Expanded(
               child: InsiteExpansionTile(
             title: Table(
-              border: TableBorder.all(width: 2, color: borderLineColor),
+              border: TableBorder.all(width: 1, color: borderLineColor),
               columnWidths: {
                 0: FlexColumnWidth(1),
                 1: FlexColumnWidth(1),
@@ -83,9 +80,9 @@ class ManageCardWidget extends StatelessWidget {
             children: [
               Table(
                 border: TableBorder(
-                  verticalInside: BorderSide(color: borderLineColor, width: 2),
-                  left: BorderSide(color: borderLineColor, width: 2),
-                  bottom: BorderSide(color: borderLineColor, width: 2),
+                  verticalInside: BorderSide(color: borderLineColor, width: 1),
+                  left: BorderSide(color: borderLineColor, width: 1),
+                  bottom: BorderSide(color: borderLineColor, width: 1),
                 ),
                 children: [
                   TableRow(children: [
@@ -106,9 +103,9 @@ class ManageCardWidget extends StatelessWidget {
               ),
               Table(
                 border: TableBorder(
-                  verticalInside: BorderSide(color: borderLineColor, width: 2),
-                  left: BorderSide(color: borderLineColor, width: 2),
-                  bottom: BorderSide(color: borderLineColor, width: 2),
+                  verticalInside: BorderSide(color: borderLineColor, width: 1),
+                  left: BorderSide(color: borderLineColor, width: 1),
+                  bottom: BorderSide(color: borderLineColor, width: 1),
                 ),
                 children: [
                   TableRow(children: [
