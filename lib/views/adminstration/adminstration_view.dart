@@ -79,7 +79,9 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                             AdminAssetsButtonType.values[4],
                             AdminAssetsButtonType.values[5]
                           ],
-                          onCallbackSelected: (value) {}),
+                          onCallbackSelected: (value) {
+                            viewModel.onRespectiveButtonClicked(value);
+                          }),
                       AssetCardsSmall(
                           headerText: "reports".toUpperCase(),
                           icon: "assets/images/reports.svg",

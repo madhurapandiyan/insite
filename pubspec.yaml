@@ -115,6 +115,7 @@ flutter:
     - assets/images/ic_trimble_logo.png
     - assets/images/ic_eol_launcher.png
     - assets/images/trimble.svg
+    - assets/images/delete.svg
 
   fonts:
     - family: Roboto
