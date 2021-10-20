@@ -1,14 +1,21 @@
 class AppConfig {
   final String baseUrl;
-  final String flavor;
+  final String productFlavor;
+  final String apiFlavor;
   final String iconPath;
   static AppConfig _instance;
-  factory AppConfig({String baseUrl, String flavor, String iconPath}) {
-    _instance ??= AppConfig._internal(baseUrl, flavor, iconPath);
+  factory AppConfig(
+      {String baseUrl,
+      String productFlavor,
+      String apiFlavor,
+      String iconPath}) {
+    _instance ??=
+        AppConfig._internal(baseUrl, productFlavor, apiFlavor, iconPath);
     return _instance;
   }
 
-  AppConfig._internal(this.baseUrl, this.flavor, this.iconPath);
+  AppConfig._internal(
+      this.baseUrl, this.productFlavor, this.apiFlavor, this.iconPath);
   static AppConfig get instance {
     return _instance;
   }

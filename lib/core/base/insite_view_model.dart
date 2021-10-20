@@ -22,7 +22,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   InsiteViewModel() {
     try {
-      if (AppConfig.instance.flavor == "visionlink") {
+      if (AppConfig.instance.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {

@@ -176,15 +176,35 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   ),
                   viewModel.showLabel
                       ? Container(
-                          height: MediaQuery.of(context).size.height * 0.10,
+                          height: MediaQuery.of(context).size.height * 0.11,
                           color: greencolor,
                           child: Padding(
                             padding: EdgeInsets.only(left: 5.0, top: 8.0),
-                            child: InsiteText(
-                              text:
-                                  "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-                              size: 11.0,
-                              fontWeight: FontWeight.w500,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: InsiteText(
+                                    text:
+                                        "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+                                    size: 11.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      viewModel.updateLabelVisibility(false);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 8.0, bottom: 8),
+                                      child: Image.asset(
+                                          "assets/images/mapclose.png",
+                                          width: 10,
+                                          height: 10,
+                                          color: Colors.black),
+                                    )),
+                              ],
                             ),
                           ),
                         )
@@ -212,6 +232,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           bottomLeft: Radius.circular(10),
                                           bottomRight: Radius.circular(10)),
                                       child: GoogleMap(
+                                        onLongPress: (argument) {},
+                                        onCameraMoveStarted: () {},
                                         onCameraMove: (position) {
                                           viewModel.customInfoWindowController
                                               .onCameraMove();
@@ -241,8 +263,6 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           viewModel.zoomToMarkers();
                                         },
                                         onTap: (argument) {
-                                          viewModel
-                                              .updateLabelVisibility(false);
                                           viewModel.customInfoWindowController
                                               .hideInfoWindow();
                                         },

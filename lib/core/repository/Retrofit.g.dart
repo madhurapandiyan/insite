@@ -589,11 +589,12 @@ class _RestClient implements RestClient {
 
   @override
   Future<List<Note>> getAssetNotes(
-      url, assetUID, customerId, serviceHeader) async {
+      url, assetUID, serviceHeader, customerId, userId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(assetUID, 'assetUID');
-    ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(userId, 'userId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     final _data = <String, dynamic>{};
@@ -602,8 +603,9 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'GET',
             headers: <String, dynamic>{
+              r'service': serviceHeader,
               r'X-VisionLink-CustomerUid': customerId,
-              r'service': serviceHeader
+              r'X-VisionLink-UserUid': userId
             },
             extra: _extra,
             baseUrl: baseUrl),

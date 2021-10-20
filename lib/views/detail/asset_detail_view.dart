@@ -169,8 +169,11 @@ class _TabPageState extends State<AssetDetailView> {
                                             child: InsiteRichText(
                                               title: "",
                                               onTap: () {},
-                                              content: viewModel.assetDetail
-                                                  .assetSerialNumber,
+                                              content:
+                                                  viewModel.assetDetail != null
+                                                      ? viewModel.assetDetail
+                                                          .assetSerialNumber
+                                                      : "",
                                             ),
                                             padding:
                                                 EdgeInsets.only(right: 38.0),
@@ -179,7 +182,9 @@ class _TabPageState extends State<AssetDetailView> {
                                       ),
                                       SizedBox(height: 15.0),
                                       Text(
-                                        viewModel.assetDetail.dealerName,
+                                        viewModel.assetDetail != null
+                                            ? viewModel.assetDetail.dealerName
+                                            : "",
                                         maxLines: 2,
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
