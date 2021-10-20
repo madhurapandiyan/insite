@@ -9,4 +9,20 @@ class AddgeofenseViewModel extends InsiteViewModel {
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
+  bool setDefaultPreferenceToUser = false;
+  bool _allowAccessToSecurity = false;
+  bool get allowAccessToSecurity => _allowAccessToSecurity;
+  String value = "Administrator";
+  List<String> dropDownlist = [
+    "Administrator",
+    "Contributor",
+    "Creator",
+    "Viewer"
+  ];
+  change_checkboxstate() {
+    setDefaultPreferenceToUser = !setDefaultPreferenceToUser;
+    Logger().e(setDefaultPreferenceToUser);
+    notifyListeners();
+  }
+  notifyListeners();
 }
