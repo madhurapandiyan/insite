@@ -22,7 +22,8 @@ void main() async {
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
       iconPath: "assets/images/hitachi.png",
-      flavor: "indiastack");
+      productFlavor: "tatahitachi",
+      apiFlavor: "indiastack");
 
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

@@ -78,6 +78,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
     _postingNote = true;
     notifyListeners();
     await _assetSingleHistoryService.postNotes(assetDetail.assetUid, note);
+    await getNotes();
     _postingNote = false;
     notifyListeners();
   }

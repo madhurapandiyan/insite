@@ -36,6 +36,7 @@ class HealthListViewModel extends InsiteViewModel {
   HealthListViewModel(AssetDetail assetDetail) {
     this._assetDetail = assetDetail;
     this.log = getLogger(this.runtimeType.toString());
+    setUp();
     _faultService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -50,6 +51,7 @@ class HealthListViewModel extends InsiteViewModel {
   }
 
   getHealthListData() async {
+    await getDateRangeFilterData();
     HealthListResponse result = await _faultService.getHealthListData(
         _assetDetail.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
@@ -77,6 +79,8 @@ class HealthListViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    page = 1;
+    limit = 20;
     await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();

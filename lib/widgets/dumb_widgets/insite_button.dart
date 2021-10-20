@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 
 class InsiteButton extends StatelessWidget {
   final String title;
@@ -189,7 +190,7 @@ class InsiteButtonWithLoader extends StatelessWidget {
               : MainAxisAlignment.center,
           children: [
             showLoad
-                ? CircularProgressIndicator()
+                ? InsiteProgressBar()
                 : Text(
                     title,
                     textAlign: TextAlign.center,
