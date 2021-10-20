@@ -686,7 +686,6 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") String serviceHeader);
 
-
   @GET('{url}')
   Future<ManageAssetConfiguration> getAssetSettingsListData(
     @Path() String url,

@@ -15,13 +15,13 @@ class AssetSettingsViewModel extends InsiteViewModel {
   int pageSize = 20;
   int pageNumber = 1;
 
-   ScrollController scrollController;
+  ScrollController scrollController;
 
   List<AssetSetting> _assets = [];
   List<AssetSetting> get asset => _assets;
 
-  bool _loading=true;
-  bool get loading=>_loading;
+  bool _loading = true;
+  bool get loading => _loading;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -31,37 +31,37 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   AssetSettingsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-     scrollController = new ScrollController();
+    scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
-     // getAssetSettingListData();
+    Future.delayed(Duration(seconds: 1), () {
+      getAssetSettingListData();
     });
   }
 
   getAssetSettingListData() async {
     ManageAssetConfiguration result =
         await _manageUserService.getAssetSettingData(pageSize, pageNumber);
-       
+
     if (result.assetSettings.isNotEmpty) {
       _assets.addAll(result.assetSettings);
-      _loading=false;
+      _loading = false;
       _loadingMore = false;
       notifyListeners();
     } else {
       _assets.addAll(result.assetSettings);
-      _loading=false;
+      _loading = false;
       _loadingMore = false;
       notifyListeners();
     }
   }
 
-   _loadMore() {
-      log.i("shouldLoadmore and is already loadingMore " +
+  _loadMore() {
+    log.i("shouldLoadmore and is already loadingMore " +
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
@@ -72,5 +72,5 @@ class AssetSettingsViewModel extends InsiteViewModel {
       notifyListeners();
       getAssetSettingListData();
     }
-   }
+  }
 }
