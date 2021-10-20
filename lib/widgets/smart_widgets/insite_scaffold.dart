@@ -5,6 +5,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
 import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/filter/filter_view.dart';
@@ -57,15 +58,18 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION
+                  widget.screenType == ScreenType.LOCATION ||
+                  widget.screenType == ScreenType.ASSET_SETTINGS
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
                   widget.screenType == ScreenType.HOME
               ? true
               : false,
-          shouldShowSearch:
-              widget.screenType == ScreenType.ACCOUNT ? false : true,
+          shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
+                  widget.screenType == ScreenType.ASSET_SETTINGS
+              ? false
+              : true,
           screenType: widget.screenType,
           height: widget.screenType == ScreenType.FLEET ||
                   widget.screenType == ScreenType.ASSET_OPERATION ||
@@ -139,14 +143,21 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                         },
                       )
                     : SizedBox(),
-                _isFilterSelected
+                (_isFilterSelected) &&
+                        (widget.screenType == ScreenType.FLEET ||
+                            widget.screenType == ScreenType.ASSET_OPERATION ||
+                            widget.screenType == ScreenType.UTILIZATION ||
+                            widget.screenType == ScreenType.HEALTH)
                     ? FilterView(
                         onFilterApplied: (bool) {
                           onFilterApplied(bool);
                         },
                         screenType: widget.screenType,
                       )
-                    : SizedBox(),
+                    : (_isFilterSelected &&
+                            widget.screenType == ScreenType.ASSET_SETTINGS)
+                        ? AssetSettingsFilterView()
+                        : SizedBox(),
                 _isRefineSelected
                     ? Refine(
                         onRefineApplied: (bool) {

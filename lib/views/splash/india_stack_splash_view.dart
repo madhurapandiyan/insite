@@ -5,7 +5,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -89,14 +88,15 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-      print("IndiaStackSplashView onStateChanged: ${state.type} ${state.url}");
+      print(
+          "IndiaStackSplashView STATE onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+          state.url.startsWith(Urls.localHost + "/auth?code=")) {
         print("IndiaStackSplashView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
             List<String> list = state.url.split("=");
-            print("IndiaStackSplashView url split list $list");
+            print("IndiaStackSplashView STATE url split list $list");
             if (list.isNotEmpty) {
               // _onUrlChanged.cancel();
               //for vision link (oauth style login)
@@ -132,13 +132,12 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("IndiaStackSplashView URL changed: $url");
-        if (url != null &&
-            url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+        if (url != null && url.startsWith(Urls.localHost + "/auth?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
               List<String> list = url.split("=");
-              print("IndiaStackSplashView url split list $list");
+              print("IndiaStackSplashView URL url split list $list");
               if (list.isNotEmpty) {
                 // _onUrlChanged.cancel();
                 //for vision link (oauth style login)

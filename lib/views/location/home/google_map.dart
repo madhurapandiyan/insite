@@ -134,10 +134,6 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                   text: map,
                                                   size: 11.0,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      .color,
                                                 ),
                                               ))
                                           .toList(),
@@ -178,19 +174,21 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.10,
-                    color: greencolor,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 5.0, top: 8.0),
-                      child: InsiteText(
-                          text:
-                              "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
-                          size: 11.0,
-                          fontWeight: FontWeight.w500,
-                          color: maptextcolor),
-                    ),
-                  ),
+                  viewModel.showLabel
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.10,
+                          color: greencolor,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 5.0, top: 8.0),
+                            child: InsiteText(
+                              text:
+                                  "To deliver high map performance, the map will only display up to 2,500 assets at one time. Please use a filter to specify a working set of less than 2,500 assets if you have more than 2,500 assets in your account .",
+                              size: 11.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
                   (viewModel.loading)
                       ? Expanded(
                           child: InsiteProgressBar(),
@@ -203,73 +201,82 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.28,
                                 decoration: BoxDecoration(
-                                  color: tuna,
+                                  color: Theme.of(context).backgroundColor,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                                 child: Stack(
                                   children: [
-                                    GoogleMap(
-                                      onCameraMove: (position) {
-                                        viewModel.customInfoWindowController
-                                            .onCameraMove();
-                                        viewModel.manager != null
-                                            ? viewModel.manager
-                                                .onCameraMove(position)
-                                            : SizedBox();
-                                      },
-                                      gestureRecognizers: <
-                                          Factory<
-                                              OneSequenceGestureRecognizer>>[
-                                        new Factory<
-                                            OneSequenceGestureRecognizer>(
-                                          () => new EagerGestureRecognizer(),
-                                        ),
-                                      ].toSet(),
-                                      onMapCreated: (GoogleMapController
-                                          controller) async {
-                                        viewModel.customInfoWindowController
-                                            .googleMapController = controller;
-                                        viewModel.controller
-                                            .complete(controller);
-                                        viewModel.manager != null
-                                            ? viewModel.manager
-                                                .setMapController(controller)
-                                            : SizedBox();
-                                        viewModel.zoomToMarkers();
-                                      },
-                                      onTap: (argument) {
-                                        viewModel.customInfoWindowController
-                                            .hideInfoWindow();
-                                      },
-                                      onCameraIdle: viewModel.manager != null
-                                          ? viewModel.manager.updateMap
-                                          : null,
-                                      mapType: _changemap(),
-                                      compassEnabled: true,
-                                      zoomControlsEnabled: false,
-                                      markers: viewModel.markers,
-                                      initialCameraPosition: viewModel
-                                                      .assetLocation !=
-                                                  null &&
-                                              viewModel.assetLocation.mapRecords
-                                                  .isNotEmpty
-                                          ? CameraPosition(
-                                              target: LatLng(
-                                                  viewModel
-                                                      .assetLocation
-                                                      .mapRecords
-                                                      .first
-                                                      .lastReportedLocationLatitude,
-                                                  viewModel
-                                                      .assetLocation
-                                                      .mapRecords
-                                                      .first
-                                                      .lastReportedLocationLongitude),
-                                              zoom: 5)
-                                          : CameraPosition(
-                                              target: LatLng(30.666, 76.8127),
-                                              zoom: 4),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10)),
+                                      child: GoogleMap(
+                                        onCameraMove: (position) {
+                                          viewModel.customInfoWindowController
+                                              .onCameraMove();
+                                          viewModel.manager != null
+                                              ? viewModel.manager
+                                                  .onCameraMove(position)
+                                              : SizedBox();
+                                        },
+                                        gestureRecognizers: <
+                                            Factory<
+                                                OneSequenceGestureRecognizer>>[
+                                          new Factory<
+                                              OneSequenceGestureRecognizer>(
+                                            () => new EagerGestureRecognizer(),
+                                          ),
+                                        ].toSet(),
+                                        onMapCreated: (GoogleMapController
+                                            controller) async {
+                                          viewModel.customInfoWindowController
+                                              .googleMapController = controller;
+                                          viewModel.controller
+                                              .complete(controller);
+                                          viewModel.manager != null
+                                              ? viewModel.manager
+                                                  .setMapController(controller)
+                                              : SizedBox();
+                                          viewModel.zoomToMarkers();
+                                        },
+                                        onTap: (argument) {
+                                          viewModel
+                                              .updateLabelVisibility(false);
+                                          viewModel.customInfoWindowController
+                                              .hideInfoWindow();
+                                        },
+                                        onCameraIdle: () {
+                                          if (viewModel.manager != null) {
+                                            viewModel.manager.updateMap();
+                                          }
+                                        },
+                                        mapType: _changemap(),
+                                        compassEnabled: true,
+                                        zoomControlsEnabled: false,
+                                        markers: viewModel.markers,
+                                        initialCameraPosition: viewModel
+                                                        .assetLocation !=
+                                                    null &&
+                                                viewModel.assetLocation
+                                                    .mapRecords.isNotEmpty
+                                            ? CameraPosition(
+                                                target: LatLng(
+                                                    viewModel
+                                                        .assetLocation
+                                                        .mapRecords
+                                                        .first
+                                                        .lastReportedLocationLatitude,
+                                                    viewModel
+                                                        .assetLocation
+                                                        .mapRecords
+                                                        .first
+                                                        .lastReportedLocationLongitude),
+                                                zoom: 5)
+                                            : CameraPosition(
+                                                target: LatLng(30.666, 76.8127),
+                                                zoom: 4),
+                                      ),
                                     ),
                                     CustomInfoWindow(
                                       controller:

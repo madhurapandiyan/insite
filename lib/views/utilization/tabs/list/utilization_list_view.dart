@@ -57,15 +57,14 @@ class UtilizationListViewState extends State<UtilizationListView> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                          style: TextStyle(
-                              color: white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11),
-                        ),
+                        InsiteText(
+                            text: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
+                            fontWeight: FontWeight.bold,
+                            size: 11),
                         SizedBox(
                           width: 4,
                         ),

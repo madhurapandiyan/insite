@@ -63,7 +63,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 AssetSettingWidget(
                   headerText: "asset settings",
                   onButtonClicked: () {
-                    print("button is tapped");
+                   viewModel.onAssetSettingStateButtonClicked();
                   },
                 ),
                 SizedBox(

@@ -7,6 +7,7 @@ import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -683,8 +684,14 @@ abstract class RestClient {
   Future<AdminManageUser> getAdminManagerUserListData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Header("X-VisionLink-UserUid") userId,
       @Header("service") String serviceHeader);
+
+
+  @GET('{url}')
+  Future<ManageAssetConfiguration> getAssetSettingsListData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 }
 
 @JsonSerializable()

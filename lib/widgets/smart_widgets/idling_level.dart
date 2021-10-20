@@ -106,8 +106,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         fontWeight: FontWeight.w700,
                                         fontFamily: 'Roboto',
                                         fontStyle: FontStyle.normal),
-                                    majorGridLines:
-                                        MajorGridLines(width: 0, color: silver),
+                                    majorGridLines: MajorGridLines(
+                                        width: 0,
+                                        color:
+                                            Theme.of(context).backgroundColor),
                                   ),
                                   onAxisLabelTapped: (axisLabelTapArgs) {
                                     Logger().d("onAxisLabelTapped " +
@@ -151,7 +153,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                   },
                                   primaryYAxis: NumericAxis(
                                       majorGridLines: MajorGridLines(
-                                          width: 2, color: silver),
+                                          width: 0,
+                                          color: Theme.of(context)
+                                              .backgroundColor),
                                       labelStyle: TextStyle(
                                           color: Theme.of(context)
                                               .textTheme
@@ -172,22 +176,15 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                new Text(
-                                  widget.data[0].count.toString() +
+                                new InsiteText(
+                                  text: widget.data[0].count.toString() +
                                       "\n" +
                                       "assets" +
                                       "\n" +
                                       "excluded",
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 9.0,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .color),
-                                )
+                                  size: 9.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ],
                             )
                           ],
@@ -237,6 +234,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 child: InsiteTextAlign(
                   text: "DAY",
                   textAlign: TextAlign.center,
+                  color: idlingLevelRange == IdlingLevelRange.DAY
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   size: 11.0,
                   fontWeight: FontWeight.w700,
                 )),
@@ -265,6 +265,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   text: "WEEK",
                   textAlign: TextAlign.center,
                   size: 11.0,
+                  color: idlingLevelRange == IdlingLevelRange.WEEK
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   fontWeight: FontWeight.w700,
                 )),
           ),
@@ -291,6 +294,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                 child: InsiteTextAlign(
                   text: "MONTH",
                   textAlign: TextAlign.center,
+                  color: idlingLevelRange == IdlingLevelRange.MONTH
+                      ? Colors.white
+                      : Theme.of(context).textTheme.bodyText1.color,
                   size: 10.0,
                   fontWeight: FontWeight.w700,
                 )),

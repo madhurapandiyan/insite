@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FleetKnob extends StatelessWidget {
   const FleetKnob({this.filterData});
@@ -55,25 +56,18 @@ class FleetKnob extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                filterData.count,
-                style: TextStyle(
-                  color: white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+              InsiteText(
+                text: filterData.count,
+                size: 14,
+                fontWeight: FontWeight.bold,
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                filterData.title.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
+              InsiteText(
+                text: filterData.title.toUpperCase(),
+                size: 12,
+                fontWeight: FontWeight.bold,
               )
             ],
           ),

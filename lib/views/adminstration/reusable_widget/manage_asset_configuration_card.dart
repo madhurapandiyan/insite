@@ -6,10 +6,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ManageAssetConfigurationCard extends StatelessWidget {
-
   final AssetSetting assetSetting;
   final VoidCallback voidCallback;
-  const ManageAssetConfigurationCard({this.assetSetting,this.voidCallback});
+  const ManageAssetConfigurationCard({this.assetSetting, this.voidCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,6 @@ class ManageAssetConfigurationCard extends StatelessWidget {
         voidCallback();
       },
       child: Card(
-          color: cardcolor,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
               side: BorderSide(color: cardcolor)),
@@ -31,17 +29,17 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.white),
+                  Icon(Icons.arrow_drop_down, color: Theme.of(context).iconTheme.color),
                   SizedBox(
                     height: 20,
                   ),
                   Container(
                       decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Icon(
                         Icons.crop_square,
-                        color: Colors.black,
+                        color: Theme.of(context).iconTheme.color,
                       )),
                 ],
               ),
@@ -84,25 +82,35 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: 'Make :',
-                      content: assetSetting.assetMakeCode!=null?assetSetting.assetMakeCode:"-",
+                      content: assetSetting.assetMakeCode != null
+                          ? assetSetting.assetMakeCode
+                          : "-",
                     ),
                     InsiteTableRowItem(
                       title: 'Model :',
-                      content: assetSetting.assetModel!=null? assetSetting.assetModel:"-",
+                      content: assetSetting.assetModel != null
+                          ? assetSetting.assetModel
+                          : "-",
                     ),
                   ]),
                   TableRow(children: [
                     InsiteRichText(
                       title: "Asset SN :",
-                      content: assetSetting.assetSerialNumber!=null? assetSetting.assetSerialNumber:"-",
+                      content: assetSetting.assetSerialNumber != null
+                          ? assetSetting.assetSerialNumber
+                          : "-",
                     ),
                     InsiteTableRowItem(
                       title: "Device ID :",
-                      content: assetSetting.deviceSerialNumber!=null? assetSetting.deviceSerialNumber:"-",
+                      content: assetSetting.deviceSerialNumber != null
+                          ? assetSetting.deviceSerialNumber
+                          : "-",
                     ),
                     InsiteTableRowItem(
                       title: 'Device Type :',
-                      content: assetSetting.devicetype!=null?assetSetting.devicetype:"-",
+                      content: assetSetting.devicetype != null
+                          ? assetSetting.devicetype
+                          : "-",
                     ),
                   ])
                 ],

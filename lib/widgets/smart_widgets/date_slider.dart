@@ -24,7 +24,6 @@ class DateSlider extends StatelessWidget {
                   size: 14,
                   text: data.date,
                   fontWeight: FontWeight.w700,
-                  color: athenGrey,
                 ),
               ),
               Padding(
@@ -32,7 +31,6 @@ class DateSlider extends StatelessWidget {
                 child: InsiteText(
                   size: 14,
                   text: data.day,
-                  color: athenGrey,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -50,7 +48,6 @@ class DateSlider extends StatelessWidget {
                         size: 14,
                         text: "-",
                         fontWeight: FontWeight.w700,
-                        color: athenGrey,
                       ),
                     )
                   : InsiteButton(

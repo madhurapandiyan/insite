@@ -47,7 +47,8 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 statusWidget(widget.color1, shouldShowLabel[0]),
-                InsiteText(text: widget.label1.toUpperCase(), size: 10),
+                InsiteText(
+                    text: widget.label1.toUpperCase() + " (Hrs)", size: 8),
               ],
             ),
           ),
@@ -69,8 +70,8 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
                 statusWidget(widget.color2, shouldShowLabel[1]),
                 InsiteText(
                   fontWeight: FontWeight.normal,
-                  size: 10,
-                  text: widget.label2.toUpperCase(),
+                  size: 8,
+                  text: widget.label2.toUpperCase() + " (Hrs)",
                 ),
               ],
             ),
@@ -92,9 +93,9 @@ class _UtilizationLegendsState extends State<UtilizationLegends> {
               children: [
                 statusWidget(widget.color3, shouldShowLabel[2]),
                 InsiteText(
-                  text: widget.label3.toUpperCase(),
+                  text: widget.label3.toUpperCase() + " (Hrs)",
                   fontWeight: FontWeight.normal,
-                  size: 10,
+                  size: 8,
                 ),
               ],
             ),

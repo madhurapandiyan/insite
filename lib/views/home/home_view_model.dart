@@ -5,7 +5,6 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/adminstration_view.dart';
-import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 import 'package:insite/views/asset_operation/asset_operation_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';

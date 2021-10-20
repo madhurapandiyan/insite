@@ -118,7 +118,9 @@ class FaultListItem extends StatelessWidget {
                               fault.basic != null && fault.basic.source != null
                                   ? fault.basic.source
                                   : "",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color),
                           onTap: () {
                             onCallback();
                           },
@@ -134,7 +136,9 @@ class FaultListItem extends StatelessWidget {
                           onTap: () {
                             onCallback();
                           },
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1.color),
                         ),
                       ]),
                     ],

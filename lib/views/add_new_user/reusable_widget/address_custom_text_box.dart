@@ -16,7 +16,7 @@ class AddressCustomTextBox extends StatelessWidget {
         fontWeight: FontWeight.w700,
         fontSize: 14,
         fontStyle: FontStyle.normal,
-        color: textcolor,
+        color: Theme.of(context).textTheme.bodyText1.color,
       ),
       cursorColor: black,
       decoration: InputDecoration(
@@ -39,7 +39,7 @@ class AddressCustomTextBox extends StatelessWidget {
             fontWeight: FontWeight.w700,
             fontSize: 14,
             fontStyle: FontStyle.normal,
-            color: textcolor,
+            color: Theme.of(context).textTheme.bodyText1.color,
           )),
     );
   }

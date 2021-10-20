@@ -5,6 +5,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
@@ -56,7 +57,6 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.adminManagerUserSumary +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
-                (await _localService.getLoggedInUser()).sub,
                 "in-identitymanager-identitywebapi");
         return adminManageUserResponse;
       }
@@ -324,5 +324,36 @@ class AssetAdminManagerUserService extends BaseService {
           "in-identitymanager-identitywebapi");
       return result;
     }
+  }
+
+  Future<ManageAssetConfiguration> getAssetSettingData(
+       pageSize,  pageNumber) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (isVisionLink) {
+        queryMap["pageSize"] = pageSize.toString();
+        queryMap["pageNumber"] = pageNumber.toString();
+        queryMap["sortColumn"] = "assetId";
+        ManageAssetConfiguration manageAssetConfigurationResponse =
+            await MyApi().getClientSeven().getAssetSettingsListData(
+                Urls.assetSettingsVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return manageAssetConfigurationResponse;
+      } else {
+        queryMap["pageSize"] = pageSize.toString();
+        queryMap["pageNumber"] = pageNumber.toString();
+        queryMap["sortColumn"] = "assetId";
+        ManageAssetConfiguration manageAssetConfigurationResponse =
+            await MyApi().getClientSeven().getAssetSettingsListData(
+                Urls.assetSettingsVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID);
+        return manageAssetConfigurationResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }

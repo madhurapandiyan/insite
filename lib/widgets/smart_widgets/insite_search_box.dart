@@ -15,7 +15,7 @@ class SearchBox extends StatelessWidget {
         // onTextChanged(vale);
       },
       style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
-      cursorColor: Colors.white,
+      cursorColor: Theme.of(context).textTheme.bodyText1.color,
       decoration: InputDecoration(
           fillColor: black,
           hintText: hint,

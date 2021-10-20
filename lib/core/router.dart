@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
-import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
-import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
-    as view14;
+import 'package:insite/views/adminstration/adminstration_view.dart'as view13;
+import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart'as view16;
+import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart'as view15;
+import 'package:insite/views/adminstration/manage_user/manage_user_view.dart' as view14;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
 import 'package:insite/views/splash/splash_view.dart' as view0;
@@ -56,10 +57,14 @@ class Router {
         return MaterialPageRoute(builder: (_) => view11.HealthView());
       case loginPageRoute:
         return MaterialPageRoute(builder: (_) => view12.LoginPage());
-      case administrationViewPageRoute:
-        return MaterialPageRoute(builder: (_) => view13.AdminstrationView());
-      case manageUserViewRoute:
-        return MaterialPageRoute(builder: (_) => view14.ManageUserView());
+        case administrationViewPageRoute:
+        return MaterialPageRoute(builder: (_)=>view13.AdminstrationView());
+        case manageUserViewRoute:
+        return MaterialPageRoute(builder: (_)=>view14.ManageUserView());
+        case assetSettingsViewRoute:
+        return MaterialPageRoute(builder: (_)=>view15.AssetSettingsView());
+        case assetSettingsFilterViewRoute:
+        return MaterialPageRoute(builder: (_)=>view16.AssetSettingsFilterView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

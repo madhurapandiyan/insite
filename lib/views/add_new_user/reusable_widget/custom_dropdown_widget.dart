@@ -3,6 +3,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomDropDownWidget extends StatelessWidget {
+ 
   final String value;
   final List<String> items;
   final ValueChanged<String> onChanged;
@@ -12,8 +13,9 @@ class CustomDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton(
         isExpanded: true,
+        dropdownColor: Theme.of(context).backgroundColor,
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),
-        dropdownColor: thunder,
+      
         value: value,
         hint: InsiteText(
           text: "Select",

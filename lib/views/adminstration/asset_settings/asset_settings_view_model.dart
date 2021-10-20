@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset.dart';
@@ -14,20 +15,62 @@ class AssetSettingsViewModel extends InsiteViewModel {
   int pageSize = 20;
   int pageNumber = 1;
 
+   ScrollController scrollController;
+
   List<AssetSetting> _assets = [];
   List<AssetSetting> get asset => _assets;
 
+  bool _loading=true;
+  bool get loading=>_loading;
+
+  bool _loadingMore = false;
+  bool get loadingMore => _loadingMore;
+
+  bool _shouldLoadmore = true;
+  bool get shouldLoadmore => _shouldLoadmore;
+
   AssetSettingsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+     scrollController = new ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        _loadMore();
+      }
+    });
     Future.delayed(Duration(seconds: 2), () {
-      getAssetSettingListData();
+     // getAssetSettingListData();
     });
   }
 
   getAssetSettingListData() async {
     ManageAssetConfiguration result =
         await _manageUserService.getAssetSettingData(pageSize, pageNumber);
-    _assets.addAll(result.assetSettings);
-    notifyListeners();
+       
+    if (result.assetSettings.isNotEmpty) {
+      _assets.addAll(result.assetSettings);
+      _loading=false;
+      _loadingMore = false;
+      notifyListeners();
+    } else {
+      _assets.addAll(result.assetSettings);
+      _loading=false;
+      _loadingMore = false;
+      notifyListeners();
+    }
   }
+
+   _loadMore() {
+      log.i("shouldLoadmore and is already loadingMore " +
+        _shouldLoadmore.toString() +
+        "  " +
+        _loadingMore.toString());
+    if (_shouldLoadmore && !_loadingMore) {
+      log.i("load more called");
+      pageNumber++;
+      _loadingMore = true;
+      notifyListeners();
+      getAssetSettingListData();
+    }
+   }
 }

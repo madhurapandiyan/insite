@@ -32,12 +32,12 @@ class _AppAvatarState extends State<AppAvatar> {
         children: [
           widget.isSelected
               ? Container(
-                  width: 43,
-                  height: 43,
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        width: 2, color: Theme.of(context).backgroundColor),
+                        width: 2, color: Theme.of(context).buttonColor),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
@@ -55,8 +55,8 @@ class _AppAvatarState extends State<AppAvatar> {
                         Logger().e(error);
                         return Image.asset(
                             "assets/images/add_user_icon_one.png",
-                            width: 43,
-                            height: 43,
+                            width: 45,
+                            height: 45,
                             fit: BoxFit.fitWidth);
                       },
                       fit: BoxFit.cover,
@@ -77,8 +77,8 @@ class _AppAvatarState extends State<AppAvatar> {
                       imageErrorBuilder: (context, error, stackTrace) {
                         return Image.asset(
                             "assets/images/add_user_icon_one.png",
-                            width: 43,
-                            height: 43,
+                            width: 40,
+                            height: 40,
                             fit: BoxFit.fitWidth);
                       },
                       fit: BoxFit.cover,

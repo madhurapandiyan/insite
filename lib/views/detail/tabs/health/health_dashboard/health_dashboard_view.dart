@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_detail_health.dart';

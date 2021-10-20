@@ -267,38 +267,38 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 53.0),
-                        child: Container(
-                          width: 17,
-                          height: 17,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(width: 1, color: black),
-                            shape: BoxShape.rectangle,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.allowAccessToSecurityClicked();
+                    },
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 53.0),
                           child: Container(
-                            width: 11,
-                            height: 11,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(width: 1, color: tango),
-                                shape: BoxShape.rectangle,
-                                color: tango),
-                          ),
+                              decoration: BoxDecoration(
+                                  color: viewModel.allowAccessToSecurity
+                                      ? Theme.of(context).buttonColor
+                                      : Theme.of(context).backgroundColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4))),
+                              child: Icon(
+                                Icons.crop_square,
+                                color: viewModel.allowAccessToSecurity
+                                    ? Theme.of(context).buttonColor
+                                    : Colors.black,
+                              )),
                         ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      InsiteText(
-                        text: "Allow access to asset security",
-                        fontWeight: FontWeight.w700,
-                        size: 14,
-                      )
-                    ],
+                        SizedBox(
+                          width: 20,
+                        ),
+                        InsiteText(
+                          text: "Allow access to asset security",
+                          fontWeight: FontWeight.w700,
+                          size: 14,
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 20,
@@ -392,7 +392,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
                     child: AddressCustomTextBox(
-                      title: "",
+                      title: "Address",
                       controller: _addressController,
                     ),
                   ),
@@ -485,45 +485,40 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 53.0),
-                        child: Container(
-                          width: 17,
-                          height: 17,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(width: 1, color: black),
-                            shape: BoxShape.rectangle,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.onDefaultPreferenceClicked();
+                    },
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 53.0),
                           child: Container(
-                            width: 11,
-                            height: 11,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .color),
-                                shape: BoxShape.rectangle,
-                                color: Theme.of(context).buttonColor),
-                          ),
+                              decoration: BoxDecoration(
+                                  color: viewModel.setDefaultPreferenceToUser
+                                      ? Theme.of(context).buttonColor
+                                      : Theme.of(context).backgroundColor,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(4))),
+                              child: Icon(
+                                Icons.crop_square,
+                                color: viewModel.allowAccessToSecurity
+                                    ? Theme.of(context).buttonColor
+                                    : Colors.black,
+                              )),
                         ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      InsiteText(
-                        text: "Click here to set this user's default" +
-                            "\n" +
-                            "preferences . ",
-                        fontWeight: FontWeight.w700,
-                        size: 14,
-                      ),
-                    ],
+                        SizedBox(
+                          width: 20,
+                        ),
+                        InsiteText(
+                          text: "Click here to set this user's default" +
+                              "\n" +
+                              "preferences . ",
+                          fontWeight: FontWeight.w700,
+                          size: 14,
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 30,
@@ -598,7 +593,6 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             Logger().e(e);
                           }
                         },
-                        bgColor: tango,
                         textColor: appbarcolor,
                       ),
                     ),

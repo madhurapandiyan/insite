@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
@@ -19,6 +18,7 @@ class ReusableDropDown extends StatelessWidget {
         InsiteButton(
           height: 27,
           title: title,
+          padding: EdgeInsets.all(4),
           bgColor: Theme.of(context).backgroundColor,
           fontSize: 11,
         ),
