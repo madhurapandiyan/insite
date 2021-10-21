@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
@@ -260,13 +261,25 @@ class Utils {
 
   static String getFuleLevelWidgetLabel(data, isForFilter) {
     String title = data;
-    if (title == "100") {
-      title = "<=" + title + "%";
-    } else {
-      title = "<" + title + "%";
-    }
-    if (isForFilter) {
-      return "Fuel Level : " + title;
+    Logger().i("getFuleLevelWidgetLabel $title");
+    // if (title == "100") {
+    //   title = "<=" + title + "%";
+    // } else {
+    //   title = "<" + title + "%";
+    // }
+    // if (isForFilter) {
+    //   return "Fuel Level : " + title;
+    // } else {
+    //   return title;
+    // }
+    if (title == "25") {
+      return "0-25%";
+    } else if (title == "50") {
+      return "25-50%";
+    } else if (title == "75") {
+      return "50-75%";
+    } else if (title == "100") {
+      return "75-100%";
     } else {
       return title;
     }
@@ -508,6 +521,23 @@ class Utils {
     } else {
       return "assets/images/EX210.png";
     }
+  }
+
+  static showInfo(BuildContext context, title, message) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: InsiteInfoDialog(
+            title: title,
+            message: message,
+            onOkClicked: () {
+              Navigator.pop(context, true);
+            },
+          ),
+        );
+      },
+    );
   }
 
   static double checkNull(double value) {

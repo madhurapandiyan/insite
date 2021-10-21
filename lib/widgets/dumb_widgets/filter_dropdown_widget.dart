@@ -4,7 +4,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FilterDropDownWidget extends StatefulWidget {
   final List<FilterData> data;
-  final Function(String) onValueSelected;
+  final Function(FilterData) onValueSelected;
 
   FilterDropDownWidget({this.data, this.onValueSelected});
 
@@ -38,9 +38,13 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
           elevation: 16,
           dropdownColor: Theme.of(context).backgroundColor,
           value: dropDownvalue,
+          icon: Icon(
+            Icons.arrow_drop_down,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onChanged: (FilterData value) {
             dropDownvalue = value;
-            widget.onValueSelected(value.title);
+            widget.onValueSelected(value);
             setState(() {});
           },
           // selectedItemBuilder: (context) {},

@@ -85,7 +85,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                               InsiteButton(
                                 title: "Date Range",
                                 width: 90,
-                                height: 30,
                                 bgColor: Theme.of(context).backgroundColor,
                                 textColor:
                                     Theme.of(context).textTheme.bodyText1.color,
@@ -208,15 +207,41 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   showNavigationArrow: false,
                                   backgroundColor:
                                       Theme.of(context).backgroundColor,
-                                  cellBorderColor: black,
+                                  cellBorderColor: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1
+                                      .color,
                                   showCurrentTimeIndicator: false,
                                   controller: calendarController,
+                                  onTap: (calendarTapDetails) {
+                                    // Logger().i(
+                                    // "on tap ${calendarTapDetails.appointments[0].notes}");
+                                    // var title = "Running";
+                                    // var startTime =
+                                    //     Utils.getLastReportedDateUTC(
+                                    //         calendarTapDetails
+                                    //             .appointments[0].startTime);
+                                    // var endTime =
+                                    //     Utils.getLastReportedDateUTC(
+                                    //         calendarTapDetails
+                                    //             .appointments[0].endTime);
+                                    // var duration = (double.parse(
+                                    //             calendarTapDetails
+                                    //                 .appointments[0].notes) /
+                                    //         60)
+                                    //     .round();
+                                    // var message =
+                                    //     "Start:$startTime \n End: $endTime \n Duration: $duration minutes";
+                                    // Utils.showInfo(context, title, message);
+                                  },
+                                  onSelectionChanged:
+                                      (calendarSelectionDetails) {},
                                   view: CalendarView.week,
+                                  todayHighlightColor:
+                                      Theme.of(context).buttonColor,
                                   todayTextStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1
-                                          .color),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                   timeSlotViewSettings: TimeSlotViewSettings(
                                     dateFormat: 'd',
                                     dayFormat: 'MMM',
@@ -364,13 +389,14 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
       if (chartData.isNotEmpty)
         for (SingleAssetOperationChartData item in chartData) {
           final Appointment chartPlot = Appointment(
-              startTime: item.startTime.toLocal(),
-              endTime: item.endTime.toLocal(),
-              color: Theme.of(context).buttonColor,
-              subject: ""
-              //making subject empty
-              // subject: item.segmentType,
-              );
+            startTime: item.startTime.toLocal(),
+            endTime: item.endTime.toLocal(),
+            color: Theme.of(context).buttonColor,
+            subject: "",
+            notes: item.duration.toString(),
+            //making subject empty
+            // subject: item.segmentType,
+          );
           appointments.add(chartPlot);
         }
       return appointments;

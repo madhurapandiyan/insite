@@ -38,7 +38,7 @@ class _FaultDropDownState extends State<FaultDropDown> {
                 color: Theme.of(context).dividerColor,
               ),
               SizedBox(
-                width: 10,
+                width: 5,
               ),
               DropdownButton(
                   elevation: 16,

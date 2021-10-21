@@ -29,18 +29,19 @@ class SingleAssetUtilizationGraphView extends StatefulWidget {
 class _SingleAssetUtilizationGraphViewState
     extends State<SingleAssetUtilizationGraphView> {
   bool isListSelected = true;
-  String dropdownValue = 'Idle Time - Idle %';
+  // String dropdownValue = 'Idle Time - Idle %';
+  String dropdownValue = 'Runtime Hours (Hrs)';
   SingleAssetUtilizationGraphType selectedGraph =
-      SingleAssetUtilizationGraphType.IDLETIMEIDLEPERCENTAGE;
+      SingleAssetUtilizationGraphType.RUNTIMEHOURS;
   int rangeChoice = 1;
   String startDate;
   String endDate;
   List<DateTime> dateRange = [];
   bool isRangeSelectionVisible = true;
   List<String> dropDownValues = [
-    'Idle Time - Idle %',
-    'Runtime - Performance %',
-    'Runtime Hours',
+    // 'Idle Time - Idle %',
+    // 'Runtime - Performance %',
+    'Runtime Hours (Hrs)',
     'Distance Traveled (KMs)'
   ];
 
@@ -64,7 +65,6 @@ class _SingleAssetUtilizationGraphViewState
                                 viewModel.startDate) +
                             " - " +
                             Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        color: white,
                         fontWeight: FontWeight.bold,
                         size: 11),
                     SizedBox(
@@ -75,7 +75,6 @@ class _SingleAssetUtilizationGraphViewState
                       child: InsiteButton(
                         title: "Date Range",
                         width: 90,
-                        height: 30,
                         bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1.color,
                         onTap: () async {
@@ -135,22 +134,22 @@ class _SingleAssetUtilizationGraphViewState
                                   setState(() {
                                     dropdownValue = newValue;
                                     switch (dropDownValues.indexOf(newValue)) {
+                                      // case 0:
+                                      //   selectedGraph =
+                                      //       SingleAssetUtilizationGraphType
+                                      //           .IDLETIMEIDLEPERCENTAGE;
+                                      //   break;
+                                      // case 1:
+                                      //   selectedGraph =
+                                      //       SingleAssetUtilizationGraphType
+                                      //           .RUNTIMEPERFORMANCEPERCENT;
+                                      //   break;
                                       case 0:
-                                        selectedGraph =
-                                            SingleAssetUtilizationGraphType
-                                                .IDLETIMEIDLEPERCENTAGE;
-                                        break;
-                                      case 1:
-                                        selectedGraph =
-                                            SingleAssetUtilizationGraphType
-                                                .RUNTIMEPERFORMANCEPERCENT;
-                                        break;
-                                      case 2:
                                         selectedGraph =
                                             SingleAssetUtilizationGraphType
                                                 .RUNTIMEHOURS;
                                         break;
-                                      case 3:
+                                      case 1:
                                         selectedGraph =
                                             SingleAssetUtilizationGraphType
                                                 .DISTANCETRAVELED;
