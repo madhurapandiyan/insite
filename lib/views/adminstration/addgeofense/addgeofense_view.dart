@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/views/adminstration/addgeofense/formfield.dart/formfieldwidget.dart';
+
+
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
 
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
+import 'add_geofence_widget/formfield.dart/formfieldwidget.dart';
 import 'addgeofense_view_model.dart';
 
 class AddgeofenseView extends StatefulWidget {

@@ -5,6 +5,8 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
+    as view16;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
@@ -64,6 +66,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view14.ManageUserView());
       case addgeofenseViewRoute:
         return MaterialPageRoute(builder: (_) => view15.AddgeofenseView());
+      case addgeofenseViewRoute:
+        return MaterialPageRoute(builder: (_) => view16.ManageGeofenceView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

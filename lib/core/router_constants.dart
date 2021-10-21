@@ -17,4 +17,4 @@ const String administrationViewPageRoute = 'administrationViewPageRoute';
 const String addNewUserViewRoute = 'addNewUserViewRoute';
 const String manageUserViewRoute = 'manageUserViewRoute';
 const String addgeofenseViewRoute = 'addgeofenseViewRoute';
-
+const String manageGeofenceViewRoute = 'manageGeofenceViewRoute';
