@@ -33,7 +33,7 @@ class IdleWorkingGraphWidget extends StatelessWidget {
           Container(
             width: 2,
             height: 60,
-            color: white,
+            color: Theme.of(context).textTheme.bodyText1.color,
           ),
           SizedBox(
             width: 8,
@@ -44,23 +44,27 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             padding: EdgeInsets.all(0),
             isRTL: true,
             width: width,
-            center:
-                InsiteText(text: "${idleLength.toStringAsFixed(1)}", size: 12),
+            center: InsiteText(
+              text: "${idleLength.toStringAsFixed(1)}",
+              size: 12,
+              color: Colors.black,
+            ),
             lineHeight: 20.0,
             percent: (idleLength * 10 / 100) > 1 ? 1 : (idleLength * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
-            progressColor: burntSienna,
+            progressColor: tango,
             backgroundColor: concrete,
           ),
-          SizedBox(
-            width: 8,
-          ),
-          Container(
-            width: 2,
-            height: 60,
-            color: white,
-          ),
+          // SizedBox(
+          //   width: 8,
+          // ),
+          // Container(
+          //   width: 2,
+          //   height: 60,
+          //   color: Theme.of(context).textTheme.bodyText1.color,
+          // ),
           LinearPercentIndicator(
+            padding: EdgeInsets.all(0),
             alignment: MainAxisAlignment.start,
             animation: true,
             animationDuration: 1000,
@@ -68,6 +72,7 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             width: width,
             center: InsiteText(
                 // "${(idleLength + workingLength).toStringAsFixed(1)}",
+                color: Colors.black,
                 text: "${(workingLength).toStringAsFixed(1)}",
                 size: 12),
             // percent: ((idleLength + workingLength) * 10 / 100) > 1
@@ -77,8 +82,16 @@ class IdleWorkingGraphWidget extends StatelessWidget {
                 ? 1
                 : ((workingLength) * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
-            progressColor: burntSienna,
+            progressColor: Colors.green,
             backgroundColor: concrete,
+          ),
+          SizedBox(
+            width: 2,
+          ),
+          InsiteText(
+            text: "${(idleLength + workingLength).toStringAsFixed(1)}",
+            size: 10,
+            fontWeight: FontWeight.bold,
           ),
         ],
       ),

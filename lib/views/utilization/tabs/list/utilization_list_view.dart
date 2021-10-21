@@ -71,7 +71,6 @@ class UtilizationListViewState extends State<UtilizationListView> {
                         InsiteButton(
                           title: "Date Range",
                           width: 90,
-                          height: 30,
                           bgColor: Theme.of(context).backgroundColor,
                           textColor:
                               Theme.of(context).textTheme.bodyText1.color,

@@ -9,7 +9,6 @@ import 'package:insite/views/location/home/google_map.dart';
 import 'package:insite/widgets/dumb_widgets/filter_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
-import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
@@ -76,7 +75,7 @@ class _DashboardViewState extends State<DashboardView> {
                             textColor: white,
                             title: "Refresh",
                             onTap: () {
-                              viewModel.refresh();
+                              viewModel.onRefereshClicked();
                             },
                           ),
                         )
@@ -99,7 +98,7 @@ class _DashboardViewState extends State<DashboardView> {
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel.getFilterDataApplied(filterData.title);
+                              viewModel.getFilterDataApplied(filterData);
                               filterLocationKey.currentState
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
@@ -124,7 +123,7 @@ class _DashboardViewState extends State<DashboardView> {
                                           viewModel.getFilterDataApplied(value);
                                           filterLocationKey.currentState
                                               .getAssetLocationHomeFilterData(
-                                                  value);
+                                                  value.title);
                                         },
                                       )
                                     : SizedBox(),

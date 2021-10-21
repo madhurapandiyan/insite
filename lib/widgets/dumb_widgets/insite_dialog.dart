@@ -57,3 +57,46 @@ class InsiteDialog extends StatelessWidget {
     );
   }
 }
+
+class InsiteInfoDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback onOkClicked;
+  const InsiteInfoDialog({Key key, this.message, this.title, this.onOkClicked})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: InsiteText(text: title, fontWeight: FontWeight.bold)),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: InsiteText(
+              text: message,
+            ),
+          ),
+          ButtonBar(children: [
+            SizedBox(
+              width: 5,
+            ),
+            TextButton(
+              child: InsiteText(
+                text: 'OK',
+              ),
+              onPressed: () async {
+                onOkClicked();
+              },
+            ),
+          ]),
+        ],
+      ),
+    );
+  }
+}

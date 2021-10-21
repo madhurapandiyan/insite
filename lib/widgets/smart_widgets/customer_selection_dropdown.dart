@@ -4,7 +4,6 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/custom_expansion_tile.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
@@ -174,7 +173,13 @@ class _AccountSelectionDropDownWidgetState
                                             data.value.DisplayName,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: _displayList[index]
+                                                        .isSelected
+                                                    ? Colors.white
+                                                    : Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
                                           ),

@@ -73,9 +73,10 @@ class Urls {
   static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
 
   static String tenantDomai = "Trimble.com";
+  
   static getV4LogoutUrl(String token, redirecturi) {
     String url = Urls.unifiedFleetV4IdTokenUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$localRedirectUri";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
     return url;
   }
 

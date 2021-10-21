@@ -59,69 +59,111 @@ class _SingleAssetUtilizationListViewState
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InsiteText(
-                        text: Utils.getDateInFormatddMMyyyy(
-                                viewModel.startDate) +
-                            " - " +
-                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        fontWeight: FontWeight.bold,
-                        size: 11),
+                    productFamilyType != ProductFamilyType.ALL
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InsiteText(
+                                text: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                                fontWeight: FontWeight.bold,
+                                size: 11),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: InsiteText(
+                                text: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                                fontWeight: FontWeight.bold,
+                                size: 11),
+                          ),
                     SizedBox(
                       width: 4,
                     ),
-                    Padding(
-                      padding: productFamilyType != ProductFamilyType.ALL
-                          ? const EdgeInsets.only(
-                              top: 12.0, left: 12, right: 12)
-                          : const EdgeInsets.all(12.0),
-                      child: InsiteButton(
-                        title: "Date Range",
-                        width: 90,
-                        height: 30,
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1.color,
-                        onTap: () async {
-                          dateRange = [];
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          if (dateRange != null && dateRange.isNotEmpty) {
-                            viewModel.refresh();
-                          }
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: productFamilyType != ProductFamilyType.ALL
+                    //       ? const EdgeInsets.only(
+                    //           top: 12.0, left: 12, right: 12)
+                    //       : const EdgeInsets.all(12.0),
+                    //   child: InsiteButton(
+                    //     title: "Date Range",
+                    //     width: 90,
+                    //     bgColor: Theme.of(context).backgroundColor,
+                    //     textColor: Theme.of(context).textTheme.bodyText1.color,
+                    //     onTap: () async {
+                    //       dateRange = [];
+                    //       dateRange = await showDialog(
+                    //         context: context,
+                    //         builder: (BuildContext context) => Dialog(
+                    //             backgroundColor: transparent,
+                    //             child: DateRangeView()),
+                    //       );
+                    //       if (dateRange != null && dateRange.isNotEmpty) {
+                    //         viewModel.refresh();
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
                 productFamilyType != ProductFamilyType.ALL
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InsiteButtonWithSelectable(
-                            onTap: (value) {
-                              setState(() {
-                                isProductFamilySelected = value;
-                              });
-                            },
-                            textColor: Colors.white,
-                            bgColor: Theme.of(context).backgroundColor,
-                            isSelectable: true,
-                            height: 30,
-                            fontSize: 12,
-                            title: productFamilyType ==
-                                    ProductFamilyType.BACKHOE_LOADER
-                                ? "BACKHOE LOADER"
-                                : productFamilyType ==
-                                        ProductFamilyType.EXCAVATOR
-                                    ? "EXCAVATOR"
-                                    : "",
-                          )
-                        ],
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InsiteButtonWithSelectable(
+                              onTap: (value) {
+                                setState(() {
+                                  isProductFamilySelected = value;
+                                });
+                              },
+                              textColor: Colors.white,
+                              bgColor: Theme.of(context).backgroundColor,
+                              isSelectable: true,
+                              height: 30,
+                              fontSize: 12,
+                              title: productFamilyType ==
+                                      ProductFamilyType.BACKHOE_LOADER
+                                  ? "BACKHOE LOADER"
+                                  : productFamilyType ==
+                                          ProductFamilyType.EXCAVATOR
+                                      ? "EXCAVATOR"
+                                      : "",
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            InsiteButton(
+                              title: "Date Range",
+                              width: 90,
+                              bgColor: Theme.of(context).backgroundColor,
+                              textColor:
+                                  Theme.of(context).textTheme.bodyText1.color,
+                              onTap: () async {
+                                dateRange = [];
+                                dateRange = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Dialog(
+                                      backgroundColor: transparent,
+                                      child: DateRangeView()),
+                                );
+                                if (dateRange != null && dateRange.isNotEmpty) {
+                                  viewModel.refresh();
+                                }
+                              },
+                            )
+                          ],
+                        ),
                       )
-                    : SizedBox(),
+                    : SizedBox(
+                        height: 12,
+                      ),
                 productFamilyType != ProductFamilyType.ALL
                     ? SizedBox(
                         height: 24,
