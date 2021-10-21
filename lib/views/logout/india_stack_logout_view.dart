@@ -71,7 +71,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
   @override
   void didUpdateWidget(IndiaStackLogoutView oldWidget) {
-    print("IndiaStackLogoutView  didUpdateWidget called");
+    Logger().i("IndiaStackLogoutView  didUpdateWidget called");
     super.didUpdateWidget(oldWidget);
   }
 
@@ -81,20 +81,20 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
     // Add a listener to on destroy WebView, so you can make came actions.
     _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("IndiaStackLogoutView destroy");
+      Logger().i("IndiaStackLogoutView destroy");
     });
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-      print("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
-      print("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
+      Logger().i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
+      Logger().i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
           state.url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-        print("IndiaStackLogoutView STATE changed with auth code: $state.url");
+        Logger().i("IndiaStackLogoutView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
             List<String> list = state.url.split("=");
-            print("IndiaStackLogoutView url split list $list");
+            Logger().i("IndiaStackLogoutView url split list $list");
             if (list.isNotEmpty) {
               // _onUrlChanged.cancel();
               //for vision link (oauth style login)
@@ -129,14 +129,14 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
     // Add a listener to on url changed
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
-        print("IndiaStackLogoutView  URL changed: $url");
+        Logger().i("IndiaStackLogoutView  URL changed: $url");
         if (url != null &&
             url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-          print("IndiaStackLogoutView URL changed with auth code : $url");
+          Logger().i("IndiaStackLogoutView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
               List<String> list = url.split("=");
-              print("IndiaStackLogoutView url split list $list");
+              Logger().i("IndiaStackLogoutView url split list $list");
               if (list.isNotEmpty) {
                 // _onUrlChanged.cancel();
                 //for vision link (oauth style login)

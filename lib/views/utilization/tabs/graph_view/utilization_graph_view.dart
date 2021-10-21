@@ -88,7 +88,6 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                   InsiteButton(
                     title: "Date Range",
                     width: 90,
-                    height: 30,
                     bgColor: Theme.of(context).backgroundColor,
                     textColor: Theme.of(context).textTheme.bodyText1.color,
                     onTap: () async {

@@ -96,6 +96,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 child: SfCartesianChart(
                                   legend: Legend(
                                     isVisible: true,
+                                    textStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
                                     alignment: ChartAlignment.center,
                                     overflowMode: LegendItemOverflowMode.wrap,
                                     width: '100%',

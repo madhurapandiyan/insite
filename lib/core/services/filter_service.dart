@@ -14,7 +14,7 @@ class FilterService extends DataBaseService {
   }
 
   //removes filters of particular type
-  clearFilterOfTypeInDb(FilterType type) async {
+  Future clearFilterOfTypeInDb(FilterType type) async {
     try {
       int size = filterBox.values.length;
       print("filter size before clear");
@@ -22,9 +22,11 @@ class FilterService extends DataBaseService {
       print("FilterType " + type.toString());
       for (var i = 0; i < size; i++) {
         FilterData data = filterBox.getAt(i);
-        Logger().d("current filter data on loop ", data);
+        Logger().d(
+          "current filter data on loop ${data.type},  ${data.title} ,$type",
+        );
         if (data.type == type) {
-          await filterBox.deleteAt(i);
+          return await filterBox.deleteAt(i);
         }
       }
       print("filter size after clear");

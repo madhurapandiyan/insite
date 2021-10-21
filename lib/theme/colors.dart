@@ -107,8 +107,11 @@ var indiaStackBlueWhite = ThemeData(
       buttonColor: buttonColor1,
     ),
     accentTextTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
-    primaryTextTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
-    textTheme: TextTheme(bodyText1: TextStyle(color: textColor1)),
+    primaryTextTheme: TextTheme(
+        bodyText1: TextStyle(color: textColor1, fontWeight: FontWeight.bold)),
+    textTheme: TextTheme(
+        bodyText1: TextStyle(color: textColor1),
+        subtitle1: TextStyle(color: textColor1)),
     appBarTheme: AppBarTheme(backgroundColor: Colors.white),
     accentColor: Colors.white);
 

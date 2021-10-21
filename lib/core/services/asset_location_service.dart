@@ -166,7 +166,11 @@ class AssetLocationService extends BaseService {
                           ScreenType.LOCATION),
                   accountSelected.CustomerUID,
                   Urls.vfleetMapPrefix);
-          return result;
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
         }
       }
       return null;
