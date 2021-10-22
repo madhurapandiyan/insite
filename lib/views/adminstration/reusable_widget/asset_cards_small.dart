@@ -9,11 +9,16 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class AssetCardsSmall extends StatefulWidget {
   final String icon;
   final String headerText;
+  final double height;
   final List<AdminAssetsButtonType> buttonTitle;
   final Function(AdminAssetsButtonType value) onCallbackSelected;
 
   AssetCardsSmall(
-      {this.icon, this.headerText, this.buttonTitle, this.onCallbackSelected});
+      {this.icon,
+      this.headerText,
+      this.buttonTitle,
+      this.onCallbackSelected,
+      this.height});
 
   @override
   State<AssetCardsSmall> createState() => _AssetCardsSmallState();
@@ -61,7 +66,7 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
               color: Theme.of(context).iconTheme.color,
             ),
             SizedBox(
-              height: 10,
+              height: widget.height,
             ),
             Flexible(
               child: ListView.builder(
