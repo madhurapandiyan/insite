@@ -17,3 +17,4 @@ const String administrationViewPageRoute = 'administrationViewPageRoute';
 const String addNewUserViewRoute = 'addNewUserViewRoute';
 const String manageUserViewRoute = 'manageUserViewRoute';
 const String subscriptionViewRoute = 'subscriptionViewRoute';
+const String viewDashboardViewRoute = 'viewDashboardViewRoute';
