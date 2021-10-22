@@ -40,10 +40,11 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
+          // ignore: deprecated_member_use
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: splashViewRoute,
-          theme: indiaStackOrangeBlack,
+          theme: indiaStackBlueWhite,
         ));
   }
 }

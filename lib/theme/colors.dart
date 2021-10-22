@@ -12,6 +12,7 @@ const Color ship_grey = Color(0xff414042);
 const Color bgcolor = Color(0xff211F20);
 const Color appbarcolor = Color(0xffFFFFFF);
 const Color cardcolor = Color(0xff303238);
+const Color upperCardColor = Color(0xFF414042);
 const Color textcolor = Color(0xffEBEBF2);
 const Color athenGrey = Color(0xFFEBEBF2);
 const Color darkGrey = Color(0xFF211F20);
@@ -71,6 +72,7 @@ const buttonColor1 = Color(0XFF00437A);
 const buttonColor2 = Color(0XFFFFFFFF);
 const buttonSelectedColor1 = Color(0XFF00437A);
 const dividerColor1 = Color(0XFF000000);
+const upperCardColor1 = Color(0XFFFFFFFF);
 
 //orange/black theme
 const backgroundColor2 = Color(0xFF211F20);
@@ -85,6 +87,7 @@ const buttonColor21 = Color(0xffF37021);
 const buttonColor22 = Color(0XFF000000);
 const buttonSelectedColor2 = Color(0xffF37021);
 const dividerColor2 = Color(0XFF000000);
+const upperCardColor2 = Color(0xFF414042);
 
 var indiaStackBlueWhite = ThemeData(
     cardColor: cardBackgroundColor1,
@@ -93,6 +96,7 @@ var indiaStackBlueWhite = ThemeData(
     buttonColor: buttonColor1,
     primaryColor: backgroundColor1,
     dividerColor: dividerColor1,
+    indicatorColor: upperCardColor1,
     iconTheme: IconThemeData(
       color: iconColor1,
     ),
@@ -121,6 +125,7 @@ var indiaStackOrangeBlack = ThemeData(
     fontFamily: 'Roboto',
     buttonColor: buttonColor21,
     dividerColor: dividerColor2,
+    indicatorColor: upperCardColor2,
     iconTheme: IconThemeData(
       color: iconColor2,
     ),
