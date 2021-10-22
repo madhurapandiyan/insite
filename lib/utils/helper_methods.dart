@@ -361,6 +361,25 @@ class Utils {
       case AdminAssetsButtonType.ADDNEWREPORT:
         title = "ADD NEW REPORT";
         break;
+      case AdminAssetsButtonType.VIEWDASHBOARD:
+        title = "VIEW DASHBOARD";
+        break;
+      case AdminAssetsButtonType.VIEWREGISTRATION:
+        title = "VIEW REGISTRATION";
+        break;
+      case AdminAssetsButtonType.VIEWFLEETSTATUS:
+        title = "VIEW FLEET STATUS";
+        break;
+      case AdminAssetsButtonType.VIEWSMSMANAGEMENT:
+        title = "VIEW SMS MANAGEMENT";
+        break;
+      case AdminAssetsButtonType.VIEWREPLACEMENT:
+        title = "VIEW REPLACEMENT";
+        break;
+      case AdminAssetsButtonType.VIEWTRANSFERHISTORY:
+        title = "VIEW TRANSFER HISTORY";
+        break;
+
       default:
     }
     return title;
