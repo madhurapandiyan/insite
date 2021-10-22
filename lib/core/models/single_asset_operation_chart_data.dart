@@ -7,6 +7,9 @@ class SingleAssetOperationChartData {
   final DateTime endTime;
   @required
   final String segmentType;
+  @required
+  final int duration;
 
-  SingleAssetOperationChartData(this.startTime, this.endTime, this.segmentType);
+  SingleAssetOperationChartData(
+      this.startTime, this.endTime, this.segmentType, this.duration);
 }

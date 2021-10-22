@@ -21,7 +21,8 @@ void main() async {
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://unifiedfleet.myvisionlink.com",
-      flavor: "visionlink",
+      apiFlavor: "visionlink",
+      productFlavor: "unifiedFleet",
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

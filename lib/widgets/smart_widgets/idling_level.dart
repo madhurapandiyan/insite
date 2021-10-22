@@ -94,6 +94,20 @@ class _IdlingLevelState extends State<IdlingLevel> {
                               child: Container(
                                 height: maxheight,
                                 child: SfCartesianChart(
+                                  legend: Legend(
+                                    isVisible: true,
+                                    textStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color),
+                                    alignment: ChartAlignment.center,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    width: '100%',
+                                    position: LegendPosition.bottom,
+                                    isResponsive: true,
+                                    toggleSeriesVisibility: false,
+                                  ),
                                   isTransposed: true,
                                   plotAreaBorderWidth: 0,
                                   primaryXAxis: CategoryAxis(
@@ -333,10 +347,13 @@ class _IdlingLevelState extends State<IdlingLevel> {
     return <BarSeries<IdlingLevelSampleData, String>>[
       BarSeries<IdlingLevelSampleData, String>(
           dataSource: chartData,
+          isVisibleInLegend: true,
+          legendItemText: "Unit x-axis (Idle %) , y-axis (Assets)",
+          legendIconType: LegendIconType.horizontalLine,
           dataLabelSettings: DataLabelSettings(
               isVisible: true,
               textStyle: new TextStyle(
-                  color: textcolor,
+                  color: Theme.of(context).textTheme.bodyText1.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',

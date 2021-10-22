@@ -62,7 +62,6 @@ class FaultViewState extends State<FaultView> {
                       ),
                       InsiteButton(
                         width: 90,
-                        height: 30,
                         title: "Date Range",
                         bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1.color,

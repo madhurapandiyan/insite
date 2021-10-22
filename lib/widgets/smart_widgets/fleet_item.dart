@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -172,8 +171,9 @@ class FleetListItem extends StatelessWidget {
                         // ),
                         InsiteTableRowItem(
                           title: "Dealer Name               ",
-                          content:
-                              fleet.dealerName != null ? fleet.dealerName : "-",
+                          content: fleet.dealerName != null
+                              ? fleet.dealerName
+                              : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",

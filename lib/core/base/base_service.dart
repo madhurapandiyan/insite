@@ -11,7 +11,7 @@ class BaseService {
   BaseService({String title}) {
     log = getLogger(title ?? this.runtimeType.toString());
     try {
-      if (AppConfig.instance.flavor == "visionlink") {
+      if (AppConfig.instance.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {

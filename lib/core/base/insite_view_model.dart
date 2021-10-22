@@ -7,7 +7,6 @@ import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -22,7 +21,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   InsiteViewModel() {
     try {
-      if (AppConfig.instance.flavor == "visionlink") {
+      if (AppConfig.instance.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
@@ -112,6 +111,15 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   Future clearFilterDb() async {
     return await _filterService.clearFilterDatabase();
+  }
+
+  Future clearDashboardFiltersDb() async {
+    await _filterService.clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
+    await _filterService.clearFilterOfTypeInDb(FilterType.SEVERITY);
+    await _filterService.clearFilterOfTypeInDb(FilterType.IDLING_LEVEL);
+    await _filterService.clearFilterOfTypeInDb(FilterType.FUEL_LEVEL);
+    await _filterService.clearFilterOfTypeInDb(FilterType.ASSET_STATUS);
+    notifyListeners();
   }
 
   getDateRangeFilterData() async {

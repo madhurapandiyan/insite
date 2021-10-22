@@ -84,10 +84,10 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
               "segment data ${segment.startTimeUtc} ${segment.endTimeUtc} ${segment.segmentType}");
           _chartData.add(
             SingleAssetOperationChartData(
-              segment.startTimeUtc,
-              segment.endTimeUtc,
-              segment.segmentType,
-            ),
+                segment.startTimeUtc,
+                segment.endTimeUtc,
+                segment.segmentType,
+                segment.durationSeconds),
           );
         }
       }

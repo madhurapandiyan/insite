@@ -188,10 +188,12 @@ abstract class RestClient {
 
   @GET('{url}')
   Future<List<Note>> getAssetNotes(
-      @Path() String url,
-      @Query("assetUID") String assetUID,
-      @Header("X-VisionLink-CustomerUid") customerId,
-      @Header("service") serviceHeader);
+    @Path() String url,
+    @Query("assetUID") String assetUID,
+    @Header("service") serviceHeader,
+    @Header("X-VisionLink-CustomerUid") customerId,
+    @Header("X-VisionLink-UserUid") userId,
+  );
 
   @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/")
   Future<List<Note>> getAssetNotesVL(@Query("assetUID") String assetUID,

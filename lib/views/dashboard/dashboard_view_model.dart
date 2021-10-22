@@ -94,8 +94,8 @@ class DashboardViewModel extends InsiteViewModel {
   bool _isFilterApplied = false;
   bool get isFilterApplied => _isFilterApplied;
 
-  String _currentFilterSelected = "";
-  String get currentFilterSelected => _currentFilterSelected;
+  FilterData _currentFilterSelected;
+  FilterData get currentFilterSelected => _currentFilterSelected;
 
   List<FilterData> filterDataProductFamily = [];
 
@@ -135,6 +135,10 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   updateDateRangeFilter(FilterData data) async {
+    await clearFilterDb();
+    if (currentFilterSelected != null) {
+      await addFilter(currentFilterSelected);
+    }
     await _dateRangeService.updateDateFilter(data);
   }
 
@@ -153,6 +157,25 @@ class DashboardViewModel extends InsiteViewModel {
     }
     _assetStatusloading = false;
     notifyListeners();
+  }
+
+  getData() async {
+    this._isFilterApplied = false;
+    this._currentFilterSelected = null;
+    await clearDashboardFiltersDb();
+    getAssetStatusData();
+    getFuelLevelData();
+    getIdlingLevelData(false);
+    getUtilizationSummary();
+    getFaultCountData();
+  }
+
+  onRefereshClicked() {
+    if (currentFilterSelected != null) {
+      getFilterDataApplied(currentFilterSelected);
+    } else {
+      refresh();
+    }
   }
 
   refresh() async {
@@ -180,6 +203,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFuelLevelData() async {
+    Logger().i("get fuel level data");
     int totalAssetCount = 0;
     AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
@@ -202,12 +226,13 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelData(bool switching) async {
+    Logger().i("get idling level data");
     _isSwitching = switching;
     notifyListeners();
     if (isFilterApplied) {
       AssetCount result = await _assetService.getIdlingLevelFilterData(
         getStartRange(),
-        currentFilterSelected,
+        currentFilterSelected.title,
         endDayRange,
       );
       if (result != null) {
@@ -231,6 +256,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountData() async {
+    Logger().i("get fault count data");
     _faultCountloading = true;
     notifyListeners();
     AssetCount count = await _assetService.getFaultCount(
@@ -244,43 +270,28 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   onFilterSelected(FilterData data) async {
-    Logger().d("onFilterSelected $data");
+    Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
+    if (currentFilterSelected != null) {
+      await addFilter(currentFilterSelected);
+    }
     await addFilter(data);
-    // Future.delayed(Duration(seconds: 1), () {
-    // gotoFleetPage();
-    // });
-  }
-
-  onFaultFilterSelected(FilterData data) async {
-    Logger().d("onFilterSelected $data");
-    // await clearFilterDb();
-    await addFilter(data);
-    Future.delayed(Duration(seconds: 1), () {
-      gotoFaultPage();
-    });
-  }
-
-  onIdlingLevelFilterSelected(FilterData data) async {
-    Logger().d("onIdlingLevelFilterSelected $data");
-    // await clearFilterDb();
-    await addFilter(data);
-    Future.delayed(Duration(seconds: 1), () {
-      gotoUtilizationPage();
-    });
   }
 
   gotoFaultPage() {
+    Logger().i("go to fault page");
     _navigationService.navigateWithTransition(HealthView(),
         transition: "rightToLeft");
   }
 
   gotoFleetPage() {
+    Logger().i("go to fleet page");
     _navigationService.navigateWithTransition(FleetView(),
         transition: "rightToLeft");
   }
 
   gotoUtilizationPage() {
+    Logger().i("go to utilization page");
     _navigationService.navigateWithTransition(UtilLizationView(),
         transition: "rightToLeft");
   }
@@ -366,33 +377,29 @@ class DashboardViewModel extends InsiteViewModel {
     }
   }
 
-  getData() {
-    this._isFilterApplied = false;
-    this._currentFilterSelected = "";
-    getAssetStatusData();
-    getFuelLevelData();
-    getIdlingLevelData(false);
-    getUtilizationSummary();
-    getFaultCountData();
+  getFilterDataApplied(FilterData filterData) async {
+    try {
+      this._isFilterApplied = true;
+      this._currentFilterSelected = filterData;
+      // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
+      // await addFilter(filterData);
+      _refreshing = true;
+      notifyListeners();
+      await getAssetStatusFilterApplied(filterData.title);
+      await getFuelLevelFilterApplied(filterData.title);
+      await getUtilizationSummaryFilterData(filterData.title);
+      await getIdlingLevelFilterData(filterData.title);
+      await getFaultCountDataFilterData(filterData.title);
+      _refreshing = false;
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
-  getFilterDataApplied(dropDownValue) async {
-    this._isFilterApplied = true;
-    this._currentFilterSelected = dropDownValue;
-    _refreshing = true;
-    notifyListeners();
-    await getAssetStatusFilterApplied(dropDownValue);
-    await getFuelLevelFilterApplied(dropDownValue);
-    await getUtilizationSummaryFilterData(dropDownValue);
-    await getIdlingLevelFilterData(dropDownValue);
-    await getFaultCountDataFilterData(dropDownValue);
-    _refreshing = false;
-    notifyListeners();
-  }
-
-  getAssetStatusFilterApplied(dropDownValue) async {
+  getAssetStatusFilterApplied(filterData) async {
     AssetCount result =
-        await _assetService.getAssetStatusFilter(dropDownValue, "assetstatus");
+        await _assetService.getAssetStatusFilter(filterData, "assetstatus");
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
@@ -418,9 +425,10 @@ class DashboardViewModel extends InsiteViewModel {
           Logger().d("countOf ${result.countData[index].count}");
           totalAssetCount = totalAssetCount + result.countData[index].count;
           fuelChartData.add(ChartSampleData(
-              x: result.countData[index].countOf,
-              y: result.countData[index].count,
-              z: totalAssetCount.toString()));
+            x: result.countData[index].countOf,
+            y: result.countData[index].count,
+            z: result.countData[index].count.toString(),
+          ));
         }
       }
     }

@@ -148,8 +148,13 @@ class AssetService extends BaseService {
           return notes;
         }
       } else {
-        List<Note> notes = await MyApi().getClient().getAssetNotes(Urls.notes,
-            assetUID, accountSelected.CustomerUID, Urls.assetprefix);
+        List<Note> notes = await MyApi().getClient().getAssetNotes(
+              Urls.notes,
+              assetUID,
+              Urls.assetprefix,
+              accountSelected.CustomerUID,
+              (await _localService.getLoggedInUser()).sub,
+            );
         if (notes != null) {
           return notes;
         }
