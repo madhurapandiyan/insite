@@ -86,11 +86,14 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-      Logger().i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
-      Logger().i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
+      Logger()
+          .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
+      Logger()
+          .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
-        Logger().i("IndiaStackLogoutView STATE changed with auth code: $state.url");
+          state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
+        Logger()
+            .i("IndiaStackLogoutView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
             List<String> list = state.url.split("=");
@@ -131,7 +134,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
       if (mounted) {
         Logger().i("IndiaStackLogoutView  URL changed: $url");
         if (url != null &&
-            url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+            url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           Logger().i("IndiaStackLogoutView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {

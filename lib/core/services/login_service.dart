@@ -194,9 +194,9 @@ class LoginService extends BaseService {
               code_challenge: code_challenge,
               code_verifier: code_verifier,
               tenantDomain: "Trimble.com",
-              redirect_uri: Urls.localHost + "/auth",
+              redirect_uri: Urls.tataHitachiRedirectUri,
               grant_type: "authorization_code",
-              client_id: Urls.indiaStackUsermoduleAppClientId),
+              client_id: Urls.indiaStackClientId),
           "application/x-www-form-urlencoded");
       return loginResponse;
     } catch (e) {

@@ -91,7 +91,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       print(
           "IndiaStackSplashView STATE onStateChanged: ${state.type} ${state.url}");
       if (state.url != null &&
-          state.url.startsWith(Urls.localHost + "/auth?code=")) {
+          state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
         print("IndiaStackSplashView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -132,7 +132,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("IndiaStackSplashView URL changed: $url");
-        if (url != null && url.startsWith(Urls.localHost + "/auth?code=")) {
+        if (url != null && url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {

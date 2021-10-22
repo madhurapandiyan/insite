@@ -67,7 +67,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   void initState() {
     loginResponse = widget.arguments;
     Logger().d(
-        "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse.id_token, Urls.localRedirectUri)}");
+        "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse.id_token, Urls.tataHitachiRedirectUri)}");
     Logger().d("IndiaStackLoginView codeVerifier $codeVerifier");
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
     Logger().d("IndiaStackLoginView codeChallenge $codeChallenge");
@@ -85,7 +85,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("IndiaStackLoginView onStateChanged: ${state.type} ${state.url}");
-      if (state.url.startsWith(Urls.unifiedFleetV4IdTokenUrl +
+      if (state.url.startsWith(Urls.idTokenBaseUrl +
           "/oauth/authorize?response_type=code&client_id=${Urls.indiaStackClientId}")) {
         print(
             "IndiaStackLoginView STATE changed with logout redirect : ${state.url}");
@@ -105,8 +105,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
         } catch (e) {
           Logger().e(e);
         }
-      } else if (state.url
-          .startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+      } else if (state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
         Logger().i(
             "IndiaStackLoginView State URL changed with access token: $state.url");
         try {
@@ -146,8 +145,8 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLoginView URL changed: $url");
-        if (url.startsWith(
-            Urls.unifiedFleetV4IdTokenUrl + "/oauth/logout?id_token_hint")) {
+        if (url
+            .startsWith(Urls.idTokenBaseUrl + "/oauth/logout?id_token_hint")) {
           Logger()
               .i("IndiaStackLoginView URL changed with logout redirect: $url");
           // Future.delayed(Duration(seconds: 2), () {
@@ -162,7 +161,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
           //     predicate: (Route<dynamic> route) => false);
           // });
           // flutterWebviewPlugin.close();
-        } else if (url.startsWith(Urls.unifiedFleetV4BaseUrl + "/auth?code=")) {
+        } else if (url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           Logger().i("IndiaStackLoginView URL changed with access token: $url");
           try {
             List<String> list = url.split("=");
@@ -247,7 +246,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
               children: [
                 WebviewScaffold(
                   url: Urls.getV4LogoutUrl(
-                      loginResponse.id_token, Urls.localRedirectUri),
+                      loginResponse.id_token, Urls.tataHitachiRedirectUri),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()
               ],
