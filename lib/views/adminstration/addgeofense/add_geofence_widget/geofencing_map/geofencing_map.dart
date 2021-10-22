@@ -1,16 +1,23 @@
-// import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_maps/maps.dart';
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_maps/maps.dart';
 
-// class GeofencingMap extends StatefulWidget {
-//   GeofencingMap({Key key}) : super(key: key);
+class GeofencingMap extends StatefulWidget {
+  GeofencingMap({Key key}) : super(key: key);
 
-//   @override
-//   _GeofencingMapState createState() => _GeofencingMapState();
-// }
+  @override
+  _GeofencingMapState createState() => _GeofencingMapState();
+}
 
-// class _GeofencingMapState extends State<GeofencingMap> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SfMaps(layers: [MapTileLayer(urlTemplate: urlTemplate)]) ;
-//   }
-// }
+class _GeofencingMapState extends State<GeofencingMap> {
+  @override
+  Widget build(BuildContext context) {
+    return SfMaps(
+      layers: [
+        MapTileLayer(
+          urlTemplate: "",
+          sublayers: [],
+        )
+      ],
+    );
+  }
+}

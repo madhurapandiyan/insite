@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.1"
+  attributes:
+    dependency: transitive
+    description:
+      name: attributes
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.3"
   badges:
     dependency: "direct main"
     description:
@@ -373,6 +380,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.1.8"
+  geocore:
+    dependency: "direct main"
+    description:
+      name: geocore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.0"
   get:
     dependency: transitive
     description:

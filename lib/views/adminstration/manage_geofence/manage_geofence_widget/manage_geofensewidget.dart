@@ -2,14 +2,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
+import 'package:syncfusion_flutter_maps/maps.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
-
+  final ManageGeofenceViewModel model;
+  ManageGeofenceWidget(this.model);
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }
@@ -24,9 +28,16 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
     _controller.complete(controller);
   }
 
+  MapShapeSource _dataSource;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dataSource = MapShapeSource.asset("assets/custom.geo.json");
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     var mediaquerry = MediaQuery.of(context);
     return Column(
       children: [
@@ -76,13 +87,17 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10),
                         ),
-                        child: GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            zoomControlsEnabled: false,
-                            initialCameraPosition: CameraPosition(
-                              target: _center,
-                              zoom: 11.0,
-                            )),
+                        child: SfMaps(layers: [
+                          MapShapeLayer(
+                            source: _dataSource,
+                            sublayers: [
+                              MapPolygonLayer(
+                                  polygons: List.generate(
+                                      widget.model.dat.length,
+                                      (index) => MapPolygon(points: widget.model.dat)).toSet())
+                            ],
+                          ),
+                        ]),
                       ),
                       Positioned(
                         top: 6,

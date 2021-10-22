@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
 
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -17,21 +16,26 @@ class AddgeofenseView extends StatefulWidget {
 
 class _AddgeofenseViewState extends State<AddgeofenseView> {
   Widget tapbutton(IconData icons, double height, double width, Color color,
-      double imgheight, double imgwidth) {
-    return Container(
-      alignment: Alignment.center,
-      width: width,
-      height: height,
-      margin: EdgeInsets.only(top: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: color,
+      double imgheight, double imgwidth, Function getdata) {
+    return InkWell(
+      onTap: () {
+        getdata();
+      },
+      child: Container(
+        alignment: Alignment.center,
+        width: width,
+        height: height,
+        margin: EdgeInsets.only(top: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: color,
+        ),
+        child: Center(
+            child: Icon(
+          icons,
+          color: icons == Icons.fiber_manual_record_rounded ? Colors.red : null,
+        )),
       ),
-      child: Center(
-          child: Icon(
-        icons,
-        color: icons == Icons.fiber_manual_record_rounded ? Colors.red : null,
-      )),
     );
   }
 
@@ -94,30 +98,33 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 tapbutton(
-                                  Icons.add,
-                                  mediaquerry.size.height * 0.05,
-                                  mediaquerry.size.width * 0.10,
-                                  theme.cardColor,
-                                  mediaquerry.size.height * 0.02,
-                                  mediaquerry.size.width * 0.05,
-                                ),
+                                    Icons.add,
+                                    mediaquerry.size.height * 0.05,
+                                    mediaquerry.size.width * 0.10,
+                                    theme.cardColor,
+                                    mediaquerry.size.height * 0.02,
+                                    mediaquerry.size.width * 0.05, () {
+                                  viewModel.getdata();
+                                }),
                                 Dropdown(),
                                 tapbutton(
-                                  Icons.search,
-                                  mediaquerry.size.height * 0.05,
-                                  mediaquerry.size.width * 0.10,
-                                  theme.cardColor,
-                                  mediaquerry.size.height * 0.02,
-                                  mediaquerry.size.width * 0.05,
-                                ),
+                                    Icons.search,
+                                    mediaquerry.size.height * 0.05,
+                                    mediaquerry.size.width * 0.10,
+                                    theme.cardColor,
+                                    mediaquerry.size.height * 0.02,
+                                    mediaquerry.size.width * 0.05, () {
+                                  viewModel.getdata();
+                                }),
                                 tapbutton(
-                                  Icons.mode_edit_outlined,
-                                  mediaquerry.size.height * 0.05,
-                                  mediaquerry.size.width * 0.10,
-                                  theme.cardColor,
-                                  mediaquerry.size.height * 0.02,
-                                  mediaquerry.size.width * 0.05,
-                                ),
+                                    Icons.mode_edit_outlined,
+                                    mediaquerry.size.height * 0.05,
+                                    mediaquerry.size.width * 0.10,
+                                    theme.cardColor,
+                                    mediaquerry.size.height * 0.02,
+                                    mediaquerry.size.width * 0.05, () {
+                                  viewModel.getdata();
+                                }),
                               ],
                             ),
                             Container(
@@ -128,31 +135,34 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   tapbutton(
-                                    Icons.minimize_outlined,
-                                    mediaquerry.size.height * 0.05,
-                                    mediaquerry.size.width * 0.10,
-                                    theme.cardColor,
-                                    mediaquerry.size.height * 0.02,
-                                    mediaquerry.size.width * 0.05,
-                                  ),
+                                      Icons.minimize_outlined,
+                                      mediaquerry.size.height * 0.05,
+                                      mediaquerry.size.width * 0.10,
+                                      theme.cardColor,
+                                      mediaquerry.size.height * 0.02,
+                                      mediaquerry.size.width * 0.05, () {
+                                    viewModel.getdata();
+                                  }),
                                   Column(
                                     children: [
                                       tapbutton(
-                                        Icons.delete,
-                                        mediaquerry.size.height * 0.05,
-                                        mediaquerry.size.width * 0.10,
-                                        theme.cardColor,
-                                        mediaquerry.size.height * 0.02,
-                                        mediaquerry.size.width * 0.05,
-                                      ),
+                                          Icons.delete,
+                                          mediaquerry.size.height * 0.05,
+                                          mediaquerry.size.width * 0.10,
+                                          theme.cardColor,
+                                          mediaquerry.size.height * 0.02,
+                                          mediaquerry.size.width * 0.05, () {
+                                        viewModel.getdata();
+                                      }),
                                       tapbutton(
-                                        Icons.fiber_manual_record_rounded,
-                                        mediaquerry.size.height * 0.05,
-                                        mediaquerry.size.width * 0.10,
-                                        theme.cardColor,
-                                        mediaquerry.size.height * 0.02,
-                                        mediaquerry.size.width * 0.05,
-                                      ),
+                                          Icons.fiber_manual_record_rounded,
+                                          mediaquerry.size.height * 0.05,
+                                          mediaquerry.size.width * 0.10,
+                                          theme.cardColor,
+                                          mediaquerry.size.height * 0.02,
+                                          mediaquerry.size.width * 0.05, () {
+                                        viewModel.getdata();
+                                      }),
                                     ],
                                   )
                                 ],

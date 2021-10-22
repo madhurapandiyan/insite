@@ -50,6 +50,8 @@ dependencies:
   crypto: ^2.1.4
   random_string: ^2.0.1
   load: ^1.0.0
+  geocore: ^0.7.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -117,6 +119,7 @@ flutter:
     - assets/images/ic_eol_launcher.png
     - assets/images/trimble.svg
     - assets/images/delete.svg
+    - assets/custom.geo.json
 
   fonts:
     - family: Roboto

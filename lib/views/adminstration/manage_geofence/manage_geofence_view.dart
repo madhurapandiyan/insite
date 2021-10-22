@@ -12,7 +12,7 @@ class ManageGeofenceView extends StatelessWidget {
           (BuildContext context, ManageGeofenceViewModel viewModel, Widget _) {
         return InsiteScaffold(
           viewModel: viewModel,
-          body: ManageGeofenceWidget(),
+          body: ManageGeofenceWidget(viewModel),
 
         );
       },

@@ -128,6 +128,29 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<Geofence> getgeofencedata(token, customerUID) async {
+    ArgumentError.checkNotNull(token, 'token');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-geofenceservice/1.0',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'authorization': token,
+              r'x-visionlink-customeruid': customerUID
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Geofence.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<UserInfo> getUserInfo(contentType, authorization) async {
     ArgumentError.checkNotNull(contentType, 'contentType');
     ArgumentError.checkNotNull(authorization, 'authorization');

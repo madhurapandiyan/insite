@@ -14,6 +14,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
+import 'package:insite/core/models/geofencemodel.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
@@ -62,6 +63,10 @@ abstract class RestClient {
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
+
+    @GET("/t/trimble.com/vss-geofenceservice/1.0")
+  Future<Geofence> getgeofencedata(@Header("authorization") String token,
+      @Header("x-visionlink-customeruid") String customerUID);
 
   @GET("/userinfo?schema=openid")
   Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
