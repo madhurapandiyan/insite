@@ -76,6 +76,7 @@ class FleetListItem extends StatelessWidget {
                         //   title: "Custom Asset State",
                         //   content: fleet.customStateDescription,
                         // ),
+
                         InsiteTableRowItem(
                           title: "Last Reported Time      ",
                           content: fleet.lastReportedUTC != null
@@ -171,9 +172,8 @@ class FleetListItem extends StatelessWidget {
                         // ),
                         InsiteTableRowItem(
                           title: "Dealer Name               ",
-                          content: fleet.dealerName != null
-                              ? fleet.dealerName
-                              : "-",
+                          content:
+                              fleet.dealerName != null ? fleet.dealerName : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",

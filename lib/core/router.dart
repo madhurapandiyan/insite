@@ -24,6 +24,8 @@ import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
 
 import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
+import 'package:insite/views/subscription/options/sub_dash_board_details/sub_dash_board_details_view.dart'
+    as view18;
 
 import 'package:insite/views/subscription/options/view_dashboard/view_dashboard_view.dart'
     as view17;
@@ -68,6 +70,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view16.SubscriptionView());
       case viewDashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view17.View());
+      case subDashBoardDetailsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view18.SubDashBoardDetailsView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
