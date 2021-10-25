@@ -292,6 +292,7 @@ class _DashboardViewState extends State<DashboardView> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: Theme.of(context).backgroundColor,
           child: InsiteDialog(
             title: "Logout",
             message: "Are you sure you want to logout?",
