@@ -233,6 +233,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: Theme.of(context).backgroundColor,
           child: InsiteDialog(
             title: "Logout",
             message: "Are you sure you want to logout?",

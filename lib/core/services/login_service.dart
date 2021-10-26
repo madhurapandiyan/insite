@@ -79,7 +79,9 @@ class LoginService extends BaseService {
     }
   }
 
-  saveExpiryTime(String expiryTime) async {}
+  saveExpiryTime(String expiryTime) async {
+    _localService.saveExpiryTime(expiryTime);
+  }
 
   Future<List<Customer>> getCustomers() async {
     if (isVisionLink) {
@@ -203,6 +205,29 @@ class LoginService extends BaseService {
       Logger().e(e);
     }
     return null;
+  }
+
+  Future<LoginResponse> getTokenWithoutLogin() async {
+    try {
+      LoginResponse loginResponse = await MyApi()
+          .getClientFive()
+          .getTokenWithoutLogin(
+              Urls.idTokenKey, "application/x-www-form-urlencoded");
+      if (loginResponse != null) {
+        onTokenReceivedWithoutLogin(loginResponse);
+      }
+      return loginResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  void onTokenReceivedWithoutLogin(LoginResponse response) {
+    Logger().i("onTokenReceivedWithoutLogin");
+    _localService.setIsloggedIn(true);
+    _localService.saveToken(response.access_token);
+    saveExpiryTime(response.expires_in.toString());
   }
 
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
