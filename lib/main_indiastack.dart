@@ -21,8 +21,11 @@ void main() async {
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
+      // baseUrl: "https://cloud.api.trimble.com/osg-in",
       iconPath: "assets/images/hitachi.png",
       productFlavor: "tatahitachi",
+      enableLogin: false,
+      isProd: false,
       apiFlavor: "indiastack");
 
   await LocatorInjector.setUpLocator();

@@ -1810,6 +1810,30 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<LoginResponse> getTokenWithoutLogin(authorization, contentType) async {
+    ArgumentError.checkNotNull(authorization, 'authorization');
+    ArgumentError.checkNotNull(contentType, 'contentType');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/oauth/token?grant_type=client_credentials',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{
+              r'Authorization': authorization,
+              r'content-type': contentType
+            },
+            extra: _extra,
+            contentType: contentType,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = LoginResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<FaultSummaryResponse> faultViewSummaryURL(
       url, fitlers, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');

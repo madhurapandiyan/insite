@@ -121,17 +121,18 @@ class ManageUserViewModel extends InsiteViewModel {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+            backgroundColor: Theme.of(context).backgroundColor,
             child: InsiteDialog(
-          title: "Delete User",
-          message:
-              "Are you sure you want to permanently remove this user account?",
-          onPositiveActionClicked: () {
-            Navigator.pop(context, true);
-          },
-          onNegativeActionClicked: () {
-            Navigator.pop(context, false);
-          },
-        ));
+              title: "Delete User",
+              message:
+                  "Are you sure you want to permanently remove this user account?",
+              onPositiveActionClicked: () {
+                Navigator.pop(context, true);
+              },
+              onNegativeActionClicked: () {
+                Navigator.pop(context, false);
+              },
+            ));
       },
     );
     if (value != null && value) {

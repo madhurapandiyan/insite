@@ -79,7 +79,9 @@ class LoginService extends BaseService {
     }
   }
 
-  saveExpiryTime(String expiryTime) async {}
+  saveExpiryTime(String expiryTime) async {
+    _localService.saveExpiryTime(expiryTime);
+  }
 
   Future<List<Customer>> getCustomers() async {
     if (isVisionLink) {
@@ -194,15 +196,38 @@ class LoginService extends BaseService {
               code_challenge: code_challenge,
               code_verifier: code_verifier,
               tenantDomain: "Trimble.com",
-              redirect_uri: Urls.localHost + "/auth",
+              redirect_uri: Urls.tataHitachiRedirectUri,
               grant_type: "authorization_code",
-              client_id: Urls.indiaStackUsermoduleAppClientId),
+              client_id: Urls.indiaStackClientId),
           "application/x-www-form-urlencoded");
       return loginResponse;
     } catch (e) {
       Logger().e(e);
     }
     return null;
+  }
+
+  Future<LoginResponse> getTokenWithoutLogin() async {
+    try {
+      LoginResponse loginResponse = await MyApi()
+          .getClientFive()
+          .getTokenWithoutLogin(
+              Urls.idTokenKey, "application/x-www-form-urlencoded");
+      if (loginResponse != null) {
+        onTokenReceivedWithoutLogin(loginResponse);
+      }
+      return loginResponse;
+    } catch (e) {
+      Logger().e(e);
+    }
+    return null;
+  }
+
+  void onTokenReceivedWithoutLogin(LoginResponse response) {
+    Logger().i("onTokenReceivedWithoutLogin");
+    _localService.setIsloggedIn(true);
+    _localService.saveToken(response.access_token);
+    saveExpiryTime(response.expires_in.toString());
   }
 
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
