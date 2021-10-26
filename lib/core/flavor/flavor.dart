@@ -3,19 +3,23 @@ class AppConfig {
   final String productFlavor;
   final String apiFlavor;
   final String iconPath;
+  final bool enableLogin;
+  final bool isProd;
   static AppConfig _instance;
   factory AppConfig(
       {String baseUrl,
       String productFlavor,
       String apiFlavor,
-      String iconPath}) {
-    _instance ??=
-        AppConfig._internal(baseUrl, productFlavor, apiFlavor, iconPath);
+      String iconPath,
+      bool enableLogin,
+      bool isProd}) {
+    _instance ??= AppConfig._internal(
+        baseUrl, productFlavor, apiFlavor, iconPath, enableLogin, isProd);
     return _instance;
   }
 
-  AppConfig._internal(
-      this.baseUrl, this.productFlavor, this.apiFlavor, this.iconPath);
+  AppConfig._internal(this.baseUrl, this.productFlavor, this.apiFlavor,
+      this.iconPath, this.enableLogin, this.isProd);
   static AppConfig get instance {
     return _instance;
   }

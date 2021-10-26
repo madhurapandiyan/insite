@@ -7,6 +7,9 @@ class Urls {
 
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String idTokenBaseUrl = "https://id.trimble.com";
+  static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
+  static String idTokenKey = "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
+  static String idTokenKeyStaging = "Basic N2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4OjY3NjdkYTcxZDliMzQ1YzM4ODZhZWExMmE4ZjNmNmZl";
 
   static String unifiedFleetloginUrlTataHitachi =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
@@ -63,12 +66,15 @@ class Urls {
   }
 
   static String mobileRedirectUri = "insite://mobile";
+  // static String tataHitachiRedirectUri =
+  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
   static String tataHitachiRedirectUri =
       "https://d1pavvpktln7z7.cloudfront.net/auth";
   static String localRedirectUri = "http://localhost:4200/auth";
 
   static String indiaStackAdminmoduleAppClientId =
       "a2f1b5a5-5b42-4488-9c19-555944c54578";
+  // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
   static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
   static String tenantDomain = "Trimble.com";
 

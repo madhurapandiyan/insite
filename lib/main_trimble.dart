@@ -23,6 +23,8 @@ void main() async {
       baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
       iconPath: "assets/images/ic_trimble_logo.png",
       productFlavor: "trimble",
+      enableLogin: true,
+      isProd: false,
       apiFlavor: "indiastack");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

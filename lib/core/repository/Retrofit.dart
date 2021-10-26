@@ -494,6 +494,11 @@ abstract class RestClient {
   Future<LoginResponse> getTokenV4(@Body() GetTokenData tokenData,
       @Header("content-type") String contentType);
 
+  @POST("/oauth/token?grant_type=client_credentials")
+  Future<LoginResponse> getTokenWithoutLogin(
+      @Header("Authorization") String authorization,
+      @Header("content-type") String contentType);
+
   @POST('{url}')
   Future<FaultSummaryResponse> faultViewSummaryURL(
       @Path() String url,
