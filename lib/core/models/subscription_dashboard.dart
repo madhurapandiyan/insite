@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'subscription_dashboard.g.dart';
 
+<<<<<<< HEAD
 @JsonSerializable(explicitToJson: true)
 class DashboardResult {
   List<ResultData> resultData;
@@ -72,3 +73,30 @@ class Results {
       _$ResultsFromJson(json);
   Map<String, dynamic> toJson() => _$ResultsToJson(this);
 }
+=======
+@JsonSerializable()
+class Result {
+  //@JsonKey(name: "result")
+  List<List> result;
+
+  Result({this.result});
+
+  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResultToJson(this);
+}
+
+// class Result {
+
+
+// 	Result({});
+
+// 	Result.fromJson(Map<String, dynamic> json) {
+// 	}
+
+// 	Map<String, dynamic> toJson() {
+// 		final Map<String, dynamic> data = new Map<String, dynamic>();
+// 		return data;
+// 	}
+// }
+>>>>>>> f0ebaa9e7731ed5688bbda93b2a081d7cc3076da

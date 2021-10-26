@@ -6,6 +6,7 @@ part of 'subscription_dashboard.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+<<<<<<< HEAD
 DashboardResult _$DashboardResultFromJson(Map<String, dynamic> json) {
   return DashboardResult(
     resultData: (json['resultData'] as List)
@@ -62,4 +63,14 @@ Map<String, dynamic> _$ResultsToJson(Results instance) => <String, dynamic>{
       'week_count': instance.weekCount,
       'month_count': instance.monthCount,
       'subscriptionEndingAsset_Month': instance.subscriptionEndingAsset,
+=======
+Result _$ResultFromJson(Map<String, dynamic> json) {
+  return Result(
+    result: (json['result'] as List)?.map((e) => e as List)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+      'result': instance.result,
+>>>>>>> f0ebaa9e7731ed5688bbda93b2a081d7cc3076da
     };
