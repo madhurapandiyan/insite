@@ -41,10 +41,7 @@ class SubscriptionView extends StatelessWidget {
                           height: 25.0,
                           onCallbackSelected: (value) {
                             viewModel.onRespectiveButtonClicked(value);
-<<<<<<< HEAD
                             viewModel.getSubscriptionDashboardData();
-=======
->>>>>>> f0ebaa9e7731ed5688bbda93b2a081d7cc3076da
                           }),
                       AssetCardsSmall(
                           headerText: "REGISTRATION",
