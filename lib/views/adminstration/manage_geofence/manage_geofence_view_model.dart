@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:geocore/geocore.dart' as geo;
 import 'package:geocore/geocore.dart' as g;
-import 'package:geojson/geojson.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:insite/core/base/insite_view_model.dart';
