@@ -3,19 +3,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Dropdown extends StatefulWidget {
-  Dropdown({Key key}) : super(key: key);
+  List<String> maptype;
+  String initialvalue;
+  Function(String) changingvalue;
+  Dropdown(this.maptype, this.initialvalue, this.changingvalue);
 
   @override
   _DropdownState createState() => _DropdownState();
 }
 
 class _DropdownState extends State<Dropdown> {
-  String _currentSelectedItem = "MAP";
   @override
   Widget build(BuildContext context) {
-    var mediaquerry=MediaQuery.of(context);
+    var mediaquerry = MediaQuery.of(context);
     return Container(
-      margin: EdgeInsets.only(left: 20,top: 15),
+      margin: EdgeInsets.only(left: 20, top: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Theme.of(context).cardColor,
@@ -38,10 +40,10 @@ class _DropdownState extends State<Dropdown> {
         ),
         isExpanded: true,
         hint: Text(
-          _currentSelectedItem,
+          widget.initialvalue,
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
         ),
-        items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
+        items: widget.maptype
             .map((map) => DropdownMenuItem(
                   value: map,
                   child: InsiteText(
@@ -51,10 +53,11 @@ class _DropdownState extends State<Dropdown> {
                   ),
                 ))
             .toList(),
-        value: _currentSelectedItem,
+        value: widget.initialvalue,
         onChanged: (value) {
           setState(() {
-            _currentSelectedItem = value;
+            widget.initialvalue = value;
+            widget.changingvalue(value);
           });
         },
         underline: Container(

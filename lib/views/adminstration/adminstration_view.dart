@@ -95,6 +95,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     ]),
                 SizedBox(
                   height: 21,
+                  child: CircleAvatar(backgroundColor: Color(0XFF16190736),),
                 ),
                 NotificationWidget(
                   headerText: "notifications".toUpperCase(),

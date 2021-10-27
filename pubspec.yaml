@@ -34,7 +34,7 @@ dependencies:
   google_maps_cluster_manager: ^1.0.0
   syncfusion_flutter_gauges: ^19.1.65
   syncfusion_flutter_charts: ^19.1.65
-  syncfusion_flutter_maps: ^19.3.46-beta
+
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
   quiver: ^2.1.5
@@ -51,6 +51,11 @@ dependencies:
   random_string: ^2.0.1
   load: ^1.0.0
   geocore: ^0.7.0
+  google_polyline_algorithm: ^3.1.0
+  polyline: ^1.0.2
+  google_maps_controller: ^1.1.0
+  flutter_colorpicker: ^0.3.5
+
   
 
 dev_dependencies:
@@ -64,6 +69,11 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/add.svg
+    - assets/images/edit.svg
+
+    - assets/images/searchs.svg
+    - assets/images/dummy.png
     - assets/images/menubar.svg
     - assets/images/searchs.svg
     - assets/images/clock.svg

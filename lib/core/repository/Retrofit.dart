@@ -15,11 +15,13 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/geofencemodel.dart';
+import 'package:insite/core/models/geofencepayload.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/models/materialmodel.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/role_data.dart';
@@ -64,7 +66,17 @@ abstract class RestClient {
   @GET("/tasks")
   Future<List<Sample>> getTasks();
 
-    @GET("/t/trimble.com/vss-geofenceservice/1.0")
+  @GET("/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials")
+  Future<Materialmodel> getmaterialmodel(@Header("authorization") String token,
+      @Header("x-visionlink-customeruid") String customerUID);
+
+  @POST("/t/trimble.com/vss-geofenceservice/1.0")
+  Future<dynamic> postgeofencepayload(
+      @Header("authorization") String token,
+      @Header("x-visionlink-customeruid") String customerUID,
+      @Body() Geofencepayload geofencepayload);
+
+  @GET("/t/trimble.com/vss-geofenceservice/1.0")
   Future<Geofence> getgeofencedata(@Header("authorization") String token,
       @Header("x-visionlink-customeruid") String customerUID);
 

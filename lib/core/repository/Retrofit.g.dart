@@ -128,6 +128,54 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<Materialmodel> getmaterialmodel(token, customerUID) async {
+    ArgumentError.checkNotNull(token, 'token');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'authorization': token,
+              r'x-visionlink-customeruid': customerUID
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Materialmodel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> postgeofencepayload(
+      token, customerUID, geofencepayload) async {
+    ArgumentError.checkNotNull(token, 'token');
+    ArgumentError.checkNotNull(customerUID, 'customerUID');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('/t/trimble.com/vss-geofenceservice/1.0',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{
+              r'authorization': token,
+              r'x-visionlink-customeruid': customerUID
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<Geofence> getgeofencedata(token, customerUID) async {
     ArgumentError.checkNotNull(token, 'token');
     ArgumentError.checkNotNull(customerUID, 'customerUID');

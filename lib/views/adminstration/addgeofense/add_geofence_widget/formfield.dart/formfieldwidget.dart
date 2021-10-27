@@ -22,6 +22,7 @@ class Formfieldwidget extends StatefulWidget {
 }
 
 class _FormfieldwidgetState extends State<Formfieldwidget> {
+  String initialvalue = "Generic";
   DateTime date;
   var key = GlobalKey<FormState>();
   var titlecontroller = TextEditingController();
@@ -103,8 +104,12 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
                 border: Border.all(width: 1, color: Colors.white)),
             child: CustomDropDownWidget(
               items: widget.listitems,
-              onChanged: (String value) {},
-              value: "Administrator",
+              onChanged: (String value) {
+                setState(() {
+                  initialvalue=value;
+                });
+              },
+              value: initialvalue,
             ),
           ),
           Padding(
@@ -123,10 +128,16 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(width: 1, color: Colors.white)),
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: InsiteText(
-                    text:
-                        "${date == null ? "choose date" : DateFormat.yMMMd().format(date)}",
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InsiteText(
+                        text:
+                            "${date == null ? "choose date" : DateFormat.yMMMd().format(date)}",
+                      ),
+                      Icon(Icons.calendar_today_outlined)
+                    ],
                   ),
                 ),
               )),
