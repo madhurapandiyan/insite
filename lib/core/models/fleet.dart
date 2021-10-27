@@ -83,8 +83,7 @@ class FleetSummaryResponse {
   final Links links;
   final Pagination pagination;
   final List<Fleet> fleetRecords;
-  FleetSummaryResponse(
-      {this.fleetRecords, this.links, this.pagination});
+  FleetSummaryResponse({this.fleetRecords, this.links, this.pagination});
 
   factory FleetSummaryResponse.fromJson(Map<String, dynamic> json) {
     return _$FleetSummaryResponseFromJson(json);

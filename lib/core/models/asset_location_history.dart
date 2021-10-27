@@ -86,7 +86,6 @@ class Address {
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }
 
-
 @JsonSerializable()
 class Pagination {
   Pagination({

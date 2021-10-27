@@ -7,7 +7,8 @@ class AssetStatusUsageWidget extends StatefulWidget {
   final Color chartColor;
   final String chartHrsData;
 
-  AssetStatusUsageWidget({this.assetStatusData, this.chartColor,this.chartHrsData});
+  AssetStatusUsageWidget(
+      {this.assetStatusData, this.chartColor, this.chartHrsData});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
 }

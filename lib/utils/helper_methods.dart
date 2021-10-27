@@ -536,7 +536,7 @@ class Utils {
     return maxDate;
   }
 
-  imageData(String model) {
+   imageData(String model) {
     if (model.contains("SHINRAI")) {
       return "assets/images/shinrai.png";
     } else if (model.contains("EX130")) {

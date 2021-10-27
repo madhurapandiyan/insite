@@ -5,7 +5,7 @@ part 'single_asset_fault_response.g.dart';
 
 @JsonSerializable()
 class SingleAssetFaultResponse {
- final List<SummaryData> summaryData;
+  final List<SummaryData> summaryData;
   SingleAssetFaultResponse({this.summaryData});
 
   factory SingleAssetFaultResponse.fromJson(Map<String, dynamic> json) =>

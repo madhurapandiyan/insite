@@ -4,6 +4,7 @@ import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
 import 'package:load/load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: splashViewRoute,
-          theme: indiaStackOrangeBlack,
+          theme:indiaStackOrangeBlack,
         ));
   }
 }

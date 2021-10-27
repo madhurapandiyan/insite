@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'idling_level.g.dart';
 
-
 @JsonSerializable()
 class IdlingLevelData {
   List<CountDatum> countData;
@@ -14,6 +13,7 @@ class IdlingLevelData {
 
   Map<String, dynamic> toJson() => _$IdlingLevelDataToJson(this);
 }
+
 @JsonSerializable()
 class CountDatum {
   String countOf;
