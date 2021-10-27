@@ -2,23 +2,47 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
-import 'package:insite/views/adminstration/adminstration_view.dart'as view13;
-import 'package:insite/views/adminstration/manage_user/manage_user_view.dart' as view14;
-import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
-import 'package:insite/views/home/home_view.dart' as view7;
-import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
+import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
+    as view15;
+import 'package:insite/views/asset_operation/asset_operation_view.dart'
+    as view8;
+
+import 'package:insite/views/health/asset/asset_view.dart' as view8;
+
+import 'package:insite/views/splash/splash_view.dart' as view0;
+
+import 'package:insite/views/home/home_view.dart' as view2;
 import 'package:insite/views/fleet/fleet_view.dart' as view3;
 import 'package:insite/views/login/login_view.dart' as view4;
 import 'package:insite/views/logout/logout_view.dart' as view5;
 import 'package:insite/views/global_search/global_search_view.dart' as view6;
-import 'package:insite/views/asset_operation/asset_operation_view.dart'
-    as view8;
+import 'package:insite/views/dashboard/dashboard_view.dart' as view7;
+
 import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
+
+import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
+import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
+    as view18;
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_reg_view.dart'
+    as view22;
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
+    as view23;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_reg_view.dart'
+    as view20;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
+    as view21;
+import 'package:insite/views/subscription/options/sub_registration/sub_registration_view.dart'
+    as view19;
+
+import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart'
+    as view17;
+import 'package:insite/views/subscription/subscription_view.dart' as view16;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,7 +52,7 @@ class Router {
       case customerSelectionViewRoute:
         return MaterialPageRoute(builder: (_) => view1.AccountSelectionView());
       case homeViewRoute:
-        return MaterialPageRoute(builder: (_) => view7.HomeView());
+        return MaterialPageRoute(builder: (_) => view2.HomeView());
       case fleetViewRoute:
         return MaterialPageRoute(builder: (_) => view3.FleetView());
       case loginViewRoute:
@@ -38,7 +62,7 @@ class Router {
       case globalSearchViewRoute:
         return MaterialPageRoute(builder: (_) => view6.GlobalSearchView());
       case dashboardViewRoute:
-        return MaterialPageRoute(builder: (_) => view2.DashboardView());
+        return MaterialPageRoute(builder: (_) => view7.DashboardView());
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
@@ -49,16 +73,39 @@ class Router {
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));
+
       case locationViewRoute:
         return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
       case loginPageRoute:
         return MaterialPageRoute(builder: (_) => view12.LoginPage());
-        case administrationViewPageRoute:
-        return MaterialPageRoute(builder: (_)=>view13.AdminstrationView());
-        case manageUserViewRoute:
-        return MaterialPageRoute(builder: (_)=>view14.ManageUserView());
+      case administrationViewPageRoute:
+        return MaterialPageRoute(builder: (_) => view13.AdminstrationView());
+      case addNewUserViewRoute:
+        return MaterialPageRoute(builder: (_) => view14.AddNewUserView());
+      case manageUserViewRoute:
+        return MaterialPageRoute(builder: (_) => view15.ManageUserView());
+      case subscriptionViewRoute:
+        return MaterialPageRoute(builder: (_) => view16.SubscriptionView());
+      case viewDashboardViewRoute:
+        return MaterialPageRoute(builder: (_) => view17.View());
+      case subDashBoardDetailsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view18.SubDashBoardDetailsView());
+      case subRegistrationViewRoute:
+        return MaterialPageRoute(builder: (_) => view19.SubRegistrationView());
+      case singleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view20.SingleAssetRegView());
+      case singleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view21.SingleAssetTransferView());
+      case multipleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view22.MultipleAssetRegView());
+      case multipleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view23.MultipleAssetTransferView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

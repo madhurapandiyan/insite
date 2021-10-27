@@ -36,6 +36,7 @@ import 'package:insite/core/models/utilization_summary.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:insite/core/models/subscription_dashboard.dart';
 part 'Retrofit.g.dart';
 
 // RUN THIS TO GENERATE FILES
@@ -59,6 +60,7 @@ part 'Retrofit.g.dart';
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+  // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
@@ -691,6 +693,13 @@ abstract class RestClient {
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") String serviceHeader);
+
+  @GET('{url}')
+  Future<DashboardResult> getSubscriptionDashboardResults(
+    @Path() String url,
+  );
+
+  // @Header("Authorization") String authorization
 }
 
 @JsonSerializable()

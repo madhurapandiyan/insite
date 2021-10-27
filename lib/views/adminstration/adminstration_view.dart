@@ -38,6 +38,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     AssetCardsSmall(
                         headerText: "users",
                         icon: "assets/images/users.svg",
+                        height: 10,
                         buttonTitle: [
                           AdminAssetsButtonType.values[0],
                           AdminAssetsButtonType.values[1],
@@ -48,6 +49,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     AssetCardsSmall(
                         headerText: "groups",
                         icon: "assets/images/gear_icon.svg",
+                        height: 10,
                         buttonTitle: [
                           AdminAssetsButtonType.values[2],
                           AdminAssetsButtonType.values[3]
@@ -79,6 +81,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                             AdminAssetsButtonType.values[4],
                             AdminAssetsButtonType.values[5]
                           ],
+                          height: 10,
                           onCallbackSelected: (value) {}),
                       AssetCardsSmall(
                           headerText: "reports".toUpperCase(),
@@ -87,6 +90,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                             AdminAssetsButtonType.values[6],
                             AdminAssetsButtonType.values[7]
                           ],
+                          height: 10,
                           onCallbackSelected: (value) {
                             viewModel.onRespectiveButtonClicked(value);
                           })

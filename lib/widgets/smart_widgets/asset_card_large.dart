@@ -6,14 +6,14 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
-class AssetCardsSmall extends StatefulWidget {
+class AssetCardsLarge extends StatefulWidget {
   final String icon;
   final String headerText;
   final double height;
   final List<AdminAssetsButtonType> buttonTitle;
   final Function(AdminAssetsButtonType value) onCallbackSelected;
 
-  AssetCardsSmall(
+  AssetCardsLarge(
       {this.icon,
       this.headerText,
       this.buttonTitle,
@@ -21,16 +21,16 @@ class AssetCardsSmall extends StatefulWidget {
       this.height});
 
   @override
-  State<AssetCardsSmall> createState() => _AssetCardsSmallState();
+  State<AssetCardsLarge> createState() => _AssetCardsLargeState();
 }
 
-class _AssetCardsSmallState extends State<AssetCardsSmall> {
+class _AssetCardsLargeState extends State<AssetCardsLarge> {
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.43,
-        height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: MediaQuery.of(context).size.height * 0.43,
         child: Column(
           children: [
             SizedBox(

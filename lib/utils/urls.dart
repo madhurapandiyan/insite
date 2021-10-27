@@ -194,4 +194,7 @@ class Urls {
   static String faultPrefix = "in-fault-us-fault-api";
   static String fleetMapPrefix = "in-vassethistory-ah-webapi";
   static String assetprefix = "in-vassetmetadata-am-webapi";
+
+  //subscription
+  static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
 }
