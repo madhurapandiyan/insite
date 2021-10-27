@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_asset_configuration_card.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -40,6 +42,50 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                             size: 14,
                           ),
                         ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        viewModel.showEdit
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                                child: InsiteButton(
+                                    title: "",
+                                    onTap: () {
+                                     viewModel.onClickEditselected();
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: appbarcolor,
+                                    )),
+                              )
+                            : SizedBox(),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        viewModel.showDeSelect
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                                child: InsiteButton(
+                                    title: "",
+                                    onTap: () {
+                                      viewModel.onItemDeselect();
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: appbarcolor,
+                                    )),
+                              )
+                            : SizedBox()
                       ],
                     ),
                     SizedBox(
@@ -55,12 +101,12 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                   itemCount: viewModel.asset.length,
                                   controller: viewModel.scrollController,
                                   itemBuilder: (_, index) {
-                                    AssetSetting assetSetting =
+                                    AssetSettingsRow assetSetting =
                                         viewModel.asset[index];
                                     return ManageAssetConfigurationCard(
                                       assetSetting: assetSetting,
-                                      voidCallback: (){
-                                        print("button is tapped");
+                                      voidCallback: () {
+                                        viewModel.onItemSelected(index);
                                       },
                                     );
                                   },

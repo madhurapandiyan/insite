@@ -361,6 +361,37 @@ class Utils {
       case AdminAssetsButtonType.ADDNEWREPORT:
         title = "ADD NEW REPORT";
         break;
+      case AdminAssetsButtonType.VIEWDASHBOARD:
+        title = "VIEW DASHBOARD";
+        break;
+      case AdminAssetsButtonType.VIEWREGISTRATION:
+        title = "VIEW REGISTRATION";
+        break;
+      case AdminAssetsButtonType.VIEWFLEETSTATUS:
+        title = "VIEW FLEET STATUS";
+        break;
+      case AdminAssetsButtonType.VIEWSMSMANAGEMENT:
+        title = "VIEW SMS MANAGEMENT";
+        break;
+      case AdminAssetsButtonType.VIEWREPLACEMENT:
+        title = "VIEW REPLACEMENT";
+        break;
+      case AdminAssetsButtonType.VIEWTRANSFERHISTORY:
+        title = "VIEW TRANSFER HISTORY";
+        break;
+      case AdminAssetsButtonType.SINGLEASSETREG:
+        title = "SINGLE ASSET REGISTRATION";
+        break;
+      case AdminAssetsButtonType.SINGLEASSETTRANSFER:
+        title = "SINGLE ASSET TRANSFER";
+        break;
+      case AdminAssetsButtonType.MULTIPLEASSETREG:
+        title = "MULTIPLE ASSET REGISTRATION";
+        break;
+      case AdminAssetsButtonType.MULTIPLEASSESTTRANSFER:
+        title = "MULTIPLE ASSET TRANSFER";
+        break;
+
       default:
     }
     return title;

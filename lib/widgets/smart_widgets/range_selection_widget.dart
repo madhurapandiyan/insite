@@ -25,7 +25,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.38,
       height: 35,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -61,7 +61,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     color: rangeChoice == 1
                         ? white
                         : Theme.of(context).textTheme.bodyText1.color,
-                    size: 10,
+                    size: 8,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

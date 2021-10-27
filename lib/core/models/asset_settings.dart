@@ -81,3 +81,8 @@ class PageInfo {
 
   Map<String, dynamic> toJson() => _$PageInfoToJson(this);
 }
+ class AssetSettingsRow{
+   final AssetSetting assetSettings;
+    bool isSelected;
+   AssetSettingsRow({this.assetSettings,this.isSelected=false});
+ }

@@ -111,7 +111,11 @@ class AssetLocationService extends BaseService {
                             ScreenType.LOCATION),
                     accountSelected.CustomerUID,
                   );
-          return result;
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
         } else if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result =
               await MyApi().getClient().assetLocationSummaryVL(
@@ -127,7 +131,11 @@ class AssetLocationService extends BaseService {
                             ScreenType.LOCATION),
                     accountSelected.CustomerUID,
                   );
-          return result;
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
         }
       } else {
         if (pageNumber != null &&
@@ -149,7 +157,11 @@ class AssetLocationService extends BaseService {
                           ScreenType.LOCATION),
                   accountSelected.CustomerUID,
                   Urls.vfleetMapPrefix);
-          return result;
+          if (result != null) {
+            return result;
+          } else {
+            return null;
+          }
         } else if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result = await MyApi()
               .getClient()
