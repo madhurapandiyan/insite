@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:insite/widgets/smart_widgets/reuse_dashRow.dart';
+import 'package:insite/widgets/smart_widgets/reusable_dash_row.dart';
 
 class DashBoardContainer extends StatefulWidget {
   DashBoardContainer({Key key, this.subTitle1, this.subTitle2, this.title})
@@ -19,7 +19,7 @@ class _DashBoardContainerState extends State<DashBoardContainer> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        height: 400,
+        height: MediaQuery.of(context).size.height * 0.6,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,

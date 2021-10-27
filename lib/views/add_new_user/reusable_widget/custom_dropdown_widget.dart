@@ -16,7 +16,7 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),
         value: value,
         hint: InsiteText(
-          text: "Select",
+          text: "  Select",
           size: 14,
           fontWeight: FontWeight.w700,
         ),

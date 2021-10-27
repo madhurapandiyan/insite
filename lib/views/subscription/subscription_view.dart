@@ -51,7 +51,7 @@ class SubscriptionView extends StatelessWidget {
                           ],
                           height: 10.0,
                           onCallbackSelected: (value) {
-                            // viewModel.onRespectiveButtonClicked(value);
+                            viewModel.onRespectiveButtonClicked(value);
                           }),
                     ],
                   ),

@@ -7,6 +7,9 @@ import 'package:insite/views/account_selection/account_selection_view.dart'
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view15;
+import 'package:insite/views/asset_operation/asset_operation_view.dart'
+    as view8;
+
 import 'package:insite/views/health/asset/asset_view.dart' as view8;
 
 import 'package:insite/views/splash/splash_view.dart' as view0;
@@ -24,10 +27,20 @@ import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
 
 import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
-import 'package:insite/views/subscription/options/sub_dash_board_details/sub_dash_board_details_view.dart'
+import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
     as view18;
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_reg_view.dart'
+    as view22;
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
+    as view23;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_reg_view.dart'
+    as view20;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
+    as view21;
+import 'package:insite/views/subscription/options/sub_registration/sub_registration_view.dart'
+    as view19;
 
-import 'package:insite/views/subscription/options/view_dashboard/view_dashboard_view.dart'
+import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart'
     as view17;
 import 'package:insite/views/subscription/subscription_view.dart' as view16;
 
@@ -51,9 +64,16 @@ class Router {
       case dashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view7.DashboardView());
       case assetViewRoute:
-        return MaterialPageRoute(builder: (_) => view8.AssetView());
+        return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        return MaterialPageRoute(builder: (_) => view9.AssetDetailView());
+        var fleetArgs = settings.arguments as view9.DetailArguments;
+        return MaterialPageRoute(
+            builder: (_) => view9.AssetDetailView(
+                  fleet: fleetArgs.fleet,
+                  tabIndex: fleetArgs.index,
+                  type: fleetArgs.type,
+                ));
+
       case locationViewRoute:
         return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
@@ -73,6 +93,18 @@ class Router {
       case subDashBoardDetailsViewRoute:
         return MaterialPageRoute(
             builder: (_) => view18.SubDashBoardDetailsView());
+      case subRegistrationViewRoute:
+        return MaterialPageRoute(builder: (_) => view19.SubRegistrationView());
+      case singleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view20.SingleAssetRegView());
+      case singleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view21.SingleAssetTransferView());
+      case multipleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view22.MultipleAssetRegView());
+      case multipleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view23.MultipleAssetTransferView());
 
       default:
         return MaterialPageRoute(

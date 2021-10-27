@@ -21,9 +21,19 @@ import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
-import 'package:insite/views/subscription/options/sub_dash_board_details/sub_dash_board_details_view.dart'
+import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
     as view18;
-import 'package:insite/views/subscription/options/view_dashboard/view_dashboard_view.dart'
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_reg_view.dart'
+    as view22;
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
+    as view23;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_reg_view.dart'
+    as view20;
+import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
+    as view21;
+import 'package:insite/views/subscription/options/sub_registration/sub_registration_view.dart'
+    as view19;
+import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart'
     as view17;
 import 'package:insite/views/subscription/subscription_view.dart' as view16;
 
@@ -80,6 +90,18 @@ class Router {
       case subDashBoardDetailsViewRoute:
         return MaterialPageRoute(
             builder: (_) => view18.SubDashBoardDetailsView());
+      case subRegistrationViewRoute:
+        return MaterialPageRoute(builder: (_) => view19.SubRegistrationView());
+      case singleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view20.SingleAssetRegView());
+      case singleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view21.SingleAssetTransferView());
+      case multipleAssetRegViewRoute:
+        return MaterialPageRoute(builder: (_) => view22.MultipleAssetRegView());
+      case multipleAssetTransferViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view23.MultipleAssetTransferView());
 
       default:
         return MaterialPageRoute(

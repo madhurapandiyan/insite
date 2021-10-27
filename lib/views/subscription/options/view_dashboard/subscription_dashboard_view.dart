@@ -4,7 +4,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/reusable_container_large.dart';
 import 'package:stacked/stacked.dart';
-import 'view_dashboard_view_model.dart';
+import 'subscription_dashboard_view_model.dart';
 
 class View extends StatelessWidget {
   @override

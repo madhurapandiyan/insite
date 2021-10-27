@@ -379,6 +379,18 @@ class Utils {
       case AdminAssetsButtonType.VIEWTRANSFERHISTORY:
         title = "VIEW TRANSFER HISTORY";
         break;
+      case AdminAssetsButtonType.SINGLEASSETREG:
+        title = "SINGLE ASSET REGISTRATION";
+        break;
+      case AdminAssetsButtonType.SINGLEASSETTRANSFER:
+        title = "SINGLE ASSET TRANSFER";
+        break;
+      case AdminAssetsButtonType.MULTIPLEASSETREG:
+        title = "MULTIPLE ASSET REGISTRATION";
+        break;
+      case AdminAssetsButtonType.MULTIPLEASSESTTRANSFER:
+        title = "MULTIPLE ASSET TRANSFER";
+        break;
 
       default:
     }

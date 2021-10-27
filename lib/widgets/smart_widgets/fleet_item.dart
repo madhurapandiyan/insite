@@ -76,7 +76,6 @@ class FleetListItem extends StatelessWidget {
                         //   title: "Custom Asset State",
                         //   content: fleet.customStateDescription,
                         // ),
-
                         InsiteTableRowItem(
                           title: "Last Reported Time      ",
                           content: fleet.lastReportedUTC != null
