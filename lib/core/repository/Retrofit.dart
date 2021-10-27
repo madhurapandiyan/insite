@@ -332,11 +332,9 @@ abstract class RestClient {
   Future<SingleAssetOperation> singleAssetOperationVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives")
+  @POST('{url}')
   Future<RunTimeCumulative> runtimeCumulative(
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -347,11 +345,9 @@ abstract class RestClient {
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives")
+  @POST('{url}')
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -362,15 +358,9 @@ abstract class RestClient {
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives/intervals")
+  @POST('{url}')
   Future<TotalHours> getTotalHours(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -385,15 +375,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives/intervals")
+  @POST('{url}')
   Future<TotalFuelBurned> getTotalFuelBurned(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -408,14 +392,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST("/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/idlepercent")
+  @POST('{url}')
   Future<IdlePercentTrend> getIdlePercentTrend(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -430,14 +409,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST("/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate")
+  @POST('{url}')
   Future<FuelBurnRateTrend> getFuelBurnRateTrend(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -546,14 +520,9 @@ abstract class RestClient {
       @Query("assetUid") String assetUid,
       @Header("X-VisionLink-CustomerUid") customerId);
 
-  @GET("/npulse-unifiedservice-in/1.0/health/FaultDetails/v1")
+  @GET('{url}')
   Future<HealthListResponse> getHealthListData(
-      @Query("assetUid") String assetUid,
-      @Query("endDateTime") String endDateTime,
-      @Query("langDesc") String langDesc,
-      @Query("limit") int limit,
-      @Query("page") int page,
-      @Query("startDateTime") String startDateTime,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -568,11 +537,9 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
-  @GET("/npulse-unifiedservice-in/1.0/health/faultSummary/v1")
+  @GET('{url}')
   Future<SingleAssetFaultResponse> getDashboardListData(
-      @Query("assetUid") String assetUid,
-      @Query("endDateTime") String endDate,
-      @Query("startDateTime") String startDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 

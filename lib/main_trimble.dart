@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:load/load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/flavor/flavor.dart';
@@ -20,7 +21,7 @@ void main() async {
   Hive.registerAdapter<CountData>(CountDataAdapter());
   Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
   AppConfig(
-      baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
+      baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
       iconPath: "assets/images/ic_trimble_logo.png",
       productFlavor: "trimble",
       enableLogin: true,

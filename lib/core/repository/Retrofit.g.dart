@@ -1236,19 +1236,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<RunTimeCumulative> runtimeCumulative(
-      startDate, endDate, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -1290,19 +1285,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
-      startDate, endDate, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -1343,28 +1333,14 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<TotalHours> getTotalHours(interval, startDate, endDate, pageNumber,
-      pageSize, includepagination, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(interval, 'interval');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(includepagination, 'includepagination');
+  Future<TotalHours> getTotalHours(url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'interval': interval,
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'includepagination': includepagination
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives/intervals',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -1414,34 +1390,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<TotalFuelBurned> getTotalFuelBurned(
-      interval,
-      startDate,
-      endDate,
-      pageNumber,
-      pageSize,
-      includepagination,
-      customerId,
-      serviceHeader) async {
-    ArgumentError.checkNotNull(interval, 'interval');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(includepagination, 'includepagination');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'interval': interval,
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'includepagination': includepagination
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives/intervals',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -1491,34 +1447,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<IdlePercentTrend> getIdlePercentTrend(
-      interval,
-      startDate,
-      endDate,
-      pageNumber,
-      pageSize,
-      includepagination,
-      customerId,
-      serviceHeader) async {
-    ArgumentError.checkNotNull(interval, 'interval');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(includepagination, 'includepagination');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'interval': interval,
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'includepagination': includepagination
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/idlepercent',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -1568,34 +1504,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<FuelBurnRateTrend> getFuelBurnRateTrend(
-      interval,
-      startDate,
-      endDate,
-      pageNumber,
-      pageSize,
-      includepagination,
-      customerId,
-      serviceHeader) async {
-    ArgumentError.checkNotNull(interval, 'interval');
-    ArgumentError.checkNotNull(startDate, 'startDate');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(pageNumber, 'pageNumber');
-    ArgumentError.checkNotNull(pageSize, 'pageSize');
-    ArgumentError.checkNotNull(includepagination, 'includepagination');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'interval': interval,
-      r'startdatelocal': startDate,
-      r'enddatelocal': endDate,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'includepagination': includepagination
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -2016,28 +1932,15 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<HealthListResponse> getHealthListData(assetUid, endDateTime, langDesc,
-      limit, page, startDateTime, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(assetUid, 'assetUid');
-    ArgumentError.checkNotNull(endDateTime, 'endDateTime');
-    ArgumentError.checkNotNull(langDesc, 'langDesc');
-    ArgumentError.checkNotNull(limit, 'limit');
-    ArgumentError.checkNotNull(page, 'page');
-    ArgumentError.checkNotNull(startDateTime, 'startDateTime');
+  Future<HealthListResponse> getHealthListData(
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUid,
-      r'endDateTime': endDateTime,
-      r'langDesc': langDesc,
-      r'limit': limit,
-      r'page': page,
-      r'startDateTime': startDateTime
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-unifiedservice-in/1.0/health/FaultDetails/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -2087,21 +1990,14 @@ class _RestClient implements RestClient {
 
   @override
   Future<SingleAssetFaultResponse> getDashboardListData(
-      assetUid, endDate, startDate, customerId, serviceHeader) async {
-    ArgumentError.checkNotNull(assetUid, 'assetUid');
-    ArgumentError.checkNotNull(endDate, 'endDate');
-    ArgumentError.checkNotNull(startDate, 'startDate');
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
     ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'assetUid': assetUid,
-      r'endDateTime': endDate,
-      r'startDateTime': startDate
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/npulse-unifiedservice-in/1.0/health/faultSummary/v1',
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

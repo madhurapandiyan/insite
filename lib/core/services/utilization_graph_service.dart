@@ -8,6 +8,7 @@ import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
@@ -47,14 +48,24 @@ class UtilizationGraphsService extends BaseService {
           return null;
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
             endDate.isNotEmpty) {
           RunTimeCumulative response = await MyApi()
               .getClient()
-              .runtimeCumulative(startDate, endDate,
-                  accountSelected.CustomerUID, Urls.vfleetPrefix);
+              .runtimeCumulative(
+                  Urls.runTimeCumulative +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
           if (response != null) {
             return response;
           }
@@ -86,14 +97,24 @@ class UtilizationGraphsService extends BaseService {
           return null;
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
             endDate.isNotEmpty) {
           FuelBurnedCumulative response = await MyApi()
               .getClient()
-              .fuelBurnedCumulative(startDate, endDate,
-                  accountSelected.CustomerUID, Urls.vfleetPrefix);
+              .fuelBurnedCumulative(
+                  Urls.fuelBurnedCumulative +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected.CustomerUID,
+                  Urls.vfleetPrefix);
           if (response != null) {
             return response;
           }
@@ -136,17 +157,32 @@ class UtilizationGraphsService extends BaseService {
           return null;
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (interval != null) {
+          queryMap["interval"] = interval;
+        }
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
+        if (pageNumber != null) {
+          queryMap["pageNumber"] = pageNumber.toString();
+        }
+        if (pageSize != null) {
+          queryMap["pageSize"] = pageSize.toString();
+        }
+        if (includepagination != null) {
+          queryMap["includepagination"] = includepagination.toString();
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
             endDate.isNotEmpty) {
           TotalHours response = await MyApi().getClient().getTotalHours(
-              interval,
-              startDate,
-              endDate,
-              pageNumber,
-              pageSize,
-              includepagination,
+              Urls.runTimeTotalHours +
+                  FilterUtils.constructQueryFromMap(queryMap),
               accountSelected.CustomerUID,
               Urls.vfleetPrefix);
           if (response != null) {
@@ -192,6 +228,25 @@ class UtilizationGraphsService extends BaseService {
           return null;
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (interval != null) {
+          queryMap["interval"] = interval;
+        }
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
+        if (pageNumber != null) {
+          queryMap["pageNumber"] = pageNumber.toString();
+        }
+        if (pageSize != null) {
+          queryMap["pageSize"] = pageSize.toString();
+        }
+        if (includepagination != null) {
+          queryMap["includepagination"] = includepagination.toString();
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
@@ -199,12 +254,8 @@ class UtilizationGraphsService extends BaseService {
           TotalFuelBurned response = await MyApi()
               .getClient()
               .getTotalFuelBurned(
-                  interval,
-                  startDate,
-                  endDate,
-                  pageNumber,
-                  pageSize,
-                  includepagination,
+                  Urls.fuelBurnedTotalHours +
+                      FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
@@ -250,6 +301,25 @@ class UtilizationGraphsService extends BaseService {
           return null;
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (interval != null) {
+          queryMap["interval"] = interval;
+        }
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
+        if (pageNumber != null) {
+          queryMap["pageNumber"] = pageNumber.toString();
+        }
+        if (pageSize != null) {
+          queryMap["pageSize"] = pageSize.toString();
+        }
+        if (includepagination != null) {
+          queryMap["includepagination"] = includepagination.toString();
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
@@ -257,12 +327,8 @@ class UtilizationGraphsService extends BaseService {
           IdlePercentTrend response = await MyApi()
               .getClient()
               .getIdlePercentTrend(
-                  interval,
-                  startDate,
-                  endDate,
-                  pageNumber,
-                  pageSize,
-                  includepagination,
+                  Urls.idlePercent +
+                      FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
@@ -309,6 +375,25 @@ class UtilizationGraphsService extends BaseService {
           }
         }
       } else {
+        Map<String, String> queryMap = Map();
+        if (interval != null) {
+          queryMap["interval"] = interval;
+        }
+        if (startDate != null) {
+          queryMap["startdatelocal"] = startDate;
+        }
+        if (endDate != null) {
+          queryMap["enddatelocal"] = endDate;
+        }
+        if (pageNumber != null) {
+          queryMap["pageNumber"] = pageNumber.toString();
+        }
+        if (pageSize != null) {
+          queryMap["pageSize"] = pageSize.toString();
+        }
+        if (includepagination != null) {
+          queryMap["includepagination"] = includepagination.toString();
+        }
         if (startDate != null &&
             startDate.isNotEmpty &&
             endDate != null &&
@@ -316,12 +401,8 @@ class UtilizationGraphsService extends BaseService {
           FuelBurnRateTrend response = await MyApi()
               .getClient()
               .getFuelBurnRateTrend(
-                  interval,
-                  startDate,
-                  endDate,
-                  pageNumber,
-                  pageSize,
-                  includepagination,
+                  Urls.fuelPercent +
+                      FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
