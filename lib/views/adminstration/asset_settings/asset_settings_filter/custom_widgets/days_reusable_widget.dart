@@ -27,9 +27,9 @@ class DaysReusableWidget extends StatefulWidget {
 }
 
 class _DaysReusableWidgetState extends State<DaysReusableWidget> {
+ 
   @override
   Widget build(BuildContext context) {
-    Logger().i("dd");
     return Column(
       children: [
         Row(
@@ -62,6 +62,7 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                     border: Border.all(
                         color: Theme.of(context).textTheme.bodyText1.color)),
                 child: IncrementDecrementwidget(
+                 
                   onValueChange: (String value) {
                     widget.onRuntimeValueChanged(value);
                   },
@@ -84,6 +85,7 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                   border: Border.all(
                       color: Theme.of(context).textTheme.bodyText1.color)),
               child: IncrementDecrementwidget(
+              
                 onValueChange: (String value) {
                   widget.onIdleValueChanged(value);
                 },

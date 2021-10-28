@@ -4,6 +4,7 @@ import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
+import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
@@ -667,12 +668,16 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
-   @GET('{url}')
+  @GET('{url}')
   Future<DashboardResult> getSubscriptionDashboardResults(
     @Path() String url,
+    // @Header("Authorization") String authorization
   );
-
-  // @Header("Authorization") String authorization
+  @PUT('{url}')
+  Future<AddSettings> getassetSettingsFuelBurnRateData(
+      @Path() String url,
+      @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()
