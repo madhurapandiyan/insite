@@ -1,13 +1,17 @@
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
-
   static String unifiedServiceBaseUrl =
       "https://unifiedservice.myvisionlink.com";
 
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
-  static String unifiedFleetV4BaseUrl = "https://d1pavvpktln7z7.cloudfront.net";
-  static String unifiedFleetV4IdTokenUrl = "https://id.trimble.com";
+  static String idTokenBaseUrl = "https://id.trimble.com";
+  static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
+
+  static String idTokenKey =
+      "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
+  static String idTokenKeyStaging =
+      "Basic N2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4OjY3NjdkYTcxZDliMzQ1YzM4ODZhZWExMmE4ZjNmNmZl";
 
   static String unifiedFleetloginUrlTataHitachi =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
@@ -41,48 +45,49 @@ class Urls {
   static String unifiedFleetV4LoginUrl =
       "https://id.trimble.com/oauth/authorize?response_type=code" +
           "&client_id=$indiaStackClientId&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
-          "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
+          "&redirect_uri=$tataHitachiRedirectUri&scope=openid InsiteFleet-2.0" +
           "&code_challenge=sbJmXLvS3LhVV88tdkRx1HDXhLazEfUH3jhDsMyMRSw&code_challenge_method=S256" +
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
-        "&client_id=a2f1b5a5-5b42-4488-9c19-555944c54578&state=$state" +
+        "&client_id=$indiaStackClientId&state=$state" +
+        "&redirect_uri=$tataHitachiRedirectUri&scope=openid InsiteFleet-2.0" +
+        "&code_challenge=$codeChallenge&code_challenge_method=S256" +
+        "&nonce=$state&navigationRedirectUri=/";
+    return url;
+  }
+
+  static getV4AdminLoginUrl(state, codeChallenge) {
+    String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
+        "&client_id=$indiaStackAdminmoduleAppClientId&state=$state" +
         "&redirect_uri=$localRedirectUri&scope=openid InsiteFleet-2.0" +
         "&code_challenge=$codeChallenge&code_challenge_method=S256" +
         "&nonce=$state&navigationRedirectUri=/";
     return url;
   }
 
-  static getV4LoginUrl1(state, codeChallenge) {
-    String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
-        "&client_id=$indiaStackUsermoduleAppClientId&state=$state" +
-        "&redirect_uri=$webRedirectUri&scope=openid InsiteFleet-2.0" +
-        "&code_challenge=$codeChallenge&code_challenge_method=S256" +
-        "&nonce=$state&navigationRedirectUri=/";
-    return url;
-  }
-
   static String mobileRedirectUri = "insite://mobile";
-  static String webRedirectUri = "https://d1pavvpktln7z7.cloudfront.net/auth";
-  static String localRedirectUri = "http://localhost:4200/auth";
-  static String localHost = "http://localhost:4200";
-  static String localHostAuth = "http://localhost:4200/auth";
-  static String indiaStackUsermoduleAppClientId =
+
+  // static String tataHitachiRedirectUri =
+  // "https://d1pavvpktln7z7.cloudfront.net/auth";
+  // static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
+  // static String tataHitachiApplicationName = "InsiteFleet-2.0";
+
+  static String tataHitachiRedirectUri =
+      "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
+  static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+  static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
+
+  static String indiaStackAdminmoduleAppClientId =
       "a2f1b5a5-5b42-4488-9c19-555944c54578";
-  static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
+  static String localRedirectUri = "http://localhost:4200/auth";
 
-  static String tenantDomai = "Trimble.com";
-  
+  static String tenantDomain = "Trimble.com";
+
   static getV4LogoutUrl(String token, redirecturi) {
-    String url = Urls.unifiedFleetV4IdTokenUrl +
+    String url = Urls.idTokenBaseUrl +
         "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
-    return url;
-  }
-
-  static getV4LogoutUrl1(String token, redirecturi) {
-    String url = Urls.unifiedFleetV4IdTokenUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$localRedirectUri";
     return url;
   }
 
@@ -101,6 +106,7 @@ class Urls {
   static String logoutURLV4 =
       "https://id.trimble.com/oauth/logout?id_token_hint=actual_token&post_logout_redirect_uri=insite://mobile";
 
+  // visionlink api urls
   static String fleetSummaryVL =
       "https://unifiedfleet.myvisionlink.com/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/FleetSummary/v2";
   static String assetSummaryVL =
@@ -137,7 +143,6 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/FaultCount/v1";
   static String searchVL =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Search/v1";
-
   static String adminManagerUserSumaryVL =
       "/t/trimble.com/vss-identityapi/2.0/Users";
   static String applicationsUrlVL =
@@ -147,46 +152,72 @@ class Urls {
       "/t/trimble.com/vss-applicationapi/v1/applications";
   static String adminManagerUserSumary =
       "/npulse-identitymanager-in/1.0/2.0/Users";
-  static String adminRolesVL =
-      "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
-  static String adminRoles =
-      "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
+  static String adminRolesVL = "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
+  static String assetSettingsVL="/t/trimble.com/vss-assetsettings/1.0/assetsettings";
 
-  static String fleetSummary = "/npulse-fleet-in/1.0/api/v2/FleetSummary";
-  static String assetSummary = "/npulse-utilization-in/1.0/AssetOperation";
-  static String utlizationSummary =
-      "/npulse-fleet-in/1.0/UnifiedFleet/Utilization";
+  // india stack api urls
+  static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
+  static String assetSummary = "$utilization/1.0/AssetOperation";
+  static String utlizationSummary = "$fleet/1.0/UnifiedFleet/Utilization";
   static String utilizationSummaryV1 =
-      "/npulse-fleet-in/1.0/UnifiedFleet/Utilization/Summary/v1";
+      "$fleet/1.0/UnifiedFleet/Utilization/Summary/v1";
   static String utilizationDetails =
-      "/npulse-utilization-in/1.0/api/v1/Utilization/Details";
+      "$utilization/1.0/api/v1/Utilization/Details";
   static String utilizationAggregate =
-      "/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate";
+      "$utilization/1.0/api/v1/Utilization/Details/Aggregate";
   static String assetoperationsegments =
-      "/npulse-utilization-in/1.0/assetoperationsegments";
-  static String locationSummary = "/npulse-fleet-in/1.0/location/maps/v1";
-  static String locationHistory =
-      "/npulse-vassethistory-in/1.0/AssetLocationHistory/";
-  static String assetCountSummary =
-      "/npulse-fleet-in/1.0/UnifiedFleet/AssetCount/v1";
+      "$utilization/1.0/assetoperationsegments";
+  static String locationSummary = "$locationMap/1.0/location/maps/v1";
+  static String locationHistory = "$assetHistory/1.0/AssetLocationHistory/";
+  static String assetCountSummary = "$fleet/1.0/UnifiedFleet/AssetCount/v1";
   static String assetCountSubscriptionSummary =
-      "/npulse-fleet-in/1.0/UnifiedFleet/AssetCount/Subscription/v1";
-  static String faultViewSummary =
-      "/npulse-unifiedservice-in/1.0/health/Faults/Search";
-  static String assetViewSummary =
-      "/npulse-unifiedservice-in/1.0/health/Assets/FaultTotals";
-  static String assetHealthSummary =
-      "/npulse-unifiedservice-in/1.0/health/Assets";
-  static String assetViewDetailSummaryV1 =
-      "/npulse-unifiedservice-in/1.0/health/FaultDetails/v1";
-  static String faultCountSummary =
-      "/npulse-unifiedservice-in/1.0/health/FaultCount/v1";
-  static String accounthierarchy =
-      "/npulse-masterdataapi-in/1.0/v1/accounthierarchy";
-  static String assetDetails = "/npulse-fleet-in/1.0/api/v1/AssetDetails";
-  static String notes = "/npulse-fleetassetmeta-in/1.0/AssetMetadata/Notes/v1";
-  static String search = "/npulse-fleet-in/1.0/api/v1/Search";
+      "$fleet/1.0/UnifiedFleet/AssetCount/Subscription/v1";
+  static String faultViewSummary = "$health/1.0/health/Faults/Search";
+  static String assetViewSummary = "$health/1.0/health/Assets/FaultTotals";
+  static String assetHealthSummary = "$health/1.0/health/Assets";
+  static String assetViewDetailSummaryV1 = "$health/1.0/health/FaultDetails/v1";
+  static String faultCountSummary = "$health/1.0/health/FaultCount/v1";
+  static String accounthierarchy = "$accountSelection/1.0/v1/accounthierarchy";
+  static String assetDetails = "$fleet/1.0/api/v1/AssetDetails";
+  static String notes = "$assetMataData/1.0/AssetMetadata/Notes/v1";
+  static String search = "$fleet/1.0/api/v1/Search";
+  static String fuelBurnedCumulative =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives";
+  static String runTimeCumulative =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives";
+  static String runTimeTotalHours =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives/intervals";
+  static String fuelBurnedTotalHours =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives/intervals";
+  static String idlePercent =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/idlepercent";
+  static String fuelPercent =
+      "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate";
+  static String faultSummary = "$health/1.0/health/faultSummary/v1";
 
+  //application url constants
+  static String accountSelection = "/frame-masterdata";
+  static String fleet = "/frame-fleet";
+  static String utilization = "/frame-utilization";
+  static String assetHistory = "/frame-assethistory";
+  static String health = "/frame-fault";
+  static String locationMap = "/frame-fleet-map";
+  static String assetMataData = "/frame-assetmetadata";
+
+  // static String accountSelection = "/npulse-masterdataapi-in";
+  // static String fleet = "/npulse-fleet-in";
+  // static String utilization = "/npulse-utilization-in";
+  // static String assetHistory = "/npulse-vassethistory-in";
+  // static String health = "/npulse-unifiedservice-in";
+  // static String locationMap = "/npulse-fleet-in";
+  // static String assetMataData = "/npulse-fleetassetmeta-in";
+
+  //application name space constants
+  static String nameSpace = "/osg-in";
+
+  // static String nameSpace = "/CTSPulseIndiastg";
+
+  // india stack api service header strings
   static String vMasterdata = "in-vlmasterdata-api-vlmd-customer";
   static String vfleetPrefix = "in-vfleet-uf-webapi";
   static String vutilizationPrefix = "in-vutilization-utz-webapi";
@@ -194,4 +225,7 @@ class Urls {
   static String faultPrefix = "in-fault-us-fault-api";
   static String fleetMapPrefix = "in-vassethistory-ah-webapi";
   static String assetprefix = "in-vassetmetadata-am-webapi";
+
+  //subscription
+  static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
 }

@@ -117,67 +117,60 @@ class ManageUserCardWidget extends StatelessWidget {
                 ],
               ),
               Table(
-                 border: TableBorder(
+                border: TableBorder(
                   verticalInside: BorderSide(color: borderLineColor, width: 2),
                   left: BorderSide(color: borderLineColor, width: 2),
                   bottom: BorderSide(color: borderLineColor, width: 2),
                 ),
-                
                 children: [
-                  TableRow(
-                    children: [
-                      InsiteTableRowItem(
-                        title: "Last Login :",
-                        content: "01/06/21   14:52",
-                      ),
-                      InsiteTableRowItem(
-                        title: "VL Administrartor :",
-                        content: "Administrartor",
-                      )
-                    ]
-                  )
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: "Last Login :",
+                      content: "01/06/21   14:52",
+                    ),
+                    InsiteTableRowItem(
+                      title: "VL Administrartor :",
+                      content: "Administrartor",
+                    )
+                  ])
                 ],
               ),
               Table(
-                 border: TableBorder(
+                border: TableBorder(
                   verticalInside: BorderSide(color: borderLineColor, width: 2),
                   left: BorderSide(color: borderLineColor, width: 2),
                   bottom: BorderSide(color: borderLineColor, width: 2),
                 ),
                 children: [
-                  TableRow(
-                    children: [
-                      InsiteTableRowItem(
-                        title: "VL Unified Fleet :",
-                        content: "Administrartor",
-                      ),
-                      InsiteTableRowItem(
-                        title: "VL Unified Service :",
-                        content: "Administrartor",
-                      )
-                    ]
-                  )
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: "VL Unified Fleet :",
+                      content: "Administrartor",
+                    ),
+                    InsiteTableRowItem(
+                      title: "VL Unified Service :",
+                      content: "Administrartor",
+                    )
+                  ])
                 ],
               ),
               Table(
-                 border: TableBorder(
+                border: TableBorder(
                   verticalInside: BorderSide(color: borderLineColor, width: 2),
                   left: BorderSide(color: borderLineColor, width: 2),
                   bottom: BorderSide(color: borderLineColor, width: 2),
                 ),
                 children: [
-                  TableRow(
-                    children: [
-                      InsiteTableRowItem(
-                        title: "Unified API :",
-                        content: "-",
-                      ),
-                      InsiteTableRowItem(
-                        title: "VL 3D Productivity Manage :",
-                        content: "-",
-                      )
-                    ]
-                  )
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: "Unified API :",
+                      content: "-",
+                    ),
+                    InsiteTableRowItem(
+                      title: "VL 3D Productivity Manage :",
+                      content: "-",
+                    )
+                  ])
                 ],
               )
             ],

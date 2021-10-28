@@ -3,19 +3,18 @@ import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_bo
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
+import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/material_dropdown.dart/material_selection.dart';
+import 'package:insite/views/adminstration/addgeofense/addgeofense_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class Formfieldwidget extends StatefulWidget {
   //Formfieldwidget({Key? key}) : super(key: key);
-  final List<String> listitems;
-  final String changedvalue;
-  final bool isclicked;
-  final bool isclick;
-  final Function checkboxstate;
-  Formfieldwidget(this.listitems, this.changedvalue, this.isclicked,
-      this.isclick, this.checkboxstate);
+  final AddgeofenseViewModel model;
+
+  Formfieldwidget(this.model);
 
   @override
   _FormfieldwidgetState createState() => _FormfieldwidgetState();
@@ -24,9 +23,15 @@ class Formfieldwidget extends StatefulWidget {
 class _FormfieldwidgetState extends State<Formfieldwidget> {
   String initialvalue = "Generic";
   DateTime date;
+  DateTime backfilldate;
   var key = GlobalKey<FormState>();
   var titlecontroller = TextEditingController();
   var descriptioncontroller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    widget.model.getmaterialdata();
+  }
 
   void datepicker() {
     showDatePicker(
@@ -37,10 +42,17 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
         .then((value) {
       if (value == null) {
         return;
+      } else if (initialvalue == widget.model.dropDownlist[2] ||
+          initialvalue == widget.model.dropDownlist[3] ||
+          initialvalue == widget.model.dropDownlist[4] ||
+          initialvalue == widget.model.dropDownlist[5] ||
+          initialvalue == widget.model.dropDownlist[6]) {
+        Logger().e("223");
+        setState(() {
+          backfilldate = value;
+          date = value;
+        });
       }
-      setState(() {
-        date = value;
-      });
     });
   }
 
@@ -103,15 +115,26 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(width: 1, color: Colors.white)),
             child: CustomDropDownWidget(
-              items: widget.listitems,
+              items: widget.model.dropDownlist,
               onChanged: (String value) {
                 setState(() {
-                  initialvalue=value;
+                  initialvalue = value;
                 });
+                widget.model.getmaterialdata();
               },
               value: initialvalue,
             ),
           ),
+          if (initialvalue == widget.model.dropDownlist[2] ||
+              initialvalue == widget.model.dropDownlist[3] ||
+              initialvalue == widget.model.dropDownlist[4] ||
+              initialvalue == widget.model.dropDownlist[5] ||
+              initialvalue == widget.model.dropDownlist[6])
+            MaterialSelction(widget.model, datepicker, backfilldate)
+          else
+            SizedBox(
+              height: 10,
+            ),
           Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 10),
             child: InsiteText(
@@ -149,7 +172,7 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
             ),
           ),
           InkWell(
-            onTap: widget.checkboxstate,
+            onTap: widget.model.changecheckboxstate,
             splashColor: Theme.of(context).backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -159,13 +182,13 @@ class _FormfieldwidgetState extends State<Formfieldwidget> {
                   padding: const EdgeInsets.only(top: 20),
                   child: Container(
                       decoration: BoxDecoration(
-                          color: widget.isclicked
+                          color: widget.model.setDefaultPreferenceToUser
                               ? Theme.of(context).buttonColor
                               : Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Icon(
                         Icons.crop_square,
-                        color: widget.isclick
+                        color: widget.model.allowAccessToSecurity
                             ? Theme.of(context).buttonColor
                             : Colors.black,
                       )),

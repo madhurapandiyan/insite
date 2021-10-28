@@ -7,6 +7,7 @@ import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -14,14 +15,12 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
-import 'package:insite/core/models/geofencemodel.dart';
-import 'package:insite/core/models/geofencepayload.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
-import 'package:insite/core/models/materialmodel.dart';
+
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/role_data.dart';
@@ -36,9 +35,15 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
+import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
+import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:insite/core/models/subscription_dashboard.dart';
 part 'Retrofit.g.dart';
 
 // RUN THIS TO GENERATE FILES
@@ -62,9 +67,17 @@ part 'Retrofit.g.dart';
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+  // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
+
+  @POST(
+      "/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithconfigs/asgeofence")
+  Future<dynamic> postgeofencepayload2(
+      @Header("authorization") String token,
+      @Header("x-visionlink-customeruid") String customerUID,
+      @Body() Addgeofencemodel geofencepayload);
 
   @GET("/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials")
   Future<Materialmodel> getmaterialmodel(@Header("authorization") String token,
@@ -347,11 +360,9 @@ abstract class RestClient {
   Future<SingleAssetOperation> singleAssetOperationVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives")
+  @POST('{url}')
   Future<RunTimeCumulative> runtimeCumulative(
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -362,11 +373,9 @@ abstract class RestClient {
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives")
+  @POST('{url}')
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -377,15 +386,9 @@ abstract class RestClient {
       @Query("enddatelocal") String endDate,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/hours/cumulatives/intervals")
+  @POST('{url}')
   Future<TotalHours> getTotalHours(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -400,15 +403,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST(
-      "/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburned/cumulatives/intervals")
+  @POST('{url}')
   Future<TotalFuelBurned> getTotalFuelBurned(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -423,14 +420,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST("/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/idlepercent")
+  @POST('{url}')
   Future<IdlePercentTrend> getIdlePercentTrend(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -445,14 +437,9 @@ abstract class RestClient {
       @Query("includepagination") bool includepagination,
       @Header("x-visionlink-customeruid") customerId);
 
-  @POST("/npulse-fleet-in/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate")
+  @POST('{url}')
   Future<FuelBurnRateTrend> getFuelBurnRateTrend(
-      @Query("interval") String interval,
-      @Query("startdatelocal") String startDate,
-      @Query("enddatelocal") String endDate,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("includepagination") bool includepagination,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -511,6 +498,11 @@ abstract class RestClient {
   Future<LoginResponse> getTokenV4(@Body() GetTokenData tokenData,
       @Header("content-type") String contentType);
 
+  @POST("/oauth/token?grant_type=client_credentials")
+  Future<LoginResponse> getTokenWithoutLogin(
+      @Header("Authorization") String authorization,
+      @Header("content-type") String contentType);
+
   @POST('{url}')
   Future<FaultSummaryResponse> faultViewSummaryURL(
       @Path() String url,
@@ -556,14 +548,9 @@ abstract class RestClient {
       @Query("assetUid") String assetUid,
       @Header("X-VisionLink-CustomerUid") customerId);
 
-  @GET("/npulse-unifiedservice-in/1.0/health/FaultDetails/v1")
+  @GET('{url}')
   Future<HealthListResponse> getHealthListData(
-      @Query("assetUid") String assetUid,
-      @Query("endDateTime") String endDateTime,
-      @Query("langDesc") String langDesc,
-      @Query("limit") int limit,
-      @Query("page") int page,
-      @Query("startDateTime") String startDateTime,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -578,11 +565,9 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
-  @GET("/npulse-unifiedservice-in/1.0/health/faultSummary/v1")
+  @GET('{url}')
   Future<SingleAssetFaultResponse> getDashboardListData(
-      @Query("assetUid") String assetUid,
-      @Query("endDateTime") String endDate,
-      @Query("startDateTime") String startDate,
+      @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -703,6 +688,18 @@ abstract class RestClient {
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") String serviceHeader);
+
+  @GET('{url}')
+  Future<ManageAssetConfiguration> getAssetSettingsListData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+  @GET('{url}')
+  Future<DashboardResult> getSubscriptionDashboardResults(
+    @Path() String url,
+  );
+
+  // @Header("Authorization") String authorization
 }
 
 @JsonSerializable()

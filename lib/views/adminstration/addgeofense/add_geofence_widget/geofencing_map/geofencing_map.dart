@@ -23,22 +23,19 @@ class _GeofencingMapState extends State<GeofencingMap> {
   @override
   void initState() {
     super.initState();
-
-    centerposition = CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962),
-      zoom: widget.zoomlev,
-    );
+    centerposition = CameraPosition(target: LatLng(30.666, 76.8127));
   }
-
-  Set<Polygon> polygon = {};
-  Set<Polyline> polyline = {};
-  List<LatLng> list = [];
 
   @override
   Widget build(BuildContext context) {
     Logger().e(widget.zoomlev);
     return GoogleMaps(
       controller: GoogleMapsController(
+        // onMapCreated: (controller) {
+        //   widget.model.customInfoWindowController.googleMapController =
+        //       controller;
+        //   widget.model.contro.complete(controller);
+        // },
         zoomControlsEnabled: false,
         zoomGesturesEnabled: true,
         mapType: widget.initialvalue == widget.model.maptype[0]

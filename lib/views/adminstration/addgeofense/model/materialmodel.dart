@@ -14,7 +14,7 @@ class Materialmodel {
 class Material {
   final String materialUid;
   final String name;
-  final String density;
+  final double density;
   Material({this.materialUid, this.name, this.density});
   factory Material.fromJson(Map<String, dynamic> json) =>
       _$MaterialFromJson(json);

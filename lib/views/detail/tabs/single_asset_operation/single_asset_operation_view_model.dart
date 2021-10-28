@@ -5,6 +5,7 @@ import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -36,11 +37,29 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
   SingleAssetOperation _singleAssetOperation;
   SingleAssetOperation get singleAssetOperation => _singleAssetOperation;
 
+  List<DateTime> days = [];
+
+  updateDateRangeList() {
+    try {
+      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate);
+      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate);
+      final daysToGenerate = endTime.difference(startTime).inDays + 1;
+      days = List.generate(
+          daysToGenerate,
+          (i) =>
+              DateTime(startTime.year, startTime.month, startTime.day + (i)));
+      Logger().d("date range length ${days.length}");
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   SingleAssetOperationViewModel(AssetDetail detail) {
     this._assetDetail = detail;
     setUp();
     this.log = getLogger(this.runtimeType.toString());
     _singleAssetOperationService.setUp();
+    updateDateRangeList();
     Future.delayed(Duration(seconds: 1), () {
       getSingleAssetOperation();
     });
@@ -61,6 +80,7 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
 
   refresh() async {
     await getDateRangeFilterData();
+    updateDateRangeList();
     _refreshing = true;
     notifyListeners();
     Logger().d("single asset operation " + _assetDetail.assetUid);

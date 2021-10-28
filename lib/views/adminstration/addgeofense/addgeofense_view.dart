@@ -74,7 +74,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
         istap = viewModel.isdrawingpolygon;
         Logger().e(istap);
         return InsiteScaffold(
-          onFilterApplied: () {},
           viewModel: viewModel,
           body: SingleChildScrollView(
             child: Column(
@@ -90,6 +89,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                         size: 20,
                       ),
                       InsiteButton(
+                        onTap: () {
+                          viewModel.dummytestfunction();
+                        },
                         title: "MANAGE GEOFENCE",
                         height: mediaquerry.size.height * 0.05,
                         width: mediaquerry.size.width * 0.4,
@@ -98,7 +100,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                   ),
                 ),
                 Container(
-                  height: mediaquerry.size.height * 0.55,
+                 // height: mediaquerry.size.height * 0.55,
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
@@ -109,7 +111,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                     alignment: Alignment.topRight,
                     children: [
                       Container(
-                        height: mediaquerry.size.height * 0.6,
+                        //height: mediaquerry.size.height * 0.6,
                         margin:
                             EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                         decoration: BoxDecoration(
@@ -128,8 +130,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               children: [
                                 InkWell(
                                     onTap: () {
+                                      viewModel.zoomval++;
                                       setState(() {
-                                        viewModel.onzooming();
+                                        viewModel.onzoomout();
                                       });
                                     },
                                     child: tapbutton(Icons.add, tuna)),
@@ -204,6 +207,12 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             FlatButton.icon(
                                                                 onPressed: () {
                                                                   setState(() {
+                                                                    viewModel
+                                                                        .listoflatlang
+                                                                        .clear();
+                                                                    viewModel
+                                                                        .listofnumber
+                                                                        .clear();
                                                                     viewModel
                                                                         .polygon
                                                                         .clear();
@@ -287,12 +296,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Formfieldwidget(
-                      viewModel.dropDownlist,
-                      viewModel.value,
-                      viewModel.setDefaultPreferenceToUser,
-                      viewModel.allowAccessToSecurity,
-                      viewModel.changecheckboxstate),
+                  child: Formfieldwidget(viewModel),
                 )
               ],
             ),

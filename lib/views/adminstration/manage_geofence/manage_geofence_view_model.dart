@@ -2,14 +2,14 @@ import 'dart:ffi';
 
 import 'package:geocore/geocore.dart' as geo;
 import 'package:geocore/geocore.dart' as g;
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/models/geofencemodel.dart';
+
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
 import 'package:insite/core/logger.dart';

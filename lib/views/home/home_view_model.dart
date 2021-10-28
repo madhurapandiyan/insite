@@ -10,6 +10,7 @@ import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/location/location_view.dart';
+import 'package:insite/views/subscription/subscription_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -25,6 +26,7 @@ class HomeViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     Future.delayed(Duration(seconds: 1), () {
       // checkPermission();
+      // _loginService.getTokenWithoutLogin();
     });
   }
 
@@ -49,6 +51,9 @@ class HomeViewModel extends InsiteViewModel {
           transition: "fade");
     } else if (type == ScreenType.ADMINISTRATION) {
       _navigationService.navigateWithTransition(AdminstrationView(),
+          transition: "fade");
+    } else if (type == ScreenType.SUBSCRIPTION) {
+      _navigationService.navigateWithTransition(SubscriptionView(),
           transition: "fade");
     }
   }

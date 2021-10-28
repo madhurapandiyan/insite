@@ -38,6 +38,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     AssetCardsSmall(
                         headerText: "users",
                         icon: "assets/images/users.svg",
+                        height: 10,
                         buttonTitle: [
                           AdminAssetsButtonType.values[0],
                           AdminAssetsButtonType.values[1],
@@ -48,6 +49,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     AssetCardsSmall(
                         headerText: "groups",
                         icon: "assets/images/gear_icon.svg",
+                        height: 10,
                         buttonTitle: [
                           AdminAssetsButtonType.values[2],
                           AdminAssetsButtonType.values[3]
@@ -63,7 +65,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 AssetSettingWidget(
                   headerText: "asset settings",
                   onButtonClicked: () {
-                    print("button is tapped");
+                   viewModel.onAssetSettingStateButtonClicked();
                   },
                 ),
                 SizedBox(
@@ -89,6 +91,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                             AdminAssetsButtonType.values[6],
                             AdminAssetsButtonType.values[7]
                           ],
+                          height: 10,
                           onCallbackSelected: (value) {
                             viewModel.onRespectiveButtonClicked(value);
                           })

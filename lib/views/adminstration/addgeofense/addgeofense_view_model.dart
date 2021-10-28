@@ -1,23 +1,30 @@
+import 'dart:async';
+
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocore/geo.dart' as geo;
-import 'package:geocore/parse_wkt.dart' as k;
+
 import 'package:geocore/base.dart' as geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+
+import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AddgeofenseViewModel extends InsiteViewModel {
   Logger log;
   final _localService = locator<LocalService>();
+  final _geofenceservice = locator<Geofenceservice>();
 
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
-  double zoomval = 10;
+  double zoomval = 5;
   Set<Circle> _circle = {};
   Set<Circle> get circle => _circle;
   Set<Polygon> _polygon = {};
@@ -32,17 +39,29 @@ class AddgeofenseViewModel extends InsiteViewModel {
   bool get allowAccessToSecurity => _allowAccessToSecurity;
   String value = "Administrator";
   Color color = tango;
+  Materialmodel _materialdata;
+  Materialmodel get materialdata => _materialdata;
+  List<List<num>> listofnumber = [];
   List<String> dropDownlist = [
     "Generic",
     "Avoidance Zone",
     "Cut",
-    "Borrow Pit"
-        "Stockpile",
-    "Fill"
+    "Borrow Pit",
+    "Stockpile",
+    "Fill",
+    "Waste",
+    "Landfill"
   ];
   List<String> maptype = ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID'];
-  onzooming() {
-    zoomval++;
+  CustomInfoWindowController customInfoWindowController =
+      CustomInfoWindowController();
+  Completer<GoogleMapController> contro = Completer();
+  Future<void> _plus(
+    double zoomVal,
+  ) async {
+    final GoogleMapController controller = await contro.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: listoflatlang.last, zoom: zoomVal)));
   }
 
   onzoomout() {
@@ -61,6 +80,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     Circle usercircle;
 
     _listoflatlang.add(userLatlang);
+
     userpolyline = Polyline(
       jointType: JointType.round,
       endCap: Cap.roundCap,
@@ -93,10 +113,29 @@ class AddgeofenseViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getmaterialdata() async {
+    Logger().e("jdhgbvdxkjchn;oxdihg;zdh;gsozihgxchig;sxid");
+    try {
+      _materialdata = await _geofenceservice.getmaterialmodeldata();
+      Logger().d(materialdata);
+      Logger().d(_materialdata);
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   changecheckboxstate() {
     setDefaultPreferenceToUser = !setDefaultPreferenceToUser;
     Logger().e(setDefaultPreferenceToUser);
     notifyListeners();
+  }
+
+  filteronchange(String value) {
+    materialdata.materials.forEach((element) {
+      element.name.contains(value);
+      materialdata.materials.clear();
+      materialdata.materials.add(element);
+    });
   }
 
   selectedpolyline(LatLng latlongdata) async {
@@ -133,6 +172,15 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Set<Polyline> _polyLines = {};
   Set<Polyline> get polylines => _polyLines;
 
+  makinglistofnumber() {
+    Logger().e(listoflatlang.length);
+    for (var i = 0; i < listoflatlang.length; i++) {
+      var json = listoflatlang[i].toJson();
+      listofnumber.add(json);
+      //Logger().d(listofnumber);
+    }
+  }
+
   dummytestfunction() {
     List<List<num>> testing = [
       [-15.201858478545118, 11.378635521993544],
@@ -141,27 +189,29 @@ class AddgeofenseViewModel extends InsiteViewModel {
       [-21.223567549999974, -1.320369840698433],
       [-15.201858478545118, 11.378635521993544]
     ];
+    makinglistofnumber();
 
+    //Logger().d(listofnumber);
     var dummy;
     List<geo.Point2> listofpoint2 = [];
     geo.PointSeries mappiy;
     geo.LineString<geo.Point<num>> anotherdummy;
     List<geo.LineString<geo.Point<num>>> value = [];
-    for (var i = 0; i < testing.length; i++) {
-      geo.Point2 point = geo.Point2.geometry.newFrom(testing[i]);
+    for (var i = 0; i < listofnumber.length; i++) {
+      geo.Point2 point = geo.Point2.geometry.newFrom(listofnumber[i]);
       listofpoint2.add(point);
     }
-    mappiy = geo.PointSeries.make(testing, geo.Point2.geometry);
+    mappiy = geo.PointSeries.make(listofnumber, geo.Point2.geometry);
     anotherdummy = geo.LineString(mappiy);
     value.add(anotherdummy);
     String fina = "POLYGON((${anotherdummy.toString()}))";
 
     if (fina.contains("((LineString<Point<num>>([Point2(")) {
       String test1 = fina.replaceAll("((LineString<Point<num>>([Point2(", "((");
-      Logger().d(test1);
+      //Logger().d(test1);
       if (test1.contains("), Point2(")) {
         String test2 = test1.replaceAll("), Point2(", ",");
-        Logger().e(test2);
+        //Logger().e(test2);
         if (test2.contains(", ")) {
           String test3 = test2.replaceAll(", ", " ");
           if (test3.contains(")])")) {

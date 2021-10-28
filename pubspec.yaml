@@ -130,6 +130,12 @@ flutter:
     - assets/images/trimble.svg
     - assets/images/delete.svg
     - assets/custom.geo.json
+    - assets/images/dashboard.svg
+    - assets/images/path0.svg
+    - assets/images/flet.svg
+    - assets/images/sms.svg
+    - assets/images/export.svg
+    - assets/images/transfer.svg
 
   fonts:
     - family: Roboto

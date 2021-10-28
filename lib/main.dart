@@ -27,6 +27,8 @@ void main() async {
       baseUrl: "https://unifiedfleet.myvisionlink.com",
       apiFlavor: "visionlink",
       productFlavor: "unifiedFleet",
+      enableLogin: true,
+      isProd: false,
       iconPath: "assets/images/hitachi.png");
 
   await LocatorInjector.setUpLocator();

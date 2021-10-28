@@ -275,25 +275,45 @@ class FaultService extends BaseService {
   }
 
   Future<HealthListResponse> getHealthListData(
-      String assetUID, endDate, limit, page, startDate) async {
+      String assetUid, endDateTime, limit, page, startDateTime) async {
     try {
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             await MyApi().getClient().getHealthListDataVL(
-                  assetUID,
-                  endDate,
+                  assetUid,
+                  endDateTime,
                   'en-US',
                   limit,
                   page,
-                  startDate,
+                  startDateTime,
                   accountSelected.CustomerUID,
                 );
         return healthListResponse;
       } else {
+        Map<String, String> queryMap = Map();
+        if (assetUid != null) {
+          queryMap["assetUid"] = assetUid;
+        }
+        if (startDateTime != null) {
+          queryMap["startDateTime"] = startDateTime;
+        }
+        if (endDateTime != null) {
+          queryMap["endDateTime"] = endDateTime;
+        }
+        if (page != null) {
+          queryMap["page"] = page.toString();
+        }
+        if (limit != null) {
+          queryMap["limit"] = limit.toString();
+        }
+        queryMap["langDesc"] = 'en-US';
         HealthListResponse healthListResponse = await MyApi()
             .getClient()
-            .getHealthListData(assetUID, endDate, 'en-US', limit, page,
-                startDate, accountSelected.CustomerUID, Urls.faultPrefix);
+            .getHealthListData(
+                Urls.assetViewDetailSummaryV1 +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected.CustomerUID,
+                Urls.faultPrefix);
         return healthListResponse;
       }
     } catch (e) {
@@ -384,20 +404,30 @@ class FaultService extends BaseService {
 
   Future<SingleAssetFaultResponse> getDashboardListData(
     assetUid,
-    endDate,
-    startDate,
+    endDateTime,
+    startDateTime,
   ) async {
     try {
       if (isVisionLink) {
         SingleAssetFaultResponse assetCountResponse = await MyApi()
             .getClient()
             .getDashboardListDataVL(
-                assetUid, endDate, startDate, accountSelected.CustomerUID);
+                assetUid, endDateTime, startDateTime, accountSelected.CustomerUID);
         return assetCountResponse;
       } else {
+        Map<String, String> queryMap = Map();
+        if (assetUid != null) {
+          queryMap["assetUid"] = assetUid;
+        }
+        if (startDateTime != null) {
+          queryMap["startDateTime"] = startDateTime;
+        }
+        if (endDateTime != null) {
+          queryMap["endDateTime"] = endDateTime;
+        }
         SingleAssetFaultResponse assetCountResponse = await MyApi()
             .getClient()
-            .getDashboardListData(assetUid, endDate, startDate,
+            .getDashboardListData(Urls.faultSummary+FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID, Urls.faultPrefix);
         return assetCountResponse;
       }

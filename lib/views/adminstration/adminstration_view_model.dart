@@ -4,6 +4,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart';
+import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart';
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 
 import 'package:logger/logger.dart';
@@ -38,5 +39,10 @@ class AdminstrationViewModel extends InsiteViewModel {
       _navigationService.navigateWithTransition(ManageGeofenceView(),
           transition: "fade");
     }
+  }
+
+  onAssetSettingStateButtonClicked() {
+    _navigationService.navigateWithTransition(AssetSettingsView(),
+    transition: "fade");
   }
 }

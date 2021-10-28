@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:insite/theme/colors.dart';
+
+class IncrementDecrementwidget extends StatefulWidget {
+  final Function(String) onValueChange;
+  final String countValue;
+
+  const IncrementDecrementwidget({this.onValueChange, this.countValue});
+
+  @override
+  _IncrementDecrementwidgetState createState() =>
+      _IncrementDecrementwidgetState();
+}
+
+class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
+  TextEditingController fullWeekValue = new TextEditingController();
+
+  @override
+  void didUpdateWidget(covariant IncrementDecrementwidget oldWidget) {
+    fullWeekValue.text = widget.countValue;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    fullWeekValue.clear();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.all(8.0),
+            ),
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.w700, color: textcolor),
+            controller: fullWeekValue,
+            keyboardType: TextInputType.numberWithOptions(
+              decimal: false,
+              signed: true,
+            ),
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                  child: Icon(
+                    Icons.arrow_drop_up,
+                    size: 18.0,
+                  ),
+                  onTap: () {
+                    getIncrementValue();
+                  }),
+              InkWell(
+                  child: Icon(
+                    Icons.arrow_drop_down,
+                    size: 18.0,
+                  ),
+                  onTap: () {
+                    getDecrementValue();
+                  }),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  void getIncrementValue() {
+    int currentValue = int.parse(fullWeekValue.text);
+    currentValue++;
+
+    setState(() {
+      fullWeekValue.text = (currentValue).toString();
+      widget.onValueChange(fullWeekValue.text);
+    });
+  }
+
+  void getDecrementValue() {
+    int currentValue = int.parse(fullWeekValue.text);
+    currentValue--;
+
+    setState(() {
+      fullWeekValue.text = (currentValue > 0 ? currentValue : 0).toString();
+      widget.onValueChange(fullWeekValue.text);
+    });
+  }
+}

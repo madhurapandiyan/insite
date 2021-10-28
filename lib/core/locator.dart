@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -17,6 +16,7 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
+import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,5 +75,7 @@ class LocatorInjector {
     log.d("Registering GEOFENCESERVICE");
     locator.registerLazySingleton(() => Geofenceservice());
     
+    log.d(" Registering SubscriptionService");
+    locator.registerLazySingleton(() => SubScriptionService());
   }
 }

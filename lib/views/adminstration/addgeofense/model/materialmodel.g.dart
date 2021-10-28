@@ -24,7 +24,7 @@ Material _$MaterialFromJson(Map<String, dynamic> json) {
   return Material(
     materialUid: json['materialUid'] as String,
     name: json['name'] as String,
-    density: json['density'] as String,
+    density: (json['density'] as num)?.toDouble(),
   );
 }
 
