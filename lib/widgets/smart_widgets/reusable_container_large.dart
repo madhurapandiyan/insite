@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:insite/widgets/smart_widgets/reusable_dash_row.dart';
+import 'package:insite/widgets/smart_widgets/reusable_dashboard_row.dart';
 
 class DashBoardContainer extends StatefulWidget {
   DashBoardContainer(

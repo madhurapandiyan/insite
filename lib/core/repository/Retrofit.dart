@@ -668,11 +668,13 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
+
   @GET('{url}')
-  Future<DashboardResult> getSubscriptionDashboardResults(
+  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(
     @Path() String url,
     // @Header("Authorization") String authorization
   );
+
   @PUT('{url}')
   Future<AddSettings> getassetSettingsFuelBurnRateData(
       @Path() String url,

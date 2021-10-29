@@ -31,7 +31,7 @@ class LocatorInjector {
     log.d('Registering Navigation Service');
     locator.registerLazySingleton(() => NavigationService());
     log.d('Registering Dialog Service');
-    locator.registerLazySingleton(() => clearDialogService());
+    locator.registerLazySingleton(() => DialogService());
     log.d('Registering Snackbar Service');
     locator.registerLazySingleton(() => SnackbarService());
     log.d('Registering shared preferences  Service');

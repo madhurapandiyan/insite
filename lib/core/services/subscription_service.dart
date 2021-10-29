@@ -31,15 +31,14 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<DashboardResult> getResultsFromSubscriptionApi() async {
-    print('vvvvvvvvvvvvvvvvvvvvvvvvv');
+  Future<SubscriptionDashboardResult> getResultsFromSubscriptionApi() async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
 
-      DashboardResult dashboardResult =
+      SubscriptionDashboardResult dashboardResult =
           await MyApi().getClientEight().getSubscriptionDashboardResults(
                 Urls.subscriptionResults +
                     FilterUtils.constructQueryFromMap(queryMap),

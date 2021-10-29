@@ -9,14 +9,14 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
-import 'single_asset_reg_view_model.dart';
+import 'single_asset_registration_view_model.dart';
 
-class SingleAssetRegView extends StatelessWidget {
+class SingleAssetRegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SingleAssetRegViewModel>.reactive(
-      builder:
-          (BuildContext context, SingleAssetRegViewModel viewModel, Widget _) {
+    return ViewModelBuilder<SingleAssetRegistrationViewModel>.reactive(
+      builder: (BuildContext context,
+          SingleAssetRegistrationViewModel viewModel, Widget _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
@@ -501,7 +501,7 @@ class SingleAssetRegView extends StatelessWidget {
               )),
         );
       },
-      viewModelBuilder: () => SingleAssetRegViewModel(),
+      viewModelBuilder: () => SingleAssetRegistrationViewModel(),
     );
   }
 }

@@ -5,14 +5,14 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
-import 'multiple_asset_reg_view_model.dart';
+import 'multiple_asset_registration_view_model.dart';
 
-class MultipleAssetRegView extends StatelessWidget {
+class MultipleAssetRegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<MultipleAssetRegViewModel>.reactive(
-      builder: (BuildContext context, MultipleAssetRegViewModel viewModel,
-          Widget _) {
+    return ViewModelBuilder<MultipleAssetRegistrationViewModel>.reactive(
+      builder: (BuildContext context,
+          MultipleAssetRegistrationViewModel viewModel, Widget _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
@@ -125,7 +125,7 @@ class MultipleAssetRegView extends StatelessWidget {
               )),
         );
       },
-      viewModelBuilder: () => MultipleAssetRegViewModel(),
+      viewModelBuilder: () => MultipleAssetRegistrationViewModel(),
     );
   }
 }

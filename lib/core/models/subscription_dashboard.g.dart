@@ -6,8 +6,9 @@ part of 'subscription_dashboard.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DashboardResult _$DashboardResultFromJson(Map<String, dynamic> json) {
-  return DashboardResult(
+SubscriptionDashboardResult _$SubscriptionDashboardResultFromJson(
+    Map<String, dynamic> json) {
+  return SubscriptionDashboardResult(
     result: (json['result'] as List)
         ?.map((e) => (e as List)
             ?.map((e) =>
@@ -17,7 +18,8 @@ DashboardResult _$DashboardResultFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DashboardResultToJson(DashboardResult instance) =>
+Map<String, dynamic> _$SubscriptionDashboardResultToJson(
+        SubscriptionDashboardResult instance) =>
     <String, dynamic>{
       'result': instance.result,
     };

@@ -4,21 +4,22 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/reusable_container_large.dart';
-import 'package:insite/widgets/smart_widgets/reusable_dash_row.dart';
+import 'package:insite/widgets/smart_widgets/reusable_dashboard_row.dart';
 import 'package:stacked/stacked.dart';
 import 'subscription_dashboard_view_model.dart';
 
-class View extends StatefulWidget {
+class SubscriptionDashboardView extends StatefulWidget {
   @override
-  _ViewState createState() => _ViewState();
+  _SubscriptionDashboardViewState createState() =>
+      _SubscriptionDashboardViewState();
 }
 
-class _ViewState extends State<View> {
+class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ViewDashboardViewModel>.reactive(
-      builder:
-          (BuildContext context, ViewDashboardViewModel viewModel, Widget _) {
+    return ViewModelBuilder<SubscriptionDashboardViewModel>.reactive(
+      builder: (BuildContext context, SubscriptionDashboardViewModel viewModel,
+          Widget _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
@@ -58,7 +59,7 @@ class _ViewState extends State<View> {
                               child: ListView.builder(
                                   itemCount: viewModel.names.length,
                                   itemBuilder: (context, index) {
-                                    return InsiteDashRow(
+                                    return InsiteTitleCountRow(
                                       name: viewModel.names[index],
                                       count: viewModel.results[index],
                                       filter: viewModel.names[index],
@@ -83,7 +84,7 @@ class _ViewState extends State<View> {
                               child: ListView.builder(
                                   itemCount: viewModel.modelNames.length,
                                   itemBuilder: (context, index) {
-                                    return InsiteDashRow(
+                                    return InsiteTitleCountRow(
                                       name: viewModel.modelNames[index],
                                       count: viewModel.modelCount[index]
                                           .toString(),
@@ -99,7 +100,7 @@ class _ViewState extends State<View> {
           ),
         );
       },
-      viewModelBuilder: () => ViewDashboardViewModel(),
+      viewModelBuilder: () => SubscriptionDashboardViewModel(),
     );
   }
 }

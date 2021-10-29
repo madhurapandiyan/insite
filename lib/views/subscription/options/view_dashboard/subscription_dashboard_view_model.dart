@@ -11,13 +11,13 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 
-class ViewDashboardViewModel extends InsiteViewModel {
+class SubscriptionDashboardViewModel extends InsiteViewModel {
   Logger log;
   // var _navigationService = locator<NavigationService>();
   var _subscriptionService = locator<SubScriptionService>();
   var _localService = locator<LocalService>();
 
-  ViewDashboardViewModel() {
+  SubscriptionDashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     _subscriptionService.setUp();
@@ -59,7 +59,7 @@ class ViewDashboardViewModel extends InsiteViewModel {
 
   getSubscriptionDashboardData() async {
     Logger().i("getApplicationAccessData");
-    DashboardResult result =
+    SubscriptionDashboardResult result =
         await _subscriptionService.getResultsFromSubscriptionApi();
     if (result == null) {
       Logger().d('no results found');

@@ -2,12 +2,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'subscription_dashboard.g.dart';
 
 @JsonSerializable()
-class DashboardResult {
+class SubscriptionDashboardResult {
   List<List<Result>> result;
-  DashboardResult({this.result});
-  factory DashboardResult.fromJson(Map<String, dynamic> json) =>
-      _$DashboardResultFromJson(json);
-  Map<String, dynamic> toJson() => _$DashboardResultToJson(this);
+  SubscriptionDashboardResult({this.result});
+  factory SubscriptionDashboardResult.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionDashboardResultFromJson(json);
+  Map<String, dynamic> toJson() => _$SubscriptionDashboardResultToJson(this);
 }
 
 // @JsonSerializable()

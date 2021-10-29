@@ -3,10 +3,10 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
-class MultipleAssetRegViewModel extends InsiteViewModel {
+class SingleAssetRegistrationViewModel extends InsiteViewModel {
   Logger log;
 
-  MultipleAssetRegViewModel() {
+  SingleAssetRegistrationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
 }

@@ -4,8 +4,8 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 
-class InsiteDashRow extends StatelessWidget {
-  const InsiteDashRow({Key key, this.name, this.count, this.filter})
+class InsiteTitleCountRow extends StatelessWidget {
+  const InsiteTitleCountRow({Key key, this.name, this.count, this.filter})
       : super(key: key);
   final String name;
   final String count;

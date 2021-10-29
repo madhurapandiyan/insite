@@ -20,7 +20,8 @@ class SubscriptionViewModel extends InsiteViewModel {
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(View(), transition: "fade");
+      _navigationService.navigateWithTransition(SubscriptionDashboardView(),
+          transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWREGISTRATION) {
       navigationService.navigateWithTransition(SubRegistrationView(),
           transition: "fade");
