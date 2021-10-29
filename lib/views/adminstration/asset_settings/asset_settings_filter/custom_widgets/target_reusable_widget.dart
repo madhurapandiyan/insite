@@ -24,8 +24,6 @@ class TargetReusableWidget extends StatefulWidget {
 }
 
 class _TargetReusableWidgetState extends State<TargetReusableWidget> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Column(

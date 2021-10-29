@@ -2484,7 +2484,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(url) async {
+  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(
+      url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2521,6 +2522,28 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = AddSettings.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+      url, estimatedAssetSetting, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(estimatedAssetSetting, 'estimatedAssetSetting');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(estimatedAssetSetting?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedAssetSetting.fromJson(_result.data);
     return value;
   }
 }

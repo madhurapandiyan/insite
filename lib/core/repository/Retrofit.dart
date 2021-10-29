@@ -10,6 +10,7 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
@@ -679,6 +680,11 @@ abstract class RestClient {
   Future<AddSettings> getassetSettingsFuelBurnRateData(
       @Path() String url,
       @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
+      @Header("x-visionlink-customeruid") customerId);
+  @PUT('{url}')
+  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+      @Path() String url,
+      @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
 }
 

@@ -158,6 +158,8 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetsettings";
   static String assetSettingsFuelBurnrate =
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
+  static String assetSettingsTarget =
+      "/t/trimble.com/vss-assetsettings/1.0/assettargetsettings";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
