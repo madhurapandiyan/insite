@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:insite/widgets/smart_widgets/reusable_dash_row.dart';
+import 'package:insite/widgets/smart_widgets/reusable_dashboard_row.dart';
 
 class DashBoardContainer extends StatefulWidget {
-  DashBoardContainer({Key key, this.subTitle1, this.subTitle2, this.title})
+  DashBoardContainer(
+      {Key key, this.subTitle1, this.subTitle2, this.title, this.cards})
       : super(key: key);
   final String title;
   final String subTitle1;
   final String subTitle2;
+  //final List viewData;
+  //List<Widget> cards;
+  final Widget cards;
 
   @override
   _DashBoardContainerState createState() => _DashBoardContainerState();
@@ -19,7 +23,7 @@ class _DashBoardContainerState extends State<DashBoardContainer> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.6,
+        height: MediaQuery.of(context).size.height * 0.55,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -73,15 +77,23 @@ class _DashBoardContainerState extends State<DashBoardContainer> {
             SizedBox(
               height: 10,
             ),
-            Expanded(
-                child: ListView.builder(
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return InsiteDashRow(
-                        rowText: "Total Devices Supplied",
-                        buttonText: "3456",
-                      );
-                    }))
+            widget.cards
+            // Expanded(
+            //   child: ListView(
+            //     children: widget.cards,
+            //   ),
+            // )
+            // Expanded(
+            //     child: ListView.builder(
+            //         itemCount: widget.viewData.length,
+            //         itemBuilder: (context, index) {
+            //           final result = widget.viewData[index];
+            //           return InsiteDashRow(
+            //             rowText: "Total Devices Supplied",
+            //             buttonText: "3456",
+            //             result: result,
+            //           );
+            //         }))
           ],
         ),
       ),

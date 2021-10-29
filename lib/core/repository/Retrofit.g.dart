@@ -2484,7 +2484,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<DashboardResult> getSubscriptionDashboardResults(url) async {
+  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2497,7 +2497,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = DashboardResult.fromJson(_result.data);
+    final value = SubscriptionDashboardResult.fromJson(_result.data);
     return value;
   }
 

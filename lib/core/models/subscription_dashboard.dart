@@ -1,61 +1,61 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'subscription_dashboard.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class DashboardResult {
-  List<ResultData> resultData;
-  DashboardResult({this.resultData});
-  factory DashboardResult.fromJson(Map<String, dynamic> json) =>
-      _$DashboardResultFromJson(json);
-  Map<String, dynamic> toJson() => _$DashboardResultToJson(this);
+@JsonSerializable()
+class SubscriptionDashboardResult {
+  List<List<Result>> result;
+  SubscriptionDashboardResult({this.result});
+  factory SubscriptionDashboardResult.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionDashboardResultFromJson(json);
+  Map<String, dynamic> toJson() => _$SubscriptionDashboardResultToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class ResultData {
-  List<Results> result;
-  ResultData({this.result});
-  factory ResultData.fromJson(Map<String, dynamic> json) =>
-      _$ResultDataFromJson(json);
-  Map<String, dynamic> toJson() => _$ResultDataToJson(this);
-}
+// @JsonSerializable()
+// class ResultData {
+//   List<Results> resultList;
+//   ResultData({this.resultList});
+//   factory ResultData.fromJson(Map<String, dynamic> json) =>
+//       _$ResultDataFromJson(json);
+//   Map<String, dynamic> toJson() => _$ResultDataToJson(this);
+// }
 
 @JsonSerializable()
-class Results {
+class Result {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "activelist")
-  int activeList;
+  double activeList;
 
   @JsonKey(name: "inActiveList")
-  int inActiveList;
+  double inActiveList;
 
   @JsonKey(name: "ModelCount")
-  int modelCount;
+  double modelCount;
 
   @JsonKey(name: "ModelName")
   String modelName;
 
   @JsonKey(name: "totalDevice")
-  int totalDevice;
+  double totalDevice;
 
   @JsonKey(name: "PlantAssetCount")
-  int plantAssetCount;
+  double plantAssetCount;
 
   @JsonKey(name: "subscriptionEndAsset")
-  int subscriptionAndAsset;
+  double subscriptionAndAsset;
 
   @JsonKey(name: "day_count")
-  int dayCount;
+  double dayCount;
 
   @JsonKey(name: "week_count")
-  int weekCount;
+  double weekCount;
 
   @JsonKey(name: "month_count")
-  int monthCount;
+  double monthCount;
 
   @JsonKey(name: "subscriptionEndingAsset_Month")
-  int subscriptionEndingAsset;
+  double subscriptionEndingAsset;
 
-  Results(
+  Result(
       {this.activeList,
       this.inActiveList,
       this.modelCount,
@@ -68,7 +68,6 @@ class Results {
       this.monthCount,
       this.subscriptionEndingAsset});
 
-  factory Results.fromJson(Map<String, dynamic> json) =>
-      _$ResultsFromJson(json);
-  Map<String, dynamic> toJson() => _$ResultsToJson(this);
+  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+  Map<String, dynamic> toJson() => _$ResultToJson(this);
 }
