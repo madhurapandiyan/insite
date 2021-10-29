@@ -35,96 +35,90 @@ class MultipleAssetTransferView extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Card(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: double.infinity,
-                      color: Theme.of(context).cardColor,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: double.infinity,
-                            width: MediaQuery.of(context).size.width * 0.02,
-                            color: Theme.of(context).buttonColor,
-                          ),
-                          SizedBox(
-                            width: 20.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: Expanded(
-                                  child: InsiteText(
-                                    text:
-                                        'Register Multiple assets by uploading an MS EXCEL File from here',
-                                    size: 14,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    width: MediaQuery.of(context).size.width,
+                    color: Theme.of(context).cardColor,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: double.infinity,
+                          width: MediaQuery.of(context).size.width * 0.02,
+                          color: Theme.of(context).buttonColor,
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Expanded(
+                                child: InsiteText(
+                                  text:
+                                      'Register Multiple assets by uploading an MS EXCEL File from here',
+                                  size: 14,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02,
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                child: Expanded(
-                                  child: InsiteText(
-                                    text:
-                                        ' Note : Please click Sample Format to get the required format to upload',
-                                    size: 14,
-                                  ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Expanded(
+                                child: InsiteText(
+                                  text:
+                                      ' Note : Please click Sample Format to get the required format to upload',
+                                  size: 14,
                                 ),
                               ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InsiteButton(
-                                    title: 'UPLOAD',
-                                    icon: Icon(
-                                      Icons.upload,
-                                      color: white,
-                                    ),
-                                    textColor: white,
-                                    bgColor: Theme.of(context).buttonColor,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.35,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.065,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InsiteButton(
+                                  title: 'UPLOAD',
+                                  icon: Icon(
+                                    Icons.upload,
+                                    color: white,
                                   ),
-                                  SizedBox(
-                                    width: 30,
+                                  textColor: white,
+                                  bgColor: Theme.of(context).buttonColor,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.065,
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                InsiteButton(
+                                  title: 'SAMPLE FORMAT',
+                                  icon: Icon(
+                                    Icons.download,
+                                    color: white,
                                   ),
-                                  InsiteButton(
-                                    title: 'SAMPLE FORMAT',
-                                    icon: Icon(
-                                      Icons.download,
-                                      color: white,
-                                    ),
-                                    textColor: white,
-                                    bgColor: Theme.of(context).buttonColor,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.35,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.065,
-                                  ),
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
+                                  textColor: white,
+                                  bgColor: Theme.of(context).buttonColor,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.065,
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
                     ),
                   )
                 ],
