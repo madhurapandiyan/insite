@@ -11,7 +11,7 @@ import 'package:stacked_services/stacked_services.dart';
 class AssetSettingsViewModel extends InsiteViewModel {
   Logger log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
-  var _navigationservice=locator<NavigationService>();
+  var _navigationservice = locator<NavigationService>();
 
   int pageSize = 20;
   int pageNumber = 1;
@@ -135,7 +135,18 @@ class AssetSettingsViewModel extends InsiteViewModel {
     } catch (e) {}
     notifyListeners();
   }
-  onClickEditselected(){
-    _navigationservice.navigateWithTransition(AssetSettingsFilterView(),transition: "fade");
+
+  onClickEditselected() {
+    AssetSettingsRow assetSettingsRow =
+        _assets.firstWhere((element) => element.isSelected);
+    onCardButtonSelected(assetSettingsRow);
+  }
+
+  onCardButtonSelected(AssetSettingsRow assetSettingsRow) {
+    _navigationservice.navigateWithTransition(
+        AssetSettingsFilterView(
+          assetSetting: assetSettingsRow.assetSettings,
+        ),
+        transition: "fade");
   }
 }

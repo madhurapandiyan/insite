@@ -5,6 +5,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
+import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/role_data.dart';
@@ -327,7 +328,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageAssetConfiguration> getAssetSettingData(
-       pageSize,  pageNumber) async {
+      pageSize, pageNumber) async {
     try {
       Map<String, String> queryMap = Map();
       if (isVisionLink) {
@@ -350,6 +351,47 @@ class AssetAdminManagerUserService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return manageAssetConfigurationResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AddSettings> getFuelBurnRateSettingsData(
+      idleValue, workingValue, assetUid) async {
+
+    AssetFuelBurnRateSetting test = AssetFuelBurnRateSetting(
+      idleTargetValue: idleValue,
+      workTargetValue: workingValue,
+      assetUIds: [
+        assetUid
+      ]
+    );
+
+    try {
+      if (isVisionLink) {
+        Logger().i(idleValue);
+        Logger().i(workingValue);
+        Logger().i(assetUid);
+        Logger().i(test.toJson());
+        AddSettings addSettings = await MyApi()
+            .getClientSeven()
+            .getassetSettingsFuelBurnRateData(Urls.assetSettingsFuelBurnrate,
+                test, accountSelected.CustomerUID);
+
+        return addSettings;
+      } else {
+        AddSettings addSettings = await MyApi()
+            .getClientSeven()
+            .getassetSettingsFuelBurnRateData(
+                Urls.assetSettingsFuelBurnrate,
+                AssetFuelBurnRateSetting( 
+                    idleTargetValue: idleValue,
+                    workTargetValue: workingValue),
+                accountSelected.CustomerUID);
+
+        return addSettings;
       }
     } catch (e) {
       Logger().e(e.toString());

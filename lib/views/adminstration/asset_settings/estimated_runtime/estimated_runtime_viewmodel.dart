@@ -6,8 +6,6 @@ import 'package:logger/logger.dart';
 
 class EstimatedRuntimeViewModel extends InsiteViewModel {
   Logger log;
-  String _applyValue;
-  String get applyValueData => _applyValue;
 
   TextEditingController fulltargetTimeController = TextEditingController();
   TextEditingController fullIdleTimeController = TextEditingController();
@@ -39,21 +37,18 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     fulltargetTimeController.text = "0";
     fullIdleTimeController.text = "0";
-    //getPercentageData();
   }
-   onChangeStateRuntime(){
-     _isSelectedFullWeekTarget=!_isSelectedFullWeekTarget;
-     notifyListeners();
-   }
-   
-   onChangeStateIdle(){
-   _isSelectedFullWeekIdle=!isSelectedFullWeekIdle;
-   notifyListeners();
-   }
+  onChangeStateRuntime() {
+    _isSelectedFullWeekTarget = !_isSelectedFullWeekTarget;
+    notifyListeners();
+  }
+
+  onChangeStateIdle() {
+    _isSelectedFullWeekIdle = !isSelectedFullWeekIdle;
+    notifyListeners();
+  }
 
   getRuntimeListValueData(String value, int index) {
-    _applyValue = value;
-
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[index];
       if (data != null) {
@@ -131,16 +126,16 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   double getPercentageData() {
     double percentageData = double.parse(fullIdleTimeController.text) / 10;
-    notifyListeners();
     return percentageData;
   }
-   getIncrementRuntimeValue() {
+
+  getIncrementRuntimeValue() {
     int currentValue = int.parse(fulltargetTimeController.text);
 
     currentValue++;
     fulltargetTimeController.text = (currentValue).toString();
     getFullWeekTargetData(fulltargetTimeController.text);
-  notifyListeners();
+    notifyListeners();
   }
 
   getDecrementRuntimeValue() {
@@ -149,7 +144,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     fulltargetTimeController.text =
         (currentValue > 0 ? currentValue : 0).toString();
     getFullWeekTargetData(fulltargetTimeController.text);
-   notifyListeners();
+    notifyListeners();
   }
 
   getIncrementIdleValue() {
@@ -159,7 +154,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     fullIdleTimeController.text = (currentValue).toString();
     getFullWeekIdleData(fullIdleTimeController.text);
 
-   notifyListeners();
+    notifyListeners();
   }
 
   getDecrementIdleValue() {
@@ -168,6 +163,6 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     fullIdleTimeController.text =
         (currentValue > 0 ? currentValue : 0).toString();
     getFullWeekIdleData(fullIdleTimeController.text);
-  notifyListeners();
+    notifyListeners();
   }
 }

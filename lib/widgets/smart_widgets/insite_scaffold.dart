@@ -58,8 +58,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION 
-                 
+                  widget.screenType == ScreenType.LOCATION
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -67,7 +66,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               ? true
               : false,
           shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
-                  widget.screenType == ScreenType.ASSET_SETTINGS
+                  widget.screenType == ScreenType.ASSET_SETTINGS||
+                  widget.screenType==ScreenType.ASSET_SETTINGS_FILTER
               ? false
               : true,
           screenType: widget.screenType,
@@ -143,21 +143,14 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                         },
                       )
                     : SizedBox(),
-                (_isFilterSelected) &&
-                        (widget.screenType == ScreenType.FLEET ||
-                            widget.screenType == ScreenType.ASSET_OPERATION ||
-                            widget.screenType == ScreenType.UTILIZATION ||
-                            widget.screenType == ScreenType.HEALTH)
+                _isFilterSelected
                     ? FilterView(
                         onFilterApplied: (bool) {
                           onFilterApplied(bool);
                         },
                         screenType: widget.screenType,
                       )
-                    : (_isFilterSelected &&
-                            widget.screenType == ScreenType.ASSET_SETTINGS)
-                        ? AssetSettingsFilterView()
-                        : SizedBox(),
+                    : SizedBox(),
                 _isRefineSelected
                     ? Refine(
                         onRefineApplied: (bool) {
