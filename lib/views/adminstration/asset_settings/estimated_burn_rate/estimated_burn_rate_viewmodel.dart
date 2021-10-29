@@ -5,7 +5,9 @@ import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class EstimatedBurnRateViewModel extends InsiteViewModel {
   Logger log;
@@ -16,6 +18,8 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
   String get assetUID => _assetUId;
   double _workingValue;
   double get workingValue => _workingValue;
+
+  var _navigationService = locator<NavigationService>();
 
   double _idleValue;
   double get idleValue => _idleValue;
@@ -62,11 +66,10 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
     AddSettings result = await _manageUserService.getFuelBurnRateSettingsData(
         idleValue, workingValue, assetUID);
     if (result != null) {
-      print("response:$result");
+      _navigationService.navigateWithTransition(AssetSettingsView(),
+          transition: "rightToLeft");
     }
 
     notifyListeners();
   }
-
- 
 }

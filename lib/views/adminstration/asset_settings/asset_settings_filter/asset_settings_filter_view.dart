@@ -48,7 +48,9 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   ),
                   FilterItemWidget(
                     text: "set estimated runtime/idling targets".toUpperCase(),
-                    body: EstimatedRunTimeWidgetView(),
+                    body: EstimatedRunTimeWidgetView(
+                      assetSetting: widget.assetSetting,
+                    ),
                   ),
                   SizedBox(
                     height: 8,

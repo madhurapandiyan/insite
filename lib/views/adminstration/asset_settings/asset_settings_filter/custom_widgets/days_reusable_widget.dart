@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/increment_decrement_reusable_widget.dart';
-import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:logger/logger.dart';
 
 class DaysReusableWidget extends StatefulWidget {
   final String days;
@@ -27,7 +25,6 @@ class DaysReusableWidget extends StatefulWidget {
 }
 
 class _DaysReusableWidgetState extends State<DaysReusableWidget> {
- 
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +59,6 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                     border: Border.all(
                         color: Theme.of(context).textTheme.bodyText1.color)),
                 child: IncrementDecrementwidget(
-                 
                   onValueChange: (String value) {
                     widget.onRuntimeValueChanged(value);
                   },
@@ -85,7 +81,6 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                   border: Border.all(
                       color: Theme.of(context).textTheme.bodyText1.color)),
               child: IncrementDecrementwidget(
-              
                 onValueChange: (String value) {
                   widget.onIdleValueChanged(value);
                 },
