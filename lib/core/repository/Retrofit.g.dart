@@ -2464,7 +2464,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ManageAssetConfiguration> getAssetSettingsListData(
+  Future<ManageAssetConfiguration> getAssetSettingsListDataVL(
       url, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customerId, 'customerId');
@@ -2476,6 +2476,30 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'GET',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ManageAssetConfiguration.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<ManageAssetConfiguration> getAssetSettingsListData(
+      url, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': serviceHeader
+            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
@@ -2499,6 +2523,25 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = SubscriptionDashboardResult.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceResults(
+      url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SubscriptionDashboardDetailResult.fromJson(_result.data);
     return value;
   }
 

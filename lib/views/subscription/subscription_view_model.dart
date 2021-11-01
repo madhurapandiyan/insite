@@ -5,7 +5,6 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_registration/sub_registration_view.dart';
 import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 

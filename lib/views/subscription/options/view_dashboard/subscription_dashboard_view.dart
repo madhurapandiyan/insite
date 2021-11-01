@@ -4,7 +4,7 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/reusable_container_large.dart';
-import 'package:insite/widgets/smart_widgets/reusable_dashboard_row.dart';
+import 'package:insite/widgets/smart_widgets/insite_title_count_row.dart';
 import 'package:stacked/stacked.dart';
 import 'subscription_dashboard_view_model.dart';
 
@@ -63,6 +63,9 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                       name: viewModel.names[index],
                                       count: viewModel.results[index],
                                       filter: viewModel.names[index],
+                                      onClicked: () {
+                                        viewModel.gotoDetailsPage("total");
+                                      },
                                     );
                                   }),
                             )),

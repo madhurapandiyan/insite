@@ -62,6 +62,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   getManagerUserAssetList() async {
+    Logger().i("getManagerUserAssetList");
     AdminManageUser result =
         await _manageUserService.getAdminManageUserListData(pageNumber);
     if (result != null) {

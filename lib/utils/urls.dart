@@ -150,8 +150,7 @@ class Urls {
   static String addUserSummaryVL = "/t/trimble.com/vss-identityapi/2.0/Users";
   static String applicationsUrl =
       "/t/trimble.com/vss-applicationapi/v1/applications";
-  static String adminManagerUserSumary =
-      "/npulse-identitymanager-in/1.0/2.0/Users";
+  static String adminManagerUserSumary = "$identity/2.0/Users";
   static String adminRolesVL =
       "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
   static String assetSettingsVL =
@@ -208,6 +207,8 @@ class Urls {
   static String fuelPercent =
       "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate";
   static String faultSummary = "$health/1.0/health/faultSummary/v1";
+  static String assetSettings =
+      "$assetSettingsMasterData/1.0/v1/assetsettings";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -217,6 +218,8 @@ class Urls {
   static String health = "/frame-fault";
   static String locationMap = "/frame-fleet-map";
   static String assetMataData = "/frame-assetmetadata";
+  static String identity = "/frame-identity";
+  static String assetSettingsMasterData = "/frame-masterdata";
 
   // static String accountSelection = "/npulse-masterdataapi-in";
   // static String fleet = "/npulse-fleet-in";
@@ -225,6 +228,7 @@ class Urls {
   // static String health = "/npulse-unifiedservice-in";
   // static String locationMap = "/npulse-fleet-in";
   // static String assetMataData = "/npulse-fleetassetmeta-in";
+  // static String identity = "/npulse-identitymanager-in";
 
   //application name space constants
   static String nameSpace = "/osg-in";
