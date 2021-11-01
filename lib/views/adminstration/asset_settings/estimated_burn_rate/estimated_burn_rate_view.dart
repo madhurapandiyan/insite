@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:insite/core/models/asset_settings.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_burn_rate/estimated_burn_rate_viewmodel.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';

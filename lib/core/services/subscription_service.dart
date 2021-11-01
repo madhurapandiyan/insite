@@ -5,6 +5,7 @@ import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -55,14 +56,23 @@ class SubScriptionService extends BaseService {
   }
 
   Future<SubscriptionDashboardDetailResult> getSubscriptionDevicesListData(
-      String fitler, int start, int limit) async {
+      String fitler,
+      int start,
+      int limit,
+      PLANTSUBSCRIPTIONFILTERTYPE filterType) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
       if (fitler != null) {
-        queryMap["status"] = fitler;
+        if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
+          queryMap["calender"] = fitler;
+        } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.MODEL) {
+          queryMap["model"] = fitler;
+        } else {
+          queryMap["status"] = fitler;
+        }
       }
       if (start != null) {
         queryMap["start"] = start.toString();

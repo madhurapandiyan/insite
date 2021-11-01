@@ -2,6 +2,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -163,6 +164,23 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     Logger().i("gotoDetailsPage");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
+    ));
+  }
+
+  gotoModelsPage(String filter) {
+    Logger().i("gotoModelsPage");
+    _navigationService.navigateToView(SubDashBoardDetailsView(
+      filterKey: filter,
+      filterType: PLANTSUBSCRIPTIONFILTERTYPE.MODEL,
+    ));
+  }
+
+  gotoCalendarDetailsPage(String filter) {
+    Logger().i("gotoCalendarDetailsPage");
+    _navigationService.navigateToView(SubDashBoardDetailsView(
+      filterKey: filter,
+      filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,
     ));
   }
 }

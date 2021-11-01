@@ -40,7 +40,7 @@ class PlantView extends StatelessWidget {
                             ],
                             height: 25.0,
                             onCallbackSelected: (value) {
-                              //viewModel.onRespectiveButtonClicked(value);
+                              viewModel.onRespectiveButtonClicked(value);
                             }),
                         AssetCardsSmall(
                             headerText: "HIERACHY",

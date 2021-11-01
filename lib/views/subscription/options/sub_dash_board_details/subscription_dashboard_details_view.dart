@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -9,7 +10,8 @@ import 'subscription_dashboard_details_view_model.dart';
 
 class SubDashBoardDetailsView extends StatelessWidget {
   final String filterKey;
-  SubDashBoardDetailsView({this.filterKey});
+  final PLANTSUBSCRIPTIONFILTERTYPE filterType;
+  SubDashBoardDetailsView({this.filterKey, this.filterType});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,8 @@ class SubDashBoardDetailsView extends StatelessWidget {
           ),
         );
       },
-      viewModelBuilder: () => SubDashBoardDetailsViewModel(filterKey),
+      viewModelBuilder: () =>
+          SubDashBoardDetailsViewModel(filterKey, filterType),
     );
   }
 }

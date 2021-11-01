@@ -125,6 +125,11 @@
             "file_path": "views/plant/plant_view.dart",
             "route_name": "plantViewRoute",
             "view_name": "PlantView"
+        },
+        {
+            "file_path": "views/plant/plant_dashboard_view.dart",
+            "route_name": "plantDashboardViewRoute",
+            "view_name": "PlantDashboardView"
         }
     ]
 }

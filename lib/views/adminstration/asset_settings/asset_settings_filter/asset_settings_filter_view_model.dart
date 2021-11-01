@@ -1,5 +1,4 @@
 import 'package:insite/core/base/insite_view_model.dart';
-import 'package:insite/core/models/asset_settings.dart';
 
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';

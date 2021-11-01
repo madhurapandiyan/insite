@@ -9,8 +9,8 @@ import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.
     as view16;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
-import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
-import 'package:insite/views/home/home_view.dart' as view7;
+import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
+    as view25;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
@@ -20,7 +20,6 @@ import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
 import 'package:insite/views/asset_operation/asset_operation_view.dart'
     as view8;
 
-import 'package:insite/views/health/asset/asset_view.dart' as view8;
 import 'package:insite/views/plant/plant_view.dart' as view24;
 
 import 'package:insite/views/splash/splash_view.dart' as view0;
@@ -127,6 +126,8 @@ class Router {
             builder: (_) => view23.MultipleAssetTransferView());
       case plantViewRoute:
         return MaterialPageRoute(builder: (_) => view24.PlantView());
+      case plantDashboardViewRoute:
+        return MaterialPageRoute(builder: (_) => view25.PlantDashboardView());
 
       default:
         return MaterialPageRoute(

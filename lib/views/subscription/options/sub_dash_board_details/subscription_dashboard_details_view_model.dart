@@ -3,6 +3,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -13,6 +14,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
 
   String _filter;
   String get filter => _filter;
+
+  PLANTSUBSCRIPTIONFILTERTYPE _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE get filterType => _filterType;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -32,8 +36,10 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
 
-  SubDashBoardDetailsViewModel(String filterKey) {
+  SubDashBoardDetailsViewModel(
+      String filterKey, PLANTSUBSCRIPTIONFILTERTYPE type) {
     this._filter = filterKey;
+    this._filterType = type;
     this.log = getLogger(this.runtimeType.toString());
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -48,8 +54,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    SubscriptionDashboardDetailResult result = await _subscriptionService
-        .getSubscriptionDevicesListData(filter, pageNumber, pageSize);
+    SubscriptionDashboardDetailResult result =
+        await _subscriptionService.getSubscriptionDevicesListData(
+            filter, pageNumber, pageSize, filterType);
     if (result != null) {
       if (result.result.isNotEmpty) {
         devices.addAll(result.result[1]);
