@@ -155,7 +155,7 @@ class Urls {
       "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
   static String assetSettingsVL =
       "/t/trimble.com/vss-assetsettings/1.0/assetsettings";
-  static String assetSettingsFuelBurnrate =
+  static String assetSettingsFuelBurnrateVL =
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
   static String assetSettingsTarget =
       "/t/trimble.com/vss-assetsettings/1.0/assettargetsettings";
@@ -165,9 +165,11 @@ class Urls {
       "/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials";
   static String postPayLoad = "/t/trimble.com/vss-geofenceservice/1.0";
 
-  static String estimatedCycleVolumePayLoad="/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";    
-  static String estimatedMileage="/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings"; 
-  
+  static String estimatedCycleVolumePayLoad =
+      "/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";
+  static String estimatedMileageVL =
+      "/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
+
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
   static String assetSummary = "$utilization/1.0/AssetOperation";
@@ -207,9 +209,14 @@ class Urls {
   static String fuelPercent =
       "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate";
   static String faultSummary = "$health/1.0/health/faultSummary/v1";
-  static String assetSettings =
-      "$assetSettingsMasterData/1.0/v1/assetsettings";
-
+  static String assetSettings = "$assetSettingsMasterData/1.0/v1/assetsettings";
+  static String assetProductivitySettings =
+      "$assetSettingsMasterData/1.0/v1/assetproductivitysettings";
+  static String assetSettingsFuelBurnrate =
+      "$assetSettingsMasterData/1.0/v1/assetfuelburnratesettings";
+  static String estimatedMileage =
+      "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
+      
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";

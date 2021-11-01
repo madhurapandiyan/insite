@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_burn_rate/estimated_burn_rate_view.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_mileage_widget.dart';
@@ -9,25 +8,21 @@ import 'package:insite/views/adminstration/asset_settings/targetcycle_volume_pay
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/filter_item_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_settings_filter_view_model.dart';
 
 class AssetSettingsFilterView extends StatefulWidget {
   final List<String> assetUids;
   AssetSettingsFilterView({this.assetUids});
-  
+
   @override
-  _AssetSettingsFilterViewState createState() => _AssetSettingsFilterViewState();
+  _AssetSettingsFilterViewState createState() =>
+      _AssetSettingsFilterViewState();
 }
 
 class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
-  
-  
   @override
   Widget build(BuildContext context) {
-  
-    
     return ViewModelBuilder<AssetSettingsFilterViewModel>.reactive(
       builder: (BuildContext context, AssetSettingsFilterViewModel viewModel,
           Widget _) {
@@ -54,7 +49,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   FilterItemWidget(
                     text: "set estimated runtime/idling targets".toUpperCase(),
                     body: EstimatedRunTimeWidgetView(
-                     assetUids: widget.assetUids,
+                      assetUids: widget.assetUids,
                     ),
                   ),
                   SizedBox(
@@ -63,8 +58,8 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   FilterItemWidget(
                     text: "set estimated fuel burn rate".toUpperCase(),
                     body: EstimatedBurnRateWidget(
-                    assetUids: widget.assetUids,
-                      ),
+                      assetUids: widget.assetUids,
+                    ),
                   ),
                   SizedBox(
                     height: 8,
@@ -72,8 +67,8 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   FilterItemWidget(
                     text: "set estimated mileage".toUpperCase(),
                     body: EstimatedMileage(
-                     // assetSetting: widget.assetSetting,
-                     assetUids: widget.assetUids,
+                      // assetSetting: widget.assetSetting,
+                      assetUids: widget.assetUids,
                     ),
                   ),
                   SizedBox(
@@ -82,8 +77,8 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   FilterItemWidget(
                     text: "set estimated voume per cycle".toUpperCase(),
                     body: EstimatedVolumeWidget(
-                      //assetSetting: widget.assetSetting,
-                    ),
+                        //assetSetting: widget.assetSetting,
+                        ),
                   ),
                   SizedBox(
                     height: 8,
@@ -91,8 +86,8 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                   FilterItemWidget(
                     text: "set estimated payload per cycle".toUpperCase(),
                     body: EstimatedPayLoadPerCycle(
-                    //  assetSetting: widget.assetSetting,
-                    ),
+                        //  assetSetting: widget.assetSetting,
+                        ),
                   ),
                   SizedBox(
                     height: 8,
@@ -101,7 +96,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                     text: "set target cycles/estimated volume/payload"
                         .toUpperCase(),
                     body: TargetCycleVolumePayloadWidget(
-                     assetUids: widget.assetUids,
+                      assetUids: widget.assetUids,
                     ),
                   )
                 ],

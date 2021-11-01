@@ -145,7 +145,6 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   onClickEditselected() {
     List<String> assetUids = [];
-
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
         assetUids.add(_assets[i].assetSettings.assetUid);
@@ -161,7 +160,6 @@ class AssetSettingsViewModel extends InsiteViewModel {
         ),
         transition: "fade");
     Logger().i(result);
-
     if (result != null && result) {
       refresh();
     }

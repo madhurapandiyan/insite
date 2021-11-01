@@ -696,16 +696,30 @@ abstract class RestClient {
   );
 
   @PUT('{url}')
+  Future<AddSettings> getassetSettingsFuelBurnRateDataVL(
+      @Path() String url,
+      @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
   Future<AddSettings> getassetSettingsFuelBurnRateData(
       @Path() String url,
       @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
+
+  @PUT('{url}')
+  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
+      @Path() String url,
+      @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
   Future<EstimatedAssetSetting> getAssetTargetSettingsData(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
-      @Header("x-visionlink-customeruid") customerId);
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
 
   @POST('{url}')
   Future<dynamic> postGeofenceAnotherData(
@@ -736,17 +750,32 @@ abstract class RestClient {
   @GET("https://singlesearch.alk.com/ww/api/search")
   Future<SearchModel> getSearchData(@Query("authToken") token,
       @Query("query") searchvalue, @Query("maxResults") int maxResults);
+
+  @PUT('{url}')
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(
+      @Path() String url,
+      @Body() EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
   @PUT('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
       @Path() String url,
       @Body() EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") String serviceHeader);
+
+  @PUT('{url}')
+  Future<AssetMileageSettingData> getMileageDataVL(
+      @Path() String url,
+      @Body() AssetMileageSettingData assetMileageSettingData,
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
   Future<AssetMileageSettingData> getMileageData(
       @Path() String url,
       @Body() AssetMileageSettingData assetMileageSettingData,
-      @Header("x-visionlink-customeruid") customerId);
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") String serviceHeader);
 }
 
 @JsonSerializable()

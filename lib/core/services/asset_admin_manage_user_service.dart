@@ -322,7 +322,7 @@ class AssetAdminManagerUserService extends BaseService {
           DeleteUserData(users: users));
       return result;
     } else {
-      var result = await MyApi().getClientSeven().deleteUsers(
+      var result = await MyApi().getClient().deleteUsers(
           Urls.adminManagerUserSumary,
           DeleteUserDataIndStack(
             users: users,
@@ -380,15 +380,19 @@ class AssetAdminManagerUserService extends BaseService {
         Logger().i(listBurnRateData.toJson());
         AddSettings addSettings = await MyApi()
             .getClientSeven()
-            .getassetSettingsFuelBurnRateData(Urls.assetSettingsFuelBurnrate,
-                listBurnRateData, accountSelected.CustomerUID);
+            .getassetSettingsFuelBurnRateDataVL(
+                Urls.assetSettingsFuelBurnrateVL,
+                listBurnRateData,
+                accountSelected.CustomerUID);
         return addSettings;
       } else {
         AddSettings addSettings = await MyApi()
-            .getClientSeven()
-            .getassetSettingsFuelBurnRateData(Urls.assetSettingsFuelBurnrate,
-                listBurnRateData, accountSelected.CustomerType);
-
+            .getClient()
+            .getassetSettingsFuelBurnRateData(
+                Urls.assetSettingsFuelBurnrate,
+                listBurnRateData,
+                accountSelected.CustomerType,
+                "in-vlmasterdata-api-vlmd-assetsettings");
         return addSettings;
       }
     } catch (e) {
@@ -420,14 +424,17 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         EstimatedAssetSetting result = await MyApi()
             .getClientSeven()
-            .getAssetTargetSettingsData(Urls.assetSettingsTarget,
+            .getAssetTargetSettingsDataVL(Urls.assetSettingsTarget,
                 listSettingTargetData, accountSelected.CustomerUID);
         return result;
       } else {
         EstimatedAssetSetting result = await MyApi()
-            .getClientSeven()
-            .getAssetTargetSettingsData(Urls.assetSettingsTarget,
-                listSettingTargetData, accountSelected.CustomerUID);
+            .getClient()
+            .getAssetTargetSettingsData(
+                Urls.assetSettings,
+                listSettingTargetData,
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
         return result;
       }
     } catch (e) {
@@ -452,27 +459,28 @@ class AssetAdminManagerUserService extends BaseService {
             volumes: volumes,
             payload: payload,
             startDate: startDate,
-            endDate: endDate)
-            );
+            endDate: endDate));
       }
       Logger().i("payLoad:$assetUid");
       EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoadListData =
-          EstimatedCycleVolumePayLoad(assetProductivitySettings: getAssetPayLoadList);
+          EstimatedCycleVolumePayLoad(
+              assetProductivitySettings: getAssetPayLoadList);
       if (isVisionLink) {
         EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad = await MyApi()
             .getClientSeven()
-            .getEstimatedCycleVolumePayLoadData(
+            .getEstimatedCycleVolumePayLoadDataVL(
                 Urls.estimatedCycleVolumePayLoad,
                 estimatedCycleVolumePayLoadListData,
                 accountSelected.CustomerUID);
         return estimatedCycleVolumePayLoad;
       } else {
         EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad = await MyApi()
-            .getClientSeven()
+            .getClient()
             .getEstimatedCycleVolumePayLoadData(
-                Urls.estimatedCycleVolumePayLoad,
+                Urls.assetProductivitySettings,
                 estimatedCycleVolumePayLoadListData,
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
         return estimatedCycleVolumePayLoad;
       }
     } catch (e) {
@@ -490,14 +498,17 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         AssetMileageSettingData assetMileageSettingData = await MyApi()
             .getClientSeven()
-            .getMileageData(Urls.estimatedMileage, mileageData,
+            .getMileageDataVL(Urls.estimatedMileageVL, mileageData,
                 accountSelected.CustomerUID);
         return assetMileageSettingData;
       } else {
         AssetMileageSettingData assetMileageSettingData = await MyApi()
-            .getClientSeven()
-            .getMileageData(Urls.estimatedMileage, mileageData,
-                accountSelected.CustomerUID);
+            .getClient()
+            .getMileageData(
+                Urls.estimatedMileage,
+                mileageData,
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
         return assetMileageSettingData;
       }
     } catch (e) {

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
-import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/increment_decrement_model.dart';
-import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -68,11 +66,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       var data = countValue[index];
       if (data != null) {
         data.runTimecount = value;
-
-        // print("data:${data.count}");
       }
     }
-
     notifyListeners();
   }
 
@@ -89,11 +84,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       var data = countValue[index];
       if (data != null) {
         data.idleCount = value;
-
         // print("data:${data.count}");
       }
     }
-
     notifyListeners();
   }
 
@@ -148,7 +141,6 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   getIncrementRuntimeValue() {
     int currentValue = int.parse(fulltargetTimeController.text);
-
     currentValue++;
     fulltargetTimeController.text = (currentValue).toString();
     getFullWeekTargetData(fulltargetTimeController.text);
@@ -166,11 +158,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   getIncrementIdleValue() {
     int currentValue = int.parse(fullIdleTimeController.text);
-
     currentValue++;
     fullIdleTimeController.text = (currentValue).toString();
     getFullWeekIdleData(fullIdleTimeController.text);
-
     notifyListeners();
   }
 
@@ -213,8 +203,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 thursday: int.parse(countValue[4].runTimecount),
                 friday: int.parse(countValue[5].runTimecount),
                 saturday: int.parse(countValue[6].runTimecount)));
-                Logger().i(assetUId);
-
+    Logger().i(assetUId);
     if (result != null) {
       Navigator.of(context).pop(true);
     } else {

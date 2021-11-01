@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/days_reusable_widget.dart';
-import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/increment_decrement_model.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
@@ -35,8 +32,6 @@ class _EstimatedRunTimeWidgetViewState
   void initState() {
     startDateInput.text = "";
     endDateInput.text = "";
-    
-
     viewModel = EstimatedRuntimeViewModel(widget.assetUids);
     super.initState();
   }
@@ -286,7 +281,10 @@ class _EstimatedRunTimeWidgetViewState
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
-                                    color: textcolor),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color),
                                 controller: viewModel.fulltargetTimeController,
                                 keyboardType: TextInputType.numberWithOptions(
                                   decimal: false,
@@ -352,7 +350,10 @@ class _EstimatedRunTimeWidgetViewState
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
-                                    color: textcolor),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color),
                                 controller: viewModel.fullIdleTimeController,
                                 keyboardType: TextInputType.numberWithOptions(
                                   decimal: false,

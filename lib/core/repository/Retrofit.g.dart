@@ -2546,7 +2546,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AddSettings> getassetSettingsFuelBurnRateData(
+  Future<AddSettings> getassetSettingsFuelBurnRateDataVL(
       url, assetFuelBurnRateSetting, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(
@@ -2569,7 +2569,34 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<AddSettings> getassetSettingsFuelBurnRateData(
+      url, assetFuelBurnRateSetting, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        assetFuelBurnRateSetting, 'assetFuelBurnRateSetting');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetFuelBurnRateSetting?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': serviceHeader
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddSettings.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
       url, estimatedAssetSetting, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(estimatedAssetSetting, 'estimatedAssetSetting');
@@ -2583,6 +2610,32 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'PUT',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedAssetSetting.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+      url, estimatedAssetSetting, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(estimatedAssetSetting, 'estimatedAssetSetting');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(estimatedAssetSetting?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': serviceHeader
+            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
@@ -2728,7 +2781,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(
       url, estimatedCycleVolumePayLoad, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(
@@ -2751,7 +2804,34 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetMileageSettingData> getMileageData(
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
+      url, estimatedCycleVolumePayLoad, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        estimatedCycleVolumePayLoad, 'estimatedCycleVolumePayLoad');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(estimatedCycleVolumePayLoad?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': serviceHeader
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedCycleVolumePayLoad.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetMileageSettingData> getMileageDataVL(
       url, assetMileageSettingData, customerId) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(
@@ -2766,6 +2846,33 @@ class _RestClient implements RestClient {
         options: RequestOptions(
             method: 'PUT',
             headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetMileageSettingData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetMileageSettingData> getMileageData(
+      url, assetMileageSettingData, customerId, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        assetMileageSettingData, 'assetMileageSettingData');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetMileageSettingData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': serviceHeader
+            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);

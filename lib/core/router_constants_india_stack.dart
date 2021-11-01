@@ -25,3 +25,4 @@ const String singleAssetTransferViewRoute = 'singleAssetTransferViewRoute';
 const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
+const String plantDashboardViewRoute = 'plantDashboardViewRoute';

@@ -63,13 +63,29 @@ class DetailResult {
   @JsonKey(name: "NetworkProvider")
   String NetworkProvider;
 
+  @JsonKey(name: "CommissioningDate")
+  String CommissioningDate;
+
+  @JsonKey(name: "SecondaryIndustry")
+  String SecondaryIndustry;
+
+  @JsonKey(name: "PrimaryIndustry")
+  String PrimaryIndustry;
+
+  @JsonKey(name: "OEMName")
+  String OEMName;
+
   DetailResult(
       {this.totalDevice,
       this.ActualStartDate,
       this.CustomerCode,
       this.CustomerName,
       this.DealerCode,
+      this.OEMName,
       this.DealerName,
+      this.CommissioningDate,
+      this.PrimaryIndustry,
+      this.SecondaryIndustry,
       this.GPSDeviceID,
       this.Model,
       this.SubscriptionEndDate,

@@ -92,6 +92,10 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                       count: viewModel.modelCount[index]
                                           .toString(),
                                       filter: viewModel.modelNames[index],
+                                      onClicked: () {
+                                        viewModel.gotoModelsPage(
+                                            viewModel.modelNames[index]);
+                                      },
                                     );
                                   }),
                             )),

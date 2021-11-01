@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 
 class IncrementDecrementwidget extends StatefulWidget {
@@ -48,7 +47,9 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
               contentPadding: EdgeInsets.only(left: 33.0),
             ),
             style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w700, color: textcolor),
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).textTheme.bodyText1.color),
             controller: fullWeekValue,
             keyboardType: TextInputType.numberWithOptions(
               decimal: false,
