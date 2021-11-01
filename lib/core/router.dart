@@ -21,6 +21,7 @@ import 'package:insite/views/asset_operation/asset_operation_view.dart'
     as view8;
 
 import 'package:insite/views/health/asset/asset_view.dart' as view8;
+import 'package:insite/views/plant/plant_view.dart' as view24;
 
 import 'package:insite/views/splash/splash_view.dart' as view0;
 
@@ -105,7 +106,8 @@ class Router {
       case subscriptionViewRoute:
         return MaterialPageRoute(builder: (_) => view16.SubscriptionView());
       case viewDashboardViewRoute:
-        return MaterialPageRoute(builder: (_) => view17.SubscriptionDashboardView());
+        return MaterialPageRoute(
+            builder: (_) => view17.SubscriptionDashboardView());
       case subDashBoardDetailsViewRoute:
         return MaterialPageRoute(
             builder: (_) => view18.SubDashBoardDetailsView());
@@ -123,6 +125,8 @@ class Router {
       case multipleAssetTransferViewRoute:
         return MaterialPageRoute(
             builder: (_) => view23.MultipleAssetTransferView());
+      case plantViewRoute:
+        return MaterialPageRoute(builder: (_) => view24.PlantView());
 
       default:
         return MaterialPageRoute(

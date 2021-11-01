@@ -16,10 +16,13 @@ const String loginPageRoute = 'loginPageRoute';
 const String administrationViewPageRoute = 'administrationViewPageRoute';
 const String addNewUserViewRoute = 'addNewUserViewRoute';
 const String manageUserViewRoute = 'manageUserViewRoute';
+<<<<<<< Updated upstream
 const String addgeofenseViewRoute = 'addgeofenseViewRoute';
 const String manageGeofenceViewRoute = 'manageGeofenceViewRoute';
 const String assetSettingsViewRoute = 'assetSettingsViewRoute';
 const String assetSettingsFilterViewRoute = 'assetSettingsFilterViewRoute';
+=======
+>>>>>>> Stashed changes
 const String subscriptionViewRoute = 'subscriptionViewRoute';
 const String viewDashboardViewRoute = 'viewDashboardViewRoute';
 const String subDashBoardDetailsViewRoute = 'subDashBoardDetailsViewRoute';
@@ -28,3 +31,4 @@ const String singleAssetRegViewRoute = 'singleAssetRegViewRoute';
 const String singleAssetTransferViewRoute = 'singleAssetTransferViewRoute';
 const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
+const String plantViewRoute = 'plantViewRoute';

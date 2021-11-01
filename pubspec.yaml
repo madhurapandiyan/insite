@@ -136,6 +136,7 @@ flutter:
     - assets/images/sms.svg
     - assets/images/export.svg
     - assets/images/transfer.svg
+    - assets/images/hier.svg
 
   fonts:
     - family: Roboto

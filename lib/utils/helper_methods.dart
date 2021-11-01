@@ -391,6 +391,9 @@ class Utils {
       case AdminAssetsButtonType.MULTIPLEASSESTTRANSFER:
         title = "MULTIPLE ASSET TRANSFER";
         break;
+      case AdminAssetsButtonType.VIEWHIERACHY:
+        title = "VIEW HIERACHY";
+        break;
 
       default:
     }
@@ -536,7 +539,7 @@ class Utils {
     return maxDate;
   }
 
-   imageData(String model) {
+  imageData(String model) {
     if (model.contains("SHINRAI")) {
       return "assets/images/shinrai.png";
     } else if (model.contains("EX130")) {

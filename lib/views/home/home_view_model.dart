@@ -10,6 +10,7 @@ import 'package:insite/views/dashboard/dashboard_view.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/location/location_view.dart';
+import 'package:insite/views/plant/plant_view.dart';
 import 'package:insite/views/subscription/subscription_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:logger/logger.dart';
@@ -54,6 +55,9 @@ class HomeViewModel extends InsiteViewModel {
           transition: "fade");
     } else if (type == ScreenType.SUBSCRIPTION) {
       _navigationService.navigateWithTransition(SubscriptionView(),
+          transition: "fade");
+    } else if (type == ScreenType.PLANT) {
+      _navigationService.navigateWithTransition(PlantView(),
           transition: "fade");
     }
   }

@@ -64,8 +64,9 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 ),
                 AssetSettingWidget(
                   headerText: "asset settings",
+                  buttonText: "Manage Asset configurations",
                   onButtonClicked: () {
-                   viewModel.onAssetSettingStateButtonClicked();
+                    viewModel.onAssetSettingStateButtonClicked();
                   },
                 ),
                 SizedBox(
