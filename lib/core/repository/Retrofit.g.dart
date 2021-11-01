@@ -2638,7 +2638,6 @@ class _RestClient implements RestClient {
 
   @override
   Future<dynamic> deleteGeofence(url, geofenceUID, actionUTC) async {
-    Logger().d(url);
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(geofenceUID, 'geofenceUID');
     ArgumentError.checkNotNull(actionUTC, 'actionUTC');
@@ -2682,6 +2681,52 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = SearchModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
+      url, estimatedCycleVolumePayLoad, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        estimatedCycleVolumePayLoad, 'estimatedCycleVolumePayLoad');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(estimatedCycleVolumePayLoad?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedCycleVolumePayLoad.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetMileageSettingData> getMileageData(
+      url, assetMileageSettingData, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        assetMileageSettingData, 'assetMileageSettingData');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetMileageSettingData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetMileageSettingData.fromJson(_result.data);
     return value;
   }
 }

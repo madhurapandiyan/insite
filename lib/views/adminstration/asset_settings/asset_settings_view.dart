@@ -56,7 +56,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                 child: InsiteButton(
                                     title: "",
                                     onTap: () {
-                                     viewModel.onClickEditselected();
+                                      viewModel.onClickEditselected();
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -122,6 +122,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         : SizedBox()
                   ],
                 ),
+                viewModel.isRefreshing ? InsiteProgressBar() : SizedBox()
               ],
             ));
       },

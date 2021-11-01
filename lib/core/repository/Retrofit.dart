@@ -14,6 +14,7 @@ import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
@@ -47,6 +48,7 @@ import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
+import 'package:insite/core/models/asset_mileage_settings.dart';
 part 'Retrofit.g.dart';
 
 // RUN THIS TO GENERATE FILES
@@ -722,6 +724,17 @@ abstract class RestClient {
       "https://singlesearch.alk.com/ww/api/search")
   Future<SearchModel> getSearchData(@Query("authToken") token,
       @Query("query") searchvalue, @Query("maxResults") int maxResults);
+  @PUT('{url}')
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
+      @Path() String url,
+      @Body() EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<AssetMileageSettingData> getMileageData(
+      @Path() String url,
+      @Body() AssetMileageSettingData assetMileageSettingData,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

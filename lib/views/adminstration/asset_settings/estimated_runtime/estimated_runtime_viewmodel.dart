@@ -16,8 +16,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   TextEditingController fulltargetTimeController = TextEditingController();
   TextEditingController fullIdleTimeController = TextEditingController();
 
-  String _assetUid;
-  String get assetUId => _assetUid;
+  List<String> _assetUid;
+  List<String> get assetUId => _assetUid;
 
   bool _isSelectedFullWeekTarget = false;
   bool get isSelectedFullWeekTarget => _isSelectedFullWeekTarget;
@@ -25,8 +25,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   bool _isSelectedFullWeekIdle = false;
   bool get isSelectedFullWeekIdle => _isSelectedFullWeekIdle;
 
+  var _snackBarService = locator<SnackbarService>();
+
   var _manageUserService = locator<AssetAdminManagerUserService>();
-  var _navigationService = locator<NavigationService>();
 
   List<IncrementDecrementValue> countValue = [
     IncrementDecrementValue(
@@ -45,8 +46,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
         runTimecount: "", runtimeDays: "Sat", idleCount: ""),
   ];
 
-  EstimatedRuntimeViewModel(AssetSetting assetSetting) {
-    _assetUid = assetSetting.assetUid;
+  EstimatedRuntimeViewModel(List<String> assetUidList) {
+    Logger().i("viewModel:$assetUidList");
+    _assetUid = assetUidList;
     this.log = getLogger(this.runtimeType.toString());
     fulltargetTimeController.text = "0";
     fullIdleTimeController.text = "0";
@@ -181,7 +183,13 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getAssetSettingTargetData(startDate, endDate) async {
+  getAssetSettingTargetData(
+      DateTime startDate, DateTime endDate, BuildContext context) async {
+    if (!endDate.isAfter(startDate)) {
+      _snackBarService.showSnackbar(
+          message: "EndDate should be greter than StartDate");
+      return;
+    }
     EstimatedAssetSetting result =
         await _manageUserService.getAssetTargetSettingsData(
             assetUId,
@@ -205,10 +213,13 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 thursday: int.parse(countValue[4].runTimecount),
                 friday: int.parse(countValue[5].runTimecount),
                 saturday: int.parse(countValue[6].runTimecount)));
-    print("result:$result");
+                Logger().i(assetUId);
+
     if (result != null) {
-      _navigationService.navigateWithTransition(AssetSettingsView(),
-          transition: "rightToLeft");
+      Navigator.of(context).pop(true);
+    } else {
+      Navigator.of(context).pop(false);
     }
+    notifyListeners();
   }
 }
