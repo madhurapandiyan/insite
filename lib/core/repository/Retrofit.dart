@@ -22,6 +22,7 @@ import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
+
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/role_data.dart';
@@ -36,7 +37,13 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
+import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
+import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/search_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -686,6 +693,35 @@ abstract class RestClient {
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<dynamic> postGeofenceAnotherData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Addgeofencemodel geofencepayload);
+
+  @GET("{url}")
+  Future<Materialmodel> getMaterialModel(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
+
+  @POST("{url}")
+  Future<dynamic> postGeofencePayLoad(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Geofencepayload geofencepayload);
+
+  @GET("{url}")
+  Future<Geofence> getGeofenceData(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
+
+  @DELETE("{url}")
+  Future<dynamic> deleteGeofence(@Path() String url,
+      @Query("geofenceuid") String geofenceUID, @Query("actionutc") String actionUTC);
+
+  @GET(
+      "https://singlesearch.alk.com/ww/api/search")
+  Future<SearchModel> getSearchData(@Query("authToken") token,
+      @Query("query") searchvalue, @Query("maxResults") int maxResults);
 }
 
 @JsonSerializable()

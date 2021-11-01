@@ -10,6 +10,7 @@ class CustomTextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      autofocus: false,
       controller: controller,
       style: TextStyle(
         fontWeight: FontWeight.w700,

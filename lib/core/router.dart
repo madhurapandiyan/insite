@@ -2,6 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
+    as view15;
+import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
+    as view16;
+import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
+    as view14;
+import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
+import 'package:insite/views/home/home_view.dart' as view7;
+import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
@@ -82,6 +92,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => view12.LoginPage());
       case administrationViewPageRoute:
         return MaterialPageRoute(builder: (_) => view13.AdminstrationView());
+      case manageUserViewRoute:
+        return MaterialPageRoute(builder: (_) => view14.ManageUserView());
+      case addgeofenseViewRoute:
+        return MaterialPageRoute(builder: (_) => view15.AddgeofenseView());
+      case addgeofenseViewRoute:
+        return MaterialPageRoute(builder: (_) => view16.ManageGeofenceView());
       case addNewUserViewRoute:
         return MaterialPageRoute(builder: (_) => view14.AddNewUserView());
       case manageUserViewRoute:

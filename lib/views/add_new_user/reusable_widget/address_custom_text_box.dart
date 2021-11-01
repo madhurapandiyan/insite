@@ -10,6 +10,7 @@ class AddressCustomTextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      autofocus: false,
       maxLines: 5,
       controller: controller,
       style: TextStyle(

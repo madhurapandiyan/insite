@@ -160,6 +160,11 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
   static String assetSettingsTarget =
       "/t/trimble.com/vss-assetsettings/1.0/assettargetsettings";
+  static String withMaterialData =
+      "/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithconfigs/asgeofence";
+  static String getMaterialData =
+      "/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials";
+  static String postPayLoad = "/t/trimble.com/vss-geofenceservice/1.0";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";

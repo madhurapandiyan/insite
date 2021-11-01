@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class InsiteInheritedDataProvider extends InheritedWidget {
   final int count;
   InsiteInheritedDataProvider({
@@ -7,8 +8,10 @@ class InsiteInheritedDataProvider extends InheritedWidget {
     this.count,
   }) : super(child: child);
   @override
-  bool updateShouldNotify(InsiteInheritedDataProvider oldWidget) =>
-      count != oldWidget.count;
+  bool updateShouldNotify(InsiteInheritedDataProvider oldWidget) {
+    return count != oldWidget.count;
+  }
+
   static InsiteInheritedDataProvider of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InsiteInheritedDataProvider>();
 }

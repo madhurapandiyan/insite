@@ -1,7 +1,7 @@
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:logger/logger.dart';
-import 'package:package_info/package_info.dart';
+
 
 import '../logger.dart';
 
