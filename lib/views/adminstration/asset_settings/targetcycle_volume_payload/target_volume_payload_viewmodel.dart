@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
+import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
+import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/incremet_decrement_payload.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   Logger log;
+
+  List<String> _assetUId;
+  List<String> get assetUid => _assetUId;
 
   bool _isChangeCycleState = false;
   bool get isChangeCycleState => _isChangeCycleState;
@@ -21,6 +29,9 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   TextEditingController volumeController = new TextEditingController();
 
   TextEditingController payLoadController = new TextEditingController();
+
+  var _manageUserService = locator<AssetAdminManagerUserService>();
+  var _snackBarService = locator<SnackbarService>();
 
   List<IncrementDecrementPayload> countValue = [
     IncrementDecrementPayload(
@@ -60,7 +71,8 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
         targetPayloadCount: ""),
   ];
 
-  TargetCycleVolumePayloadViewModel() {
+  TargetCycleVolumePayloadViewModel(List<String> assetUIdList) {
+    _assetUId = assetUIdList;
     this.log = getLogger(this.runtimeType.toString());
     cycleController.text = "0";
     volumeController.text = "0";
@@ -249,6 +261,53 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
       print(i.toString() +
           " " +
           "fullWeekPayLoadvalue : ${data.targetPayloadCount}");
+    }
+    notifyListeners();
+  }
+
+  getEstimatedCycleVolumePayLoad(
+      DateTime startDate, DateTime endDate, BuildContext context) async {
+    if (!endDate.isAfter(startDate)) {
+      _snackBarService.showSnackbar(
+          message: "EndDate should be greter than StartDate");
+      return;
+    }
+    EstimatedCycleVolumePayLoad result =
+        await _manageUserService.getEstimatedCycleVolumePayLoad(
+            assetUid,
+            Cycles(
+              sunday: int.parse(countValue[0].targetCyclesCount),
+              monday: int.parse(countValue[1].targetCyclesCount),
+              tuesday: int.parse(countValue[2].targetCyclesCount),
+              wednesday: int.parse(countValue[3].targetCyclesCount),
+              thursday: int.parse(countValue[4].targetCyclesCount),
+              friday: int.parse(countValue[5].targetCyclesCount),
+              saturday: int.parse(countValue[6].targetCyclesCount),
+            ),
+            Volumes(
+                sunday: double.parse(countValue[0].targetVolumesCount),
+                monday: double.parse(countValue[1].targetVolumesCount),
+                tuesday: double.parse(countValue[2].targetVolumesCount),
+                wednesday: double.parse(countValue[3].targetVolumesCount),
+                thursday: double.parse(countValue[4].targetVolumesCount),
+                friday: double.parse(countValue[5].targetVolumesCount),
+                saturday: double.parse(countValue[6].targetVolumesCount)),
+            Cycles(
+              sunday: int.parse(countValue[0].targetCyclesCount),
+              monday: int.parse(countValue[1].targetCyclesCount),
+              tuesday: int.parse(countValue[2].targetCyclesCount),
+              wednesday: int.parse(countValue[3].targetCyclesCount),
+              thursday: int.parse(countValue[4].targetCyclesCount),
+              friday: int.parse(countValue[5].targetCyclesCount),
+              saturday: int.parse(countValue[6].targetCyclesCount),
+            ),
+            startDate.toString(),
+            endDate.toString());
+    print("result:$result");
+    if (result != null) {
+      Navigator.of(context).pop(true);
+    } else {
+      Navigator.of(context).pop(false);
     }
     notifyListeners();
   }

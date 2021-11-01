@@ -9,8 +9,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedBurnRateWidget extends StatefulWidget {
-  final AssetSetting assetSetting;
-  EstimatedBurnRateWidget({this.assetSetting});
+
+ final List<String> assetUids;
+ EstimatedBurnRateWidget({this.assetUids});
 
   @override
   _EstimatedBurnRateWidgetState createState() =>
@@ -228,7 +229,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                     textColor: textcolor,
                     bgColor: tango,
                     onTap: () {
-                      viewModel.getAssetSettingFuelBurnRateData();
+                      viewModel.getAssetSettingFuelBurnRateData(context);
                     },
                   ),
                   SizedBox(
@@ -241,6 +242,9 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                     fontSize: 12,
                     textColor: textcolor,
                     bgColor: tuna,
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
                   ),
                   Expanded(
                     flex: 2,
@@ -252,7 +256,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
           ],
         );
       },
-      viewModelBuilder: () => EstimatedBurnRateViewModel(widget.assetSetting),
+      viewModelBuilder: () => EstimatedBurnRateViewModel(widget.assetUids),
     );
   }
 }

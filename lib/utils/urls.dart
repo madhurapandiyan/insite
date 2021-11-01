@@ -166,6 +166,9 @@ class Urls {
       "/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials";
   static String postPayLoad = "/t/trimble.com/vss-geofenceservice/1.0";
 
+  static String estimatedCycleVolumePayLoad="/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";    
+  static String estimatedMileage="/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings"; 
+  
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
   static String assetSummary = "$utilization/1.0/AssetOperation";

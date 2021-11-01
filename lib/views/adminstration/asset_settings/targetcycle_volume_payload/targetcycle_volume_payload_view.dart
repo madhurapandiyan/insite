@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/target_reusable_widget.dart';
@@ -10,7 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class TargetCycleVolumePayloadWidget extends StatefulWidget {
-  //const TargetCycleVolumePayloadWidget({ Key? key }) : super(key: key);
+  final List<String> assetUids;
+  TargetCycleVolumePayloadWidget({this.assetUids});
 
   @override
   _TargetCycleVolumePayloadWidgetState createState() =>
@@ -21,6 +23,8 @@ class _TargetCycleVolumePayloadWidgetState
     extends State<TargetCycleVolumePayloadWidget> {
   TextEditingController startDateInput = TextEditingController();
   TextEditingController endDateInput = TextEditingController();
+  DateTime startDate;
+  DateTime endDate;
 
   @override
   void initState() {
@@ -275,7 +279,7 @@ class _TargetCycleVolumePayloadWidgetState
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(left:20.0),
+                                    contentPadding: EdgeInsets.only(left: 20.0),
                                   ),
                                   style: TextStyle(
                                       fontSize: 14,
@@ -346,7 +350,8 @@ class _TargetCycleVolumePayloadWidgetState
                                     child: TextFormField(
                                       textAlign: TextAlign.center,
                                       decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(left:20.0),
+                                        contentPadding:
+                                            EdgeInsets.only(left: 20.0),
                                       ),
                                       style: TextStyle(
                                           fontSize: 14,
@@ -419,7 +424,8 @@ class _TargetCycleVolumePayloadWidgetState
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(left:20.0),
+                                      contentPadding:
+                                          EdgeInsets.only(left: 20.0),
                                     ),
                                     style: TextStyle(
                                         fontSize: 14,
@@ -482,10 +488,10 @@ class _TargetCycleVolumePayloadWidgetState
                         viewModel.getSingleItemCycleData(value, index);
                       },
                       onValueVolumeChange: (String value) {
-                         viewModel.getSingleVolumeItemData(value, index);
+                        viewModel.getSingleVolumeItemData(value, index);
                       },
                       onValuePayLoadChange: (String value) {
-                         viewModel.getSingleItemPayLoadData(value, index);
+                        viewModel.getSingleItemPayLoadData(value, index);
                       },
                       days: targetCycleVolumePayload.runTimeDays,
                       fullWeekCountCycleValue:
@@ -518,6 +524,9 @@ class _TargetCycleVolumePayloadWidgetState
                         viewModel.getFullWeekTCycleDataApply();
                         viewModel.getFullWeekVolumeDataApply();
                         viewModel.getFullWeekPayLoadDataApply();
+
+                        viewModel.getEstimatedCycleVolumePayLoad(
+                            startDate, endDate, context);
                       },
                     ),
                     SizedBox(
@@ -548,23 +557,26 @@ class _TargetCycleVolumePayloadWidgetState
           ],
         );
       },
-      viewModelBuilder: () => TargetCycleVolumePayloadViewModel(),
+      viewModelBuilder: () =>
+          TargetCycleVolumePayloadViewModel(widget.assetUids),
     );
   }
 
   getStartDatePicker() async {
     DateTime pickedStartdate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2101));
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101))
+        .then((value) => startDate = value);
 
     if (pickedStartdate != null) {
       print(pickedStartdate);
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedStartdate);
-      print(formattedDate);
+      String startDate = DateFormat('dd-MM-yyyy').format(pickedStartdate);
+
+      print(startDate);
       setState(() {
-        startDateInput.text = formattedDate;
+        startDateInput.text = startDate;
       });
     } else {
       print("Date is not selected");
@@ -573,17 +585,18 @@ class _TargetCycleVolumePayloadWidgetState
 
   getEndDatePicker() async {
     DateTime pickedEndDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2101));
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101))
+        .then((value) => endDate = value);
 
     if (pickedEndDate != null) {
       print(pickedEndDate);
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedEndDate);
-      print(formattedDate);
+      String endDate = DateFormat('dd-MM-yyyy').format(pickedEndDate);
+      print(endDate);
       setState(() {
-        endDateInput.text = formattedDate;
+        endDateInput.text = endDate;
       });
     } else {
       print("Date is not selected");

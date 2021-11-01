@@ -44,7 +44,7 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
         Flexible(
           child: TextFormField(
             decoration: InputDecoration(
-              border: InputBorder.none,
+              border: OutlineInputBorder(borderSide: BorderSide.none),
               contentPadding: EdgeInsets.only(left: 33.0),
             ),
             style: TextStyle(

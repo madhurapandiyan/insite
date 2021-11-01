@@ -14,18 +14,18 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
   TextEditingController workingcontroller = TextEditingController();
   TextEditingController idleController = TextEditingController();
   var _manageUserService = locator<AssetAdminManagerUserService>();
-  String _assetUId;
-  String get assetUID => _assetUId;
+ List< String> _assetUId;
+ List< String> get assetUID => _assetUId;
+
   double _workingValue;
   double get workingValue => _workingValue;
 
-  var _navigationService = locator<NavigationService>();
-
+  
   double _idleValue;
   double get idleValue => _idleValue;
 
-  EstimatedBurnRateViewModel(AssetSetting assetSetting) {
-    this._assetUId = assetSetting.assetUid;
+  EstimatedBurnRateViewModel(List<String> assetUid) {
+    this._assetUId = assetUid;
     this.log = getLogger(this.runtimeType.toString());
     workingcontroller.text = "0";
     idleController.text = "0";
@@ -59,15 +59,16 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getAssetSettingFuelBurnRateData() async {
+  getAssetSettingFuelBurnRateData(BuildContext context) async {
     _workingValue = double.parse(workingcontroller.text);
     _idleValue = double.parse(idleController.text);
 
     AddSettings result = await _manageUserService.getFuelBurnRateSettingsData(
         idleValue, workingValue, assetUID);
     if (result != null) {
-      _navigationService.navigateWithTransition(AssetSettingsView(),
-          transition: "rightToLeft");
+      Navigator.of(context).pop(true);
+    } else {
+      Navigator.of(context).pop(false);
     }
 
     notifyListeners();

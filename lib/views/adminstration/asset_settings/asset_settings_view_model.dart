@@ -19,6 +19,9 @@ class AssetSettingsViewModel extends InsiteViewModel {
   bool _showEdit = false;
   bool get showEdit => _showEdit;
 
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
+
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
 
@@ -62,6 +65,8 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
       _loading = false;
       _loadingMore = false;
+      _isRefreshing = false;
+
       notifyListeners();
     } else {
       for (var assetSetting in result.assetSettings) {
@@ -70,6 +75,8 @@ class AssetSettingsViewModel extends InsiteViewModel {
       }
       _loading = false;
       _loadingMore = false;
+      _isRefreshing = false;
+
       notifyListeners();
     }
   }
@@ -79,7 +86,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
-    if (_shouldLoadmore && !_loadingMore) {
+    if (_shouldLoadmore && !_loadingMore && !isRefreshing) {
       log.i("load more called");
       pageNumber++;
       _loadingMore = true;
@@ -137,16 +144,33 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onClickEditselected() {
-    AssetSettingsRow assetSettingsRow =
-        _assets.firstWhere((element) => element.isSelected);
-    onCardButtonSelected(assetSettingsRow);
+    List<String> assetUids = [];
+
+    for (int i = 0; i < _assets.length; i++) {
+      if (_assets[i].isSelected) {
+        assetUids.add(_assets[i].assetSettings.assetUid);
+      }
+    }
+    onCardButtonSelected(assetUids);
   }
 
-  onCardButtonSelected(AssetSettingsRow assetSettingsRow) {
-    _navigationservice.navigateWithTransition(
+  onCardButtonSelected(List<String> assetUid) async {
+    var result = await _navigationservice.navigateWithTransition(
         AssetSettingsFilterView(
-          assetSetting: assetSettingsRow.assetSettings,
+          assetUids: assetUid,
         ),
         transition: "fade");
+    Logger().i(result);
+
+    if (result != null && result) {
+      refresh();
+    }
+  }
+
+  refresh() {
+    onItemDeselect();
+    getAssetSettingListData();
+    _isRefreshing = true;
+    notifyListeners();
   }
 }

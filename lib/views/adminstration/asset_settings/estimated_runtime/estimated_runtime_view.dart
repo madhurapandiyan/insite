@@ -7,15 +7,15 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/days_reusable_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/increment_decrement_model.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
-
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
-  final AssetSetting assetSetting;
-  EstimatedRunTimeWidgetView({this.assetSetting});
+  final List<String> assetUids;
+  EstimatedRunTimeWidgetView({this.assetUids});
 
   @override
   _EstimatedRunTimeWidgetViewState createState() =>
@@ -27,15 +27,17 @@ class _EstimatedRunTimeWidgetViewState
   TextEditingController startDateInput = TextEditingController();
   TextEditingController endDateInput = TextEditingController();
   String dropDownValue = "Hours";
-
+  DateTime startDate;
+  DateTime endDate;
   var viewModel;
 
   @override
   void initState() {
     startDateInput.text = "";
     endDateInput.text = "";
+    
 
-    viewModel = EstimatedRuntimeViewModel(widget.assetSetting);
+    viewModel = EstimatedRuntimeViewModel(widget.assetUids);
     super.initState();
   }
 
@@ -43,7 +45,6 @@ class _EstimatedRunTimeWidgetViewState
   void dispose() {
     startDateInput.dispose();
     endDateInput.dispose();
-
     super.dispose();
   }
 
@@ -438,10 +439,9 @@ class _EstimatedRunTimeWidgetViewState
                         viewModel.onIdleClickValueApply();
                         viewModel.getFullWeekTargetDataApply();
                         viewModel.getFullWeekIdleDataApply();
-                        String startDateTime = startDateInput.text;
-                        String endDateTime = endDateInput.text;
+
                         viewModel.getAssetSettingTargetData(
-                            startDateTime, endDateTime);
+                            startDate, endDate, context);
                       },
                     ),
                     SizedBox(
@@ -479,14 +479,16 @@ class _EstimatedRunTimeWidgetViewState
 
   getStartDatePicker() async {
     DateTime pickedStartdate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2101));
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101))
+        .then((value) => startDate = value);
 
     if (pickedStartdate != null) {
       print(pickedStartdate);
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartdate);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedStartdate);
+
       print(formattedDate);
       setState(() {
         startDateInput.text = formattedDate;
@@ -498,17 +500,18 @@ class _EstimatedRunTimeWidgetViewState
 
   getEndDatePicker() async {
     DateTime pickedEndDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2101));
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101))
+        .then((value) => endDate = value);
 
     if (pickedEndDate != null) {
       print(pickedEndDate);
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedEndDate);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedEndDate);
       print(formattedDate);
       setState(() {
-        endDateInput.text = formattedDate;
+        endDateInput.text = formattedDate.toString();
       });
     } else {
       print("Date is not selected");
