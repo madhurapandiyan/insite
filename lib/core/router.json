@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-    "last_updated": "Wed, 20 Oct 2021 13:56:09 GMT",
-=======
     "last_updated": "Mon, 01 Nov 2021 12:40:00 GMT",
->>>>>>> Stashed changes
     "routes": [
         {
             "file_path": "views/splash/splash_view.dart",
