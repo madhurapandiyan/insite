@@ -8,6 +8,7 @@ import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view15;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
+import 'package:insite/views/plant/plant_view.dart' as view24;
 import 'package:insite/views/splash/india_stack_splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
@@ -105,6 +106,8 @@ class Router {
       case multipleAssetTransferViewRoute:
         return MaterialPageRoute(
             builder: (_) => view23.MultipleAssetTransferView());
+      case plantViewRoute:
+        return MaterialPageRoute(builder: (_) => view24.PlantView());
 
       default:
         return MaterialPageRoute(

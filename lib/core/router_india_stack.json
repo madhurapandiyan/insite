@@ -120,6 +120,11 @@
             "file_path": "views/multiple_asset_transfer/multiple_asset_transfer_view.dart",
             "route_name": "multiple_asset_transferViewRoute",
             "view_name": "MultipleAssetTransferView"
+        },
+        {
+            "file_path": "views/plant/plant_view.dart",
+            "route_name": "plantViewRoute",
+            "view_name": "PlantView"
         }
     ]
 }
