@@ -15,7 +15,7 @@ class ManageGeofenceView extends StatefulWidget {
 class _ManageGeofenceViewState extends State<ManageGeofenceView> {
   @override
   Widget build(BuildContext context) {
-    var mediaquerry = MediaQuery.of(context);
+    var mediaQuery = MediaQuery.of(context);
     return ViewModelBuilder<ManageGeofenceViewModel>.reactive(
       builder:
           (BuildContext context, ManageGeofenceViewModel viewModel, Widget _) {
@@ -37,8 +37,8 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             ),
                             InsiteButton(
                               title: "ADD GEOFENCE",
-                              height: mediaquerry.size.height * 0.05,
-                              width: mediaquerry.size.width * 0.4,
+                              height: mediaQuery.size.height * 0.05,
+                              width: mediaQuery.size.width * 0.4,
                             )
                           ],
                         ),

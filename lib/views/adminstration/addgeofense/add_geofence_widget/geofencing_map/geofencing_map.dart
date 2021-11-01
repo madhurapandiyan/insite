@@ -5,24 +5,24 @@ import 'package:logger/logger.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 
 class GeofencingMap extends StatefulWidget {
-  final List<String> maptype;
-  final Function(LatLng) gettingdata;
-  final String initialvalue;
+  final List<String> mapType;
+  final Function(LatLng) gettingData;
+  final String initialValue;
   final Color color;
   final Set<Circle> circle;
   final Set<Polygon> polygon;
   final Set<Polyline> polyline;
-  final bool isdrawing;
+  final bool isDrawing;
 
   GeofencingMap(
-      {this.maptype,
-      this.gettingdata,
+      {this.mapType,
+      this.gettingData,
       this.color,
-      this.initialvalue,
+      this.initialValue,
       this.circle,
       this.polygon,
       this.polyline,
-      this.isdrawing});
+      this.isDrawing});
 
   @override
   _GeofencingMapState createState() => _GeofencingMapState();
@@ -30,17 +30,16 @@ class GeofencingMap extends StatefulWidget {
 
 class _GeofencingMapState extends State<GeofencingMap> {
   GoogleMapsController controller;
-  CameraPosition centerposition;
+  CameraPosition centerPosition;
 
   @override
   void initState() {
     super.initState();
-    centerposition = CameraPosition(target: LatLng(30.666, 76.8127));
+    centerPosition = CameraPosition(target: LatLng(30.666, 76.8127));
   }
 
   @override
   Widget build(BuildContext context) {
-    //Logger().e(widget.zoomlev);
     return GoogleMaps(
       controller: GoogleMapsController(
         // onMapCreated: (controller) {
@@ -50,20 +49,20 @@ class _GeofencingMapState extends State<GeofencingMap> {
         // },
         zoomControlsEnabled: false,
         zoomGesturesEnabled: true,
-        mapType: widget.initialvalue == widget.maptype[0]
+        mapType: widget.initialValue == widget.mapType[0]
             ? MapType.normal
-            : widget.initialvalue == widget.maptype[1]
+            : widget.initialValue == widget.mapType[1]
                 ? MapType.terrain
-                : widget.initialvalue == widget.maptype[2]
+                : widget.initialValue == widget.mapType[2]
                     ? MapType.satellite
                     : MapType.hybrid,
         initialCircles: widget.circle,
-        initialCameraPosition: centerposition,
+        initialCameraPosition: centerPosition,
         initialPolygons: widget.circle.isEmpty ? null : widget.polygon,
         initialPolylines: widget.polyline.isEmpty ? null : widget.polyline,
-        onTap: widget.isdrawing
+        onTap: widget.isDrawing
             ? (latlng) {
-                widget.gettingdata(latlng);
+                widget.gettingData(latlng);
               }
             : null,
       ),

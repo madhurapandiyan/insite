@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocore/base.dart' as geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/router_constants.dart';
 
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/theme/colors.dart';
@@ -22,7 +21,7 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AddgeofenseViewModel extends InsiteViewModel {
-  final _geofenceservice = locator<Geofenceservice>();
+  final _geofenceService = locator<Geofenceservice>();
   var _navigationService = locator<NavigationService>();
   Logger log;
 
@@ -31,7 +30,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
     getMaterialData();
   }
-  double zoomval = 5;
+  double zoomValue = 5;
 
   Geofencepayload geofenceRequestPayload;
 
@@ -47,8 +46,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Set<Polyline> _polyline = {};
   Set<Polyline> get polyline => _polyline;
 
-  List<LatLng> _listoflatlang = [];
-  List<LatLng> get listoflatlang => _listoflatlang;
+  List<LatLng> _listOfLatLong = [];
+  List<LatLng> get listOfLatLong => _listOfLatLong;
 
   List<LatLng> correctedListofLatlang = [];
 
@@ -70,18 +69,11 @@ class AddgeofenseViewModel extends InsiteViewModel {
   List<List<num>> listOfNumber = [];
 
   List<m.Material> materialModelList = [];
-
-  String title;
-  String descriptiontxt;
-  String materialName;
-  String targetValue;
   DateTime backFillDate;
-  DateTime enddate;
-
+  DateTime endingDate;
   DateTime actionUTC = DateTime.now();
   String geofenceType;
   String materialUID;
-
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var targetController = TextEditingController();
@@ -107,60 +99,60 @@ class AddgeofenseViewModel extends InsiteViewModel {
   // Future<void> _plus(
   //   double zoomVal,
   // ) async {
-  //   finalpolygonOBJl GoogleMapController controller = await contro.future;
+  //   finalPolygonOBJl GoogleMapController controller = await contro.future;
   //   controller.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: listoflatlang.last, zoom: zoomVal)));
+  //       CameraPosition(target: listOfLatLong.last, zoom: zoomVal)));
   // }
 
   // onZoomOut() {
-  //   zoomval--;
+  //   zoomValue--;
   // }
 
-  LatLng lastlatlng;
+  LatLng lastLatLong;
 
   onGettingLatLang(
-    LatLng userLatlang,
+    LatLng userLatlong,
   ) {
-    Polyline userpolyline;
-    Polygon userpolygon;
-    Circle usercircle;
-    double latitude = userLatlang.longitude;
-    double longitude = userLatlang.latitude;
-    LatLng correctedlatlng = LatLng(latitude, longitude);
-    lastlatlng = correctedlatlng;
-    correctedListofLatlang.add(correctedlatlng);
+    Polyline userPolyline;
+    Polygon userPolygon;
+    Circle userCircle;
+    double latitude = userLatlong.longitude;
+    double longitude = userLatlong.latitude;
+    LatLng correctedLatLong = LatLng(latitude, longitude);
+    lastLatLong = correctedLatLong;
+    correctedListofLatlang.add(correctedLatLong);
 
-    _listoflatlang.add(userLatlang);
+    _listOfLatLong.add(userLatlong);
 
-    userpolyline = Polyline(
+    userPolyline = Polyline(
       jointType: JointType.round,
       endCap: Cap.roundCap,
       startCap: Cap.buttCap,
       width: 5,
-      points: _listoflatlang,
+      points: _listOfLatLong,
       polylineId: PolylineId(DateTime.now().toString()),
       consumeTapEvents: true,
       color: color,
       visible: true,
     );
-    userpolygon = Polygon(
+    userPolygon = Polygon(
         strokeColor: color,
         strokeWidth: 5,
         polygonId: PolygonId(DateTime.now().toString()),
         fillColor: color,
         visible: true,
-        points: listoflatlang);
-    usercircle = Circle(
+        points: listOfLatLong);
+    userCircle = Circle(
         radius: 200,
         strokeWidth: 5,
         strokeColor: black,
         visible: true,
         circleId: CircleId(DateTime.now().toString()),
-        center: userLatlang,
+        center: userLatlong,
         fillColor: Colors.white);
-    _polygon.add(userpolygon);
-    _polyline.add(userpolyline);
-    _circle.add(usercircle);
+    _polygon.add(userPolygon);
+    _polyline.add(userPolyline);
+    _circle.add(userCircle);
     //colorValue = int.parse(color.toString());
     Logger().e(_circle);
 
@@ -169,10 +161,10 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   getMaterialData() async {
     try {
-      _materialData = await _geofenceservice.getmaterialmodeldata();
+      _materialData = await _geofenceService.getMaterialModelData();
       for (var i = 0; i < _materialData.materials.length; i++) {
-        m.Material extractedmaterial = _materialData.materials[i];
-        materialModelList.add(extractedmaterial);
+        m.Material extractedMaterial = _materialData.materials[i];
+        materialModelList.add(extractedMaterial);
       }
 
       Logger().e(materialModelList.length);
@@ -182,19 +174,18 @@ class AddgeofenseViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  checkBoxState() {
-    isNoendDate = !isNoendDate;
-    //Logger().e(setDefaultPreferenceToUser);
-    notifyListeners();
-  }
+  // checkBoxState() {
+  //   isNoendDate = !isNoendDate;
+  //   //Logger().e(setDefaultPreferenceToUser);
+  //   notifyListeners();
+  // }
 
   materialSelection(String value) {
     Logger().i("query typeed " + value);
     for (var i = 0; i < _materialData.materials.length; i++) {
-      m.Material extractedmaterial = _materialData.materials[i];
-      materialModelList.add(extractedmaterial);
+      m.Material extractedMaterial = _materialData.materials[i];
+      materialModelList.add(extractedMaterial);
     }
-
     Logger().e(materialModelList.length);
     Logger().d(materialModelList);
     if (value != null) {
@@ -205,8 +196,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
           if (item.name.contains(value.toUpperCase())) tempList.add(item);
         });
         materialModelList = tempList;
-        //Logger().i("total list size " + list.length.toString());
-        //Logger().i("searched list size " + displayList.length.toString());
         notifyListeners();
       } else {
         return materialModelList;
@@ -217,8 +206,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   // selectedPolyLine(LatLng latlongdata) async {
   //   try {
-  //     List<LatLng> newlistoflatlang = [];
-  //     newlistoflatlang.add(latlongdata);
+  //     List<LatLng> newlistOfLatLong = [];
+  //     newlistOfLatLong.add(latlongdata);
   //     Polyline newpolyline = Polyline(
   //         polylineId: PolylineId(DateTime.now().toString()),
   //         color: Colors.amber,
@@ -226,14 +215,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
   //         geodesic: true,
   //         consumeTapEvents: false,
   //         width: 12,
-  //         points: newlistoflatlang);
+  //         points: newlistOfLatLong);
 
   //     Polygon newpolygon = Polygon(
   //         fillColor: Colors.blue,
   //         strokeColor: Colors.black,
   //         strokeWidth: 12,
   //         polygonId: PolygonId(DateTime.now().toString()),
-  //         points: newlistoflatlang);
+  //         points: newlistOfLatLong);
 
   //     _polyline.add(newpolyline);
 
@@ -248,8 +237,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   convertingPolyOBJtoWKT() {
     try {
-      lastlatlng = correctedListofLatlang.first;
-      correctedListofLatlang.add(lastlatlng);
+      lastLatLong = correctedListofLatlang.first;
+      correctedListofLatlang.add(lastLatLong);
       Logger().d(correctedListofLatlang);
 
       for (var i = 0; i < correctedListofLatlang.length; i++) {
@@ -263,21 +252,21 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
       //Logger().d(listOfNumber);
 
-      List<geo.Point2> listofpoint2 = [];
-      geo.PointSeries mappiy;
-      geo.LineString<geo.Point<num>> anotherdummy;
-      List<geo.LineString<geo.Point<num>>> value = [];
+      List<geo.Point2> listOfPoints = [];
+      geo.PointSeries pointSeries;
+      geo.LineString<geo.Point<num>> lineStringSeries;
+      List<geo.LineString<geo.Point<num>>> listOfLineSeries = [];
       for (var i = 0; i < listOfNumber.length; i++) {
         geo.Point2 point = geo.Point2.geometry.newFrom(listOfNumber[i]);
-        listofpoint2.add(point);
+        listOfPoints.add(point);
       }
-      mappiy = geo.PointSeries.make(listOfNumber, geo.Point2.geometry);
-      anotherdummy = geo.LineString(mappiy);
-      value.add(anotherdummy);
-      String finalpolygonOBJ = "POLYGON((${anotherdummy.toString()}))";
+      pointSeries = geo.PointSeries.make(listOfNumber, geo.Point2.geometry);
+      lineStringSeries = geo.LineString(pointSeries);
+      listOfLineSeries.add(lineStringSeries);
+      String finalPolygonOBJ = "POLYGON((${lineStringSeries.toString()}))";
 
-      if (finalpolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
-        String polygonWKT1 = finalpolygonOBJ.replaceAll(
+      if (finalPolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
+        String polygonWKT1 = finalPolygonOBJ.replaceAll(
             "((LineString<Point<num>>([Point2(", "((");
         //Logger().d(polygonWKT1);
         if (polygonWKT1.contains("), Point2(")) {
@@ -294,7 +283,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
       }
       correctedListofLatlang.clear();
       listOfNumber.clear();
-      listoflatlang.clear();
+      listOfLatLong.clear();
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -316,7 +305,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   convertingOBJtoModel() {
     String titleText = titleController.text;
     String descriptionText = descriptionController.text;
-    Logger().e(enddate);
+    Logger().e(endingDate);
     Logger().e(finalPolygonWKTstring);
     if (initialValue == dropDownlist[0] ||
         initialValue == dropDownlist[1] ||
@@ -325,18 +314,17 @@ class AddgeofenseViewModel extends InsiteViewModel {
           ActionUTC: DateTime.now().toString(),
           Description: descriptionText == null ? null : descriptionText,
           GeofenceName: titleText,
-          EndDate: enddate == null ? null : enddate.toString(),
+          EndDate: endingDate == null ? null : endingDate.toString(),
           GeometryWKT: finalPolygonWKTstring,
           GeofenceType: initialValue,
           IsTransparent: true,
           FillColor: 658170);
     } else {
-      Logger().e(targetValue);
       geofenceRequestPayload = Geofencepayload(
           ActionUTC: DateTime.now().toString(),
           Description: descriptionText == null ? null : descriptionText,
           GeofenceName: titleText,
-          EndDate: enddate == null ? null : enddate.toString(),
+          EndDate: endingDate == null ? null : endingDate.toString(),
           GeometryWKT: finalPolygonWKTstring,
           GeofenceType: initialValue,
           IsTransparent: true,
@@ -363,19 +351,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
     try {
       await convertingPolyOBJtoWKT();
       await convertingOBJtoModel();
-      //Logger().e(geofenceRequestPayload.toJson());
-
-      //Logger().d(finalPolygonWKTstring);
-      //Logger().e(addGeofencePayLoad.toJson());
-      //print(addGeofencePayLoad.toJson());
       if (initialValue == dropDownlist[0] ||
           initialValue == dropDownlist[1] ||
           initialValue == dropDownlist[7]) {
-        Map<String, dynamic> data = await _geofenceservice
+        Map<String, dynamic> data = await _geofenceService
             .postGeofenceData(geofenceRequestPayload)
             .then((value) {
           if (value == null) {
-            navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+            _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
           } else {
             return;
           }
@@ -384,18 +367,18 @@ class AddgeofenseViewModel extends InsiteViewModel {
         Logger().e(data);
       } else {
         isLoading = true;
-        var data = await _geofenceservice
+        var data = await _geofenceService
             .postAddGeofenceData(addGeofencePayLoad)
             .then((value) {
           if (value == null) {
-            navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+            _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
           } else {
             return;
           }
         });
       }
 
-      // listoflatlang.clear();
+      // listOfLatLong.clear();
       // correctedListofLatlang.clear();
       // listOfNumber.clear();
       // _polygon.clear();

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:logger/logger.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
@@ -26,19 +25,19 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var mediaquerry = MediaQuery.of(context);
+    var mediaQuery = MediaQuery.of(context);
     return Column(
       children: [
         Card(
           child: Container(
             width: double.maxFinite,
-            height: MediaQuery.of(context).size.height * 0.288,
+            height: mediaQuery.size.height * 0.288,
             child: Column(
               children: [
                 Container(
                   margin: EdgeInsets.all(8),
-                  width: MediaQuery.of(context).size.width * 0.86,
-                  height: MediaQuery.of(context).size.height * 0.20,
+                  width: mediaQuery.size.width * 0.86,
+                  height: mediaQuery.size.height * 0.20,
                   decoration: BoxDecoration(
                     boxShadow: [new BoxShadow(blurRadius: 1.0, color: bgcolor)],
                     border: Border.all(width: 2.5, color: bgcolor),

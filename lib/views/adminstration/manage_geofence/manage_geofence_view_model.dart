@@ -26,41 +26,36 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   List<Set<Polyline>> _fetchedPolygons = [];
   List<Set<Polyline>> get fetchedPolygons => _fetchedPolygons;
 
-  List<geo.Polygon> _polygondata = [];
+  List<geo.Polygon> _polygonData = [];
   List<String> listOfEncoded = [];
-  List<Set<Polygon>> type = [];
 
   Geofence _geofence;
   Geofence get geofence => _geofence;
-  var value;
-  List<num> list;
 
   getGeofencedata() async {
-    List<String> dat = [];
+    List<String> listOfWKTstring = [];
 
     //MapLatLng latlo = MapLatLng(latitude, longitude);
-    List<geo.PointSeries<geo.Point<num>>> pointseries = [];
-    _geofence = await _geofenceservice.getgeoencedata();
+    List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
+    _geofence = await _geofenceservice.getGeofenceData();
 
     try {
       for (var i = 0; i < _geofence.Geofences.length; i++) {
-        String wkttext = _geofence.Geofences[i].GeometryWKT;
+        String wktText = _geofence.Geofences[i].GeometryWKT;
         //Logger().e(_geofence.Geofences.last.GeometryWKT);
-        dat.add(wkttext);
-        final geofencedata = geo.wktProjected.parse(dat[i]);
-        Logger().d(geofencedata);
-        Logger().d(_polygondata);
-        _polygondata.add(geofencedata);
-        Logger().e(_polygondata);
-        final points = _polygondata[i].exterior.chain;
+        listOfWKTstring.add(wktText);
+        final geofenceData = geo.wktProjected.parse(listOfWKTstring[i]);
+        Logger().d(geofenceData);
+        Logger().d(_polygonData);
+        _polygonData.add(geofenceData);
+        Logger().e(_polygonData);
+        final points = _polygonData[i].exterior.chain;
         Logger().d(points);
-        pointseries.add(points);
+        listOfPointSeries.add(points);
       }
-      //Logger().d(pointseries);
 
-      getEncodedPolylines(pointseries);
-      //makemaplatlan(pointseries);
-      //getEncodedPolylines(pointseries);
+      getEncodedPolylines(listOfPointSeries);
+
       return 1;
     } catch (e) {
       Logger().e(e.toString());
