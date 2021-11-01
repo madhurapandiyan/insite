@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_burn_rate/estimated_burn_rate_view.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_mileage_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_payload_cycle.dart';
@@ -10,7 +12,15 @@ import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_settings_filter_view_model.dart';
 
-class AssetSettingsFilterView extends StatelessWidget {
+class AssetSettingsFilterView extends StatefulWidget {
+  final AssetSetting assetSetting;
+  AssetSettingsFilterView({this.assetSetting});
+  
+  @override
+  _AssetSettingsFilterViewState createState() => _AssetSettingsFilterViewState();
+}
+
+class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsFilterViewModel>.reactive(
@@ -18,6 +28,7 @@ class AssetSettingsFilterView extends StatelessWidget {
           Widget _) {
         return InsiteScaffold(
           viewModel: viewModel,
+          screenType: ScreenType.ASSET_SETTINGS_FILTER,
           body: Container(
               height: MediaQuery.of(context).size.height * 0.75,
               decoration: BoxDecoration(
@@ -37,14 +48,16 @@ class AssetSettingsFilterView extends StatelessWidget {
                   ),
                   FilterItemWidget(
                     text: "set estimated runtime/idling targets".toUpperCase(),
-                    body: EstimatedRunTimeWidgetView(),
+                    body: EstimatedRunTimeWidgetView(
+                      assetSetting: widget.assetSetting,
+                    ),
                   ),
                   SizedBox(
                     height: 8,
                   ),
                   FilterItemWidget(
                     text: "set estimated fuel burn rate".toUpperCase(),
-                    body: EstimatedBurnRateWidget(),
+                    body: EstimatedBurnRateWidget(assetSetting: widget.assetSetting,),
                   ),
                   SizedBox(
                     height: 8,

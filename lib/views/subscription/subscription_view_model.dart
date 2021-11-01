@@ -8,7 +8,6 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:insite/core/models/subscription_dashboard.dart';
 
 class SubscriptionViewModel extends InsiteViewModel {
   Logger log;
@@ -21,21 +20,11 @@ class SubscriptionViewModel extends InsiteViewModel {
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(View(), transition: "fade");
+      _navigationService.navigateWithTransition(SubscriptionDashboardView(),
+          transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWREGISTRATION) {
       navigationService.navigateWithTransition(SubRegistrationView(),
           transition: "fade");
     }
-  }
-
-  getSubscriptionDashboardData() async {
-    Logger().i("getApplicationAccessData");
-    DashboardResult result =
-        await _subscriptionService.getResultsFromSubscriptionApi();
-    if (result != null) {
-      Logger().d('no results found');
-    }
-    Logger().d('$result');
-    notifyListeners();
   }
 }

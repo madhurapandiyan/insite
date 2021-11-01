@@ -128,103 +128,6 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<dynamic> postgeofencepayload2(
-      token, customerUID, geofencepayload) async {
-    ArgumentError.checkNotNull(token, 'token');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request(
-        '/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithconfigs/asgeofence',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{
-              r'authorization': token,
-              r'x-visionlink-customeruid': customerUID
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = _result.data;
-    return value;
-  }
-
-  @override
-  Future<Materialmodel> getmaterialmodel(token, customerUID) async {
-    ArgumentError.checkNotNull(token, 'token');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'authorization': token,
-              r'x-visionlink-customeruid': customerUID
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = Materialmodel.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<dynamic> postgeofencepayload(
-      token, customerUID, geofencepayload) async {
-    ArgumentError.checkNotNull(token, 'token');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request('/t/trimble.com/vss-geofenceservice/1.0',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{
-              r'authorization': token,
-              r'x-visionlink-customeruid': customerUID
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = _result.data;
-    return value;
-  }
-
-  @override
-  Future<Geofence> getgeofencedata(token, customerUID) async {
-    ArgumentError.checkNotNull(token, 'token');
-    ArgumentError.checkNotNull(customerUID, 'customerUID');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/t/trimble.com/vss-geofenceservice/1.0',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{
-              r'authorization': token,
-              r'x-visionlink-customeruid': customerUID
-            },
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = Geofence.fromJson(_result.data);
-    return value;
-  }
-
-  @override
   Future<UserInfo> getUserInfo(contentType, authorization) async {
     ArgumentError.checkNotNull(contentType, 'contentType');
     ArgumentError.checkNotNull(authorization, 'authorization');
@@ -2581,7 +2484,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<DashboardResult> getSubscriptionDashboardResults(url) async {
+  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(
+      url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2594,7 +2498,190 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = DashboardResult.fromJson(_result.data);
+    final value = SubscriptionDashboardResult.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AddSettings> getassetSettingsFuelBurnRateData(
+      url, assetFuelBurnRateSetting, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(
+        assetFuelBurnRateSetting, 'assetFuelBurnRateSetting');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetFuelBurnRateSetting?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddSettings.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+      url, estimatedAssetSetting, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(estimatedAssetSetting, 'estimatedAssetSetting');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(estimatedAssetSetting?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedAssetSetting.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> postGeofenceAnotherData(
+      url, customeruid, geofencepayload) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<Materialmodel> getMaterialModel(url, customeruid) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Materialmodel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> postGeofencePayLoad(url, customeruid, geofencepayload) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<Geofence> getGeofenceData(url, customeruid) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Geofence.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> deleteGeofence(url, geofenceUID, actionUTC) async {
+    Logger().d(url);
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(geofenceUID, 'geofenceUID');
+    ArgumentError.checkNotNull(actionUTC, 'actionUTC');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'geofenceuid': geofenceUID,
+      r'actionutc': actionUTC
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'DELETE',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<SearchModel> getSearchData(token, searchvalue, maxResults) async {
+    ArgumentError.checkNotNull(token, 'token');
+    ArgumentError.checkNotNull(searchvalue, 'searchvalue');
+    ArgumentError.checkNotNull(maxResults, 'maxResults');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'authToken': token?.toJson(),
+      r'query': searchvalue?.toJson(),
+      r'maxResults': maxResults
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        'https://singlesearch.alk.com/ww/api/search',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchModel.fromJson(_result.data);
     return value;
   }
 }

@@ -6,7 +6,8 @@ class Dropdown extends StatefulWidget {
   List<String> maptype;
   String initialvalue;
   Function(String) changingvalue;
-  Dropdown(this.maptype, this.initialvalue, this.changingvalue);
+
+  Dropdown({this.maptype, this.initialvalue, this.changingvalue});
 
   @override
   _DropdownState createState() => _DropdownState();
@@ -17,7 +18,7 @@ class _DropdownState extends State<Dropdown> {
   Widget build(BuildContext context) {
     var mediaquerry = MediaQuery.of(context);
     return Container(
-      margin: EdgeInsets.only(left: 20, top: 15),
+      // margin: EdgeInsets.only(left: 20, top: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: Theme.of(context).cardColor,

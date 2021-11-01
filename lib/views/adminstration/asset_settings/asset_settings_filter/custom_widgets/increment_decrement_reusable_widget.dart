@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:logger/logger.dart';
 
 class IncrementDecrementwidget extends StatefulWidget {
   final Function(String) onValueChange;
   final String countValue;
+  final TextEditingController textEditingController;
 
-  const IncrementDecrementwidget({this.onValueChange, this.countValue});
+  const IncrementDecrementwidget(
+      {this.onValueChange, this.countValue, this.textEditingController});
 
   @override
   _IncrementDecrementwidgetState createState() =>
@@ -14,7 +17,13 @@ class IncrementDecrementwidget extends StatefulWidget {
 }
 
 class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
-  TextEditingController fullWeekValue = new TextEditingController();
+  TextEditingController fullWeekValue = new TextEditingController(text: "0");
+
+  @override
+  void initState() {
+    fullWeekValue.text = widget.countValue;
+    super.initState();
+  }
 
   @override
   void didUpdateWidget(covariant IncrementDecrementwidget oldWidget) {
@@ -34,10 +43,9 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
       children: [
         Flexible(
           child: TextFormField(
-            textAlign: TextAlign.center,
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.all(8.0),
+              contentPadding: EdgeInsets.only(left: 33.0),
             ),
             style: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w700, color: textcolor),
@@ -80,22 +88,34 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
   }
 
   void getIncrementValue() {
-    int currentValue = int.parse(fullWeekValue.text);
-    currentValue++;
-
-    setState(() {
+    Logger().i(fullWeekValue.text);
+    try {
+      int currentValue = 0;
+      if (fullWeekValue.text.isNotEmpty) {
+        currentValue = int.parse(fullWeekValue.text);
+      }
+      currentValue++;
       fullWeekValue.text = (currentValue).toString();
       widget.onValueChange(fullWeekValue.text);
-    });
+      setState(() {});
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   void getDecrementValue() {
-    int currentValue = int.parse(fullWeekValue.text);
-    currentValue--;
-
-    setState(() {
+    Logger().i(fullWeekValue.text);
+    try {
+      int currentValue = 0;
+      if (fullWeekValue.text.isNotEmpty) {
+        currentValue = int.parse(fullWeekValue.text);
+      }
+      currentValue--;
       fullWeekValue.text = (currentValue > 0 ? currentValue : 0).toString();
       widget.onValueChange(fullWeekValue.text);
-    });
+      setState(() {});
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

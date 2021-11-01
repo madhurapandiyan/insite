@@ -6,51 +6,42 @@ part of 'subscription_dashboard.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DashboardResult _$DashboardResultFromJson(Map<String, dynamic> json) {
-  return DashboardResult(
-    resultData: (json['resultData'] as List)
-        ?.map((e) =>
-            e == null ? null : ResultData.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
-
-Map<String, dynamic> _$DashboardResultToJson(DashboardResult instance) =>
-    <String, dynamic>{
-      'resultData': instance.resultData?.map((e) => e?.toJson())?.toList(),
-    };
-
-ResultData _$ResultDataFromJson(Map<String, dynamic> json) {
-  return ResultData(
+SubscriptionDashboardResult _$SubscriptionDashboardResultFromJson(
+    Map<String, dynamic> json) {
+  return SubscriptionDashboardResult(
     result: (json['result'] as List)
-        ?.map((e) =>
-            e == null ? null : Results.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => (e as List)
+            ?.map((e) =>
+                e == null ? null : Result.fromJson(e as Map<String, dynamic>))
+            ?.toList())
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$ResultDataToJson(ResultData instance) =>
+Map<String, dynamic> _$SubscriptionDashboardResultToJson(
+        SubscriptionDashboardResult instance) =>
     <String, dynamic>{
-      'result': instance.result?.map((e) => e?.toJson())?.toList(),
+      'result': instance.result,
     };
 
-Results _$ResultsFromJson(Map<String, dynamic> json) {
-  return Results(
-    activeList: json['activelist'] as int,
-    inActiveList: json['inActiveList'] as int,
-    modelCount: json['ModelCount'] as int,
+Result _$ResultFromJson(Map<String, dynamic> json) {
+  return Result(
+    activeList: (json['activelist'] as num)?.toDouble(),
+    inActiveList: (json['inActiveList'] as num)?.toDouble(),
+    modelCount: (json['ModelCount'] as num)?.toDouble(),
     modelName: json['ModelName'] as String,
-    totalDevice: json['totalDevice'] as int,
-    plantAssetCount: json['PlantAssetCount'] as int,
-    subscriptionAndAsset: json['subscriptionEndAsset'] as int,
-    dayCount: json['day_count'] as int,
-    weekCount: json['week_count'] as int,
-    monthCount: json['month_count'] as int,
-    subscriptionEndingAsset: json['subscriptionEndingAsset_Month'] as int,
+    totalDevice: (json['totalDevice'] as num)?.toDouble(),
+    plantAssetCount: (json['PlantAssetCount'] as num)?.toDouble(),
+    subscriptionAndAsset: (json['subscriptionEndAsset'] as num)?.toDouble(),
+    dayCount: (json['day_count'] as num)?.toDouble(),
+    weekCount: (json['week_count'] as num)?.toDouble(),
+    monthCount: (json['month_count'] as num)?.toDouble(),
+    subscriptionEndingAsset:
+        (json['subscriptionEndingAsset_Month'] as num)?.toDouble(),
   );
 }
 
-Map<String, dynamic> _$ResultsToJson(Results instance) => <String, dynamic>{
+Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'activelist': instance.activeList,
       'inActiveList': instance.inActiveList,
       'ModelCount': instance.modelCount,

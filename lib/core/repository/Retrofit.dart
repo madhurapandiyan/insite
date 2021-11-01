@@ -4,11 +4,13 @@ import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
+import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
 import 'package:insite/core/models/customer.dart';
@@ -39,6 +41,7 @@ import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.da
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/search_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
@@ -71,27 +74,6 @@ abstract class RestClient {
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
-
-  @POST(
-      "/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithconfigs/asgeofence")
-  Future<dynamic> postgeofencepayload2(
-      @Header("authorization") String token,
-      @Header("x-visionlink-customeruid") String customerUID,
-      @Body() Addgeofencemodel geofencepayload);
-
-  @GET("/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials")
-  Future<Materialmodel> getmaterialmodel(@Header("authorization") String token,
-      @Header("x-visionlink-customeruid") String customerUID);
-
-  @POST("/t/trimble.com/vss-geofenceservice/1.0")
-  Future<dynamic> postgeofencepayload(
-      @Header("authorization") String token,
-      @Header("x-visionlink-customeruid") String customerUID,
-      @Body() Geofencepayload geofencepayload);
-
-  @GET("/t/trimble.com/vss-geofenceservice/1.0")
-  Future<Geofence> getgeofencedata(@Header("authorization") String token,
-      @Header("x-visionlink-customeruid") String customerUID);
 
   @GET("/userinfo?schema=openid")
   Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
@@ -694,12 +676,52 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
+
   @GET('{url}')
-  Future<DashboardResult> getSubscriptionDashboardResults(
+  Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(
     @Path() String url,
+    // @Header("Authorization") String authorization
   );
 
-  // @Header("Authorization") String authorization
+  @PUT('{url}')
+  Future<AddSettings> getassetSettingsFuelBurnRateData(
+      @Path() String url,
+      @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
+      @Header("x-visionlink-customeruid") customerId);
+  @PUT('{url}')
+  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+      @Path() String url,
+      @Body() EstimatedAssetSetting estimatedAssetSetting,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<dynamic> postGeofenceAnotherData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Addgeofencemodel geofencepayload);
+
+  @GET("{url}")
+  Future<Materialmodel> getMaterialModel(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
+
+  @POST("{url}")
+  Future<dynamic> postGeofencePayLoad(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Geofencepayload geofencepayload);
+
+  @GET("{url}")
+  Future<Geofence> getGeofenceData(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
+
+  @DELETE("{url}")
+  Future<dynamic> deleteGeofence(@Path() String url,
+      @Query("geofenceuid") String geofenceUID, @Query("actionutc") String actionUTC);
+
+  @GET(
+      "https://singlesearch.alk.com/ww/api/search")
+  Future<SearchModel> getSearchData(@Query("authToken") token,
+      @Query("query") searchvalue, @Query("maxResults") int maxResults);
 }
 
 @JsonSerializable()

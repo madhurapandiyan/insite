@@ -8,20 +8,22 @@ class TargetReusableWidget extends StatefulWidget {
   final Function(String) onValueVolumeChange;
   final Function(String) onValuePayLoadChange;
   final String fullWeekCountCycleValue;
+  final String fullWeekVolumeCycleValue;
+  final String fullWeekPayLoadCycleValue;
   const TargetReusableWidget(
       {this.days,
       this.onValueCycleChange,
       this.onValueVolumeChange,
       this.onValuePayLoadChange,
-      this.fullWeekCountCycleValue});
+      this.fullWeekCountCycleValue,
+      this.fullWeekVolumeCycleValue,
+      this.fullWeekPayLoadCycleValue});
 
   @override
   _TargetReusableWidgetState createState() => _TargetReusableWidgetState();
 }
 
 class _TargetReusableWidgetState extends State<TargetReusableWidget> {
- 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -79,7 +81,7 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                   border: Border.all(
                       color: Theme.of(context).textTheme.bodyText1.color)),
               child: IncrementDecrementwidget(
-                // countValue: widget.fullWeekCountCycleValue,
+                countValue: widget.fullWeekVolumeCycleValue,
                 onValueChange: (String value) {
                   widget.onValueVolumeChange(value);
                 },
@@ -105,7 +107,7 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                 onValueChange: (String value) {
                   widget.onValuePayLoadChange(value);
                 },
-                //countValue: widget.fullWeekCountCycleValue,
+                countValue: widget.fullWeekPayLoadCycleValue,
               ),
             ),
           ],

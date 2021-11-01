@@ -16,11 +16,11 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   bool _isChangePayLoadState = false;
   bool get isChangePayLoadSate => _isChangePayLoadState;
 
-  TextEditingController cycleController = TextEditingController();
+  TextEditingController cycleController = new TextEditingController();
 
-  TextEditingController volumeController = TextEditingController();
+  TextEditingController volumeController = new TextEditingController();
 
-  TextEditingController payLoadController = TextEditingController();
+  TextEditingController payLoadController = new TextEditingController();
 
   List<IncrementDecrementPayload> countValue = [
     IncrementDecrementPayload(
@@ -60,14 +60,13 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
         targetPayloadCount: ""),
   ];
 
-  targetCycleVolumePayload() {
+  TargetCycleVolumePayloadViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     cycleController.text = "0";
     volumeController.text = "0";
     payLoadController.text = "0";
-    getIncrementCycleValue();
-    getDecrementCycleValue();
   }
+
   getChangeCycleState() {
     _isChangeCycleState = !_isChangeCycleState;
     notifyListeners();
@@ -104,7 +103,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
     currentValue++;
     volumeController.text = (currentValue).toString();
-    // viewModel.getFullWeekTargetData(cycleController.text);
+    getFullWeekVolumeData(volumeController.text);
     notifyListeners();
   }
 
@@ -112,7 +111,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     int currentValue = int.parse(volumeController.text);
     currentValue--;
     volumeController.text = (currentValue > 0 ? currentValue : 0).toString();
-    // viewModel.getFullWeekTargetData(fulltargetTimeController.text);
+    getFullWeekVolumeData(volumeController.text);
     notifyListeners();
   }
 
@@ -121,7 +120,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
     currentValue++;
     payLoadController.text = (currentValue).toString();
-    // viewModel.getFullWeekTargetData(cycleController.text);
+    getFullWeekPayLoadData(payLoadController.text);
     notifyListeners();
   }
 
@@ -130,11 +129,11 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
     currentValue--;
     payLoadController.text = (currentValue).toString();
-    // viewModel.getFullWeekTargetData(cycleController.text);
+    getFullWeekPayLoadData(payLoadController.text);
     notifyListeners();
   }
 
-  getSingleItemData(String value, int index) {
+  getSingleItemCycleData(String value, int index) {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[index];
       if (data != null) {
@@ -148,7 +147,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   onClickCycleApply() {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
-      print(i.toString() + " " + "runTimeValue:${data.targetCyclesCount}");
+      print(i.toString() + " " + "runTimeValue:" + "${data.targetCyclesCount}");
     }
     notifyListeners();
   }
@@ -159,8 +158,8 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
       if (data != null) {
         data.targetCyclesCount = text;
       }
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   getFullWeekTCycleDataApply() {
@@ -168,7 +167,88 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
       var data = countValue[i];
       print(i.toString() +
           " " +
-          "fullWeekTargetvalue : ${data..targetCyclesCount}");
+          "fullWeekTargetvalue : ${data.targetCyclesCount}");
+    }
+    notifyListeners();
+  }
+
+  getSingleVolumeItemData(String value, int index) {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[index];
+      if (data != null) {
+        data.targetVolumesCount = value;
+      }
+    }
+    notifyListeners();
+  }
+
+  onClickVolumeApply() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+        print(i.toString() +
+            " " +
+            "volume Value :" +
+            "${data.targetVolumesCount}");
+      }
+    }
+  }
+
+  getFullWeekVolumeData(String text) {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+        data.targetVolumesCount = text;
+      }
+    }
+    notifyListeners();
+  }
+
+  getFullWeekVolumeDataApply() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      print(i.toString() +
+          " " +
+          "fullWeekVoumevalue : ${data.targetVolumesCount}");
+    }
+    notifyListeners();
+  }
+
+  getSingleItemPayLoadData(String value, int index) {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[index];
+      if (data != null) {
+        data.targetPayloadCount = value;
+      }
+    }
+    notifyListeners();
+  }
+
+  onClickPayLoadApply() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+        print(i.toString() + " " + "PayLoad :" + "${data.targetVolumesCount}");
+      }
+    }
+  }
+
+  getFullWeekPayLoadData(String text) {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+        data.targetPayloadCount = text;
+      }
+    }
+    notifyListeners();
+  }
+
+  getFullWeekPayLoadDataApply() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      print(i.toString() +
+          " " +
+          "fullWeekPayLoadvalue : ${data.targetPayloadCount}");
     }
     notifyListeners();
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
@@ -13,7 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
-  //const EstimatedRunTimeWidget({});
+  final AssetSetting assetSetting;
+  EstimatedRunTimeWidgetView({this.assetSetting});
 
   @override
   _EstimatedRunTimeWidgetViewState createState() =>
@@ -33,7 +35,7 @@ class _EstimatedRunTimeWidgetViewState
     startDateInput.text = "";
     endDateInput.text = "";
 
-    viewModel = EstimatedRuntimeViewModel();
+    viewModel = EstimatedRuntimeViewModel(widget.assetSetting);
     super.initState();
   }
 
@@ -436,6 +438,10 @@ class _EstimatedRunTimeWidgetViewState
                         viewModel.onIdleClickValueApply();
                         viewModel.getFullWeekTargetDataApply();
                         viewModel.getFullWeekIdleDataApply();
+                        String startDateTime = startDateInput.text;
+                        String endDateTime = endDateInput.text;
+                        viewModel.getAssetSettingTargetData(
+                            startDateTime, endDateTime);
                       },
                     ),
                     SizedBox(
@@ -480,7 +486,7 @@ class _EstimatedRunTimeWidgetViewState
 
     if (pickedStartdate != null) {
       print(pickedStartdate);
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedStartdate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartdate);
       print(formattedDate);
       setState(() {
         startDateInput.text = formattedDate;
@@ -499,7 +505,7 @@ class _EstimatedRunTimeWidgetViewState
 
     if (pickedEndDate != null) {
       print(pickedEndDate);
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedEndDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedEndDate);
       print(formattedDate);
       setState(() {
         endDateInput.text = formattedDate;

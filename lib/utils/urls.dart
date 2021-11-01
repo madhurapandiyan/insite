@@ -152,8 +152,19 @@ class Urls {
       "/t/trimble.com/vss-applicationapi/v1/applications";
   static String adminManagerUserSumary =
       "/npulse-identitymanager-in/1.0/2.0/Users";
-  static String adminRolesVL = "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
-  static String assetSettingsVL="/t/trimble.com/vss-assetsettings/1.0/assetsettings";
+  static String adminRolesVL =
+      "/t/trimble.com/vss-useraccessmanager/1.0/Applications";
+  static String assetSettingsVL =
+      "/t/trimble.com/vss-assetsettings/1.0/assetsettings";
+  static String assetSettingsFuelBurnrate =
+      "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
+  static String assetSettingsTarget =
+      "/t/trimble.com/vss-assetsettings/1.0/assettargetsettings";
+  static String withMaterialData =
+      "/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithconfigs/asgeofence";
+  static String getMaterialData =
+      "/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials";
+  static String postPayLoad = "/t/trimble.com/vss-geofenceservice/1.0";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";

@@ -255,68 +255,145 @@ class _TargetCycleVolumePayloadWidgetState
                   width: 18,
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.20,
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      border: Border.all(
-                          color: Theme.of(context).textTheme.bodyText1.color)),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(8.0),
-                          ),
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: textcolor),
-                          controller: viewModel.cycleController,
-                          keyboardType: TextInputType.numberWithOptions(
-                            decimal: false,
-                            signed: true,
-                          ),
-                          inputFormatters: <TextInputFormatter>[
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                                child: Icon(
-                                  Icons.arrow_drop_up,
-                                  size: 18.0,
+                        border: Border.all(
+                            color:
+                                Theme.of(context).textTheme.bodyText1.color)),
+                    child: viewModel.isChangeCycleState
+                        ? Row(
+                            children: [
+                              Flexible(
+                                child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left:20.0),
+                                  ),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: textcolor),
+                                  controller: viewModel.cycleController,
+                                  keyboardType: TextInputType.numberWithOptions(
+                                    decimal: false,
+                                    signed: true,
+                                  ),
+                                  inputFormatters: <TextInputFormatter>[
+                                    WhitelistingTextInputFormatter.digitsOnly
+                                  ],
                                 ),
-                                onTap: () {
-                                  viewModel.getIncrementCycleValue();
-                                }),
-                            InkWell(
-                              child: Icon(
-                                Icons.arrow_drop_down,
-                                size: 18.0,
                               ),
-                              onTap: () {
-                                viewModel.getDecrementCycleValue();
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                        child: Icon(
+                                          Icons.arrow_drop_up,
+                                          size: 18.0,
+                                        ),
+                                        onTap: () {
+                                          viewModel.getIncrementCycleValue();
+                                        }),
+                                    InkWell(
+                                      child: Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 18.0,
+                                      ),
+                                      onTap: () {
+                                        viewModel.getDecrementCycleValue();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        : SizedBox()),
+                SizedBox(
+                  width: 18,
                 ),
+                Flexible(
+                    child: Container(
+                        width: MediaQuery.of(context).size.width * 0.20,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            border: Border.all(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color)),
+                        child: viewModel.isChangeVolumeState
+                            ? Row(
+                                children: [
+                                  Flexible(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left:20.0),
+                                      ),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: textcolor),
+                                      controller: viewModel.volumeController,
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                        decimal: false,
+                                        signed: true,
+                                      ),
+                                      inputFormatters: <TextInputFormatter>[
+                                        WhitelistingTextInputFormatter
+                                            .digitsOnly
+                                      ],
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                            child: Icon(
+                                              Icons.arrow_drop_up,
+                                              size: 18.0,
+                                            ),
+                                            onTap: () {
+                                              viewModel
+                                                  .getIncrementVolumeValue();
+                                            }),
+                                        InkWell(
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
+                                            size: 18.0,
+                                          ),
+                                          onTap: () {
+                                            viewModel.getDecrementVolumeValue();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            : SizedBox())),
                 SizedBox(
                   width: 18,
                 ),
@@ -335,123 +412,59 @@ class _TargetCycleVolumePayloadWidgetState
                           border: Border.all(
                               color:
                                   Theme.of(context).textTheme.bodyText1.color)),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(8.0),
-                              ),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: textcolor),
-                              controller: viewModel.volumeController,
-                              keyboardType: TextInputType.numberWithOptions(
-                                decimal: false,
-                                signed: true,
-                              ),
-                              inputFormatters: <TextInputFormatter>[
-                                WhitelistingTextInputFormatter.digitsOnly
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                      child: viewModel.isChangePayLoadSate
+                          ? Row(
                               children: [
-                                InkWell(
-                                    child: Icon(
-                                      Icons.arrow_drop_up,
-                                      size: 18.0,
+                                Flexible(
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(left:20.0),
                                     ),
-                                    onTap: () {
-                                      viewModel.getIncrementVolumeValue();
-                                    }),
-                                InkWell(
-                                  child: Icon(
-                                    Icons.arrow_drop_down,
-                                    size: 18.0,
-                                  ),
-                                  onTap: () {
-                                    viewModel.getDecrementVolumeValue();
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                ),
-                SizedBox(
-                  width: 18,
-                ),
-                Flexible(
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.20,
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          border: Border.all(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1.color)),
-                      child: Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(8.0),
-                              ),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: textcolor),
-                              controller: viewModel.payLoadController,
-                              keyboardType: TextInputType.numberWithOptions(
-                                decimal: false,
-                                signed: true,
-                              ),
-                              inputFormatters: <TextInputFormatter>[
-                                WhitelistingTextInputFormatter.digitsOnly
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                InkWell(
-                                    child: Icon(
-                                      Icons.arrow_drop_up,
-                                      size: 18.0,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: textcolor),
+                                    controller: viewModel.payLoadController,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                      decimal: false,
+                                      signed: true,
                                     ),
-                                    onTap: () {
-                                      viewModel.getIncrementPayLoadValue();
-                                    }),
-                                InkWell(
-                                  child: Icon(
-                                    Icons.arrow_drop_down,
-                                    size: 18.0,
+                                    inputFormatters: <TextInputFormatter>[
+                                      WhitelistingTextInputFormatter.digitsOnly
+                                    ],
                                   ),
-                                  onTap: () {
-                                    viewModel.getDecrementPayLoadValue();
-                                  },
                                 ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                          child: Icon(
+                                            Icons.arrow_drop_up,
+                                            size: 18.0,
+                                          ),
+                                          onTap: () {
+                                            viewModel
+                                                .getIncrementPayLoadValue();
+                                          }),
+                                      InkWell(
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 18.0,
+                                        ),
+                                        onTap: () {
+                                          viewModel.getDecrementPayLoadValue();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
-                            ),
-                          )
-                        ],
-                      )),
+                            )
+                          : SizedBox()),
                 )
               ],
             ),
@@ -466,13 +479,21 @@ class _TargetCycleVolumePayloadWidgetState
                         viewModel.countValue[index];
                     return TargetReusableWidget(
                       onValueCycleChange: (String value) {
-                        viewModel.getSingleItemData(value, index);
+                        viewModel.getSingleItemCycleData(value, index);
                       },
-                      onValueVolumeChange: (String value) {},
-                      onValuePayLoadChange: (String value) {},
+                      onValueVolumeChange: (String value) {
+                         viewModel.getSingleVolumeItemData(value, index);
+                      },
+                      onValuePayLoadChange: (String value) {
+                         viewModel.getSingleItemPayLoadData(value, index);
+                      },
                       days: targetCycleVolumePayload.runTimeDays,
                       fullWeekCountCycleValue:
                           targetCycleVolumePayload.targetCyclesCount,
+                      fullWeekVolumeCycleValue:
+                          targetCycleVolumePayload.targetVolumesCount,
+                      fullWeekPayLoadCycleValue:
+                          targetCycleVolumePayload.targetPayloadCount,
                     );
                   }),
             ),
@@ -495,6 +516,8 @@ class _TargetCycleVolumePayloadWidgetState
                       onTap: () {
                         viewModel.onClickCycleApply();
                         viewModel.getFullWeekTCycleDataApply();
+                        viewModel.getFullWeekVolumeDataApply();
+                        viewModel.getFullWeekPayLoadDataApply();
                       },
                     ),
                     SizedBox(

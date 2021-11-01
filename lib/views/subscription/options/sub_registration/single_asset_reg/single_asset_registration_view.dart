@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -8,14 +9,14 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
-import 'single_asset_transfer_view_model.dart';
+import 'single_asset_registration_view_model.dart';
 
-class SingleAssetTransferView extends StatelessWidget {
+class SingleAssetRegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SingleAssetTransferViewModel>.reactive(
-      builder: (BuildContext context, SingleAssetTransferViewModel viewModel,
-          Widget _) {
+    return ViewModelBuilder<SingleAssetRegistrationViewModel>.reactive(
+      builder: (BuildContext context,
+          SingleAssetRegistrationViewModel viewModel, Widget _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters.length,
           child: InsiteScaffold(
@@ -33,54 +34,17 @@ class SingleAssetTransferView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InsiteText(
-                        text: 'SINGLE ASSET TRANSFER',
+                        text: 'SINGLE ASSET REGISTRATION',
                         fontWeight: FontWeight.w700,
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          viewModel.allowAssetTransferClicked();
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                                decoration: BoxDecoration(
-                                    color: viewModel.allowTransferAsset
-                                        ? Theme.of(context).buttonColor
-                                        : Theme.of(context).backgroundColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4))),
-                                child: Icon(
-                                  Icons.crop_square,
-                                  color: viewModel.allowTransferAsset
-                                      ? Theme.of(context).buttonColor
-                                      : Colors.black,
-                                  size: 20,
-                                )),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.01,
-                            ),
-                            Expanded(
-                              child: InsiteText(
-                                text:
-                                    "Transfer Asset by retaining current Customer details",
-                                fontWeight: FontWeight.w700,
-                                size: 14,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.01,
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Card(
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.80,
+                            height: MediaQuery.of(context).size.height * 0.8,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Theme.of(context).cardColor,
@@ -92,20 +56,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
-                                        InsiteText(
-                                          text: 'Asset Details:',
-                                          size: 13,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -160,6 +111,48 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   .height *
                                               0.02,
                                         ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            InsiteText(
+                                              text: 'Select Asset Model:',
+                                              size: 13,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01,
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              height: 35,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: CustomDropDownWidget(
+                                                value: '',
+                                                items: [],
+                                                onChanged: (value) {},
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.02,
+                                        ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -169,29 +162,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 InsiteText(
-                                                  text: 'Machine Model:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child: CustomTextBox()),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text:
-                                                      'Asset Commissioning Date:',
+                                                  text: 'Hour Meter Date:',
                                                   size: 13,
                                                   fontWeight: FontWeight.w700,
                                                 ),
@@ -217,6 +188,69 @@ class SingleAssetTransferView extends StatelessWidget {
                                                                 .circular(10)),
                                                     child: CustomDatePicker()),
                                               ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                InsiteText(
+                                                  text: 'Hour Meter:',
+                                                  size: 13,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                SizedBox(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.01,
+                                                ),
+                                                Container(
+                                                    height: 35,
+                                                    width: 130,
+                                                    child: CustomTextBox()),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.02,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            InsiteText(
+                                              text: 'Plant Details:',
+                                              size: 13,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.01,
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              height: 35,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1
+                                                        .color,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: CustomDropDownWidget(
+                                                value: '',
+                                                items: [],
+                                                onChanged: (value) {},
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -247,7 +281,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                               0.01,
                                         ),
                                         InsiteText(
-                                            text: 'Dealer Details:',
+                                            text: 'Device Details:',
                                             size: 13,
                                             fontWeight: FontWeight.w700),
                                         SizedBox(
@@ -265,7 +299,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 InsiteText(
-                                                  text: 'Dealer Name:',
+                                                  text: 'Device ID:',
                                                   size: 13,
                                                   fontWeight: FontWeight.w700,
                                                 ),
@@ -310,66 +344,12 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   .height *
                                               0.02,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Dealer Email ID :',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child: CustomTextBox()),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Dealer Mobile No.:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child: CustomTextBox()),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
-                                        ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             InsiteText(
-                                              text: 'SMS Languge',
+                                              text: 'Dealer Email ID:',
                                               size: 13,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -380,23 +360,9 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   0.01,
                                             ),
                                             Container(
-                                              width: 130,
+                                              width: double.infinity,
                                               height: 35,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        .color,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              child: CustomDropDownWidget(
-                                                value: '',
-                                                items: [],
-                                                onChanged: (value) {},
-                                              ),
+                                              child: CustomTextBox(),
                                             ),
                                             SizedBox(
                                               height: MediaQuery.of(context)
@@ -445,7 +411,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 InsiteText(
-                                                  text: 'Customer Name:',
+                                                  text: 'Customer ID:',
                                                   size: 13,
                                                   fontWeight: FontWeight.w700,
                                                 ),
@@ -490,66 +456,12 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   .height *
                                               0.02,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Customer Email ID :',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child: CustomTextBox()),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Customer Mobile No.:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child: CustomTextBox()),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
-                                        ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             InsiteText(
-                                              text: 'SMS Languge',
+                                              text: 'Customer Email ID:',
                                               size: 13,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -560,93 +472,22 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   0.01,
                                             ),
                                             Container(
-                                              width: 130,
-                                              height: 29,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1
-                                                        .color,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              child: CustomDropDownWidget(
-                                                value: '',
-                                                items: [],
-                                                onChanged: (value) {},
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.01,
+                                              width: double.infinity,
+                                              height: 35,
+                                              child: CustomTextBox(),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
-                                  ),
-                                  Divider(
-                                    thickness: 1.5,
-                                    color: thunder,
+                                  InsiteButton(
+                                    title: 'PREVIEW',
+                                    textColor: white,
+                                    margin: EdgeInsets.all(20),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        InsiteText(
-                                          text: 'Industry Details:',
-                                          size: 13,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1
-                                                    .color,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: CustomDropDownWidget(
-                                            value: '',
-                                            items: [],
-                                            onChanged: (value) {},
-                                          ),
-                                        ),
-                                        InsiteButton(
-                                          title: 'PREVIEW',
-                                          textColor: white,
-                                          margin: EdgeInsets.all(20),
-                                        ),
-                                        SizedBox(
-                                          height: 40,
-                                        ),
-                                      ],
-                                    ),
+                                    height: 40,
                                   ),
                                 ],
                               ),
@@ -660,7 +501,7 @@ class SingleAssetTransferView extends StatelessWidget {
               )),
         );
       },
-      viewModelBuilder: () => SingleAssetTransferViewModel(),
+      viewModelBuilder: () => SingleAssetRegistrationViewModel(),
     );
   }
 }

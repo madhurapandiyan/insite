@@ -1,23 +1,19 @@
-import 'dart:async';
 import 'dart:ui';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view_model.dart';
-import 'package:insite/views/adminstration/reusable_widget/reusabletapbutton.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
-  final ManageGeofenceViewModel model;
-  final String geofence_name;
-  final String geofence_date;
-  ManageGeofenceWidget(this.model, this.geofence_name, this.geofence_date);
+  final Function(dynamic, dynamic) ondeleting;
+  final String geofenceName;
+  final String geofenceDate;
+  final String geofenceUID;
+  ManageGeofenceWidget(
+      this.geofenceName, this.geofenceDate, this.ondeleting, this.geofenceUID);
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }
@@ -25,7 +21,6 @@ class ManageGeofenceWidget extends StatefulWidget {
 class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -68,13 +63,17 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                         right: 6,
                         child: Align(
                           alignment: Alignment.topRight,
-                          child: GestureDetector(
+                          child: InsiteButton(
+                              bgColor: tuna,
+                              title: "",
                               onTap: () {
-                                Logger().d("button tap");
-                                //widget.model.getdata();
+                                widget.ondeleting(widget.geofenceUID,
+                                    DateTime.now().toUtc().toString());
                               },
-                              child: Reusabletapbutton(
-                                  "assets/images/delete_icon.svg", false)),
+                              icon: Icon(
+                                Icons.delete,
+                                color: appbarcolor,
+                              )),
                         ),
                       )
                     ],
@@ -89,7 +88,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                     Padding(
                       padding: const EdgeInsets.only(left: 14.0),
                       child: InsiteText(
-                        text: widget.geofence_name,
+                        text: widget.geofenceName,
                         size: 14,
                         fontWeight: FontWeight.w700,
                       ),
@@ -97,7 +96,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                     Padding(
                         padding: const EdgeInsets.only(right: 14.0),
                         child: InsiteText(
-                          text: "End Date : ${widget.geofence_date.toString()}",
+                          text: "End Date : ${widget.geofenceDate.toString()}",
                           size: 14,
                           fontWeight: FontWeight.w700,
                         ))

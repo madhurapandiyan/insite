@@ -5,12 +5,24 @@ import 'package:logger/logger.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 
 class GeofencingMap extends StatefulWidget {
-  final AddgeofenseViewModel model;
+  final List<String> maptype;
+  final Function(LatLng) gettingdata;
   final String initialvalue;
   final Color color;
-  final double zoomlev;
+  final Set<Circle> circle;
+  final Set<Polygon> polygon;
+  final Set<Polyline> polyline;
+  final bool isdrawing;
 
-  GeofencingMap(this.model, this.color, this.initialvalue, this.zoomlev);
+  GeofencingMap(
+      {this.maptype,
+      this.gettingdata,
+      this.color,
+      this.initialvalue,
+      this.circle,
+      this.polygon,
+      this.polyline,
+      this.isdrawing});
 
   @override
   _GeofencingMapState createState() => _GeofencingMapState();
@@ -28,7 +40,7 @@ class _GeofencingMapState extends State<GeofencingMap> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().e(widget.zoomlev);
+    //Logger().e(widget.zoomlev);
     return GoogleMaps(
       controller: GoogleMapsController(
         // onMapCreated: (controller) {
@@ -38,22 +50,20 @@ class _GeofencingMapState extends State<GeofencingMap> {
         // },
         zoomControlsEnabled: false,
         zoomGesturesEnabled: true,
-        mapType: widget.initialvalue == widget.model.maptype[0]
+        mapType: widget.initialvalue == widget.maptype[0]
             ? MapType.normal
-            : widget.initialvalue == widget.model.maptype[1]
+            : widget.initialvalue == widget.maptype[1]
                 ? MapType.terrain
-                : widget.initialvalue == widget.model.maptype[2]
+                : widget.initialvalue == widget.maptype[2]
                     ? MapType.satellite
                     : MapType.hybrid,
-        initialCircles: widget.model.circle,
+        initialCircles: widget.circle,
         initialCameraPosition: centerposition,
-        initialPolygons:
-            widget.model.polygon.isEmpty ? null : widget.model.polygon,
-        initialPolylines:
-            widget.model.polyline.isEmpty ? null : widget.model.polyline,
-        onTap: widget.model.isdrawingpolygon
+        initialPolygons: widget.circle.isEmpty ? null : widget.polygon,
+        initialPolylines: widget.polyline.isEmpty ? null : widget.polyline,
+        onTap: widget.isdrawing
             ? (latlng) {
-                widget.model.ongettinglatlong(latlng);
+                widget.gettingdata(latlng);
               }
             : null,
       ),

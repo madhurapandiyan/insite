@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
@@ -29,22 +31,27 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<DashboardResult> getResultsFromSubscriptionApi() async {
+  Future<SubscriptionDashboardResult> getResultsFromSubscriptionApi() async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
 
-      DashboardResult dashboardResult =
+      SubscriptionDashboardResult dashboardResult =
           await MyApi().getClientEight().getSubscriptionDashboardResults(
                 Urls.subscriptionResults +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
+      if (dashboardResult == null) {
+        Logger().d('no data found');
+      }
 
       Logger().d('subscription result: $dashboardResult');
+      return dashboardResult;
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 }

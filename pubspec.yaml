@@ -129,7 +129,7 @@ flutter:
     - assets/images/ic_eol_launcher.png
     - assets/images/trimble.svg
     - assets/images/delete.svg
-    - assets/custom.geo.json
+
     - assets/images/dashboard.svg
     - assets/images/path0.svg
     - assets/images/flet.svg
