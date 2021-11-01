@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'insite_row_item_text.dart';

@@ -31,6 +31,7 @@ import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
+import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
@@ -44,7 +45,6 @@ import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dar
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/search_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -674,15 +674,25 @@ abstract class RestClient {
       @Header("service") String serviceHeader);
 
   @GET('{url}')
-  Future<ManageAssetConfiguration> getAssetSettingsListData(
+  Future<ManageAssetConfiguration> getAssetSettingsListDataVL(
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
 
   @GET('{url}')
+  Future<ManageAssetConfiguration> getAssetSettingsListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") String serviceHeader);
+
+  @GET('{url}')
   Future<SubscriptionDashboardResult> getSubscriptionDashboardResults(
     @Path() String url,
-    // @Header("Authorization") String authorization
+  );
+
+  @GET('{url}')
+  Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceResults(
+    @Path() String url,
   );
 
   @PUT('{url}')
@@ -690,6 +700,7 @@ abstract class RestClient {
       @Path() String url,
       @Body() AssetFuelBurnRateSetting assetFuelBurnRateSetting,
       @Header("x-visionlink-customeruid") customerId);
+
   @PUT('{url}')
   Future<EstimatedAssetSetting> getAssetTargetSettingsData(
       @Path() String url,
@@ -717,11 +728,12 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid);
 
   @DELETE("{url}")
-  Future<dynamic> deleteGeofence(@Path() String url,
-      @Query("geofenceuid") String geofenceUID, @Query("actionutc") String actionUTC);
+  Future<dynamic> deleteGeofence(
+      @Path() String url,
+      @Query("geofenceuid") String geofenceUID,
+      @Query("actionutc") String actionUTC);
 
-  @GET(
-      "https://singlesearch.alk.com/ww/api/search")
+  @GET("https://singlesearch.alk.com/ww/api/search")
   Future<SearchModel> getSearchData(@Query("authToken") token,
       @Query("query") searchvalue, @Query("maxResults") int maxResults);
   @PUT('{url}')

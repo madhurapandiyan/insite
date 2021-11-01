@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -39,6 +37,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AdminManageUser> getAdminManageUserListData(pageNumber) async {
+    Logger().i("getAdminManageUserListData");
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
@@ -71,6 +70,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageUser> getUser(String userId) async {
+    Logger().i("getUser");
     try {
       if (isVisionLink) {
         ManageUser adminManageUserResponse = await MyApi()
@@ -92,6 +92,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ApplicationData> getApplicationsData() async {
+    Logger().i("getApplicationsData");
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
@@ -138,6 +139,7 @@ class AssetAdminManagerUserService extends BaseService {
       userType,
       roles,
       userUid) async {
+    Logger().i("getSaveUserData");
     try {
       Logger().d(
           "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
@@ -208,6 +210,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<RoleDataResponse> getRoles(String appName) async {
+    Logger().i("getRoles");
     try {
       if (isVisionLink) {
         var result = await MyApi().getClientSeven().roles(
@@ -239,6 +242,7 @@ class AssetAdminManagerUserService extends BaseService {
       userType,
       sso_id,
       roles) async {
+    Logger().i("getAddUserData");
     try {
       if (isVisionLink) {
         Logger().d(
@@ -310,6 +314,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<dynamic> deleteUsers(users) async {
+    Logger().i("deleteUsers");
     if (isVisionLink) {
       var result = await MyApi().getClientSeven().deleteUsersData(
           Urls.adminManagerUserSumaryVL,
@@ -339,7 +344,7 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sortColumn"] = "assetId";
         ManageAssetConfiguration manageAssetConfigurationResponse =
-            await MyApi().getClientSeven().getAssetSettingsListData(
+            await MyApi().getClientSeven().getAssetSettingsListDataVL(
                 Urls.assetSettingsVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
@@ -349,10 +354,11 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sortColumn"] = "assetId";
         ManageAssetConfiguration manageAssetConfigurationResponse =
-            await MyApi().getClientSeven().getAssetSettingsListData(
-                Urls.assetSettingsVL +
+            await MyApi().getClient().getAssetSettingsListData(
+                Urls.assetSettings +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
         return manageAssetConfigurationResponse;
       }
     } catch (e) {
@@ -376,7 +382,6 @@ class AssetAdminManagerUserService extends BaseService {
             .getClientSeven()
             .getassetSettingsFuelBurnRateData(Urls.assetSettingsFuelBurnrate,
                 listBurnRateData, accountSelected.CustomerUID);
-
         return addSettings;
       } else {
         AddSettings addSettings = await MyApi()

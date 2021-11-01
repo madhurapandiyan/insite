@@ -51,7 +51,7 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
                 InsiteText(
                     text: widget.headerText.toUpperCase(),
                     fontWeight: FontWeight.w700,
-                    size: 14.0),
+                    size: 12.0),
               ],
             ),
             Divider(

@@ -1,21 +1,19 @@
-import 'dart:convert';
-
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
-import 'package:insite/utils/enums.dart';
+import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class SubscriptionDashboardViewModel extends InsiteViewModel {
   Logger log;
   // var _navigationService = locator<NavigationService>();
   var _subscriptionService = locator<SubScriptionService>();
   var _localService = locator<LocalService>();
+  var _navigationService = locator<NavigationService>();
 
   SubscriptionDashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -159,5 +157,12 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     }
 
     notifyListeners();
+  }
+
+  gotoDetailsPage(String filter) {
+    Logger().i("gotoDetailsPage");
+    _navigationService.navigateToView(SubDashBoardDetailsView(
+      filterKey: filter,
+    ));
   }
 }

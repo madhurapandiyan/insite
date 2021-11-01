@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/health/fault_list_item_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
