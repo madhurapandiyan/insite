@@ -2,6 +2,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart';
+import 'package:insite/views/plant/plant_hierachy/plant_hierachy_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,7 +17,11 @@ class PlantViewModel extends InsiteViewModel {
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(PlantDashboardView(),
+      _navigationService.navigateWithTransition(
+        PlantDashboardView(),
+      );
+    } else if (value == AdminAssetsButtonType.VIEWHIERACHY) {
+      navigationService.navigateWithTransition(PlantHierachyView(),
           transition: "fade");
     }
   }

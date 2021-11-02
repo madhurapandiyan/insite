@@ -43,14 +43,14 @@ class PlantView extends StatelessWidget {
                               viewModel.onRespectiveButtonClicked(value);
                             }),
                         AssetCardsSmall(
-                            headerText: "HIERACHY",
+                            headerText: "HIERARCHY",
                             icon: "assets/images/hier.svg",
                             buttonTitle: [
                               AdminAssetsButtonType.values[18],
                             ],
                             height: 20.0,
                             onCallbackSelected: (value) {
-                              // viewModel.onRespectiveButtonClicked(value);
+                              viewModel.onRespectiveButtonClicked(value);
                             }),
                       ],
                     ),

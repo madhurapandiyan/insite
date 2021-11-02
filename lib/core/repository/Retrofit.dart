@@ -26,6 +26,7 @@ import 'package:insite/core/models/login_response.dart';
 
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -692,6 +693,11 @@ abstract class RestClient {
 
   @GET('{url}')
   Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceResults(
+    @Path() String url,
+  );
+
+  @GET('{url}')
+  Future<HierarchyAssets> getPlantHierarchyAssetsDetails(
     @Path() String url,
   );
 

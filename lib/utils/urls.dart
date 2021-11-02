@@ -216,7 +216,7 @@ class Urls {
       "$assetSettingsMasterData/1.0/v1/assetfuelburnratesettings";
   static String estimatedMileage =
       "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
-      
+
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";
@@ -253,4 +253,8 @@ class Urls {
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
+
+  //plant
+  static String plantHierarchyAssetsResult =
+      "/osg-frame/frame-api/2.0/hierarchy";
 }

@@ -392,7 +392,7 @@ class Utils {
         title = "MULTIPLE ASSET TRANSFER";
         break;
       case AdminAssetsButtonType.VIEWHIERACHY:
-        title = "VIEW HIERACHY";
+        title = "VIEW HIERARCHY";
         break;
 
       default:
