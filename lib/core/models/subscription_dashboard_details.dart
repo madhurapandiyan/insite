@@ -75,12 +75,32 @@ class DetailResult {
   @JsonKey(name: "OEMName")
   String OEMName;
 
+  @JsonKey(name: "ID")
+  int ID;
+
+  @JsonKey(name: "Name")
+  String Name;
+
+  @JsonKey(name: "UserName")
+  String UserName;
+
+  @JsonKey(name: "Email")
+  String Email;
+
+  @JsonKey(name: "Code")
+  String Code;
+
   DetailResult(
       {this.totalDevice,
       this.ActualStartDate,
       this.CustomerCode,
       this.CustomerName,
       this.DealerCode,
+      this.Code,
+      this.Email,
+      this.ID,
+      this.Name,
+      this.UserName,
       this.OEMName,
       this.DealerName,
       this.CommissioningDate,

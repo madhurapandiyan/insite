@@ -51,10 +51,14 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: "Device ID : " + "\n",
-                        path: detailResult == null
+                        title: detailResult.GPSDeviceID != null
+                            ? "Device ID : " + "\n" + detailResult.GPSDeviceID
+                            : "Device ID : " + "\n",
+                        path: detailResult == null || detailResult.Model == null
                             ? "assets/images/EX210.png"
-                            : Utils().imageData(detailResult.Model),
+                            : detailResult.Model != null
+                                ? Utils().imageData(detailResult.Model)
+                                : "",
                       ),
                       Table(
                         children: [
@@ -128,7 +132,9 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                           title: "Customer Name :",
                           content: detailResult.CustomerName != null
                               ? detailResult.CustomerName
-                              : "",
+                              : detailResult.Name != null
+                                  ? detailResult.Name
+                                  : "",
                         ),
                       ],
                     ),
@@ -138,7 +144,9 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                           title: "Customer Code :",
                           content: detailResult.CustomerCode != null
                               ? detailResult.CustomerCode
-                              : "",
+                              : detailResult.Code != null
+                                  ? detailResult.Code
+                                  : "",
                         ),
                         InsiteTableRowItem(
                           title: "Subscription Start Date :",

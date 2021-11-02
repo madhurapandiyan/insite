@@ -87,11 +87,16 @@ class PlantHierachyView extends StatelessWidget {
                                         itemCount: viewModel.assetCount.length,
                                         itemBuilder: (context, index) {
                                           return InsiteTitleCountRow(
+                                              onClicked: () {
+                                                viewModel.gotoDetailsPage(
+                                                    viewModel
+                                                        .filterType[index]);
+                                              },
                                               name: viewModel.assetType[index],
                                               count: viewModel.assetCount[index]
                                                   .toStringAsFixed(1),
                                               filter:
-                                                  viewModel.assetType[index]);
+                                                  viewModel.filterType[index]);
                                         }),
                                   )),
                           ],
