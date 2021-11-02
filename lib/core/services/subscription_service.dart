@@ -70,6 +70,8 @@ class SubScriptionService extends BaseService {
           queryMap["calender"] = fitler;
         } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.MODEL) {
           queryMap["model"] = fitler;
+        } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
+          queryMap["type"] = fitler;
         } else {
           queryMap["status"] = fitler;
         }
@@ -82,8 +84,11 @@ class SubScriptionService extends BaseService {
       }
       SubscriptionDashboardDetailResult dashboardResult =
           await MyApi().getClientEight().getSubscriptionDeviceResults(
-                Urls.subscriptionResults +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
+                    ? Urls.plantHierarchyAssetsResult +
+                        FilterUtils.constructQueryFromMap(queryMap)
+                    : Urls.subscriptionResults +
+                        FilterUtils.constructQueryFromMap(queryMap),
               );
       if (dashboardResult == null) {
         Logger().d('no data found');

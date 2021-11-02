@@ -3,8 +3,9 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/plant_hierachy_service.dart';
+import 'package:insite/utils/enums.dart';
+import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -21,6 +22,9 @@ class PlantHierachyViewModel extends InsiteViewModel {
   List<String> _assetType = [];
   List<String> get assetType => _assetType;
 
+  List<String> _filterType = [];
+  List<String> get filterType => _filterType;
+
   List<int> _assetCount = [];
   List<int> get assetCount => _assetCount;
 
@@ -33,11 +37,13 @@ class PlantHierachyViewModel extends InsiteViewModel {
       getPlantHeirrchyAssetData();
     });
   }
+
   getPlantHeirrchyAssetData() async {
     try {
       HierarchyAssets assetsData =
           await _plantHierarchyService.getResultsFromPlantHierchyApi();
       _assetType.addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
+      _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
 
       final customerCount = assetsData.result[0][0].customerCount;
       final dealerCount = assetsData.result[0][0].dealerCount;
@@ -51,5 +57,13 @@ class PlantHierachyViewModel extends InsiteViewModel {
       _loading = false;
     }
     notifyListeners();
+  }
+
+  gotoDetailsPage(String filter) {
+    Logger().i("gotoDetailsPage $filter");
+    _navigationService.navigateToView(SubDashBoardDetailsView(
+      filterKey: filter,
+      filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+    ));
   }
 }
