@@ -16,10 +16,10 @@ class PlantViewModel extends InsiteViewModel {
   }
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
+    Logger().i("onRespectiveButtonClicked $value");
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(
-        PlantDashboardView(),
-      );
+      _navigationService.navigateWithTransition(PlantDashboardView(),
+          transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWHIERACHY) {
       navigationService.navigateWithTransition(PlantHierachyView(),
           transition: "fade");

@@ -56,6 +56,16 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   ];
   List<String> get names => _names;
 
+  List<String> _filters = [
+    "total",
+    "active",
+    "inactive",
+    "subscriptionendasset",
+    "subscriptionendingasset_month",
+    "plantasset"
+  ];
+  List<String> get filters => _filters;
+
   getSubscriptionDashboardData() async {
     Logger().i("getApplicationAccessData");
     SubscriptionDashboardResult result =
@@ -161,7 +171,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   }
 
   gotoDetailsPage(String filter) {
-    Logger().i("gotoDetailsPage");
+    Logger().i("gotoDetailsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
@@ -169,7 +179,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   }
 
   gotoModelsPage(String filter) {
-    Logger().i("gotoModelsPage");
+    Logger().i("gotoModelsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.MODEL,
@@ -177,7 +187,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   }
 
   gotoCalendarDetailsPage(String filter) {
-    Logger().i("gotoCalendarDetailsPage");
+    Logger().i("gotoCalendarDetailsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,
