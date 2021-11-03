@@ -4,12 +4,14 @@ import 'package:insite/theme/colors.dart';
 class AddressCustomTextBox extends StatelessWidget {
   final String title;
   final TextEditingController controller;
+  final FocusNode focusNode;
 
-  AddressCustomTextBox({this.controller, this.title});
+  AddressCustomTextBox({this.controller, this.title, this.focusNode});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
       autofocus: false,
       maxLines: 5,
       controller: controller,

@@ -748,14 +748,8 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid);
 
   @DELETE("{url}")
-  Future<dynamic> deleteGeofence(
-      @Path() String url,
-      @Query("geofenceuid") String geofenceUID,
-      @Query("actionutc") String actionUTC);
-
-  @GET("https://singlesearch.alk.com/ww/api/search")
-  Future<SearchModel> getSearchData(@Query("authToken") token,
-      @Query("query") searchvalue, @Query("maxResults") int maxResults);
+  Future<dynamic> deleteGeofence(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
 
   @PUT('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(

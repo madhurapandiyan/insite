@@ -4,6 +4,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_geofence_view_model.dart';
 
@@ -13,12 +14,14 @@ class ManageGeofenceView extends StatefulWidget {
 }
 
 class _ManageGeofenceViewState extends State<ManageGeofenceView> {
+  deletGeoence(uid, actionUTC) {}
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return ViewModelBuilder<ManageGeofenceViewModel>.reactive(
       builder:
           (BuildContext context, ManageGeofenceViewModel viewModel, Widget _) {
+        Logger().d(viewModel.isLoading);
         return InsiteScaffold(
             viewModel: viewModel,
             body: viewModel.isLoading
@@ -36,6 +39,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               size: 20,
                             ),
                             InsiteButton(
+                              onTap: viewModel.onNavigation,
                               title: "ADD GEOFENCE",
                               height: mediaQuery.size.height * 0.05,
                               width: mediaQuery.size.width * 0.4,
@@ -50,10 +54,17 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             var model = viewModel.geofence.Geofences;
 
                             return ManageGeofenceWidget(
-                                model[i].GeofenceName, model[i].StartDate,
-                                (uid, actionutc) {
-                              viewModel.deleteGeofence(uid, actionutc);
-                            }, model[i].GeofenceUID);
+                              ondeleting: (uid, actionutc) {
+                                setState(() {
+                                  viewModel.isLoading = !viewModel.isLoading;
+                                  viewModel.deleteGeofence(uid, actionutc);
+                                });
+                              },
+                              geofenceName: model[i].GeofenceName,
+                              geofenceDate: model[i].StartDate,
+                              geofenceUID: model[i].GeofenceUID,
+                              isLoading: viewModel.isLoading,
+                            );
                           },
                         ),
                       ),

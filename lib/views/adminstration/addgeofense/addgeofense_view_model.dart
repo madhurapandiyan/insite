@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:geocore/base.dart' as geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_location.dart';
 
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/theme/colors.dart';
@@ -16,6 +18,7 @@ import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart'
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart'
     as m;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -30,11 +33,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
     getMaterialData();
   }
-  double zoomValue = 5;
+  double zoomValue = 1;
 
   Geofencepayload geofenceRequestPayload;
 
   Addgeofencemodel addGeofencePayLoad;
+
+  AssetLocationData _assetLocation;
+  AssetLocationData get assetLocation => _assetLocation;
 
   String finalPolygonWKTstring;
   Set<Circle> _circle = {};
@@ -55,6 +61,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   bool isLoading = false;
 
+  bool isSearching = false;
+
   bool isNoendDate = false;
   bool _allowAccessToSecurity = false;
   bool get allowAccessToSecurity => _allowAccessToSecurity;
@@ -72,7 +80,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   DateTime backFillDate;
   DateTime endingDate;
   DateTime actionUTC = DateTime.now();
-  String geofenceType;
+  String geofenceType = "Generic";
   String materialUID;
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
@@ -96,6 +104,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
   Completer<GoogleMapController> googleMapController = Completer();
+  CameraPosition centerPosition =
+      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
   // Future<void> _plus(
   //   double zoomVal,
   // ) async {
@@ -109,6 +119,71 @@ class AddgeofenseViewModel extends InsiteViewModel {
   // }
 
   LatLng lastLatLong;
+
+  onChangeDropDown(String value) {
+    if (value == dropDownlist[0] ||
+        value == dropDownlist[6] ||
+        value == dropDownlist[7]) {
+      geofenceType = value;
+    } else if (value == dropDownlist[1]) {
+      geofenceType = "AvoidanceZone";
+    } else if (value == dropDownlist[2]) {
+      geofenceType = "CutZone";
+    } else if (value == dropDownlist[3]) {
+      geofenceType = "Borrow";
+    } else if (value == dropDownlist[4]) {
+      geofenceType = "stockpile";
+    } else {
+      geofenceType = "FillZone";
+    }
+    Logger().d(initialValue);
+    notifyListeners();
+  }
+
+  onRespectivePageNavigation() {
+    _navigationService.navigateToView(ManageGeofenceView());
+  }
+
+  Future<void> plus(
+    double zoomVal,
+    LatLng targetPosition,
+  ) async {
+    final controller = await googleMapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: targetPosition, zoom: zoomVal)));
+  }
+
+  Future<void> minus(
+    double zoomVal,
+    LatLng targetPosition,
+  ) async {
+    final GoogleMapController controller =  await googleMapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: targetPosition, zoom: zoomVal)));
+  }
+
+  onChoosingColor(String value) {
+    Logger().d(value);
+    Logger().i(value.contains("Color(0xff"));
+    Logger().i(value.contains(")"));
+    String colorValueString;
+    if (value.contains("Color(0xff") && value.contains(")")) {
+      colorValueString = value.replaceAll("Color(0xff", "");
+      colorValueString = colorValueString.replaceAll(")", "");
+      //colorValue = int.parse(colorValueString);
+      Logger().e(colorValueString);
+    }
+    colorValue = int.parse(colorValueString, radix: 17);
+    Logger().i(colorValue);
+  }
+
+  onLocationSelected(String locationLatitude, String locationLongitude) {
+    double parsedLatitude = double.parse(locationLatitude);
+    double parsedLongitude = double.parse(locationLongitude);
+    LatLng pickedLatLong = LatLng(parsedLatitude, parsedLongitude);
+    centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
+    notifyListeners();
+  }
 
   onGettingLatLang(
     LatLng userLatlong,
@@ -268,10 +343,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
       if (finalPolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
         String polygonWKT1 = finalPolygonOBJ.replaceAll(
             "((LineString<Point<num>>([Point2(", "((");
-        //Logger().d(polygonWKT1);
+
         if (polygonWKT1.contains("), Point2(")) {
           String polygonWKT2 = polygonWKT1.replaceAll("), Point2(", ",");
-          //Logger().e(polygonWKT2);
           if (polygonWKT2.contains(", ")) {
             String polygonWKT3 = polygonWKT2.replaceAll(", ", " ");
             if (polygonWKT3.contains(")])")) {
@@ -303,79 +377,75 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   convertingOBJtoModel() {
-    String titleText = titleController.text;
-    String descriptionText = descriptionController.text;
-    Logger().e(endingDate);
-    Logger().e(finalPolygonWKTstring);
-    if (initialValue == dropDownlist[0] ||
-        initialValue == dropDownlist[1] ||
-        initialValue == dropDownlist[7]) {
-      geofenceRequestPayload = Geofencepayload(
-          ActionUTC: DateTime.now().toString(),
-          Description: descriptionText == null ? null : descriptionText,
-          GeofenceName: titleText,
-          EndDate: endingDate == null ? null : endingDate.toString(),
-          GeometryWKT: finalPolygonWKTstring,
-          GeofenceType: initialValue,
-          IsTransparent: true,
-          FillColor: 658170);
-    } else {
-      geofenceRequestPayload = Geofencepayload(
-          ActionUTC: DateTime.now().toString(),
-          Description: descriptionText == null ? null : descriptionText,
-          GeofenceName: titleText,
-          EndDate: endingDate == null ? null : endingDate.toString(),
-          GeometryWKT: finalPolygonWKTstring,
-          GeofenceType: initialValue,
-          IsTransparent: true,
-          FillColor: 658170);
-      Backfill backfill = Backfill(
-          BackfillDate: backFillDate == null ? null : backFillDate.toString());
-      Target target = Target(
-          TargetVolumeInCuMeter: targetController.text == null
-              ? null
-              : double.parse(targetController.text));
-      Materials material =
-          Materials(MaterialUID: materialUID == null ? null : materialUID);
-      Geofenceinputs geofenceinputs = Geofenceinputs(
-          BackfillInput: backfill,
-          GeofenceInput: geofenceRequestPayload,
-          Material: material,
-          TargetInput: target);
-      addGeofencePayLoad = Addgeofencemodel(
-          Inputs: [geofenceinputs], ValidationConstraint: null);
+    try {
+      String titleText = titleController.text;
+      String descriptionText = descriptionController.text;
+      Logger().e(endingDate);
+      Logger().e(finalPolygonWKTstring);
+      if (initialValue == dropDownlist[0] ||
+          initialValue == dropDownlist[1] ||
+          initialValue == dropDownlist[7]) {
+        geofenceRequestPayload = Geofencepayload(
+            ActionUTC: DateTime.now().toIso8601String(),
+            Description: descriptionText == null ? null : descriptionText,
+            GeofenceName: titleText,
+            EndDate: endingDate == null ? null : endingDate.toIso8601String(),
+            GeometryWKT: finalPolygonWKTstring,
+            GeofenceType: geofenceType,
+            IsTransparent: false,
+            FillColor: colorValue == null ? 658170 : colorValue);
+      } else {
+        geofenceRequestPayload = Geofencepayload(
+            ActionUTC: DateTime.now().toIso8601String(),
+            Description: descriptionText == null ? null : descriptionText,
+            GeofenceName: titleText,
+            EndDate: endingDate == null ? null : endingDate.toIso8601String(),
+            GeometryWKT: finalPolygonWKTstring,
+            GeofenceType: geofenceType,
+            IsTransparent: false,
+            FillColor: colorValue == null ? 658170 : colorValue);
+
+        Backfill backfill = Backfill(
+            BackfillDate:
+                backFillDate == null ? null : backFillDate.toIso8601String());
+        Logger().d("mappiy");
+        Target target = Target(
+            TargetVolumeInCuMeter: targetController.text.isEmpty
+                ? null
+                : double.parse(targetController.text));
+        Logger().d("1234");
+        Materials material =
+            Materials(MaterialUID: materialUID == null ? null : materialUID);
+        Geofenceinputs geofenceinputs = Geofenceinputs(
+            BackfillInput: backfill,
+            GeofenceInput: geofenceRequestPayload,
+            Material: material,
+            TargetInput: target);
+        addGeofencePayLoad = Addgeofencemodel(
+            Inputs: [geofenceinputs], ValidationConstraint: null);
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
   onSavingData() async {
+    showLoadingDialog();
     try {
       await convertingPolyOBJtoWKT();
       await convertingOBJtoModel();
       if (initialValue == dropDownlist[0] ||
           initialValue == dropDownlist[1] ||
           initialValue == dropDownlist[7]) {
-        Map<String, dynamic> data = await _geofenceService
-            .postGeofenceData(geofenceRequestPayload)
-            .then((value) {
-          if (value == null) {
-            _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
-          } else {
-            return;
-          }
-          return;
-        });
-        Logger().e(data);
+        var data =
+            await _geofenceService.postGeofenceData(geofenceRequestPayload);
+        _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+        hideLoadingDialog();
       } else {
-        isLoading = true;
-        var data = await _geofenceService
-            .postAddGeofenceData(addGeofencePayLoad)
-            .then((value) {
-          if (value == null) {
-            _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
-          } else {
-            return;
-          }
-        });
+        var data =
+            await _geofenceService.postAddGeofenceData(addGeofencePayLoad);
+        _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+        hideLoadingDialog();
       }
 
       // listOfLatLong.clear();
@@ -385,9 +455,10 @@ class AddgeofenseViewModel extends InsiteViewModel {
       // _polyline.clear();
       // _circle.clear();
 
-    } catch (e) {
+    } on DioError catch (e) {
+      hideLoadingDialog();
+      snackbarService.showSnackbar(message: e.response.statusMessage);
       Logger().e(e.toString());
-      throw e;
     }
     notifyListeners();
   }

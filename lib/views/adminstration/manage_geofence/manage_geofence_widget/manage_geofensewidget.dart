@@ -11,8 +11,13 @@ class ManageGeofenceWidget extends StatefulWidget {
   final String geofenceName;
   final String geofenceDate;
   final String geofenceUID;
+  bool isLoading;
   ManageGeofenceWidget(
-      this.geofenceName, this.geofenceDate, this.ondeleting, this.geofenceUID);
+      {this.geofenceName,
+      this.geofenceDate,
+      this.ondeleting,
+      this.geofenceUID,
+      this.isLoading});
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }

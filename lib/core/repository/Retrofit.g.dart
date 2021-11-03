@@ -2751,50 +2751,23 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<dynamic> deleteGeofence(url, geofenceUID, actionUTC) async {
+  Future<dynamic> deleteGeofence(url, customeruid) async {
     ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(geofenceUID, 'geofenceUID');
-    ArgumentError.checkNotNull(actionUTC, 'actionUTC');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'geofenceuid': geofenceUID,
-      r'actionutc': actionUTC
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'DELETE',
-            headers: <String, dynamic>{},
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
     final value = _result.data;
-    return value;
-  }
-
-  @override
-  Future<SearchModel> getSearchData(token, searchvalue, maxResults) async {
-    ArgumentError.checkNotNull(token, 'token');
-    ArgumentError.checkNotNull(searchvalue, 'searchvalue');
-    ArgumentError.checkNotNull(maxResults, 'maxResults');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'authToken': token?.toJson(),
-      r'query': searchvalue?.toJson(),
-      r'maxResults': maxResults
-    };
-    final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        'https://singlesearch.alk.com/ww/api/search',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    final value = SearchModel.fromJson(_result.data);
     return value;
   }
 
