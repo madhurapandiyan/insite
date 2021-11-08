@@ -39,7 +39,9 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               size: 20,
                             ),
                             InsiteButton(
-                              onTap: viewModel.onNavigation,
+                              onTap: () {
+                                viewModel.onNavigation(null);
+                              },
                               title: "ADD GEOFENCE",
                               height: mediaQuery.size.height * 0.05,
                               width: mediaQuery.size.width * 0.4,
@@ -54,6 +56,9 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             var model = viewModel.geofence.Geofences;
 
                             return ManageGeofenceWidget(
+                              onNavigation: () {
+                                viewModel.onNavigation(model[i].GeofenceUID);
+                              },
                               ondeleting: (uid, actionutc) {
                                 setState(() {
                                   viewModel.isLoading = !viewModel.isLoading;

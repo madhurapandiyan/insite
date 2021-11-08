@@ -6,7 +6,7 @@ part 'geofencemodel.g.dart';
 class Geofence {
   final List<Geofencemodeldata> Geofences;
   Geofence({this.Geofences});
-    factory Geofence.fromJson(Map<String, dynamic> json) =>
+  factory Geofence.fromJson(Map<String, dynamic> json) =>
       _$GeofenceFromJson(json);
   Map<String, dynamic> toJson() => _$GeofenceToJson(this);
 }
@@ -16,6 +16,7 @@ class Geofencemodeldata {
   final String GeofenceUID;
   final String GeofenceName;
   final String GeofenceType;
+  final String Description;
   final bool IsFavorite;
   final String CustomerUID;
   final bool IsTransparent;
@@ -28,6 +29,7 @@ class Geofencemodeldata {
       {this.GeofenceUID,
       this.GeofenceName,
       this.GeofenceType,
+      this.Description,
       this.IsFavorite,
       this.CustomerUID,
       this.IsTransparent,

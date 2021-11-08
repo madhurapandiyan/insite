@@ -34,7 +34,7 @@ Geofenceinputs _$GeofenceinputsFromJson(Map<String, dynamic> json) {
             json['GeofenceInput'] as Map<String, dynamic>),
     TargetInput: json['TargetInput'] == null
         ? null
-        : Target.fromJson(json['TargetInput'] as Map<String, dynamic>),
+        : TargetData.fromJson(json['TargetInput'] as Map<String, dynamic>),
     Material: json['Material'] == null
         ? null
         : Materials.fromJson(json['Material'] as Map<String, dynamic>),
@@ -50,16 +50,6 @@ Map<String, dynamic> _$GeofenceinputsToJson(Geofenceinputs instance) =>
       'TargetInput': instance.TargetInput?.toJson(),
       'BackfillInput': instance.BackfillInput?.toJson(),
       'Material': instance.Material?.toJson(),
-    };
-
-Target _$TargetFromJson(Map<String, dynamic> json) {
-  return Target(
-    TargetVolumeInCuMeter: (json['TargetVolumeInCuMeter'] as num)?.toDouble(),
-  );
-}
-
-Map<String, dynamic> _$TargetToJson(Target instance) => <String, dynamic>{
-      'TargetVolumeInCuMeter': instance.TargetVolumeInCuMeter,
     };
 
 Backfill _$BackfillFromJson(Map<String, dynamic> json) {
@@ -93,4 +83,58 @@ Map<String, dynamic> _$ValidationConstraintgeofenceToJson(
         ValidationConstraintgeofence instance) =>
     <String, dynamic>{
       'ValidationConstraint': instance.ValidationConstraint,
+    };
+
+GetAddgeofenceModel _$GetAddgeofenceModelFromJson(Map<String, dynamic> json) {
+  return GetAddgeofenceModel(
+    Result: json['Result'] == null
+        ? null
+        : ResultData.fromJson(json['Result'] as Map<String, dynamic>),
+    Code: json['Code'] as int,
+    Message: json['Message'] as String,
+  );
+}
+
+Map<String, dynamic> _$GetAddgeofenceModelToJson(
+        GetAddgeofenceModel instance) =>
+    <String, dynamic>{
+      'Result': instance.Result?.toJson(),
+      'Code': instance.Code,
+      'Message': instance.Message,
+    };
+
+ResultData _$ResultDataFromJson(Map<String, dynamic> json) {
+  return ResultData(
+    BackfillDate: json['BackfillDate'] == null
+        ? null
+        : Backfill.fromJson(json['BackfillDate'] as Map<String, dynamic>),
+    Geofence: json['Geofence'] == null
+        ? null
+        : Geofencepayload.fromJson(json['Geofence'] as Map<String, dynamic>),
+    MaterialData: json['MaterialData'] == null
+        ? null
+        : Materials.fromJson(json['MaterialData'] as Map<String, dynamic>),
+    Target: json['Target'] == null
+        ? null
+        : TargetData.fromJson(json['Target'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$ResultDataToJson(ResultData instance) =>
+    <String, dynamic>{
+      'Geofence': instance.Geofence?.toJson(),
+      'Target': instance.Target?.toJson(),
+      'BackfillDate': instance.BackfillDate?.toJson(),
+      'MaterialData': instance.MaterialData?.toJson(),
+    };
+
+TargetData _$TargetDataFromJson(Map<String, dynamic> json) {
+  return TargetData(
+    TargetVolumeInCuMeter: (json['TargetVolumeInCuMeter'] as num)?.toDouble(),
+  );
+}
+
+Map<String, dynamic> _$TargetDataToJson(TargetData instance) =>
+    <String, dynamic>{
+      'TargetVolumeInCuMeter': instance.TargetVolumeInCuMeter,
     };

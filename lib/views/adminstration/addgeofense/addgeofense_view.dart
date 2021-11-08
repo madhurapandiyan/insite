@@ -7,9 +7,7 @@ import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_bo
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
-
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
-
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -18,7 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_geofence_widget/geofencing_map/geofencing_map.dart';
-
 import 'addgeofense_view_model.dart';
 
 class AddgeofenseView extends StatefulWidget {
@@ -34,15 +31,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
   var titleFocus = FocusNode();
   var descriptionFocus = FocusNode();
   var targetFocus = FocusNode();
-
-  // DateTime backFillDate;
-//  DateTime endDate;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  String polygonString;
   void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
@@ -75,16 +64,20 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
     });
   }
 
+  String uid;
+
   @override
   Widget build(BuildContext context) {
+    uid = ModalRoute.of(context).settings.arguments as String;
+    //Logger().wtf(isInit);
     var mediaquerry = MediaQuery.of(context);
     var theme = Theme.of(context);
     return ViewModelBuilder<AddgeofenseViewModel>.reactive(
       builder:
           (BuildContext context, AddgeofenseViewModel viewModel, Widget _) {
-        //Logger().e(viewModel.materialdata);
-        Logger().e(viewModel.endingDate);
-        Logger().e(viewModel.backFillDate);
+        if (viewModel.isLoading) {
+          viewModel.getGeofenceData(uid);
+        }
         return InsiteScaffold(
           viewModel: viewModel,
           body: viewModel.isLoading
@@ -105,6 +98,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               size: 20,
                             ),
                             InsiteButton(
+                              textColor: white,
                               onTap: viewModel.onRespectivePageNavigation,
                               title: "MANAGE GEOFENCE",
                               height: mediaquerry.size.height * 0.05,
@@ -302,18 +296,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                                               label: Text("cancel")),
                                                                           FlatButton.icon(
                                                                               onPressed: () {
-                                                                                setState(() {
-                                                                                  viewModel.listOfLatLong.clear();
-                                                                                  viewModel.listOfNumber.clear();
-                                                                                  viewModel.lastLatLong = null;
-                                                                                  viewModel.listOfLatLong.clear();
-                                                                                  viewModel.listOfNumber.clear();
-                                                                                  viewModel.polygon.clear();
-                                                                                  viewModel.polyline.clear();
-                                                                                  viewModel.circle.clear();
-                                                                                  viewModel.listOfLatLong.clear();
-                                                                                  Navigator.of(context).pop();
-                                                                                });
+                                                                                viewModel.onPolygonCleared();
+                                                                                Navigator.of(context).pop();
                                                                               },
                                                                               icon: Icon(Icons.delete),
                                                                               label: Text("Clear"))
@@ -402,6 +386,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   width: double.infinity,
                                   height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
+                                    //value: viewModel.fetchedGeofenceName,
                                     focusNode: titleFocus,
                                     title: "title",
                                     controller: viewModel.titleController,
@@ -452,14 +437,19 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        width: 1, color: Colors.white)),
+                                        width: 1,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color)),
                                 child: CustomDropDownWidget(
+                                  istappable: uid != null,
                                   items: viewModel.dropDownlist,
                                   onChanged: (String value) {
                                     //widget.getmaterialdata();
                                     setState(() {
                                       viewModel.initialValue = value;
-                                      viewModel.onChangeDropDown(value);
+                                      //viewModel.onChangeDropDown(value);
                                     });
                                   },
                                   value: viewModel.initialValue,
@@ -488,15 +478,22 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       margin: EdgeInsets.all(2),
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        border:
-                                            Border.all(width: 1, color: white),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Theme(
                                         data: Theme.of(context).copyWith(
                                             dividerColor: Colors.transparent),
                                         child: ExpansionTile(
-                                          iconColor: white,
+                                          iconColor: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color,
                                           onExpansionChanged: (bool) {},
                                           childrenPadding: EdgeInsets.all(10),
                                           title: InsiteText(
@@ -516,7 +513,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
                                                             width: 1,
-                                                            color: white),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15)),
@@ -565,9 +566,19 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             });
                                                           },
                                                           title: InsiteText(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color,
                                                             text: data[i].name,
                                                           ),
                                                           subtitle: InsiteText(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color,
                                                             text: data[i]
                                                                 .density
                                                                 .toString(),
@@ -597,7 +608,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         height: mediaquerry.size.height * 0.05,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                width: 1, color: white),
+                                                width: 1,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color),
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         child: TextFormField(
@@ -665,7 +680,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                   width: 1,
-                                                  color: Colors.white)),
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color)),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 20),
@@ -710,7 +728,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                            width: 1, color: Colors.white)),
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
@@ -792,6 +814,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     InsiteButton(
+                                      onTap: () {
+                                        setState(() {
+                                          viewModel.onCancelButtonClicked();
+                                        });
+                                      },
                                       height: mediaquerry.size.height * 0.05,
                                       width: mediaquerry.size.width * 0.4,
                                       bgColor:
@@ -800,11 +827,16 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       fontSize: 20,
                                     ),
                                     InsiteButton(
-                                      onTap: viewModel.correctedListofLatlang
-                                                  .isEmpty &&
-                                              viewModel
-                                                  .titleController.text.isEmpty
-                                          ? null
+                                      textColor: white,
+                                      onTap: viewModel.isPolygonsCreated ||
+                                              viewModel.titleController.text
+                                                  .isEmpty
+                                          ? () {
+                                              print(
+                                                  viewModel.isPolygonsCreated);
+                                              print(viewModel.titleController
+                                                  .text.isEmpty);
+                                            }
                                           : () {
                                               FocusScope.of(context).unfocus();
                                               Logger().e(viewModel

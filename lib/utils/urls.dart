@@ -164,6 +164,8 @@ class Urls {
   static String getMaterialData =
       "/t/trimble.com/vss-unifiedproductivity/1.0/productivity/materials";
   static String postPayLoad = "/t/trimble.com/vss-geofenceservice/1.0";
+  static String getGeofenceInputsUrl =
+      "/t/trimble.com/vss-unifiedproductivity/1.0/composite/sitewithtargets/";
 
   static String estimatedCycleVolumePayLoad =
       "/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";
@@ -216,7 +218,7 @@ class Urls {
       "$assetSettingsMasterData/1.0/v1/assetfuelburnratesettings";
   static String estimatedMileage =
       "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
-
+  static String getGeofenceData = "$geofence/1.0";
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";
@@ -227,6 +229,7 @@ class Urls {
   static String assetMataData = "/frame-assetmetadata";
   static String identity = "/frame-identity";
   static String assetSettingsMasterData = "/frame-masterdata";
+  static String geofence = "/frame-geofence";
 
   // static String accountSelection = "/npulse-masterdataapi-in";
   // static String fleet = "/npulse-fleet-in";

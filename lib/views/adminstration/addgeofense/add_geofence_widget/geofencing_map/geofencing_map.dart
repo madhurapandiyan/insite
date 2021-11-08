@@ -40,7 +40,6 @@ class _GeofencingMapState extends State<GeofencingMap> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().e(widget.camPosition);
     return GoogleMaps(
       controller: GoogleMapsController(
         onMapCreated: (controller) {

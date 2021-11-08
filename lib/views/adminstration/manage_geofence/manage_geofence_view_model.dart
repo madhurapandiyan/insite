@@ -80,9 +80,12 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onNavigation() {
-    Logger().e("navigation");
-    navigationService.navigateToView(AddgeofenseView());
+  onNavigation(String uid) {
+    if (uid == null) {
+      navigationService.clearTillFirstAndShowView(AddgeofenseView());
+    } else {
+      navigationService.clearTillFirstAndShowView(AddgeofenseView(), arguments: uid);
+    }
   }
 
   // makemaplatlan(List<geo.PointSeries<geo.Point<num>>> pointslist) {

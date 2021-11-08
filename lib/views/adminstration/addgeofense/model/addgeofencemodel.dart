@@ -1,3 +1,4 @@
+import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'addgeofencemodel.g.dart';
@@ -15,7 +16,7 @@ class Addgeofencemodel {
 @JsonSerializable(explicitToJson: true)
 class Geofenceinputs {
   final Geofencepayload GeofenceInput;
-  final Target TargetInput;
+  final TargetData TargetInput;
   final Backfill BackfillInput;
   final Materials Material;
   Geofenceinputs(
@@ -28,13 +29,7 @@ class Geofenceinputs {
   Map<String, dynamic> toJson() => _$GeofenceinputsToJson(this);
 }
 
-@JsonSerializable()
-class Target {
-  final double TargetVolumeInCuMeter;
-  Target({this.TargetVolumeInCuMeter});
-  factory Target.fromJson(Map<String, dynamic> json) => _$TargetFromJson(json);
-  Map<String, dynamic> toJson() => _$TargetToJson(this);
-}
+
 
 @JsonSerializable()
 class Backfill {
@@ -61,4 +56,34 @@ class ValidationConstraintgeofence {
   factory ValidationConstraintgeofence.fromJson(Map<String, dynamic> json) =>
       _$ValidationConstraintgeofenceFromJson(json);
   Map<String, dynamic> toJson() => _$ValidationConstraintgeofenceToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAddgeofenceModel {
+  final ResultData Result;
+  final int Code;
+  final String Message;
+  GetAddgeofenceModel({this.Result, this.Code, this.Message});
+  factory GetAddgeofenceModel.fromJson(Map<String, dynamic> json) =>
+      _$GetAddgeofenceModelFromJson(json);
+  Map<String, dynamic> toJson() => _$GetAddgeofenceModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ResultData {
+  final Geofencepayload Geofence;
+  final TargetData Target;
+  final Backfill BackfillDate;
+  final Materials MaterialData;
+  ResultData({this.BackfillDate, this.Geofence, this.MaterialData, this.Target});
+  factory ResultData.fromJson(Map<String, dynamic> json) =>
+      _$ResultDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ResultDataToJson(this);
+}
+@JsonSerializable()
+class TargetData {
+  final double TargetVolumeInCuMeter;
+  TargetData({this.TargetVolumeInCuMeter});
+  factory TargetData.fromJson(Map<String, dynamic> json) => _$TargetDataFromJson(json);
+  Map<String, dynamic> toJson() => _$TargetDataToJson(this);
 }
