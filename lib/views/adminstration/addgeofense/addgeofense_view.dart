@@ -26,13 +26,7 @@ class AddgeofenseView extends StatefulWidget {
 class _AddgeofenseViewState extends State<AddgeofenseView> {
   Color pickerColor = tango;
   Color currentColor;
-  double lat = 30.666;
-  double lon = 76.8127;
-  var titleFocus = FocusNode();
-  var descriptionFocus = FocusNode();
-  var targetFocus = FocusNode();
-  String polygonString;
-  void endDatePicker(AddgeofenseViewModel model) {
+void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -42,9 +36,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
       if (value == null) {
         return;
       }
-      setState(() {
-        model.endingDate = value;
-      });
+      model.onEndDatePicked(value);
     });
   }
 
@@ -58,9 +50,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
       if (value == null) {
         return;
       }
-      setState(() {
-        model.backFillDate = value;
-      });
+      model.onBackFillDatePicked(value);
     });
   }
 
@@ -117,19 +107,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                           color: theme.cardColor,
                         ),
                         child: viewModel.isSearching
-                            ? LocationSearchView(
-                                getLatLong: (lat, long) {
-                                  setState(() {
-                                    viewModel.onLocationSelected(lat, long);
-                                  });
-                                },
-                                onApply: (_) {
-                                  setState(() {
-                                    viewModel.isSearching =
-                                        !viewModel.isSearching;
-                                  });
-                                },
-                              )
+                            ? LocationSearchView(getLatLong: (lat, long) {
+                                viewModel.onLocationSelected(lat, long);
+                              }, onApply: (_) {
+                                viewModel.onLocationSearchApply();
+                              })
                             : Stack(
                                 alignment: Alignment.topRight,
                                 children: [
@@ -170,12 +152,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                 bgColor: tuna,
                                                 title: "",
                                                 onTap: () {
-                                                  setState(() {
-                                                    viewModel.zoomValue++;
-                                                    viewModel.plus(
-                                                        viewModel.zoomValue,
-                                                        LatLng(lat++, lon++));
-                                                  });
+                                                  viewModel.zoomValue++;
+                                                  viewModel.plus(
+                                                    viewModel.zoomValue,
+                                                  );
                                                 },
                                                 icon: Icon(
                                                   Icons.add,
@@ -184,10 +164,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             Dropdown(
                                               maptype: viewModel.mapType,
                                               changingvalue: (value) {
-                                                setState(() {
-                                                  viewModel.initialMapType =
-                                                      value;
-                                                });
+                                                viewModel
+                                                    .onDropDownMapTypeChange(
+                                                        value);
                                               },
                                               initialvalue:
                                                   viewModel.initialMapType,
@@ -207,43 +186,25 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   Icons.search,
                                                   color: appbarcolor,
                                                 )),
+                                                uid==null?
                                             InsiteButton(
                                                 bgColor:
                                                     viewModel.isDrawingPolygon
                                                         ? tango
                                                         : tuna,
                                                 title: "",
-                                                onTap: viewModel
-                                                        .polygon.isNotEmpty
+                                                onTap: viewModel.polygon
+                                                            .isNotEmpty &&
+                                                        uid != null
                                                     ? null
                                                     : () {
-                                                        Logger().e(
-                                                            viewModel.polygon);
-                                                        setState(() {
-                                                          // Logger().e("xdgvzdx");
-                                                          viewModel
-                                                                  .isDrawingPolygon =
-                                                              !viewModel
-                                                                  .isDrawingPolygon;
-                                                          viewModel.polygon
-                                                              .clear();
-                                                          viewModel.polyline
-                                                              .clear();
-                                                          viewModel.circle
-                                                              .clear();
-                                                          viewModel
-                                                              .listOfLatLong
-                                                              .clear();
-                                                        });
-                                                        Logger().e(
-                                                            viewModel.polygon);
-                                                        Logger().d(viewModel
-                                                            .isDrawingPolygon);
+                                                        viewModel
+                                                            .onEditButtonClicked();
                                                       },
                                                 icon: Icon(
                                                   Icons.edit,
                                                   color: appbarcolor,
-                                                )),
+                                                )):SizedBox(width: 10,)
                                           ],
                                         ),
                                         Container(
@@ -258,12 +219,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   title: "",
                                                   bgColor: tuna,
                                                   onTap: () {
-                                                    setState(() {
-                                                      viewModel.zoomValue--;
-                                                      viewModel.minus(
-                                                          viewModel.zoomValue,
-                                                          LatLng(lat--, lon--));
-                                                    });
+                                                    viewModel.zoomValue--;
+                                                    viewModel.minus(
+                                                      viewModel.zoomValue,
+                                                    );
                                                   },
                                                   icon: Icon(
                                                     Icons.minimize,
@@ -274,11 +233,13 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     MainAxisAlignment
                                                         .spaceAround,
                                                 children: [
+                                                  uid==null?
                                                   InsiteButton(
                                                       bgColor: tuna,
                                                       title: "",
                                                       onTap: viewModel.polygon
-                                                              .isNotEmpty
+                                                                  .isNotEmpty &&
+                                                              uid == null
                                                           ? () => showDialog(
                                                               context: context,
                                                               builder: (ctx) =>
@@ -309,7 +270,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                       icon: Icon(
                                                         Icons.delete,
                                                         color: appbarcolor,
-                                                      )),
+                                                      )):SizedBox(width: 10,),
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -325,12 +286,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                                       actions: [
                                                                         FlatButton.icon(
                                                                             onPressed: () {
-                                                                              setState(() {
-                                                                                currentColor = pickerColor;
-                                                                                viewModel.color = currentColor;
-                                                                                Logger().d(viewModel.color);
-                                                                                viewModel.onChoosingColor(currentColor.toString());
-                                                                              });
+                                                                               viewModel.onColorPicked(pickerColor);
+                                                                              viewModel.onChoosingColor();
                                                                               Navigator.of(context).pop();
                                                                             },
                                                                             icon: Icon(Icons.check),
@@ -350,7 +307,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                         icon: Icon(
                                                           Icons
                                                               .auto_awesome_mosaic,
-                                                          color: currentColor,
+                                                          color: pickerColor,
                                                         )),
                                                   ),
                                                 ],
@@ -387,7 +344,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
                                     //value: viewModel.fetchedGeofenceName,
-                                    focusNode: titleFocus,
+                                    focusNode: viewModel.titleFocus,
                                     title: "title",
                                     controller: viewModel.titleController,
                                   )),
@@ -417,7 +374,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               Container(
                                   width: double.infinity,
                                   child: AddressCustomTextBox(
-                                    focusNode: descriptionFocus,
+                                    focusNode: viewModel.descriptionFocus,
                                     title: "Description",
                                     controller: viewModel.descriptionController,
                                   )),
@@ -446,11 +403,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   istappable: uid != null,
                                   items: viewModel.dropDownlist,
                                   onChanged: (String value) {
-                                    //widget.getmaterialdata();
-                                    setState(() {
-                                      viewModel.initialValue = value;
-                                      //viewModel.onChangeDropDown(value);
-                                    });
+                                    viewModel.onDropDownValueChanged(value);
                                   },
                                   value: viewModel.initialValue,
                                 ),
@@ -528,11 +481,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                       child: TextFormField(
                                                         autofocus: false,
                                                         onChanged: (value) {
-                                                          setState(() {
-                                                            viewModel
-                                                                .materialSelection(
-                                                                    value);
-                                                          });
+                                                          viewModel
+                                                              .materialSelection(
+                                                                  value);
                                                         },
                                                         decoration:
                                                             InputDecoration(
@@ -616,7 +567,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         child: TextFormField(
-                                          focusNode: targetFocus,
+                                          focusNode: viewModel.targetFocus,
                                           controller:
                                               viewModel.targetController,
                                           autofocus: false,
@@ -760,13 +711,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    viewModel.isNoendDate =
-                                        !viewModel.isNoendDate;
-
-                                    viewModel.endingDate = null;
-                                    viewModel.backFillDate = null;
-                                  });
+                                  viewModel.onCheckBoxChecked();
                                 },
                                 splashColor: Theme.of(context).backgroundColor,
                                 child: Row(
@@ -815,9 +760,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   children: [
                                     InsiteButton(
                                       onTap: () {
-                                        setState(() {
-                                          viewModel.onCancelButtonClicked();
-                                        });
+                                        viewModel.onCancelButtonClicked();
                                       },
                                       height: mediaquerry.size.height * 0.05,
                                       width: mediaquerry.size.width * 0.4,
@@ -829,8 +772,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     InsiteButton(
                                       textColor: white,
                                       onTap: viewModel.isPolygonsCreated ||
-                                              viewModel.titleController.text
-                                                  .isEmpty
+                                              viewModel
+                                                  .titleController.text.isEmpty
                                           ? () {
                                               print(
                                                   viewModel.isPolygonsCreated);

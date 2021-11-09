@@ -1,10 +1,6 @@
 import 'dart:async';
-
-import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
-
 import 'package:google_maps_controller/google_maps_controller.dart';
-import 'package:logger/logger.dart';
 
 class GeofencingMap extends StatefulWidget {
   final List<String> mapType;
@@ -17,19 +13,20 @@ class GeofencingMap extends StatefulWidget {
   final bool isDrawing;
   final CameraPosition camPosition;
   final Completer<GoogleMapController> completer;
+  final Function(CameraPosition) onPan;
 
-  GeofencingMap({
-    this.mapType,
-    this.gettingData,
-    this.color,
-    this.initialValue,
-    this.circle,
-    this.polygon,
-    this.polyline,
-    this.isDrawing,
-    this.camPosition,
-    this.completer,
-  });
+  GeofencingMap(
+      {this.mapType,
+      this.gettingData,
+      this.color,
+      this.initialValue,
+      this.circle,
+      this.polygon,
+      this.polyline,
+      this.isDrawing,
+      this.camPosition,
+      this.completer,
+      this.onPan});
 
   @override
   _GeofencingMapState createState() => _GeofencingMapState();

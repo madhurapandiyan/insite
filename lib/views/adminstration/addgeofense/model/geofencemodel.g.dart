@@ -33,6 +33,7 @@ Geofencemodeldata _$GeofencemodeldataFromJson(Map<String, dynamic> json) {
     FillColor: json['FillColor'] as int,
     StartDate: json['StartDate'] as String,
     GeometryWKT: json['GeometryWKT'] as String,
+    EndDate: json['EndDate'] as String,
   );
 }
 
@@ -49,4 +50,5 @@ Map<String, dynamic> _$GeofencemodeldataToJson(Geofencemodeldata instance) =>
       'FillColor': instance.FillColor,
       'StartDate': instance.StartDate,
       'GeometryWKT': instance.GeometryWKT,
+      'EndDate': instance.EndDate,
     };

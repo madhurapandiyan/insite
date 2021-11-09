@@ -44,9 +44,7 @@ import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.da
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
-import 'package:insite/views/adminstration/addgeofense/model/search_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -734,9 +732,21 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Addgeofencemodel geofencepayload);
 
+  @PUT('{url}')
+  Future<dynamic> putGeofenceAnotherData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() GeofenceModelWithMaterialData geofencepayload);
+
   @GET("{url}")
   Future<Materialmodel> getMaterialModel(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
+
+  @PUT("{url}")
+  Future<dynamic> putGeofencePayLoad(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Geofencepayload geofencepayload);
 
   @POST("{url}")
   Future<dynamic> postGeofencePayLoadVL(

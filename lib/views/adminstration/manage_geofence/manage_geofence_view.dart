@@ -66,7 +66,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                 });
                               },
                               geofenceName: model[i].GeofenceName,
-                              geofenceDate: model[i].StartDate,
+                              geofenceDate: model[i].EndDate,
                               geofenceUID: model[i].GeofenceUID,
                               isLoading: viewModel.isLoading,
                             );

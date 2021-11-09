@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:intl/intl.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
@@ -103,7 +104,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                       Padding(
                           padding: const EdgeInsets.only(right: 14.0),
                           child: InsiteText(
-                            text: "End Date : ${widget.geofenceDate.toString()}",
+                            text: "End Date : ${widget.geofenceDate==null?"No End Date":widget.geofenceDate }",
                             size: 14,
                             fontWeight: FontWeight.w700,
                           ))

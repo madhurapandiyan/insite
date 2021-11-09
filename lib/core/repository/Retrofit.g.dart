@@ -2686,6 +2686,30 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<dynamic> putGeofenceAnotherData(
+      url, customeruid, geofencepayload) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<Materialmodel> getMaterialModel(url, customeruid) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customeruid, 'customeruid');
@@ -2703,6 +2727,29 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = Materialmodel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> putGeofencePayLoad(url, customeruid, geofencepayload) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
     return value;
   }
 

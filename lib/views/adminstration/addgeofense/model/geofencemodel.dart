@@ -24,6 +24,7 @@ class Geofencemodeldata {
   final int FillColor;
   final String StartDate;
   final String GeometryWKT;
+  final String EndDate;
 
   Geofencemodeldata(
       {this.GeofenceUID,
@@ -36,7 +37,7 @@ class Geofencemodeldata {
       this.AreaSqMeters,
       this.FillColor,
       this.StartDate,
-      this.GeometryWKT});
+      this.GeometryWKT,this.EndDate});
   factory Geofencemodeldata.fromJson(Map<String, dynamic> json) =>
       _$GeofencemodeldataFromJson(json);
   Map<String, dynamic> toJson() => _$GeofencemodeldataToJson(this);

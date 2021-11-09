@@ -138,3 +138,20 @@ Map<String, dynamic> _$TargetDataToJson(TargetData instance) =>
     <String, dynamic>{
       'TargetVolumeInCuMeter': instance.TargetVolumeInCuMeter,
     };
+
+GeofenceModelWithMaterialData _$GeofenceModelWithMaterialDataFromJson(
+    Map<String, dynamic> json) {
+  return GeofenceModelWithMaterialData(
+    Input: json['Input'] == null
+        ? null
+        : Geofenceinputs.fromJson(json['Input'] as Map<String, dynamic>),
+    GeofenceUID: json['GeofenceUID'] as String,
+  );
+}
+
+Map<String, dynamic> _$GeofenceModelWithMaterialDataToJson(
+        GeofenceModelWithMaterialData instance) =>
+    <String, dynamic>{
+      'Input': instance.Input,
+      'GeofenceUID': instance.GeofenceUID,
+    };

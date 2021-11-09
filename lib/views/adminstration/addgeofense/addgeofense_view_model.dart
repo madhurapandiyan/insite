@@ -42,6 +42,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   Addgeofencemodel addGeofencePayLoad;
 
+  GeofenceModelWithMaterialData geofenceWithMaterialData;
+
   AssetLocationData _assetLocation;
   AssetLocationData get assetLocation => _assetLocation;
 
@@ -95,12 +97,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
   String titleText;
   String descriptionText;
   String targetText;
-  String polygonString;
   String fetchedGeofenceType;
   String initialValue = "Generic";
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var targetController = TextEditingController();
+  var titleFocus = FocusNode();
+  var descriptionFocus = FocusNode();
+  var targetFocus = FocusNode();
 
   List<String> dropDownlist = [
     "Generic",
@@ -124,55 +128,147 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   LatLng lastLatLong;
 
+//navigation
   onRespectivePageNavigation() {
     _navigationService.navigateToView(ManageGeofenceView());
   }
 
-  Future<void> plus(
-    double zoomVal,
-    LatLng targetPosition,
-  ) async {
+//datepick
+  onBackFillDatePicked(DateTime value) {
+    backFillDate = value;
+    notifyListeners();
+  }
+
+  onEndDatePicked(DateTime value) {
+    endingDate = value;
+    notifyListeners();
+  }
+
+//zoom functions
+  Future<void> plus(double zoomVal) async {
     final controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(onZoomLatitude, onZoomLongitude), zoom: zoomVal)));
+        target: LatLng(onZoomLatitude == null ? 30.666 : onZoomLatitude,
+            onZoomLongitude == null ? 76.8127 : onZoomLongitude),
+        zoom: zoomVal)));
+    notifyListeners();
   }
 
-  Future<void> minus(
-    double zoomVal,
-    LatLng targetPosition,
-  ) async {
-    Logger().e(targetPosition);
+  Future<void> minus(double zoomVal) async {
     final GoogleMapController controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(onZoomLatitude, onZoomLongitude), zoom: zoomVal)));
+        target: LatLng(onZoomLatitude == null ? 30.666 : onZoomLatitude,
+            onZoomLongitude == null ? 76.8127 : onZoomLongitude),
+        zoom: zoomVal)));
+    notifyListeners();
   }
 
-  onChoosingColor(String value) {
-    Logger().d(value);
-    Logger().i(value.contains("Color(0xff"));
-    Logger().i(value.contains(")"));
+//choosing Color
+  onColorPicked(Color value) {
+    color = value;
+    onChangePolygonColor();
+    notifyListeners();
+  }
+
+  onChangePolygonColor() {
+    _polygon.clear();
+    _polyline.clear();
+    _circle.clear();
+    Polyline userPolyline;
+    Polygon userPolygon;
+    LatLng lastLatLng = _listOfLatLong.first;
+    _listOfLatLong.add(lastLatLng);
+    Logger().wtf(_listOfLatLong);
+    for (var i = 0; i < _listOfLatLong.length; i++) {
+      userPolyline = Polyline(
+        jointType: JointType.round,
+        endCap: Cap.roundCap,
+        startCap: Cap.buttCap,
+        width: 3,
+        points: _listOfLatLong,
+        polylineId: PolylineId(DateTime.now().toString()),
+        consumeTapEvents: true,
+        color: color,
+        visible: true,
+      );
+      userPolygon = Polygon(
+          //strokeColor: color,
+          strokeWidth: 3,
+          polygonId: PolygonId(DateTime.now().toString()),
+          fillColor: color,
+          visible: true,
+          points: _listOfLatLong);
+    }
+    _polygon.add(userPolygon);
+    _polyline.add(userPolyline);
+    notifyListeners();
+  }
+
+  onChoosingColor() {
+    String colorString = color.toString();
+    Logger().d(colorString);
+    Logger().i(colorString.contains("Color(0xff"));
+    Logger().i(colorString.contains(")"));
     String colorValueString;
-    if (value.contains("Color(0xff") && value.contains(")")) {
-      colorValueString = value.replaceAll("Color(0xff", "");
+    if (colorString.contains("Color(0xff") && colorString.contains(")")) {
+      colorValueString = colorString.replaceAll("Color(0xff", "");
       colorValueString = colorValueString.replaceAll(")", "");
       //colorValue = int.parse(colorValueString);
       Logger().e(colorValueString);
     }
     colorValue = int.parse(colorValueString, radix: 16);
     Logger().i(colorValue);
+    notifyListeners();
   }
 
   onLocationSelected(String locationLatitude, String locationLongitude) {
     double parsedLatitude = double.parse(locationLatitude);
     double parsedLongitude = double.parse(locationLongitude);
+    onZoomLatitude = parsedLatitude;
+    onZoomLongitude = parsedLongitude;
     LatLng pickedLatLong = LatLng(parsedLatitude, parsedLongitude);
     centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
     notifyListeners();
   }
 
-  onGettingLatLang(
-    LatLng userLatlong,
-  ) {
+  onLocationSearchApply() {
+    isSearching = !isSearching;
+    notifyListeners();
+  }
+
+  onDropDownValueChanged(String value) {
+    initialValue = value;
+    Logger().w(initialValue);
+    notifyListeners();
+  }
+
+  onCheckBoxChecked() {
+    isNoendDate = !isNoendDate;
+    endingDate = null;
+    backFillDate = null;
+    notifyListeners();
+  }
+
+  onDropDownMapTypeChange(String value) {
+    initialMapType = value;
+    notifyListeners();
+  }
+
+  onEditButtonClicked() {
+    isDrawingPolygon = !isDrawingPolygon;
+    _polygon.clear();
+    _polyline.clear();
+    _circle.clear();
+    _listOfLatLong.clear();
+    notifyListeners();
+  }
+
+  onSearching() {
+    isSearching = !isSearching;
+    notifyListeners();
+  }
+
+  onGettingLatLang(LatLng userLatlong) {
     Logger().wtf(userLatlong);
     Polyline userPolyline;
     Polygon userPolygon;
@@ -181,7 +277,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     double longitude1 = userLatlong.latitude;
     Logger().wtf(longitude1);
     Logger().wtf(latitude1);
-    LatLng correctedLatLong = LatLng(latitude1,longitude1);
+    LatLng correctedLatLong = LatLng(longitude1, latitude1);
     lastLatLong = correctedLatLong;
     correctedListofLatlang.add(correctedLatLong);
     Logger().d(correctedListofLatlang);
@@ -194,7 +290,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
       jointType: JointType.round,
       endCap: Cap.roundCap,
       startCap: Cap.buttCap,
-      width: 5,
+      width: 3,
       points: _listOfLatLong,
       polylineId: PolylineId(DateTime.now().toString()),
       consumeTapEvents: true,
@@ -203,7 +299,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     );
     userPolygon = Polygon(
         strokeColor: color,
-        strokeWidth: 5,
+        strokeWidth: 3,
         polygonId: PolygonId(DateTime.now().toString()),
         fillColor: color,
         visible: true,
@@ -306,22 +402,18 @@ class AddgeofenseViewModel extends InsiteViewModel {
   // }
 
   convertingPolyOBJtoWKT() {
+    Logger().d("running too many times");
     try {
+      listOfNumber.clear();
       lastLatLong = correctedListofLatlang.first;
       correctedListofLatlang.add(lastLatLong);
-      Logger().d(correctedListofLatlang);
-
       for (var i = 0; i < correctedListofLatlang.length; i++) {
-        var json = correctedListofLatlang[i].toJson();
+        double latitude = correctedListofLatlang[i].latitude;
+        double longitude = correctedListofLatlang[i].longitude;
+        List<num> json = [longitude, latitude];
+        Logger().d(json);
         listOfNumber.add(json);
       }
-      //List<num> firstlatlang = listOfNumber.first;
-      //Logger().d(firstlatlang);
-      //listOfNumber.insert(listOfNumber.length - 1, firstlatlang);
-      //Logger().d(listOfNumber);
-
-      //Logger().d(listOfNumber);
-
       List<geo.Point2> listOfPoints = [];
       geo.PointSeries pointSeries;
       geo.LineString<geo.Point<num>> lineStringSeries;
@@ -350,25 +442,12 @@ class AddgeofenseViewModel extends InsiteViewModel {
           }
         }
       }
-
       correctedListofLatlang.clear();
       listOfNumber.clear();
       listOfLatLong.clear();
     } catch (e) {
       Logger().e(e.toString());
     }
-
-    // for (var i = 0; i < testing.length; i++) {
-    //     List innerlist1 = testing[i];
-    //     for (var i1 = 0; i1 < innerlist1.length; i1++) {
-    //       List innerlist2 = innerlist1[i1];
-
-    //       example = geo.Point2.geometry.newFrom(innerlist2 as Iterable<num>);
-    //       listofpointfactory.add(example);
-    //     }
-    //     Logger().e(listofpointfactory);
-    //     polygonsparsing = geo.Polygon.make(testing, geo.Point2.geometry);
-    //   }
     Logger().d("parsing finished");
   }
 
@@ -383,6 +462,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
           initialValue == dropDownlist[1] ||
           initialValue == dropDownlist[7]) {
         geofenceRequestPayload = Geofencepayload(
+            GeofenceUID: fetchedGeofenceUid == null ? null : fetchedGeofenceUid,
             ActionUTC: DateTime.now().toIso8601String(),
             Description: descriptionController.text == null
                 ? null
@@ -395,6 +475,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
             FillColor: colorValue == null ? 658170 : colorValue);
       } else {
         geofenceRequestPayload = Geofencepayload(
+            GeofenceUID: fetchedGeofenceUid == null ? null : fetchedGeofenceUid,
             ActionUTC: DateTime.now().toIso8601String(),
             Description: descriptionController.text == null
                 ? null
@@ -424,6 +505,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
             TargetInput: target);
         addGeofencePayLoad = Addgeofencemodel(
             Inputs: [geofenceinputs], ValidationConstraint: null);
+
+        geofenceWithMaterialData = GeofenceModelWithMaterialData(
+            Input: geofenceinputs, GeofenceUID: fetchedGeofenceUid);
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -433,7 +517,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
   onSavingData() async {
     showLoadingDialog();
     try {
-      await convertingPolyOBJtoWKT();
+      if (fetchedGeofenceUid == null) {
+        await convertingPolyOBJtoWKT();
+      }
       await convertingOBJtoModel();
       if (fetchedGeofenceUid == null) {
         if (initialValue == dropDownlist[0] ||
@@ -451,6 +537,18 @@ class AddgeofenseViewModel extends InsiteViewModel {
         }
       } else {
         Logger().i("put method");
+        if (initialValue == dropDownlist[0] ||
+            initialValue == dropDownlist[1] ||
+            initialValue == dropDownlist[7]) {
+          await _geofenceService.putGeofenceData(geofenceRequestPayload);
+          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+          hideLoadingDialog();
+        } else {
+          await _geofenceService
+              .putGeofenceDataWithMaterial(geofenceWithMaterialData);
+          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+          hideLoadingDialog();
+        }
       }
 
       // listOfLatLong.clear();
@@ -484,6 +582,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onPolygonCleared() {
+    onZoomLatitude = null;
+    onZoomLongitude = null;
     isPolygonsCreated = true;
     finalPolygonWKTstring = null;
     listOfLatLong.clear();
@@ -501,30 +601,40 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   Future<Geofencemodeldata> getGeofenceData(String uid) async {
     Logger().e("FUNCTION");
+    fetchedGeofenceUid = uid;
     Geofencemodeldata data;
     GetAddgeofenceModel geofenceInputsData;
     try {
-      data = await _geofenceService.getSingleGeofenceData(uid);
-      fetchedGeofenceType = data.GeofenceType;
-      if (data.GeofenceType == dropDownlist[2] ||
-          data.GeofenceType == dropDownlist[3] ||
-          data.GeofenceType == dropDownlist[4] ||
-          data.GeofenceType == dropDownlist[5] ||
-          data.GeofenceType == dropDownlist[6]) {
-        geofenceInputsData = await _geofenceService.getGeofenceInput(uid);
-        Logger().wtf(geofenceInputsData.Result.toJson());
-        targetController.text =
-            geofenceInputsData.Result.Target.TargetVolumeInCuMeter.toString();
+      if (fetchedGeofenceUid != null) {
+        data = await _geofenceService.getSingleGeofenceData(uid);
+        fetchedGeofenceType = data.GeofenceType;
+        if (data.GeofenceType == dropDownlist[2] ||
+            data.GeofenceType == dropDownlist[3] ||
+            data.GeofenceType == dropDownlist[4] ||
+            data.GeofenceType == dropDownlist[5] ||
+            data.GeofenceType == dropDownlist[6]) {
+          geofenceInputsData = await _geofenceService.getGeofenceInput(uid);
+          Logger().wtf(geofenceInputsData.Result.toJson());
+          Logger().d("mappiy");
+          targetController.text =
+              geofenceInputsData.Result.Target.TargetVolumeInCuMeter == null
+                  ? 0.0
+                  : geofenceInputsData.Result.Target.TargetVolumeInCuMeter
+                      .toString();
+        }
+        titleController.text = data.GeofenceName;
+        descriptionController.text = data.Description;
+        initialValue = data.GeofenceType == "Unknown"
+            ? dropDownlist[4]
+            : data.GeofenceType;
+        finalPolygonWKTstring = data.GeometryWKT;
+        await convertWKTtoPolygon();
+        isLoading = false;
+        notifyListeners();
+        Logger().wtf(data.toJson());
+        return data;
       }
-      titleController.text = data.GeofenceName;
-      descriptionController.text = data.Description;
-      initialValue = data.GeofenceType;
-      polygonString = data.GeometryWKT;
-      await convertWKTtoPolygon();
       isLoading = false;
-      notifyListeners();
-      Logger().wtf(data.toJson());
-      return data;
     } catch (e) {
       isLoading = false;
       Logger().e(e.toString());
@@ -539,37 +649,30 @@ class AddgeofenseViewModel extends InsiteViewModel {
     try {
       double fetchedLatitude;
       double fetchedLongitude;
-      double correctedFetchedLatitude;
-      double correctedFetchedLongitude;
-      List<LatLng> correctedFetchedLatLng = [];
       List<LatLng> fetchedLatlng = [];
-      Set<Polygon> fetchedSetPolygon = {};
       Polygon fetchedSinglePolygon;
-      Set<Polyline> fetchedSetPolyline = {};
       Polyline fetchedSinglePolyline;
       // Logger().e(polygonString);
-      final geometryPolygon = Geo.wktProjected.parse(polygonString);
-
+      final geometryPolygon = Geo.wktProjected.parse(finalPolygonWKTstring);
       fetchedPolygons.add(geometryPolygon);
       final pointSeriesList = fetchedPolygons.first.exterior.chain;
+      Logger().w(pointSeriesList);
       for (var item in pointSeriesList) {
         fetchedLatitude = item.y;
         fetchedLongitude = item.x;
-        correctedFetchedLatitude = item.x;
-        correctedFetchedLongitude = item.y;
-        final LatLng correctedFetchedLatLng =
-            LatLng(correctedFetchedLatitude, correctedFetchedLongitude);
         final LatLng latitudeLongitude =
             LatLng(fetchedLatitude, fetchedLongitude);
         fetchedLatlng.add(latitudeLongitude);
-        correctedListofLatlang.add(correctedFetchedLatLng);
       }
       _listOfLatLong = fetchedLatlng;
       onZoomLatitude = _listOfLatLong.first.latitude;
       onZoomLongitude = _listOfLatLong.first.longitude;
+      centerPosition = CameraPosition(
+          target: LatLng(onZoomLatitude, onZoomLongitude), zoom: 5);
+
       fetchedSinglePolygon = Polygon(
           strokeColor: color,
-          strokeWidth: 5,
+          strokeWidth: 3,
           polygonId: PolygonId(DateTime.now().toString()),
           fillColor: color,
           visible: true,
@@ -578,20 +681,17 @@ class AddgeofenseViewModel extends InsiteViewModel {
           jointType: JointType.round,
           endCap: Cap.roundCap,
           startCap: Cap.buttCap,
-          width: 5,
+          width: 3,
           polylineId: PolylineId(DateTime.now().toString()),
           consumeTapEvents: true,
           color: color,
           visible: true,
           points: fetchedLatlng);
-      fetchedSetPolygon.add(fetchedSinglePolygon);
-      fetchedSetPolyline.add(fetchedSinglePolyline);
-      _polygon = fetchedSetPolygon;
-      _polyline = fetchedSetPolyline;
+      _polygon.add(fetchedSinglePolygon);
+      _polyline.add(fetchedSinglePolyline);
       Logger().d(_polygon);
       Logger().d(fetchedSinglePolygon);
-      convertingPolyOBJtoWKT();
-      isPolygonsCreated = true;
+      isPolygonsCreated = false;
       notifyListeners();
 //_polygon = fetchedPolygons.toSet() as Set<Polygon>;
     } catch (e) {

@@ -60,6 +60,37 @@ class Geofenceservice extends BaseService {
     }
   }
 
+    Future<dynamic> putGeofenceData(Geofencepayload payload) async {
+    Logger().d(payload.toJson());
+    Customer customer = await _localService.getAccountInfo();
+    if (isVisionLink) {
+      dynamic data = await MyApi().getClientSeven().putGeofencePayLoad(
+          Urls.postPayLoad, customer.CustomerUID, payload);
+    } else {
+      dynamic data = await MyApi().getClient().postGeofencePayLoad(
+          Urls.getGeofenceData,
+          customer.CustomerUID,
+          payload,
+          "in-geofence-gfapi");
+    }
+  }
+
+    Future<dynamic> putGeofenceDataWithMaterial(GeofenceModelWithMaterialData payload) async {
+    Logger().d(payload.Input.toJson());
+    Customer customer = await _localService.getAccountInfo();
+    if (isVisionLink) {
+      dynamic data = await MyApi().getClientSeven().putGeofenceAnotherData(
+          Urls.withMaterialData, customer.CustomerUID, payload);
+    } else {
+      // dynamic data = await MyApi().getClient().postGeofencePayLoad(
+      //     Urls.getGeofenceData,
+      //     customer.CustomerUID,
+      //     payload,
+      //     "in-geofence-gfapi");
+    }
+  }
+
+
   Future<dynamic> postAddGeofenceData(Addgeofencemodel payload) async {
     print(payload.toJson());
     Logger().d(payload.toJson());
