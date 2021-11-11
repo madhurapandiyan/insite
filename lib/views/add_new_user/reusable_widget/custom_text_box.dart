@@ -3,13 +3,17 @@ import 'package:insite/theme/colors.dart';
 
 class CustomTextBox extends StatelessWidget {
   final String title;
+  final FocusNode focusNode;
+  final String value;
   final TextEditingController controller;
 
-  const CustomTextBox({this.title, this.controller});
+  const CustomTextBox(
+      {this.title, this.controller, this.focusNode, this.value});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
       autofocus: false,
       controller: controller,
       style: TextStyle(

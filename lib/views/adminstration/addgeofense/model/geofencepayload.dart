@@ -4,6 +4,7 @@ part 'geofencepayload.g.dart';
 @JsonSerializable()
 class Geofencepayload {
   final String ActionUTC;
+  final String GeofenceUID;
   final String EndDate;
   final int FillColor;
   final String Description;
@@ -13,6 +14,7 @@ class Geofencepayload {
   final bool IsTransparent;
   Geofencepayload(
       {this.ActionUTC,
+      this.GeofenceUID,
       this.EndDate,
       this.FillColor,
       this.Description,

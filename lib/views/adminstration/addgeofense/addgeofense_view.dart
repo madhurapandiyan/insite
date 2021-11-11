@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
-
+import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
-
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -16,7 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_geofence_widget/geofencing_map/geofencing_map.dart';
-
 import 'addgeofense_view_model.dart';
 
 class AddgeofenseView extends StatefulWidget {
@@ -27,15 +26,7 @@ class AddgeofenseView extends StatefulWidget {
 class _AddgeofenseViewState extends State<AddgeofenseView> {
   Color pickerColor = tango;
   Color currentColor;
-  DateTime backFillDate;
-  DateTime endDate;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void endDatePicker() {
+void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -45,13 +36,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
       if (value == null) {
         return;
       }
-      setState(() {
-        endDate = value;
-      });
+      model.onEndDatePicked(value);
     });
   }
 
-  void backFillDatePicker() {
+  void backFillDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -61,20 +50,24 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
       if (value == null) {
         return;
       }
-      setState(() {
-        backFillDate = value;
-      });
+      model.onBackFillDatePicked(value);
     });
   }
 
+  String uid;
+
   @override
   Widget build(BuildContext context) {
+    uid = ModalRoute.of(context).settings.arguments as String;
+    //Logger().wtf(isInit);
     var mediaquerry = MediaQuery.of(context);
     var theme = Theme.of(context);
     return ViewModelBuilder<AddgeofenseViewModel>.reactive(
       builder:
           (BuildContext context, AddgeofenseViewModel viewModel, Widget _) {
-        //Logger().e(viewModel.materialdata);
+        if (viewModel.isLoading) {
+          viewModel.getGeofenceData(uid);
+        }
         return InsiteScaffold(
           viewModel: viewModel,
           body: viewModel.isLoading
@@ -95,7 +88,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               size: 20,
                             ),
                             InsiteButton(
-                              onTap: () {},
+                              textColor: white,
+                              onTap: viewModel.onRespectivePageNavigation,
                               title: "MANAGE GEOFENCE",
                               height: mediaquerry.size.height * 0.05,
                               width: mediaquerry.size.width * 0.4,
@@ -112,222 +106,220 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                           borderRadius: BorderRadius.circular(20),
                           color: theme.cardColor,
                         ),
-                        child: Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            Container(
-                              height: mediaquerry.size.height * 0.6,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: theme.backgroundColor,
-                              ),
-                              child: GeofencingMap(
-                                color: currentColor,
-                                initialValue: viewModel.initialMapType,
-                                mapType: viewModel.mapType,
-                                isDrawing: viewModel.isDrawingPolygon,
-                                circle: viewModel.circle,
-                                polygon: viewModel.polygon,
-                                polyline: viewModel.polyline,
-                                gettingData: (LatLng latlng) {
-                                  viewModel.onGettingLatLang(latlng);
-                                },
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                        child: viewModel.isSearching
+                            ? LocationSearchView(getLatLong: (lat, long) {
+                                viewModel.onLocationSelected(lat, long);
+                              }, onApply: (_) {
+                                viewModel.onLocationSearchApply();
+                              })
+                            : Stack(
+                                alignment: Alignment.topRight,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      InsiteButton(
-                                          bgColor: tuna,
-                                          title: "",
-                                          onTap: () {},
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: appbarcolor,
-                                          )),
-                                      Dropdown(
-                                        maptype: viewModel.mapType,
-                                        changingvalue: (value) {
-                                          setState(() {
-                                            viewModel.initialMapType = value;
-                                          });
-                                        },
-                                        initialvalue: viewModel.initialMapType,
-                                      ),
-                                      InsiteButton(
-                                          title: "",
-                                          bgColor: tuna,
-                                          onTap: () {},
-                                          icon: Icon(
-                                            Icons.search,
-                                            color: appbarcolor,
-                                          )),
-                                      InsiteButton(
-                                          bgColor: viewModel.isDrawingPolygon
-                                              ? tango
-                                              : tuna,
-                                          title: "",
-                                          onTap: viewModel.polygon.isNotEmpty
-                                              ? null
-                                              : () {
-                                                  Logger().e(viewModel.polygon);
-                                                  setState(() {
-                                                    // Logger().e("xdgvzdx");
-                                                    viewModel.isDrawingPolygon =
-                                                        !viewModel
-                                                            .isDrawingPolygon;
-                                                    viewModel.polygon.clear();
-                                                    viewModel.polyline.clear();
-                                                    viewModel.circle.clear();
-                                                    viewModel.listOfLatLong
-                                                        .clear();
-                                                  });
-                                                  Logger().e(viewModel.polygon);
-                                                  Logger().d(viewModel
-                                                      .isDrawingPolygon);
-                                                },
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: appbarcolor,
-                                          )),
-                                    ],
+                                  Container(
+                                    height: mediaquerry.size.height * 0.6,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 2, horizontal: 2),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: theme.backgroundColor,
+                                    ),
+                                    child: GeofencingMap(
+                                      completer: viewModel.googleMapController,
+                                      camPosition: viewModel.centerPosition,
+                                      color: currentColor,
+                                      initialValue: viewModel.initialMapType,
+                                      mapType: viewModel.mapType,
+                                      isDrawing: viewModel.isDrawingPolygon,
+                                      circle: viewModel.circle,
+                                      polygon: viewModel.polygon,
+                                      polyline: viewModel.polyline,
+                                      gettingData: (LatLng latlng) {
+                                        viewModel.onGettingLatLang(latlng);
+                                      },
+                                    ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                //viewModel.onZoomOut();
-                                              });
-                                            },
-                                            child: InsiteButton(
-                                                title: "",
-                                                bgColor: tuna,
-                                                onTap: () {},
-                                                icon: Icon(
-                                                  Icons.minimize,
-                                                  color: appbarcolor,
-                                                ))),
-                                        Column(
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             InsiteButton(
                                                 bgColor: tuna,
                                                 title: "",
-                                                onTap:
-                                                    viewModel.polygon.isNotEmpty
-                                                        ? () => showDialog(
+                                                onTap: () {
+                                                  viewModel.zoomValue++;
+                                                  viewModel.plus(
+                                                    viewModel.zoomValue,
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  Icons.add,
+                                                  color: appbarcolor,
+                                                )),
+                                            Dropdown(
+                                              maptype: viewModel.mapType,
+                                              changingvalue: (value) {
+                                                viewModel
+                                                    .onDropDownMapTypeChange(
+                                                        value);
+                                              },
+                                              initialvalue:
+                                                  viewModel.initialMapType,
+                                            ),
+                                            InsiteButton(
+                                                title: "",
+                                                bgColor: viewModel.isSearching
+                                                    ? tango
+                                                    : tuna,
+                                                onTap: () {
+                                                  setState(() {
+                                                    viewModel.isSearching =
+                                                        !viewModel.isSearching;
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.search,
+                                                  color: appbarcolor,
+                                                )),
+                                                uid==null?
+                                            InsiteButton(
+                                                bgColor:
+                                                    viewModel.isDrawingPolygon
+                                                        ? tango
+                                                        : tuna,
+                                                title: "",
+                                                onTap: viewModel.polygon
+                                                            .isNotEmpty &&
+                                                        uid != null
+                                                    ? null
+                                                    : () {
+                                                        viewModel
+                                                            .onEditButtonClicked();
+                                                      },
+                                                icon: Icon(
+                                                  Icons.edit,
+                                                  color: appbarcolor,
+                                                )):SizedBox(width: 10,)
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              InsiteButton(
+                                                  title: "",
+                                                  bgColor: tuna,
+                                                  onTap: () {
+                                                    viewModel.zoomValue--;
+                                                    viewModel.minus(
+                                                      viewModel.zoomValue,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.minimize,
+                                                    color: appbarcolor,
+                                                  )),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  uid==null?
+                                                  InsiteButton(
+                                                      bgColor: tuna,
+                                                      title: "",
+                                                      onTap: viewModel.polygon
+                                                                  .isNotEmpty &&
+                                                              uid == null
+                                                          ? () => showDialog(
+                                                              context: context,
+                                                              builder: (ctx) =>
+                                                                  AlertDialog(
+                                                                    title: Text(
+                                                                        "Clear Geofence"),
+                                                                    content: Text(
+                                                                        "Are you sure you want to clear this geofence?"),
+                                                                    actions: [
+                                                                      Row(
+                                                                        children: [
+                                                                          FlatButton.icon(
+                                                                              onPressed: () => Navigator.of(context).pop(),
+                                                                              icon: Icon(Icons.cancel),
+                                                                              label: Text("cancel")),
+                                                                          FlatButton.icon(
+                                                                              onPressed: () {
+                                                                                viewModel.onPolygonCleared();
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                              icon: Icon(Icons.delete),
+                                                                              label: Text("Clear"))
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ))
+                                                          : null,
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        color: appbarcolor,
+                                                      )):SizedBox(width: 10,),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10),
+                                                    child: InsiteButton(
+                                                        bgColor: tuna,
+                                                        title: "",
+                                                        onTap: () => showDialog(
                                                             context: context,
                                                             builder:
                                                                 (ctx) =>
                                                                     AlertDialog(
-                                                                      title: Text(
-                                                                          "Clear Geofence"),
-                                                                      content: Text(
-                                                                          "Are you sure you want to clear this geofence?"),
                                                                       actions: [
-                                                                        Row(
-                                                                          children: [
-                                                                            FlatButton.icon(
-                                                                                onPressed: () => Navigator.of(context).pop(),
-                                                                                icon: Icon(Icons.cancel),
-                                                                                label: Text("cancel")),
-                                                                            FlatButton.icon(
-                                                                                onPressed: () {
-                                                                                  setState(() {
-                                                                                    viewModel.listOfLatLong.clear();
-                                                                                    viewModel.listOfNumber.clear();
-                                                                                    viewModel.lastLatLong = null;
-                                                                                    viewModel.listOfLatLong.clear();
-                                                                                    viewModel.listOfNumber.clear();
-                                                                                    viewModel.polygon.clear();
-                                                                                    viewModel.polyline.clear();
-                                                                                    viewModel.circle.clear();
-                                                                                    viewModel.listOfLatLong.clear();
-                                                                                    Navigator.of(context).pop();
-                                                                                  });
-                                                                                },
-                                                                                icon: Icon(Icons.delete),
-                                                                                label: Text("Clear"))
-                                                                          ],
-                                                                        )
+                                                                        FlatButton.icon(
+                                                                            onPressed: () {
+                                                                               viewModel.onColorPicked(pickerColor);
+                                                                              viewModel.onChoosingColor();
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                            icon: Icon(Icons.check),
+                                                                            label: Text("Apply"))
                                                                       ],
-                                                                    ))
-                                                        : null,
-                                                icon: Icon(
-                                                  Icons.delete,
-                                                  color: appbarcolor,
-                                                )),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: InsiteButton(
-                                                  bgColor: tuna,
-                                                  title: "",
-                                                  onTap: () => showDialog(
-                                                      context: context,
-                                                      builder:
-                                                          (ctx) => AlertDialog(
-                                                                actions: [
-                                                                  FlatButton.icon(
-                                                                      onPressed: () {
-                                                                        setState(
-                                                                            () {
-                                                                          currentColor =
-                                                                              pickerColor;
-                                                                          viewModel.color =
-                                                                              currentColor;
-                                                                        });
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                      icon: Icon(Icons.check),
-                                                                      label: Text("Apply"))
-                                                                ],
-                                                                content:
-                                                                    SingleChildScrollView(
-                                                                  child:
-                                                                      ColorPicker(
-                                                                          pickerColor:
-                                                                              pickerColor,
-                                                                          onColorChanged:
-                                                                              (color) {
-                                                                            setState(() {
-                                                                              pickerColor = color;
-                                                                            });
-                                                                          }),
-                                                                ),
-                                                              )),
-                                                  icon: Icon(
-                                                    Icons.auto_awesome_mosaic,
-                                                    color: currentColor,
-                                                  )),
-                                            ),
-                                          ],
+                                                                      content:
+                                                                          SingleChildScrollView(
+                                                                        child: ColorPicker(
+                                                                            pickerColor: pickerColor,
+                                                                            onColorChanged: (color) {
+                                                                              setState(() {
+                                                                                pickerColor = color;
+                                                                              });
+                                                                            }),
+                                                                      ),
+                                                                    )),
+                                                        icon: Icon(
+                                                          Icons
+                                                              .auto_awesome_mosaic,
+                                                          color: pickerColor,
+                                                        )),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
                       ),
                       //formfield widget
                       // Formfieldwidget(
@@ -351,6 +343,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   width: double.infinity,
                                   height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
+                                    //value: viewModel.fetchedGeofenceName,
+                                    focusNode: viewModel.titleFocus,
                                     title: "title",
                                     controller: viewModel.titleController,
                                   )),
@@ -380,6 +374,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               Container(
                                   width: double.infinity,
                                   child: AddressCustomTextBox(
+                                    focusNode: viewModel.descriptionFocus,
                                     title: "Description",
                                     controller: viewModel.descriptionController,
                                   )),
@@ -399,14 +394,16 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        width: 1, color: Colors.white)),
+                                        width: 1,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            .color)),
                                 child: CustomDropDownWidget(
+                                  istappable: uid != null,
                                   items: viewModel.dropDownlist,
                                   onChanged: (String value) {
-                                    //widget.getmaterialdata();
-                                    setState(() {
-                                      viewModel.initialValue = value;
-                                    });
+                                    viewModel.onDropDownValueChanged(value);
                                   },
                                   value: viewModel.initialValue,
                                 ),
@@ -434,15 +431,22 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       margin: EdgeInsets.all(2),
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        border:
-                                            Border.all(width: 1, color: white),
+                                        border: Border.all(
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Theme(
                                         data: Theme.of(context).copyWith(
                                             dividerColor: Colors.transparent),
                                         child: ExpansionTile(
-                                          iconColor: white,
+                                          iconColor: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color,
                                           onExpansionChanged: (bool) {},
                                           childrenPadding: EdgeInsets.all(10),
                                           title: InsiteText(
@@ -462,7 +466,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
                                                             width: 1,
-                                                            color: white),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15)),
@@ -473,11 +481,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                       child: TextFormField(
                                                         autofocus: false,
                                                         onChanged: (value) {
-                                                          setState(() {
-                                                            viewModel
-                                                                .materialSelection(
-                                                                    value);
-                                                          });
+                                                          viewModel
+                                                              .materialSelection(
+                                                                  value);
                                                         },
                                                         decoration:
                                                             InputDecoration(
@@ -511,9 +517,19 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             });
                                                           },
                                                           title: InsiteText(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color,
                                                             text: data[i].name,
                                                           ),
                                                           subtitle: InsiteText(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyText1
+                                                                .color,
                                                             text: data[i]
                                                                 .density
                                                                 .toString(),
@@ -543,10 +559,15 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         height: mediaquerry.size.height * 0.05,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                width: 1, color: white),
+                                                width: 1,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1
+                                                    .color),
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         child: TextFormField(
+                                          focusNode: viewModel.targetFocus,
                                           controller:
                                               viewModel.targetController,
                                           autofocus: false,
@@ -597,7 +618,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     InkWell(
                                         onTap: viewModel.isNoendDate
                                             ? null
-                                            : backFillDatePicker,
+                                            : () {
+                                                backFillDatePicker(viewModel);
+                                              },
                                         borderRadius: BorderRadius.circular(20),
                                         child: Container(
                                           width: double.infinity,
@@ -608,7 +631,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   BorderRadius.circular(20),
                                               border: Border.all(
                                                   width: 1,
-                                                  color: Colors.white)),
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1
+                                                      .color)),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 20),
@@ -619,7 +645,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                               children: [
                                                 InsiteText(
                                                   text:
-                                                      "${backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat.yMMMd().format(backFillDate)}",
+                                                      "${viewModel.backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat.yMMMd().format(viewModel.backFillDate)}",
                                                 ),
                                                 Icon(Icons
                                                     .calendar_today_outlined)
@@ -643,7 +669,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               InkWell(
                                   onTap: viewModel.isNoendDate
                                       ? null
-                                      : endDatePicker,
+                                      : () {
+                                          endDatePicker(viewModel);
+                                        },
                                   borderRadius: BorderRadius.circular(20),
                                   child: Container(
                                     width: double.infinity,
@@ -651,7 +679,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                            width: 1, color: Colors.white)),
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .color)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
@@ -661,7 +693,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         children: [
                                           InsiteText(
                                             text:
-                                                "${endDate == null ? "choose date" : DateFormat.yMMMd().format(endDate)}",
+                                                "${viewModel.endingDate == null ? "choose date" : DateFormat.yMMMd().format(viewModel.endingDate)}",
                                           ),
                                           Icon(Icons.calendar_today_outlined)
                                         ],
@@ -679,13 +711,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    viewModel.isNoendDate =
-                                        !viewModel.isNoendDate;
-
-                                    endDate = null;
-                                    backFillDate = null;
-                                  });
+                                  viewModel.onCheckBoxChecked();
                                 },
                                 splashColor: Theme.of(context).backgroundColor,
                                 child: Row(
@@ -733,6 +759,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     InsiteButton(
+                                      onTap: () {
+                                        viewModel.onCancelButtonClicked();
+                                      },
                                       height: mediaquerry.size.height * 0.05,
                                       width: mediaquerry.size.width * 0.4,
                                       bgColor:
@@ -741,17 +770,22 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       fontSize: 20,
                                     ),
                                     InsiteButton(
-                                      onTap: () {
-                                        Logger()
-                                            .e(viewModel.titleController.text);
-                                        try {
-                                          viewModel.onSavingData();
-                                        } catch (e) {
-                                          Logger().e(e.toString());
-                                        }
-                                        viewModel.endingDate = endDate;
-                                        viewModel.backFillDate = backFillDate;
-                                      },
+                                      textColor: white,
+                                      onTap: viewModel.isPolygonsCreated ||
+                                              viewModel
+                                                  .titleController.text.isEmpty
+                                          ? () {
+                                              print(
+                                                  viewModel.isPolygonsCreated);
+                                              print(viewModel.titleController
+                                                  .text.isEmpty);
+                                            }
+                                          : () {
+                                              FocusScope.of(context).unfocus();
+                                              Logger().e(viewModel
+                                                  .titleController.text);
+                                              viewModel.onSavingData();
+                                            },
                                       height: mediaquerry.size.height * 0.05,
                                       width: mediaquerry.size.width * 0.4,
                                       title: "Save",

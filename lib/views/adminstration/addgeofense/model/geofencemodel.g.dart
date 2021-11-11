@@ -25,6 +25,7 @@ Geofencemodeldata _$GeofencemodeldataFromJson(Map<String, dynamic> json) {
     GeofenceUID: json['GeofenceUID'] as String,
     GeofenceName: json['GeofenceName'] as String,
     GeofenceType: json['GeofenceType'] as String,
+    Description: json['Description'] as String,
     IsFavorite: json['IsFavorite'] as bool,
     CustomerUID: json['CustomerUID'] as String,
     IsTransparent: json['IsTransparent'] as bool,
@@ -32,6 +33,7 @@ Geofencemodeldata _$GeofencemodeldataFromJson(Map<String, dynamic> json) {
     FillColor: json['FillColor'] as int,
     StartDate: json['StartDate'] as String,
     GeometryWKT: json['GeometryWKT'] as String,
+    EndDate: json['EndDate'] as String,
   );
 }
 
@@ -40,6 +42,7 @@ Map<String, dynamic> _$GeofencemodeldataToJson(Geofencemodeldata instance) =>
       'GeofenceUID': instance.GeofenceUID,
       'GeofenceName': instance.GeofenceName,
       'GeofenceType': instance.GeofenceType,
+      'Description': instance.Description,
       'IsFavorite': instance.IsFavorite,
       'CustomerUID': instance.CustomerUID,
       'IsTransparent': instance.IsTransparent,
@@ -47,4 +50,5 @@ Map<String, dynamic> _$GeofencemodeldataToJson(Geofencemodeldata instance) =>
       'FillColor': instance.FillColor,
       'StartDate': instance.StartDate,
       'GeometryWKT': instance.GeometryWKT,
+      'EndDate': instance.EndDate,
     };

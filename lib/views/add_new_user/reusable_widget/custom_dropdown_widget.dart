@@ -5,8 +5,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class CustomDropDownWidget extends StatelessWidget {
   final String value;
   final List<String> items;
+  final bool istappable;
   final ValueChanged<String> onChanged;
-  CustomDropDownWidget({this.value, this.items, this.onChanged});
+  CustomDropDownWidget({this.value, this.items, this.onChanged,this.istappable});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class CustomDropDownWidget extends StatelessWidget {
           size: 14,
           fontWeight: FontWeight.w700,
         ),
-        onChanged: onChanged,
+        onChanged:istappable ||istappable==null?null:onChanged,
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,

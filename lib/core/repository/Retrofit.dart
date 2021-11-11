@@ -44,7 +44,6 @@ import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.da
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
-import 'package:insite/views/adminstration/addgeofense/model/search_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -733,29 +732,59 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Addgeofencemodel geofencepayload);
 
+  @PUT('{url}')
+  Future<dynamic> putGeofenceAnotherData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() GeofenceModelWithMaterialData geofencepayload);
+
   @GET("{url}")
   Future<Materialmodel> getMaterialModel(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
 
-  @POST("{url}")
-  Future<dynamic> postGeofencePayLoad(
+  @PUT("{url}")
+  Future<dynamic> putGeofencePayLoad(
       @Path() String url,
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Geofencepayload geofencepayload);
 
+  @POST("{url}")
+  Future<dynamic> postGeofencePayLoadVL(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Geofencepayload geofencepayload);
+
+  @POST("{url}")
+  Future<dynamic> postGeofencePayLoad(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") String customeruid,
+    @Body() Geofencepayload geofencepayload,
+    @Header("service") String serviceHeader,
+  );
+
   @GET("{url}")
-  Future<Geofence> getGeofenceData(@Path() String url,
+  Future<Geofence> getGeofenceDataVL(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
+
+  @GET("{url}")
+  Future<Geofence> getGeofenceData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("service") String service);
+
+  @DELETE("{url}")
+  Future<dynamic> deleteGeofenceVL(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
 
   @DELETE("{url}")
   Future<dynamic> deleteGeofence(
       @Path() String url,
-      @Query("geofenceuid") String geofenceUID,
-      @Query("actionutc") String actionUTC);
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("service") String service);
 
-  @GET("https://singlesearch.alk.com/ww/api/search")
-  Future<SearchModel> getSearchData(@Query("authToken") token,
-      @Query("query") searchvalue, @Query("maxResults") int maxResults);
+  @GET("{url}")
+  Future<Geofencemodeldata> getSingleGeofence(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
 
   @PUT('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(
@@ -782,6 +811,9 @@ abstract class RestClient {
       @Body() AssetMileageSettingData assetMileageSettingData,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") String serviceHeader);
+  @GET('{url}')
+  Future<GetAddgeofenceModel> getGeofenceInputData(@Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid);
 }
 
 @JsonSerializable()

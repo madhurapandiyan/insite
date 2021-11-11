@@ -9,6 +9,7 @@ part of 'geofencepayload.dart';
 Geofencepayload _$GeofencepayloadFromJson(Map<String, dynamic> json) {
   return Geofencepayload(
     ActionUTC: json['ActionUTC'] as String,
+    GeofenceUID: json['GeofenceUID'] as String,
     EndDate: json['EndDate'] as String,
     FillColor: json['FillColor'] as int,
     Description: json['Description'] as String,
@@ -22,6 +23,7 @@ Geofencepayload _$GeofencepayloadFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$GeofencepayloadToJson(Geofencepayload instance) =>
     <String, dynamic>{
       'ActionUTC': instance.ActionUTC,
+      'GeofenceUID': instance.GeofenceUID,
       'EndDate': instance.EndDate,
       'FillColor': instance.FillColor,
       'Description': instance.Description,

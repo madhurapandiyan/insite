@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/asset_location_history_service.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -34,7 +33,7 @@ class LocatorInjector {
     log.d('Registering Navigation Service');
     locator.registerLazySingleton(() => NavigationService());
     log.d('Registering Dialog Service');
-    locator.registerLazySingleton(() => DialogService());
+   // locator.registerLazySingleton(() => clearDialogService());
     log.d('Registering Snackbar Service');
     locator.registerLazySingleton(() => SnackbarService());
     log.d('Registering shared preferences  Service');

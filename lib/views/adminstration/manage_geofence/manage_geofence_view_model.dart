@@ -5,6 +5,8 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 
 import 'package:insite/core/services/geofence_service.dart';
+import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
+import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
@@ -16,7 +18,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   ManageGeofenceViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 1), () {
       getGeofencedata();
     });
   }
@@ -53,10 +55,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
         Logger().d(points);
         listOfPointSeries.add(points);
       }
-
       getEncodedPolylines(listOfPointSeries);
-
-      return 1;
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -66,11 +65,26 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   deleteGeofence(uid, actionUTC) async {
     try {
+      Logger().d(isLoading);
       Logger().e(uid);
       Logger().e(actionUTC);
-      //var data = _geofenceservice.deleteGeofence(uid, actionUTC);
+      var data =
+          await _geofenceservice.deleteGeofence(uid, actionUTC).then((_) {
+        Future.delayed(Duration(seconds: 1), () => getGeofencedata());
+      });
+
+      notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
+    }
+    notifyListeners();
+  }
+
+  onNavigation(String uid) {
+    if (uid == null) {
+      navigationService.clearTillFirstAndShowView(AddgeofenseView());
+    } else {
+      navigationService.clearTillFirstAndShowView(AddgeofenseView(), arguments: uid);
     }
   }
 
