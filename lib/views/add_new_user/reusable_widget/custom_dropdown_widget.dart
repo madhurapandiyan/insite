@@ -23,12 +23,19 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down,
             color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
+        hint: InsiteText(
+          text: "  Select",
+          size: 14,
+          fontWeight: FontWeight.w700,
+        ),
+        onChanged: istappable == null || istappable == true ? onChanged : null,
+
         // hint: InsiteText(
         //   text: "  Select",
         //   size: 14,
         //   fontWeight: FontWeight.w700,
         // ),
-        onChanged: onChanged,
+
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,

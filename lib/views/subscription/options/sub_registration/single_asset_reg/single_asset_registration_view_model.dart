@@ -345,6 +345,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
 
     notifyListeners();
+    _assetModel = results.result.modelName;
   }
 
   getSubscriptionModelData() async {
