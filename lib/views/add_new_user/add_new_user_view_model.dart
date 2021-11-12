@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -143,7 +142,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     Logger().i("getApplicationAccessData");
     ApplicationData applicationData =
         await _manageUserService.getApplicationsData();
-    if (applicationData != null) {
+    if (applicationData != null && applicationData.applications.isNotEmpty) {
       for (var application in applicationData.applications.take(4)) {
         if (application.enabled) {
           _assetsData.add(ApplicationAccessData(

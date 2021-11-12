@@ -52,7 +52,7 @@ class Urls {
   static getV4LoginUrl(state, codeChallenge) {
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=$indiaStackClientId&state=$state" +
-        "&redirect_uri=$tataHitachiRedirectUri&scope=openid InsiteFleet-2.0" +
+        "&redirect_uri=$tataHitachiRedirectUri&scope=openid Frame-Administrator-IND" +
         "&code_challenge=$codeChallenge&code_challenge_method=S256" +
         "&nonce=$state&navigationRedirectUri=/";
     return url;
@@ -74,9 +74,14 @@ class Urls {
   // static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
+  // static String tataHitachiRedirectUri =
+  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
+  // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+  // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
+
   static String tataHitachiRedirectUri =
-      "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+      "https://dj8lqow8wzdep.cloudfront.net/auth";
+  static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   static String indiaStackAdminmoduleAppClientId =

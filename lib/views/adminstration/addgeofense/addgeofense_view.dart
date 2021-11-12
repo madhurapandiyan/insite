@@ -26,7 +26,7 @@ class AddgeofenseView extends StatefulWidget {
 class _AddgeofenseViewState extends State<AddgeofenseView> {
   Color pickerColor = tango;
   Color currentColor;
-void endDatePicker(AddgeofenseViewModel model) {
+  void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -186,25 +186,28 @@ void endDatePicker(AddgeofenseViewModel model) {
                                                   Icons.search,
                                                   color: appbarcolor,
                                                 )),
-                                                uid==null?
-                                            InsiteButton(
-                                                bgColor:
-                                                    viewModel.isDrawingPolygon
+                                            uid == null
+                                                ? InsiteButton(
+                                                    bgColor: viewModel
+                                                            .isDrawingPolygon
                                                         ? tango
                                                         : tuna,
-                                                title: "",
-                                                onTap: viewModel.polygon
-                                                            .isNotEmpty &&
-                                                        uid != null
-                                                    ? null
-                                                    : () {
-                                                        viewModel
-                                                            .onEditButtonClicked();
-                                                      },
-                                                icon: Icon(
-                                                  Icons.edit,
-                                                  color: appbarcolor,
-                                                )):SizedBox(width: 10,)
+                                                    title: "",
+                                                    onTap: viewModel.polygon
+                                                                .isNotEmpty &&
+                                                            uid != null
+                                                        ? null
+                                                        : () {
+                                                            viewModel
+                                                                .onEditButtonClicked();
+                                                          },
+                                                    icon: Icon(
+                                                      Icons.edit,
+                                                      color: appbarcolor,
+                                                    ))
+                                                : SizedBox(
+                                                    width: 10,
+                                                  )
                                           ],
                                         ),
                                         Container(
@@ -233,44 +236,46 @@ void endDatePicker(AddgeofenseViewModel model) {
                                                     MainAxisAlignment
                                                         .spaceAround,
                                                 children: [
-                                                  uid==null?
-                                                  InsiteButton(
-                                                      bgColor: tuna,
-                                                      title: "",
-                                                      onTap: viewModel.polygon
-                                                                  .isNotEmpty &&
-                                                              uid == null
-                                                          ? () => showDialog(
-                                                              context: context,
-                                                              builder: (ctx) =>
-                                                                  AlertDialog(
-                                                                    title: Text(
-                                                                        "Clear Geofence"),
-                                                                    content: Text(
-                                                                        "Are you sure you want to clear this geofence?"),
-                                                                    actions: [
-                                                                      Row(
-                                                                        children: [
-                                                                          FlatButton.icon(
-                                                                              onPressed: () => Navigator.of(context).pop(),
-                                                                              icon: Icon(Icons.cancel),
-                                                                              label: Text("cancel")),
-                                                                          FlatButton.icon(
-                                                                              onPressed: () {
-                                                                                viewModel.onPolygonCleared();
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              icon: Icon(Icons.delete),
-                                                                              label: Text("Clear"))
-                                                                        ],
-                                                                      )
-                                                                    ],
-                                                                  ))
-                                                          : null,
-                                                      icon: Icon(
-                                                        Icons.delete,
-                                                        color: appbarcolor,
-                                                      )):SizedBox(width: 10,),
+                                                  uid == null
+                                                      ? InsiteButton(
+                                                          bgColor: tuna,
+                                                          title: "",
+                                                          onTap: viewModel
+                                                                      .polygon
+                                                                      .isNotEmpty &&
+                                                                  uid == null
+                                                              ? () =>
+                                                                  showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (ctx) =>
+                                                                              AlertDialog(
+                                                                                title: Text("Clear Geofence"),
+                                                                                content: Text("Are you sure you want to clear this geofence?"),
+                                                                                actions: [
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      FlatButton.icon(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.cancel), label: Text("cancel")),
+                                                                                      FlatButton.icon(
+                                                                                          onPressed: () {
+                                                                                            viewModel.onPolygonCleared();
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          icon: Icon(Icons.delete),
+                                                                                          label: Text("Clear"))
+                                                                                    ],
+                                                                                  )
+                                                                                ],
+                                                                              ))
+                                                              : null,
+                                                          icon: Icon(
+                                                            Icons.delete,
+                                                            color: appbarcolor,
+                                                          ))
+                                                      : SizedBox(
+                                                          width: 10,
+                                                        ),
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -286,7 +291,7 @@ void endDatePicker(AddgeofenseViewModel model) {
                                                                       actions: [
                                                                         FlatButton.icon(
                                                                             onPressed: () {
-                                                                               viewModel.onColorPicked(pickerColor);
+                                                                              viewModel.onColorPicked(pickerColor);
                                                                               viewModel.onChoosingColor();
                                                                               Navigator.of(context).pop();
                                                                             },

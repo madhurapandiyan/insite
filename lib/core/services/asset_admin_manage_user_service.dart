@@ -53,11 +53,12 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         Map<String, String> queryMap = Map();
         queryMap["pageNumber"] = pageNumber.toString();
-        // queryMap["sort"] = "";
+        queryMap["sort"] = "Email";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClient()
             .getAdminManagerUserListData(
                 Urls.adminManagerUserSumary +
+                    "/List" +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
                 "in-identitymanager-identitywebapi");
@@ -121,8 +122,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<UpdateResponse> getSaveUserData(
@@ -205,8 +206,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<RoleDataResponse> getRoles(String appName) async {
@@ -225,7 +226,10 @@ class AssetAdminManagerUserService extends BaseService {
             );
         return result;
       }
-    } catch (e) {}
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
   }
 
   Future<AddUser> getAddUserData(
@@ -309,34 +313,40 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<dynamic> deleteUsers(users) async {
     Logger().i("deleteUsers");
-    if (isVisionLink) {
-      var result = await MyApi().getClientSeven().deleteUsersData(
-          Urls.adminManagerUserSumaryVL,
-          accountSelected.CustomerUID,
-          DeleteUserData(users: users));
-      return result;
-    } else {
-      var result = await MyApi().getClient().deleteUsers(
-          Urls.adminManagerUserSumary,
-          DeleteUserDataIndStack(
-            users: users,
-            customerUid: accountSelected.CustomerUID,
-          ),
-          accountSelected.CustomerUID,
-          (await _localService.getLoggedInUser()).sub,
-          "in-identitymanager-identitywebapi");
-      return result;
+    try {
+      if (isVisionLink) {
+        var result = await MyApi().getClientSeven().deleteUsersData(
+            Urls.adminManagerUserSumaryVL,
+            accountSelected.CustomerUID,
+            DeleteUserData(users: users));
+        return result;
+      } else {
+        var result = await MyApi().getClient().deleteUsers(
+            Urls.adminManagerUserSumary,
+            DeleteUserDataIndStack(
+              users: users,
+              customerUid: accountSelected.CustomerUID,
+            ),
+            accountSelected.CustomerUID,
+            (await _localService.getLoggedInUser()).sub,
+            "in-identitymanager-identitywebapi");
+        return result;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
     }
   }
 
   Future<ManageAssetConfiguration> getAssetSettingData(
       pageSize, pageNumber) async {
+    Logger().i("getAssetSettingData");
     try {
       Map<String, String> queryMap = Map();
       if (isVisionLink) {
@@ -363,18 +373,17 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<AddSettings> getFuelBurnRateSettingsData(
       idleValue, workingValue, assetUid) async {
+    Logger().i("getFuelBurnRateSettingsData");
     AssetFuelBurnRateSetting listBurnRateData = AssetFuelBurnRateSetting(
         idleTargetValue: idleValue,
         workTargetValue: workingValue,
         assetUIds: assetUid);
-    Logger().i(listBurnRateData);
-
     try {
       if (isVisionLink) {
         Logger().i(listBurnRateData.toJson());
@@ -397,8 +406,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<EstimatedAssetSetting> getAssetTargetSettingsData(
@@ -439,8 +448,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoad(
