@@ -31,9 +31,9 @@ class DashboardBarChartWidget extends StatefulWidget {
 
 class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
   var colors = [
-    burntSienna,
     emerald,
     mustard,
+    burntSienna,
   ];
 
   @override
@@ -56,7 +56,7 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                         width: 10,
                       ),
                       new InsiteText(
-                          text: "ASSET STATUS - TOTAL ASSET",
+                          text: "ASSET DETAILS - TOTAL ASSET",
                           fontWeight: FontWeight.w900,
                           size: 12.0),
                       SizedBox(
@@ -64,13 +64,15 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                       ),
                     ],
                   ),
-                  InsiteButton(
-                    title: widget.title2,
-                    textColor: Colors.white,
-                    onTap: () {
-                      widget.onFilterSelected("total");
-                    },
-                  )
+                  !widget.isLoading
+                      ? InsiteButton(
+                          title: widget.title2,
+                          textColor: Colors.white,
+                          onTap: () {
+                            widget.onFilterSelected("total");
+                          },
+                        )
+                      : SizedBox()
                   // Row(
                   //   children: [
                   //     InsiteText(
@@ -107,12 +109,13 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.20,
                           height: MediaQuery.of(context).size.height * 0.20,
+                          padding: EdgeInsets.only(left: 16),
                           alignment: Alignment.center,
                           child: SfCircularChart(
                             palette: <Color>[
-                              burntSienna,
                               emerald,
                               mustard,
+                              burntSienna,
                             ],
                             legend: Legend(
                                 isVisible: false,
@@ -139,7 +142,7 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: widget.data.length,
                               scrollDirection: Axis.vertical,
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: EdgeInsets.only(right: 10.0),
                               itemBuilder: (context, index) {
                                 ChartSampleData assetStatusData =
                                     widget.data[index];

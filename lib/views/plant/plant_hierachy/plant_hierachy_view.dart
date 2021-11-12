@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/insite_title_count_row.dart';
-import 'package:insite/widgets/smart_widgets/reusable_container_large.dart';
 import 'package:stacked/stacked.dart';
 import 'plant_hierachy_view_model.dart';
 
@@ -34,7 +32,7 @@ class PlantHierachyView extends StatelessWidget {
                       height: 30.0,
                     ),
                     InsiteText(
-                      text: "HEIRARCHY",
+                      text: "HIERARCHY",
                       fontWeight: FontWeight.w700,
                     ),
                     SizedBox(
@@ -76,29 +74,28 @@ class PlantHierachyView extends StatelessWidget {
                             SizedBox(
                               height: 10,
                             ),
-                            viewModel.loading
-                                ? InsiteProgressBar()
-                                : Expanded(
-                                    child: MediaQuery.removePadding(
-                                    context: (context),
-                                    removeBottom: true,
-                                    removeTop: true,
-                                    child: ListView.builder(
-                                        itemCount: viewModel.assetCount.length,
-                                        itemBuilder: (context, index) {
-                                          return InsiteTitleCountRow(
-                                              onClicked: () {
-                                                viewModel.gotoDetailsPage(
-                                                    viewModel
-                                                        .filterType[index]);
-                                              },
-                                              name: viewModel.assetType[index],
-                                              count: viewModel.assetCount[index]
-                                                  .toStringAsFixed(1),
-                                              filter:
+                            Expanded(
+                                child: MediaQuery.removePadding(
+                              context: (context),
+                              removeBottom: true,
+                              removeTop: true,
+                              child: viewModel.loading
+                                  ? InsiteProgressBar()
+                                  : ListView.builder(
+                                      itemCount: viewModel.assetCount.length,
+                                      itemBuilder: (context, index) {
+                                        return InsiteTitleCountRow(
+                                            onClicked: () {
+                                              viewModel.gotoDetailsPage(
                                                   viewModel.filterType[index]);
-                                        }),
-                                  )),
+                                            },
+                                            name: viewModel.assetType[index],
+                                            count: viewModel.assetCount[index]
+                                                .toStringAsFixed(0),
+                                            filter:
+                                                viewModel.filterType[index]);
+                                      }),
+                            )),
                           ],
                         ),
                       ),

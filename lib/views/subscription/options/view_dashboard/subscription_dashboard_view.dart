@@ -46,30 +46,34 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                       height: 20,
                     ),
                     DashBoardContainer(
+                      height: MediaQuery.of(context).size.height * 0.55,
                       title: "PLANT DISPATCH SUMMARY",
                       subTitle1: "TYPE",
                       subTitle2: "DEVICE COUNT",
-                      cards: viewModel.loading
-                          ? InsiteProgressBar()
-                          : Expanded(
-                              child: MediaQuery.removePadding(
-                              context: (context),
-                              removeBottom: true,
-                              removeTop: true,
-                              child: ListView.builder(
-                                  itemCount: viewModel.names.length,
-                                  itemBuilder: (context, index) {
-                                    return InsiteTitleCountRow(
-                                      name: viewModel.names[index],
-                                      count: viewModel.results[index],
-                                      filter: viewModel.names[index],
-                                      onClicked: () {
-                                        viewModel.gotoDetailsPage(
-                                            viewModel.filters[index]);
-                                      },
-                                    );
-                                  }),
-                            )),
+                      cards: Expanded(
+                          child: MediaQuery.removePadding(
+                        context: (context),
+                        removeBottom: true,
+                        removeTop: true,
+                        child: viewModel.loading
+                            ? InsiteProgressBar()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: viewModel.names.length,
+                                itemBuilder: (context, index) {
+                                  return InsiteTitleCountRow(
+                                    name: viewModel.names[index],
+                                    count: viewModel.results[index]
+                                        .toStringAsFixed(0),
+                                    filter: viewModel.names[index],
+                                    onClicked: () {
+                                      viewModel.gotoDetailsPage(
+                                          viewModel.filters[index]);
+                                    },
+                                  );
+                                }),
+                      )),
                     ),
                     SizedBox(
                       height: 20,
@@ -78,28 +82,31 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                       title: "ACTIVE DEVICES BY MODEL",
                       subTitle1: "MODEL",
                       subTitle2: "DEVICE COUNT",
-                      cards: viewModel.loading
-                          ? InsiteProgressBar()
-                          : Expanded(
-                              child: MediaQuery.removePadding(
-                              context: (context),
-                              removeBottom: true,
-                              removeTop: true,
-                              child: ListView.builder(
-                                  itemCount: viewModel.modelNames.length,
-                                  itemBuilder: (context, index) {
-                                    return InsiteTitleCountRow(
-                                      name: viewModel.modelNames[index],
-                                      count: viewModel.modelCount[index]
-                                          .toString(),
-                                      filter: viewModel.modelNames[index],
-                                      onClicked: () {
-                                        viewModel.gotoModelsPage(
-                                            viewModel.modelNames[index]);
-                                      },
-                                    );
-                                  }),
-                            )),
+                      height: MediaQuery.of(context).size.height * 1.2,
+                      cards: Expanded(
+                          child: MediaQuery.removePadding(
+                        context: (context),
+                        removeBottom: true,
+                        removeTop: true,
+                        child: viewModel.loading
+                            ? InsiteProgressBar()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: viewModel.modelNames.length,
+                                itemBuilder: (context, index) {
+                                  return InsiteTitleCountRow(
+                                    name: viewModel.modelNames[index],
+                                    count: viewModel.modelCount[index]
+                                        .toStringAsFixed(0),
+                                    filter: viewModel.modelNames[index],
+                                    onClicked: () {
+                                      viewModel.gotoModelsPage(
+                                          viewModel.modelNames[index]);
+                                    },
+                                  );
+                                }),
+                      )),
                     ),
                   ],
                 ),

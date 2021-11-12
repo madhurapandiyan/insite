@@ -5,10 +5,10 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
-class SubscriptionDeviceListItem extends StatelessWidget {
+class DeviceListItem extends StatelessWidget {
   final DetailResult detailResult;
   final VoidCallback onCallback;
-  const SubscriptionDeviceListItem(
+  const DeviceListItem(
       {Key key, this.detailResult, this.onCallback})
       : super(key: key);
 
@@ -60,24 +60,24 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                                 ? Utils().imageData(detailResult.Model)
                                 : "",
                       ),
-                      Table(
-                        children: [
-                          TableRow(
-                            children: [
-                              InsiteTableRowItem(
-                                title: "Make :",
-                                content: "",
-                              ),
-                              InsiteTableRowItem(
-                                title: "Model :",
-                                content: detailResult.Model != null
-                                    ? detailResult.Model
-                                    : "",
-                              ),
-                            ],
-                          ),
-                        ],
+                      // Table(
+                      // children: [
+                      // TableRow(
+                      // children: [
+                      // InsiteTableRowItem(
+                      //   title: "Make :",
+                      //   content: "",
+                      // ),
+                      InsiteTableRowItem(
+                        title: "Model :",
+                        content: detailResult.Model != null
+                            ? detailResult.Model
+                            : "",
                       ),
+                      // ],
+                      // ),
+                      // ],
+                      // ),
                     ],
                   ),
                   TableRow(
@@ -132,8 +132,8 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                           title: "Customer Name :",
                           content: detailResult.CustomerName != null
                               ? detailResult.CustomerName
-                              : detailResult.Name != null
-                                  ? detailResult.Name
+                              : detailResult.CustomerName != null
+                                  ? detailResult.CustomerName
                                   : "",
                         ),
                       ],
@@ -144,8 +144,8 @@ class SubscriptionDeviceListItem extends StatelessWidget {
                           title: "Customer Code :",
                           content: detailResult.CustomerCode != null
                               ? detailResult.CustomerCode
-                              : detailResult.Code != null
-                                  ? detailResult.Code
+                              : detailResult.CustomerCode != null
+                                  ? detailResult.CustomerCode
                                   : "",
                         ),
                         InsiteTableRowItem(

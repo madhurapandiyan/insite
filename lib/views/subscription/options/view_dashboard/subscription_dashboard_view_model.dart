@@ -38,8 +38,8 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  List<String> _results = [];
-  List<String> get results => _results;
+  List<double> _results = [];
+  List<double> get results => _results;
 
   List<String> _modelNames = [];
   List<String> get modelNames => _modelNames;
@@ -75,14 +75,13 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
       _loading = false;
       return "no results found";
     } else {
-      final totalDeviceSupplied = result.result[3][0].totalDevice.toString();
-      final plantAssetCount = result.result[4][0].plantAssetCount.toString();
-      final activeSubScription = result.result[0][0].activeList.toString();
-      final yetToBeActivated = result.result[1][0].inActiveList.toString();
-      final subScriptionEnded =
-          result.result[5][0].subscriptionAndAsset.toString();
+      final totalDeviceSupplied = result.result[3][0].totalDevice;
+      final plantAssetCount = result.result[4][0].plantAssetCount;
+      final activeSubScription = result.result[0][0].activeList;
+      final yetToBeActivated = result.result[1][0].inActiveList;
+      final subScriptionEnded = result.result[5][0].subscriptionAndAsset;
       final subScriptionEndingThisMOnth =
-          result.result[9][0].subscriptionEndingAsset.toString();
+          result.result[9][0].subscriptionEndingAsset;
 
       _results.addAll([
         totalDeviceSupplied,
@@ -100,6 +99,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
       final twl5 = result.result[2][1].modelName;
       final ex110 = result.result[2][2].modelName;
       final ex200lc = result.result[2][4].modelName;
+      final ex200lcsuperplus = result.result[2][5].modelName;
       final ex210lc = result.result[2][6].modelName;
       final ex215 = result.result[2][7].modelName;
       final ex300 = result.result[2][8].modelName;
@@ -117,6 +117,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
         twl5,
         ex110,
         ex200lc,
+        ex200lcsuperplus,
         ex210lc,
         ex215,
         ex300,
@@ -135,6 +136,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
       final twl5Count = result.result[2][1].modelCount;
       final ex110Count = result.result[2][2].modelCount;
       final ex200lcCount = result.result[2][4].modelCount;
+      final ex200lcSuperPlusCount = result.result[2][5].modelCount;
       final ex210lcCount = result.result[2][6].modelCount;
       final ex215Count = result.result[2][7].modelCount;
       final ex300Count = result.result[2][8].modelCount;
@@ -153,6 +155,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
         twl5Count,
         ex110Count,
         ex200lcCount,
+        ex200lcSuperPlusCount,
         ex210lcCount,
         ex215Count,
         ex300Count,
@@ -174,6 +177,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     Logger().i("gotoDetailsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: PLANTSUBSCRIPTIONDETAILTYPE.DEVICE,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
     ));
   }
@@ -182,6 +186,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     Logger().i("gotoModelsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: PLANTSUBSCRIPTIONDETAILTYPE.DEVICE,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.MODEL,
     ));
   }
@@ -190,6 +195,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     Logger().i("gotoCalendarDetailsPage $filter");
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: PLANTSUBSCRIPTIONDETAILTYPE.DEVICE,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,
     ));
   }

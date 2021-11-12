@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:insite/widgets/smart_widgets/insite_title_count_row.dart';
 
 class DashBoardContainer extends StatefulWidget {
   DashBoardContainer(
-      {Key key, this.subTitle1, this.subTitle2, this.title, this.cards})
+      {Key key,
+      this.subTitle1,
+      this.subTitle2,
+      this.title,
+      this.height,
+      this.cards})
       : super(key: key);
   final String title;
   final String subTitle1;
   final String subTitle2;
+  final double height;
   //final List viewData;
   //List<Widget> cards;
   final Widget cards;
@@ -23,7 +28,7 @@ class _DashBoardContainerState extends State<DashBoardContainer> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.55,
+        height: widget.height,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
