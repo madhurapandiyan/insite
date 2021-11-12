@@ -30,8 +30,8 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  int pageNumber = 1;
-  int pageSize = 10;
+  int start = 0;
+  int limit = 50;
 
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
@@ -54,11 +54,11 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getSubscriptionDevicesListData(
-            filter, pageNumber, pageSize, filterType);
+    SubscriptionDashboardDetailResult result = await _subscriptionService
+        .getSubscriptionDevicesListData(filter, start+1, limit, filterType);
     if (result != null) {
       if (result.result.isNotEmpty) {
+        start = start + limit;
         devices.addAll(result.result[1]);
         _loading = false;
         _loadingMore = false;
@@ -82,7 +82,6 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
         _loadingMore.toString());
     if (_shouldLoadmore && !_loadingMore && !_refreshing) {
       log.i("load more called");
-      pageNumber++;
       _loadingMore = true;
       notifyListeners();
       getSubcriptionDeviceListData();

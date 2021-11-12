@@ -3,6 +3,7 @@ import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -50,16 +51,14 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
                       width: 10,
                     ),
                     InsiteText(
-                        text: "ACTIVATED ASSETS",
+                        text: "ACTIVATED ASSETS - " +
+                            DateFormat.yMMMM().format(DateTime.now()),
                         fontWeight: FontWeight.w900,
                         size: 12.0),
                   ],
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: 190.0,
-                    ),
                     // GestureDetector(
                     //   onTap: () => print("button is tapped"),
                     //   child: SvgPicture.asset(

@@ -34,6 +34,7 @@ class SubscriptionView extends StatelessWidget {
                     children: [
                       AssetCardsSmall(
                           headerText: "DASHBOARD",
+                          showExapansionMenu: false,
                           icon: "assets/images/dashboard.svg",
                           buttonTitle: [
                             AdminAssetsButtonType.values[8],
@@ -43,6 +44,7 @@ class SubscriptionView extends StatelessWidget {
                             viewModel.onRespectiveButtonClicked(value);
                           }),
                       AssetCardsSmall(
+                          showExapansionMenu: false,
                           headerText: "REGISTRATION",
                           icon: "assets/images/path0.svg",
                           buttonTitle: [
@@ -63,6 +65,7 @@ class SubscriptionView extends StatelessWidget {
                       AssetCardsSmall(
                           headerText: "FLEET STATUS",
                           icon: "assets/images/flet.svg",
+                          showExapansionMenu: false,
                           buttonTitle: [
                             AdminAssetsButtonType.values[10],
                           ],
@@ -76,6 +79,7 @@ class SubscriptionView extends StatelessWidget {
                           buttonTitle: [
                             AdminAssetsButtonType.values[11],
                           ],
+                          showExapansionMenu: false,
                           height: 25,
                           onCallbackSelected: (value) {
                             // viewModel.onRespectiveButtonClicked(value);
@@ -94,6 +98,7 @@ class SubscriptionView extends StatelessWidget {
                           buttonTitle: [
                             AdminAssetsButtonType.values[12],
                           ],
+                          showExapansionMenu: false,
                           height: 20.0,
                           onCallbackSelected: (value) {
                             // viewModel.onRespectiveButtonClicked(value);
@@ -101,6 +106,7 @@ class SubscriptionView extends StatelessWidget {
                       AssetCardsSmall(
                           headerText: "TRANSFER HISTORY",
                           icon: "assets/images/transfer.svg",
+                          showExapansionMenu: false,
                           buttonTitle: [
                             AdminAssetsButtonType.values[13],
                           ],

@@ -53,7 +53,7 @@ class _PlantDashboardViewState extends State<PlantDashboardView> {
                         isRefreshing: false,
                         title: "",
                         title2: viewModel.results.isNotEmpty
-                            ? viewModel.results[0].toString()
+                            ? viewModel.results[0].toStringAsFixed(0)
                             : "",
                         onFilterSelected: (value) {
                           viewModel.gotoDetailsPage(value);

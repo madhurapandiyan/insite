@@ -49,7 +49,6 @@ class PlantHierachyViewModel extends InsiteViewModel {
       final dealerCount = assetsData.result[0][0].dealerCount;
       final plantCount = assetsData.result[0][0].plantCount;
       final totalAssets = assetsData.result[1][0].totalAssets;
-
       _assetCount.addAll([customerCount, dealerCount, plantCount, totalAssets]);
       _loading = false;
     } catch (e) {
@@ -61,8 +60,19 @@ class PlantHierachyViewModel extends InsiteViewModel {
 
   gotoDetailsPage(String filter) {
     Logger().i("gotoDetailsPage $filter");
+    var detailsType = PLANTSUBSCRIPTIONDETAILTYPE.DEVICE;
+    if (filter == "CUSTOMER") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER;
+    } else if (filter == "DEALER") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.DEALER;
+    } else if (filter == "PLANT") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.PLANT;
+    } else if (filter == "asset") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.ASSET;
+    }
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
     ));
   }

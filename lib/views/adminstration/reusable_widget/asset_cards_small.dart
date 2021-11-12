@@ -10,12 +10,14 @@ class AssetCardsSmall extends StatefulWidget {
   final String icon;
   final String headerText;
   final double height;
+  final bool showExapansionMenu;
   final List<AdminAssetsButtonType> buttonTitle;
   final Function(AdminAssetsButtonType value) onCallbackSelected;
 
   AssetCardsSmall(
       {this.icon,
       this.headerText,
+      this.showExapansionMenu = true,
       this.buttonTitle,
       this.onCallbackSelected,
       this.height});
@@ -38,13 +40,17 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
             ),
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SvgPicture.asset(
-                  "assets/images/arrowdown.svg",
-                  color: Theme.of(context).iconTheme.color,
-                ),
+                widget.showExapansionMenu
+                    ? SizedBox(
+                        width: 10,
+                      )
+                    : SizedBox(),
+                widget.showExapansionMenu
+                    ? SvgPicture.asset(
+                        "assets/images/arrowdown.svg",
+                        color: Theme.of(context).iconTheme.color,
+                      )
+                    : SizedBox(),
                 SizedBox(
                   width: 15,
                 ),

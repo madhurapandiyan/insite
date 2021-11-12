@@ -8,8 +8,12 @@ class AssetSettingWidget extends StatelessWidget {
   final String headerText;
   final VoidCallback onButtonClicked;
   final String buttonText;
+  final bool showExapansionMenu;
   const AssetSettingWidget(
-      {this.headerText, this.onButtonClicked, this.buttonText});
+      {this.headerText,
+      this.showExapansionMenu = true,
+      this.onButtonClicked,
+      this.buttonText});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +28,17 @@ class AssetSettingWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SvgPicture.asset(
-                  "assets/images/arrowdown.svg",
-                  color: Theme.of(context).iconTheme.color,
-                ),
+                showExapansionMenu
+                    ? SizedBox(
+                        width: 10,
+                      )
+                    : SizedBox(),
+                showExapansionMenu
+                    ? SvgPicture.asset(
+                        "assets/images/arrowdown.svg",
+                        color: Theme.of(context).iconTheme.color,
+                      )
+                    : SizedBox(),
                 SizedBox(
                   width: 15,
                 ),

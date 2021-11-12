@@ -38,7 +38,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
     "Total Devices supplied",
     "Active",
     "Yet to be activated",
-    "Suscription End",
+    "Subscription End",
     "Subscription to be ending this month",
     "Plant Asset Count"
   ];
@@ -173,25 +173,40 @@ class PlantDashboardViewModel extends InsiteViewModel {
   }
 
   gotoDetailsPage(String filter) {
-    Logger().i("gotoDetailsPage");
+    Logger().i("gotoDetailsPage $filter");
+    var detailsType = PLANTSUBSCRIPTIONDETAILTYPE.DEVICE;
+    if (filter == "inactive") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
+    }
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
     ));
   }
 
   gotoModelsPage(String filter) {
-    Logger().i("gotoDetailsPage");
+    Logger().i("gotoModelsPage $filter");
+    var detailsType = PLANTSUBSCRIPTIONDETAILTYPE.DEVICE;
+    if (filter == "inactive") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
+    }
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.MODEL,
     ));
   }
 
   gotoCalendarDetailsPage(String filter) {
-    Logger().i("gotoCalendarDetailsPage");
+    Logger().i("gotoCalendarDetailsPage $filter");
+    var detailsType = PLANTSUBSCRIPTIONDETAILTYPE.DEVICE;
+    if (filter == "inactive") {
+      detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
+    }
     _navigationService.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
+      detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,
     ));
   }

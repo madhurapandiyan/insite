@@ -34,6 +34,7 @@ class PlantView extends StatelessWidget {
                       children: [
                         AssetCardsSmall(
                             headerText: "DASHBOARD",
+                            showExapansionMenu: false,
                             icon: "assets/images/dashboard.svg",
                             buttonTitle: [
                               AdminAssetsButtonType.values[8],
@@ -43,6 +44,7 @@ class PlantView extends StatelessWidget {
                               viewModel.onRespectiveButtonClicked(value);
                             }),
                         AssetCardsSmall(
+                            showExapansionMenu: false,
                             headerText: "HIERARCHY",
                             icon: "assets/images/hier.svg",
                             buttonTitle: [
@@ -61,6 +63,7 @@ class PlantView extends StatelessWidget {
                       height: 20,
                     ),
                     AssetSettingWidget(
+                      showExapansionMenu: false,
                       headerText: "ASSET CREATION",
                       buttonText: "asset creation",
                       onButtonClicked: () {},
