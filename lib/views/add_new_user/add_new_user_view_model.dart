@@ -143,6 +143,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     ApplicationData applicationData =
         await _manageUserService.getApplicationsData();
     if (applicationData != null && applicationData.applications.isNotEmpty) {
+      Logger().i("applications length ${applicationData.applications.length}");
       for (var application in applicationData.applications.take(4)) {
         if (application.enabled) {
           _assetsData.add(ApplicationAccessData(

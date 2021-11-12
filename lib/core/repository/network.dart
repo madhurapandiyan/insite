@@ -7,7 +7,6 @@ import '../locator.dart';
 import 'Retrofit.dart';
 
 class MyApi {
-  
   MyApi._internal() {
     httpWrapper = HttpWrapper();
   }
@@ -63,8 +62,7 @@ class MyApi {
 }
 
 class HttpWrapper {
-
-String token =
+  String token =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL3N0YWdlLmlkLnRyaW1ibGVjbG91ZC5jb20iLCJleHAiOjE2MzY3MTk2MDgsIm5iZiI6MTYzNjcxNjAwOCwiaWF0IjoxNjM2NzE2MDA4LCJqdGkiOiIyMGRiMjBlODU2OTk0NmMzYmMyY2FhZGI3M2I1ZDk3MCIsImp3dF92ZXIiOjIsInN1YiI6ImQ4ZjA4MGEzLTZmZDEtNDUzNi1iMmVkLWI0MTk5MTg4ZjNlNCIsImlkZW50aXR5X3R5cGUiOiJ1c2VyIiwiYW1yIjpbInBhc3N3b3JkIl0sImF1dGhfdGltZSI6MTYzNjcxNjAwNywiYXpwIjoiN2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4IiwiYXVkIjpbIjdiZTc1OWIxLWFmYzUtNGE0YS04YTg2LWJkYTVlMDQ1YTUwOCJdLCJzY29wZSI6Ik9TRy1GUkFNRS1BUFAtU1RBR0UifQ.de6s0WSRhhSHLB2Ob1exx6Es6DvxsB4_FGOnGLYtIWGNPyQ8R9CbwIdanzxkZ99-iRVK5hoTUWdXLKp2KWsmeTLnTx8uhdWDYiQ7Xae4kpXQnaVRwFmKxVICrnfETdeWPoVcvJScffHO35lIMth7haG5RZi-eqmbjZexob-Xay3l-9ff7rIASmHWo5k1v_ZewSFzruUffBZQq0Ku5eyQc5-FkrvKiSogmScIgN_Jk3gdui79v8Uc_c9fsGJU9J3-4AknCS8eApWMaMppL9WIiA9AupoeQqa_X1flok1f-JV5qFOOmoK6ZJeFreWvkN6lfj26_xnxXFFScoUKfiHucg";
 
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
@@ -234,7 +232,12 @@ String token =
           });
           return options;
         },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
       ));
+      
     dioEight.interceptors
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
@@ -260,8 +263,7 @@ String token =
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " +
-                await _localService.getToken(),
+            "Authorization": "bearer " + await _localService.getToken(),
           });
 
           return options;
@@ -272,13 +274,13 @@ String token =
         requestBody: SHOW_LOGS,
       ));
 
-          dioTen.interceptors
+    dioTen.interceptors
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " +token,
+            "Authorization": "bearer " + token,
           });
 
           return options;

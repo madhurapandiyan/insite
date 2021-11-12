@@ -23,8 +23,77 @@ class AssetAdminManagerUserService extends BaseService {
   Customer accountSelected;
   Customer customerSelected;
 
+  List<RoleData> roleData = [];
+
   AssetAdminManagerUserService() {
     setUp();
+    roleData.add(RoleData(
+        description: "Administrator",
+        provider_id: "Frame-Fleet-IND",
+        role_id: 2142,
+        role_name: "Administrator"));
+    roleData.add(RoleData(
+        description: "Contributor",
+        provider_id: "Frame-Fleet-IND",
+        role_id: 2143,
+        role_name: "Contributor"));
+    roleData.add(RoleData(
+        description: "Creator",
+        provider_id: "Frame-Fleet-IND",
+        role_id: 2144,
+        role_name: "Creator"));
+    roleData.add(RoleData(
+        description: "Viewer",
+        provider_id: "Frame-Fleet-IND",
+        role_id: 2145,
+        role_name: "Viewer"));
+
+    roleData.add(RoleData(
+        description: "Administrator",
+        provider_id: "Frame-Administrator-IND",
+        role_id: 2146,
+        role_name: "Administrator"));
+    roleData.add(RoleData(
+        description: "AssetSecurity",
+        provider_id: "Frame-Administrator-IND",
+        role_id: 2147,
+        role_name: "AssetSecurity"));
+    roleData.add(RoleData(
+        description: "Contributor",
+        provider_id: "Frame-Administrator-IND",
+        role_id: 2148,
+        role_name: "Contributor"));
+    roleData.add(RoleData(
+        description: "Creator",
+        provider_id: "Frame-Administrator-IND",
+        role_id: 2149,
+        role_name: "Creator"));
+    roleData.add(RoleData(
+        description: "Viewer",
+        provider_id: "Frame-Administrator-IND",
+        role_id: 2150,
+        role_name: "Viewer"));
+
+    roleData.add(RoleData(
+        description: "Administrator",
+        provider_id: "Frame-Service-IND",
+        role_id: 2151,
+        role_name: "Administrator"));
+    roleData.add(RoleData(
+        description: "Contributor",
+        provider_id: "Frame-Service-IND",
+        role_id: 2152,
+        role_name: "Contributor"));
+    roleData.add(RoleData(
+        description: "Creator",
+        provider_id: "Frame-Service-IND",
+        role_id: 2153,
+        role_name: "Creator"));
+    roleData.add(RoleData(
+        description: "Viewer",
+        provider_id: "Frame-Service-IND",
+        role_id: 2154,
+        role_name: "Viewer"));
   }
 
   setUp() async {
@@ -108,6 +177,32 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
       } else {
+        var application1 = Application(
+            iconUrl:
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insitefleet/",
+            name: "InSite Fleet",
+            enabled: true,
+            tpaasAppName: "Frame-Fleet-IND",
+            appUID: "f03001b8-ea9f-11e5-88ba-0a4c287ff82f");
+        var application2 = Application(
+            iconUrl:
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteservice/",
+            name: "InSite Service",
+            enabled: true,
+            tpaasAppName: "Frame-Service-IND",
+            appUID: "b5fe5c50-9c5f-11e7-b46d-0645f4ae660c");
+        var application3 = Application(
+            iconUrl:
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteadministrator/",
+            name: "InSite Administrator",
+            enabled: true,
+            tpaasAppName: "Frame-Administrator-IND",
+            appUID: "006dfbee-b8f7-11e6-85f7-0a9e41c60d3d");
+        List<Application> applications = [];
+        applications.add(application1);
+        applications.add(application2);
+        applications.add(application3);
+        return ApplicationData(applications: applications);
         Map<String, String> queryMap = Map();
         if (accountSelected != null) {
           queryMap["CustomerUID"] = accountSelected.CustomerUID;
@@ -177,7 +272,7 @@ class AssetAdminManagerUserService extends BaseService {
         return updateResponse;
       } else {
         UpdateResponse updateResponse = await MyApi()
-            .getClientSeven()
+            .getClient()
             .updateUserData(
                 Urls.adminManagerUserSumaryVL + "/" + userUid,
                 accountSelected.CustomerUID,
@@ -211,7 +306,8 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<RoleDataResponse> getRoles(String appName) async {
-    Logger().i("getRoles");
+    Logger().i("getRoles $appName");
+    Logger().i("getRoles ${roleData.length}");
     try {
       if (isVisionLink) {
         var result = await MyApi().getClientSeven().roles(
@@ -220,11 +316,15 @@ class AssetAdminManagerUserService extends BaseService {
             );
         return result;
       } else {
-        var result = await MyApi().getClientSeven().roles(
-              Urls.adminRolesVL + "/" + appName + "/roles",
-              accountSelected.CustomerUID,
-            );
-        return result;
+        RoleDataResponse response = RoleDataResponse(
+            role_list:
+                roleData.where((element) => element.provider_id == appName).toList());
+        return response;
+        // var result = await MyApi().getClientSeven().roles(
+        //       Urls.adminRolesVL + "/" + appName + "/roles",
+        //       accountSelected.CustomerUID,
+        //     );
+        // return result;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -283,7 +383,7 @@ class AssetAdminManagerUserService extends BaseService {
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
             "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
-        AddUser addUserResponse = await MyApi().getClientSeven().inviteUser(
+        AddUser addUserResponse = await MyApi().getClient().inviteUser(
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
                 fname: firstName,
