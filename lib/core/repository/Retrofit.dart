@@ -44,7 +44,10 @@ import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.da
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
+import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -743,10 +746,17 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid);
 
   @PUT("{url}")
-  Future<dynamic> putGeofencePayLoad(
+  Future<dynamic> putGeofencePayLoadVL(
       @Path() String url,
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Geofencepayload geofencepayload);
+
+  @PUT("{url}")
+  Future<dynamic> putGeofencePayLoad(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Body() Geofencepayload geofencepayload,
+      @Header("service") String serviceHeader,);
 
   @POST("{url}")
   Future<dynamic> postGeofencePayLoadVL(
@@ -783,8 +793,14 @@ abstract class RestClient {
       @Header("service") String service);
 
   @GET("{url}")
-  Future<Geofencemodeldata> getSingleGeofence(@Path() String url,
+  Future<Geofencemodeldata> getSingleGeofenceVL(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
+
+  @GET("{url}")
+  Future<Geofencemodeldata> getSingleGeofence(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("service") String service);
 
   @PUT('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(
@@ -806,6 +822,16 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
+  Future<dynamic> markFavouriteVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<dynamic> markFavourite(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") String service);
+
+  @PUT('{url}')
   Future<AssetMileageSettingData> getMileageData(
       @Path() String url,
       @Body() AssetMileageSettingData assetMileageSettingData,
@@ -814,6 +840,10 @@ abstract class RestClient {
   @GET('{url}')
   Future<GetAddgeofenceModel> getGeofenceInputData(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
+
+  @POST('{url}')
+  Future<SingleAssetResponce> postSingleAssetSmsSchedule(
+      @Path() String url, @Body() List<SingleAssetSmsSchedule> singleAssetData);
 }
 
 @JsonSerializable()

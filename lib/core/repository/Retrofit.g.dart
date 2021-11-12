@@ -2731,7 +2731,8 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<dynamic> putGeofencePayLoad(url, customeruid, geofencepayload) async {
+  Future<dynamic> putGeofencePayLoadVL(
+      url, customeruid, geofencepayload) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customeruid, 'customeruid');
     ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
@@ -2745,6 +2746,32 @@ class _RestClient implements RestClient {
             method: 'PUT',
             headers: <String, dynamic>{
               r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> putGeofencePayLoad(
+      url, customeruid, geofencepayload, serviceHeader) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(geofencepayload, 'geofencepayload');
+    ArgumentError.checkNotNull(serviceHeader, 'serviceHeader');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(geofencepayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid,
+              r'service': serviceHeader
             },
             extra: _extra,
             baseUrl: baseUrl),
@@ -2892,7 +2919,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<Geofencemodeldata> getSingleGeofence(url, customeruid) async {
+  Future<Geofencemodeldata> getSingleGeofenceVL(url, customeruid) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(customeruid, 'customeruid');
     const _extra = <String, dynamic>{};
@@ -2904,6 +2931,29 @@ class _RestClient implements RestClient {
             method: 'GET',
             headers: <String, dynamic>{
               r'x-visionlink-customeruid': customeruid
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Geofencemodeldata.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<Geofencemodeldata> getSingleGeofence(url, customeruid, service) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customeruid, 'customeruid');
+    ArgumentError.checkNotNull(service, 'service');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customeruid,
+              r'service': service
             },
             extra: _extra,
             baseUrl: baseUrl),
@@ -2986,6 +3036,48 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<dynamic> markFavouriteVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> markFavourite(url, customerId, service) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    ArgumentError.checkNotNull(service, 'service');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{
+              r'x-visionlink-customeruid': customerId,
+              r'service': service
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<AssetMileageSettingData> getMileageData(
       url, assetMileageSettingData, customerId, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
@@ -3030,6 +3122,26 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = GetAddgeofenceModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SingleAssetResponce> postSingleAssetSmsSchedule(
+      url, singleAssetData) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(singleAssetData, 'singleAssetData');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = singleAssetData.map((e) => e.toJson()).toList();
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SingleAssetResponce.fromJson(_result.data);
     return value;
   }
 }

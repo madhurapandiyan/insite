@@ -12,6 +12,7 @@ class Geofencepayload {
   final String GeofenceType;
   final String GeometryWKT;
   final bool IsTransparent;
+  final bool IsFavorite;
   Geofencepayload(
       {this.ActionUTC,
       this.GeofenceUID,
@@ -21,7 +22,7 @@ class Geofencepayload {
       this.GeofenceName,
       this.GeofenceType,
       this.GeometryWKT,
-      this.IsTransparent});
+      this.IsTransparent,this.IsFavorite});
   factory Geofencepayload.fromJson(Map<String, dynamic> json) =>
       _$GeofencepayloadFromJson(json);
   Map<String, dynamic> toJson() => _$GeofencepayloadToJson(this);

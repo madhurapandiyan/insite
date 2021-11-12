@@ -394,6 +394,15 @@ class Utils {
       case AdminAssetsButtonType.VIEWHIERACHY:
         title = "VIEW HIERARCHY";
         break;
+      case AdminAssetsButtonType.SMSSCHEDULEFORSINGLEASSET:
+        title = "SMS SCHEDULE FOR SINGLE ASSET";
+        break;
+      case AdminAssetsButtonType.SMSSCHEDULEFORMUTLIPLEASSET:
+        title = "SMS SCHEDULE FOR MUTLIPLE ASSET";
+        break;
+      case AdminAssetsButtonType.REPORTSUMMARYFORSMS:
+        title = "REPORT SUMMARY FOR SMS";
+        break;
 
       default:
     }

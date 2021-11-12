@@ -5,14 +5,34 @@ class CustomTextBox extends StatelessWidget {
   final String title;
   final FocusNode focusNode;
   final String value;
+  final String labelTitle;
   final TextEditingController controller;
+  final Function(String) onChanged;
+  final Function(String) validator;
+  final Function(String) onSaved;
+  final Function(String) onFieldSubmmit;
+  final TextInputType keyPadType;
 
   const CustomTextBox(
-      {this.title, this.controller, this.focusNode, this.value});
+      {this.title,
+      this.controller,
+      this.focusNode,
+      this.value,
+      this.labelTitle,
+      this.validator,
+      this.onChanged,
+      this.onFieldSubmmit,
+      this.onSaved,
+      this.keyPadType});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      keyboardType: keyPadType,
+      onChanged: onChanged,
+      onSaved: onSaved,
+      onFieldSubmitted: onFieldSubmmit,
+      validator: validator,
       focusNode: focusNode,
       autofocus: false,
       controller: controller,
@@ -24,6 +44,7 @@ class CustomTextBox extends StatelessWidget {
       ),
       cursorColor: addUserBgColor,
       decoration: InputDecoration(
+          labelText: labelTitle,
           fillColor: black,
           hintText: title,
           contentPadding: EdgeInsets.only(left: 12, top: 8),

@@ -17,6 +17,7 @@ import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/plant_hierachy_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
+import 'package:insite/core/services/smsManagementService.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/core/services/utilization_graph_service.dart';
 import 'package:logger/logger.dart';
@@ -80,5 +81,8 @@ class LocatorInjector {
     locator.registerLazySingleton(() => SubScriptionService());
     log.d('Registering PlantHierachyService');
     locator.registerLazySingleton(() => PlantHeirarchyAssetService());
+        log.d('Registering SmsManagementService');
+    locator.registerLazySingleton(() => SmsManagementService());
+    
   }
 }

@@ -224,6 +224,7 @@ class Urls {
   static String estimatedMileage =
       "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
   static String getGeofenceData = "$geofence/1.0";
+  static String smsManagementSingleAsset = "$subscriptionPrefix/scheduleSms";
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";
@@ -235,6 +236,7 @@ class Urls {
   static String identity = "/frame-identity";
   static String assetSettingsMasterData = "/frame-masterdata";
   static String geofence = "/frame-geofence";
+  static String subscriptionPrefix = "/osg-frame/frame-api/2.0";
 
   // static String accountSelection = "/npulse-masterdataapi-in";
   // static String fleet = "/npulse-fleet-in";

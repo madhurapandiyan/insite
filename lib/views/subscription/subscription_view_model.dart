@@ -4,6 +4,7 @@ import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_registration/sub_registration_view.dart';
 import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart';
+import 'package:insite/views/subscription/sms-management/sms_management_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -21,7 +22,11 @@ class SubscriptionViewModel extends InsiteViewModel {
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
       _navigationService.navigateWithTransition(SubscriptionDashboardView(),
           transition: "fade");
-    } else if (value == AdminAssetsButtonType.VIEWREGISTRATION) {
+    }else if(value==AdminAssetsButtonType.VIEWSMSMANAGEMENT){
+      navigationService.navigateWithTransition(SmsManagementView(),
+          transition: "fade");
+    }
+     else if (value == AdminAssetsButtonType.VIEWREGISTRATION) {
       navigationService.navigateWithTransition(SubRegistrationView(),
           transition: "fade");
     }

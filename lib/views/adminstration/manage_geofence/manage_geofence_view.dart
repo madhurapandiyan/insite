@@ -56,6 +56,10 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             var model = viewModel.geofence.Geofences;
 
                             return ManageGeofenceWidget(
+                              isFav:model[i].IsFavorite,
+                              onFavourite: (uid) {
+                                viewModel.markFavouriteStatus(uid,);
+                              },
                               onNavigation: () {
                                 viewModel.onNavigation(model[i].GeofenceUID);
                               },
@@ -68,7 +72,6 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               geofenceName: model[i].GeofenceName,
                               geofenceDate: model[i].EndDate,
                               geofenceUID: model[i].GeofenceUID,
-                              isLoading: viewModel.isLoading,
                             );
                           },
                         ),

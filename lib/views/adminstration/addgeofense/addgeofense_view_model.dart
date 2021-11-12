@@ -33,7 +33,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-
+    isVisionlinkCheck = isVisionLink ;
+    Logger().w(isVisionlinkCheck);
     getMaterialData();
   }
   double zoomValue = 1;
@@ -61,6 +62,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   List<LatLng> get listOfLatLong => _listOfLatLong;
 
   List<LatLng> correctedListofLatlang = [];
+
+  bool isVisionlinkCheck;
 
   bool isDrawingPolygon = false;
 
@@ -340,12 +343,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  // checkBoxState() {
-  //   isNoendDate = !isNoendDate;
-  //   //Logger().e(setDefaultPreferenceToUser);
-  //   notifyListeners();
-  // }
-
   materialSelection(String value) {
     Logger().i("query typeed " + value);
     for (var i = 0; i < _materialData.materials.length; i++) {
@@ -369,37 +366,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
     }
     notifyListeners();
   }
-
-  // selectedPolyLine(LatLng latlongdata) async {
-  //   try {
-  //     List<LatLng> newlistOfLatLong = [];
-  //     newlistOfLatLong.add(latlongdata);
-  //     Polyline newpolyline = Polyline(
-  //         polylineId: PolylineId(DateTime.now().toString()),
-  //         color: Colors.amber,
-  //         visible: true,
-  //         geodesic: true,
-  //         consumeTapEvents: false,
-  //         width: 12,
-  //         points: newlistOfLatLong);
-
-  //     Polygon newpolygon = Polygon(
-  //         fillColor: Colors.blue,
-  //         strokeColor: Colors.black,
-  //         strokeWidth: 12,
-  //         polygonId: PolygonId(DateTime.now().toString()),
-  //         points: newlistOfLatLong);
-
-  //     _polyline.add(newpolyline);
-
-  //     _polygon.add(newpolygon);
-
-  //     Logger().e(polygon);
-  //   } catch (e) {
-  //     Logger().e(e);
-  //   }
-  //   //Logger().e(latlongdata);
-  // }
 
   convertingPolyOBJtoWKT() {
     Logger().d("running too many times");
@@ -599,7 +565,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  Future<Geofencemodeldata> getGeofenceData(String uid) async {
+  getGeofenceData(String uid) async {
     Logger().e("FUNCTION");
     fetchedGeofenceUid = uid;
     Geofencemodeldata data;

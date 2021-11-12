@@ -405,7 +405,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             .bodyText1
                                             .color)),
                                 child: CustomDropDownWidget(
-                                  istappable: uid != null,
+                                  istappable:!viewModel.isVisionlinkCheck?false: !(uid != null),
                                   items: viewModel.dropDownlist,
                                   onChanged: (String value) {
                                     viewModel.onDropDownValueChanged(value);
