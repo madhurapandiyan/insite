@@ -154,6 +154,11 @@ class ManageUserViewModel extends InsiteViewModel {
       if (userIds.isNotEmpty) {
         showLoadingDialog();
         var result = await _manageUserService.deleteUsers(userIds);
+        if (result != null) {
+          snackbarService.showSnackbar(message: "Deleted successfully");
+        } else {
+          snackbarService.showSnackbar(message: "Deleting failed");
+        }
         await deleteUsersFromList(userIds);
         hideLoadingDialog();
         // getManagerUserAssetList();

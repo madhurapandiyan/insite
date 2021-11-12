@@ -99,6 +99,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                             ? Expanded(
                                 child: ListView.builder(
                                   itemCount: viewModel.asset.length,
+                                  padding: EdgeInsets.all(8),
                                   controller: viewModel.scrollController,
                                   itemBuilder: (_, index) {
                                     AssetSettingsRow assetSetting =

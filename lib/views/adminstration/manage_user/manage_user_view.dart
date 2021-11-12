@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -144,6 +143,7 @@ class ManageUserView extends StatelessWidget {
                                   child: ListView.builder(
                                       itemCount: viewModel.assets.length,
                                       controller: viewModel.scrollController,
+                                      padding: EdgeInsets.all(8),
                                       itemBuilder: (context, index) {
                                         UserRow user = viewModel.assets[index];
                                         return ManageUserWidget(

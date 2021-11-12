@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomDropDownWidget extends StatelessWidget {
@@ -7,7 +6,8 @@ class CustomDropDownWidget extends StatelessWidget {
   final List<String> items;
   final bool istappable;
   final ValueChanged<String> onChanged;
-  CustomDropDownWidget({this.value, this.items, this.onChanged,this.istappable});
+  CustomDropDownWidget(
+      {this.value, this.items, this.onChanged, this.istappable});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CustomDropDownWidget extends StatelessWidget {
           size: 14,
           fontWeight: FontWeight.w700,
         ),
-        onChanged:istappable ||istappable==null?null:onChanged,
+        onChanged: istappable == null || istappable == true ? onChanged : null,
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
