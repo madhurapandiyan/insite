@@ -6,12 +6,14 @@ class CustomDropDownWidget extends StatelessWidget {
   final List<String> items;
   final bool istappable;
   final ValueChanged<String> onChanged;
+  final FocusNode onFocus;
   CustomDropDownWidget(
-      {this.value, this.items, this.onChanged, this.istappable});
+      {this.value, this.items, this.onChanged, this.istappable,this.onFocus});
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
+      focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
         icon: Icon(Icons.arrow_drop_down, color: Colors.white),

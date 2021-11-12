@@ -30,7 +30,7 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
-        height: MediaQuery.of(context).size.height * 0.43,
+        height: MediaQuery.of(context).size.height * 0.45,
         child: Column(
           children: [
             SizedBox(
@@ -72,18 +72,22 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
               child: ListView.builder(
                   itemCount: widget.buttonTitle.length,
                   itemBuilder: (builder, index) {
-                    return InsiteButton(
-                        height: MediaQuery.of(context).size.height * 0.043,
-                        margin: EdgeInsets.all(4),
-                        title: Utils.getAdminModuleMenuTitle(
-                            widget.buttonTitle[index]),
-                        textColor: white,
-                        fontSize: 10,
-                        onTap: () {
-                          AdminAssetsButtonType value =
-                              widget.buttonTitle[index];
-                          widget.onCallbackSelected(value);
-                        });
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: InsiteButton(
+                        //width: MediaQuery.of(context).size.width * 0.004,
+                          height: MediaQuery.of(context).size.height * 0.049,
+                          margin: EdgeInsets.all(4),
+                          title: Utils.getAdminModuleMenuTitle(
+                              widget.buttonTitle[index]),
+                          textColor: white,
+                          fontSize: 10,
+                          onTap: () {
+                            AdminAssetsButtonType value =
+                                widget.buttonTitle[index];
+                            widget.onCallbackSelected(value);
+                          }),
+                    );
                   }),
             )
           ],

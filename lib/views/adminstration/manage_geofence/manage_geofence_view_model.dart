@@ -6,8 +6,8 @@ import 'package:insite/core/locator.dart';
 
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
-import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
 import 'package:insite/core/logger.dart';
@@ -33,6 +33,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   Geofence _geofence;
   Geofence get geofence => _geofence;
+
+  bool _isFavourite = false;
+  bool get isFavourite => _isFavourite;
 
   getGeofencedata() async {
     List<String> listOfWKTstring = [];
@@ -63,11 +66,23 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  markFavouriteStatus(String uid) async {
+    _isFavourite = !isFavourite;
+    isLoading = !isLoading;
+    notifyListeners();
+    if (_isFavourite) {
+      await _geofenceservice
+          .markFavourite(uid, "MarkFavorite?")
+          .then((_) => getGeofencedata());
+    } else {
+      await _geofenceservice
+          .markFavourite(uid, "MarkUnfavorite?")
+          .then((_) => getGeofencedata());
+    }
+  }
+
   deleteGeofence(uid, actionUTC) async {
     try {
-      Logger().d(isLoading);
-      Logger().e(uid);
-      Logger().e(actionUTC);
       var data =
           await _geofenceservice.deleteGeofence(uid, actionUTC).then((_) {
         Future.delayed(Duration(seconds: 1), () => getGeofencedata());
@@ -84,46 +99,10 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     if (uid == null) {
       navigationService.clearTillFirstAndShowView(AddgeofenseView());
     } else {
-      navigationService.clearTillFirstAndShowView(AddgeofenseView(), arguments: uid);
+      navigationService.clearTillFirstAndShowView(AddgeofenseView(),
+          arguments: uid);
     }
   }
-
-  // makemaplatlan(List<geo.PointSeries<geo.Point<num>>> pointslist) {
-  //   _fetchedPolygons = [];
-  //   double latitude;
-  //   double longitude;
-  //   Set<Polyline> mypolygons = {};
-  //   Set<Polygon> mypoly = {};
-  //   List<LatLng> setlatlang_element = [];
-  //   LatLng latitudelongidude;
-
-  //   for (var p = 0; p < pointslist.length; p++) {
-  //     var innerList = pointslist[p];
-
-  //     for (var i = 0; i < innerList.length; i++) {
-  //       latitude = innerList[i].x;
-  //       longitude = innerList[i].y;
-  //       list = innerList[i].values;
-  //       latitudelongidude = LatLng(latitude, longitude);
-  //       setlatlang_element.add(latitudelongidude);
-  //     }
-  //     mypoly.add(Polygon(
-  //         polygonId: PolygonId(DateTime.now().toString()),
-  //         points: setlatlang_element));
-
-  //     mypolygons.add(Polyline(
-  //         polylineId: PolylineId(DateTime.now().toString()),
-  //         points: setlatlang_element));
-  //     Logger().d(mypolygons);
-  //     _fetchedPolygons.add(mypolygons);
-  //     type.add(mypoly);
-  //     setlatlang_element = [];
-  //     mypoly = {};
-  //     mypolygons = {};
-  //   }
-
-  //   Logger().d(_fetchedPolygons);
-  // }
 
   getEncodedPolylines(List<geo.PointSeries<geo.Point<num>>> pointslist) {
     Logger().e(pointslist);

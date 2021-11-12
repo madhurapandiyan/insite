@@ -30,3 +30,7 @@ const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
+const String smsManagementView = "smsManagementView";
+const String smsScheduleSingleAssetViewRoute ='smsScheduleSingleAssetViewRoute';
+const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
+const String reportSummaryViewRoute = 'reportSummaryViewRoute';

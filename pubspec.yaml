@@ -55,6 +55,8 @@ dependencies:
   polyline: ^1.0.2
   google_maps_controller: ^1.1.0
   flutter_colorpicker: ^0.3.5
+  form_field_validator: ^1.1.0
+  excel: ^1.1.5
 
   
 
@@ -137,6 +139,7 @@ flutter:
     - assets/images/export.svg
     - assets/images/transfer.svg
     - assets/images/hier.svg
+    - assets/images/message.svg
 
   fonts:
     - family: Roboto

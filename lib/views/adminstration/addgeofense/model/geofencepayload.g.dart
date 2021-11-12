@@ -17,6 +17,7 @@ Geofencepayload _$GeofencepayloadFromJson(Map<String, dynamic> json) {
     GeofenceType: json['GeofenceType'] as String,
     GeometryWKT: json['GeometryWKT'] as String,
     IsTransparent: json['IsTransparent'] as bool,
+    IsFavorite: json['IsFavorite'] as bool,
   );
 }
 
@@ -31,4 +32,5 @@ Map<String, dynamic> _$GeofencepayloadToJson(Geofencepayload instance) =>
       'GeofenceType': instance.GeofenceType,
       'GeometryWKT': instance.GeometryWKT,
       'IsTransparent': instance.IsTransparent,
+      'IsFavorite': instance.IsFavorite,
     };

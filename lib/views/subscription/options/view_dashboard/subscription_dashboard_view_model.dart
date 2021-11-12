@@ -4,6 +4,13 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart';
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view.dart';
+import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart';
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view.dart';
+import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart';
+import 'package:insite/views/subscription/sms-management/report_summary/report_summary_view.dart';
+import 'package:insite/views/subscription/sms-management/sms-multi_asset/sms_schedule_multi_asset_view.dart';
+import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -198,5 +205,18 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
       detailType: PLANTSUBSCRIPTIONDETAILTYPE.DEVICE,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,
     ));
+  }
+
+  void onRespectiveButtonClicked(AdminAssetsButtonType value) {
+    if (value == AdminAssetsButtonType.SMSSCHEDULEFORSINGLEASSET) {
+      _navigationService.navigateWithTransition(SmsScheduleSingleAssetView(),
+          transition: "fade");
+    } else if (value == AdminAssetsButtonType.SMSSCHEDULEFORMUTLIPLEASSET) {
+      _navigationService.navigateWithTransition(SmsScheduleMultiAssetView(),
+          transition: "fade");
+    } else if (value == AdminAssetsButtonType.REPORTSUMMARYFORSMS) {
+      _navigationService.navigateWithTransition(ReportSummaryView(),
+          transition: "fade");
+    }
   }
 }

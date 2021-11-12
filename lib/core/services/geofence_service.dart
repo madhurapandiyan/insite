@@ -60,14 +60,15 @@ class Geofenceservice extends BaseService {
     }
   }
 
-    Future<dynamic> putGeofenceData(Geofencepayload payload) async {
+  Future<dynamic> putGeofenceData(Geofencepayload payload) async {
     Logger().d(payload.toJson());
     Customer customer = await _localService.getAccountInfo();
     if (isVisionLink) {
-      dynamic data = await MyApi().getClientSeven().putGeofencePayLoad(
-          Urls.postPayLoad, customer.CustomerUID, payload);
+      dynamic data = await MyApi()
+          .getClientSeven()
+          .putGeofencePayLoadVL(Urls.postPayLoad, customer.CustomerUID, payload);
     } else {
-      dynamic data = await MyApi().getClient().postGeofencePayLoad(
+      dynamic data = await MyApi().getClient().putGeofencePayLoad(
           Urls.getGeofenceData,
           customer.CustomerUID,
           payload,
@@ -75,7 +76,8 @@ class Geofenceservice extends BaseService {
     }
   }
 
-    Future<dynamic> putGeofenceDataWithMaterial(GeofenceModelWithMaterialData payload) async {
+  Future<dynamic> putGeofenceDataWithMaterial(
+      GeofenceModelWithMaterialData payload) async {
     Logger().d(payload.Input.toJson());
     Customer customer = await _localService.getAccountInfo();
     if (isVisionLink) {
@@ -89,7 +91,6 @@ class Geofenceservice extends BaseService {
       //     "in-geofence-gfapi");
     }
   }
-
 
   Future<dynamic> postAddGeofenceData(Addgeofencemodel payload) async {
     print(payload.toJson());
@@ -134,8 +135,13 @@ class Geofenceservice extends BaseService {
     Customer customer = await _localService.getAccountInfo();
     Geofencemodeldata data;
     if (isVisionLink) {
-      data = await MyApi().getClientSeven().getSingleGeofence(
+      data = await MyApi().getClientSeven().getSingleGeofenceVL(
           Urls.postPayLoad + "/" + uid, customer.CustomerUID);
+    } else {
+      data = await MyApi().getClient().getSingleGeofence(
+          Urls.getGeofenceData + "/" + uid,
+          customer.CustomerUID,
+          "in-geofence-gfapi");
     }
     return data;
   }
@@ -148,6 +154,25 @@ class Geofenceservice extends BaseService {
           Urls.getGeofenceInputsUrl + uid + "/asgeofence",
           customer.CustomerUID);
       return geofenceInputsData;
+    }
+  }
+
+  Future<Null> markFavourite(String uid, String favToggle) async {
+    Customer customer = await _localService.getAccountInfo();
+    String querryUrlVL = "geofenceUID=$uid";
+    String querryUrl = "geofenceUIDs=$uid";
+    Logger().w(favToggle);
+
+    if (isVisionLink) {
+      var data = await MyApi().getClientSeven().markFavouriteVL(
+          Urls.postPayLoad + "/" + favToggle + querryUrlVL,
+          customer.CustomerUID);
+    } else {
+ 
+      var data = await MyApi().getClient().markFavourite(
+          Urls.getGeofenceData + "/" + favToggle + querryUrl,
+          customer.CustomerUID,
+          "in-geofence-gfapi");
     }
   }
 }
