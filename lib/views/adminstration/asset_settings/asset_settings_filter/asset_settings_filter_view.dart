@@ -4,6 +4,7 @@ import 'package:insite/views/adminstration/asset_settings/estimated_burn_rate/es
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_mileage_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_payload_cycle.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_volume_widget.dart';
+import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
 import 'package:insite/views/adminstration/asset_settings/targetcycle_volume_payload/targetcycle_volume_payload_view.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/filter_item_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_view.dart';
@@ -13,6 +14,7 @@ import 'asset_settings_filter_view_model.dart';
 
 class AssetSettingsFilterView extends StatefulWidget {
   final List<String> assetUids;
+
   AssetSettingsFilterView({this.assetUids});
 
   @override
@@ -21,6 +23,11 @@ class AssetSettingsFilterView extends StatefulWidget {
 }
 
 class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsFilterViewModel>.reactive(
@@ -47,6 +54,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                     height: 8,
                   ),
                   FilterItemWidget(
+                   
                     text: "set estimated runtime/idling targets".toUpperCase(),
                     body: EstimatedRunTimeWidgetView(
                       assetUids: widget.assetUids,

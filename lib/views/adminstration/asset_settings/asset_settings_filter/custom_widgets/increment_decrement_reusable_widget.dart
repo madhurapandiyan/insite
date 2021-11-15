@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:logger/logger.dart';
 
 class IncrementDecrementwidget extends StatefulWidget {
   final Function(String) onValueChange;
-  final String countValue;
-  final TextEditingController textEditingController;
+  final double countValue;
 
-  const IncrementDecrementwidget(
-      {this.onValueChange, this.countValue, this.textEditingController});
+  const IncrementDecrementwidget({
+    this.onValueChange,
+    this.countValue,
+  });
 
   @override
   _IncrementDecrementwidgetState createState() =>
@@ -20,13 +22,13 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
 
   @override
   void initState() {
-    fullWeekValue.text = widget.countValue;
+    fullWeekValue.text = widget.countValue.toString();
     super.initState();
   }
 
   @override
   void didUpdateWidget(covariant IncrementDecrementwidget oldWidget) {
-    fullWeekValue.text = widget.countValue;
+    fullWeekValue.text = widget.countValue.toString();
     super.didUpdateWidget(oldWidget);
   }
 
@@ -89,34 +91,37 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
   }
 
   void getIncrementValue() {
-    Logger().i(fullWeekValue.text);
+    //  Logger().i(fullWeekValue.text);
     try {
-      int currentValue = 0;
+      double currentValue = 0;
       if (fullWeekValue.text.isNotEmpty) {
-        currentValue = int.parse(fullWeekValue.text);
+        currentValue = double.parse(
+          fullWeekValue.text,
+        );
       }
+
       currentValue++;
-      fullWeekValue.text = (currentValue).toString();
+      fullWeekValue.text = currentValue.toString();
       widget.onValueChange(fullWeekValue.text);
       setState(() {});
     } catch (e) {
-      Logger().e(e.toString());
+      // Logger().e(e.toString());
     }
   }
 
   void getDecrementValue() {
-    Logger().i(fullWeekValue.text);
+    //Logger().i(fullWeekValue.text);
     try {
-      int currentValue = 0;
+      double currentValue = 0;
       if (fullWeekValue.text.isNotEmpty) {
-        currentValue = int.parse(fullWeekValue.text);
+        currentValue = double.parse(fullWeekValue.text);
       }
       currentValue--;
       fullWeekValue.text = (currentValue > 0 ? currentValue : 0).toString();
       widget.onValueChange(fullWeekValue.text);
       setState(() {});
     } catch (e) {
-      Logger().e(e.toString());
+      //Logger().e(e.toString());
     }
   }
 }

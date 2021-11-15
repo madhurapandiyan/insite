@@ -5,8 +5,10 @@ import 'package:insite/core/logger.dart';
 
 class AssetSettingsFilterViewModel extends InsiteViewModel {
   Logger log;
+ 
 
   AssetSettingsFilterViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
+
 }

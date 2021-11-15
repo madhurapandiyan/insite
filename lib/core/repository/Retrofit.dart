@@ -9,6 +9,7 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
@@ -753,10 +754,11 @@ abstract class RestClient {
 
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoad(
-      @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
-      @Body() Geofencepayload geofencepayload,
-      @Header("service") String serviceHeader,);
+    @Path() String url,
+    @Header("x-visionlink-customeruid") String customeruid,
+    @Body() Geofencepayload geofencepayload,
+    @Header("service") String serviceHeader,
+  );
 
   @POST("{url}")
   Future<dynamic> postGeofencePayLoadVL(
@@ -844,6 +846,17 @@ abstract class RestClient {
   @POST('{url}')
   Future<SingleAssetResponce> postSingleAssetSmsSchedule(
       @Path() String url, @Body() List<SingleAssetSmsSchedule> singleAssetData);
+
+  @POST('{url}')
+  Future<EstimatedAssetSetting> getEstimatedTagetListData(
+      @Path() String url,
+      @Body() List<dynamic> assetUid,
+      @Header("x-visionlink-customeruid") customerId);
+  @POST('{url}')
+  Future<AssetSettingsData> getEstimatedCyclePayLoadVoumeListData(
+      @Path() String url,
+      @Body() AssetSettingsData assetSettingsData,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

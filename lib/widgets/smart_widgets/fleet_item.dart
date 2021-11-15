@@ -41,6 +41,7 @@ class FleetListItem extends StatelessWidget {
             ),
             Expanded(
               child: InsiteExpansionTile(
+                
                 tilePadding: EdgeInsets.only(left: 8),
                 title: Table(
                   border: TableBorder.all(),

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/increment_decrement_reusable_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 
 class DaysReusableWidget extends StatefulWidget {
   final String days;
   final String value;
   final Function(String) onRuntimeValueChanged;
   final Function(String) onIdleValueChanged;
-  final String countRuntimeValue;
-  final String countIdleValue;
-  final double percentageData;
+  final double countRuntimeValue;
+  final double countIdleValue;
+  
+  final double percentCountValue;
+  final Function(String) onPercentCountValueChange;
+  final bool isChangingState;
 
   const DaysReusableWidget(
       {this.days,
@@ -18,7 +23,10 @@ class DaysReusableWidget extends StatefulWidget {
       this.onIdleValueChanged,
       this.countRuntimeValue,
       this.countIdleValue,
-      this.percentageData});
+      this.percentCountValue,
+      this.onPercentCountValueChange,
+      this.isChangingState,
+     });
 
   @override
   _DaysReusableWidgetState createState() => _DaysReusableWidgetState();
@@ -27,6 +35,7 @@ class DaysReusableWidget extends StatefulWidget {
 class _DaysReusableWidgetState extends State<DaysReusableWidget> {
   @override
   Widget build(BuildContext context) {
+    //Logger().i("perr:${widget.percentCountValue}");
     return Column(
       children: [
         Row(
@@ -84,20 +93,30 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                 onValueChange: (String value) {
                   widget.onIdleValueChanged(value);
                 },
-                countValue: widget.countIdleValue,
+                countValue: widget.isChangingState
+                    ? widget.percentCountValue
+                    : widget.countIdleValue,
               ),
             ),
             SizedBox(
               width: 14,
             ),
+           
             Container(
-              width: 60,
-              child: InsiteText(
-                text: widget.value + " " + "${widget.percentageData}%",
-                fontWeight: FontWeight.w700,
-                size: 14,
-              ),
-            ),
+                width: 100,
+                child: widget.isChangingState
+                    ? InsiteText(
+                        text:
+                            "%" + " " + "(${widget.countIdleValue.toString()})",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
+                      )
+                    : InsiteText(
+                        text:
+                            "Hrs" + " " + "(${widget.percentCountValue})" + "%",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
+                      ))
           ],
         ),
         SizedBox(
