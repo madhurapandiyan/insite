@@ -1,8 +1,9 @@
 class IncrementDecrementValue {
   final String runtimeDays;
-  String runTimecount;
-  String idleCount;
+  double runTimecount;
+  double idleCount;
+  double percentCount;
 
   IncrementDecrementValue(
-      {this.runTimecount, this.runtimeDays, this.idleCount});
+      {this.runTimecount, this.runtimeDays, this.idleCount, this.percentCount});
 }

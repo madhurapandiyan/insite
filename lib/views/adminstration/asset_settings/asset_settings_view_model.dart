@@ -79,6 +79,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
       notifyListeners();
     }
+   
   }
 
   _loadMore() {
@@ -106,6 +107,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onItemDeselect() {
+  
     try {
       for (int i = 0; i < _assets.length; i++) {
         _assets[i].isSelected = false;
@@ -159,7 +161,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
           assetUids: assetUid,
         ),
         transition: "fade");
-    Logger().i(result);
+   
     if (result != null && result) {
       refresh();
     }

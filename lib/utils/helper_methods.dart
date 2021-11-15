@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -23,6 +24,24 @@ class Utils {
     }
   }
 
+ static double getHrsValueeData(double percentageValue, double runTimeValue) {
+    if (percentageValue == 0 && runTimeValue == 0) {
+      return 0.0;
+    }
+    double hrsData = ((percentageValue * runTimeValue) * 1 / 100);
+    return hrsData;
+  }
+
+  static String getPercentageValueData(double runTimevalue, double idleValue) {
+    if (runTimevalue == 0 && idleValue == 0) {
+      return "0";
+    }
+    double perData = ((idleValue / runTimevalue) * 100);
+    int data = perData.toInt();
+
+    return data.toString();
+  }
+
   static String getLastReportedDateOne(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
@@ -44,6 +63,30 @@ class Utils {
       return outputDate;
     } catch (e) {
       return "";
+    }
+  }
+
+  static String getLastReportedDateTwoFilter(DateTime date) {
+    try {
+      String dateTime = date.toIso8601String();
+      int index = dateTime.indexOf(".");
+      var lastindex = dateTime.length;
+      var finalstring = dateTime.replaceRange(index, lastindex, "");
+      return finalstring;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String getLastReportedDateFilterData(DateTime date) {
+    try {
+      String dateTime = date.toIso8601String();
+      int index = dateTime.indexOf("T");
+      var lastindex = dateTime.length;
+      var finalstring = dateTime.replaceRange(index, lastindex, "");
+      return finalstring;
+    } catch (e) {
+      return null;
     }
   }
 

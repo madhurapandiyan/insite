@@ -5,6 +5,7 @@ import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
@@ -13,6 +14,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
@@ -510,7 +512,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<dynamic> getAssetTargetSettingsData(
       List<String> assetUid, startDate, endDate, idle, runTime) async {
     try {
       List<AssetTargetSettings> getAssetList = [];
@@ -528,13 +530,14 @@ class AssetAdminManagerUserService extends BaseService {
 
       EstimatedAssetSetting listSettingTargetData =
           EstimatedAssetSetting(assetTargetSettings: getAssetList);
-      Logger().i(listSettingTargetData.toJson());
-      Logger().i(assetUid);
+
       if (isVisionLink) {
-        EstimatedAssetSetting result = await MyApi()
+        var result = await MyApi()
             .getClientSeven()
             .getAssetTargetSettingsDataVL(Urls.assetSettingsTarget,
                 listSettingTargetData, accountSelected.CustomerUID);
+        Logger().i(result);
+
         return result;
       } else {
         EstimatedAssetSetting result = await MyApi()
@@ -619,6 +622,72 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return assetMileageSettingData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<EstimatedAssetSetting> getEstimatedTargetSettingListData(
+      List<dynamic> assetUids) async {
+    String startdate = Utils.getLastReportedDateFilterData(
+        DateTime.utc(2021, DateTime.september, 12));
+    String endDate = Utils.getLastReportedDateFilterData(
+        DateTime.utc(2022, DateTime.february, 05));
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["endDate"] = endDate;
+      queryMap["startDate"] = startdate;
+
+      if (isVisionLink) {
+        EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
+            .getClientSeven()
+            .getEstimatedTagetListData(
+                Urls.getEstimatedAsetSettingTargetDataVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                assetUids,
+                accountSelected.CustomerUID);
+
+        return assetSettingsDataResponse;
+      } else {
+        EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
+            .getClientSeven()
+            .getEstimatedTagetListData(
+                Urls.getEstimatedAsetSettingTargetDataVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                assetUids,
+                accountSelected.CustomerUID);
+        return assetSettingsDataResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<AssetSettingsData> getEstimatedCycleVolumePayLoadListData(
+      startDate, endDate, List<String> assetUids) async {
+    try {
+      Map<String, dynamic> queryMap = Map();
+      queryMap["startDate"] = startDate;
+      queryMap["endDate"] = endDate;
+      if (isVisionLink) {
+        AssetSettingsData assetSettingsData = await MyApi()
+            .getClientSeven()
+            .getEstimatedCyclePayLoadVoumeListData(
+                Urls.getEstimatedCycleVoumePayLoadListDataVL,
+                AssetSettingsData(assetUids: assetUids),
+                accountSelected.CustomerUID);
+        return assetSettingsData;
+      } else {
+        AssetSettingsData assetSettingsData = await MyApi()
+            .getClientSeven()
+            .getEstimatedCyclePayLoadVoumeListData(
+                Urls.getEstimatedCycleVoumePayLoadListDataVL,
+                AssetSettingsData(assetUids: assetUids),
+                accountSelected.CustomerUID);
+        return assetSettingsData;
       }
     } catch (e) {
       Logger().e(e.toString());

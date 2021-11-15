@@ -7,11 +7,12 @@ class EstimatedAssetSetting {
 
   EstimatedAssetSetting({this.assetTargetSettings});
 
- factory EstimatedAssetSetting.fromJson(Map<String, dynamic> json)=>_$EstimatedAssetSettingFromJson(json);
-  
+  factory EstimatedAssetSetting.fromJson(Map<String, dynamic> json) =>
+      _$EstimatedAssetSettingFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$EstimatedAssetSettingToJson(this);
+  Map<String, dynamic> toJson() => _$EstimatedAssetSettingToJson(this);
 }
+
 @JsonSerializable()
 class AssetTargetSettings {
   Runtime runtime;
@@ -23,19 +24,21 @@ class AssetTargetSettings {
   AssetTargetSettings(
       {this.runtime, this.idle, this.startDate, this.endDate, this.assetUid});
 
- factory AssetTargetSettings.fromJson(Map<String, dynamic> json)=>_$AssetTargetSettingsFromJson(json); 
+  factory AssetTargetSettings.fromJson(Map<String, dynamic> json) =>
+      _$AssetTargetSettingsFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$AssetTargetSettingsToJson(this);
+  Map<String, dynamic> toJson() => _$AssetTargetSettingsToJson(this);
 }
+
 @JsonSerializable()
 class Runtime {
-  int sunday;
-  int monday;
-  int tuesday;
-  int wednesday;
-  int thursday;
-  int friday;
-  int saturday;
+  double sunday;
+  double monday;
+  double tuesday;
+  double wednesday;
+  double thursday;
+  double friday;
+  double saturday;
 
   Runtime(
       {this.sunday,
@@ -46,20 +49,21 @@ class Runtime {
       this.friday,
       this.saturday});
 
- factory Runtime.fromJson(Map<String, dynamic> json)=>_$RuntimeFromJson(json);
+  factory Runtime.fromJson(Map<String, dynamic> json) =>
+      _$RuntimeFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$RuntimeToJson(this); 
+  Map<String, dynamic> toJson() => _$RuntimeToJson(this);
 }
 
 @JsonSerializable()
 class Idle {
-  int sunday;
+  double sunday;
   double monday;
   double tuesday;
   double wednesday;
   double thursday;
   double friday;
-  int saturday;
+  double saturday;
 
   Idle(
       {this.sunday,
@@ -70,8 +74,7 @@ class Idle {
       this.friday,
       this.saturday});
 
-  factory Idle.fromJson(Map<String, dynamic> json)=>_$IdleFromJson(json); 
+  factory Idle.fromJson(Map<String, dynamic> json) => _$IdleFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$IdleToJson(this); 
+  Map<String, dynamic> toJson() => _$IdleToJson(this);
 }
-

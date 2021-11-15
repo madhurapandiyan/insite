@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/incremet_decrement_payload.dart';
@@ -308,6 +310,13 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     } else {
       Navigator.of(context).pop(false);
     }
+    notifyListeners();
+  }
+
+  getEstimatedCycleVoumePayLoadListData(startDate, endDate, assetUids) async {
+    AssetSettingsData result = await _manageUserService
+        .getEstimatedCycleVolumePayLoadListData(startDate, endDate, assetUids);
+    print("result:$result");
     notifyListeners();
   }
 }

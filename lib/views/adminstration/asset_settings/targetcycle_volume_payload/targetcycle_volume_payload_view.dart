@@ -519,12 +519,12 @@ class _TargetCycleVolumePayloadWidgetState
                       fontSize: 12,
                       textColor: textcolor,
                       bgColor: tango,
-                      onTap: () {
+                      onTap: () async{
                         viewModel.onClickCycleApply();
                         viewModel.getFullWeekTCycleDataApply();
                         viewModel.getFullWeekVolumeDataApply();
                         viewModel.getFullWeekPayLoadDataApply();
-
+                        
                         viewModel.getEstimatedCycleVolumePayLoad(
                             startDate, endDate, context);
                       },
