@@ -13,6 +13,7 @@ class CustomDropDownWidget extends StatelessWidget {
   CustomDropDownWidget(
       {this.value, this.items, this.onChanged, this.istappable, this.onFocus});
   final Function(String) onChanged;
+  //CustomDropDownWidget({this.value, this.items, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +24,11 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down,
             color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
-        hint: InsiteText(
-          text: "  Select",
-          size: 14,
-          fontWeight: FontWeight.w700,
-        ),
-        onChanged: istappable == null || istappable == true ? onChanged : null,
-
         // hint: InsiteText(
         //   text: "  Select",
         //   size: 14,
         //   fontWeight: FontWeight.w700,
         // ),
-
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
