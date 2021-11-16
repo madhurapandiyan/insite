@@ -31,9 +31,6 @@ class AssetSettingsConfigureView extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    CustomDropDownWidget(
-                      items: [],
-                    )
                   ],
                 )
               ],

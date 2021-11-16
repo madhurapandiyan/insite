@@ -231,7 +231,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                     },
                   ),
                   SizedBox(
-                    width: 15,
+                    width: 30,
                   ),
                   InsiteButton(
                     width: MediaQuery.of(context).size.width * 0.20,

@@ -46,7 +46,7 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(borderSide: BorderSide.none),
-              contentPadding: EdgeInsets.only(left: 33.0),
+              contentPadding: EdgeInsets.only(left: 20.0),
             ),
             style: TextStyle(
                 fontSize: 14,

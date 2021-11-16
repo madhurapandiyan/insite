@@ -11,22 +11,22 @@ class DaysReusableWidget extends StatefulWidget {
   final Function(String) onIdleValueChanged;
   final double countRuntimeValue;
   final double countIdleValue;
-  
+
   final double percentCountValue;
   final Function(String) onPercentCountValueChange;
   final bool isChangingState;
 
-  const DaysReusableWidget(
-      {this.days,
-      this.value,
-      this.onRuntimeValueChanged,
-      this.onIdleValueChanged,
-      this.countRuntimeValue,
-      this.countIdleValue,
-      this.percentCountValue,
-      this.onPercentCountValueChange,
-      this.isChangingState,
-     });
+  const DaysReusableWidget({
+    this.days,
+    this.value,
+    this.onRuntimeValueChanged,
+    this.onIdleValueChanged,
+    this.countRuntimeValue,
+    this.countIdleValue,
+    this.percentCountValue,
+    this.onPercentCountValueChange,
+    this.isChangingState,
+  });
 
   @override
   _DaysReusableWidgetState createState() => _DaysReusableWidgetState();
@@ -101,19 +101,19 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
             SizedBox(
               width: 14,
             ),
-           
             Container(
                 width: 100,
                 child: widget.isChangingState
                     ? InsiteText(
                         text:
-                            "%" + " " + "(${widget.countIdleValue.toString()})",
+                            "(%)" + " " + "(${widget.countIdleValue.toString()}"+" " + "hrs)",
                         size: 14,
                         fontWeight: FontWeight.w700,
                       )
                     : InsiteText(
-                        text:
-                            "Hrs" + " " + "(${widget.percentCountValue})" + "%",
+                        text: "(Hrs)" +
+                            " " +
+                            "(${widget.percentCountValue} "+" " +"%)",
                         size: 14,
                         fontWeight: FontWeight.w700,
                       ))

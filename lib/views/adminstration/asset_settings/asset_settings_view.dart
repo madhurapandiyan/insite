@@ -162,22 +162,6 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               size: 14,
             )),
         PopupMenuItem(
-          value: "Cancel",
-          child: InsiteText(
-            text: "Cancel",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
-        PopupMenuItem(
-          value: "Show/Edit Target",
-          child: InsiteText(
-            text: "Show/Edit Target",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
-        PopupMenuItem(
           value: "Configure",
           child: InsiteText(
             text: "Configure",
@@ -185,20 +169,16 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
             size: 14,
           ),
         ),
-        PopupMenuItem(
-          value: "Help",
-          child: InsiteText(
-            text: "Help",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
       ],
       onSelected: (value) {
         print("value:$value");
-       viewModel.onSelectedItemClicK(value);
+        viewModel.onSelectedItemClicK(value);
       },
-      icon: Icon(Icons.more_vert),
+      icon: Icon(
+        Icons.more_vert,
+        color: appbarcolor,
+        size: 25,
+      ),
     );
   }
 }
