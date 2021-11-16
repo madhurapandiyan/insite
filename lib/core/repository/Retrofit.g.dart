@@ -3153,29 +3153,7 @@ class _RestClient implements RestClient {
     ArgumentError.checkNotNull(customerId, 'customerId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    //final _data = assetUid.map((e) => e.toJson()).toList();
-    final _result = await _dio.request<Map<String, dynamic>>('$url',
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'POST',
-            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: assetUid);
-    final value = EstimatedAssetSetting.fromJson(_result.data);
-    return value;
-  }
-
-  @override
-  Future<AssetSettingsData> getEstimatedCyclePayLoadVoumeListData(
-      url, assetSettingsData, customerId) async {
-    ArgumentError.checkNotNull(url, 'url');
-    ArgumentError.checkNotNull(assetSettingsData, 'assetSettingsData');
-    ArgumentError.checkNotNull(customerId, 'customerId');
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(assetSettingsData?.toJson() ?? <String, dynamic>{});
+    final _data = assetUid;
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -3184,7 +3162,28 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = AssetSettingsData.fromJson(_result.data);
+    final value = EstimatedAssetSetting.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
+      url, assetUid, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(assetUid, 'assetUid');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = assetUid;
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = EstimatedCycleVolumePayLoad.fromJson(_result.data);
     return value;
   }
 }

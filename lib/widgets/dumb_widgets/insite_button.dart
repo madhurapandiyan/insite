@@ -66,6 +66,47 @@ class InsiteButton extends StatelessWidget {
   }
 }
 
+class InsitePopMenuItemButton extends StatelessWidget {
+  
+  final Color bgColor;
+  final double fontSize;
+  final Color textColor;
+  final double width;
+  final double height;
+  final Widget widget;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final bool isSelectable;
+  const InsitePopMenuItemButton(
+      {this.width,
+      this.widget,
+      this.isSelectable = false,
+      this.margin,
+      this.bgColor,
+      this.padding,
+      this.height,
+      this.fontSize,
+
+      this.textColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+    
+      margin: margin != null ? margin : EdgeInsets.all(0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+        color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
+      ),
+      alignment: Alignment.center,
+      height: height != null ? height : null,
+      width: width != null ? width : null,
+      child: widget,
+    );
+  }
+}
+
 class InsiteButtonWithSelectable extends StatefulWidget {
   final String title;
   final Function(bool) onTap;

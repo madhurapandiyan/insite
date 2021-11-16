@@ -3,6 +3,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart'as view30;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
     as view16;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
@@ -51,7 +52,7 @@ import 'package:insite/views/subscription/sms-management/report_summary/report_s
     as view29;
 import 'package:insite/views/subscription/sms-management/sms-multi_asset/sms_schedule_multi_asset_view.dart'
     as view28;
-import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart'
+import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart' 
     as view27;
 import 'package:insite/views/subscription/sms-management/sms_management_view.dart'
     as view26;
@@ -131,7 +132,7 @@ class Router {
         return MaterialPageRoute(builder: (_) => view24.PlantView());
       case plantDashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view25.PlantDashboardView());
-      case smsManagementView:
+      case smsManagementViewRoute:
         return MaterialPageRoute(builder: (_) => view26.SmsManagementView());
       case smsScheduleSingleAssetViewRoute:
         return MaterialPageRoute(
@@ -141,6 +142,8 @@ class Router {
             builder: (_) => view28.SmsScheduleMultiAssetView());
       case reportSummaryViewRoute:
         return MaterialPageRoute(builder: (_) => view29.ReportSummaryView());
+        case assetSettingsConfigureViewRoute:
+        return MaterialPageRoute(builder: (_)=>view30.AssetSettingsConfigureView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -8,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_settings_view_model.dart';
 
@@ -43,7 +44,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                           ),
                         ),
                         SizedBox(
-                          width: 30,
+                          width: 10,
                         ),
                         viewModel.showEdit
                             ? ClipRRect(
@@ -65,7 +66,25 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                               )
                             : SizedBox(),
                         SizedBox(
-                          width: 30,
+                          width: 10,
+                        ),
+                        viewModel.showEdit
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                                child: InsitePopMenuItemButton(
+                                  width: 40,
+                                  height: 40,
+                                  //icon: Icon(Icons.more_vert),
+                                  widget: onContextMenuSelected(viewModel),
+                                ))
+                            : SizedBox(),
+                        SizedBox(
+                          width: 10,
                         ),
                         viewModel.showDeSelect
                             ? ClipRRect(
@@ -128,6 +147,58 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
             ));
       },
       viewModelBuilder: () => AssetSettingsViewModel(),
+    );
+  }
+
+  Widget onContextMenuSelected(AssetSettingsViewModel viewModel) {
+    return PopupMenuButton<String>(
+      offset: Offset(30, 50),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+            value: "Deselect All",
+            child: InsiteText(
+              text: "Deselect All",
+              fontWeight: FontWeight.w700,
+              size: 14,
+            )),
+        PopupMenuItem(
+          value: "Cancel",
+          child: InsiteText(
+            text: "Cancel",
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        ),
+        PopupMenuItem(
+          value: "Show/Edit Target",
+          child: InsiteText(
+            text: "Show/Edit Target",
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        ),
+        PopupMenuItem(
+          value: "Configure",
+          child: InsiteText(
+            text: "Configure",
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        ),
+        PopupMenuItem(
+          value: "Help",
+          child: InsiteText(
+            text: "Help",
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        ),
+      ],
+      onSelected: (value) {
+        print("value:$value");
+       viewModel.onSelectedItemClicK(value);
+      },
+      icon: Icon(Icons.more_vert),
     );
   }
 }

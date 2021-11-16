@@ -7,9 +7,9 @@ class TargetReusableWidget extends StatefulWidget {
   final Function(String) onValueCycleChange;
   final Function(String) onValueVolumeChange;
   final Function(String) onValuePayLoadChange;
-  final String fullWeekCountCycleValue;
-  final String fullWeekVolumeCycleValue;
-  final String fullWeekPayLoadCycleValue;
+  final double fullWeekCountCycleValue;
+  final double fullWeekVolumeCycleValue;
+  final double fullWeekPayLoadCycleValue;
   const TargetReusableWidget(
       {this.days,
       this.onValueCycleChange,
@@ -61,7 +61,7 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                 onValueChange: (String value) {
                   widget.onValueCycleChange(value);
                 },
-                //countValue: widget.fullWeekCountCycleValue,
+                countValue: widget.fullWeekCountCycleValue,
               ),
             ),
             SizedBox(
@@ -81,7 +81,7 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                   border: Border.all(
                       color: Theme.of(context).textTheme.bodyText1.color)),
               child: IncrementDecrementwidget(
-               // countValue: widget.fullWeekVolumeCycleValue,
+                countValue: widget.fullWeekVolumeCycleValue,
                 onValueChange: (String value) {
                   widget.onValueVolumeChange(value);
                 },
@@ -107,7 +107,7 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                 onValueChange: (String value) {
                   widget.onValuePayLoadChange(value);
                 },
-                //countValue: widget.fullWeekPayLoadCycleValue,
+                countValue: widget.fullWeekPayLoadCycleValue,
               ),
             ),
           ],
