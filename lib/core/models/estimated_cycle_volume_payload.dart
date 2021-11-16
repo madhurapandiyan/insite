@@ -37,13 +37,13 @@ class AssetProductivitySettings {
 
 @JsonSerializable()
 class Cycles {
-  int sunday;
-  int monday;
-  int tuesday;
-  int wednesday;
-  int thursday;
-  int friday;
-  int saturday;
+  double sunday;
+  double monday;
+  double tuesday;
+  double wednesday;
+  double thursday;
+  double friday;
+  double saturday;
 
   Cycles(
       {this.sunday,

@@ -1,5 +1,3 @@
-// [ This is an auto generated file ]
-
 const String splashViewRoute = 'splashViewRoute';
 const String customerSelectionViewRoute = 'customerSelectionViewRoute';
 const String homeViewRoute = 'homeViewRoute';
@@ -30,7 +28,8 @@ const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
-const String smsManagementView = "smsManagementView";
+const String smsManagementViewRoute = "smsManagementView";
 const String smsScheduleSingleAssetViewRoute ='smsScheduleSingleAssetViewRoute';
 const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
 const String reportSummaryViewRoute = 'reportSummaryViewRoute';
+const String assetSettingsConfigureViewRoute='assetSettingsConfigureViewRoute';

@@ -34,9 +34,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   double _percentageData;
   double get percentageData => _percentageData;
 
-  TextEditingController startDateController = TextEditingController();
+  TextEditingController startDateController = new  TextEditingController();
 
-  TextEditingController endDateController = TextEditingController();
+  TextEditingController endDateController = new TextEditingController();
 
   var _snackBarService = locator<SnackbarService>();
 

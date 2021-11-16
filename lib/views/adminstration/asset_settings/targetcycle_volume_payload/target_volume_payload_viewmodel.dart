@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/incremet_decrement_payload.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -31,53 +33,72 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
   TextEditingController payLoadController = new TextEditingController();
 
+  TextEditingController startDateInput = new TextEditingController();
+
+  TextEditingController endDateInput = new TextEditingController();
+
   var _manageUserService = locator<AssetAdminManagerUserService>();
   var _snackBarService = locator<SnackbarService>();
 
+  EstimatedCycleVolumePayLoad result;
+  Cycles dateFilterTargetValue;
+  Volumes dateFilterVolumeValue;
+  Cycles dateFilterPayLoadValue;
   List<IncrementDecrementPayload> countValue = [
     IncrementDecrementPayload(
         runTimeDays: "Sun",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Mon",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Tue",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Wed",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Thu",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Fri",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
     IncrementDecrementPayload(
         runTimeDays: "Sat",
-        targetCyclesCount: "",
-        targetVolumesCount: "",
-        targetPayloadCount: ""),
+        targetCyclesCount: 0,
+        targetVolumesCount: 0,
+        targetPayloadCount: 0),
   ];
 
   TargetCycleVolumePayloadViewModel(List<String> assetUIdList) {
     _assetUId = assetUIdList;
     this.log = getLogger(this.runtimeType.toString());
+    getEstimatedCycleVoumePayLoadListData();
     cycleController.text = "0";
     volumeController.text = "0";
     payLoadController.text = "0";
+  }
+
+  getStartTextState(String value) {
+    startDateInput.text = value;
+    notifyListeners();
+  }
+
+  getEndTextState(String value) {
+    endDateInput.text = value;
+    notifyListeners();
   }
 
   getChangeCycleState() {
@@ -150,7 +171,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[index];
       if (data != null) {
-        data.targetCyclesCount = value;
+        data.targetCyclesCount = double.parse(value);
         // print("data:${data.count}");
       }
       notifyListeners();
@@ -169,7 +190,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-        data.targetCyclesCount = text;
+        data.targetCyclesCount = double.parse(text);
       }
     }
     notifyListeners();
@@ -189,7 +210,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[index];
       if (data != null) {
-        data.targetVolumesCount = value;
+        data.targetVolumesCount = double.parse(value);
       }
     }
     notifyListeners();
@@ -211,7 +232,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-        data.targetVolumesCount = text;
+        data.targetVolumesCount = double.parse(text);
       }
     }
     notifyListeners();
@@ -231,7 +252,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[index];
       if (data != null) {
-        data.targetPayloadCount = value;
+        data.targetPayloadCount = double.parse(value);
       }
     }
     notifyListeners();
@@ -250,7 +271,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-        data.targetPayloadCount = text;
+        data.targetPayloadCount = double.parse(text);
       }
     }
     notifyListeners();
@@ -277,30 +298,43 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
         await _manageUserService.getEstimatedCycleVolumePayLoad(
             assetUid,
             Cycles(
-              sunday: int.parse(countValue[0].targetCyclesCount),
-              monday: int.parse(countValue[1].targetCyclesCount),
-              tuesday: int.parse(countValue[2].targetCyclesCount),
-              wednesday: int.parse(countValue[3].targetCyclesCount),
-              thursday: int.parse(countValue[4].targetCyclesCount),
-              friday: int.parse(countValue[5].targetCyclesCount),
-              saturday: int.parse(countValue[6].targetCyclesCount),
+              sunday: double.parse(countValue[0].targetCyclesCount.toString()),
+              monday: double.parse(countValue[1].targetCyclesCount.toString()),
+              tuesday: double.parse(countValue[2].targetCyclesCount.toString()),
+              wednesday:
+                  double.parse(countValue[3].targetCyclesCount.toString()),
+              thursday:
+                  double.parse(countValue[4].targetCyclesCount.toString()),
+              friday: double.parse(countValue[5].targetCyclesCount.toString()),
+              saturday:
+                  double.parse(countValue[6].targetCyclesCount.toString()),
             ),
             Volumes(
-                sunday: double.parse(countValue[0].targetVolumesCount),
-                monday: double.parse(countValue[1].targetVolumesCount),
-                tuesday: double.parse(countValue[2].targetVolumesCount),
-                wednesday: double.parse(countValue[3].targetVolumesCount),
-                thursday: double.parse(countValue[4].targetVolumesCount),
-                friday: double.parse(countValue[5].targetVolumesCount),
-                saturday: double.parse(countValue[6].targetVolumesCount)),
+                sunday:
+                    double.parse(countValue[0].targetVolumesCount.toString()),
+                monday:
+                    double.parse(countValue[1].targetVolumesCount.toString()),
+                tuesday:
+                    double.parse(countValue[2].targetVolumesCount.toString()),
+                wednesday:
+                    double.parse(countValue[3].targetVolumesCount.toString()),
+                thursday:
+                    double.parse(countValue[4].targetVolumesCount.toString()),
+                friday:
+                    double.parse(countValue[5].targetVolumesCount.toString()),
+                saturday:
+                    double.parse(countValue[6].targetVolumesCount.toString())),
             Cycles(
-              sunday: int.parse(countValue[0].targetCyclesCount),
-              monday: int.parse(countValue[1].targetCyclesCount),
-              tuesday: int.parse(countValue[2].targetCyclesCount),
-              wednesday: int.parse(countValue[3].targetCyclesCount),
-              thursday: int.parse(countValue[4].targetCyclesCount),
-              friday: int.parse(countValue[5].targetCyclesCount),
-              saturday: int.parse(countValue[6].targetCyclesCount),
+              sunday: double.parse(countValue[0].targetCyclesCount.toString()),
+              monday: double.parse(countValue[1].targetCyclesCount.toString()),
+              tuesday: double.parse(countValue[2].targetCyclesCount.toString()),
+              wednesday:
+                  double.parse(countValue[3].targetCyclesCount.toString()),
+              thursday:
+                  double.parse(countValue[4].targetCyclesCount.toString()),
+              friday: double.parse(countValue[5].targetCyclesCount.toString()),
+              saturday:
+                  double.parse(countValue[6].targetCyclesCount.toString()),
             ),
             startDate.toString(),
             endDate.toString());
@@ -313,10 +347,83 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getEstimatedCycleVoumePayLoadListData(startDate, endDate, assetUids) async {
-    AssetSettingsData result = await _manageUserService
-        .getEstimatedCycleVolumePayLoadListData(startDate, endDate, assetUids);
+  getEstimatedCycleVoumePayLoadListData() async {
+    result = await _manageUserService
+        .getEstimatedCycleVolumePayLoadListData(assetUid);
     print("result:$result");
+    notifyListeners();
+  }
+
+  getDateFilter(DateTime startDate, DateTime endDate) {
+    dateFilterTargetValue = null;
+    dateFilterVolumeValue = null;
+    dateFilterPayLoadValue = null;
+
+    List<IncrementDecrementPayload> dateFilterUpdateListValue = [];
+
+    try {
+      var startDateString = Utils.getLastReportedDateTwoFilter(startDate);
+      var endDateString = Utils.getLastReportedDateTwoFilter(endDate);
+      result.assetProductivitySettings.forEach((element) {
+        if (element.startDate == startDateString &&
+            element.endDate == endDateString) {
+          dateFilterTargetValue = element.cycles;
+          dateFilterVolumeValue = element.volumes;
+          dateFilterPayLoadValue = element.cycles;
+        }
+      });
+
+      var sunT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.sunday,
+          targetVolumesCount: dateFilterVolumeValue.sunday,
+          targetPayloadCount: dateFilterPayLoadValue.sunday,
+          runTimeDays: "Sun");
+      var monT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.monday,
+          targetVolumesCount: dateFilterVolumeValue.monday,
+          targetPayloadCount: dateFilterPayLoadValue.monday,
+          runTimeDays: "Mon");
+      var tueT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.tuesday,
+          targetVolumesCount: dateFilterVolumeValue.tuesday,
+          targetPayloadCount: dateFilterPayLoadValue.tuesday,
+          runTimeDays: "Tue");
+      var wedT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.wednesday,
+          targetVolumesCount: dateFilterVolumeValue.wednesday,
+          targetPayloadCount: dateFilterPayLoadValue.wednesday,
+          runTimeDays: "Wed");
+      var thuT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.thursday,
+          targetVolumesCount: dateFilterVolumeValue.thursday,
+          targetPayloadCount: dateFilterPayLoadValue.thursday,
+          runTimeDays: "Thu");
+      var friT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.friday,
+          targetVolumesCount: dateFilterVolumeValue.friday,
+          targetPayloadCount: dateFilterPayLoadValue.friday,
+          runTimeDays: "Fri");
+      var satT = IncrementDecrementPayload(
+          targetCyclesCount: dateFilterTargetValue.sunday,
+          targetVolumesCount: dateFilterVolumeValue.sunday,
+          targetPayloadCount: dateFilterPayLoadValue.sunday,
+          runTimeDays: "Sun");
+      dateFilterUpdateListValue
+          .addAll([sunT, monT, tueT, wedT, thuT, friT, satT]);
+
+      if (dateFilterTargetValue == null &&
+          dateFilterVolumeValue == null &&
+          dateFilterPayLoadValue == null) {
+        notifyListeners();
+        return countValue;
+      } else {
+        countValue = dateFilterUpdateListValue;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
     notifyListeners();
   }
 }

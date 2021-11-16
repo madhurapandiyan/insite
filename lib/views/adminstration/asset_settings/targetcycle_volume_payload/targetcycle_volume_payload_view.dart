@@ -21,24 +21,16 @@ class TargetCycleVolumePayloadWidget extends StatefulWidget {
 
 class _TargetCycleVolumePayloadWidgetState
     extends State<TargetCycleVolumePayloadWidget> {
-  TextEditingController startDateInput = TextEditingController();
-  TextEditingController endDateInput = TextEditingController();
   DateTime startDate;
   DateTime endDate;
 
   @override
   void initState() {
-    startDateInput.text = "";
-    endDateInput.text = "";
-
     super.initState();
   }
 
   @override
   void dispose() {
-    startDateInput.dispose();
-    endDateInput.dispose();
-
     super.dispose();
   }
 
@@ -99,9 +91,9 @@ class _TargetCycleVolumePayloadWidgetState
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
-                          controller: startDateInput,
+                          controller: viewModel.startDateInput,
                           voidCallback: () {
-                            getStartDatePicker();
+                            getStartDatePicker(viewModel);
                           },
                         )),
                   ),
@@ -127,9 +119,10 @@ class _TargetCycleVolumePayloadWidgetState
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
-                          controller: endDateInput,
-                          voidCallback: () {
-                            getEndDatePicker();
+                          controller: viewModel.endDateInput,
+                          voidCallback: () async {
+                            await getEndDatePicker(viewModel);
+                            viewModel.getDateFilter(startDate, endDate);
                           },
                         )),
                   ),
@@ -519,12 +512,12 @@ class _TargetCycleVolumePayloadWidgetState
                       fontSize: 12,
                       textColor: textcolor,
                       bgColor: tango,
-                      onTap: () async{
+                      onTap: () async {
                         viewModel.onClickCycleApply();
                         viewModel.getFullWeekTCycleDataApply();
                         viewModel.getFullWeekVolumeDataApply();
                         viewModel.getFullWeekPayLoadDataApply();
-                        
+
                         viewModel.getEstimatedCycleVolumePayLoad(
                             startDate, endDate, context);
                       },
@@ -562,7 +555,7 @@ class _TargetCycleVolumePayloadWidgetState
     );
   }
 
-  getStartDatePicker() async {
+  getStartDatePicker(TargetCycleVolumePayloadViewModel viewModel) async {
     DateTime pickedStartdate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -575,15 +568,13 @@ class _TargetCycleVolumePayloadWidgetState
       String startDate = DateFormat('dd-MM-yyyy').format(pickedStartdate);
 
       print(startDate);
-      setState(() {
-        startDateInput.text = startDate;
-      });
+      viewModel.getStartTextState(startDate);
     } else {
       print("Date is not selected");
     }
   }
 
-  getEndDatePicker() async {
+  getEndDatePicker(TargetCycleVolumePayloadViewModel viewModel) async {
     DateTime pickedEndDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -595,9 +586,7 @@ class _TargetCycleVolumePayloadWidgetState
       print(pickedEndDate);
       String endDate = DateFormat('dd-MM-yyyy').format(pickedEndDate);
       print(endDate);
-      setState(() {
-        endDateInput.text = endDate;
-      });
+      viewModel.getEndTextState(endDate);
     } else {
       print("Date is not selected");
     }

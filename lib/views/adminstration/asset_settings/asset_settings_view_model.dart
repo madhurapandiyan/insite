@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
+import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -18,6 +19,9 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   bool _showEdit = false;
   bool get showEdit => _showEdit;
+
+  bool _showMenu = false;
+  bool get showMenu => _showMenu;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -79,7 +83,6 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
       notifyListeners();
     }
-   
   }
 
   _loadMore() {
@@ -107,7 +110,6 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onItemDeselect() {
-  
     try {
       for (int i = 0; i < _assets.length; i++) {
         _assets[i].isSelected = false;
@@ -132,13 +134,15 @@ class AssetSettingsViewModel extends InsiteViewModel {
         if (count > 1) {
           _showEdit = true;
           _showDeSelect = true;
+          _showEdit = true;
         } else {
           _showEdit = true;
           _showDeSelect = true;
+          _showEdit = true;
         }
       } else {
         _showEdit = false;
-
+        _showEdit = false;
         _showDeSelect = false;
       }
     } catch (e) {}
@@ -155,13 +159,20 @@ class AssetSettingsViewModel extends InsiteViewModel {
     onCardButtonSelected(assetUids);
   }
 
+  onSelectedItemClicK(String value) {
+    if (value == "Configure") {
+      _navigationservice.navigateWithTransition(AssetSettingsConfigureView(),
+          transition: "fade");
+    }
+  }
+
   onCardButtonSelected(List<String> assetUid) async {
     var result = await _navigationservice.navigateWithTransition(
         AssetSettingsFilterView(
           assetUids: assetUid,
         ),
         transition: "fade");
-   
+
     if (result != null && result) {
       refresh();
     }

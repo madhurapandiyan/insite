@@ -54,13 +54,13 @@ Map<String, dynamic> _$AssetProductivitySettingsToJson(
 
 Cycles _$CyclesFromJson(Map<String, dynamic> json) {
   return Cycles(
-    sunday: json['sunday'] as int,
-    monday: json['monday'] as int,
-    tuesday: json['tuesday'] as int,
-    wednesday: json['wednesday'] as int,
-    thursday: json['thursday'] as int,
-    friday: json['friday'] as int,
-    saturday: json['saturday'] as int,
+    sunday: (json['sunday'] as num)?.toDouble(),
+    monday: (json['monday'] as num)?.toDouble(),
+    tuesday: (json['tuesday'] as num)?.toDouble(),
+    wednesday: (json['wednesday'] as num)?.toDouble(),
+    thursday: (json['thursday'] as num)?.toDouble(),
+    friday: (json['friday'] as num)?.toDouble(),
+    saturday: (json['saturday'] as num)?.toDouble(),
   );
 }
 

@@ -319,8 +319,9 @@ class AssetAdminManagerUserService extends BaseService {
         return result;
       } else {
         RoleDataResponse response = RoleDataResponse(
-            role_list:
-                roleData.where((element) => element.provider_id == appName).toList());
+            role_list: roleData
+                .where((element) => element.provider_id == appName)
+                .toList());
         return response;
         // var result = await MyApi().getClientSeven().roles(
         //       Urls.adminRolesVL + "/" + appName + "/roles",
@@ -630,7 +631,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<EstimatedAssetSetting> getEstimatedTargetSettingListData(
-      List<dynamic> assetUids) async {
+      List<String> assetUids) async {
     String startdate = Utils.getLastReportedDateFilterData(
         DateTime.utc(2021, DateTime.september, 12));
     String endDate = Utils.getLastReportedDateFilterData(
@@ -666,26 +667,30 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AssetSettingsData> getEstimatedCycleVolumePayLoadListData(
-      startDate, endDate, List<String> assetUids) async {
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadListData(
+      List<String> assetUids) async {
     try {
-      Map<String, dynamic> queryMap = Map();
-      queryMap["startDate"] = startDate;
-      queryMap["endDate"] = endDate;
+      Map<String, String> queryMap = Map();
+      queryMap["startDate"] = Utils.getLastReportedDateFilterData(
+          DateTime.utc(2021, DateTime.september, 19));
+      queryMap["endDate"] = Utils.getLastReportedDateFilterData(
+          DateTime.utc(2022, DateTime.november, 15));
       if (isVisionLink) {
-        AssetSettingsData assetSettingsData = await MyApi()
+        EstimatedCycleVolumePayLoad assetSettingsData = await MyApi()
             .getClientSeven()
             .getEstimatedCyclePayLoadVoumeListData(
-                Urls.getEstimatedCycleVoumePayLoadListDataVL,
-                AssetSettingsData(assetUids: assetUids),
+                Urls.getEstimatedCycleVoumePayLoadListDataVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                assetUids,
                 accountSelected.CustomerUID);
         return assetSettingsData;
       } else {
-        AssetSettingsData assetSettingsData = await MyApi()
+        EstimatedCycleVolumePayLoad assetSettingsData = await MyApi()
             .getClientSeven()
             .getEstimatedCyclePayLoadVoumeListData(
-                Urls.getEstimatedCycleVoumePayLoadListDataVL,
-                AssetSettingsData(assetUids: assetUids),
+                Urls.getEstimatedCycleVoumePayLoadListDataVL +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                assetUids,
                 accountSelected.CustomerUID);
         return assetSettingsData;
       }

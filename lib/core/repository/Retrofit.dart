@@ -850,12 +850,12 @@ abstract class RestClient {
   @POST('{url}')
   Future<EstimatedAssetSetting> getEstimatedTagetListData(
       @Path() String url,
-      @Body() List<dynamic> assetUid,
+      @Body() List<String> assetUid,
       @Header("x-visionlink-customeruid") customerId);
   @POST('{url}')
-  Future<AssetSettingsData> getEstimatedCyclePayLoadVoumeListData(
+  Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
       @Path() String url,
-      @Body() AssetSettingsData assetSettingsData,
+      @Body() List<String> assetUid,
       @Header("x-visionlink-customeruid") customerId);
 }
 
