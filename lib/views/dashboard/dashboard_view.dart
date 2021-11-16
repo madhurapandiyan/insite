@@ -199,9 +199,13 @@ class _DashboardViewState extends State<DashboardView> {
                           viewModel.gotoUtilizationPage();
                         },
                         totalGreatestNumber:
-                            viewModel.utilizationTotalGreatestValue,
+                            viewModel.utilizationSummary != null
+                                ? viewModel.utilizationTotalGreatestValue
+                                : 0,
                         averageGreatestNumber:
-                            viewModel.utilizationAverageGreatestValue,
+                            viewModel.utilizationSummary != null
+                                ? viewModel.utilizationAverageGreatestValue
+                                : 0,
                         isLoading: viewModel.assetUtilizationLoading,
                         isRefreshing: viewModel.refreshing,
                       ),

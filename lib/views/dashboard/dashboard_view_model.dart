@@ -101,6 +101,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   UtilizationSummary _utilizationSummary;
   UtilizationSummary get utilizationSummary => _utilizationSummary;
+
   List<ChartSampleData> statusChartData = [];
   List<ChartSampleData> fuelChartData = [];
 
