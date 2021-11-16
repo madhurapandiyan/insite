@@ -37,7 +37,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
           viewModel: viewModel,
           screenType: ScreenType.ASSET_SETTINGS_FILTER,
           body: Container(
-              height: MediaQuery.of(context).size.height * 0.75,
+              height: MediaQuery.of(context).size.height * 0.95,
               decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   borderRadius: BorderRadius.only(
@@ -54,7 +54,6 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                     height: 8,
                   ),
                   FilterItemWidget(
-                   
                     text: "set estimated runtime/idling targets".toUpperCase(),
                     body: EstimatedRunTimeWidgetView(
                       assetUids: widget.assetUids,

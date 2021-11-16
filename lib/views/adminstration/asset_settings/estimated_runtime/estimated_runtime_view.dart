@@ -51,9 +51,6 @@ class _EstimatedRunTimeWidgetViewState
           Widget _) {
         return Column(
           children: [
-            SizedBox(
-              height: 8,
-            ),
             Row(
               children: [
                 SizedBox(
@@ -86,7 +83,7 @@ class _EstimatedRunTimeWidgetViewState
                 ),
                 Flexible(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
+                    width: MediaQuery.of(context).size.width * 0.42,
                     height: MediaQuery.of(context).size.height * 0.04,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -113,7 +110,7 @@ class _EstimatedRunTimeWidgetViewState
                 ),
                 Flexible(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
+                    width: MediaQuery.of(context).size.width * 0.42,
                     height: MediaQuery.of(context).size.height * 0.04,
                     decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
@@ -234,7 +231,6 @@ class _EstimatedRunTimeWidgetViewState
                         value: dropDownValue,
                         onChanged: (String value) {
                           dropDownValue = value;
-                          // viewModel.onChangeDroDown(value);
                           viewModel.onChangeStateValue();
                           setState(() {});
                         },
@@ -245,7 +241,7 @@ class _EstimatedRunTimeWidgetViewState
               ],
             ),
             SizedBox(
-              height: 10,
+              height: 8,
             ),
             Row(
               children: [
@@ -400,10 +396,11 @@ class _EstimatedRunTimeWidgetViewState
             SizedBox(
               height: 10,
             ),
-
-            Flexible(
+            Expanded(
+              flex: 3,
               child: ListView.builder(
                   itemCount: 7,
+                  shrinkWrap: true,
                   itemBuilder: (_, index) {
                     final days = viewModel.countValue[index];
                     return DaysReusableWidget(
@@ -425,60 +422,51 @@ class _EstimatedRunTimeWidgetViewState
                     );
                   }),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 32.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(),
-                    ),
-                    InsiteButton(
-                      width: MediaQuery.of(context).size.width * 0.20,
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      title: "apply".toUpperCase(),
-                      fontSize: 12,
-                      textColor: textcolor,
-                      bgColor: tango,
-                      onTap: () {
-                        viewModel.onClickValueRunTimeApply();
-                        viewModel.onIdleClickValueApply();
-                        viewModel.getFullWeekTargetDataApply();
-                        viewModel.getFullWeekIdleDataApply();
-                        viewModel.getAssetSettingTargetData(
-                            startDate, endDate, context);
-                      },
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    InsiteButton(
-                      width: MediaQuery.of(context).size.width * 0.20,
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      title: "cancel".toUpperCase(),
-                      fontSize: 12,
-                      textColor: textcolor,
-                      bgColor: tuna,
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: SizedBox(),
-                    )
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.only(right: 32.0, bottom: 150),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  InsiteButton(
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    title: "apply".toUpperCase(),
+                    fontSize: 12,
+                    textColor: textcolor,
+                    bgColor: tango,
+                    onTap: () {
+                      viewModel.onClickValueRunTimeApply();
+                      viewModel.onIdleClickValueApply();
+                      viewModel.getFullWeekTargetDataApply();
+                      viewModel.getFullWeekIdleDataApply();
+                      viewModel.getAssetSettingTargetData(
+                          startDate, endDate, context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  InsiteButton(
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    height: MediaQuery.of(context).size.height * 0.04,
+                    title: "cancel".toUpperCase(),
+                    fontSize: 12,
+                    textColor: textcolor,
+                    bgColor: tuna,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  )
+                ],
               ),
             ),
-
-            // SizedBox(
-            //   height: 30,
-            // )
           ],
         );
       },

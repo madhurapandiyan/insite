@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomDropDownWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class CustomDropDownWidget extends StatelessWidget {
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
-        icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+        icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
         hint: InsiteText(
           text: "  Select",

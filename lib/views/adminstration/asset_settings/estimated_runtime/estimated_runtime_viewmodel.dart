@@ -34,7 +34,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   double _percentageData;
   double get percentageData => _percentageData;
 
-  TextEditingController startDateController = new  TextEditingController();
+  TextEditingController startDateController = new TextEditingController();
 
   TextEditingController endDateController = new TextEditingController();
 
@@ -199,7 +199,6 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-
   getFullWeekTargetData(String value) {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
@@ -270,12 +269,13 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  Future getAssetSettingTargetData(
+  getAssetSettingTargetData(
       DateTime startDate, DateTime endDate, BuildContext context) async {
-    Logger().i("dd");
-    if (!endDate.isAfter(startDate)) {
-      _snackBarService.showSnackbar(
-          message: "EndDate should be greter than StartDate");
+    if (startDate == null) {
+      _snackBarService.showSnackbar(message: "StartDate must not be  null");
+      return;
+    } else if (endDate == null) {
+      _snackBarService.showSnackbar(message: "EndDate must not be  null");
       return;
     }
 
@@ -361,8 +361,22 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   }
 
   getDateFilter(DateTime startDate, DateTime endDate) {
-    dateFilterRuntimeValue = null;
-    dateFilterIdleValue = null;
+    dateFilterRuntimeValue = Runtime(
+        sunday: 0,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0);
+    dateFilterIdleValue = Idle(
+        sunday: 0,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0);
     dateFilterUpdateListValue = [];
     try {
       var startDateString = Utils.getLastReportedDateTwoFilter(startDate);
@@ -405,9 +419,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
           runtimeDays: "Sat");
       dateFilterUpdateListValue
           .addAll([sunT, monT, tueT, wedT, thuT, friT, satT]);
-      // Logger().wtf(dateFilterUpdateListValue.first.runTimecount);
+
       if (dateFilterIdleValue == null && dateFilterRuntimeValue == null) {
-        notifyListeners();
         return countValue;
       } else {
         countValue = dateFilterUpdateListValue;

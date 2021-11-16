@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_widget/manage_geofensewidget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -42,6 +43,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               onTap: () {
                                 viewModel.onNavigation(null);
                               },
+                               textColor: white,
                               title: "ADD GEOFENCE",
                               height: mediaQuery.size.height * 0.05,
                               width: mediaQuery.size.width * 0.4,

@@ -163,6 +163,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
     if (value == "Configure") {
       _navigationservice.navigateWithTransition(AssetSettingsConfigureView(),
           transition: "fade");
+    } else if (value == "Show/Edit Target") {
+      onClickEditselected();
+    } else if (value == "Deselect All") {
+      onItemDeselect();
     }
   }
 

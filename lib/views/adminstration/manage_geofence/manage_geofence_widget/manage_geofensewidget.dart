@@ -39,97 +39,88 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
       children: [
         InkWell(
           onTap: widget.onNavigation,
-          child: Card(
-            child: Container(
-              width: double.maxFinite,
-              height: mediaQuery.size.height * 0.288,
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    width: mediaQuery.size.width * 0.86,
-                    height: mediaQuery.size.height * 0.20,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        new BoxShadow(blurRadius: 1.0, color: bgcolor)
-                      ],
-                      border: Border.all(width: 2.5, color: bgcolor),
-                      borderRadius: BorderRadius.circular(10),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                            ),
-                            child: Image.asset("assets/images/dummy.png")),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InsiteButton(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  bgColor:widget.isFav?tango: tuna,
-                                  title: "",
-                                  onTap: () {
-                                    widget.onFavourite(widget.geofenceUID);
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: appbarcolor,
-                                  )),
-                              InsiteButton(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  bgColor: tuna,
-                                  title: "",
-                                  onTap: () {
-                                    widget.ondeleting(widget.geofenceUID,
-                                        DateTime.now().toUtc().toString());
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: appbarcolor,
-                                  )),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 14.0),
-                        child: InsiteText(
-                          text: widget.geofenceName,
-                          size: 14,
-                          fontWeight: FontWeight.w700,
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(8),
+                width: mediaQuery.size.width * 0.92,
+                height: mediaQuery.size.height * 0.25,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2.5),
+                  borderRadius: BorderRadius.circular(10),
+                  shape: BoxShape.rectangle,
+                ),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
                         ),
+                        child: Expanded(
+                          child: Image.asset(
+                            "assets/images/dummy.png",
+                          ),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InsiteButton(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              title: "",
+                              onTap: () {
+                                widget.onFavourite(widget.geofenceUID);
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                color: widget.isFav ? tango : white,
+                              )),
+                          InsiteButton(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              bgColor: tuna,
+                              title: "",
+                              onTap: () {
+                                widget.ondeleting(widget.geofenceUID,
+                                    DateTime.now().toUtc().toString());
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: appbarcolor,
+                              )),
+                        ],
                       ),
-                      Padding(
-                          padding: const EdgeInsets.only(right: 14.0),
-                          child: InsiteText(
-                            text:
-                                "End Date : ${widget.geofenceDate == null ? "No End Date" : widget.geofenceDate}",
-                            size: 14,
-                            fontWeight: FontWeight.w700,
-                          ))
-                    ],
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InsiteText(
+                      text: widget.geofenceName,
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    InsiteText(
+                      text:
+                          "End Date : ${widget.geofenceDate == null ? "No End Date" : widget.geofenceDate}",
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ],

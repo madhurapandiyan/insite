@@ -44,30 +44,28 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                           ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 20,
                         ),
-                        viewModel.showEdit
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: InsiteButton(
-                                    title: "",
-                                    onTap: () {
-                                      viewModel.onClickEditselected();
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: appbarcolor,
-                                    )),
-                              )
-                            : SizedBox(),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        // viewModel.showEdit
+                        //     ? ClipRRect(
+                        //         borderRadius: BorderRadius.only(
+                        //           topLeft: Radius.circular(10),
+                        //           topRight: Radius.circular(10),
+                        //           bottomRight: Radius.circular(10),
+                        //           bottomLeft: Radius.circular(10),
+                        //         ),
+                        //         child: InsiteButton(
+                        //             title: "",
+                        //             onTap: () {
+                        //               viewModel.onClickEditselected();
+                        //             },
+                        //             icon: Icon(
+                        //               Icons.edit,
+                        //               color: appbarcolor,
+                        //             )),
+                        //       )
+                        //     : SizedBox(),
+                       
                         viewModel.showEdit
                             ? ClipRRect(
                                 borderRadius: BorderRadius.only(
@@ -86,25 +84,25 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         SizedBox(
                           width: 10,
                         ),
-                        viewModel.showDeSelect
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: InsiteButton(
-                                    title: "",
-                                    onTap: () {
-                                      viewModel.onItemDeselect();
-                                    },
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: appbarcolor,
-                                    )),
-                              )
-                            : SizedBox()
+                        // viewModel.showDeSelect
+                        //     ? ClipRRect(
+                        //         borderRadius: BorderRadius.only(
+                        //           topLeft: Radius.circular(10),
+                        //           topRight: Radius.circular(10),
+                        //           bottomRight: Radius.circular(10),
+                        //           bottomLeft: Radius.circular(10),
+                        //         ),
+                        //         child: InsiteButton(
+                        //             title: "",
+                        //             onTap: () {
+                        //               viewModel.onItemDeselect();
+                        //             },
+                        //             icon: Icon(
+                        //               Icons.close,
+                        //               color: appbarcolor,
+                        //             )),
+                        //       )
+                        //     : SizedBox()
                       ],
                     ),
                     SizedBox(
@@ -161,22 +159,14 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-        PopupMenuItem(
-          value: "Cancel",
-          child: InsiteText(
-            text: "Cancel",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
-        PopupMenuItem(
-          value: "Show/Edit Target",
-          child: InsiteText(
-            text: "Show/Edit Target",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
+            PopupMenuItem(
+            value: "Show/Edit Target",
+            child: InsiteText(
+              text: "Show/Edit Target",
+              fontWeight: FontWeight.w700,
+              size: 14,
+            )),
+
         PopupMenuItem(
           value: "Configure",
           child: InsiteText(
@@ -185,20 +175,16 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
             size: 14,
           ),
         ),
-        PopupMenuItem(
-          value: "Help",
-          child: InsiteText(
-            text: "Help",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
       ],
       onSelected: (value) {
         print("value:$value");
-       viewModel.onSelectedItemClicK(value);
+        viewModel.onSelectedItemClicK(value);
       },
-      icon: Icon(Icons.more_vert),
+      icon: Icon(
+        Icons.more_vert,
+        color: appbarcolor,
+        size: 25,
+      ),
     );
   }
 }
