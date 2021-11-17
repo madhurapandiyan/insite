@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/account.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/custom_expansion_tile.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -118,12 +117,12 @@ class _AccountSelectionDropDownWidgetState
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: Theme.of(context).cardColor,
-          ),
+              color: Theme.of(context).backgroundColor,
+              border: Border.all(
+                  color: Theme.of(context).textTheme.bodyText1.color)),
           height: _displayList.isNotEmpty && selected != null
-              ? MediaQuery.of(context).size.height * 0.4
-              : MediaQuery.of(context).size.height * 0.3,
+              ? MediaQuery.of(context).size.height * 0.42
+              : MediaQuery.of(context).size.height * 0.32,
           child: Column(
             children: [
               Container(

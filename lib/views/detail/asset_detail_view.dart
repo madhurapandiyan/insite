@@ -250,19 +250,27 @@ class _TabPageState extends State<AssetDetailView> {
                     ),
                     SizedBox(height: 13.0),
                     widget.type == ScreenType.HEALTH
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(typeTwo.length, (index) {
-                              Category category = typeTwo[index];
-                              return _tabcontainer(index, category);
-                            }),
+                        ? Container(
+                            height: 80,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: typeTwo.length,
+                              itemBuilder: (context, index) {
+                                Category category = typeTwo[index];
+                                return _tabcontainer(index, category);
+                              },
+                            ),
                           )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(typeOne.length, (index) {
-                              Category category = typeOne[index];
-                              return _tabcontainer(index, category);
-                            }),
+                        : Container(
+                            height: 80,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: typeOne.length,
+                              itemBuilder: (context, index) {
+                                Category category = typeOne[index];
+                                return _tabcontainer(index, category);
+                              },
+                            ),
                           ),
                     Flexible(
                       child: selectedTabIndex == 0

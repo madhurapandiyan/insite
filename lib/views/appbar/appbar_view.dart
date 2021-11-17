@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,12 +68,24 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             AppBar(
               titleSpacing: 0,
-              leading: IconButton(
-                  icon: SvgPicture.asset("assets/images/menubar.svg",
-                      color: Theme.of(context).buttonColor),
-                  onPressed: () {
-                    viewModel.onHomePressed();
-                  }),
+              leading: Platform.isAndroid
+                  ? IconButton(
+                      icon: SvgPicture.asset("assets/images/menubar.svg",
+                          color: Theme.of(context).buttonColor),
+                      onPressed: () {
+                        viewModel.onHomePressed();
+                      })
+                  : (screenType == ScreenType.ACCOUNT ||
+                          screenType == ScreenType.HOME)
+                      ? IconButton(
+                          icon: SvgPicture.asset("assets/images/menubar.svg",
+                              color: Theme.of(context).buttonColor),
+                          onPressed: () {
+                            viewModel.onHomePressed();
+                          })
+                      : BackButton(
+                          color: Theme.of(context).buttonColor,
+                        ),
               title: Row(
                 children: [
                   InsiteImage(
