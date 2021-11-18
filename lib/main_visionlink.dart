@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
@@ -14,7 +15,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-Hive.registerAdapter<FilterData>(FilterDataAdapter());
+   await FlutterDownloader.initialize(debug: true);
+  Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: splashViewRoute,
-          theme:indiaStackOrangeBlack,
+          theme: indiaStackOrangeBlack,
         ));
   }
 }
