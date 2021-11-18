@@ -7,7 +7,7 @@ import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/services/smsManagementService.dart';
+import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';

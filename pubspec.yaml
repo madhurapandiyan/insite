@@ -148,7 +148,7 @@ flutter:
     - assets/images/transfer.svg
     - assets/images/hier.svg
     - assets/images/message.svg
-    - assets/file/SMS Schedule_export.xlsx
+    
 
   fonts:
     - family: Roboto

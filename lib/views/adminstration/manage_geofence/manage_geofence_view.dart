@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_widget/manage_geofensewidget.dart';
-import 'package:insite/views/adminstration/manage_geofence/static_map.dart/staticmapapi.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_geofence_view_model.dart';
 

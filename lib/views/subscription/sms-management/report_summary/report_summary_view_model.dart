@@ -4,7 +4,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/services/smsManagementService.dart';
+import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';

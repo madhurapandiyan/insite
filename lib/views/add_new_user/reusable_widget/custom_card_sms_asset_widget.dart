@@ -88,7 +88,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                             InsiteText(
                               text: "Model",
                             ),
-                            InsiteText(
+                            InsiteTextOverFlow(
                               overflow: TextOverflow.ellipsis,
                               text: model,
                             ),
@@ -128,7 +128,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                       InsiteText(
                         text: "Recipient’s Mobile No",
                       ),
-                      InsiteText(
+                      InsiteTextOverFlow(
                         text: mobileNo,
                       ),
                     ],
@@ -146,7 +146,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                       InsiteText(
                         text: "Recipient’s Name",
                       ),
-                      InsiteText(
+                      InsiteTextOverFlow(
                         overflow: TextOverflow.ellipsis,
                         text: name,
                       )
@@ -163,7 +163,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                       InsiteText(
                         text: "Language",
                       ),
-                      InsiteText(
+                      InsiteTextOverFlow(
                         text: language,
                       )
                     ],
@@ -188,7 +188,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                   text: "Subscription Activation Date :",
                 ),
                 SizedBox(height: 10,),
-                InsiteText(
+                InsiteTextOverFlow(
                   overflow: TextOverflow.ellipsis,
                   text: DateFormat("yyyy-MM-dd").parse(date).toString(),
                 )

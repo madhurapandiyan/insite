@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/add_new_user/reusable_widget/customcardsmsassetwidget.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_card_sms_asset_widget.dart';
 
 class SingleAssetValidateWidget extends StatelessWidget {
   final String StartDate;
