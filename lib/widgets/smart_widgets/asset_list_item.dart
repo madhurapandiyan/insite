@@ -49,6 +49,7 @@ class AssetOperationListItem extends StatelessWidget {
             ),
             Expanded(
               child: InsiteExpansionTile(
+                
                 title: Table(
                   border: TableBorder.all(),
                   columnWidths: {

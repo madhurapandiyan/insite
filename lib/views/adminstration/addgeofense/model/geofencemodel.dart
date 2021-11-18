@@ -17,7 +17,7 @@ class Geofencemodeldata {
   final String GeofenceName;
   final String GeofenceType;
   final String Description;
-  final bool IsFavorite;
+   bool IsFavorite;
   final String CustomerUID;
   final bool IsTransparent;
   final double AreaSqMeters;

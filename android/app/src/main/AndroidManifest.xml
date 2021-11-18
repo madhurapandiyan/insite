@@ -9,15 +9,19 @@
         <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
         <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        
 
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data
        android:name="com.google.android.geo.API_KEY"
-       android:value="AIzaSyC0p2C51YrCDrDUHqep98JnRn7Dd9meTSY" />
+       android:value="AIzaSyBTJcIhg6xPwh44ti48Quh_xFEAgrxhY-8" />
 
         <activity
             android:name=".MainActivity"
@@ -59,6 +63,16 @@
                     android:scheme="insite" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+            android:authorities="${applicationId}.flutter_downloader.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+              android:name="android.support.FILE_PROVIDER_PATHS"
+              android:resource="@xml/provider_paths"/>
+        </provider>
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

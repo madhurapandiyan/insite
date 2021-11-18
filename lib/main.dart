@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/customer.dart';
@@ -16,6 +17,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+   await FlutterDownloader.initialize(debug: true);
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());

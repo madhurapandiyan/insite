@@ -5,7 +5,6 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_geofence_view_model.dart';
 
@@ -22,7 +21,6 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
     return ViewModelBuilder<ManageGeofenceViewModel>.reactive(
       builder:
           (BuildContext context, ManageGeofenceViewModel viewModel, Widget _) {
-        Logger().d(viewModel.isLoading);
         return InsiteScaffold(
             viewModel: viewModel,
             body: viewModel.isLoading
@@ -43,7 +41,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               onTap: () {
                                 viewModel.onNavigation(null);
                               },
-                               textColor: white,
+                              textColor: white,
                               title: "ADD GEOFENCE",
                               height: mediaQuery.size.height * 0.05,
                               width: mediaQuery.size.width * 0.4,
@@ -51,33 +49,42 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: viewModel.geofence.Geofences.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            var model = viewModel.geofence.Geofences;
+                      viewModel.geofence.Geofences.isEmpty
+                          ? Expanded(
+                              child: Center(
+                                child: InsiteText(
+                                  text: "Add More Geofence To View",
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          : Expanded(
+                              child: ListView.builder(
+                                itemCount: viewModel.geofence.Geofences.length,
+                                itemBuilder: (BuildContext context, int i) {
+                                  var model = viewModel.geofence.Geofences;
 
-                            return ManageGeofenceWidget(
-                              isFav:model[i].IsFavorite,
-                              onFavourite: (uid) {
-                                viewModel.markFavouriteStatus(uid,);
-                              },
-                              onNavigation: () {
-                                viewModel.onNavigation(model[i].GeofenceUID);
-                              },
-                              ondeleting: (uid, actionutc) {
-                                setState(() {
-                                  viewModel.isLoading = !viewModel.isLoading;
-                                  viewModel.deleteGeofence(uid, actionutc);
-                                });
-                              },
-                              geofenceName: model[i].GeofenceName,
-                              geofenceDate: model[i].EndDate,
-                              geofenceUID: model[i].GeofenceUID,
-                            );
-                          },
-                        ),
-                      ),
+                                  return ManageGeofenceWidget(
+                                    encodedPolyline: viewModel.listOfEncoded[i],
+                                    isFav: model[i].IsFavorite,
+                                    onFavourite: (uid) {
+                                      viewModel.markFavouriteStatus(uid, i);
+                                    },
+                                    onNavigation: () {
+                                      viewModel
+                                          .onNavigation(model[i].GeofenceUID);
+                                    },
+                                    ondeleting: (uid, actionutc) {
+                                      viewModel.deleteGeofence(
+                                          uid, actionutc, i);
+                                    },
+                                    geofenceName: model[i].GeofenceName,
+                                    geofenceDate: model[i].EndDate,
+                                    geofenceUID: model[i].GeofenceUID,
+                                  );
+                                },
+                              ),
+                            ),
                     ],
                   ));
       },

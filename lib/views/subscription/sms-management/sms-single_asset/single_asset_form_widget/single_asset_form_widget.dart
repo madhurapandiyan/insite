@@ -39,7 +39,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
       key: formKey,
       child: Container(
         padding: EdgeInsets.all(20),
-        height: MediaQuery.of(context).size.height * 0.56,
+        //height: MediaQuery.of(context).size.height * 0.6,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -65,11 +65,12 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                   serialNo = value;
                 },
               ),
-              SizedBox(
-                height: 25,
-              ),
-              InsiteText(
-                text: "Recipient’s Name :",
+              
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: InsiteText(
+                  text: "Recipient’s Name :",
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -85,11 +86,12 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 },
                 validator: serialNoValidator,
               ),
-              SizedBox(
-                height: 25,
-              ),
-              InsiteText(
-                text: "Recipient’s Mobile No. :",
+              
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: InsiteText(
+                  text: "Recipient’s Mobile No. :",
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -105,11 +107,12 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 focusNode: mobileNoFocus,
                 validator: modileNoValidator,
               ),
-              SizedBox(
-                height: 25,
-              ),
-              InsiteText(
-                text: "Language :",
+              
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: InsiteText(
+                  text: "Language :",
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -136,17 +139,16 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(
-                child: InsiteButton(
-                  onTap: () {
-                    final valid = formKey.currentState.validate();
-                    if (valid) {
-                      widget.onSaving(serialNo, name, mobileNo, value);
-                    }
-                  },
-                  title: "Submit",
-                  fontSize: 15,
-                ),
+              InsiteButton(
+                height: MediaQuery.of(context).size.height * 0.07,
+                onTap: () {
+                  final valid = formKey.currentState.validate();
+                  if (valid) {
+                    widget.onSaving(serialNo, name, mobileNo, value);
+                  }
+                },
+                title: "Submit",
+                fontSize: 15,
               )
             ],
           ),

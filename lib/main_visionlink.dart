@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
 import 'package:load/load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
@@ -15,6 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+   await FlutterDownloader.initialize(debug: true);
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: splashViewRoute,
-          theme:indiaStackOrangeBlack,
+          theme: indiaStackOrangeBlack,
         ));
   }
 }

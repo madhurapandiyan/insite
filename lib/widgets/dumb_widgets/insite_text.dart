@@ -5,6 +5,7 @@ class InsiteText extends StatelessWidget {
   final String text;
   final Color color;
   final double size;
+
   final FontWeight fontWeight;
   const InsiteText({this.text, this.color, this.fontWeight, this.size});
 

@@ -33,9 +33,11 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    isVisionlinkCheck = isVisionLink ;
+    isVisionlinkCheck = isVisionLink;
     Logger().w(isVisionlinkCheck);
-    getMaterialData();
+    if (isVisionlinkCheck) {
+      getMaterialData();
+    }
   }
   double zoomValue = 1;
 
@@ -441,6 +443,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
             FillColor: colorValue == null ? 658170 : colorValue);
       } else {
         geofenceRequestPayload = Geofencepayload(
+          IsFavorite: false,
             GeofenceUID: fetchedGeofenceUid == null ? null : fetchedGeofenceUid,
             ActionUTC: DateTime.now().toIso8601String(),
             Description: descriptionController.text == null
@@ -538,9 +541,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
     polygon.clear();
     polyline.clear();
     circle.clear();
-    titleText = null;
-    descriptionText = null;
-    targetText = null;
+    titleController.text = null ;
+    targetController.text = null;
     endingDate = null;
     backFillDate = null;
     initialValue = dropDownlist[0];

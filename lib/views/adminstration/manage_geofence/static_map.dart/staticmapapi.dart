@@ -1,10 +1,10 @@
 import 'package:logger/logger.dart';
 
-const String apikey = "AIzaSyAOo4z0EgylTSAYdOIYUS21l8T6lZ-FgCg";
+const String apikey = "AIzaSyBTJcIhg6xPwh44ti48Quh_xFEAgrxhY-8";
 
 class StaticMap {
   String generatedimg(String polylineencode) {
     Logger().e(polylineencode);
-    return "https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyAOo4z0EgylTSAYdOIYUS21l8T6lZ-FgCg";
+    return "https://maps.googleapis.com/maps/api/staticmap?size=400x400&path=weight:3%7Ccolor:purple10%7Cenc:$polylineencode&key=$apikey";
   }
 }
