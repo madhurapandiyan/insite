@@ -9,7 +9,6 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_settings.dart';
-import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
@@ -45,10 +44,11 @@ import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.da
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
+import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -857,6 +857,17 @@ abstract class RestClient {
       @Path() String url,
       @Body() List<String> assetUid,
       @Header("x-visionlink-customeruid") customerId);
+
+  @POST("{url}")
+  Future<SavingSmsResponce> savingSms(
+      @Path() String url, @Body() List<SavingSmsModel> singleAssetData);
+
+  @GET('{url}')
+  Future<SmsReportSummaryModel> gettingReportSummary(@Path() String url);
+
+  @GET('{url}')
+  Future<SmsReportSummaryModel> gettingScheduleReportSummary(
+      @Path() String url);
 }
 
 @JsonSerializable()

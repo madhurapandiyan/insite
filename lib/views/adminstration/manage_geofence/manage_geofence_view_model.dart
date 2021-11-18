@@ -8,6 +8,7 @@ import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
 import 'package:insite/core/logger.dart';
@@ -43,19 +44,19 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     //MapLatLng latlo = MapLatLng(latitude, longitude);
     List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
     _geofence = await _geofenceservice.getGeofenceData();
-
+    Logger().i(_geofence.toJson());
     try {
       for (var i = 0; i < _geofence.Geofences.length; i++) {
         String wktText = _geofence.Geofences[i].GeometryWKT;
         //Logger().e(_geofence.Geofences.last.GeometryWKT);
         listOfWKTstring.add(wktText);
         final geofenceData = geo.wktProjected.parse(listOfWKTstring[i]);
-        Logger().d(geofenceData);
-        Logger().d(_polygonData);
+        //Logger().d(geofenceData);
+        //Logger().d(_polygonData);
         _polygonData.add(geofenceData);
-        Logger().e(_polygonData);
+        // Logger().e(_polygonData);
         final points = _polygonData[i].exterior.chain;
-        Logger().d(points);
+        //Logger().d(points);
         listOfPointSeries.add(points);
       }
       getEncodedPolylines(listOfPointSeries);
@@ -66,28 +67,23 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  markFavouriteStatus(String uid) async {
+  markFavouriteStatus(String uid, int index) async {
+    _geofence.Geofences[index].IsFavorite =
+        !_geofence.Geofences[index].IsFavorite;
+    //showLoadingDialog();
     _isFavourite = !isFavourite;
-    isLoading = !isLoading;
     notifyListeners();
-    if (_isFavourite) {
-      await _geofenceservice
-          .markFavourite(uid, "MarkFavorite?")
-          .then((_) => getGeofencedata());
+    if (_geofence.Geofences[index].IsFavorite) {
+      await _geofenceservice.markFavourite(uid, "MarkFavorite?");
     } else {
-      await _geofenceservice
-          .markFavourite(uid, "MarkUnfavorite?")
-          .then((_) => getGeofencedata());
+      await _geofenceservice.markFavourite(uid, "MarkUnfavorite?");
     }
   }
 
-  deleteGeofence(uid, actionUTC) async {
+  deleteGeofence(uid, actionUTC, int i) async {
     try {
-      var data =
-          await _geofenceservice.deleteGeofence(uid, actionUTC).then((_) {
-        Future.delayed(Duration(seconds: 1), () => getGeofencedata());
-      });
-
+      geofence.Geofences.removeAt(i);
+      var data = await _geofenceservice.deleteGeofence(uid, actionUTC);
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
@@ -105,34 +101,47 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   }
 
   getEncodedPolylines(List<geo.PointSeries<geo.Point<num>>> pointslist) {
-    Logger().e(pointslist);
-    listOfEncoded = [];
+    try {
+      if (_geofence.Geofences.isEmpty) {
+        isLoading = false;
+        notifyListeners();
+      } else {
+        listOfEncoded = [];
 
-    List<num> listOfNumber = [];
-    List<List<num>> list = [];
-    String encoding;
+        List<List<num>> list = [];
+        String encoding;
+        List<num> listOfNumber = [];
+        for (var p = 0; p < pointslist.length; p++) {
+          var innerList = pointslist[p];
+          for (var i = 0; i < innerList.length; i++) {
+            num latitude = innerList[i].x;
+            num longitude = innerList[i].y;
+            listOfNumber.addAll([longitude, latitude]);
 
-    for (var p = 0; p < pointslist.length; p++) {
-      var innerList = pointslist[p];
-      for (var i = 0; i < innerList.length; i++) {
-        listOfNumber = innerList[i].values;
-        list.add(listOfNumber);
-        //Logger().d(list);
-        listOfNumber = [];
+            list.add(listOfNumber);
+            listOfNumber = [];
+          }
+          Logger().d(list);
+
+          encoding = encodePolyline(list, accuracyExponent: 5);
+          listOfEncoded.add(encoding);
+          Logger().w(listOfEncoded);
+          list = [];
+
+          notifyListeners();
+
+          //Logger().d(list);
+          // var getEncodedPolylines = poly.Polyline.Encode(
+          //     precision: 5, decodedCoords: list as List<List<double>>);
+          //Logger().e(getEncodedPolylines.encodedString);
+        }
+        Logger().d(listOfEncoded.length);
       }
-      Logger().d(list);
-
-      encoding = encodePolyline(list, accuracyExponent: 5);
-      listOfEncoded.add(encoding);
-      list = [];
       isLoading = false;
-      notifyListeners();
-
-      //Logger().d(list);
-      // var getEncodedPolylines = poly.Polyline.Encode(
-      //     precision: 5, decodedCoords: list as List<List<double>>);
-      //Logger().e(getEncodedPolylines.encodedString);
+      hideLoadingDialog();
+    } catch (e) {
+      hideLoadingDialog();
+      Logger().d(e.toString());
     }
-    Logger().d(listOfEncoded.length);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_cards_small.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_setting_widget.dart';

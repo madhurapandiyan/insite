@@ -64,9 +64,8 @@ class Geofenceservice extends BaseService {
     Logger().d(payload.toJson());
     Customer customer = await _localService.getAccountInfo();
     if (isVisionLink) {
-      dynamic data = await MyApi()
-          .getClientSeven()
-          .putGeofencePayLoadVL(Urls.postPayLoad, customer.CustomerUID, payload);
+      dynamic data = await MyApi().getClientSeven().putGeofencePayLoadVL(
+          Urls.postPayLoad, customer.CustomerUID, payload);
     } else {
       dynamic data = await MyApi().getClient().putGeofencePayLoad(
           Urls.getGeofenceData,
@@ -168,7 +167,7 @@ class Geofenceservice extends BaseService {
           Urls.postPayLoad + "/" + favToggle + querryUrlVL,
           customer.CustomerUID);
     } else {
- 
+
       var data = await MyApi().getClient().markFavourite(
           Urls.getGeofenceData + "/" + favToggle + querryUrl,
           customer.CustomerUID,

@@ -5,15 +5,17 @@ class InsiteText extends StatelessWidget {
   final String text;
   final Color color;
   final double size;
+  final TextOverflow overflow;
   final FontWeight fontWeight;
-  const InsiteText({this.text, this.color, this.fontWeight, this.size});
+  const InsiteText({this.text, this.color, this.fontWeight, this.size,this.overflow});
 
   const InsiteText.overflow(
-      {this.text, this.color, this.fontWeight, this.size});
+      {this.text, this.color, this.fontWeight, this.size,this.overflow});
 
   @override
   Widget build(BuildContext context) {
     return Text(text,
+        overflow: overflow,
         style: TextStyle(
           color: color != null
               ? color
@@ -107,7 +109,7 @@ class InsiteRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(3),
       child: RichText(
           text: TextSpan(children: [
         TextSpan(

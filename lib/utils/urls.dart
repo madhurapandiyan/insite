@@ -227,7 +227,12 @@ class Urls {
   static String estimatedMileage =
       "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
   static String getGeofenceData = "$geofence/1.0";
+  static String savingSms = "$smsManagementSingleAsset/savingsms";
   static String smsManagementSingleAsset = "$subscriptionPrefix/scheduleSms";
+  static String smsManagementScheduleReportSummary =
+      "$subscriptionPrefix/scheduleSmsSummaryReport";
+  static String getScheduleReportData =
+      "$smsManagementScheduleReportSummary/download";
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";
