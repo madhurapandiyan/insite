@@ -34,7 +34,7 @@ AssetProductivitySettings _$AssetProductivitySettingsFromJson(
         : Volumes.fromJson(json['volumes'] as Map<String, dynamic>),
     payload: json['payload'] == null
         ? null
-        : Cycles.fromJson(json['payload'] as Map<String, dynamic>),
+        : PayLoad.fromJson(json['payload'] as Map<String, dynamic>),
     startDate: json['startDate'] as String,
     endDate: json['endDate'] as String,
     assetUid: json['assetUid'] as String,
@@ -87,6 +87,28 @@ Volumes _$VolumesFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$VolumesToJson(Volumes instance) => <String, dynamic>{
+      'sunday': instance.sunday,
+      'monday': instance.monday,
+      'tuesday': instance.tuesday,
+      'wednesday': instance.wednesday,
+      'thursday': instance.thursday,
+      'friday': instance.friday,
+      'saturday': instance.saturday,
+    };
+
+PayLoad _$PayLoadFromJson(Map<String, dynamic> json) {
+  return PayLoad(
+    sunday: (json['sunday'] as num)?.toDouble(),
+    monday: (json['monday'] as num)?.toDouble(),
+    tuesday: (json['tuesday'] as num)?.toDouble(),
+    wednesday: (json['wednesday'] as num)?.toDouble(),
+    thursday: (json['thursday'] as num)?.toDouble(),
+    friday: (json['friday'] as num)?.toDouble(),
+    saturday: (json['saturday'] as num)?.toDouble(),
+  );
+}
+
+Map<String, dynamic> _$PayLoadToJson(PayLoad instance) => <String, dynamic>{
       'sunday': instance.sunday,
       'monday': instance.monday,
       'tuesday': instance.tuesday,

@@ -16,7 +16,7 @@ class EstimatedCycleVolumePayLoad {
 class AssetProductivitySettings {
   Cycles cycles;
   Volumes volumes;
-  Cycles payload;
+  PayLoad payload;
   String startDate;
   String endDate;
   String assetUid;
@@ -82,4 +82,29 @@ class Volumes {
       _$VolumesFromJson(json);
 
   Map<String, dynamic> toJson() => _$VolumesToJson(this);
+}
+
+@JsonSerializable()
+class PayLoad{
+   double sunday;
+  double monday;
+  double tuesday;
+  double wednesday;
+  double thursday;
+  double friday;
+  double saturday;
+
+  PayLoad(
+      {this.sunday,
+      this.monday,
+      this.tuesday,
+      this.wednesday,
+      this.thursday,
+      this.friday,
+      this.saturday});
+
+  factory PayLoad.fromJson(Map<String, dynamic> json) =>
+      _$PayLoadFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PayLoadToJson(this);
 }

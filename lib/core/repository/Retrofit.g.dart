@@ -3241,4 +3241,25 @@ class _RestClient implements RestClient {
     final value = SmsReportSummaryModel.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<dynamic> getAssetIconData(url, assetIconPayLoad, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(assetIconPayLoad, 'assetIconPayLoad');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetIconPayLoad?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
 }
