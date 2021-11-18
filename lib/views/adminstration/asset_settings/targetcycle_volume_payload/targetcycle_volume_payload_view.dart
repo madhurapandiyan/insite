@@ -471,6 +471,7 @@ class _TargetCycleVolumePayloadWidgetState
               height: 10,
             ),
             Expanded(
+              flex: 3,
               child: ListView.builder(
                   itemCount: 7,
                   itemBuilder: (_, index) {

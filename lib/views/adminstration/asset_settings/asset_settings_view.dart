@@ -8,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_settings_view_model.dart';
 
@@ -33,6 +34,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                       height: 40,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
@@ -42,9 +44,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                             size: 14,
                           ),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+
                         // viewModel.showEdit
                         //     ? ClipRRect(
                         //         borderRadius: BorderRadius.only(
@@ -64,7 +64,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         //             )),
                         //       )
                         //     : SizedBox(),
-                       
+
                         viewModel.showEdit
                             ? ClipRRect(
                                 borderRadius: BorderRadius.only(
@@ -73,16 +73,17 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                   bottomRight: Radius.circular(10),
                                   bottomLeft: Radius.circular(10),
                                 ),
-                                child: InsitePopMenuItemButton(
-                                  width: 40,
-                                  height: 40,
-                                  //icon: Icon(Icons.more_vert),
-                                  widget: onContextMenuSelected(viewModel),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: InsitePopMenuItemButton(
+                                    width: 40,
+                                    height: 40,
+                                    //icon: Icon(Icons.more_vert),
+                                    widget: onContextMenuSelected(viewModel),
+                                  ),
                                 ))
                             : SizedBox(),
-                        SizedBox(
-                          width: 10,
-                        ),
+
                         // viewModel.showDeSelect
                         //     ? ClipRRect(
                         //         borderRadius: BorderRadius.only(
@@ -158,25 +159,28 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-            PopupMenuItem(
-            value: "Show/Edit Target",
-            child: InsiteText(
-              text: "Show/Edit Target",
-              fontWeight: FontWeight.w700,
-              size: 14,
-            )),
-
-        PopupMenuItem(
-          value: "Configure",
-          child: InsiteText(
-            text: "Configure",
-            fontWeight: FontWeight.w700,
-            size: 14,
-          ),
-        ),
+        viewModel.showMenu
+            ? PopupMenuItem(
+                value: "Show/Edit Target",
+                child: InsiteText(
+                  text: "Show/Edit Target",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ))
+            : null,
+        viewModel.showMenu
+            ? PopupMenuItem(
+                value: "Configure",
+                child: InsiteText(
+                  text: "Configure",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ),
+              )
+            : null
       ],
       onSelected: (value) {
-        print("value:$value");
+        Logger().i("value:$value");
         viewModel.onSelectedItemClicK(value);
       },
       icon: Icon(

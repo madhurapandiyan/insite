@@ -132,11 +132,11 @@ class AssetSettingsViewModel extends InsiteViewModel {
       }
       if (count > 0) {
         if (count > 1) {
-          _showEdit = true;
+          _showMenu = false;
           _showDeSelect = true;
           _showEdit = true;
         } else {
-          _showEdit = true;
+          _showMenu = true;
           _showDeSelect = true;
           _showEdit = true;
         }
@@ -156,13 +156,13 @@ class AssetSettingsViewModel extends InsiteViewModel {
         assetUids.add(_assets[i].assetSettings.assetUid);
       }
     }
+
     onCardButtonSelected(assetUids);
   }
 
   onSelectedItemClicK(String value) {
     if (value == "Configure") {
-      _navigationservice.navigateWithTransition(AssetSettingsConfigureView(),
-          transition: "fade");
+      onItemSelectConfigure();
     } else if (value == "Show/Edit Target") {
       onClickEditselected();
     } else if (value == "Deselect All") {
@@ -187,5 +187,23 @@ class AssetSettingsViewModel extends InsiteViewModel {
     getAssetSettingListData();
     _isRefreshing = true;
     notifyListeners();
+  }
+
+  onItemSelectConfigure() {
+    String configureAssetUId;
+    for (int i = 0; i < _assets.length; i++) {
+      if (_assets[i].isSelected) {
+        configureAssetUId = _assets[i].assetSettings.assetUid;
+      }
+    }
+    onClickRespectiveConfigurePage(configureAssetUId);
+  }
+
+  onClickRespectiveConfigurePage(String assetUid) {
+    _navigationservice.navigateWithTransition(
+        AssetSettingsConfigureView(
+          assetUids: assetUid,
+        ),
+        transition: "fade");
   }
 }

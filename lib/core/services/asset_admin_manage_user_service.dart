@@ -16,6 +16,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 
@@ -698,5 +699,38 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().e(e.toString());
     }
     return null;
+  }
+
+  getAssetIconData(String actionUTC, String assetUID, int iconKey,
+      int legacyAssetID, modelYear) async {
+    try {
+      if (isVisionLink) {
+        var assetIconData = await MyApi().getClientSeven().getAssetIconData(
+            Urls.getAssetIconVL,
+            AssetIconPayLoad(
+                actionUTC: actionUTC,
+                assetUID: assetUID,
+                iconKey: iconKey,
+                legacyAssetID: legacyAssetID,
+                modelYear: modelYear),
+            accountSelected.CustomerUID);
+
+        return assetIconData;
+      } else {
+        var assetIconData = await MyApi().getClientSeven().getAssetIconData(
+            Urls.getAssetIconVL,
+            AssetIconPayLoad(
+                actionUTC: actionUTC,
+                assetUID: assetUID,
+                iconKey: iconKey,
+                legacyAssetID: legacyAssetID,
+                modelYear: modelYear),
+            accountSelected.CustomerUID);
+
+        return assetIconData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

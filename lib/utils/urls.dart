@@ -179,6 +179,8 @@ class Urls {
   static String getEstimatedAsetSettingTargetDataVL =
       "/t/trimble.com/vss-assetsettings/1.0/assettargetsettings";
    static String getEstimatedCycleVoumePayLoadListDataVL="/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";   
+   static String getAssetIconVL="/t/trimble.com/vss-storeassetservice/1.0/AssetIcon";
+
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";

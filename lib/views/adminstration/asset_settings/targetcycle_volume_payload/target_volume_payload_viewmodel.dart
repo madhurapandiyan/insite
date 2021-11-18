@@ -43,7 +43,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   EstimatedCycleVolumePayLoad result;
   Cycles dateFilterTargetValue;
   Volumes dateFilterVolumeValue;
-  Cycles dateFilterPayLoadValue;
+  PayLoad dateFilterPayLoadValue;
   List<IncrementDecrementPayload> countValue = [
     IncrementDecrementPayload(
         runTimeDays: "Sun",
@@ -289,9 +289,16 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
   getEstimatedCycleVolumePayLoad(
       DateTime startDate, DateTime endDate, BuildContext context) async {
-    if (!endDate.isAfter(startDate)) {
-      _snackBarService.showSnackbar(
-          message: "EndDate should be greter than StartDate");
+    // if (!endDate.isAfter(startDate)) {
+    //   _snackBarService.showSnackbar(
+    //       message: "EndDate should be greter than StartDate");
+    //   return;
+    // }
+    if (startDate == null) {
+      _snackBarService.showSnackbar(message: "StartDate must not be  null");
+      return;
+    } else if (endDate == null) {
+      _snackBarService.showSnackbar(message: "EndDate must not be  null");
       return;
     }
     EstimatedCycleVolumePayLoad result =
@@ -324,17 +331,18 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
                     double.parse(countValue[5].targetVolumesCount.toString()),
                 saturday:
                     double.parse(countValue[6].targetVolumesCount.toString())),
-            Cycles(
-              sunday: double.parse(countValue[0].targetCyclesCount.toString()),
-              monday: double.parse(countValue[1].targetCyclesCount.toString()),
-              tuesday: double.parse(countValue[2].targetCyclesCount.toString()),
+            PayLoad(
+              sunday: double.parse(countValue[0].targetPayloadCount.toString()),
+              monday: double.parse(countValue[1].targetPayloadCount.toString()),
+              tuesday:
+                  double.parse(countValue[2].targetPayloadCount.toString()),
               wednesday:
-                  double.parse(countValue[3].targetCyclesCount.toString()),
+                  double.parse(countValue[3].targetPayloadCount.toString()),
               thursday:
-                  double.parse(countValue[4].targetCyclesCount.toString()),
-              friday: double.parse(countValue[5].targetCyclesCount.toString()),
+                  double.parse(countValue[4].targetPayloadCount.toString()),
+              friday: double.parse(countValue[5].targetPayloadCount.toString()),
               saturday:
-                  double.parse(countValue[6].targetCyclesCount.toString()),
+                  double.parse(countValue[6].targetPayloadCount.toString()),
             ),
             startDate.toString(),
             endDate.toString());
@@ -355,9 +363,30 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   }
 
   getDateFilter(DateTime startDate, DateTime endDate) {
-    dateFilterTargetValue = null;
-    dateFilterVolumeValue = null;
-    dateFilterPayLoadValue = null;
+    dateFilterTargetValue = Cycles(
+        sunday: 0,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0);
+    dateFilterVolumeValue = Volumes(
+        sunday: 0,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0);
+    dateFilterPayLoadValue = PayLoad(
+        sunday: 0,
+        monday: 0,
+        tuesday: 0,
+        wednesday: 0,
+        thursday: 0,
+        friday: 0,
+        saturday: 0);
 
     List<IncrementDecrementPayload> dateFilterUpdateListValue = [];
 
@@ -369,7 +398,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
             element.endDate == endDateString) {
           dateFilterTargetValue = element.cycles;
           dateFilterVolumeValue = element.volumes;
-          dateFilterPayLoadValue = element.cycles;
+          dateFilterPayLoadValue = element.payload;
         }
       });
 
