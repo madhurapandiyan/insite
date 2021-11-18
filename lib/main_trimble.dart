@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: router.Router.generateRoute,
           initialRoute: indiaStackSplashViewRoute,
-          theme: indiaStackOrangeBlack,
+          theme: indiaStackBlueWhite,
         ));
   }
 }
