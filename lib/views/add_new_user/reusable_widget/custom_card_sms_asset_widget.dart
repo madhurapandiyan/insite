@@ -107,7 +107,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InsiteText(
+                      InsiteTextOverFlow(
                         overflow: TextOverflow.ellipsis,
                         text: "Serial No",
                       ),
