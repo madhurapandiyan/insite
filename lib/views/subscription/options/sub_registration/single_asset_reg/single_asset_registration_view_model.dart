@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
+import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
@@ -33,10 +35,17 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
-  String _assetModel = " ";
+  String _assetModel = "Select Asset Model";
   String get assetModel => _assetModel;
+
   String _plantDetail = " ";
   String get plantDetail => _plantDetail;
+
+  String _plantCode = " ";
+  String get plantCode => _plantCode;
+
+  String _plantEmail = "sivaranjani_k@trimble.com";
+  String get plantEmail => _plantEmail;
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
@@ -76,8 +85,34 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<String> _modelNames = [];
   List<String> get modelNames => _modelNames;
 
+  List<String> _popUpCardTitles = [
+    "Entity Details",
+    "Plant Details",
+    "Dealer Details",
+    "Customer Details"
+  ];
+  List<String> get popUpCardTitles => _popUpCardTitles;
+
+  List<List<PreviewData>> _totalList = [];
+  List<List<PreviewData>> get totalList => _totalList;
+
+  List<PreviewData> _previewDeviceDetails = [];
+  List<PreviewData> get previewDeviceDetails => _previewDeviceDetails;
+
+  List<PreviewData> _generalPlantDetails = [];
+  List<PreviewData> get generalPlantDetails => _generalPlantDetails;
+
+  List<PreviewData> _generalDealerDetails = [];
+  List<PreviewData> get generalDealerDetails => _generalDealerDetails;
+
+  List<PreviewData> _generalCustomerDetails = [];
+  List<PreviewData> get generalCustomerDetails => _generalCustomerDetails;
+
   List<String> _finalDeviceDetails = [];
   List<String> get finalDeviceDetails => _finalDeviceDetails;
+
+  List<AssetValues> _totalAssetValues = [];
+  List<AssetValues> get totalAssetValues => _totalAssetValues;
 
   List<String> _plantDetails = [
     "Dharward",
@@ -85,6 +120,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     "TATA HITACHI KHARAGPUR FACTORY"
   ];
   List<String> get plantDetails => _plantDetails;
+
+  List<String> _plantCodes = ["1005", "1006", "3065"];
+  List<String> get plantCodes => _plantCodes;
 
   SingleAssetRegistrationViewModel(
       String filterKey, PLANTSUBSCRIPTIONFILTERTYPE type) {
@@ -106,11 +144,21 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   updateplantDEtail(String newValue) {
     _plantDetail = newValue;
+    if (_plantDetail == plantDetails[0]) {
+      _plantCode = plantCodes[0];
+    } else if (_plantDetail == plantDetails[1]) {
+      _plantCode = plantCodes[1];
+    } else if (_plantDetail == plantDetails[2]) {
+      _plantCode = plantCodes[2];
+    }
+
+    Logger().wtf(_plantCode);
+
     notifyListeners();
   }
 
   TextEditingController hourMeterDateController = TextEditingController();
-  TextEditingController autocustomTextFieldController = TextEditingController();
+  TextEditingController deviceIdController = TextEditingController();
   TextEditingController serialNumberController = TextEditingController();
 
   TextEditingController hourMeterController = TextEditingController();
@@ -125,6 +173,126 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   getSelectedDate(DateTime value) {
     _pickedDate = value;
     hourMeterDateController.text = DateFormat.yMMMd().format(_pickedDate);
+    notifyListeners();
+  }
+
+  updateDeviceId(String value) {
+    deviceIdController.text = value;
+    notifyListeners();
+  }
+
+  getTotalDataDetails() {
+    getPreviewDeviceDetails();
+    getPlantDetails();
+    getDealerDetails();
+    getCustomerDetails();
+    notifyListeners();
+  }
+
+  getPlantDetails() {
+    PreviewData plantName =
+        PreviewData(title: "Plant Name", value: plantDetail);
+    _generalPlantDetails.add(plantName);
+    PreviewData plantCodeValue =
+        PreviewData(title: "Plant Code", value: plantCode);
+    _generalPlantDetails.add(plantCodeValue);
+    PreviewData plantEmailValue =
+        PreviewData(title: "Plant Email", value: plantEmail);
+    _generalPlantDetails.add(plantEmailValue);
+
+    _totalList.add(_generalPlantDetails);
+    notifyListeners();
+  }
+
+  getDealerDetails() {
+    PreviewData dealerName =
+        PreviewData(title: "Dealer Name", value: deviceNameController.text);
+    _generalDealerDetails.add(dealerName);
+    PreviewData dealerCode =
+        PreviewData(title: "Dealer Code", value: deviceCodeController.text);
+    _generalDealerDetails.add(dealerCode);
+    PreviewData dealerEmailValue =
+        PreviewData(title: "Dealer Email", value: deviceEmailController.text);
+    _generalDealerDetails.add(dealerEmailValue);
+
+    _totalList.add(_generalDealerDetails);
+    notifyListeners();
+  }
+
+  getCustomerDetails() {
+    PreviewData customerName =
+        PreviewData(title: "Customer Name", value: customerNameController.text);
+    _generalCustomerDetails.add(customerName);
+    PreviewData customerCode =
+        PreviewData(title: "Customer Code", value: customerCodeController.text);
+    _generalCustomerDetails.add(customerCode);
+    PreviewData customerEmailValue = PreviewData(
+        title: "Customer Email", value: customerEmailController.text);
+    _generalCustomerDetails.add(customerEmailValue);
+
+    _totalList.add(_generalCustomerDetails);
+    notifyListeners();
+  }
+
+  getPreviewDeviceDetails() {
+    PreviewData deviceId =
+        PreviewData(title: 'Device ID', value: deviceIdController.text);
+    _previewDeviceDetails.add(
+      deviceId,
+    );
+    PreviewData serialnumber =
+        PreviewData(title: 'Serial Number', value: serialNumberController.text);
+    _previewDeviceDetails.add(
+      serialnumber,
+    );
+
+    PreviewData machineModel =
+        PreviewData(title: 'Machine Model', value: _assetModel);
+    _previewDeviceDetails.add(
+      machineModel,
+    );
+    PreviewData hourMeterDate =
+        PreviewData(title: 'HRM', value: hourMeterDateController.text);
+    _previewDeviceDetails.add(
+      hourMeterDate,
+    );
+    PreviewData hourMeter =
+        PreviewData(title: 'HRM Data', value: hourMeterController.text);
+    _previewDeviceDetails.add(
+      hourMeter,
+    );
+    _totalList.add(previewDeviceDetails);
+    notifyListeners();
+  }
+
+  subscriptionAssetRegistration() async {
+    AssetValues deviceAssetValues;
+    deviceAssetValues = AssetValues(
+      deviceId: previewDeviceDetails[0].value,
+      machineSlNo: previewDeviceDetails[1].value,
+      machineModel: previewDeviceDetails[2].value,
+      hMRDate: previewDeviceDetails[3].value,
+      hMR: int.parse(previewDeviceDetails[4].value),
+      plantName: generalPlantDetails[0].value,
+      plantCode: generalPlantDetails[1].value,
+      plantEmailID: generalPlantDetails[2].value,
+      customerName: generalCustomerDetails[0].value,
+      customerCode: generalCustomerDetails[1].value,
+      customerEmailID: generalCustomerDetails[2].value,
+      dealerName: generalDealerDetails[0].value,
+      dealerCode: generalDealerDetails[1].value,
+      dealerEmailID: generalDealerDetails[2].value,
+      commissioningDate: null,
+      primaryIndustry: null,
+      secondaryIndustry: null,
+    );
+    _totalAssetValues.add(deviceAssetValues);
+
+    var result = await _subscriptionService
+        .postSingleAssetRegistration(_totalAssetValues);
+
+    Logger().wtf(result);
+
     notifyListeners();
   }
 
@@ -165,11 +333,18 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         .getDeviceModelNameBySerialNumber(serialNumber: value);
 
     if (results != null) {
+      String assetModelName = results.result.modelName;
+
+      if (modelNames.contains(assetModelName)) {
+        _assetModel = assetModelName;
+      } else {
+        _assetModel = " ";
+      }
     } else {
       return 'no results found';
     }
 
-    _assetModel = results.result.modelName;
+    notifyListeners();
   }
 
   getSubscriptionModelData() async {
@@ -198,8 +373,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       final th76 = result.result[2][14].modelName;
       final tl340h = result.result[2][15].modelName;
       final th340hPrime = result.result[2][16].modelName;
+
       _modelNames.addAll([
-        assetModel,
+        "Select Asset Model",
         ex70SuperPlus,
         ex130SuperPlus,
         shinRaiBx80,
@@ -220,8 +396,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
       _loading = false;
     }
-
     notifyListeners();
+    return _modelNames;
   }
 
   getSubcriptionDeviceListPerNameOrCode(

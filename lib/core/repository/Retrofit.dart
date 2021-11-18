@@ -1,3 +1,4 @@
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
@@ -879,6 +880,11 @@ abstract class RestClient {
   Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
     @Path() String url,
   );
+  @POST("{url}")
+  Future<AddAssetRegistrationData> getSingleAssetRegistrationData(
+      @Path() String url,
+      // @Header("content-type") String contentType,
+      @Body() AddAssetRegistrationData addAssetRegistrationData);
 }
 
 @JsonSerializable()

@@ -1,6 +1,9 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
+import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
@@ -10,6 +13,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 
 class SubScriptionService extends BaseService {
   var _localService = locator<LocalService>();
@@ -132,11 +136,30 @@ class SubScriptionService extends BaseService {
         Logger().d('no data found');
       }
 
-      Logger().d('serial number results: $serialNumberResults');
-
       return serialNumberResults;
     } catch (e) {
-      print(e.toString());
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<AddAssetRegistrationData> postSingleAssetRegistration(
+      List<AssetValues> data) async {
+    data.map((e) {
+      Logger().wtf(
+          'values to be checked ${e.commissioningDate} ${e.customerCode} ${e.customerEmailID} ${e.customerName} ${e.dealerCode}${e.dealerEmailID}${e.dealerName}${e.deviceId}${e.hMR}${e.hMRDate}${e.machineModel}${e.machineSlNo}${e.plantCode}${e.plantEmailID}${e.plantName}${e.primaryIndustry}${e.secondaryIndustry}');
+    });
+
+    var body = AddAssetRegistrationData(
+        source: "THC", version: "2.1", userID: 58839, asset: data);
+
+    try {
+      AddAssetRegistrationData addAssetRegistrationData = await MyApi()
+          .getClientEleven()
+          .getSingleAssetRegistrationData(Urls.singleAssetRegistration, body);
+      return addAssetRegistrationData;
+    } catch (e) {
+      Logger().e(e.toString());
       return null;
     }
   }

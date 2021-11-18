@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
 import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/base_autocomplete.dart';
 import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -28,6 +31,12 @@ class SingleAssetRegistrationView extends StatefulWidget {
 
 class _SingleAssetRegistrationViewState
     extends State<SingleAssetRegistrationView> {
+  final _formKey = GlobalKey<FormState>();
+
+  var defaultCustomFieldValidator = MultiValidator([
+    RequiredValidator(errorText: "This Field is Required"),
+  ]);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetRegistrationViewModel>.reactive(
@@ -56,21 +65,22 @@ class _SingleAssetRegistrationViewState
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Card(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.8,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Theme.of(context).cardColor,
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Form(
-                                    child: Padding(
+                      Form(
+                        key: _formKey,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Card(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Theme.of(context).cardColor,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Column(
                                         children: [
@@ -100,22 +110,17 @@ class _SingleAssetRegistrationViewState
                                                       child:
                                                           ReusableAutocompleteSearchView(
                                                         reuseController: viewModel
-                                                            .autocustomTextFieldController,
+                                                            .deviceIdController,
                                                         onSelected:
                                                             (selectedString) {
                                                           viewModel
-                                                                  .autocustomTextFieldController
-                                                                  .text =
-                                                              selectedString;
+                                                              .updateDeviceId(
+                                                                  selectedString);
                                                         },
                                                         data: viewModel
                                                             .gpsDeviceId,
-                                                        validator: (value) {
-                                                          if (value.isEmpty) {
-                                                            return "required";
-                                                          }
-                                                          return null;
-                                                        },
+                                                        validator:
+                                                            defaultCustomFieldValidator,
                                                       )),
                                                 ],
                                               ),
@@ -139,20 +144,15 @@ class _SingleAssetRegistrationViewState
                                                       height: 35,
                                                       width: 130,
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .serialNumberController,
-                                                        onChanged: (value) {
-                                                          viewModel
-                                                              .getModelNamebySerialNumber(
-                                                                  value);
-                                                        },
-                                                        validation: (value) {
-                                                          if (value.isEmpty) {
-                                                            return "required";
-                                                          }
-                                                          return null;
-                                                        },
-                                                      )),
+                                                          controller: viewModel
+                                                              .serialNumberController,
+                                                          onChanged: (value) {
+                                                            viewModel
+                                                                .getModelNamebySerialNumber(
+                                                                    value);
+                                                          },
+                                                          validation:
+                                                              defaultCustomFieldValidator)),
                                                 ],
                                               ),
                                             ],
@@ -192,7 +192,10 @@ class _SingleAssetRegistrationViewState
                                                         BorderRadius.circular(
                                                             10)),
                                                 child: CustomDropDownWidget(
-                                                  value: viewModel.assetModel,
+                                                  value: viewModel.assetModel ==
+                                                          null
+                                                      ? " "
+                                                      : viewModel.assetModel,
                                                   items: viewModel.modelNames,
                                                   onChanged: (String value) {
                                                     viewModel.updateModelValue(
@@ -291,13 +294,14 @@ class _SingleAssetRegistrationViewState
                                                       height: 35,
                                                       width: 130,
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .hourMeterController,
-                                                        textInputFormat: [
-                                                          FilteringTextInputFormatter
-                                                              .digitsOnly
-                                                        ],
-                                                      )),
+                                                          controller: viewModel
+                                                              .hourMeterController,
+                                                          textInputFormat: [
+                                                            FilteringTextInputFormatter
+                                                                .digitsOnly
+                                                          ],
+                                                          validation:
+                                                              defaultCustomFieldValidator)),
                                                 ],
                                               ),
                                             ],
@@ -356,319 +360,370 @@ class _SingleAssetRegistrationViewState
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Divider(
-                                    thickness: 1.5,
-                                    color: thunder,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
-                                        InsiteText(
-                                            text: 'Device Details:',
-                                            size: 13,
-                                            fontWeight: FontWeight.w700),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Device Name:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                  height: 35,
-                                                  width: 130,
-                                                  child: CustomTextBox(
-                                                    controller: viewModel
-                                                        .deviceNameController,
-                                                    onChanged: (value) {
-                                                      Logger().wtf(
-                                                          'vvvvvvvvvvvvvvvvvvvvv$value');
-
-                                                      viewModel
-                                                          .getSubcriptionDeviceListPerNameOrCode(
-                                                              name: value,
-                                                              type: "DEALER");
-                                                      Logger().i(
-                                                          "vvvvvvvvvvvvvvvvvv${viewModel.deviceCodeController.text}");
-                                                    },
+                                    Divider(
+                                      thickness: 1.5,
+                                      color: thunder,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          InsiteText(
+                                              text: 'Device Details:',
+                                              size: 13,
+                                              fontWeight: FontWeight.w700),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  InsiteText(
+                                                    text: 'Device Name:',
+                                                    size: 13,
+                                                    fontWeight: FontWeight.w700,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Dealer Code:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.01,
+                                                  ),
+                                                  Container(
                                                     height: 35,
                                                     width: 130,
                                                     child: CustomTextBox(
-                                                      controller: viewModel
-                                                          .deviceCodeController,
-                                                      onChanged: (value) {
-                                                        viewModel
-                                                            .getSubcriptionDeviceListPerNameOrCode(
-                                                                name: value,
-                                                                type: "DEALER");
-                                                      },
-                                                    )),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            InsiteText(
-                                              text: 'Dealer Email ID:',
-                                              size: 13,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.01,
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              height: 35,
-                                              child: CustomTextBox(
-                                                controller: viewModel
-                                                    .deviceEmailController,
+                                                        controller: viewModel
+                                                            .deviceNameController,
+                                                        onChanged: (value) {
+                                                          viewModel
+                                                              .getSubcriptionDeviceListPerNameOrCode(
+                                                                  name: value,
+                                                                  type:
+                                                                      "DEALER");
+                                                        },
+                                                        validation:
+                                                            defaultCustomFieldValidator),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.01,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    thickness: 1.5,
-                                    color: thunder,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
-                                        InsiteText(
-                                            text: 'Customer Details:',
-                                            size: 13,
-                                            fontWeight: FontWeight.w700),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Customer Name:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
-                                                          .customerNameController,
-                                                      onSelected:
-                                                          (selectedString) {
-                                                        viewModel
-                                                            .filterCustomerDetails(
-                                                                selectedString);
-                                                      },
-                                                      onChanged: (value) {
-                                                        viewModel
-                                                            .getSubcriptionListOfNameAndCode(
-                                                                name: value,
-                                                                type:
-                                                                    "CUSTOMER");
-                                                      },
-                                                      data: viewModel
-                                                          .customerCode,
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return "required";
-                                                        }
-                                                        return null;
-                                                      },
-                                                    )),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InsiteText(
-                                                  text: 'Customer Code:',
-                                                  size: 13,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.01,
-                                                ),
-                                                Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
-                                                          .customerCodeController,
-                                                      onSelected:
-                                                          (selectedString) {
-                                                        viewModel
-                                                            .updateSelectedCode(
-                                                                selectedString);
-                                                        viewModel
-                                                            .filterCustomerDetails(
-                                                                viewModel
-                                                                    .customerCodeController
-                                                                    .text);
-                                                      },
-                                                      onChanged: (value) {
-                                                        viewModel
-                                                            .getSubcriptionListOfNameAndCode(
-                                                                code: int.parse(
-                                                                    value),
-                                                                type:
-                                                                    "CUSTOMER");
-                                                      },
-                                                      data: viewModel
-                                                          .customerCode,
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return "required";
-                                                        }
-                                                        return null;
-                                                      },
-                                                    )),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            InsiteText(
-                                              text: 'Customer Email ID:',
-                                              size: 13,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.01,
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              height: 35,
-                                              child: CustomTextBox(
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  InsiteText(
+                                                    text: 'Dealer Code:',
+                                                    size: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.01,
+                                                  ),
+                                                  Container(
+                                                      height: 35,
+                                                      width: 130,
+                                                      child: CustomTextBox(
+                                                          controller: viewModel
+                                                              .deviceCodeController,
+                                                          onChanged: (value) {
+                                                            viewModel
+                                                                .getSubcriptionDeviceListPerNameOrCode(
+                                                                    name: value,
+                                                                    type:
+                                                                        "DEALER");
+                                                          },
+                                                          validation:
+                                                              defaultCustomFieldValidator)),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.02,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              InsiteText(
+                                                text: 'Dealer Email ID:',
+                                                size: 13,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.01,
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                height: 35,
+                                                child: CustomTextBox(
                                                   controller: viewModel
-                                                      .customerEmailController),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                                      .deviceEmailController,
+                                                  validation:
+                                                      defaultCustomFieldValidator,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.01,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  InsiteButton(
-                                    title: 'PREVIEW',
-                                    textColor: white,
-                                    margin: EdgeInsets.all(20),
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                ],
+                                    Divider(
+                                      thickness: 1.5,
+                                      color: thunder,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          InsiteText(
+                                              text: 'Customer Details:',
+                                              size: 13,
+                                              fontWeight: FontWeight.w700),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.01,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  InsiteText(
+                                                    text: 'Customer Name:',
+                                                    size: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.01,
+                                                  ),
+                                                  Container(
+                                                      height: 35,
+                                                      width: 130,
+                                                      child:
+                                                          ReusableAutocompleteSearchView(
+                                                        reuseController: viewModel
+                                                            .customerNameController,
+                                                        onSelected:
+                                                            (selectedString) {
+                                                          viewModel
+                                                              .filterCustomerDetails(
+                                                                  selectedString);
+                                                        },
+                                                        onChanged: (value) {
+                                                          viewModel
+                                                              .getSubcriptionListOfNameAndCode(
+                                                                  name: value,
+                                                                  type:
+                                                                      "CUSTOMER");
+                                                        },
+                                                        data: viewModel
+                                                            .customerCode,
+                                                        validator: (value) {
+                                                          if (value.isEmpty) {
+                                                            return "required";
+                                                          }
+                                                          return null;
+                                                        },
+                                                      )),
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  InsiteText(
+                                                    text: 'Customer Code:',
+                                                    size: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.01,
+                                                  ),
+                                                  Container(
+                                                      height: 35,
+                                                      width: 130,
+                                                      child:
+                                                          ReusableAutocompleteSearchView(
+                                                        reuseController: viewModel
+                                                            .customerCodeController,
+                                                        onSelected:
+                                                            (selectedString) {
+                                                          viewModel
+                                                              .updateSelectedCode(
+                                                                  selectedString);
+                                                          viewModel
+                                                              .filterCustomerDetails(
+                                                                  viewModel
+                                                                      .customerCodeController
+                                                                      .text);
+                                                        },
+                                                        onChanged: (value) {
+                                                          viewModel
+                                                              .getSubcriptionListOfNameAndCode(
+                                                                  code:
+                                                                      int.parse(
+                                                                          value),
+                                                                  type:
+                                                                      "CUSTOMER");
+                                                        },
+                                                        data: viewModel
+                                                            .customerCode,
+                                                        validator: (value) {
+                                                          if (value.isEmpty) {
+                                                            return "required";
+                                                          }
+                                                          return null;
+                                                        },
+                                                      )),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.02,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              InsiteText(
+                                                text: 'Customer Email ID:',
+                                                size: 13,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.01,
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                height: 35,
+                                                child: CustomTextBox(
+                                                  controller: viewModel
+                                                      .customerEmailController,
+                                                  validation:
+                                                      defaultCustomFieldValidator,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        if (_formKey.currentState.validate()) {
+                                          viewModel.getTotalDataDetails();
+
+                                          Logger().wtf(
+                                              ' datalength: ${viewModel.totalList}');
+
+                                          await showGeneralDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            transitionDuration:
+                                                Duration(milliseconds: 500),
+                                            transitionBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              return FadeTransition(
+                                                opacity: animation,
+                                                child: ScaleTransition(
+                                                  scale: animation,
+                                                  child: child,
+                                                ),
+                                              );
+                                            },
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return InsitePopUp(
+                                                pageTitle: "Preview",
+                                                titles:
+                                                    viewModel.popUpCardTitles,
+                                                data: viewModel.totalList,
+                                                onButtonTapped: () async {
+                                                  await viewModel
+                                                      .subscriptionAssetRegistration();
+                                                },
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: InsiteButton(
+                                        title: 'PREVIEW',
+                                        textColor: white,
+                                        margin: EdgeInsets.all(20),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

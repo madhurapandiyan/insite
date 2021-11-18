@@ -273,7 +273,8 @@ class Urls {
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
-
+  static String singleAssetRegistration =
+      "/osg-frame/frame-api/2.0/subscriptionSave/save";
   static String serialNumberSearch =
       "/osg-frame/frame-api/2.0/assetDetail/asset/model/";
 
