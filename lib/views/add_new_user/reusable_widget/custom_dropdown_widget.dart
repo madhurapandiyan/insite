@@ -6,10 +6,20 @@ class CustomDropDownWidget extends StatelessWidget {
   final String value;
   final List<String> items;
   final bool istappable;
-  final ValueChanged<String> onChanged;
+
   final FocusNode onFocus;
+  bool enableHint;
+
+  //final ValueChanged<String> onChanged;
   CustomDropDownWidget(
-      {this.value, this.items, this.onChanged, this.istappable, this.onFocus});
+      {this.value,
+      this.items,
+      this.onChanged,
+      this.istappable,
+      this.onFocus,
+      this.enableHint = true});
+  final Function(String) onChanged;
+  //CustomDropDownWidget({this.value, this.items, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +27,21 @@ class CustomDropDownWidget extends StatelessWidget {
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
-        icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).textTheme.bodyText1.backgroundColor),
+        icon: Icon(Icons.arrow_drop_down,
+            color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
-        hint: InsiteText(
-          text: "  Select",
-          size: 14,
-          fontWeight: FontWeight.w700,
-        ),
-        onChanged: istappable == null || istappable == true ? onChanged : null,
+        hint: enableHint
+            ? InsiteText(
+                text: "  Select",
+                size: 14,
+                fontWeight: FontWeight.w700,
+              )
+            : SizedBox(),
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: InsiteText(
-              text: value,
+              text: "  " + value,
               size: 14,
               fontWeight: FontWeight.w700,
             ),

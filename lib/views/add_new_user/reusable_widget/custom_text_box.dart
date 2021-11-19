@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:insite/theme/colors.dart';
 
 class CustomTextBox extends StatelessWidget {
@@ -12,18 +13,22 @@ class CustomTextBox extends StatelessWidget {
   final Function(String) onSaved;
   final Function(String) onFieldSubmmit;
   final TextInputType keyPadType;
+  final String Function(String) validation;
+  final List<TextInputFormatter> textInputFormat;
 
   const CustomTextBox(
       {this.title,
       this.controller,
-      this.focusNode,
-      this.value,
-      this.labelTitle,
-      this.validator,
       this.onChanged,
+      this.validation,
+      this.textInputFormat,
+      this.focusNode,
+      this.keyPadType,
+      this.labelTitle,
       this.onFieldSubmmit,
       this.onSaved,
-      this.keyPadType});
+      this.validator,
+      this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +41,25 @@ class CustomTextBox extends StatelessWidget {
       focusNode: focusNode,
       autofocus: false,
       controller: controller,
+
       style: TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 14,
         fontStyle: FontStyle.normal,
         color: Theme.of(context).textTheme.bodyText1.color,
       ),
+      // onEditingComplete: ,
+      // onSubmitted: ,
+
       cursorColor: addUserBgColor,
+      inputFormatters: textInputFormat,
       decoration: InputDecoration(
           labelText: labelTitle,
           fillColor: black,
           hintText: title,
+          // errorText: validation(controller.text),
+
+          errorStyle: TextStyle(color: Theme.of(context).errorColor),
           contentPadding: EdgeInsets.only(left: 12, top: 8),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),

@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view.dart';
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart';
@@ -19,7 +22,11 @@ class SubRegistrationViewModel extends InsiteViewModel {
   }
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.SINGLEASSETREG) {
-      _navigationService.navigateWithTransition(SingleAssetRegistrationView(),
+      _navigationService.navigateWithTransition(
+          SingleAssetRegistrationView(
+            filterKey: "total",
+            filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
+          ),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.SINGLEASSETTRANSFER) {
       _navigationService.navigateWithTransition(SingleAssetTransferView(),

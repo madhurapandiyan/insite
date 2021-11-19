@@ -29,7 +29,17 @@ const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
 const String smsManagementViewRoute = "smsManagementView";
-const String smsScheduleSingleAssetViewRoute ='smsScheduleSingleAssetViewRoute';
+const String smsScheduleSingleAssetViewRoute =
+    'smsScheduleSingleAssetViewRoute';
 const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
 const String reportSummaryViewRoute = 'reportSummaryViewRoute';
-const String assetSettingsConfigureViewRoute='assetSettingsConfigureViewRoute';
+const String assetSettingsConfigureViewRoute =
+    'assetSettingsConfigureViewRoute';
+const String smsManagementView = "smsManagementView";
+// const String smsScheduleSingleAssetViewRoute =
+//     'smsScheduleSingleAssetViewRoute';
+// const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
+// const String reportSummaryViewRoute = 'reportSummaryViewRoute';
+
+const String reusableAutocompleteSearchViewRoute =
+    'reusableAutocompleteSearchViewRoute';

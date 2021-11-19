@@ -1,3 +1,4 @@
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
@@ -33,6 +34,7 @@ import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
@@ -50,6 +52,7 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -874,6 +877,15 @@ abstract class RestClient {
       @Path() String url,
       @Body() AssetIconPayLoad assetIconPayLoad,
       @Header("x-visionlink-customeruid") customerId);
+  @GET('{url}')
+  Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
+    @Path() String url,
+  );
+  @POST("{url}")
+  Future<AddAssetRegistrationData> getSingleAssetRegistrationData(
+      @Path() String url,
+      // @Header("content-type") String contentType,
+      @Body() AddAssetRegistrationData addAssetRegistrationData);
 }
 
 @JsonSerializable()

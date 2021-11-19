@@ -82,8 +82,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => SubScriptionService());
     log.d('Registering PlantHierachyService');
     locator.registerLazySingleton(() => PlantHeirarchyAssetService());
-        log.d('Registering SmsManagementService');
+    log.d('Registering SmsManagementService');
     locator.registerLazySingleton(() => SmsManagementService());
-    
   }
 }

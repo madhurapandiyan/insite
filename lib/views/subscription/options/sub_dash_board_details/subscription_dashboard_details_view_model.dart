@@ -56,7 +56,12 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   getSubcriptionDeviceListData() async {
     SubscriptionDashboardDetailResult result =
         await _subscriptionService.getSubscriptionDevicesListData(
-            filter, start == 0 ? start : start + 1, limit, filterType);
+      fitler: filter,
+      start: start == 0 ? start : start + 1,
+      limit: limit,
+      filterType: filterType,
+    );
+
     if (result != null) {
       if (result.result.isNotEmpty) {
         start = start + limit;

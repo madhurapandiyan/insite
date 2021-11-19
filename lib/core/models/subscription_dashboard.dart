@@ -10,15 +10,6 @@ class SubscriptionDashboardResult {
   Map<String, dynamic> toJson() => _$SubscriptionDashboardResultToJson(this);
 }
 
-// @JsonSerializable()
-// class ResultData {
-//   List<Results> resultList;
-//   ResultData({this.resultList});
-//   factory ResultData.fromJson(Map<String, dynamic> json) =>
-//       _$ResultDataFromJson(json);
-//   Map<String, dynamic> toJson() => _$ResultDataToJson(this);
-// }
-
 @JsonSerializable()
 class Result {
   // to diplay key name as displayed on endpoint.
