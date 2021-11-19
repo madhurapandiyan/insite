@@ -8,10 +8,16 @@ class CustomDropDownWidget extends StatelessWidget {
   final bool istappable;
 
   final FocusNode onFocus;
+  bool enableHint;
 
   //final ValueChanged<String> onChanged;
   CustomDropDownWidget(
-      {this.value, this.items, this.onChanged, this.istappable, this.onFocus});
+      {this.value,
+      this.items,
+      this.onChanged,
+      this.istappable,
+      this.onFocus,
+      this.enableHint = true});
   final Function(String) onChanged;
   //CustomDropDownWidget({this.value, this.items, this.onChanged});
 
@@ -24,11 +30,13 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down,
             color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
-        // hint: InsiteText(
-        //   text: "  Select",
-        //   size: 14,
-        //   fontWeight: FontWeight.w700,
-        // ),
+        hint: enableHint
+            ? InsiteText(
+                text: "  Select",
+                size: 14,
+                fontWeight: FontWeight.w700,
+              )
+            : SizedBox(),
         items: items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
