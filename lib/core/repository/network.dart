@@ -237,7 +237,7 @@ class HttpWrapper {
         responseBody: SHOW_LOGS,
         requestBody: SHOW_LOGS,
       ));
-      
+
     dioEight.interceptors
       ..add(InterceptorsWrapper(
         onRequest: (Options options) async {
@@ -280,7 +280,7 @@ class HttpWrapper {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + token,
+            "Authorization": "bearer " + await _localService.getToken(),
           });
 
           return options;
@@ -301,7 +301,7 @@ class HttpWrapper {
     clientSeven = RestClient(dioSeven, baseUrl: _baseUrlSeven);
     clientEight = RestClient(dioEight, baseUrl: _baseUrlSix);
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
-    clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
+    clientTen = RestClient(dioTen, baseUrl: _baseUrlSix);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

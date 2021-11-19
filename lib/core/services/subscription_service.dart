@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -56,10 +57,12 @@ class SubScriptionService extends BaseService {
   }
 
   Future<SubscriptionDashboardDetailResult> getSubscriptionDevicesListData(
-      String fitler,
+      {String fitler,
       int start,
       int limit,
-      PLANTSUBSCRIPTIONFILTERTYPE filterType) async {
+      String name,
+      int code,
+      PLANTSUBSCRIPTIONFILTERTYPE filterType}) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -76,12 +79,19 @@ class SubScriptionService extends BaseService {
           queryMap["status"] = fitler;
         }
       }
+      if (name != null) {
+        queryMap["Name"] = name.toString();
+      }
+      if (code != null) {
+        queryMap["Code"] = code.toString();
+      }
       if (start != null) {
         queryMap["start"] = start.toString();
       }
       if (limit != null) {
         queryMap["limit"] = limit.toString();
       }
+
       SubscriptionDashboardDetailResult dashboardResult =
           await MyApi().getClientEight().getSubscriptionDeviceResults(
                 filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
@@ -95,6 +105,36 @@ class SubScriptionService extends BaseService {
       }
       Logger().d('subscription result: $dashboardResult');
       return dashboardResult;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<SerialNumberResults> getDeviceModelNameBySerialNumber(
+      {String serialNumber}) async {
+    try {
+      Map<String, String> queryMap = Map();
+
+      if (accountSelected != null) {
+        queryMap["oemName"] = "THC";
+      }
+      if (serialNumber != null) {
+        queryMap["machineSerialNumber"] = serialNumber.toString();
+      }
+
+      SerialNumberResults serialNumberResults =
+          await MyApi().getClientTen().getModelNameFromMachineSerialNumber(
+                Urls.serialNumberSearch +
+                    FilterUtils.constructQueryFromMap(queryMap),
+              );
+      if (serialNumberResults == null) {
+        Logger().d('no data found');
+      }
+
+      Logger().d('serial number results: $serialNumberResults');
+
+      return serialNumberResults;
     } catch (e) {
       print(e.toString());
       return null;

@@ -33,3 +33,11 @@ const String smsScheduleSingleAssetViewRoute ='smsScheduleSingleAssetViewRoute';
 const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
 const String reportSummaryViewRoute = 'reportSummaryViewRoute';
 const String assetSettingsConfigureViewRoute='assetSettingsConfigureViewRoute';
+const String smsManagementView = "smsManagementView";
+// const String smsScheduleSingleAssetViewRoute =
+//     'smsScheduleSingleAssetViewRoute';
+// const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
+// const String reportSummaryViewRoute = 'reportSummaryViewRoute';
+
+const String reusableAutocompleteSearchViewRoute =
+    'reusableAutocompleteSearchViewRoute';

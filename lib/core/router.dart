@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
-import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart'as view30;
+import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart'
+    as view30;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
     as view16;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
@@ -39,6 +41,8 @@ import 'package:insite/views/subscription/options/sub_registration/multiple_asse
     as view22;
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
     as view23;
+import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart'
+    as view26;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view.dart'
     as view20;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
@@ -52,7 +56,7 @@ import 'package:insite/views/subscription/sms-management/report_summary/report_s
     as view29;
 import 'package:insite/views/subscription/sms-management/sms-multi_asset/sms_schedule_multi_asset_view.dart'
     as view28;
-import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart' 
+import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart'
     as view27;
 import 'package:insite/views/subscription/sms-management/sms_management_view.dart'
     as view26;
@@ -118,7 +122,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view19.SubRegistrationView());
       case singleAssetRegViewRoute:
         return MaterialPageRoute(
-            builder: (_) => view20.SingleAssetRegistrationView());
+          builder: (_) => view20.SingleAssetRegistrationView(
+              filterKey: "total",
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS),
+        );
       case singleAssetTransferViewRoute:
         return MaterialPageRoute(
             builder: (_) => view21.SingleAssetTransferView());
@@ -142,8 +149,13 @@ class Router {
             builder: (_) => view28.SmsScheduleMultiAssetView());
       case reportSummaryViewRoute:
         return MaterialPageRoute(builder: (_) => view29.ReportSummaryView());
-        case assetSettingsConfigureViewRoute:
-        return MaterialPageRoute(builder: (_)=>view30.AssetSettingsConfigureView());
+      case assetSettingsConfigureViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view30.AssetSettingsConfigureView());
+      case reusableAutocompleteSearchViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view26.ReusableAutocompleteSearchView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

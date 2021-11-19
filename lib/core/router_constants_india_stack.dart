@@ -26,3 +26,5 @@ const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
+const String reusableAutocompleteSearchViewRoute =
+    'reusableAutocompleteSearchViewRoute';

@@ -274,6 +274,9 @@ class Urls {
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
 
+  static String serialNumberSearch =
+      "/osg-frame/frame-api/2.0/assetDetail/asset/model/";
+
   //plant
   static String plantHierarchyAssetsResult =
       "/osg-frame/frame-api/2.0/hierarchy";

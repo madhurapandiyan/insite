@@ -33,6 +33,7 @@ import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
@@ -874,6 +875,10 @@ abstract class RestClient {
       @Path() String url,
       @Body() AssetIconPayLoad assetIconPayLoad,
       @Header("x-visionlink-customeruid") customerId);
+  @GET('{url}')
+  Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
+    @Path() String url,
+  );
 }
 
 @JsonSerializable()

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
@@ -30,6 +31,8 @@ import 'package:insite/views/subscription/options/sub_registration/multiple_asse
     as view22;
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
     as view23;
+import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart'
+    as view26;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view.dart'
     as view20;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
@@ -98,7 +101,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view19.SubRegistrationView());
       case singleAssetRegViewRoute:
         return MaterialPageRoute(
-            builder: (_) => view20.SingleAssetRegistrationView());
+            builder: (_) => view20.SingleAssetRegistrationView(
+                  filterKey: "total",
+                  filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
+                ));
       case singleAssetTransferViewRoute:
         return MaterialPageRoute(
             builder: (_) => view21.SingleAssetTransferView());
@@ -112,6 +118,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => view24.PlantView());
       case plantDashboardViewRoute:
         return MaterialPageRoute(builder: (_) => view25.PlantDashboardView());
+      case reusableAutocompleteSearchViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view26.ReusableAutocompleteSearchView());
 
       default:
         return MaterialPageRoute(
