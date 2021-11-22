@@ -69,6 +69,8 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
             ),
             SvgPicture.asset(
               widget.icon,
+              height: 24,
+              width: 24,
               color: Theme.of(context).iconTheme.color,
             ),
             SizedBox(
@@ -77,6 +79,8 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
             Flexible(
               child: ListView.builder(
                   itemCount: widget.buttonTitle.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (builder, index) {
                     return InsiteButton(
                         height: MediaQuery.of(context).size.height * 0.043,

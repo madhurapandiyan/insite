@@ -36,7 +36,8 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                   children: [
                     AssetCardsSmall(
                         headerText: "users",
-                        icon: "assets/images/users.svg",
+                        icon: "assets/images/users_items.svg",
+                        showExapansionMenu: false,
                         height: 10,
                         buttonTitle: [
                           AdminAssetsButtonType.values[0],
@@ -49,6 +50,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                         headerText: "groups",
                         icon: "assets/images/gear_icon.svg",
                         height: 10,
+                        showExapansionMenu: false,
                         buttonTitle: [
                           AdminAssetsButtonType.values[2],
                           AdminAssetsButtonType.values[3]
@@ -63,6 +65,8 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 ),
                 AssetSettingWidget(
                   headerText: "asset settings",
+                  showExapansionMenu: false,
+                  icon: "assets/images/assessment.svg",
                   buttonText: "Manage Asset configurations",
                   onButtonClicked: () {
                     viewModel.onAssetSettingStateButtonClicked();
@@ -76,7 +80,9 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     children: [
                       AssetCardsSmall(
                           headerText: "geofences".toUpperCase(),
+                          height: 10,
                           icon: "assets/images/geofence.svg",
+                          showExapansionMenu: false,
                           buttonTitle: [
                             AdminAssetsButtonType.values[4],
                             AdminAssetsButtonType.values[5]
@@ -87,6 +93,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                       AssetCardsSmall(
                           headerText: "reports".toUpperCase(),
                           icon: "assets/images/reports.svg",
+                          showExapansionMenu: false,
                           buttonTitle: [
                             AdminAssetsButtonType.values[6],
                             AdminAssetsButtonType.values[7]
@@ -98,9 +105,13 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     ]),
                 SizedBox(
                   height: 21,
-                  child: CircleAvatar(backgroundColor: Color(0XFF16190736),),
+                  child: CircleAvatar(
+                    backgroundColor: Color(0XFF16190736),
+                  ),
                 ),
                 NotificationWidget(
+                  showExapansionMenu: false,
+                  icon: "assets/images/warning.svg",
                   headerText: "notifications".toUpperCase(),
                   onButtonClicked: () {
                     print("button is tapped");

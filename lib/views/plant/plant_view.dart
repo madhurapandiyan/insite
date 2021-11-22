@@ -63,6 +63,7 @@ class PlantView extends StatelessWidget {
                       height: 20,
                     ),
                     AssetSettingWidget(
+                      icon: "assets/images/assessment.svg",
                       showExapansionMenu: false,
                       headerText: "ASSET CREATION",
                       buttonText: "asset creation",

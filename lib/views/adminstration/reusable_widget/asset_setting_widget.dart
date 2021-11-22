@@ -9,8 +9,11 @@ class AssetSettingWidget extends StatelessWidget {
   final VoidCallback onButtonClicked;
   final String buttonText;
   final bool showExapansionMenu;
+  final String icon;
+
   const AssetSettingWidget(
       {this.headerText,
+      this.icon,
       this.showExapansionMenu = true,
       this.onButtonClicked,
       this.buttonText});
@@ -20,7 +23,7 @@ class AssetSettingWidget extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.16,
+        height: MediaQuery.of(context).size.height * 0.17,
         child: Column(
           children: [
             SizedBox(
@@ -51,6 +54,15 @@ class AssetSettingWidget extends StatelessWidget {
             Divider(
               thickness: 1,
               color: Theme.of(context).dividerColor,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            SvgPicture.asset(
+              icon,
+              height: 24,
+              width: 24,
+              color: Theme.of(context).iconTheme.color,
             ),
             InsiteButton(
               width: MediaQuery.of(context).size.width * 0.71,

@@ -1,4 +1,3 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'geofencemodel.g.dart';
 

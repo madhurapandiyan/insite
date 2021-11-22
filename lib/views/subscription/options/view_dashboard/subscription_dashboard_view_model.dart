@@ -76,7 +76,6 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
     if (result == null) {
       Logger().d('no results found');
       _loading = false;
-      return "no results found";
     } else {
       final totalDeviceSupplied = result.result[3][0].totalDevice;
       final plantAssetCount = result.result[4][0].plantAssetCount;

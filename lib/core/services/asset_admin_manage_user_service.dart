@@ -5,7 +5,6 @@ import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_settings.dart';
-import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
@@ -108,12 +107,19 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AdminManageUser> getAdminManageUserListData(pageNumber) async {
+  Future<AdminManageUser> getAdminManageUserListData(
+      pageNumber, String searchKey) async {
     Logger().i("getAdminManageUserListData");
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
         queryMap["pageNumber"] = pageNumber.toString();
+        if (searchKey.isNotEmpty) {
+          queryMap["searchKey"] = searchKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
         queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
@@ -125,6 +131,12 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         Map<String, String> queryMap = Map();
         queryMap["pageNumber"] = pageNumber.toString();
+        if (searchKey.isNotEmpty) {
+          queryMap["searchKey"] = searchKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
         queryMap["sort"] = "Email";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClient()
@@ -146,15 +158,31 @@ class AssetAdminManagerUserService extends BaseService {
     Logger().i("getUser");
     try {
       if (isVisionLink) {
+        Map<String, String> queryMap = Map();
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
         ManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
-            .getUser(Urls.adminManagerUserSumaryVL + "/" + userId,
+            .getUser(
+                Urls.adminManagerUserSumaryVL +
+                    "/" +
+                    userId +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
       } else {
+        Map<String, String> queryMap = Map();
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected.CustomerUID;
+        }
         ManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
-            .getUser(Urls.adminManagerUserSumaryVL + "/" + userId,
+            .getUser(
+                Urls.adminManagerUserSumaryVL +
+                    "/" +
+                    userId +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
       }
@@ -428,15 +456,18 @@ class AssetAdminManagerUserService extends BaseService {
         var result = await MyApi().getClientSeven().deleteUsersData(
             Urls.adminManagerUserSumaryVL,
             accountSelected.CustomerUID,
-            DeleteUserData(users: users));
+            customerSelected != null
+                ? DeleteUserDataIndStack(
+                    users: users, customerUid: customerSelected.CustomerUID)
+                : DeleteUserData(users: users));
         return result;
       } else {
         var result = await MyApi().getClient().deleteUsers(
             Urls.adminManagerUserSumary,
-            DeleteUserDataIndStack(
-              users: users,
-              customerUid: accountSelected.CustomerUID,
-            ),
+            customerSelected != null
+                ? DeleteUserDataIndStack(
+                    users: users, customerUid: customerSelected.CustomerUID)
+                : DeleteUserData(users: users),
             accountSelected.CustomerUID,
             (await _localService.getLoggedInUser()).sub,
             "in-identitymanager-identitywebapi");

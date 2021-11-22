@@ -4,7 +4,6 @@ import 'package:insite/views/adminstration/asset_settings/estimated_burn_rate/es
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_mileage_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_payload_cycle.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_payload_mileage_volume/estimated_volume_widget.dart';
-import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
 import 'package:insite/views/adminstration/asset_settings/targetcycle_volume_payload/targetcycle_volume_payload_view.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/filter_item_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_view.dart';
@@ -78,34 +77,34 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                       assetUids: widget.assetUids,
                     ),
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  FilterItemWidget(
-                    text: "set estimated voume per cycle".toUpperCase(),
-                    body: EstimatedVolumeWidget(
-                        //assetSetting: widget.assetSetting,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  FilterItemWidget(
-                    text: "set estimated payload per cycle".toUpperCase(),
-                    body: EstimatedPayLoadPerCycle(
-                        //  assetSetting: widget.assetSetting,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  FilterItemWidget(
-                    text: "set target cycles/estimated volume/payload"
-                        .toUpperCase(),
-                    body: TargetCycleVolumePayloadWidget(
-                      assetUids: widget.assetUids,
-                    ),
-                  )
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // FilterItemWidget(
+                  //   text: "set estimated voume per cycle".toUpperCase(),
+                  //   body: EstimatedVolumeWidget(
+                  //       //assetSetting: widget.assetSetting,
+                  //       ),
+                  // ),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // FilterItemWidget(
+                  //   text: "set estimated payload per cycle".toUpperCase(),
+                  //   body: EstimatedPayLoadPerCycle(
+                  //       //  assetSetting: widget.assetSetting,
+                  //       ),
+                  // ),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // FilterItemWidget(
+                  //   text: "set target cycles/estimated volume/payload"
+                  //       .toUpperCase(),
+                  //   body: TargetCycleVolumePayloadWidget(
+                  //     assetUids: widget.assetUids,
+                  //   ),
+                  // )
                 ],
               )),
         );

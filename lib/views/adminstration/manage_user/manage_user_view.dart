@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_user_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -132,6 +133,21 @@ class ManageUserView extends StatelessWidget {
                           ]),
                       SizedBox(
                         height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: CustomTextBox(
+                          controller: viewModel.textEditingController,
+                          title: "Search users",
+                          onChanged: (searchText) {
+                            if (searchText.isNotEmpty) {
+                              viewModel.searchKeyword = searchText;
+                              viewModel.getManagerUserAssetList();
+                            } else {
+                              viewModel.updateSearchDataToEmpty();
+                            }
+                          },
+                        ),
                       ),
                       viewModel.loading
                           ? Padding(

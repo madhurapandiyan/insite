@@ -147,8 +147,10 @@ flutter:
     - assets/images/transfer.svg
     - assets/images/hier.svg
     - assets/images/message.svg
-   
-
+    - assets/images/warning.svg
+    - assets/images/users_items.svg
+    - assets/images/assessment.svg
+    
   fonts:
     - family: Roboto
       fonts:

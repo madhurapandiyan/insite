@@ -6,17 +6,22 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class NotificationWidget extends StatelessWidget {
   final String headerText;
-
+  final bool showExapansionMenu;
   final VoidCallback onButtonClicked;
+  final String icon;
 
-  const NotificationWidget({this.headerText, this.onButtonClicked});
+  const NotificationWidget(
+      {this.headerText,
+      this.icon,
+      this.showExapansionMenu,
+      this.onButtonClicked});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.14,
+        height: MediaQuery.of(context).size.height * 0.2,
         child: Column(
           children: [
             SizedBox(
@@ -27,10 +32,12 @@ class NotificationWidget extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                SvgPicture.asset(
-                  "assets/images/arrowdown.svg",
-                  color: Theme.of(context).iconTheme.color,
-                ),
+                showExapansionMenu
+                    ? SvgPicture.asset(
+                        "assets/images/arrowdown.svg",
+                        color: Theme.of(context).iconTheme.color,
+                      )
+                    : SizedBox(),
                 SizedBox(
                   width: 15,
                 ),
@@ -43,6 +50,18 @@ class NotificationWidget extends StatelessWidget {
             Divider(
               thickness: 1,
               color: Theme.of(context).dividerColor,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            SvgPicture.asset(
+              icon,
+              height: 24,
+              width: 24,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            SizedBox(
+              height: 8,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

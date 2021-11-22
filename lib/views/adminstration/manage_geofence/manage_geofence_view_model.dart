@@ -1,13 +1,10 @@
 import 'package:geocore/geocore.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
-import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
@@ -19,6 +16,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   ManageGeofenceViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _geofenceservice.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getGeofencedata();
     });

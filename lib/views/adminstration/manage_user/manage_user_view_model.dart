@@ -15,6 +15,18 @@ class ManageUserViewModel extends InsiteViewModel {
   var _manageUserService = locator<AssetAdminManagerUserService>();
   var _navigationService = locator<NavigationService>();
 
+  TextEditingController textEditingController = TextEditingController();
+
+  String _searchKeyword = '';
+  set searchKeyword(String keyword) {
+    this._searchKeyword = keyword;
+  }
+
+  updateSearchDataToEmpty() {
+    _assets = [];
+    notifyListeners();
+  }
+
   List<UserRow> _assets = [];
   List<UserRow> get assets => _assets;
 
@@ -63,11 +75,12 @@ class ManageUserViewModel extends InsiteViewModel {
 
   getManagerUserAssetList() async {
     Logger().i("getManagerUserAssetList");
-    AdminManageUser result =
-        await _manageUserService.getAdminManageUserListData(pageNumber);
+    AdminManageUser result = await _manageUserService
+        .getAdminManageUserListData(pageNumber, _searchKeyword);
     if (result != null) {
       if (result.users.isNotEmpty) {
         Logger().i("list of assets " + result.users.length.toString());
+        _assets.clear();
         for (var user in result.users) {
           _assets.add(UserRow(user: user, isSelected: false));
         }

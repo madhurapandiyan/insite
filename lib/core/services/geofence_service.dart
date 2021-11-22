@@ -14,6 +14,17 @@ import 'package:logger/logger.dart';
 
 class Geofenceservice extends BaseService {
   final _localService = locator<LocalService>();
+  Customer accountSelected;
+  Customer customerSelected;
+
+  setUp() async {
+    try {
+      accountSelected = await _localService.getAccountInfo();
+      customerSelected = await _localService.getCustomerInfo();
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
 
   Future<Geofence> getGeofenceData() async {
     Customer customer = await _localService.getAccountInfo();
@@ -31,7 +42,6 @@ class Geofenceservice extends BaseService {
 
   Future<Materialmodel> getMaterialModelData() async {
     Customer customer = await _localService.getAccountInfo();
-
     if (isVisionLink) {
       Materialmodel data = await MyApi()
           .getClientSeven()

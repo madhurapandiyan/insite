@@ -63,7 +63,6 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                 itemCount: viewModel.geofence.Geofences.length,
                                 itemBuilder: (BuildContext context, int i) {
                                   var model = viewModel.geofence.Geofences;
-
                                   return ManageGeofenceWidget(
                                     encodedPolyline: viewModel.listOfEncoded[i],
                                     isFav: model[i].IsFavorite,
