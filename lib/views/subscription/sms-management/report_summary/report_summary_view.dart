@@ -5,6 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'report_summary_view_model.dart';
 
@@ -39,6 +40,15 @@ class ReportSummaryView extends StatelessWidget {
                         size: 20,
                         text: "Total Entries -1345 ",
                       ),
+                      // InsiteButton(
+                      //     height: MediaQuery.of(context).size.height * 0.05,
+                      //     bgColor: tuna,
+                      //     title: "",
+                      //     onTap: viewModel.showDeleteButton ? () {} : null,
+                      //     icon: Icon(
+                      //       Icons.delete,
+                      //       color: appbarcolor,
+                      //     )),
                       InsiteButton(
                           height: MediaQuery.of(context).size.height * 0.05,
                           bgColor: tuna,

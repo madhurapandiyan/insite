@@ -7,6 +7,7 @@ import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,6 +17,7 @@ import 'local_service.dart';
 class LoginService extends BaseService {
   final _nagivationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
+  UserInfo userInfo;
 
   Future<UserInfo> getLoggedInUserInfo() async {
     try {
@@ -46,11 +48,29 @@ class LoginService extends BaseService {
     }
   }
 
+  Future<AuthenticatedUser> getAuthenticateUserId() async {
+    AuthenticatedUser userAuthenticateStatus;
+    AuthenticatePayload data =
+        AuthenticatePayload(uuid: userInfo.sub, email: userInfo.email);
+    Logger().d(data.toJson());
+    if (isVisionLink) {
+    } else {
+      userAuthenticateStatus = await MyApi()
+          .getClientEleven()
+          .authenticateUser(Urls.authenticateUrl, data);
+      await _localService
+          .saveUserId(Utils.getUserId(userAuthenticateStatus.result));
+    }
+
+    return userAuthenticateStatus;
+  }
+
   getUser(token, shouldRemovePreviousRoutes) async {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
-      UserInfo userInfo = await getLoggedInUserInfo();
+      userInfo = await getLoggedInUserInfo();
+      await getAuthenticateUserId();
       Future.delayed(Duration(seconds: 1), () {
         if (userInfo != null) {
           _localService.saveUserInfo(userInfo);

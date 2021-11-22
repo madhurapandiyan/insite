@@ -47,6 +47,12 @@ import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
+import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
+import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
+import 'package:insite/views/subscription/replacement/model/replace_deviceId_model.dart';
+import 'package:insite/views/subscription/replacement/model/replacement_deviceId_download.dart';
+import 'package:insite/views/subscription/replacement/model/replacement_model.dart';
 import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
@@ -756,6 +762,10 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Geofencepayload geofencepayload);
 
+  @POST("{url}")
+  Future<AuthenticatedUser> authenticateUser(
+      @Path() String url, @Body() AuthenticatePayload authenticatePayload);
+
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoad(
     @Path() String url,
@@ -886,6 +896,28 @@ abstract class RestClient {
       @Path() String url,
       // @Header("content-type") String contentType,
       @Body() AddAssetRegistrationData addAssetRegistrationData);
+
+  @GET("{url}")
+  Future<DeviceSearchModel> getDeviceSearchModel(@Path() String url);
+
+  @GET("{url}")
+  Future<DeviceSearchModelResponse> getDeviceSearchModelResponse(
+      @Path() String url);
+
+  @GET("{url}")
+  Future<ReplaceDeviceModel> getReplaceDeviceModel(@Path() String url);
+
+  @POST("{url}")
+  Future<dynamic> postNewDeviceId(
+      @Path() String url, @Body() ReplacementModel replacementModel);
+
+  @GET("{url}")
+  Future<TotalDeviceReplacementStatusModel> getRepalcementDeviceStatus(
+      @Path() String url);
+
+  @GET("{url}")
+  Future<ReplacementDeviceIdDownload> getReplacementDeviceIdDownload(
+      @Path() String url);
 }
 
 @JsonSerializable()
@@ -987,4 +1019,49 @@ class AuthenticationResponse {
       _$AuthenticationResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
+}
+
+@JsonSerializable()
+class AuthenticatedUser {
+  String code;
+  String status;
+  String result;
+  AuthenticatedUser({this.code, this.status, this.result});
+
+  factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatedUserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthenticatedUserToJson(this);
+}
+
+@JsonSerializable()
+class AuthenticatePayload {
+  String env;
+  String grantType;
+  String code;
+  String redirectUri;
+  String client_key;
+  String clientSecret;
+  String tenantDomain;
+  String mobile;
+  String uuid;
+  String email;
+
+  AuthenticatePayload({
+    this.env = "THC",
+    this.grantType = "authorization_code",
+    this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
+    this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
+    this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
+    this.clientSecret = "testSecret",
+    this.tenantDomain = "trimble.com",
+    this.mobile = "0000000000",
+    this.uuid,
+    this.email,
+  });
+
+  factory AuthenticatePayload.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatePayloadFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AuthenticatePayloadToJson(this);
 }

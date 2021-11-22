@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
@@ -79,7 +80,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                             border: Border.all(width: 1),
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(10))),
-                        height: 80,
+                        height: 100,
                         //width: 60,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -102,18 +103,18 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
               TableRow(children: [
                 Container(
                   height: 50,
-                  padding: EdgeInsets.only(left: 3),
+                  padding: EdgeInsets.only(left: 5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InsiteTextOverFlow(
-                        overflow: TextOverflow.ellipsis,
+                      InsiteText(
                         text: "Serial No",
                       ),
                       InsiteRichText(
+                        style: TextStyle(fontSize: 12,color: tango,fontWeight: FontWeight.bold),
+                        content: serialNo,
                         textColor: tango,
-                        title: serialNo,
                       )
                     ],
                   ),
@@ -174,7 +175,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(left: 5),
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.07,
             width: MediaQuery.of(context).size.width * 0.79,
             decoration: BoxDecoration(
                 border: Border.all(width: 1, color: black),
@@ -187,10 +188,13 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                 InsiteText(
                   text: "Subscription Activation Date :",
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 InsiteTextOverFlow(
                   overflow: TextOverflow.ellipsis,
-                  text: DateFormat("yyyy-MM-dd").parse(date).toString(),
+                  text: Utils.getLastReportedDateFilterData(
+                      DateFormat("yyyy-MM-dd").parse(date)),
                 )
               ],
             ),

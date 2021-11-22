@@ -18,6 +18,7 @@ class LocalService extends BaseService {
   static const String EXPIREY_TIME = "expiry_token";
   static const String IS_LOGGEDIN = "isLoggedIn";
   static const String HAS_PERMISSION = "hasPermission";
+  static const String USERID = "userId";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -33,6 +34,14 @@ class LocalService extends BaseService {
 
   Future<String> getToken() async {
     return preferences.getString(TOKEN);
+  }
+
+  Future saveUserId(String userId) async {
+    return await preferences.setString(USERID, userId);
+  }
+
+  Future<String> getUserId() async {
+    return preferences.getString(USERID);
   }
 
   Future<String> getExpiry() async {

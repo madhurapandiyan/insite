@@ -14,7 +14,6 @@ import 'package:insite/views/subscription/sms-management/model/sms_single_asset_
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
-import 'package:insite/views/subscription/sms-management/sms-single_asset/sms_schedule_single_asset_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';

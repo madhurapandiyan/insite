@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomDropDownWidget extends StatelessWidget {

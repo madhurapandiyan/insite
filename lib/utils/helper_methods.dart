@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -24,7 +23,7 @@ class Utils {
     }
   }
 
- static double getHrsValueeData(double percentageValue, double runTimeValue) {
+  static double getHrsValueeData(double percentageValue, double runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
@@ -446,6 +445,12 @@ class Utils {
       case AdminAssetsButtonType.REPORTSUMMARYFORSMS:
         title = "REPORT SUMMARY FOR SMS";
         break;
+      case AdminAssetsButtonType.DEVICEREPLACEMENT:
+        title = "DEVICE REPLACEMENT";
+        break;
+      case AdminAssetsButtonType.REPLACEMENTSTATUS:
+        title = "REPLACEMENT STATUS";
+        break;
 
       default:
     }
@@ -679,5 +684,12 @@ class Utils {
         backgroundColor: Colors.yellow,
         textColor: Colors.black,
         fontSize: 16.0);
+  }
+
+  static String getUserId(String userId) {
+    return userId
+        .split("{\"userName\":null,\"userID\":")[1]
+        .split(",\"UUID\":")
+        .first;
   }
 }

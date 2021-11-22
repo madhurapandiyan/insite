@@ -167,7 +167,6 @@ class Geofenceservice extends BaseService {
           Urls.postPayLoad + "/" + favToggle + querryUrlVL,
           customer.CustomerUID);
     } else {
-
       var data = await MyApi().getClient().markFavourite(
           Urls.getGeofenceData + "/" + favToggle + querryUrl,
           customer.CustomerUID,

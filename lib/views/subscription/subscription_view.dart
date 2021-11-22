@@ -101,7 +101,7 @@ class SubscriptionView extends StatelessWidget {
                           showExapansionMenu: false,
                           height: 20.0,
                           onCallbackSelected: (value) {
-                            // viewModel.onRespectiveButtonClicked(value);
+                             viewModel.onRespectiveButtonClicked(value);
                           }),
                       AssetCardsSmall(
                           headerText: "TRANSFER HISTORY",
