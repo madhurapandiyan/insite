@@ -7,6 +7,7 @@ class CustomTextBox extends StatelessWidget {
   final FocusNode focusNode;
   final String value;
   final String labelTitle;
+  final Widget suffixWidget;
   final TextEditingController controller;
   final Function(String) onChanged;
   final Function(String) validator;
@@ -28,7 +29,8 @@ class CustomTextBox extends StatelessWidget {
       this.onFieldSubmmit,
       this.onSaved,
       this.validator,
-      this.value});
+      this.value,
+      this.suffixWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class CustomTextBox extends StatelessWidget {
       cursorColor: addUserBgColor,
       inputFormatters: textInputFormat,
       decoration: InputDecoration(
+          suffixIcon: suffixWidget,
           labelText: labelTitle,
           fillColor: black,
           hintText: title,

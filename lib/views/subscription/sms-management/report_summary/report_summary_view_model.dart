@@ -6,6 +6,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +31,8 @@ class ReportSummaryViewModel extends InsiteViewModel {
   SmsReportSummaryModel data;
 
   bool isLoading = true;
+
+  bool showDeleteButton = false;
 
   getReportSummaryData() async {
     try {
@@ -58,12 +61,26 @@ class ReportSummaryViewModel extends InsiteViewModel {
   }
 
   onSelected(int i) {
-    modelDataList[i].isSelected = !modelDataList[i].isSelected;
-    notifyListeners();
+    try {
+      modelDataList[i].isSelected = !modelDataList[i].isSelected;
+      showDeleteButton = true;
+      notifyListeners();
+    } catch (e) {
+      Logger().w(e.toString());
+    }
   }
+
+  // setBool(int i) {
+  //   modelDataList.forEach((element) {
+  //     if (element.isSelected == true) {
+  //       showDeleteButton = true;
+  //     }
+  //   });
+  // }
 
   onDownload() async {
     try {
+      showLoadingDialog();
       Directory path = await getExternalStorageDirectory();
       data = await _smsScheduleService.getScheduleReportData();
       final Excel excelSheet = Excel.createExcel();
@@ -94,16 +111,18 @@ class ReportSummaryViewModel extends InsiteViewModel {
         sheetObj.updateCell(
             CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
       }
-      Logger().e(path.path);
+     // Logger().e(path.path);
       excelSheet.encode().then((onValue) {
-        File("${path.path}/SMS_schedule.xslx")
+        File("${path.path}/SMS_schedule.xlsx")
           ..createSync(recursive: true)
           ..writeAsBytesSync(onValue)
           ..open(mode: FileMode.read);
       });
       snackbarService.showSnackbar(message: "File saved in ${path.path}");
-      Logger().e(excelSheet.sheets.values.last.rows);
+     // Logger().e(excelSheet.sheets.values.last.rows);
+      hideLoadingDialog();
     } catch (e) {
+      hideLoadingDialog();
       Logger().e(e.toString());
     }
   }

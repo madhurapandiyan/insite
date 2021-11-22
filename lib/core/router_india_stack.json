@@ -130,6 +130,26 @@
             "file_path": "views/plant/plant_dashboard_view.dart",
             "route_name": "plantDashboardViewRoute",
             "view_name": "PlantDashboardView"
+        },
+        {
+            "file_path": "views/sms_management/sms_management_view.dart",
+            "route_name": "sms_managementViewRoute",
+            "view_name": "SmsManagementView"
+        },
+        {
+            "file_path": "views/sms_schedule_single_asset/sms_schedule_single_asset_view.dart",
+            "route_name": "sms_schedule_single_assetViewRoute",
+            "view_name": "SmsScheduleSingleAssetView"
+        },
+        {
+            "file_path": "views/sms_schedule_multi_asset/sms_schedule_multi_asset_view.dart",
+            "route_name": "sms_schedule_multi_assetViewRoute",
+            "view_name": "SmsScheduleMultiAssetView"
+        },
+        {
+            "file_path": "views/report_summary/report_summary_view.dart",
+            "route_name": "report_summaryViewRoute",
+            "view_name": "ReportSummaryView"
         }
     ]
 }

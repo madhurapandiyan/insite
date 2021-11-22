@@ -94,6 +94,51 @@ Map<String, dynamic> _$AuthenticationResponseToJson(
       'expires_in': instance.expires_in,
     };
 
+AuthenticatedUser _$AuthenticatedUserFromJson(Map<String, dynamic> json) {
+  return AuthenticatedUser(
+    code: json['code'] as String,
+    status: json['status'] as String,
+    result: json['result'] as String,
+  );
+}
+
+Map<String, dynamic> _$AuthenticatedUserToJson(AuthenticatedUser instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'status': instance.status,
+      'result': instance.result,
+    };
+
+AuthenticatePayload _$AuthenticatePayloadFromJson(Map<String, dynamic> json) {
+  return AuthenticatePayload(
+    env: json['env'] as String,
+    grantType: json['grantType'] as String,
+    code: json['code'] as String,
+    redirectUri: json['redirectUri'] as String,
+    client_key: json['client_key'] as String,
+    clientSecret: json['clientSecret'] as String,
+    tenantDomain: json['tenantDomain'] as String,
+    mobile: json['mobile'] as String,
+    uuid: json['uuid'] as String,
+    email: json['email'] as String,
+  );
+}
+
+Map<String, dynamic> _$AuthenticatePayloadToJson(
+        AuthenticatePayload instance) =>
+    <String, dynamic>{
+      'env': instance.env,
+      'grantType': instance.grantType,
+      'code': instance.code,
+      'redirectUri': instance.redirectUri,
+      'client_key': instance.client_key,
+      'clientSecret': instance.clientSecret,
+      'tenantDomain': instance.tenantDomain,
+      'mobile': instance.mobile,
+      'uuid': instance.uuid,
+      'email': instance.email,
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -2755,6 +2800,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AuthenticatedUser> authenticateUser(url, authenticatePayload) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(authenticatePayload, 'authenticatePayload');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(authenticatePayload?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AuthenticatedUser.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<dynamic> putGeofencePayLoad(
       url, customeruid, geofencepayload, serviceHeader) async {
     ArgumentError.checkNotNull(url, 'url');
@@ -3300,6 +3365,118 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = AddAssetRegistrationData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<DeviceSearchModel> getDeviceSearchModel(url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = DeviceSearchModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<DeviceSearchModelResponse> getDeviceSearchModelResponse(url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = DeviceSearchModelResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<ReplaceDeviceModel> getReplaceDeviceModel(url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ReplaceDeviceModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<dynamic> postNewDeviceId(url, replacementModel) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(replacementModel, 'replacementModel');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(replacementModel?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<TotalDeviceReplacementStatusModel> getRepalcementDeviceStatus(
+      url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = TotalDeviceReplacementStatusModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<ReplacementDeviceIdDownload> getReplacementDeviceIdDownload(
+      url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ReplacementDeviceIdDownload.fromJson(_result.data);
     return value;
   }
 }

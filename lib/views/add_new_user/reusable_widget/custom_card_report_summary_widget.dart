@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
-import 'package:logger/logger.dart';
 
 class CustomCardReportSummaryWidget extends StatelessWidget {
   final String deviceId;
@@ -54,144 +54,51 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
             child: InsiteExpansionTile(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Row(
+                  padding: EdgeInsets.only(left: 15,right: 15),
+                  child: Table(
+                    border: TableBorder.all(width: 1, color: black),
                     children: [
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: Table(
-                          border: TableBorder.all(width: 1, color: black),
-                          children: [
-                            TableRow(children: [
-                              Container(
-                                padding: EdgeInsets.only(left: 5),
-                                height: 50,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsiteText(
-                                      size: 12,
-                                      text: "Language :",
-                                    ),
-                                    InsiteText(
-                                      size: 12,
-                                      text: language,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5),
-                                height: 50,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsiteText(
-                                      size: 12,
-                                      text: "Scheduled SMS Start Date",
-                                    ),
-                                    InsiteText(
-                                      size: 12,
-                                      text: date,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ])
-                          ],
+                      TableRow(children: [
+                        InsiteTableRowItem(
+                          title: "Language",
+                          content: language,
                         ),
-                      ),
+                        InsiteTableRowItem(
+                          title: "Scheduled SMS Start Date",
+                          content: Utils.getLastReportedDateFilterData(
+                              DateTime.parse(date)),
+                        )
+                      ])
                     ],
                   ),
                 )
               ],
-              title: Expanded(
-                  child: Table(
+              title: Table(
                 border: TableBorder.all(width: 1, color: black),
                 columnWidths: {0: FlexColumnWidth(5), 1: FlexColumnWidth(5)},
                 children: [
-                  TableRow(children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      height: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InsiteText(
-                            size: 12,
-                            text: "Device ID :",
-                          ),
-                          InsiteText(
-                            size: 12,
-                            text: deviceId,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      height: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InsiteText(
-                            size: 12,
-                            text: "Recipient’s Name :",
-                          ),
-                          InsiteText(
-                            size: 12,
-                            text: name,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      height: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InsiteText(
-                            size: 12,
-                            text: "Serial No. :",
-                          ),
-                          InsiteText(
-                            size: 12,
-                            text: serialNo,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      height: 50,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InsiteText(
-                            size: 12,
-                            text: "Mobile Number : ",
-                          ),
-                          InsiteText(
-                            size: 12,
-                            text: mobileNo,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
+              TableRow(children: [
+                InsiteTableRowItem(
+                  title: "Device ID :",
+                  content: deviceId,
+                ),
+                InsiteTableRowItem(
+                  title: "Recipient’s Name :",
+                  content: name,
+                ),
+              ]),
+              TableRow(children: [
+                InsiteTableRowItem(
+                  title: "Serial No. :",
+                  content: serialNo,
+                ),
+                InsiteTableRowItem(
+                  title: "Mobile Number : ",
+                  content: mobileNo,
+                ),
+              ]),
                 ],
-              )),
+              ),
             ),
           ),
         ],

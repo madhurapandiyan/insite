@@ -42,7 +42,7 @@ import 'package:insite/views/subscription/options/sub_registration/multiple_asse
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_view.dart'
     as view23;
 import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart'
-    as view26;
+    as view34;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view.dart'
     as view20;
 import 'package:insite/views/subscription/options/sub_registration/single_asset_transfer/single_asset_transfer_view.dart'
@@ -52,6 +52,12 @@ import 'package:insite/views/subscription/options/sub_registration/sub_registrat
 
 import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view.dart'
     as view17;
+import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_view.dart'
+    as view32;
+import 'package:insite/views/subscription/replacement/device_replacement_status/device_replacement_status_view.dart'
+    as view31;
+import 'package:insite/views/subscription/replacement/replacement_view.dart'
+    as view33;
 import 'package:insite/views/subscription/sms-management/report_summary/report_summary_view.dart'
     as view29;
 import 'package:insite/views/subscription/sms-management/sms-multi_asset/sms_schedule_multi_asset_view.dart'
@@ -154,8 +160,16 @@ class Router {
             builder: (_) => view30.AssetSettingsConfigureView());
       case reusableAutocompleteSearchViewRoute:
         return MaterialPageRoute(
-            builder: (_) => view26.ReusableAutocompleteSearchView());
+            builder: (_) => view34.ReusableAutocompleteSearchView());
 
+      case deviceReplacementStatusView:
+        return MaterialPageRoute(
+            builder: (_) => view31.DeviceReplacementStatusView());
+      case deviceReplacementView:
+        return MaterialPageRoute(
+            builder: (_) => view32.DeviceReplacementView());
+      case replacementView:
+        return MaterialPageRoute(builder: (_) => view33.ReplacementView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

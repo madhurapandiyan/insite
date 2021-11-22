@@ -185,6 +185,7 @@ class Urls {
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
+  static String authenticateUrl = "$subscriptionPrefix/authenticate";
   static String assetSummary = "$utilization/1.0/AssetOperation";
   static String utlizationSummary = "$fleet/1.0/UnifiedFleet/Utilization";
   static String utilizationSummaryV1 =
@@ -236,6 +237,16 @@ class Urls {
       "$subscriptionPrefix/scheduleSmsSummaryReport";
   static String getScheduleReportData =
       "$smsManagementScheduleReportSummary/download";
+  static String masterSearchDeviceId =
+      "$subscriptionPrefix/masterSearch/smartSearch";
+  static String getSearchModelResponse =
+      "$subscriptionPrefix/subscriptionSave/device/";
+  static String getReplaceDeviceIdModel = "$subscriptionPrefix/oemdetails";
+  static String saveNewDeviceId = "$subscriptionPrefix/subscriptionSave/save";
+  static String getReportOfReplacement =
+      "$subscriptionPrefix/subscriptionSave/replacementHistory";
+  static String downloadReplacementData = "$getReportOfReplacement/download";
+
   //application url constants
   static String accountSelection = "/frame-masterdata";
   static String fleet = "/frame-fleet";

@@ -43,3 +43,6 @@ const String smsManagementView = "smsManagementView";
 
 const String reusableAutocompleteSearchViewRoute =
     'reusableAutocompleteSearchViewRoute';
+const String deviceReplacementView = "deviceReplacementView";
+const String deviceReplacementStatusView = "deviceReplacementStatusView";
+const String replacementView = "replacementView";
