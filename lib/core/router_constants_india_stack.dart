@@ -28,3 +28,12 @@ const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
 const String reusableAutocompleteSearchViewRoute =
     'reusableAutocompleteSearchViewRoute';
+const String smsManagementViewRoute = "smsManagementView";
+const String smsScheduleSingleAssetViewRoute =
+    'smsScheduleSingleAssetViewRoute';
+const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
+const String reportSummaryViewRoute = 'reportSummaryViewRoute';
+const String smsManagementView = "smsManagementView";
+const String deviceReplacementView = "deviceReplacementView";
+const String deviceReplacementStatusView = "deviceReplacementStatusView";
+const String replacementView = "replacementView";
