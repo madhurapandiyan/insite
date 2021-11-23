@@ -128,7 +128,7 @@ class SubScriptionService extends BaseService {
       }
 
       SerialNumberResults serialNumberResults =
-          await MyApi().getClientTen().getModelNameFromMachineSerialNumber(
+          await MyApi().getClientNine().getModelNameFromMachineSerialNumber(
                 Urls.serialNumberSearch +
                     FilterUtils.constructQueryFromMap(queryMap),
               );

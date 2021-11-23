@@ -47,7 +47,7 @@ class SmsManagementService extends BaseService {
         FilterUtils.constructQueryFromMap(queryMap));
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientTen().gettingReportSummary(
+      data = await MyApi().getClientNine().gettingReportSummary(
           Urls.smsManagementScheduleReportSummary +
               FilterUtils.constructQueryFromMap(queryMap));
     }
@@ -60,7 +60,7 @@ class SmsManagementService extends BaseService {
     queryMap["OEM"] = "VEhD";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientTen().gettingScheduleReportSummary(
+      data = await MyApi().getClientNine().gettingScheduleReportSummary(
           Urls.getScheduleReportData +
               FilterUtils.constructQueryFromMap(queryMap));
     }
