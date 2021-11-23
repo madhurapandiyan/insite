@@ -84,7 +84,7 @@ class AssetListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult.vin != null ? detailResult.vin : "",
+                            detailResult.VIN != null ? detailResult.VIN : "",
                         onTap: () {
                           onCallback();
                         },

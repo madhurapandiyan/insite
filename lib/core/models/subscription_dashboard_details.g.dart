@@ -46,7 +46,7 @@ DetailResult _$DetailResultFromJson(Map<String, dynamic> json) {
     Model: json['Model'] as String,
     SubscriptionEndDate: json['SubscriptionEndDate'] as String,
     SubscriptionStartDate: json['SubscriptionStartDate'] as String,
-    vin: json['vin'] as String,
+    VIN: json['VIN'] as String,
     NetworkProvider: json['NetworkProvider'] as String,
     ProductFamily: json['ProductFamily'] as String,
     fk_AssetId: json['fk_AssetId'] as String,
@@ -65,7 +65,7 @@ Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
     <String, dynamic>{
       'totalDevice': instance.totalDevice,
       'GPSDeviceID': instance.GPSDeviceID,
-      'vin': instance.vin,
+      'VIN': instance.VIN,
       'Model': instance.Model,
       'ActualStartDate': instance.ActualStartDate,
       'SubscriptionStartDate': instance.SubscriptionStartDate,
