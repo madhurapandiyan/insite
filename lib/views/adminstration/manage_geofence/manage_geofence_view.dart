@@ -14,7 +14,6 @@ class ManageGeofenceView extends StatefulWidget {
 }
 
 class _ManageGeofenceViewState extends State<ManageGeofenceView> {
-  deletGeoence(uid, actionUTC) {}
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -53,7 +52,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           ? Expanded(
                               child: Center(
                                 child: InsiteText(
-                                  text: "Add More Geofence To View",
+                                  text: "No geofence is added",
                                   size: 20,
                                 ),
                               ),

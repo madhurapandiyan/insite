@@ -71,7 +71,7 @@ class SubscriptionView extends StatelessWidget {
                           ],
                           height: 20,
                           onCallbackSelected: (value) {
-                            // viewModel.onRespectiveButtonClicked(value);
+                            viewModel.onRespectiveButtonClicked(value);
                           }),
                       AssetCardsSmall(
                           headerText: "SMS MANAGEMENT",
@@ -82,7 +82,7 @@ class SubscriptionView extends StatelessWidget {
                           showExapansionMenu: false,
                           height: 25,
                           onCallbackSelected: (value) {
-                             viewModel.onRespectiveButtonClicked(value);
+                            viewModel.onRespectiveButtonClicked(value);
                           }),
                     ],
                   ),
@@ -101,7 +101,7 @@ class SubscriptionView extends StatelessWidget {
                           showExapansionMenu: false,
                           height: 20.0,
                           onCallbackSelected: (value) {
-                             viewModel.onRespectiveButtonClicked(value);
+                            viewModel.onRespectiveButtonClicked(value);
                           }),
                       AssetCardsSmall(
                           headerText: "TRANSFER HISTORY",
@@ -112,7 +112,7 @@ class SubscriptionView extends StatelessWidget {
                           ],
                           height: 20.0,
                           onCallbackSelected: (value) {
-                            // viewModel.onRespectiveButtonClicked(value);
+                            viewModel.onRespectiveButtonClicked(value);
                           }),
                     ],
                   ),

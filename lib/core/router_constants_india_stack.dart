@@ -37,3 +37,5 @@ const String smsManagementView = "smsManagementView";
 const String deviceReplacementView = "deviceReplacementView";
 const String deviceReplacementStatusView = "deviceReplacementStatusView";
 const String replacementView = "replacementView";
+const String fleetStatusView = "fleetStatusView";
+const String transferHistoryView = "transferHistoryView";
