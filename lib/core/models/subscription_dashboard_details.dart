@@ -90,16 +90,16 @@ class DetailResult {
   @JsonKey(name: "Code")
   String Code;
 
- @JsonKey(name: "vin")
+  @JsonKey(name: "vin")
   String vin;
 
   @JsonKey(name: "fk_AssetId")
-  String fk_AssetId;
+  int fk_AssetId;
 
-  @JsonKey(name:"SourceName1")
+  @JsonKey(name: "SourceName1")
   String SourceName1;
-  @JsonKey(name: "SourceName2")
 
+  @JsonKey(name: "SourceName2")
   String SourceName2;
 
   @JsonKey(name: "DestinationName1")
@@ -116,7 +116,7 @@ class DetailResult {
 
   @JsonKey(name: "Status")
   String Status;
-  
+
   @JsonKey(name: "InsertUTC")
   String InsertUTC;
 
@@ -152,9 +152,7 @@ class DetailResult {
       this.InsertUTC,
       this.SourceCustomerType,
       this.Status,
-     this.vin
-      
-      });
+      this.vin});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>
       _$DetailResultFromJson(json);

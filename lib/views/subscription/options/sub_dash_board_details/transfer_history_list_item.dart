@@ -68,9 +68,9 @@ class TransferHistoryListItem extends StatelessWidget {
                       //   content: "",
                       // ),
                       InsiteTableRowItem(
-                        title: "Model :",
-                        content: detailResult.Model != null
-                            ? detailResult.Model
+                        title: "Source Name 1 :",
+                        content: detailResult.SourceName1 != null
+                            ? detailResult.SourceName1
                             : "",
                       ),
                       // ],
@@ -84,15 +84,15 @@ class TransferHistoryListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult.VIN != null ? detailResult.VIN : "",
+                            detailResult.vin != null ? detailResult.vin : "",
                         onTap: () {
                           onCallback();
                         },
                       ),
                       InsiteTableRowItem(
-                        title: "Product Family :",
-                        content: detailResult.ProductFamily != null
-                            ? detailResult.ProductFamily
+                        title: "Source Name 2 :",
+                        content: detailResult.SourceName2 != null
+                            ? detailResult.SourceName2
                             : "",
                       ),
                     ],
@@ -106,15 +106,15 @@ class TransferHistoryListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItem(
-                          title: "Network Provider : ",
-                          content: detailResult.NetworkProvider != null
-                              ? detailResult.NetworkProvider
+                          title: "Destination Name 1 :",
+                          content: detailResult.DestinationName1 != null
+                              ? detailResult.DestinationName1
                               : "",
                         ),
                         InsiteTableRowItem(
-                          title: "Dealer Name : ",
-                          content: detailResult.DealerName != null
-                              ? detailResult.DealerName
+                          title: "Destination Name 2 : ",
+                          content: detailResult.DestinationName2 != null
+                              ? detailResult.DestinationName2
                               : "",
                         ),
                       ],
@@ -122,54 +122,34 @@ class TransferHistoryListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItem(
-                          title: "Dealer Code :",
-                          content: detailResult.DealerCode != null
-                              ? detailResult.DealerCode
+                          title: "Source Type :",
+                          content: detailResult.SourceCustomerType != null
+                              ? detailResult.SourceCustomerType
                               : "",
                         ),
                         InsiteTableRowItem(
-                          title: "Customer Name :",
-                          content: detailResult.CustomerName != null
-                              ? detailResult.CustomerName
-                              : detailResult.CustomerName != null
-                                  ? detailResult.CustomerName
+                          title: "Destination Type :",
+                          content: detailResult.DestinationCustomerType != null
+                              ? detailResult.DestinationCustomerType
+                              : "",
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        InsiteTableRowItem(
+                          title: "Transfer Status :",
+                          content: detailResult.Status != null
+                              ? detailResult.Status
+                              : detailResult.Status != null
+                                  ? detailResult.Status
                                   : "",
                         ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
                         InsiteTableRowItem(
-                          title: "Customer Code :",
-                          content: detailResult.CustomerCode != null
-                              ? detailResult.CustomerCode
-                              : detailResult.CustomerCode != null
-                                  ? detailResult.CustomerCode
-                                  : "",
-                        ),
-                        InsiteTableRowItem(
-                          title: "Subscription Start Date :",
-                          content: detailResult.SubscriptionStartDate != null
-                              ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.SubscriptionStartDate)
-                              : "",
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        InsiteTableRowItem(
-                          title: "Actual Start Date :",
-                          content: detailResult.SubscriptionStartDate != null
-                              ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.ActualStartDate)
-                              : "",
-                        ),
-                        InsiteTableRowItem(
-                          title: "Subscription End Date :",
-                          content: detailResult.SubscriptionStartDate != null
-                              ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.SubscriptionEndDate)
+                          title: "Transferered Time :",
+                          content: detailResult.InsertUTC != null
+                              ? Utils.getLastReportedDate(
+                                  detailResult.InsertUTC)
                               : "",
                         ),
                       ],

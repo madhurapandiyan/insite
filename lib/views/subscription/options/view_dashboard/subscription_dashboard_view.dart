@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -57,22 +58,26 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                         removeTop: true,
                         child: viewModel.loading
                             ? InsiteProgressBar()
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: viewModel.names.length,
-                                itemBuilder: (context, index) {
-                                  return InsiteTitleCountRow(
-                                    name: viewModel.names[index],
-                                    count: viewModel.results[index]
-                                        .toStringAsFixed(0),
-                                    filter: viewModel.names[index],
-                                    onClicked: () {
-                                      viewModel.gotoDetailsPage(
-                                          viewModel.filters[index]);
-                                    },
-                                  );
-                                }),
+                            : viewModel.results.isNotEmpty
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: viewModel.names.length,
+                                    itemBuilder: (context, index) {
+                                      return InsiteTitleCountRow(
+                                        name: viewModel.names[index],
+                                        count: viewModel.results[index]
+                                            .toStringAsFixed(0),
+                                        filter: viewModel.names[index],
+                                        onClicked: () {
+                                          viewModel.gotoDetailsPage(
+                                              viewModel.filters[index]);
+                                        },
+                                      );
+                                    })
+                                : EmptyView(
+                                    title: "No Results",
+                                  ),
                       )),
                     ),
                     SizedBox(
@@ -82,7 +87,9 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                       title: "ACTIVE DEVICES BY MODEL",
                       subTitle1: "MODEL",
                       subTitle2: "DEVICE COUNT",
-                      height: MediaQuery.of(context).size.height * 1.2,
+                      height: viewModel.modelNames.isNotEmpty
+                          ? MediaQuery.of(context).size.height * 1.2
+                          : MediaQuery.of(context).size.height * 0.6,
                       cards: Expanded(
                           child: MediaQuery.removePadding(
                         context: (context),
@@ -90,22 +97,26 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                         removeTop: true,
                         child: viewModel.loading
                             ? InsiteProgressBar()
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: viewModel.modelNames.length,
-                                itemBuilder: (context, index) {
-                                  return InsiteTitleCountRow(
-                                    name: viewModel.modelNames[index],
-                                    count: viewModel.modelCount[index]
-                                        .toStringAsFixed(0),
-                                    filter: viewModel.modelNames[index],
-                                    onClicked: () {
-                                      viewModel.gotoModelsPage(
-                                          viewModel.modelNames[index]);
-                                    },
-                                  );
-                                }),
+                            : viewModel.modelNames.isNotEmpty
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: viewModel.modelNames.length,
+                                    itemBuilder: (context, index) {
+                                      return InsiteTitleCountRow(
+                                        name: viewModel.modelNames[index],
+                                        count: viewModel.modelCount[index]
+                                            .toStringAsFixed(0),
+                                        filter: viewModel.modelNames[index],
+                                        onClicked: () {
+                                          viewModel.gotoModelsPage(
+                                              viewModel.modelNames[index]);
+                                        },
+                                      );
+                                    })
+                                : EmptyView(
+                                    title: "No Results",
+                                  ),
                       )),
                     ),
                   ],
