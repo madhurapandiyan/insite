@@ -1,54 +1,56 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'add_asset_registration.g.dart';
+part 'add_asset_transfer.g.dart';
 
 @JsonSerializable()
-class AddAssetRegistrationData {
+class AssetTransferData {
   @JsonKey(name: "Source")
   String source;
   @JsonKey(name: "Version")
   String version;
   @JsonKey(name: "UserID")
   int userID;
-  @JsonKey(name: "asset")
-  List<AssetValues> asset;
+  @JsonKey(name: "transfer")
+  List<Transfer> transfer;
+  AssetTransferData({this.source, this.transfer, this.userID, this.version});
 
-  AddAssetRegistrationData({
-    this.source,
-    this.version,
-    this.userID,
-    this.asset,
-  });
+  factory AssetTransferData.fromJson(Map<String, dynamic> json) =>
+      _$AssetTransferDataFromJson(json);
 
-  factory AddAssetRegistrationData.fromJson(Map<String, dynamic> json) =>
-      _$AddAssetRegistrationDataFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AddAssetRegistrationDataToJson(this);
+  Map<String, dynamic> toJson() => _$AssetTransferDataToJson(this);
 }
 
 @JsonSerializable()
-class AssetValues {
+class Transfer {
   @JsonKey(name: "DeviceId")
   String deviceId;
   @JsonKey(name: "MachineModel")
   String machineModel;
   @JsonKey(name: "HMR")
-  int hMR;
+  String hMR;
   @JsonKey(name: "HMRDate")
   String hMRDate;
-  @JsonKey(name: "PrimaryIndustry")
-  String primaryIndustry;
-  @JsonKey(name: "SecondaryIndustry")
-  String secondaryIndustry;
-  @JsonKey(name: "MachineSlNo")
-  String machineSlNo;
-  @JsonKey(name: "CommissioningDate")
-  String commissioningDate;
   @JsonKey(name: "PlantName")
   String plantName;
   @JsonKey(name: "PlantCode")
   String plantCode;
   @JsonKey(name: "PlantEmailID")
   String plantEmailID;
+  @JsonKey(name: "PrimaryIndustry")
+  String primaryIndustry;
+  @JsonKey(name: "SecondaryIndustry")
+  String secondaryIndustry;
+  @JsonKey(name: "DealerLanguage")
+  String dealerLanguage;
+  @JsonKey(name: "DealerMobile")
+  String dealerMobile;
+  @JsonKey(name: "CustomerLanguage")
+  String customerLanguage;
+  @JsonKey(name: "CustomerMobile")
+  String customerMobile;
+  @JsonKey(name: "MachineSlNo")
+  String machineSlNo;
+  @JsonKey(name: "CommissioningDate")
+  String commissioningDate;
   @JsonKey(name: "DealerName")
   String dealerName;
   @JsonKey(name: "DealerCode")
@@ -62,26 +64,30 @@ class AssetValues {
   @JsonKey(name: "CustomerEmailID")
   String customerEmailID;
 
-  AssetValues(
+  Transfer(
       {this.deviceId,
       this.machineModel,
       this.hMR,
       this.hMRDate,
-      this.primaryIndustry,
-      this.secondaryIndustry,
-      this.machineSlNo,
-      this.commissioningDate,
       this.plantName,
       this.plantCode,
       this.plantEmailID,
+      this.primaryIndustry,
+      this.secondaryIndustry,
+      this.dealerLanguage,
+      this.dealerMobile,
+      this.customerLanguage,
+      this.customerMobile,
+      this.machineSlNo,
+      this.commissioningDate,
       this.dealerName,
       this.dealerCode,
       this.dealerEmailID,
       this.customerName,
       this.customerCode,
       this.customerEmailID});
-  factory AssetValues.fromJson(Map<String, dynamic> json) =>
-      _$AssetValuesFromJson(json);
+  factory Transfer.fromJson(Map<String, dynamic> json) =>
+      _$TransferFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AssetValuesToJson(this);
+  Map<String, dynamic> toJson() => _$TransferToJson(this);
 }

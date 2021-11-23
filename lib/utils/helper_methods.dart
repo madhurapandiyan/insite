@@ -23,6 +23,9 @@ class Utils {
     }
   }
 
+  static String suceessRegistration =
+      "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
+
   static double getHrsValueeData(double percentageValue, double runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;

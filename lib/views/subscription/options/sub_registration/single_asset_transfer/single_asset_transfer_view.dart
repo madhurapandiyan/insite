@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
@@ -935,8 +936,12 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     viewModel.popUpCardTitles,
                                                 data: viewModel.totalList,
                                                 onButtonTapped: () async {
-                                                  // await viewModel
-                                                  //     .subscriptionAssetRegistration();
+                                                  final result = await viewModel
+                                                      .subscriptionAssetTransfer();
+                                                  if (result != null) {
+                                                    Utils.showToast(Utils
+                                                        .suceessRegistration);
+                                                  }
                                                 },
                                               );
                                             },

@@ -288,12 +288,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     );
     _totalAssetValues.add(deviceAssetValues);
 
-    var result = await _subscriptionService
-        .postSingleAssetRegistration(_totalAssetValues);
-
-    Logger().wtf(result);
+    var result = await _subscriptionService.postSingleAssetRegistration(
+        data: _totalAssetValues);
 
     notifyListeners();
+    return result;
   }
 
   getSubcriptionDeviceListData() async {

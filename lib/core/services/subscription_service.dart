@@ -1,6 +1,7 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
+import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
@@ -147,15 +148,30 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<AddAssetRegistrationData> postSingleAssetRegistration(
-      List<AssetValues> data) async {
-    data.map((e) {
-      Logger().wtf(
-          'values to be checked ${e.commissioningDate} ${e.customerCode} ${e.customerEmailID} ${e.customerName} ${e.dealerCode}${e.dealerEmailID}${e.dealerName}${e.deviceId}${e.hMR}${e.hMRDate}${e.machineModel}${e.machineSlNo}${e.plantCode}${e.plantEmailID}${e.plantName}${e.primaryIndustry}${e.secondaryIndustry}');
-    });
+  Future<AssetTransferData> postSingleTransferRegistration(
+      {List<Transfer> transferData}) async {
+    var body = AssetTransferData(
+        source: "THC", version: "2.1", userID: 58839, transfer: transferData);
 
+    try {
+      AssetTransferData addAssetRegistrationData = await MyApi()
+          .getClientTen()
+          .getSingleAssetTransferData(Urls.singleAssetRegistration, body);
+      return addAssetRegistrationData;
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<AddAssetRegistrationData> postSingleAssetRegistration(
+      {List<AssetValues> data}) async {
     var body = AddAssetRegistrationData(
-        source: "THC", version: "2.1", userID: 58839, asset: data);
+      source: "THC",
+      version: "2.1",
+      userID: 58839,
+      asset: data,
+    );
 
     try {
       AddAssetRegistrationData addAssetRegistrationData = await MyApi()

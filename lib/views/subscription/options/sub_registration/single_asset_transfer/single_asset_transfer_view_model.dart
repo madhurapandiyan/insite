@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
+import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
@@ -124,6 +126,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   ];
   List<String> get popUpCardTitles => _popUpCardTitles;
 
+  List<Transfer> _totalTransferValues = [];
+  List<Transfer> get totalTransferValues => _totalTransferValues;
+
   List<List<PreviewData>> _totalList = [];
   List<List<PreviewData>> get totalList => _totalList;
 
@@ -189,6 +194,39 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  subscriptionAssetTransfer() async {
+    Transfer deviceTransferValues;
+    deviceTransferValues = Transfer(
+        deviceId: previewEntityDetails[0].value,
+        machineModel: previewEntityDetails[2].value,
+        hMR: null,
+        hMRDate: null,
+        plantCode: null,
+        plantEmailID: null,
+        plantName: null,
+        primaryIndustry: generalIndustryDetails[0].value,
+        secondaryIndustry: generalIndustryDetails[0].value,
+        dealerLanguage: generalDealerDetails[4].value,
+        dealerMobile: generalDealerDetails[3].value,
+        customerLanguage: generalCustomerDetails[4].value,
+        customerMobile: generalCustomerDetails[3].value,
+        machineSlNo: previewEntityDetails[1].value,
+        commissioningDate: previewEntityDetails[3].value,
+        dealerName: generalDealerDetails[0].value,
+        dealerCode: generalDealerDetails[1].value,
+        dealerEmailID: generalDealerDetails[2].value,
+        customerName: generalCustomerDetails[0].value,
+        customerCode: generalCustomerDetails[1].value,
+        customerEmailID: generalCustomerDetails[2].value);
+    _totalTransferValues.add(deviceTransferValues);
+
+    var result = await _subscriptionService.postSingleTransferRegistration(
+        transferData: _totalTransferValues);
+
+    notifyListeners();
+    return result;
+  }
+
   getEntityDetails() {
     PreviewData deviceId =
         PreviewData(title: "Device Id", value: deviceIdController.text);
@@ -200,6 +238,10 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     PreviewData machineModel =
         PreviewData(title: "Machine Model", value: machineModelController.text);
     _previewEntityDetails.add(machineModel);
+
+    PreviewData commissioningDate =
+        PreviewData(title: "HMR Date", value: commisioningDateController.text);
+    _previewEntityDetails.add(commissioningDate);
 
     _totalList.add(_previewEntityDetails);
     notifyListeners();
@@ -222,9 +264,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     PreviewData dealerMobileLanguage =
         PreviewData(title: "Dealer Mobile Language", value: _initialLanguage);
     _generalDealerDetails.add(dealerMobileLanguage);
-    PreviewData commissioningDate =
-        PreviewData(title: "HMR Date", value: commisioningDateController.text);
-    _generalDealerDetails.add(commissioningDate);
 
     _totalList.add(_generalDealerDetails);
     notifyListeners();
