@@ -685,7 +685,7 @@ class AssetAdminManagerUserService extends BaseService {
         return assetSettingsDataResponse;
       } else {
         EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClientSeven()
+            .getClient()
             .getEstimatedTagetListData(
                 Urls.getEstimatedAsetSettingTargetDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
@@ -718,7 +718,7 @@ class AssetAdminManagerUserService extends BaseService {
         return assetSettingsData;
       } else {
         EstimatedCycleVolumePayLoad assetSettingsData = await MyApi()
-            .getClientSeven()
+            .getClient()
             .getEstimatedCyclePayLoadVoumeListData(
                 Urls.getEstimatedCycleVoumePayLoadListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
@@ -745,10 +745,9 @@ class AssetAdminManagerUserService extends BaseService {
                 legacyAssetID: legacyAssetID,
                 modelYear: modelYear),
             accountSelected.CustomerUID);
-
         return assetIconData;
       } else {
-        var assetIconData = await MyApi().getClientSeven().getAssetIconData(
+        var assetIconData = await MyApi().getClient().getAssetIconData(
             Urls.getAssetIconVL,
             AssetIconPayLoad(
                 actionUTC: actionUTC,
