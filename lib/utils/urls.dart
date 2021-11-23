@@ -182,6 +182,9 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetproductivitysettings";
   static String getAssetIconVL =
       "/t/trimble.com/vss-storeassetservice/1.0/AssetIcon";
+   static String getAssetFuelBurnRateListDataVL="/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
+   static String getAssetMileageListDataVL="/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
+
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -223,13 +226,14 @@ class Urls {
   static String fuelPercent =
       "$fleet/1.0/api/v2/UtilizationGraphs/summary/fuelburnrate";
   static String faultSummary = "$health/1.0/health/faultSummary/v1";
-  static String assetSettings = "$assetSettingsMasterData/1.0/v1/assetsettings";
+  static String assetSettings = "/osg-in/$assetSettingsMasterData/1.0/v1/assetsettings";
+  static String assetSettingsTargetListData="/osg-in/$assetSettingsMasterData/1.0/v1/assettargetsettings";
   static String assetProductivitySettings =
       "$assetSettingsMasterData/1.0/v1/assetproductivitysettings";
   static String assetSettingsFuelBurnrate =
-      "$assetSettingsMasterData/1.0/v1/assetfuelburnratesettings";
+      "/osg-in/$assetSettingsMasterData/1.0/v1/assetfuelburnratesettings";
   static String estimatedMileage =
-      "$assetSettingsMasterData/1.0/v1/assetmileagesettings";
+      "/osg-in/$assetSettingsMasterData/1.0/v1/assetmileagesettings";
   static String getGeofenceData = "$geofence/1.0";
   static String savingSms = "$smsManagementSingleAsset/savingsms";
   static String smsManagementSingleAsset = "$subscriptionPrefix/scheduleSms";
@@ -246,6 +250,9 @@ class Urls {
   static String getReportOfReplacement =
       "$subscriptionPrefix/subscriptionSave/replacementHistory";
   static String downloadReplacementData = "$getReportOfReplacement/download";
+  static String estimatedTargetSettingsData="/osg-in/$accountSelection/1.0/v1/assettargetsettings";
+   static String estimatedfuelBurnRateData="/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
+    static String estimatedMileageData="/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -310,4 +317,5 @@ class Urls {
   static String subscriptionResult = "/osg-frame/frame-api/2.0/subscription";
   static String transferHistoryResult =
       "/osg-frame/frame-api/2.0/transferView/gettransferstatus";
+      static String plantAssetCreationResult="/osg-frame/frame-api/2.0/assetDetail/asset/model";
 }

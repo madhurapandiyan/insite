@@ -67,7 +67,9 @@ class PlantView extends StatelessWidget {
                       showExapansionMenu: false,
                       headerText: "ASSET CREATION",
                       buttonText: "asset creation",
-                      onButtonClicked: () {},
+                      onButtonClicked: () {
+                        viewModel.goToPlantAssetCreationPage();
+                      },
                     ),
                   ],
                 ),

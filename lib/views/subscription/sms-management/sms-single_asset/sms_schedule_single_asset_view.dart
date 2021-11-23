@@ -89,6 +89,7 @@ class _SmsScheduleSingleAssetViewState
                                 final model =
                                     viewModel.singleAssetModelResponce;
                                 return SingleAssetValidateWidget(
+                                
                                     GPSDeviceID: model[0].GPSDeviceID,
                                     SerialNumber: model[0].SerialNumber,
                                     StartDate: model[0].StartDate,
