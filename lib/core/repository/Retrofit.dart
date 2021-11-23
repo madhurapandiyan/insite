@@ -1,4 +1,5 @@
 import 'package:insite/core/models/add_asset_registration.dart';
+import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
@@ -897,8 +898,12 @@ abstract class RestClient {
   @POST("{url}")
   Future<AddAssetRegistrationData> getSingleAssetRegistrationData(
       @Path() String url,
-      // @Header("content-type") String contentType,
       @Body() AddAssetRegistrationData addAssetRegistrationData);
+
+  @POST("{url}")
+  Future<AssetTransferData> getSingleAssetTransferData(
+      @Path() String url,
+      @Body() AssetTransferData assetTransferData);
 
   @GET("{url}")
   Future<DeviceSearchModel> getDeviceSearchModel(@Path() String url);

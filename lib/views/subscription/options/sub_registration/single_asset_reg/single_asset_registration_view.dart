@@ -5,6 +5,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
@@ -707,8 +708,12 @@ class _SingleAssetRegistrationViewState
                                                     viewModel.popUpCardTitles,
                                                 data: viewModel.totalList,
                                                 onButtonTapped: () async {
-                                                  await viewModel
+                                                  final result = await viewModel
                                                       .subscriptionAssetRegistration();
+                                                  if (result != null) {
+                                                    Utils.showToast(Utils
+                                                        .suceessRegistration);
+                                                  }
                                                 },
                                               );
                                             },

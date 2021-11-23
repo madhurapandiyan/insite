@@ -3369,6 +3369,27 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<AssetTransferData> getSingleAssetTransferData(
+      url, assetTransferData) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(assetTransferData, 'assetTransferData');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetTransferData?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetTransferData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<DeviceSearchModel> getDeviceSearchModel(url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
