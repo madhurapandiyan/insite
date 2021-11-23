@@ -4,12 +4,15 @@ import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/asset_creation_response.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
+import 'package:insite/core/models/asset_fuel_burn_rate_settings_list_data.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
+import 'package:insite/core/models/asset_mileage_settings_list_data.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
@@ -866,10 +869,15 @@ abstract class RestClient {
       @Path() String url, @Body() List<SingleAssetSmsSchedule> singleAssetData);
 
   @POST('{url}')
-  Future<EstimatedAssetSetting> getEstimatedTagetListData(
+  Future<EstimatedAssetSetting> getEstimatedTagetListDataVL(
       @Path() String url,
       @Body() List<String> assetUid,
       @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<EstimatedAssetSetting> getEstimatedTagetListData(@Path() String url,
+      @Body() List<String> assetUid, @Header("service") service);
+
   @POST('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
       @Path() String url,
@@ -945,6 +953,38 @@ abstract class RestClient {
   Future<CustomerDetails> getExitingCustomerDetails(
     @Path() String url,
   );
+
+  @GET('{url}')
+  Future<AssetCreationResponse> getAssetCreationData(
+    @Path() String url,
+  );
+  @POST('{url}')
+  Future<AssetFuelBurnRateSettingsListData>
+      getAssetFuelBurnRateSettingsListDataVL(
+          @Path() String url,
+          @Body() List<String> assetUid,
+          @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<AssetFuelBurnRateSettingsListData>
+      getAssetFuelBurnRateSettingsListData(
+          @Path() String url,
+          @Body() List<String> assetUid,
+          @Header("x-visionlink-customeruid") customerId,
+          @Header("service") service);
+
+  @POST('{url}')
+  Future<AssetMileageSettingsListData> getAssetMileageSettingsListDataVL(
+      @Path() String url,
+      @Body() List<String> assetUId,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
+      @Path() String url,
+      @Body() List<String> assetUId,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") service);
 }
 
 @JsonSerializable()

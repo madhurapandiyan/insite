@@ -1,3 +1,5 @@
+// [ This is an auto generated file ]
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
@@ -12,6 +14,8 @@ import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
+import 'package:insite/views/plant/plant_asset_creation/plant_asset_creation_view.dart'
+    as view31;
 import 'package:insite/views/splash/splash_view.dart' as view0;
 import 'package:insite/views/account_selection/account_selection_view.dart'
     as view1;
@@ -178,6 +182,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view35.FleetStatusView());
       case transferHistoryView:
         return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
+      case plantAssetCreationViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view31.PlantAssetCreationView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

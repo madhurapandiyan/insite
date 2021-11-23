@@ -8,7 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedMileage extends StatefulWidget {
- final List<String> assetUids;
+  final List<String> assetUids;
   const EstimatedMileage({this.assetUids});
 
   @override
@@ -16,17 +16,13 @@ class EstimatedMileage extends StatefulWidget {
 }
 
 class _EstimatedMileageState extends State<EstimatedMileage> {
-  TextEditingController kiloController = TextEditingController();
-
   @override
   void initState() {
-    kiloController.text = "0";
     super.initState();
   }
 
   @override
   void dispose() {
-    kiloController.dispose();
     super.dispose();
   }
 
@@ -71,7 +67,14 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                                   borderSide: BorderSide.none),
                               contentPadding: EdgeInsets.all(8.0),
                             ),
-                            controller: kiloController,
+                            controller: viewModel.kiloController,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color),
                             keyboardType: TextInputType.numberWithOptions(
                               decimal: false,
                               signed: true,
@@ -91,7 +94,7 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                                     size: 18.0,
                                   ),
                                   onTap: () {
-                                    getIncrementmileageValue();
+                                    getIncrementmileageValue(viewModel);
                                   },
                                 ),
                                 InkWell(
@@ -100,7 +103,7 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                                     size: 18.0,
                                   ),
                                   onTap: () {
-                                    getDecrementmileageValue();
+                                    getDecrementmileageValue(viewModel);
                                   },
                                 ),
                               ],
@@ -136,7 +139,8 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                     title: "apply".toUpperCase(),
                     fontSize: 12,
                     onTap: () {
-                      var mileageValue = double.parse(kiloController.text);
+                      var mileageValue =
+                          double.parse(viewModel.kiloController.text);
                       viewModel.getAssetMileageData(mileageValue, context);
                     },
                     textColor: textcolor,
@@ -170,18 +174,19 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
     );
   }
 
-  getIncrementmileageValue() {
-    int currentValue = int.parse(kiloController.text);
+  getIncrementmileageValue(EstimatedVoumePayloadMileage viewModel) {
+    double currentValue = double.parse(viewModel.kiloController.text);
 
     currentValue++;
-    kiloController.text = (currentValue).toString();
+    viewModel.kiloController.text = (currentValue).toString();
     setState(() {});
   }
 
-  getDecrementmileageValue() {
-    int currentValue = int.parse(kiloController.text);
+  getDecrementmileageValue(EstimatedVoumePayloadMileage viewModel) {
+    double currentValue = double.parse(viewModel.kiloController.text);
     currentValue--;
-    kiloController.text = (currentValue > 0 ? currentValue : 0).toString();
+    viewModel.kiloController.text =
+        (currentValue > 0 ? currentValue : 0).toString();
     setState(() {});
   }
 }

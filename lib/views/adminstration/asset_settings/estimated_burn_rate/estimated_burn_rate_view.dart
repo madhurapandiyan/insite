@@ -7,9 +7,8 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedBurnRateWidget extends StatefulWidget {
-
- final List<String> assetUids;
- EstimatedBurnRateWidget({this.assetUids});
+  final List<String> assetUids;
+  EstimatedBurnRateWidget({this.assetUids});
 
   @override
   _EstimatedBurnRateWidgetState createState() =>
@@ -84,6 +83,13 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(8.0),
                             ),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color),
                             controller: viewModel.workingcontroller,
                             keyboardType: TextInputType.numberWithOptions(
                               decimal: false,
@@ -162,6 +168,13 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                               contentPadding: EdgeInsets.all(8.0),
                             ),
                             controller: viewModel.idleController,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .color),
                             keyboardType: TextInputType.numberWithOptions(
                               decimal: false,
                               signed: true,
@@ -240,7 +253,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                     fontSize: 12,
                     textColor: textcolor,
                     bgColor: tuna,
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                     },
                   ),

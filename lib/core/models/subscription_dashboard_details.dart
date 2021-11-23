@@ -30,8 +30,8 @@ class DetailResult {
   @JsonKey(name: "GPSDeviceID")
   String GPSDeviceID;
 
-  @JsonKey(name: "VIN")
-  String VIN;
+  @JsonKey(name: "vin")
+  String vin;
 
   @JsonKey(name: "Model")
   String Model;
@@ -90,29 +90,64 @@ class DetailResult {
   @JsonKey(name: "Code")
   String Code;
 
-  DetailResult(
-      {this.totalDevice,
-      this.ActualStartDate,
-      this.CustomerCode,
-      this.CustomerName,
-      this.DealerCode,
-      this.Code,
-      this.Email,
-      this.ID,
-      this.Name,
-      this.UserName,
-      this.OEMName,
-      this.DealerName,
-      this.CommissioningDate,
-      this.PrimaryIndustry,
-      this.SecondaryIndustry,
-      this.GPSDeviceID,
-      this.Model,
-      this.SubscriptionEndDate,
-      this.SubscriptionStartDate,
-      this.VIN,
-      this.NetworkProvider,
-      this.ProductFamily});
+  @JsonKey(name: "fk_AssetId")
+  String fk_AssetId;
+  @JsonKey(name: "SourceName1")
+  String SourceName1;
+  @JsonKey(name: "SourceName2")
+  String SourceName2;
+
+  @JsonKey(name: "DestinationName1")
+  String DestinationName1;
+
+  @JsonKey(name: "DestinationName2")
+  String DestinationName2;
+
+  @JsonKey(name: "SourceCustomerType")
+  String SourceCustomerType;
+
+  @JsonKey(name: "DestinationCustomerType")
+  String DestinationCustomerType;
+
+  @JsonKey(name: "Status")
+  String Status;
+
+  @JsonKey(name: "InsertUTC")
+  String InsertUTC;
+
+  DetailResult({
+    this.totalDevice,
+    this.ActualStartDate,
+    this.CustomerCode,
+    this.CustomerName,
+    this.DealerCode,
+    this.Code,
+    this.Email,
+    this.ID,
+    this.Name,
+    this.UserName,
+    this.OEMName,
+    this.DealerName,
+    this.CommissioningDate,
+    this.PrimaryIndustry,
+    this.SecondaryIndustry,
+    this.GPSDeviceID,
+    this.Model,
+    this.SubscriptionEndDate,
+    this.SubscriptionStartDate,
+    this.vin,
+    this.NetworkProvider,
+    this.ProductFamily,
+    this.fk_AssetId,
+    this.SourceName1,
+    this.SourceName2,
+    this.DestinationName1,
+    this.DestinationName2,
+    this.DestinationCustomerType,
+    this.InsertUTC,
+    this.SourceCustomerType,
+    this.Status,
+  });
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>
       _$DetailResultFromJson(json);

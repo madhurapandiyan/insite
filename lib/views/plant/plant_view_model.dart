@@ -2,6 +2,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart';
+import 'package:insite/views/plant/plant_asset_creation/plant_asset_creation_view.dart';
 import 'package:insite/views/plant/plant_hierachy/plant_hierachy_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -24,5 +25,10 @@ class PlantViewModel extends InsiteViewModel {
       navigationService.navigateWithTransition(PlantHierachyView(),
           transition: "fade");
     }
+  }
+
+  void goToPlantAssetCreationPage() {
+    _navigationService.navigateWithTransition(PlantAssetCreationView(),
+        transition: "fade");
   }
 }

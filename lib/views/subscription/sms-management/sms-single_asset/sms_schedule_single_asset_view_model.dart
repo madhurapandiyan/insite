@@ -75,10 +75,10 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       }
       hideLoadingDialog();
       listOfSingleAssetSmsSchedule.clear();
-      dummy = true;
+   
       notifyListeners();
     } on DioError catch (e) {
-      dummy = true;
+  
       hideLoadingDialog();
       final error = DioException.fromDioError(e);
       snackbarService.showCustomSnackBar(message: e.message);

@@ -4,6 +4,8 @@ import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
+import 'package:insite/core/models/asset_fuel_burn_rate_settings_list_data.dart';
+import 'package:insite/core/models/asset_mileage_settings_list_data.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
@@ -499,7 +501,7 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sortColumn"] = "assetId";
         ManageAssetConfiguration manageAssetConfigurationResponse =
-            await MyApi().getClient().getAssetSettingsListData(
+            await MyApi().getClientSix().getAssetSettingsListData(
                 Urls.assetSettings +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected.CustomerUID,
@@ -531,11 +533,11 @@ class AssetAdminManagerUserService extends BaseService {
         return addSettings;
       } else {
         AddSettings addSettings = await MyApi()
-            .getClient()
+            .getClientSix()
             .getassetSettingsFuelBurnRateData(
                 Urls.assetSettingsFuelBurnrate,
                 listBurnRateData,
-                accountSelected.CustomerType,
+                accountSelected.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return addSettings;
       }
@@ -563,6 +565,7 @@ class AssetAdminManagerUserService extends BaseService {
 
       EstimatedAssetSetting listSettingTargetData =
           EstimatedAssetSetting(assetTargetSettings: getAssetList);
+          Logger().i(listSettingTargetData.toJson());
 
       if (isVisionLink) {
         var result = await MyApi()
@@ -574,9 +577,9 @@ class AssetAdminManagerUserService extends BaseService {
         return result;
       } else {
         EstimatedAssetSetting result = await MyApi()
-            .getClient()
+            .getClientSix()
             .getAssetTargetSettingsData(
-                Urls.assetSettings,
+                Urls.assetSettingsTargetListData,
                 listSettingTargetData,
                 accountSelected.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
@@ -648,7 +651,7 @@ class AssetAdminManagerUserService extends BaseService {
         return assetMileageSettingData;
       } else {
         AssetMileageSettingData assetMileageSettingData = await MyApi()
-            .getClient()
+            .getClientSix()
             .getMileageData(
                 Urls.estimatedMileage,
                 mileageData,
@@ -685,12 +688,9 @@ class AssetAdminManagerUserService extends BaseService {
         return assetSettingsDataResponse;
       } else {
         EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClient()
-            .getEstimatedTagetListData(
-                Urls.getEstimatedAsetSettingTargetDataVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                assetUids,
-                accountSelected.CustomerUID);
+            .getClientSix()
+            .getEstimatedTagetListData(Urls.estimatedTargetSettingsData,
+                assetUids, "in-vlmasterdata-api-vlmd-assetsettings");
         return assetSettingsDataResponse;
       }
     } catch (e) {
@@ -762,5 +762,57 @@ class AssetAdminManagerUserService extends BaseService {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  Future<AssetFuelBurnRateSettingsListData> getAssetFuelBurnRateListData(
+      List<String> assetUId) async {
+    try {
+      if (isVisionLink) {
+        AssetFuelBurnRateSettingsListData assetFuelBurnRateSettingsListData =
+            await MyApi()
+                .getClientSeven()
+                .getAssetFuelBurnRateSettingsListDataVL(
+                    Urls.getAssetFuelBurnRateListDataVL,
+                    assetUId,
+                    accountSelected.CustomerUID);
+        return assetFuelBurnRateSettingsListData;
+      } else {
+        AssetFuelBurnRateSettingsListData assetFuelBurnRateSettingsListData =
+            await MyApi().getClientSix().getAssetFuelBurnRateSettingsListData(
+                Urls.estimatedfuelBurnRateData,
+                assetUId,
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
+        return assetFuelBurnRateSettingsListData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
+      List<String> assetUid) async {
+    try {
+      if (isVisionLink) {
+        AssetMileageSettingsListData assetMileageSettingsListData =
+            await MyApi().getClientSeven().getAssetMileageSettingsListDataVL(
+                Urls.getAssetMileageListDataVL,
+                assetUid,
+                accountSelected.CustomerUID);
+        return assetMileageSettingsListData;
+      } else {
+        AssetMileageSettingsListData assetMileageSettingsListData =
+            await MyApi().getClientSix().getAssetMileageSettingsListData(
+                Urls.estimatedMileageData,
+                assetUid,
+                accountSelected.CustomerUID,
+                "in-vlmasterdata-api-vlmd-assetsettings");
+        return assetMileageSettingsListData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }
