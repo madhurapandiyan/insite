@@ -314,13 +314,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         devices.forEach((element) {
           gpsDeviceId.add(element.GPSDeviceID);
         });
-
-        notifyListeners();
       } else {
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
-        notifyListeners();
       }
       _loading = false;
       _loadingMore = false;

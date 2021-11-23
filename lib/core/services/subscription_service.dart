@@ -3,6 +3,10 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/device_details_per_id.dart';
+import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
+import 'package:insite/core/models/get_single_transfer_device_id.dart';
+import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
@@ -155,7 +159,7 @@ class SubScriptionService extends BaseService {
 
     try {
       AddAssetRegistrationData addAssetRegistrationData = await MyApi()
-          .getClientEleven()
+          .getClientTen()
           .getSingleAssetRegistrationData(Urls.singleAssetRegistration, body);
       return addAssetRegistrationData;
     } catch (e) {
@@ -222,6 +226,127 @@ class SubScriptionService extends BaseService {
       return dashboardResult;
     } catch (e) {
       print(e.toString());
+      return null;
+    }
+  }
+
+  Future<DeviceDetailsPerId> getDeviceDetailsPerDeviceId(
+      String controllerValue) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["OEM"] = "VEhD";
+      }
+      if (accountSelected != null) {
+        queryMap["gSearch"] = "GPSDeviceID_Fleet";
+      }
+      if (controllerValue != null) {
+        queryMap["contains"] = controllerValue.toString();
+      }
+
+      DeviceDetailsPerId deviceDetailsPerId = await MyApi()
+          .getClientTen()
+          .getDeviceDetailsPerDeviceId(Urls.singleAssetSearchDeviceIdData +
+              FilterUtils.constructQueryFromMap(queryMap));
+
+      return deviceDetailsPerId;
+    } catch (e) {
+      Logger().e(e.toString());
+
+      return null;
+    }
+  }
+
+  Future<SingleTransferDeviceId> getSingleTransferDeviceId({
+    String filter,
+    PLANTSUBSCRIPTIONFILTERTYPE filterType,
+    String controllerValue,
+    int start,
+    int limit,
+    String searchBy,
+  }) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["OEM"] = "VEhD";
+      }
+      if (accountSelected.CustomerUID != null) {
+        queryMap["UserUID"] = accountSelected.CustomerUID;
+      }
+      if (filter != null) {
+        if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
+          queryMap["calender"] = filter;
+        } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.MODEL) {
+          queryMap["model"] = filter;
+        } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
+          queryMap["type"] = filter;
+        } else {
+          queryMap["status"] = filter;
+        }
+      }
+      if (accountSelected != null) {
+        queryMap["searchBy"] = searchBy;
+      }
+      if (controllerValue != null) {
+        queryMap["contains"] = controllerValue.toString();
+      }
+      if (start != null) {
+        queryMap["start"] = start.toString();
+      }
+      if (limit != null) {
+        queryMap["limit"] = limit.toString();
+      }
+      SingleTransferDeviceId singleTransferDeviceIds =
+          await MyApi().getClientTen().getSingleAssetTransfersDeviceIds(
+                Urls.singleAssetTransferDeviceId +
+                    FilterUtils.constructQueryFromMap(queryMap),
+              );
+
+      return singleTransferDeviceIds;
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<CustomerDetails> getCustomerDetails(String deviceID) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["oemName"] = "THC";
+      }
+      CustomerDetails customerDetails = await MyApi()
+          .getClientEight()
+          .getExitingCustomerDetails(Urls.getExistingCustomerDetails +
+              deviceID +
+              FilterUtils.constructQueryFromMap(queryMap));
+
+      return customerDetails;
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<AssetDetailsBySerialNo> getDeviceAssetDetailsBySerialNo(
+      String text) async {
+    try {
+      Map<String, String> queryMap = Map();
+
+      if (text != null) {
+        queryMap["machineSerialNumber"] = text;
+      }
+      if (accountSelected != null) {
+        queryMap["oemName"] = "THC";
+      }
+
+      AssetDetailsBySerialNo assetDetailsBySerialNo = await MyApi()
+          .getClientTen()
+          .getDeviceDetailsPerSerialNo(Urls.singleAssetSerchBySerialNo +
+              FilterUtils.constructQueryFromMap(queryMap));
+      return assetDetailsBySerialNo;
+    } catch (e) {
+      Logger().e(e.toString());
       return null;
     }
   }

@@ -13,6 +13,7 @@ class ReusableAutocompleteSearchView extends StatefulWidget {
   final String Function(String) validator;
   final Function(String) onSelected;
   final Function(String) onChanged;
+  bool isEnabled;
 
   ReusableAutocompleteSearchView(
       {Key key,
@@ -20,6 +21,7 @@ class ReusableAutocompleteSearchView extends StatefulWidget {
       this.data,
       this.validator,
       this.onChanged,
+      this.isEnabled = true,
       this.onSelected})
       : super(key: key);
 
@@ -57,34 +59,44 @@ class _ReusableAutocompleteSearchViewState
       },
       onSelected: widget.onSelected,
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-        return TextField(
-          controller: controller,
-          focusNode: focusNode,
-          cursorColor: addUserBgColor,
-          // validator: widget.validator,
-          onChanged: widget.onChanged,
-          style: TextStyle(
-            color: Theme.of(context).textTheme.bodyText1.color,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-          ),
-          onEditingComplete: onEditingComplete,
-          decoration: InputDecoration(
-            // errorText: errorText(widget.reuseController.text),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.bodyText1.color, width: 1),
+        return Container(
+          height: 35,
+          child: TextFormField(
+            controller: controller,
+            focusNode: focusNode,
+            cursorColor: addUserBgColor,
+            validator: widget.validator,
+            onChanged: widget.onChanged,
+            maxLines: 1,
+            enabled: widget.isEnabled,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyText1.color,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.bodyText1.color, width: 1),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.bodyText1.color, width: 1),
+            onEditingComplete: onEditingComplete,
+            decoration: InputDecoration(
+              // errorText: errorText(widget.reuseController.text),
+              contentPadding: EdgeInsets.only(left: 12, top: 22),
+              isDense: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.bodyText1.color,
+                    width: 1),
+              ),
             ),
           ),
         );
