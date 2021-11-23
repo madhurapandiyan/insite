@@ -11,6 +11,7 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/asset_location.dart' as location;
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -19,6 +20,8 @@ import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
+import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
+import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
@@ -28,6 +31,7 @@ import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
+import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -917,6 +921,25 @@ abstract class RestClient {
   @GET("{url}")
   Future<ReplacementDeviceIdDownload> getReplacementDeviceIdDownload(
       @Path() String url);
+  @GET('{url}')
+  Future<SingleTransferDeviceId> getSingleAssetTransfersDeviceIds(
+    @Path() String url,
+  );
+
+  @GET('{url}')
+  Future<DeviceDetailsPerId> getDeviceDetailsPerDeviceId(
+    @Path() String url,
+  );
+
+  @GET('{url}')
+  Future<AssetDetailsBySerialNo> getDeviceDetailsPerSerialNo(
+    @Path() String url,
+  );
+
+  @GET('{url}')
+  Future<CustomerDetails> getExitingCustomerDetails(
+    @Path() String url,
+  );
 }
 
 @JsonSerializable()

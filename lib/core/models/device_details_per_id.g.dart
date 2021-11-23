@@ -8,7 +8,7 @@ part of 'device_details_per_id.dart';
 
 DeviceDetailsPerId _$DeviceDetailsPerIdFromJson(Map<String, dynamic> json) {
   return DeviceDetailsPerId(
-    results: (json['results'] as List)
+    result: (json['result'] as List)
         ?.map((e) =>
             e == null ? null : ResultData.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -17,7 +17,7 @@ DeviceDetailsPerId _$DeviceDetailsPerIdFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$DeviceDetailsPerIdToJson(DeviceDetailsPerId instance) =>
     <String, dynamic>{
-      'results': instance.results,
+      'result': instance.result,
     };
 
 ResultData _$ResultDataFromJson(Map<String, dynamic> json) {

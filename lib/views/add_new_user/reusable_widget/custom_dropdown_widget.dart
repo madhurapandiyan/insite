@@ -16,9 +16,11 @@ class CustomDropDownWidget extends StatelessWidget {
       this.onChanged,
       this.istappable,
       this.onFocus,
+      this.isEnabled = true,
       this.enableHint = true});
   final Function(String) onChanged;
   //CustomDropDownWidget({this.value, this.items, this.onChanged});
+  bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class CustomDropDownWidget extends StatelessWidget {
         icon: Icon(Icons.arrow_drop_down,
             color: Theme.of(context).textTheme.bodyText1.backgroundColor),
         value: value,
+        onChanged: true ? onChanged : null,
         hint: enableHint
             ? InsiteText(
                 text: "  Select",

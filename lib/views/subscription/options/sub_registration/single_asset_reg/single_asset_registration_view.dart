@@ -151,7 +151,7 @@ class _SingleAssetRegistrationViewState
                                                                 .getModelNamebySerialNumber(
                                                                     value);
                                                           },
-                                                          validation:
+                                                          validator:
                                                               defaultCustomFieldValidator)),
                                                 ],
                                               ),
@@ -301,7 +301,7 @@ class _SingleAssetRegistrationViewState
                                                             FilteringTextInputFormatter
                                                                 .digitsOnly
                                                           ],
-                                                          validation:
+                                                          validator:
                                                               defaultCustomFieldValidator)),
                                                 ],
                                               ),
@@ -422,7 +422,7 @@ class _SingleAssetRegistrationViewState
                                                                   type:
                                                                       "DEALER");
                                                         },
-                                                        validation:
+                                                        validator:
                                                             defaultCustomFieldValidator),
                                                   ),
                                                 ],
@@ -456,7 +456,7 @@ class _SingleAssetRegistrationViewState
                                                                     type:
                                                                         "DEALER");
                                                           },
-                                                          validation:
+                                                          validator:
                                                               defaultCustomFieldValidator)),
                                                 ],
                                               ),
@@ -489,7 +489,7 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomTextBox(
                                                   controller: viewModel
                                                       .deviceEmailController,
-                                                  validation:
+                                                  validator:
                                                       defaultCustomFieldValidator,
                                                 ),
                                               ),
@@ -665,7 +665,7 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomTextBox(
                                                   controller: viewModel
                                                       .customerEmailController,
-                                                  validation:
+                                                  validator:
                                                       defaultCustomFieldValidator,
                                                 ),
                                               ),

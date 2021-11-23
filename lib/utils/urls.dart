@@ -290,6 +290,18 @@ class Urls {
   static String serialNumberSearch =
       "/osg-frame/frame-api/2.0/assetDetail/asset/model/";
 
+  static String singleAssetTransferDeviceId =
+      "/osg-frame/frame-api/2.0/hierarchy/getDealerAssets";
+
+  static String singleAssetSearchDeviceIdData =
+      "/osg-frame/frame-api/2.0/masterSearch/singleAsset";
+
+  static String singleAssetSerchBySerialNo =
+      "/osg-frame/frame-api/2.0/assetDetail/asset/hmr";
+
+  static String getExistingCustomerDetails =
+      "/osg-frame/frame-api/2.0/customer/";
+
   //plant
   static String plantHierarchyAssetsResult =
       "/osg-frame/frame-api/2.0/hierarchy";

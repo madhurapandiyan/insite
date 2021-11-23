@@ -63,6 +63,10 @@ class MyApi {
   RestClient getClientEleven() {
     return httpWrapper.clientEleven;
   }
+
+  RestClient getClientTwelve() {
+    return httpWrapper.clientTwelve;
+  }
 }
 
 class HttpWrapper {
@@ -93,6 +97,7 @@ class HttpWrapper {
   Dio dioNine = new Dio();
   Dio dioTen = new Dio();
   Dio dioEleven = new Dio();
+  Dio dioTwelve = new Dio();
 
   var client;
   var clientOne;
@@ -106,6 +111,7 @@ class HttpWrapper {
   var clientNine;
   var clientTen;
   var clientEleven;
+  var clientTwelve;
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
@@ -314,6 +320,23 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioTwelve.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "content-type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "bearer " + token,
+          });
+
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: AppConfig.instance.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
@@ -326,6 +349,7 @@ class HttpWrapper {
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
     clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
     clientEleven = RestClient(dioEleven, baseUrl: _baseUrlEight);
+    clientTwelve = RestClient(dioTwelve, baseUrl: _baseUrlEight);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

@@ -3,9 +3,9 @@ part 'device_details_per_id.g.dart';
 
 @JsonSerializable()
 class DeviceDetailsPerId {
-  List<ResultData> results;
+  List<ResultData> result;
 
-  DeviceDetailsPerId({this.results});
+  DeviceDetailsPerId({this.result});
   factory DeviceDetailsPerId.fromJson(Map<String, dynamic> json) =>
       _$DeviceDetailsPerIdFromJson(json);
 
