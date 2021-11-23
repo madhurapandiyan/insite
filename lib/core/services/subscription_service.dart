@@ -159,7 +159,7 @@ class SubScriptionService extends BaseService {
 
     try {
       AddAssetRegistrationData addAssetRegistrationData = await MyApi()
-          .getClientEleven()
+          .getClientTen()
           .getSingleAssetRegistrationData(Urls.singleAssetRegistration, body);
       return addAssetRegistrationData;
     } catch (e) {
@@ -245,7 +245,7 @@ class SubScriptionService extends BaseService {
       }
 
       DeviceDetailsPerId deviceDetailsPerId = await MyApi()
-          .getClientTwelve()
+          .getClientTen()
           .getDeviceDetailsPerDeviceId(Urls.singleAssetSearchDeviceIdData +
               FilterUtils.constructQueryFromMap(queryMap));
 
@@ -297,7 +297,7 @@ class SubScriptionService extends BaseService {
         queryMap["limit"] = limit.toString();
       }
       SingleTransferDeviceId singleTransferDeviceIds =
-          await MyApi().getClientTwelve().getSingleAssetTransfersDeviceIds(
+          await MyApi().getClientTen().getSingleAssetTransfersDeviceIds(
                 Urls.singleAssetTransferDeviceId +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -341,7 +341,7 @@ class SubScriptionService extends BaseService {
       }
 
       AssetDetailsBySerialNo assetDetailsBySerialNo = await MyApi()
-          .getClientTwelve()
+          .getClientTen()
           .getDeviceDetailsPerSerialNo(Urls.singleAssetSerchBySerialNo +
               FilterUtils.constructQueryFromMap(queryMap));
       return assetDetailsBySerialNo;
