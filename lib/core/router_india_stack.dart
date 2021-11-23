@@ -56,6 +56,10 @@ import 'package:insite/views/subscription/replacement/device_replacement/device_
     as view32;
 import 'package:insite/views/subscription/replacement/replacement_view.dart'
     as view33;
+import 'package:insite/views/subscription/fleetstatus/fleet_status_view.dart'
+    as view35;
+import 'package:insite/views/subscription/transferhistory/transfer_history_view.dart'
+    as view36;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -153,7 +157,10 @@ class Router {
             builder: (_) => view32.DeviceReplacementView());
       case replacementView:
         return MaterialPageRoute(builder: (_) => view33.ReplacementView());
-
+      case fleetStatusView:
+        return MaterialPageRoute(builder: (_) => view35.FleetStatusView());
+      case transferHistoryView:
+        return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

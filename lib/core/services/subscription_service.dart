@@ -163,4 +163,66 @@ class SubScriptionService extends BaseService {
       return null;
     }
   }
+
+  Future<SubscriptionDashboardDetailResult> getFleetStatusData({
+    int start,
+    int limit,
+  }) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["OEM"] = "VEhD";
+      }
+      if (start != null) {
+        queryMap["start"] = start.toString();
+      }
+      if (limit != null) {
+        queryMap["limit"] = limit.toString();
+      }
+
+      SubscriptionDashboardDetailResult dashboardResult = await MyApi()
+          .getClientNine()
+          .getSubscriptionDeviceResults(Urls.subscriptionResult +
+              FilterUtils.constructQueryFromMap(queryMap));
+      if (dashboardResult == null) {
+        Logger().d('no data found');
+      }
+      Logger().d('subscription result: $dashboardResult');
+      return dashboardResult;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<SubscriptionDashboardDetailResult> getTransferHistoryViewData({
+    int start,
+    int limit,
+  }) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["oemName"] = "THC";
+      }
+      if (start != null) {
+        queryMap["start"] = start.toString();
+      }
+      if (limit != null) {
+        queryMap["limit"] = limit.toString();
+      }
+
+      SubscriptionDashboardDetailResult dashboardResult = await MyApi()
+          .getClientNine()
+          .getSubscriptionDeviceResults(Urls.transferHistoryResult +
+              FilterUtils.constructQueryFromMap(queryMap));
+      if (dashboardResult == null) {
+        Logger().d('no data found');
+      }
+      Logger().d('subscription result: $dashboardResult');
+      return dashboardResult;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

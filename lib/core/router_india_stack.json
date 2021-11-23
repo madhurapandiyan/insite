@@ -150,6 +150,16 @@
             "file_path": "views/report_summary/report_summary_view.dart",
             "route_name": "report_summaryViewRoute",
             "view_name": "ReportSummaryView"
+        },
+        {
+            "file_path": "views/subscription/fleetstatus/fleet_status_view.dart",
+            "route_name": "fleet_status_ViewRoute",
+            "view_name": "FleetStatusView"
+        },
+        {
+            "file_path": "views/subscription/transferhistory/transfer_history_view.dart",
+            "route_name": "transfer_history_ViewRoute",
+            "view_name": "TransferHistoryView"
         }
     ]
 }

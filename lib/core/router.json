@@ -165,6 +165,16 @@
             "file_path": "views/reusable_autocomplete_search/reusable_autocomplete_search_view.dart",
             "route_name": "reusable_autocomplete_searchViewRoute",
             "view_name": "ReusableAutocompleteSearchView"
+        },
+        {
+            "file_path": "views/subscription/fleetstatus/fleet_status_view.dart",
+            "route_name": "fleet_status_ViewRoute",
+            "view_name": "FleetStatusView"
+        },
+        {
+            "file_path": "views/subscription/transferhistory/transfer_history_view.dart",
+            "route_name": "transfer_history_ViewRoute",
+            "view_name": "TransferHistoryView"
         }
     ]
 }

@@ -293,4 +293,9 @@ class Urls {
   //plant
   static String plantHierarchyAssetsResult =
       "/osg-frame/frame-api/2.0/hierarchy";
+
+  //subscription
+  static String subscriptionResult = "/osg-frame/frame-api/2.0/subscription";
+  static String transferHistoryResult =
+      "/osg-frame/frame-api/2.0/transferView/gettransferstatus";
 }

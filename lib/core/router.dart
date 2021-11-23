@@ -68,6 +68,11 @@ import 'package:insite/views/subscription/sms-management/sms_management_view.dar
     as view26;
 import 'package:insite/views/subscription/subscription_view.dart' as view16;
 
+import 'package:insite/views/subscription/fleetstatus/fleet_status_view.dart'
+    as view35;
+import 'package:insite/views/subscription/transferhistory/transfer_history_view.dart'
+    as view36;
+
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -161,7 +166,6 @@ class Router {
       case reusableAutocompleteSearchViewRoute:
         return MaterialPageRoute(
             builder: (_) => view34.ReusableAutocompleteSearchView());
-
       case deviceReplacementStatusView:
         return MaterialPageRoute(
             builder: (_) => view31.DeviceReplacementStatusView());
@@ -170,6 +174,10 @@ class Router {
             builder: (_) => view32.DeviceReplacementView());
       case replacementView:
         return MaterialPageRoute(builder: (_) => view33.ReplacementView());
+      case fleetStatusView:
+        return MaterialPageRoute(builder: (_) => view35.FleetStatusView());
+      case transferHistoryView:
+        return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -58,7 +58,6 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
