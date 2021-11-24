@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 
 import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/enums.dart';
-
-import 'reusable_autocomplete_search_view_model.dart';
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view_model.dart';
+import 'package:logger/logger.dart';
 
 class ReusableAutocompleteSearchView extends StatefulWidget {
   final TextEditingController reuseController;
@@ -13,7 +10,10 @@ class ReusableAutocompleteSearchView extends StatefulWidget {
   final String Function(String) validator;
   final Function(String) onSelected;
   final Function(String) onChanged;
+  final Function onTap;
   bool isEnabled;
+  bool formFieldType;
+  FieldType type;
 
   ReusableAutocompleteSearchView(
       {Key key,
@@ -22,7 +22,10 @@ class ReusableAutocompleteSearchView extends StatefulWidget {
       this.validator,
       this.onChanged,
       this.isEnabled = true,
-      this.onSelected})
+      this.formFieldType,
+      this.type,
+      this.onSelected,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -37,6 +40,7 @@ class _ReusableAutocompleteSearchViewState
 
   @override
   Widget build(BuildContext context) {
+    Logger().wtf(widget.formFieldType);
     return Autocomplete(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text.isEmpty) {
@@ -45,7 +49,6 @@ class _ReusableAutocompleteSearchViewState
           widget.data.map((e) {
             dataValues.add(e);
           }).toList();
-
           dataValues.forEach((element) {
             if (element
                 .toLowerCase()
@@ -53,7 +56,6 @@ class _ReusableAutocompleteSearchViewState
               filteredValues.add(element);
             }
           });
-
           return filteredValues;
         }
       },
@@ -62,7 +64,11 @@ class _ReusableAutocompleteSearchViewState
         return Container(
           height: 35,
           child: TextFormField(
-            controller: controller,
+            onTap: widget.onTap,
+            controller:
+                widget.formFieldType == null || widget.formFieldType == true
+                    ? widget.reuseController
+                    : controller,
             focusNode: focusNode,
             cursorColor: addUserBgColor,
             validator: widget.validator,
@@ -76,7 +82,6 @@ class _ReusableAutocompleteSearchViewState
             ),
             onEditingComplete: onEditingComplete,
             decoration: InputDecoration(
-              // errorText: errorText(widget.reuseController.text),
               contentPadding: EdgeInsets.only(left: 12, top: 22),
               isDense: true,
               border: OutlineInputBorder(

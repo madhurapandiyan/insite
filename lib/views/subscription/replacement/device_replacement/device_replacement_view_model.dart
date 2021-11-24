@@ -28,6 +28,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   bool showingOldPreview = false;
   bool showNewPreview = false;
   bool isBackPressed = false;
+  bool showingDialog = false;
 
   List<DeviceContainsList> _searchList = [];
   List<DeviceContainsList> get searchList => _searchList;
@@ -59,6 +60,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   getUserId() async {
     userId = await _localService.getUserId();
+    Logger().d(userId);
   }
 
   onBackPressed() {
@@ -81,7 +83,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onEnteringDeviceId(String searchedWord) async {
-    Logger().wtf(searchedWord);
+    // Logger().wtf(searchedWord);
     if (searchedWord.length < 4) {
       _searchList.clear();
       notifyListeners();
@@ -92,6 +94,11 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       data.result.forEach((element) {
         _searchList = element;
       });
+      Logger().w(_searchList.length);
+      if (_searchList.isEmpty) {
+        snackbarService.showSnackbar(message: "No Data Found");
+      }
+
       notifyListeners();
     }
     notifyListeners();
@@ -126,7 +133,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onGettingReplaceDeviceId(String searchWord) async {
-    Logger().wtf("mappiy");
+    
     try {
       if (searchWord.length < 4) {
         _replaceDeviceModelData = null;
@@ -151,12 +158,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           VIN: deviceSearchModelResponse.result.VIN,
           NewDeviceId: replaceDeviceIdController.text,
           OldDeviceId: deviceSearchModelResponse.result.GPSDeviceID);
+      //Logger().d(NewdeviceData.toJson());
+      //Logger().w(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
-          UserID: int.parse(userId),
+          UserID: int.parse(userId) ?? 58839,
           Version: 2.1,
           device: [NewdeviceData]);
 
+      Logger().d(replacementData.toJson());
       var data = await replacementService.savingReplacement(replacementData);
       searchList.clear();
       navigationService.clearTillFirstAndShowView(

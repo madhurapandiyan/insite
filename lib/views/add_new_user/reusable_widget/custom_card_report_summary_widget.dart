@@ -25,38 +25,41 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
       this.mobileNo});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      // height: MediaQuery.of(context).size.height * 0.25,
-      width: MediaQuery.of(context).size.width * 0.9,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: tuna,
-      ),
-      child: Row(
-        children: [
-          Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(Icons.keyboard_arrow_down),
-              IconButton(
-                  onPressed: () {
-                    onSelected();
-                  },
-                  icon: Icon(
-                    Icons.check_box_outline_blank,
-                    color: isSelected ? tango : white,
-                  ))
-            ],
-          ),
-          Expanded(
-            child: InsiteExpansionTile(
+    return Card(
+      child: Container(
+       // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        // height: MediaQuery.of(context).size.height * 0.25,
+       // width: MediaQuery.of(context).size.width * 0.9,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 15,right: 15),
-                  child: Table(
-                    border: TableBorder.all(width: 1, color: black),
+                Icon(Icons.keyboard_arrow_down),
+                IconButton(
+                    onPressed: () {
+                      onSelected();
+                    },
+                    icon: Container(
+                      color: isSelected
+                          ? Theme.of(context).buttonColor
+                          : null,
+                      child: Icon(
+                        Icons.check_box_outline_blank,
+                      ),
+                    ))
+              ],
+            ),
+            Expanded(
+              child: InsiteExpansionTile(
+                childrenPadding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
+                children: [
+                  Table(
+                    border: TableBorder.all(width: 2, color: borderLineColor),
                     children: [
                       TableRow(children: [
                         InsiteTableRowItem(
@@ -70,38 +73,38 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
                         )
                       ])
                     ],
-                  ),
-                )
-              ],
-              title: Table(
-                border: TableBorder.all(width: 1, color: black),
-                columnWidths: {0: FlexColumnWidth(5), 1: FlexColumnWidth(5)},
-                children: [
-              TableRow(children: [
-                InsiteTableRowItem(
-                  title: "Device ID :",
-                  content: deviceId,
-                ),
-                InsiteTableRowItem(
-                  title: "Recipient’s Name :",
-                  content: name,
-                ),
-              ]),
-              TableRow(children: [
-                InsiteTableRowItem(
-                  title: "Serial No. :",
-                  content: serialNo,
-                ),
-                InsiteTableRowItem(
-                  title: "Mobile Number : ",
-                  content: mobileNo,
-                ),
-              ]),
+                  )
                 ],
+                title: Table(
+                  border: TableBorder.all(width: 2, color: borderLineColor),
+                  columnWidths: {0: FlexColumnWidth(2), 1: FlexColumnWidth(2)},
+                  children: [
+                    TableRow(children: [
+                      InsiteTableRowItem(
+                        title: "Device ID :",
+                        content: deviceId,
+                      ),
+                      InsiteTableRowItem(
+                        title: "Recipient’s Name :",
+                        content: name,
+                      ),
+                    ]),
+                    TableRow(children: [
+                      InsiteTableRowItem(
+                        title: "Serial No. :",
+                        content: serialNo,
+                      ),
+                      InsiteTableRowItem(
+                        title: "Mobile Number : ",
+                        content: mobileNo,
+                      ),
+                    ]),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

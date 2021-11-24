@@ -61,6 +61,7 @@ import 'package:insite/views/subscription/replacement/model/device_search_model_
 import 'package:insite/views/subscription/replacement/model/replace_deviceId_model.dart';
 import 'package:insite/views/subscription/replacement/model/replacement_deviceId_download.dart';
 import 'package:insite/views/subscription/replacement/model/replacement_model.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
@@ -992,6 +993,9 @@ abstract class RestClient {
       @Body() List<String> assetUId,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
+  @POST("{url}")
+  Future<dynamic> deleteSmsSchedule(
+      @Path() String url, @Body() List<DeleteSmsReport> data);
 }
 
 @JsonSerializable()

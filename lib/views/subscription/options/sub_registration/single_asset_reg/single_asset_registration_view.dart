@@ -110,6 +110,8 @@ class _SingleAssetRegistrationViewState
                                                       width: 130,
                                                       child:
                                                           ReusableAutocompleteSearchView(
+                                                        formFieldType: viewModel
+                                                            .deviceIdType,
                                                         reuseController: viewModel
                                                             .deviceIdController,
                                                         onSelected:
@@ -413,19 +415,27 @@ class _SingleAssetRegistrationViewState
                                                   Container(
                                                     height: 35,
                                                     width: 130,
-                                                    child: CustomTextBox(
-                                                        controller: viewModel
+                                                    child:
+                                                        ReusableAutocompleteSearchView(
+                                                          formFieldType: false,
+                                                          reuseController: viewModel
                                                             .deviceNameController,
-                                                        onChanged: (value) {
-                                                          viewModel
-                                                              .getSubcriptionDeviceListPerNameOrCode(
-                                                                  name: value,
-                                                                  type:
-                                                                      "DEALER");
-                                                        },
-                                                        validator:
-                                                            defaultCustomFieldValidator),
+                                                      onChanged: (value) {
+                                                        viewModel
+                                                            .getSubcriptionDeviceListPerNameOrCode(
+                                                                name: value,
+                                                                type: "DEALER");
+                                                      },
+                                                      data:
+                                                          viewModel.customerId,
+                                                      onSelected: (value) {
+                                                        viewModel
+                                                            .filterDealerName(
+                                                                value);
+                                                      },
+                                                    ),
                                                   ),
+                                                  
                                                 ],
                                               ),
                                               Column(
@@ -445,20 +455,43 @@ class _SingleAssetRegistrationViewState
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
-                                                      width: 130,
-                                                      child: CustomTextBox(
-                                                          controller: viewModel
-                                                              .deviceCodeController,
-                                                          onChanged: (value) {
-                                                            viewModel
-                                                                .getSubcriptionDeviceListPerNameOrCode(
-                                                                    name: value,
-                                                                    type:
-                                                                        "DEALER");
-                                                          },
-                                                          validator:
-                                                              defaultCustomFieldValidator)),
+                                                    height: 35,
+                                                    width: 130,
+                                                    child:
+                                                        ReusableAutocompleteSearchView(
+                                                      formFieldType: true,
+                                                      reuseController: viewModel
+                                                          .deviceCodeController,
+                                                      data: viewModel
+                                                          .finalDeviceDetails,
+                                                      onChanged: (value) {
+                                                        viewModel
+                                                            .getSubcriptionDeviceListPerNameOrCode(
+                                                                name: value,
+                                                                type: "DEALER");
+                                                      },
+                                                      onSelected: (value) {
+                                                        viewModel
+                                                            .filterDealerCode(
+                                                                value)(value);
+                                                      },
+                                                    ),
+                                                  ),
+                                                  // Container(
+                                                  //     height: 35,
+                                                  //     width: 130,
+                                                  //     child: CustomTextBox(
+                                                  //         controller: viewModel
+                                                  //             .deviceCodeController,
+                                                  //         onChanged: (value) {
+                                                  //           viewModel
+                                                  //               .getSubcriptionDeviceListPerNameOrCode(
+                                                  //                   name: value,
+                                                  //                   type:
+                                                  //                       "DEALER");
+                                                  //         },
+                                                  //         validator:
+                                                  //             defaultCustomFieldValidator)),
                                                 ],
                                               ),
                                             ],
@@ -557,6 +590,21 @@ class _SingleAssetRegistrationViewState
                                                       width: 130,
                                                       child:
                                                           ReusableAutocompleteSearchView(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            viewModel
+                                                                    .customerNameType =
+                                                                false;
+                                                            viewModel
+                                                                    .customerCodetype =
+                                                                true;
+                                                            viewModel
+                                                                    .deviceIdType =
+                                                                true;
+                                                          });
+                                                        },
+                                                        formFieldType: viewModel
+                                                            .customerNameType,
                                                         reuseController: viewModel
                                                             .customerNameController,
                                                         onSelected:
@@ -573,7 +621,7 @@ class _SingleAssetRegistrationViewState
                                                                       "CUSTOMER");
                                                         },
                                                         data: viewModel
-                                                            .customerCode,
+                                                            .customerId,
                                                         validator: (value) {
                                                           if (value.isEmpty) {
                                                             return "required";
@@ -604,6 +652,21 @@ class _SingleAssetRegistrationViewState
                                                       width: 130,
                                                       child:
                                                           ReusableAutocompleteSearchView(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            viewModel
+                                                                    .customerCodetype =
+                                                                false;
+                                                            viewModel
+                                                                    .deviceIdType =
+                                                                true;
+                                                            viewModel
+                                                                    .customerNameType =
+                                                                true;
+                                                          });
+                                                        },
+                                                        formFieldType: viewModel
+                                                            .customerCodetype,
                                                         reuseController: viewModel
                                                             .customerCodeController,
                                                         onSelected:

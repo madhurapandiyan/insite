@@ -59,11 +59,19 @@ class MyApi {
   RestClient getClientTen() {
     return httpWrapper.clientTen;
   }
+
+  RestClient getClientEleven() {
+    return httpWrapper.clientEleven;
+  }
+
+  RestClient getClientTwelve() {
+    return httpWrapper.clientTwelve;
+  }
 }
 
 class HttpWrapper {
   String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL3N0YWdlLmlkLnRyaW1ibGVjbG91ZC5jb20iLCJleHAiOjE2MzczMDIzNDgsIm5iZiI6MTYzNzI5ODc0OCwiaWF0IjoxNjM3Mjk4NzQ4LCJqdGkiOiI3N2Y5YjA3YmU5NjU0MWE5OGQ0ZjI5ODQzOTY3ZjRhZCIsImp3dF92ZXIiOjIsInN1YiI6ImQ4ZjA4MGEzLTZmZDEtNDUzNi1iMmVkLWI0MTk5MTg4ZjNlNCIsImlkZW50aXR5X3R5cGUiOiJ1c2VyIiwiYW1yIjpbInBhc3N3b3JkIl0sImF1dGhfdGltZSI6MTYzNzI5ODc0NywiYXpwIjoiN2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4IiwiYXVkIjpbIjdiZTc1OWIxLWFmYzUtNGE0YS04YTg2LWJkYTVlMDQ1YTUwOCJdLCJzY29wZSI6Ik9TRy1GUkFNRS1BUFAtU1RBR0UifQ.embDRg_IZMUPP6Ks9jnk2d4QoU07_BDSsSjRgVOHX4Fj_eWg6BBdDyez5ws3pg34vUm7UeF8M_ZgiJgnj1ouK0ffgtpM8cqZ8zywKrdcFbXCmAMp4mLP-XQQp6vyZ-eYxsdwEEABglexuGAK9bUL9TPqbuuJ5Ixbz7TFOmy3dEM0mxRpisb6PqK7bfE3slr-stbNXW05Xeui3UyQrwwzcA47nvSTN_fkeVq3EriaAb7XY8jgJfElWDAP53EpgvPuuW4LkIJ_PMJ1_UVThwLWQBRJzKSXjYKAH_2BTb0QVjeT9j_DSYXbRTUXD8BnAuJHR_PvhKZorEkP-ECCIRxDTw";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL3N0YWdlLmlkLnRyaW1ibGVjbG91ZC5jb20iLCJleHAiOjE2Mzc3NDQ4MDEsIm5iZiI6MTYzNzc0MTIwMSwiaWF0IjoxNjM3NzQxMjAxLCJqdGkiOiJjMWE4NmU1N2VhNDQ0YWFiYmEwMDkxMDU5YmVmZjAzMiIsImp3dF92ZXIiOjIsInN1YiI6ImQ4ZjA4MGEzLTZmZDEtNDUzNi1iMmVkLWI0MTk5MTg4ZjNlNCIsImlkZW50aXR5X3R5cGUiOiJ1c2VyIiwiYW1yIjpbInBhc3N3b3JkIl0sImF1dGhfdGltZSI6MTYzNzc0MTIwMCwiYXpwIjoiN2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4IiwiYXVkIjpbIjdiZTc1OWIxLWFmYzUtNGE0YS04YTg2LWJkYTVlMDQ1YTUwOCJdLCJzY29wZSI6Ik9TRy1GUkFNRS1BUFAtU1RBR0UifQ.BGty4HNX_qdIBQM1xpn-QoGs_dq-7eYfwmg9nqdoS-F5DXfWqIXidLX3s4TH4Rl8D5k4xC6DPKZLczLT_E0dwJ-WuMvglhKupf5-0udTx0jlNDiW-PYH7EqDsAYWPr8HsJGNF8ObrwoeI8L44tgRO66Wh-2t46x_Qp-89n-exjz1pPUmFcJOR4RmUVjl6GrpXxZ3tcSy4G4SJg9lcCqXd8XypKHXtafHSr-46qIs1mzKNfjqpSSjMozjWIRHBtYKWPycrspeZY93lBxhFj4fnv5Ue05DAHPC-hBqXCnc1iznjufPljqf53b6t4_C-S7NI-O4aJv8IByUfGDSNcAExA";
 
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
@@ -88,6 +96,8 @@ class HttpWrapper {
   Dio dioEight = new Dio();
   Dio dioNine = new Dio();
   Dio dioTen = new Dio();
+  Dio dioEleven = new Dio();
+  Dio dioTwelve = new Dio();
 
   var client;
   var clientOne;
@@ -100,6 +110,8 @@ class HttpWrapper {
   var clientEight;
   var clientNine;
   var clientTen;
+  var clientEleven;
+  var clientTwelve;
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
@@ -291,6 +303,40 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioEleven.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "content-type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "bearer " + token,
+          });
+
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
+    dioTwelve.interceptors
+      ..add(InterceptorsWrapper(
+        onRequest: (Options options) async {
+          options.headers.addAll({
+            "content-type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "bearer " + await _localService.getToken(),
+          });
+
+          return options;
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: AppConfig.instance.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
@@ -302,6 +348,8 @@ class HttpWrapper {
     clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
     clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
+    clientEleven = RestClient(dioEleven, baseUrl: _baseUrlEight);
+    clientTwelve = RestClient(dioTwelve, baseUrl: _baseUrlSix);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();
