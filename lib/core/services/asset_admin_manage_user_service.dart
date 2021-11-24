@@ -565,7 +565,7 @@ class AssetAdminManagerUserService extends BaseService {
 
       EstimatedAssetSetting listSettingTargetData =
           EstimatedAssetSetting(assetTargetSettings: getAssetList);
-          Logger().i(listSettingTargetData.toJson());
+      Logger().i(listSettingTargetData.toJson());
 
       if (isVisionLink) {
         var result = await MyApi()
@@ -736,7 +736,7 @@ class AssetAdminManagerUserService extends BaseService {
       int legacyAssetID, modelYear) async {
     try {
       if (isVisionLink) {
-        var assetIconData = await MyApi().getClientSeven().getAssetIconData(
+        var assetIconData = await MyApi().getClientSeven().getAssetIconDataVL(
             Urls.getAssetIconVL,
             AssetIconPayLoad(
                 actionUTC: actionUTC,
@@ -747,15 +747,16 @@ class AssetAdminManagerUserService extends BaseService {
             accountSelected.CustomerUID);
         return assetIconData;
       } else {
-        var assetIconData = await MyApi().getClient().getAssetIconData(
-            Urls.getAssetIconVL,
+        var assetIconData = await MyApi().getClientSix().getAssetIconData(
+            Urls.assetIconData,
             AssetIconPayLoad(
                 actionUTC: actionUTC,
                 assetUID: assetUID,
                 iconKey: iconKey,
                 legacyAssetID: legacyAssetID,
                 modelYear: modelYear),
-            accountSelected.CustomerUID);
+            accountSelected.CustomerUID,
+            "in-vlmasterdata-api-vlmd-asset");
 
         return assetIconData;
       }
