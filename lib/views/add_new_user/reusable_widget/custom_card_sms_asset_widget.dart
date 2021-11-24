@@ -31,7 +31,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
       child: Column(
         children: [
           Table(
-            border: TableBorder.all(width: 1, color: black),
+            border: TableBorder.all(width: 2, color: borderLineColor),
             columnWidths: {0: FlexColumnWidth(5), 1: FlexColumnWidth(5)},
             children: [
               TableRow(children: [
@@ -51,33 +51,12 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 5),
-                        height: 50,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FittedBox(
-                              child: InsiteText(
-                                text: "Make",
-                              ),
-                            ),
-                            FittedBox(
-                              child: InsiteText(
-                                text: "Tata Hitachi",
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    InsiteTableRowItem(title: "Make",content: "Title",),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.only(left: 5),
                         decoration: BoxDecoration(
-                            border: Border.all(width: 1),
+                            border: Border.all(width: 2, color: borderLineColor),
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(10))),
                         height: 100,
@@ -119,22 +98,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 50,
-                  padding: EdgeInsets.only(left: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InsiteText(
-                        text: "Recipient’s Mobile No",
-                      ),
-                      InsiteTextOverFlow(
-                        text: mobileNo,
-                      ),
-                    ],
-                  ),
-                ),
+                InsiteTableRowItem(title: "Recipient's Mobile No",content: mobileNo,)
               ]),
               TableRow(children: [
                 Container(
@@ -173,30 +137,34 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
               ]),
             ],
           ),
-          Container(
-            padding: EdgeInsets.only(left: 5),
-            height: MediaQuery.of(context).size.height * 0.07,
-            width: MediaQuery.of(context).size.width * 0.79,
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, color: black),
-                borderRadius:
-                    BorderRadius.only(bottomRight: Radius.circular(10))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InsiteText(
-                  text: "Subscription Activation Date :",
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                InsiteTextOverFlow(
-                  overflow: TextOverflow.ellipsis,
-                  text: Utils.getLastReportedDateFilterData(
-                      DateFormat("yyyy-MM-dd").parse(date)),
-                )
-              ],
+          Expanded(
+            flex: 1,
+            child: Container(
+              margin: EdgeInsets.all(3),
+              padding: EdgeInsets.only(left: 5),
+              //height: MediaQuery.of(context).size.height * 0.07,
+             width: MediaQuery.of(context).size.width * 0.80,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: borderLineColor),
+                  borderRadius:
+                      BorderRadius.only(bottomRight: Radius.circular(10))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InsiteText(
+                    text: "Subscription Activation Date :",
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InsiteTextOverFlow(
+                    overflow: TextOverflow.ellipsis,
+                    text: Utils.getLastReportedDateFilterData(
+                        DateFormat("yyyy-MM-dd").parse(date)),
+                  )
+                ],
+              ),
             ),
           )
         ],

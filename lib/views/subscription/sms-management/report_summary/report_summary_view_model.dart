@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:excel/excel.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -21,34 +22,51 @@ class ReportSummaryViewModel extends InsiteViewModel {
     Future.delayed(Duration.zero, () {
       getReportSummaryData();
     });
+    controller.addListener(() {
+      if (controller.position.pixels == controller.position.maxScrollExtent) {
+        isLoadMore = true;
+        startCount = startCount + 16;
+        getReportSummaryData();
+        notifyListeners();
+      }
+    });
   }
 
   SmsReportSummaryModel _smsReportSummaryModel;
   SmsReportSummaryModel get smsReportSummaryModel => _smsReportSummaryModel;
 
   List<ReportSummaryModel> modelDataList = [];
+  List<int> selectedId = [];
+  List<DeleteSmsReport> deleteSmsReport = [];
 
   SmsReportSummaryModel data;
 
   bool isLoading = true;
+  bool isLoadMore = false;
+
+  int startCount = 0;
+  final controller = new ScrollController();
 
   bool showDeleteButton = false;
 
   getReportSummaryData() async {
     try {
       _smsReportSummaryModel =
-          await _smsScheduleService.getsmsReportSummaryModel();
+          await _smsScheduleService.getsmsReportSummaryModel(startCount);
       for (var i = 0; i < _smsReportSummaryModel.result.length; i++) {
         if (i == 0) {
           Logger().wtf(null);
           isLoading = false;
           notifyListeners();
         } else {
-          modelDataList = _smsReportSummaryModel.result[1];
+          _smsReportSummaryModel.result[1].forEach((element) {
+            modelDataList.add(element);
+          });
           for (var i = 0; i < modelDataList.length; i++) {
             modelDataList[i].isSelected = false;
           }
           isLoading = false;
+          isLoadMore = false;
           notifyListeners();
         }
       }
@@ -56,6 +74,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
       notifyListeners();
     } catch (e) {
       isLoading = false;
+      Logger().e(e.toString());
       notifyListeners();
     }
   }
@@ -63,20 +82,55 @@ class ReportSummaryViewModel extends InsiteViewModel {
   onSelected(int i) {
     try {
       modelDataList[i].isSelected = !modelDataList[i].isSelected;
-      showDeleteButton = true;
+      if (modelDataList[i].isSelected) {
+        selectedId.add(modelDataList[i].ID);
+      } else if (modelDataList[i].isSelected == false) {
+        selectedId.remove(modelDataList[i].ID);
+      }
+      Logger().wtf(selectedId);
+      setBool();
       notifyListeners();
     } catch (e) {
       Logger().w(e.toString());
     }
   }
 
-  // setBool(int i) {
-  //   modelDataList.forEach((element) {
-  //     if (element.isSelected == true) {
-  //       showDeleteButton = true;
-  //     }
-  //   });
-  // }
+  setBool() {
+    final checkIsSelected = modelDataList.any((element) {
+      return element.isSelected == true;
+    });
+    if (checkIsSelected) {
+      showDeleteButton = true;
+      notifyListeners();
+    } else {
+      showDeleteButton = false;
+      notifyListeners();
+    }
+  }
+
+  onDeletingSmsSchedule() async {
+    try {
+      DeleteSmsReport deleteData;
+      selectedId.forEach((id) {
+        deleteData = DeleteSmsReport(ID: id);
+        deleteSmsReport.add(deleteData);
+        var deletingData =
+            modelDataList.singleWhere((element) => element.ID == id);
+        modelDataList.remove(deletingData);
+        // selectedId.remove(id);
+        notifyListeners();
+      });
+      var data =
+          await _smsScheduleService.deleteSmsScheduleReport(deleteSmsReport);
+      Logger().w(selectedId.length);
+      selectedId.clear();
+      deleteSmsReport.clear();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
+    notifyListeners();
+  }
 
   onDownload() async {
     try {
@@ -111,7 +165,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         sheetObj.updateCell(
             CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
       }
-     // Logger().e(path.path);
+      // Logger().e(path.path);
       excelSheet.encode().then((onValue) {
         File("${path.path}/SMS_schedule.xlsx")
           ..createSync(recursive: true)
@@ -119,7 +173,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
           ..open(mode: FileMode.read);
       });
       snackbarService.showSnackbar(message: "File saved in ${path.path}");
-     // Logger().e(excelSheet.sheets.values.last.rows);
+      // Logger().e(excelSheet.sheets.values.last.rows);
       hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();

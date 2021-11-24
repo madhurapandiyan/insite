@@ -3730,4 +3730,23 @@ class _RestClient implements RestClient {
     final value = AssetMileageSettingsListData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<dynamic> deleteSmsSchedule(url, data) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(data, 'data');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = data.map((e) => e.toJson()).toList();
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
 }

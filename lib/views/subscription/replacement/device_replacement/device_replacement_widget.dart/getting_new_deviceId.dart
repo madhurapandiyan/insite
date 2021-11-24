@@ -72,33 +72,37 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
         SizedBox(
           height: 10,
         ),
-        CustomTextBox(
-          controller: widget.controller,
-          onChanged: (value) {
-            widget.onChange(value);
-          },
+        Container(
+          width: MediaQuery.of(context).size.width * 0.75,
+          height: MediaQuery.of(context).size.height * 0.05,
+          child: CustomTextBox(
+            controller: widget.controller,
+            onChanged: (value) {
+              widget.onChange(value);
+            },
+          ),
         ),
         widget.showingDeviceId
             ? SizedBox(
                 height: 20,
               )
             : Container(
-                margin: EdgeInsets.all(8),
-                height: 50,
+                //margin: EdgeInsets.all(8),
+                // height: 50,
                 color: white,
-                child: ListView.builder(
-                  itemCount: widget.modelData.result.last.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return DeviceIdListWidget(
-                        onSelected: () {
-                          setState(() {
-                            widget.controller.text =
-                                widget.modelData.result.last[i].GPSDeviceID;
-                          });
-                          FocusScope.of(context).unfocus();
-                        },
-                        deviceId: widget.modelData.result.last[i].GPSDeviceID);
-                  },
+                child: Column(
+                  children: List.generate(
+                      widget.modelData.result.last.length,
+                      (i) => DeviceIdListWidget(
+                          onSelected: () {
+                            setState(() {
+                              widget.controller.text =
+                                  widget.modelData.result.last[i].GPSDeviceID;
+                            });
+                            FocusScope.of(context).unfocus();
+                          },
+                          deviceId:
+                              widget.modelData.result.last[i].GPSDeviceID)),
                 ),
               ),
         SizedBox(
@@ -110,18 +114,23 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
         SizedBox(
           height: 10,
         ),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.05,
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 1, color: white)),
-          child: CustomDropDownWidget(
-            items: widget.items,
-            value: widget.initialValue,
-            onChanged: (value) {
-              widget.onDropDownValueChange(value);
-            },
+        Card(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            height: MediaQuery.of(context).size.height * 0.05,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                    width: 2,
+                    color: Theme.of(context).textTheme.bodyText1.color)),
+            child: CustomDropDownWidget(
+              items: widget.items,
+              value: widget.initialValue,
+              onChanged: (value) {
+                widget.onDropDownValueChange(value);
+              },
+            ),
           ),
         ),
       ],

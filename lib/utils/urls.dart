@@ -239,6 +239,8 @@ class Urls {
   static String smsManagementSingleAsset = "$subscriptionPrefix/scheduleSms";
   static String smsManagementScheduleReportSummary =
       "$subscriptionPrefix/scheduleSmsSummaryReport";
+  static String deleteSmsScheduleReport =
+      "$smsManagementScheduleReportSummary/deleteReport";
   static String getScheduleReportData =
       "$smsManagementScheduleReportSummary/download";
   static String masterSearchDeviceId =

@@ -50,7 +50,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
                               InsiteButton(
                                   height:
                                       MediaQuery.of(context).size.height * 0.05,
-                                  bgColor: tuna,
+                                 // bgColor: tuna,
                                   title: "",
                                   onTap: () {
                                     viewModel.onDownload();

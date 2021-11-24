@@ -37,120 +37,135 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        //height: MediaQuery.of(context).size.height * 0.6,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: tuna,
-        ),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InsiteText(
-                text: "Asset Serial No. :",
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextBox(
-                onFieldSubmmit: (_) {
-                  FocusScope.of(context).requestFocus(nameFocus);
-                },
-                keyPadType: TextInputType.text,
-                validator: serialNoValidator,
-                onChanged: (value) {
-                  serialNo = value;
-                },
-              ),
-              
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: InsiteText(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          //height: MediaQuery.of(context).size.height * 0.6,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+         
+          ),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InsiteText(
+                  text: "Asset Serial No. :",
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: CustomTextBox(
+                    onFieldSubmmit: (_) {
+                      FocusScope.of(context).requestFocus(nameFocus);
+                    },
+                    keyPadType: TextInputType.text,
+                    validator: serialNoValidator,
+                    onChanged: (value) {
+                      serialNo = value;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                InsiteText(
                   text: "Recipient’s Name :",
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextBox(
-                onFieldSubmmit: (_) {
-                  FocusScope.of(context).requestFocus(mobileNoFocus);
-                },
-                focusNode: nameFocus,
-                keyPadType: TextInputType.name,
-                onChanged: (value) {
-                  name = value;
-                },
-                validator: serialNoValidator,
-              ),
-              
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: InsiteText(
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: CustomTextBox(
+                    onFieldSubmmit: (_) {
+                      FocusScope.of(context).requestFocus(mobileNoFocus);
+                    },
+                    focusNode: nameFocus,
+                    keyPadType: TextInputType.name,
+                    onChanged: (value) {
+                      name = value;
+                    },
+                    validator: serialNoValidator,
+                  ),
+                ),
+                 SizedBox(
+                  height: 30,
+                ),
+                InsiteText(
                   text: "Recipient’s Mobile No. :",
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextBox(
-                onFieldSubmmit: (_) {
-                  FocusScope.of(context).requestFocus(languageFocus);
-                },
-                keyPadType: TextInputType.phone,
-                onChanged: (value) {
-                  mobileNo = value;
-                },
-                focusNode: mobileNoFocus,
-                validator: modileNoValidator,
-              ),
-              
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: InsiteText(
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  child: CustomTextBox(
+                    onFieldSubmmit: (_) {
+                      FocusScope.of(context).requestFocus(languageFocus);
+                    },
+                    keyPadType: TextInputType.phone,
+                    onChanged: (value) {
+                      mobileNo = value;
+                    },
+                    focusNode: mobileNoFocus,
+                    validator: modileNoValidator,
+                  ),
+                ),
+                 SizedBox(
+                  height: 30,
+                ),
+                InsiteText(
                   text: "Language :",
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1.color,
-                        width: 1)),
-                child: CustomDropDownWidget(
-                  onFocus: languageFocus,
-                  items: ["English", "Hindi"],
-                  value: value,
-                  onChanged: (val) {
-                    Logger().e(val);
-                    setState(() {
-                      value = val;
-                    });
-                  },
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              InsiteButton(
-                height: MediaQuery.of(context).size.height * 0.07,
-                onTap: () {
-                  final valid = formKey.currentState.validate();
-                  if (valid) {
-                    widget.onSaving(serialNo, name, mobileNo, value);
-                  }
-                },
-                title: "Submit",
-                fontSize: 15,
-              )
-            ],
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(
+                          color: Theme.of(context).textTheme.bodyText1.color,
+                          width: 1)),
+                  child: CustomDropDownWidget(
+                    onFocus: languageFocus,
+                    items: ["English", "Hindi"],
+                    value: value,
+                    onChanged: (val) {
+                      Logger().e(val);
+                      setState(() {
+                        value = val;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                InsiteButton(
+                  textColor: white,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  onTap: () {
+                    final valid = formKey.currentState.validate();
+                    if (valid) {
+                      widget.onSaving(serialNo, name, mobileNo, value);
+                    }
+                  },
+                  title: "Submit",
+                  fontSize: 15,
+                )
+              ],
+            ),
           ),
         ),
       ),

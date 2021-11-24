@@ -60,6 +60,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   int pageSize = 100;
   int pageNumberSecond = 0;
   int pageSizeSecond = 10;
+  bool deviceIdType = true;
+  bool customerCodetype = true;
+  bool customerNameType = true;
 
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
@@ -513,4 +516,30 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     });
     notifyListeners();
   }
+
+  filterDealerCode(String value) {
+    customerDetails.forEach((element) {
+      if (value.toLowerCase() == element.Code.toLowerCase()) {
+        deviceNameController.text = element.Code;
+        deviceEmailController.text = element.Email;
+        notifyListeners();
+      }
+    });
+  }
+
+  filterDealerName(String value) {
+    customerDetails.forEach((element) {
+      if (value.toLowerCase() == element.Name.toLowerCase()) {
+        deviceCodeController.text = element.Code;
+        deviceEmailController.text = element.Email;
+        notifyListeners();
+      }
+    });
+  }
+}
+
+enum FieldType {
+  CUSTOMERCODE,
+  CUSTOMERNAME,
+  DEVICEID,
 }
