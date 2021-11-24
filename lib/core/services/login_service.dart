@@ -56,7 +56,7 @@ class LoginService extends BaseService {
     if (isVisionLink) {
     } else {
       userAuthenticateStatus = await MyApi()
-          .getClientTwelve()
+          .getClientNine()
           .authenticateUser(Urls.authenticateUrl, data);
       await _localService
           .saveUserId(Utils.getUserId(userAuthenticateStatus.result));
