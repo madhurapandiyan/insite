@@ -139,7 +139,7 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
   }
 
   gotoAssetingSettingsPage() {
-    _navigationservice.navigateWithTransition(AssetSettingsView(),
-        transition: "fade");
+    _navigationservice.clearTillFirstAndShowView(AssetSettingsView());
+        
   }
 }

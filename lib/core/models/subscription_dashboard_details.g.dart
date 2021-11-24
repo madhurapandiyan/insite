@@ -58,6 +58,7 @@ DetailResult _$DetailResultFromJson(Map<String, dynamic> json) {
     InsertUTC: json['InsertUTC'] as String,
     SourceCustomerType: json['SourceCustomerType'] as String,
     Status: json['Status'] as String,
+    vin: json['vin'] as String,
   );
 }
 
@@ -85,6 +86,7 @@ Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
       'UserName': instance.UserName,
       'Email': instance.Email,
       'Code': instance.Code,
+      'vin': instance.vin,
       'fk_AssetId': instance.fk_AssetId,
       'SourceName1': instance.SourceName1,
       'SourceName2': instance.SourceName2,

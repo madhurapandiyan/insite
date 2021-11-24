@@ -895,10 +895,18 @@ abstract class RestClient {
   Future<SmsReportSummaryModel> gettingScheduleReportSummary(
       @Path() String url);
   @PUT('{url}')
-  Future<dynamic> getAssetIconData(
+  Future<dynamic> getAssetIconDataVL(
       @Path() String url,
       @Body() AssetIconPayLoad assetIconPayLoad,
       @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<dynamic> getAssetIconData(
+      @Path() String url,
+      @Body() AssetIconPayLoad assetIconPayLoad,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") service);
+      
   @GET('{url}')
   Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
     @Path() String url,
@@ -910,8 +918,7 @@ abstract class RestClient {
 
   @POST("{url}")
   Future<AssetTransferData> getSingleAssetTransferData(
-      @Path() String url,
-      @Body() AssetTransferData assetTransferData);
+      @Path() String url, @Body() AssetTransferData assetTransferData);
 
   @GET("{url}")
   Future<DeviceSearchModel> getDeviceSearchModel(@Path() String url);
