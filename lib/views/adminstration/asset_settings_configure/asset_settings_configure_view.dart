@@ -8,7 +8,6 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_settings_configure_view_model.dart';
 

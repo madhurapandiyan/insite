@@ -37,7 +37,11 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
       onSearchTextChanged(textEditingController.text);
     });
   }
-  var items = ["Select", "Asset Icon", "Asset ID", "CO2 Emissions", "Meters"];
+  // var items = ["Select", "Asset Icon", "Asset ID", "CO2 Emissions", "Meters"];
+  var items = [
+    "Select",
+    "Asset Icon",
+  ];
 
   List<ConfigureGridViewModel> staticTranspotData = [
     ConfigureGridViewModel(
@@ -140,6 +144,5 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
 
   gotoAssetingSettingsPage() {
     _navigationservice.clearTillFirstAndShowView(AssetSettingsView());
-        
   }
 }

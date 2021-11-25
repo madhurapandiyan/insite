@@ -12,11 +12,13 @@ class AssetCardsLarge extends StatefulWidget {
   final double height;
   final List<AdminAssetsButtonType> buttonTitle;
   final Function(AdminAssetsButtonType value) onCallbackSelected;
+  final bool showExapansionMenu;
 
   AssetCardsLarge(
       {this.icon,
       this.headerText,
       this.buttonTitle,
+      this.showExapansionMenu = true,
       this.onCallbackSelected,
       this.height});
 
@@ -38,13 +40,17 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
             ),
             Row(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SvgPicture.asset(
-                  "assets/images/arrowdown.svg",
-                  color: Theme.of(context).iconTheme.color,
-                ),
+                widget.showExapansionMenu
+                    ? SizedBox(
+                        width: 10,
+                      )
+                    : SizedBox(),
+                widget.showExapansionMenu
+                    ? SvgPicture.asset(
+                        "assets/images/arrowdown.svg",
+                        color: Theme.of(context).iconTheme.color,
+                      )
+                    : SizedBox(),
                 SizedBox(
                   width: 15,
                 ),
@@ -75,7 +81,7 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: InsiteButton(
-                        //width: MediaQuery.of(context).size.width * 0.004,
+                          //width: MediaQuery.of(context).size.width * 0.004,
                           height: MediaQuery.of(context).size.height * 0.049,
                           margin: EdgeInsets.all(4),
                           title: Utils.getAdminModuleMenuTitle(

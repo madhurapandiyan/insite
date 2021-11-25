@@ -33,10 +33,11 @@ class SmsManagementView extends StatelessWidget {
                       child: AssetCardsLarge(
                         headerText: 'SMS MANAGEMENT',
                         icon: "assets/images/message.svg",
+                        showExapansionMenu: false,
                         height: 30,
                         buttonTitle: [
                           AdminAssetsButtonType.values[19],
-                          AdminAssetsButtonType.values[20],
+                          // AdminAssetsButtonType.values[20],
                           AdminAssetsButtonType.values[21],
                         ],
                         onCallbackSelected: (value) {

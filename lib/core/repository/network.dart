@@ -248,7 +248,6 @@ class HttpWrapper {
           });
           // var check = await _localService.getToken();
           // log('interceptor $check');
-
           return options;
         },
       ))
