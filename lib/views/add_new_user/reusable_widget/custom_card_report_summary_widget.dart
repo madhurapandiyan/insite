@@ -27,9 +27,9 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-       // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        // margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         // height: MediaQuery.of(context).size.height * 0.25,
-       // width: MediaQuery.of(context).size.width * 0.9,
+        // width: MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -39,15 +39,13 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.keyboard_arrow_down),
+                // Icon(Icons.keyboard_arrow_down),
                 IconButton(
                     onPressed: () {
                       onSelected();
                     },
                     icon: Container(
-                      color: isSelected
-                          ? Theme.of(context).buttonColor
-                          : null,
+                      color: isSelected ? Theme.of(context).buttonColor : null,
                       child: Icon(
                         Icons.check_box_outline_blank,
                       ),
@@ -56,7 +54,8 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
             ),
             Expanded(
               child: InsiteExpansionTile(
-                childrenPadding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
+                childrenPadding:
+                    EdgeInsets.only(right: 15, left: 15, bottom: 15),
                 children: [
                   Table(
                     border: TableBorder.all(width: 2, color: borderLineColor),

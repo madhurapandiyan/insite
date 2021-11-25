@@ -33,33 +33,36 @@ class DeviceReplacementStatusView extends StatelessWidget {
                           InsiteText(
                             size: 20,
                             fontWeight: FontWeight.bold,
-                            text: "REPLACEMENT Status",
+                            text: "REPLACEMENT STATUS",
                           ),
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InsiteText(
-                                fontWeight: FontWeight.bold,
-                                size: 20,
-                                text:
-                                    "Total Entries -${viewModel.totalDeviceReplacementStatusModel.result.first.first.count} ",
-                              ),
-                              InsiteButton(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                 // bgColor: tuna,
-                                  title: "",
-                                  onTap: () {
-                                    viewModel.onDownload();
-                                  },
-                                  icon: Icon(
-                                    Icons.download,
-                                    color: appbarcolor,
-                                  )),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InsiteText(
+                                  fontWeight: FontWeight.bold,
+                                  size: 20,
+                                  text:
+                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel.result.first.first.count} ",
+                                ),
+                                InsiteButton(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    // bgColor: tuna,
+                                    title: "",
+                                    onTap: () {
+                                      viewModel.onDownload();
+                                    },
+                                    icon: Icon(
+                                      Icons.download,
+                                      color: appbarcolor,
+                                    )),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: 20,

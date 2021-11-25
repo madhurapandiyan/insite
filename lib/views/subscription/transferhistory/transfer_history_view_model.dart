@@ -9,7 +9,11 @@ import 'package:logger/logger.dart';
 class TransferHistoryViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
+
   var _subscriptionService = locator<SubScriptionService>();
+
+  bool _showDownload = false;
+  bool get showDownload => _showDownload;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -49,11 +53,10 @@ class TransferHistoryViewModel extends InsiteViewModel {
       start: start == 0 ? start : start + 1,
       limit: limit,
     );
-
     if (result != null) {
       if (result.result.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result[1]);
+        devices.addAll(result.result[0]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -63,6 +66,7 @@ class TransferHistoryViewModel extends InsiteViewModel {
         _shouldLoadmore = false;
         notifyListeners();
       }
+      Logger().i("getTransferHistoryViewData length ${devices.length}");
       _loading = false;
       _loadingMore = false;
       notifyListeners();

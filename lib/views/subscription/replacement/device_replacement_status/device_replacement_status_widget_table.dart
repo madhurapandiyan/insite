@@ -18,27 +18,26 @@ class ReplacementStatusTableWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.9,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.keyboard_arrow_down),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.check_box_outline_blank,
-                            //color: Theme.of(context).buttonColor,
-                          ))
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 15),
+                //   child: Column(
+                //     // crossAxisAlignment: CrossAxisAlignment.start,
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Icon(Icons.keyboard_arrow_down),
+                //       IconButton(
+                //           onPressed: () {},
+                //           icon: Icon(
+                //             Icons.check_box_outline_blank,
+                //             //color: Theme.of(context).buttonColor,
+                //           ))
+                //     ],
+                //   ),
+                // ),
                 Expanded(
                   child: InsiteExpansionTile(
                     childrenPadding: EdgeInsets.all(10),
@@ -73,20 +72,19 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                     ),
                     children: [
                       Table(
-                        border: TableBorder.all(width: 2, color: borderLineColor),
+                        border:
+                            TableBorder.all(width: 2, color: borderLineColor),
                         children: [
                           TableRow(
                             children: [
                               InsiteTableRowItem(
                                 title: "Replacement Status : ",
-                     
                                 content: modelData.State ?? "null",
                               ),
                               InsiteTableRowItem(
                                 title: "Description : ",
                                 content: modelData.Description ?? "null",
                               ),
-                           
                             ],
                           ),
                           TableRow(children: [

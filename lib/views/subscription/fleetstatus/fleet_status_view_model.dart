@@ -9,7 +9,11 @@ import 'package:logger/logger.dart';
 class FleetStatusViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
+  
   var _subscriptionService = locator<SubScriptionService>();
+
+  bool _showDownload = false;
+  bool get showDownload => _showDownload;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -19,6 +23,7 @@ class FleetStatusViewModel extends InsiteViewModel {
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
+
   ScrollController scrollController;
 
   FleetStatusViewModel() {

@@ -62,15 +62,15 @@ class PlantView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    AssetSettingWidget(
-                      icon: "assets/images/assessment.svg",
-                      showExapansionMenu: false,
-                      headerText: "ASSET CREATION",
-                      buttonText: "asset creation",
-                      onButtonClicked: () {
-                        viewModel.goToPlantAssetCreationPage();
-                      },
-                    ),
+                    // AssetSettingWidget(
+                    //   icon: "assets/images/assessment.svg",
+                    //   showExapansionMenu: false,
+                    //   headerText: "ASSET CREATION",
+                    //   buttonText: "asset creation",
+                    //   onButtonClicked: () {
+                    //     viewModel.goToPlantAssetCreationPage();
+                    //   },
+                    // ),
                   ],
                 ),
               )),

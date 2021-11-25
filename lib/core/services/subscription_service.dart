@@ -49,7 +49,7 @@ class SubScriptionService extends BaseService {
       }
 
       SubscriptionDashboardResult dashboardResult =
-          await MyApi().getClientEight().getSubscriptionDashboardResults(
+          await MyApi().getClientSix().getSubscriptionDashboardResults(
                 Urls.subscriptionResults +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -102,7 +102,7 @@ class SubScriptionService extends BaseService {
       }
 
       SubscriptionDashboardDetailResult dashboardResult =
-          await MyApi().getClientEight().getSubscriptionDeviceResults(
+          await MyApi().getClientSix().getSubscriptionDeviceResults(
                 filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
                     ? Urls.plantHierarchyAssetsResult +
                         FilterUtils.constructQueryFromMap(queryMap)
@@ -332,7 +332,7 @@ class SubScriptionService extends BaseService {
         queryMap["oemName"] = "THC";
       }
       CustomerDetails customerDetails = await MyApi()
-          .getClientEight()
+          .getClientSix()
           .getExitingCustomerDetails(Urls.getExistingCustomerDetails +
               deviceID +
               FilterUtils.constructQueryFromMap(queryMap));

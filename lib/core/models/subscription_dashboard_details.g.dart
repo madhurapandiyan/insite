@@ -49,7 +49,7 @@ DetailResult _$DetailResultFromJson(Map<String, dynamic> json) {
     VIN: json['VIN'] as String,
     NetworkProvider: json['NetworkProvider'] as String,
     ProductFamily: json['ProductFamily'] as String,
-    fk_AssetId: json['fk_AssetId'] as String,
+    fk_AssetId: json['fk_AssetId'] as int,
     SourceName1: json['SourceName1'] as String,
     SourceName2: json['SourceName2'] as String,
     DestinationName1: json['DestinationName1'] as String,

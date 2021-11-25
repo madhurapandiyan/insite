@@ -31,9 +31,10 @@ class ReplacementView extends StatelessWidget {
                   children: [
                     Center(
                       child: AssetCardsLarge(
-                        headerText: 'SMS MANAGEMENT',
-                        icon: "assets/images/message.svg",
+                        headerText: 'REPLACEMENT',
+                        icon: "assets/images/export.svg",
                         height: 30,
+                        showExapansionMenu: false,
                         buttonTitle: [
                           AdminAssetsButtonType.values[22],
                           AdminAssetsButtonType.values[23],

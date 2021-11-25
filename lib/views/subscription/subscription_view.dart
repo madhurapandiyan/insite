@@ -50,9 +50,9 @@ class SubscriptionView extends StatelessWidget {
                           buttonTitle: [
                             AdminAssetsButtonType.values[9],
                           ],
-                          height: 10.0,
+                          height: 25.0,
                           onCallbackSelected: (value) {
-                            viewModel.onRespectiveButtonClicked(value);
+                            // viewModel.onRespectiveButtonClicked(value);
                           }),
                     ],
                   ),
