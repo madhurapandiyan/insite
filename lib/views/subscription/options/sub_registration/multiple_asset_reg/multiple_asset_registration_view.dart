@@ -186,7 +186,7 @@ class _MultipleAssetRegistrationViewState
                           children: List.generate(
                             viewModel.assetValueData.length,
                             (i) => MultipleAssetRegistrationCard(
-                              assetValue: viewModel.assetValueData,
+                              assetValue: viewModel.assetValueData[i],
                             ),
                           ),
                         )

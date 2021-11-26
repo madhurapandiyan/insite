@@ -49,9 +49,9 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
 
         final data = await FlutterDownloader.enqueue(
             url:
-                "https://insite.frame-oesolutions.com/assets/files/Sample-multiple.xlsx",
+                "https://docs.google.com/spreadsheets/d/1ISiq3m39_APxsEFsBDOuBdkpLYv8H3Ik/edit?usp=sharing&ouid=104928811217417861871&rtpof=true&sd=true",
             savedDir: baseStorage.path,
-            fileName: "Multiple Registration Sample File",
+            fileName: "Multiple Registration Sample",
             openFileFromNotification: true);
       }
     } catch (e) {
