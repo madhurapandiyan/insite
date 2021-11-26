@@ -1,39 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_card_asset_registration.dart';
 
 class MultipleAssetRegistrationCard extends StatelessWidget {
-  final String deviceId;
-  final String model;
-  final String serial;
-  final String hRM;
-  final String hrmDate;
-  final String plantName;
-  final String plantCode;
-  final String plantEmail;
-  final String dealerName;
-  final String dealerCode;
-  final String dealerEmail;
-  final String customerName;
-  final String customerCode;
-  final String customerEmail;
+  final List<AssetValues> assetValue;
 
-  MultipleAssetRegistrationCard({
-    this.customerCode,
-    this.customerEmail,
-    this.customerName,
-    this.dealerCode,
-    this.dealerEmail,
-    this.dealerName,
-    this.deviceId,
-    this.hRM,
-    this.hrmDate,
-    this.model,
-    this.plantCode,
-    this.plantEmail,
-    this.plantName,
-    this.serial,
-  });
+  MultipleAssetRegistrationCard({this.assetValue});
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +39,7 @@ class MultipleAssetRegistrationCard extends StatelessWidget {
                 ],
               ),
             ),
-            CustoCardMultipleAssetWidget(
-              deviceId: deviceId,
-              model: model,
-              serial: serial,
-              hRM: hRM,
-              hrmDate: hrmDate,
-              plantName: plantName,
-              plantCode: plantCode,
-              plantEmail: plantEmail,
-              dealerName: dealerName,
-              dealerCode: dealerCode,
-              dealerEmail: dealerEmail,
-              customerName: customerName,
-              customerCode: customerCode,
-              customerEmail: customerEmail,
-            )
+            CustoCardMultipleAssetWidget(assetValue: assetValue)
           ],
         ),
       ),

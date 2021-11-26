@@ -51,7 +51,7 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
             url:
                 "https://insite.frame-oesolutions.com/assets/files/Sample-multiple.xlsx",
             savedDir: baseStorage.path,
-            fileName: "Sample- multiple",
+            fileName: "Multiple Registration Sample File",
             openFileFromNotification: true);
       }
     } catch (e) {

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_card.dart';
@@ -185,29 +186,8 @@ class _MultipleAssetRegistrationViewState
                           children: List.generate(
                             viewModel.assetValueData.length,
                             (i) => MultipleAssetRegistrationCard(
-                                deviceId: viewModel.assetValueData[i].deviceId,
-                                model: viewModel.assetValueData[i].machineModel,
-                                serial: viewModel.assetValueData[i].machineSlNo,
-                                hRM: viewModel.assetValueData[i].hMR.toString(),
-                                hrmDate: viewModel.assetValueData[i].hMRDate,
-                                plantName:
-                                    viewModel.assetValueData[i].plantName,
-                                plantCode:
-                                    viewModel.assetValueData[i].plantCode,
-                                plantEmail:
-                                    viewModel.assetValueData[i].plantEmailID,
-                                dealerName:
-                                    viewModel.assetValueData[i].dealerName,
-                                dealerCode:
-                                    viewModel.assetValueData[i].dealerCode,
-                                dealerEmail:
-                                    viewModel.assetValueData[i].dealerEmailID,
-                                customerName:
-                                    viewModel.assetValueData[i].customerName,
-                                customerCode:
-                                    viewModel.assetValueData[i].customerCode,
-                                customerEmail: viewModel
-                                    .assetValueData[i].customerEmailID),
+                              assetValue: viewModel.assetValueData,
+                            ),
                           ),
                         )
                       : SizedBox(),

@@ -1,39 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustoCardMultipleAssetWidget extends StatelessWidget {
-  final String deviceId;
-  final String model;
-  final String serial;
-  final String hRM;
-  final String hrmDate;
-  final String plantName;
-  final String plantCode;
-  final String plantEmail;
-  final String dealerName;
-  final String dealerCode;
-  final String dealerEmail;
-  final String customerName;
-  final String customerCode;
-  final String customerEmail;
+  final List<AssetValues> assetValue;
 
   CustoCardMultipleAssetWidget({
-    this.customerCode,
-    this.customerEmail,
-    this.customerName,
-    this.dealerCode,
-    this.dealerEmail,
-    this.dealerName,
-    this.deviceId,
-    this.hRM,
-    this.hrmDate,
-    this.model,
-    this.plantCode,
-    this.plantEmail,
-    this.plantName,
-    this.serial,
+    this.assetValue,
   });
 
   @override
@@ -58,7 +33,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         title: "Device ID ",
                       ),
                       InsiteRichText(
-                        title: deviceId,
+                        title: assetValue[0].deviceId,
                       )
                     ],
                   ),
@@ -105,7 +80,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                               ),
                               InsiteTextOverFlow(
                                 overflow: TextOverflow.ellipsis,
-                                text: model,
+                                text: assetValue[0].machineModel,
                               ),
                             ],
                           ),
@@ -130,7 +105,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                               fontSize: 12,
                               color: tango,
                               fontWeight: FontWeight.bold),
-                          content: serial,
+                          content: assetValue[0].machineSlNo,
                           textColor: tango,
                         )
                       ],
@@ -147,7 +122,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "HRM",
                         ),
                         InsiteTextOverFlow(
-                          text: hRM,
+                          text: assetValue[0].hMR.toString(),
                         ),
                       ],
                     ),
@@ -166,7 +141,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: hrmDate,
+                          text: assetValue[0].hMRDate,
                         )
                       ],
                     ),
@@ -182,7 +157,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "Plant Name",
                         ),
                         InsiteTextOverFlow(
-                          text: plantName,
+                          text: assetValue[0].plantName,
                         )
                       ],
                     ),
@@ -201,7 +176,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: plantCode,
+                          text: assetValue[0].plantCode,
                         )
                       ],
                     ),
@@ -217,7 +192,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "Plant Email ID",
                         ),
                         InsiteTextOverFlow(
-                          text: plantEmail,
+                          text: assetValue[0].plantEmailID,
                         )
                       ],
                     ),
@@ -236,7 +211,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: dealerName,
+                          text: assetValue[0].dealerName,
                         )
                       ],
                     ),
@@ -252,7 +227,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "Dealer Code",
                         ),
                         InsiteTextOverFlow(
-                          text: dealerCode,
+                          text: assetValue[0].dealerCode,
                         )
                       ],
                     ),
@@ -271,7 +246,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: dealerEmail,
+                          text: assetValue[0].dealerEmailID,
                         )
                       ],
                     ),
@@ -287,7 +262,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "Customer Name",
                         ),
                         InsiteTextOverFlow(
-                          text: customerName,
+                          text: assetValue[0].customerName,
                         )
                       ],
                     ),
@@ -306,7 +281,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: customerCode,
+                          text: assetValue[0].customerCode,
                         )
                       ],
                     ),
@@ -322,7 +297,7 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                           text: "Customer Email Id",
                         ),
                         InsiteTextOverFlow(
-                          text: customerEmail,
+                          text: assetValue[0].customerEmailID,
                         )
                       ],
                     ),
@@ -330,31 +305,6 @@ class CustoCardMultipleAssetWidget extends StatelessWidget {
                 ]),
               ],
             ),
-            // Container(
-            //   padding: EdgeInsets.only(left: 5),
-            //   height: MediaQuery.of(context).size.height * 0.07,
-            //   width: MediaQuery.of(context).size.width * 0.79,
-            //   decoration: BoxDecoration(
-            //       border: Border.all(width: 1, color: black),
-            //       borderRadius:
-            //           BorderRadius.only(bottomRight: Radius.circular(10))),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       InsiteText(
-            //         text: "Subscription Activation Date :",
-            //       ),
-            //       SizedBox(
-            //         height: 10,
-            //       ),
-            //       InsiteTextOverFlow(
-            //         overflow: TextOverflow.ellipsis,
-            //         text: date,
-            //       )
-            //     ],
-            //   ),
-            // )
           ],
         ),
       ),
