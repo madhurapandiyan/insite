@@ -34,7 +34,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
           widget.data = [];
         });
 
-        //Navigator.pop(context);
+        Navigator.pop(context);
         return shouldPop;
       },
       child: Scaffold(
@@ -59,6 +59,8 @@ class _InsitePopUpState extends State<InsitePopUp> {
                       ),
                       IconButton(
                         onPressed: () {
+                          widget.data = [];
+
                           Navigator.of(context).pop();
                         },
                         icon: Icon(

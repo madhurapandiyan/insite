@@ -91,7 +91,10 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                         text: "Serial No",
                       ),
                       InsiteRichText(
-                        style: TextStyle(fontSize: 12,color: tango,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: tango,
+                            fontWeight: FontWeight.bold),
                         content: serialNo,
                         textColor: tango,
                       )

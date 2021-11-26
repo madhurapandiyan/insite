@@ -200,7 +200,7 @@ class _SingleAssetRegistrationViewState
                                                       ? " "
                                                       : viewModel.assetModel,
                                                   items: viewModel.modelNames,
-                                                 // enableHint: false,
+                                                  // enableHint: false,
                                                   onChanged: (String value) {
                                                     viewModel.updateModelValue(
                                                         value);
@@ -347,7 +347,7 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomDropDownWidget(
                                                   value: viewModel.plantDetail,
                                                   items: viewModel.plantDetails,
-                                                //  enableHint: false,
+                                                  //  enableHint: false,
                                                   onChanged: (value) {
                                                     viewModel.updateplantDEtail(
                                                         value);
