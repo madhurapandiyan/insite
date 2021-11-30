@@ -93,10 +93,11 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
                   customerCode: excelData[12].toString(),
                   customerEmailID: excelData[13].toString());
               assetValueData.add(assetValues);
+              Logger().wtf(excelData);
             }
           }
         }
-        Logger().wtf(assetValueData[0].toJson());
+
         _dataLoaded = true;
         notifyListeners();
         hideLoadingDialog();
@@ -139,6 +140,6 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
         data: _assetData);
 
     notifyListeners();
-    return result;
+    return result.status;
   }
 }
