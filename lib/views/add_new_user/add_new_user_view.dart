@@ -167,6 +167,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       controller: _phoneNumberController,
                       title: "Phone number",
                       text: "Optional",
+                      textInputType: TextInputType.phone,
                     ),
                   ),
                   SizedBox(

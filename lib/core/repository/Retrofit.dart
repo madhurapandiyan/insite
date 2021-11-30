@@ -661,12 +661,12 @@ abstract class RestClient {
   Future<UpdateResponse> deleteUsersData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Body() DeleteUserData updateUserData);
+      @Body() Map<String, dynamic> updateUserData);
 
   @PUT('{url}')
   Future<UpdateResponse> deleteUsers(
       @Path() String url,
-      @Body() DeleteUserDataIndStack updateUserData,
+      @Body() Map<String, dynamic> updateUserData,
       @Header("x-visionlink-customeruid") customerId,
       @Header("X-VisionLink-UserUid") userId,
       @Header("service") String serviceHeader);

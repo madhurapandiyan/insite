@@ -2375,7 +2375,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    _data.addAll(updateUserData ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -2399,7 +2399,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    _data.addAll(updateUserData ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
