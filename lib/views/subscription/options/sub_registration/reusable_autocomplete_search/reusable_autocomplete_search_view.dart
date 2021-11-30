@@ -40,7 +40,6 @@ class _ReusableAutocompleteSearchViewState
 
   @override
   Widget build(BuildContext context) {
-    Logger().wtf(widget.formFieldType);
     return Autocomplete(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text.isEmpty) {
@@ -60,6 +59,7 @@ class _ReusableAutocompleteSearchViewState
         }
       },
       onSelected: widget.onSelected,
+
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
         return Container(
           height: 35,
@@ -80,7 +80,7 @@ class _ReusableAutocompleteSearchViewState
               fontWeight: FontWeight.w700,
               fontSize: 14,
             ),
-            onEditingComplete: onEditingComplete,
+          //  onEditingComplete: onEditingComplete,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.only(left: 12, top: 22),
               isDense: true,

@@ -141,7 +141,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       : Container(
                                           margin: EdgeInsets.all(8),
                                           // height: 50,
-                                          color: white,
+                                          color: Theme.of(context).textTheme.bodyText1.color,
                                           child: Column(
                                             children: List.generate(
                                                 viewModel.searchList.length,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -27,6 +28,7 @@ import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/health_list_response.dart';
+import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
@@ -713,10 +715,13 @@ abstract class RestClient {
   );
 
   @GET('{url}')
-  Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceResults(
+  Future<SingleAssetRegistrationSearchModel> getSubscriptionDeviceResults(
     @Path() String url,
   );
 
+  @GET("{url}")
+  Future<SubscriptionDashboardDetailResult> getSubcriptionDeviceListData(
+      @Path() String url);
   @GET('{url}')
   Future<HierarchyAssets> getPlantHierarchyAssetsDetails(
     @Path() String url,
@@ -907,7 +912,7 @@ abstract class RestClient {
       @Body() AssetIconPayLoad assetIconPayLoad,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
-      
+
   @GET('{url}')
   Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
     @Path() String url,
@@ -917,6 +922,9 @@ abstract class RestClient {
       @Path() String url,
       @Body() AddAssetRegistrationData addAssetRegistrationData);
 
+  @POST("{url}")
+  Future<dynamic> postSingleAssetTransferRegistration(
+      @Path() String url, @Body() AddAssetRegistrationData data);
   @POST("{url}")
   Future<AssetTransferData> getSingleAssetTransferData(
       @Path() String url, @Body() AssetTransferData assetTransferData);
@@ -996,6 +1004,10 @@ abstract class RestClient {
   @POST("{url}")
   Future<dynamic> deleteSmsSchedule(
       @Path() String url, @Body() List<DeleteSmsReport> data);
+
+  @GET("{url}")
+  Future<SubscriptionDashboardDetailResult> getFleetStatusData(
+      @Path() String url);
 }
 
 @JsonSerializable()

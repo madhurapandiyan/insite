@@ -56,19 +56,15 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(nameFocus);
-                    },
-                    keyPadType: TextInputType.text,
-                    validator: serialNoValidator,
-                    onChanged: (value) {
-                      serialNo = value;
-                    },
-                  ),
+                CustomTextBox(
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(nameFocus);
+                  },
+                  keyPadType: TextInputType.text,
+                  validator: serialNoValidator,
+                  onChanged: (value) {
+                    serialNo = value;
+                  },
                 ),
                 SizedBox(
                   height: 30,
@@ -79,20 +75,16 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(mobileNoFocus);
-                    },
-                    focusNode: nameFocus,
-                    keyPadType: TextInputType.name,
-                    onChanged: (value) {
-                      name = value;
-                    },
-                    validator: serialNoValidator,
-                  ),
+                CustomTextBox(
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(mobileNoFocus);
+                  },
+                  focusNode: nameFocus,
+                  keyPadType: TextInputType.name,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  validator: serialNoValidator,
                 ),
                  SizedBox(
                   height: 30,
@@ -103,20 +95,16 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(languageFocus);
-                    },
-                    keyPadType: TextInputType.phone,
-                    onChanged: (value) {
-                      mobileNo = value;
-                    },
-                    focusNode: mobileNoFocus,
-                    validator: modileNoValidator,
-                  ),
+                CustomTextBox(
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(languageFocus);
+                  },
+                  keyPadType: TextInputType.phone,
+                  onChanged: (value) {
+                    mobileNo = value;
+                  },
+                  focusNode: mobileNoFocus,
+                  validator: modileNoValidator,
                 ),
                  SizedBox(
                   height: 30,
@@ -129,7 +117,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
+                //  height: MediaQuery.of(context).size.height * 0.05,
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),

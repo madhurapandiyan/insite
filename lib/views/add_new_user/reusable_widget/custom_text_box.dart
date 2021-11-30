@@ -36,7 +36,6 @@ class CustomTextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 35,
       child: TextFormField(
         keyboardType: keyPadType,
         onChanged: onChanged,
@@ -46,7 +45,6 @@ class CustomTextBox extends StatelessWidget {
         focusNode: focusNode,
         autofocus: false,
         controller: controller,
-
         style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 14,

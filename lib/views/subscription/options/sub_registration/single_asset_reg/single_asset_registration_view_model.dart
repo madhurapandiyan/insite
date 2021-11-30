@@ -1,21 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
-import 'package:insite/core/models/plant_heirarchy.dart';
+import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/preview_data.dart';
-import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
+import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class SingleAssetRegistrationViewModel extends InsiteViewModel {
@@ -56,28 +54,38 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   DateTime _pickedDate = DateTime.now();
   DateTime get pickedDate => _pickedDate;
 
-  int pageNumber = 1;
+  int pageNumber = 0;
   int pageSize = 100;
   int pageNumberSecond = 0;
   int pageSizeSecond = 10;
-  bool deviceIdType = true;
+  bool deviceCodeType = true;
+  bool deviceNametype = true;
   bool customerCodetype = true;
   bool customerNameType = true;
 
-  List<DetailResult> _devices = [];
-  List<DetailResult> get devices => _devices;
+  List<HierarchyModel> _devices = [];
+  List<HierarchyModel> get devices => _devices;
 
-  List<DetailResult> _deviceDetails = [];
-  List<DetailResult> get deviceDetails => _deviceDetails;
+  List<DetailResult> _detailResult = [];
+  List<DetailResult> get detailResult => _detailResult;
 
-  List<DetailResult> _customerDetails = [];
-  List<DetailResult> get customerDetails => _customerDetails;
+  List<HierarchyModel> _deviceDetails = [];
+  List<HierarchyModel> get deviceDetails => _deviceDetails;
+
+  List<HierarchyModel> _customerDetails = [];
+  List<HierarchyModel> get customerDetails => _customerDetails;
 
   List<String> _gpsDeviceId = [];
   List<String> get gpsDeviceId => _gpsDeviceId;
 
   List<String> _customerId = [];
   List<String> get customerId => _customerId;
+
+  List<String> _dealerId = [];
+  List<String> get dealerId => _dealerId;
+
+  List<String> _dealerCode = [];
+  List<String> get dealerCode => _dealerCode;
 
   List<String> _customerCode = [];
   List<String> get customerCode => _customerCode;
@@ -87,6 +95,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   List<String> _modelNames = [];
   List<String> get modelNames => _modelNames;
+
+  List<String> _serialNoList = [];
+  List<String> get serialNoList => _serialNoList;
 
   List<String> _popUpCardTitles = [
     "Entity Details",
@@ -117,6 +128,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<AssetValues> _totalAssetValues = [];
   List<AssetValues> get totalAssetValues => _totalAssetValues;
 
+  List<HierarchyModel> detailResultList = [];
+
   List<String> _plantDetails = [
     "Dharward",
     "Plant",
@@ -135,7 +148,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     plantDetails.add(_plantDetail);
 
     Future.delayed(Duration(seconds: 1), () {
-      getSubcriptionDeviceListData();
+      // getSubcriptionDeviceListData();
       getSubscriptionModelData();
     });
   }
@@ -298,111 +311,133 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     return result;
   }
 
-  getSubcriptionDeviceListData() async {
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getSubscriptionDevicesListData(
-            filterType: filterType,
-            fitler: filter,
-            start: pageNumber,
-            limit: pageSize);
+  getSubcriptionDeviceListData({String name, int code, String type}) async {
+    try {
+      _detailResult.clear();
+      _gpsDeviceId.clear();
+      if (name.length >= 3) {
+        SubscriptionDashboardDetailResult result =
+            await _subscriptionService.getSubscriptionDeviceListData(
+                filterType: filterType,
+                fitler: filter,
+                name: name,
+                start: pageNumber,
+                limit: pageSize);
 
-    if (result != null) {
-      if (result.result.isNotEmpty) {
-        devices.addAll(result.result[1]);
+        if (result != null) {
+          if (result.result[1].isNotEmpty) {
+            _detailResult.addAll(result.result[1]);
 
-        _loading = false;
-        _loadingMore = false;
+            _loading = false;
+            _loadingMore = false;
 
-        devices.forEach((element) {
-          gpsDeviceId.add(element.GPSDeviceID);
-        });
-      } else {
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
+            _detailResult.forEach((element) {
+              gpsDeviceId.add(element.GPSDeviceID);
+            });
+          } else {
+            Fluttertoast.showToast(msg: "No Data Found");
+            _devices.clear();
+            detailResult.clear();
+            gpsDeviceId.clear();
+            notifyListeners();
+            _loading = false;
+            _loadingMore = false;
+            _shouldLoadmore = false;
+          }
+          _loading = false;
+          _loadingMore = false;
+        }
       }
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
     }
   }
 
   getModelNamebySerialNumber(String value) async {
-    SerialNumberResults results = await _subscriptionService
-        .getDeviceModelNameBySerialNumber(serialNumber: value);
-
-    if (results != null) {
-      String assetModelName = results.result.modelName;
-
-      if (modelNames.contains(assetModelName)) {
-        _assetModel = assetModelName;
+    try {
+      SerialNumberResults results = await _subscriptionService
+          .getDeviceModelNameBySerialNumber(serialNumber: value);
+      if (results != null) {
+        String assetModelName = results.result.modelName;
+        if (modelNames.contains(assetModelName)) {
+          _assetModel = assetModelName;
+        } else {
+          _assetModel = " ";
+        }
       } else {
-        _assetModel = " ";
+        return 'no results found';
       }
-    } else {
-      return 'no results found';
+      notifyListeners();
+      _assetModel = results.result.modelName;
+    } catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
     }
-
-    notifyListeners();
-    _assetModel = results.result.modelName;
   }
 
   getSubscriptionModelData() async {
-    Logger().i("getApplicationAccessData");
-    SubscriptionDashboardResult result =
-        await _subscriptionService.getResultsFromSubscriptionApi();
-    if (result == null) {
-      Logger().d('no results found');
-      _loading = false;
-      return "no results found";
-    } else {
-      //model names
-      final ex70SuperPlus = result.result[2][9].modelName;
-      final ex130SuperPlus = result.result[2][3].modelName;
-      final shinRaiBx80 = result.result[2][11].modelName;
-      final notMapped = "Not Mapped";
-      final twl5 = result.result[2][1].modelName;
-      final ex110 = result.result[2][2].modelName;
-      final ex200lc = result.result[2][4].modelName;
-      final ex210lc = result.result[2][6].modelName;
-      final ex215 = result.result[2][7].modelName;
-      final ex300 = result.result[2][8].modelName;
-      final ptl340h = result.result[2][10].modelName;
-      final shinraibx80Bviv = result.result[2][12].modelName;
-      final shinraipro = result.result[2][13].modelName;
-      final th76 = result.result[2][14].modelName;
-      final tl340h = result.result[2][15].modelName;
-      final th340hPrime = result.result[2][16].modelName;
+    try {
+      Logger().i("getApplicationAccessData");
+      SubscriptionDashboardResult result =
+          await _subscriptionService.getResultsFromSubscriptionApi();
+      if (result == null) {
+        Logger().d('no results found');
+        _loading = false;
+        return "no results found";
+      } else {
+        //model names
+        final ex70SuperPlus = result.result[2][9].modelName;
+        final ex130SuperPlus = result.result[2][3].modelName;
+        final shinRaiBx80 = result.result[2][11].modelName;
+        final notMapped = "Not Mapped";
+        final twl5 = result.result[2][1].modelName;
+        final ex110 = result.result[2][2].modelName;
+        final ex200lc = result.result[2][4].modelName;
+        final ex210lc = result.result[2][6].modelName;
+        final ex215 = result.result[2][7].modelName;
+        final ex300 = result.result[2][8].modelName;
+        final ptl340h = result.result[2][10].modelName;
+        final shinraibx80Bviv = result.result[2][12].modelName;
+        final shinraipro = result.result[2][13].modelName;
+        final th76 = result.result[2][14].modelName;
+        final tl340h = result.result[2][15].modelName;
+        final th340hPrime = result.result[2][16].modelName;
 
-      _modelNames.addAll([
-        "Select Asset Model",
-        ex70SuperPlus,
-        ex130SuperPlus,
-        shinRaiBx80,
-        notMapped,
-        twl5,
-        ex110,
-        ex200lc,
-        ex210lc,
-        ex215,
-        ex300,
-        ptl340h,
-        shinraibx80Bviv,
-        shinraipro,
-        th76,
-        tl340h,
-        th340hPrime
-      ]);
+        _modelNames.addAll([
+          "Select Asset Model",
+          ex70SuperPlus,
+          ex130SuperPlus,
+          shinRaiBx80,
+          notMapped,
+          twl5,
+          ex110,
+          ex200lc,
+          ex210lc,
+          ex215,
+          ex300,
+          ptl340h,
+          shinraibx80Bviv,
+          shinraipro,
+          th76,
+          tl340h,
+          th340hPrime
+        ]);
 
-      _loading = false;
+        _loading = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
     }
-    notifyListeners();
+
     return _modelNames;
   }
 
   getSubcriptionDeviceListPerNameOrCode(
       {String name, int code, String type}) async {
-    SubscriptionDashboardDetailResult result =
+    SingleAssetRegistrationSearchModel result =
         await _subscriptionService.getSubscriptionDevicesListData(
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
       start: pageNumberSecond,
@@ -450,37 +485,298 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  getSubcriptionListOfNameAndCode({String name, int code, String type}) async {
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getSubscriptionDevicesListData(
-      filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-      start: pageNumber,
-      name: name,
-      code: code,
-      fitler: type,
-      limit: pageSize,
-    );
-
-    if (result != null) {
-      if (result.result.isNotEmpty) {
-        customerDetails.addAll(result.result[1]);
-
-        customerDetails.forEach((element) {
-          customerId.add(element.Name);
-          customerCode.add(element.Code);
-          customerEmail.add(element.Email);
-        });
-
-        notifyListeners();
-      } else {
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
+  onSelectedDeviceId(String value) {
+    _detailResult.forEach((element) {
+      if (element.GPSDeviceID == value) {
+        deviceIdController.text = element.GPSDeviceID;
+        serialNumberController.text = element.VIN;
+        _gpsDeviceId.clear();
         notifyListeners();
       }
-      _loading = false;
-      _loadingMore = false;
+    });
+  }
+
+  onSelectedNameTile(String value) {
+    Logger().e(value);
+    _devices.forEach((element) {
+      if (element.Name == value) {
+        customerNameController.text = element.Name;
+        customerCodeController.text = element.Code;
+        customerEmailController.text = element.Email;
+        customerId.clear();
+      }
+    });
+    notifyListeners();
+  }
+
+  onSelectedDealerNameTile(String value) {
+    Logger().e(_devices.length);
+    _devices.forEach((element) {
+      if (element.Name == value) {
+        deviceNameController.text = element.Name;
+        deviceCodeController.text = element.Code;
+        deviceEmailController.text = element.Email;
+        _dealerId.clear();
+        notifyListeners();
+      }
+    });
+  }
+
+  onSelectedDealerCodeTile(String value) {
+    _devices.forEach((element) {
+      if (element.Code == value) {
+        deviceNameController.text = element.Name;
+        deviceCodeController.text = element.Code;
+        deviceEmailController.text = element.Email;
+        _dealerCode.clear();
+        notifyListeners();
+      }
+    });
+  }
+
+  onSelectedCodeTile(String value) {
+    Logger().e(value);
+    _devices.forEach((element) {
+      Logger().wtf(value);
+      if (element.Code == value) {
+        customerNameController.text = element.Name;
+        customerCodeController.text = element.Code;
+        customerEmailController.text = element.Email;
+        customerCode.clear();
+        notifyListeners();
+      }
+    });
+  }
+
+  onCustomerNameChanges({String name, String type, int code}) async {
+    try {
+      Logger().w(_dealerId.length);
+      detailResultList.clear();
+      if (name == null || name.isEmpty) {
+        Logger().e("if");
+        Future.delayed(Duration(seconds: 3), () {
+          _customerId.clear();
+          notifyListeners();
+        });
+      } else {
+        _customerId.clear();
+        _devices.clear();
+        Logger().e("type");
+        if (name.length >= 3) {
+          SingleAssetRegistrationSearchModel result =
+              await _subscriptionService.getSubscriptionDevicesListData(
+            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+            start: pageNumber,
+            name: name,
+            code: code,
+            fitler: type,
+            limit: pageSize,
+          );
+          if (result.result[1].isNotEmpty) {
+            result.result[1].forEach((element) {
+              _devices.add(element);
+              _customerId.add(element.Name);
+              notifyListeners();
+            });
+          } else {
+            Fluttertoast.showToast(msg: "No Data Found");
+            _devices.clear();
+            detailResult.clear();
+            _customerId.clear();
+            notifyListeners();
+          }
+        }
+      }
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
+    }
+  }
+
+  onDealerNameChanges({String name, String type, int code}) async {
+    try {
+      detailResultList.clear();
+      if (name == null || name.isEmpty) {
+        Future.delayed(Duration(seconds: 3), () {
+          _dealerId.clear();
+          notifyListeners();
+        });
+      } else {
+        _devices.clear();
+        _dealerId.clear();
+        if (name.length >= 3) {
+          SingleAssetRegistrationSearchModel result =
+              await _subscriptionService.getSubscriptionDevicesListData(
+            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+            start: pageNumber,
+            name: name,
+            code: code,
+            fitler: type,
+            limit: pageSize,
+          );
+          if (result.result[1].isNotEmpty) {
+            result.result[1].forEach((element) {
+              _devices.add(element);
+              _dealerId.add(element.Name);
+              notifyListeners();
+            });
+          } else {
+            Fluttertoast.showToast(msg: "No Data Found");
+            _devices.clear();
+            detailResult.clear();
+            _dealerId.clear();
+            notifyListeners();
+          }
+        }
+      }
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
+    }
+  }
+
+  onDealerCodeChanges({String name, String type, int code}) async {
+    try {
+      detailResultList.clear();
+      if (code == null || code.toString().isEmpty) {
+        Future.delayed(Duration(seconds: 3), () {
+          _dealerCode.clear();
+          notifyListeners();
+        });
+      } else {
+        _devices.clear();
+        _dealerCode.clear();
+
+        if (code.toString().length >= 3) {
+          SingleAssetRegistrationSearchModel result =
+              await _subscriptionService.getSubscriptionDevicesListData(
+            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+            start: pageNumber,
+            name: name,
+            code: code,
+            fitler: type,
+            limit: pageSize,
+          );
+          if (result.result[1].isNotEmpty) {
+            result.result[1].forEach((element) {
+              _devices.add(element);
+              _dealerCode.add(element.Code);
+              notifyListeners();
+            });
+          } else {
+            Fluttertoast.showToast(msg: "No Data Found");
+            _devices.clear();
+            _dealerCode.clear();
+            detailResult.clear();
+            notifyListeners();
+          }
+        }
+      }
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
+    }
+  }
+
+  onCustomerCodeChanges({String name, String type, int code}) async {
+    try {
+      detailResultList.clear();
+      if (code == null) {
+        Logger().e("if");
+        Future.delayed(Duration(seconds: 3), () {
+          _customerCode.clear();
+          notifyListeners();
+        });
+      } else {
+        _customerCode.clear();
+        _devices.clear();
+        if (code.toString().length >= 3) {
+          SingleAssetRegistrationSearchModel result =
+              await _subscriptionService.getSubscriptionDevicesListData(
+            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+            start: pageNumber,
+            name: name,
+            code: code,
+            fitler: type,
+            limit: pageSize,
+          );
+          if (code == null) {
+            return;
+          } else {
+            if (result.result[1].isEmpty) {
+              _customerCode.clear();
+              snackbarService.showSnackbar(
+                message: "No Data Found",
+                duration: Duration(seconds: 1),
+              );
+              notifyListeners();
+            } else {
+              if (result.result[1].isNotEmpty) {
+                result.result[1].forEach((element) {
+                  _devices.add(element);
+                  _customerCode.add(element.Code);
+                  notifyListeners();
+                });
+              } else {
+                Fluttertoast.showToast(msg: "No Data Found");
+                _devices.clear();
+                detailResult.clear();
+                customerCode.clear();
+                notifyListeners();
+              }
+            }
+          }
+        }
+      }
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message);
+    }
+  }
+
+  getSubcriptionListOfNameAndCode({String name, int code, String type}) async {
+    if (name == null || name.isEmpty) {
+      customerCode.clear();
+      _customerId.clear();
+      customerId.clear();
+      customerEmail.clear();
+      name = null;
       notifyListeners();
+    } else {
+      SingleAssetRegistrationSearchModel result =
+          await _subscriptionService.getSubscriptionDevicesListData(
+        filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+        start: pageNumber,
+        name: name,
+        code: code,
+        fitler: type,
+        limit: pageSize,
+      );
+
+      if (result != null) {
+        if (result.result[1].isNotEmpty) {
+          customerDetails.addAll(result.result[1]);
+
+          customerDetails.forEach((element) {
+            customerId.add(element.Name);
+            customerCode.add(element.Code);
+            customerEmail.add(element.Email);
+          });
+
+          notifyListeners();
+        } else {
+          Fluttertoast.showToast(msg: "No Data Found");
+          _devices.clear();
+          detailResult.clear();
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
   }
 
@@ -498,12 +794,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     customerDetails.forEach((element) {
       if (value.toLowerCase() == element.Name.toLowerCase()) {
         Logger().e('codet${element.Code}');
-
         customerCodeController.text = element.Code;
         customerEmailController.text = element.Email;
-
         Logger().wtf('code: ${element.Code}');
-
         notifyListeners();
       } else if (value == element.Code) {
         customerNameController.text = element.Name;
@@ -535,6 +828,26 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         notifyListeners();
       }
     });
+  }
+
+  onTappingCustomerName() {
+    customerCodetype = true;
+    customerNameType = false;
+    customerCodeController.text = null;
+    customerEmailController.text = null;
+    customerNameController.text = null;
+    notifyListeners();
+  }
+
+  onTappingCustomerCode() {
+    Logger().wtf("customerCode tapped");
+    Logger().w(customerNameController.text);
+    customerNameType = true;
+    customerCodetype = false;
+    customerNameController.text = null;
+    customerEmailController.text = null;
+    customerCodeController.text = null;
+    notifyListeners();
   }
 }
 

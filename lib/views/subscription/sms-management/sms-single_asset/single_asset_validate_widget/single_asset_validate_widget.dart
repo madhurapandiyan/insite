@@ -20,7 +20,8 @@ class SingleAssetValidateWidget extends StatelessWidget {
       this.model});
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(
+      children: [
       Card(
         child: Row(
           //  mainAxisAlignment: MainAxisAlignment.start,
