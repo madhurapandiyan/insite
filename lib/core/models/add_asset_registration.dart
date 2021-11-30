@@ -27,6 +27,14 @@ class AddAssetRegistrationData {
 
 @JsonSerializable()
 class AssetValues {
+  @JsonKey(name: "CustomerMobile")
+  String CustomerMobile;
+  @JsonKey(name: "CustomerLanguage")
+  String CustomerLanguage;
+  @JsonKey(name: "DealerMobile")
+  String DealerMobile;
+  @JsonKey(name: "DealerLanguage")
+  String DealerLanguage;
   @JsonKey(name: "DeviceId")
   String deviceId;
   @JsonKey(name: "MachineModel")
@@ -79,7 +87,11 @@ class AssetValues {
       this.dealerEmailID,
       this.customerName,
       this.customerCode,
-      this.customerEmailID});
+      this.customerEmailID,
+      this.CustomerLanguage,
+      this.CustomerMobile,
+      this.DealerLanguage,
+      this.DealerMobile});
   factory AssetValues.fromJson(Map<String, dynamic> json) =>
       _$AssetValuesFromJson(json);
 

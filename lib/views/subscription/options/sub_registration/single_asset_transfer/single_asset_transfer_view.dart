@@ -7,6 +7,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
 import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart';
+import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/custom_auto_complete_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
@@ -122,95 +123,49 @@ class SingleAssetTransferView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Device ID:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                      height: 35,
-                                                      width: 130,
-                                                      child:
-                                                          ReusableAutocompleteSearchView(
-                                                        reuseController: viewModel
-                                                            .deviceIdController,
-                                                        onChanged: (value) {
-                                                          viewModel
-                                                              .getDeviceIds(
-                                                                  value);
-                                                        },
-                                                        data: viewModel
-                                                            .gpsDeviceIdList,
-                                                        onSelected:
-                                                            (selectedValue) {
-                                                          viewModel
-                                                              .updateDeviceIdValues(
-                                                                  selectedValue);
-
-                                                          viewModel
-                                                                  .allowTransferAsset
-                                                              ? viewModel
-                                                                  .getCustomerDetailValues(
-                                                                      selectedValue)
-                                                              : null;
-                                                        },
-                                                        validator:
-                                                            defaultCustomFieldValidator,
-                                                      )),
-                                                ],
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Serial No.:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                      height: 35,
-                                                      width: 130,
-                                                      child:
-                                                          ReusableAutocompleteSearchView(
-                                                        reuseController: viewModel
-                                                            .machineSerialNumberController,
-                                                        onChanged: (value) {
-                                                          viewModel
-                                                              .getSerialNumbers(
-                                                                  value);
-                                                        },
-                                                        data: viewModel
-                                                            .serialNoList,
-                                                        onSelected:
-                                                            (selectedValue) {
-                                                          viewModel
-                                                              .updateSerialNumberValues(
-                                                                  selectedValue);
-                                                        },
-                                                        validator:
-                                                            defaultCustomFieldValidator,
-                                                      )),
-                                                ],
-                                              ),
+                                              viewModel.serialNoList.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      validator:
+                                                          defaultCustomFieldValidator,
+                                                      controller: viewModel
+                                                          .deviceIdController,
+                                                      onSelect: (value) {
+                                                        viewModel
+                                                            .onSelectedDeviceId(
+                                                                value);
+                                                      },
+                                                      items: viewModel
+                                                          .gpsDeviceIdList,
+                                                      textBoxTitle:
+                                                          'Device ID:',
+                                                      onChange: (value) {
+                                                        viewModel.getDeviceIds(
+                                                            value);
+                                                      },
+                                                    ),
+                                              viewModel.gpsDeviceIdList.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      validator:
+                                                          defaultCustomFieldValidator,
+                                                      isAlign: false,
+                                                     controller: viewModel
+                                                          .machineSerialNumberController,
+                                                      onSelect: (value) {
+                                                        viewModel
+                                                            .onSelectedSerialNo(value);
+                                                      },
+                                                      items: viewModel
+                                                          .serialNoList,
+                                                      textBoxTitle:
+                                                          'Serial No.:',
+                                                      onChange: (value) {
+                                                        viewModel
+                                                            .getSerialNumbers(
+                                                                value);
+                                                      },
+                                                    ),
                                             ],
                                           ),
                                           SizedBox(
@@ -245,7 +200,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .machineModelController,
-                                                        isenabled: false,
+                                                    //  isenabled: false,
                                                         validator:
                                                             defaultCustomFieldValidator,
                                                       )),
@@ -354,93 +309,51 @@ class SingleAssetTransferView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Dealer Name:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
+                                              viewModel.dealerCode.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      controller: viewModel
                                                           .dealerNameController,
-                                                      onChanged: (value) {
+                                                      onSelect: (value) {
                                                         viewModel
-                                                            .getDealerNamesData(
+                                                            .onSelectedDealerNameTile(
+                                                                value);
+                                                      },
+                                                      items: viewModel.dealerId,
+                                                      textBoxTitle:
+                                                          'Device Name:',
+                                                      onChange: (value) {
+                                                        viewModel
+                                                            .onDealerNameChanges(
                                                                 name: value,
                                                                 type: "DEALER");
                                                       },
-                                                      data:
-                                                          viewModel.dealerName,
-                                                      onSelected:
-                                                          (selectedValue) {
-                                                        viewModel
-                                                            .filterDealerDetails(
-                                                                selectedValue);
-                                                      },
-                                                      validator:
-                                                          defaultCustomFieldValidator,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Dealer Code:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
+                                              viewModel.dealerId.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      isAlign: false,
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      controller: viewModel
                                                           .dealerCodeController,
-                                                      onChanged: (value) {
+                                                      onSelect: (value) {
                                                         viewModel
-                                                            .getDealerNamesData(
+                                                            .onSelectedDealerCodeTile(
+                                                                value);
+                                                      },
+                                                      items:
+                                                          viewModel.dealerCode,
+                                                      textBoxTitle:
+                                                          'Dealer Code:',
+                                                      onChange: (value) {
+                                                        viewModel
+                                                            .onDealerCodeChanges(
                                                                 code: int.parse(
                                                                     value),
                                                                 type: "DEALER");
                                                       },
-                                                      data:
-                                                          viewModel.dealerCode,
-                                                      onSelected:
-                                                          (selectedValue) {
-                                                        viewModel
-                                                            .filterDealerDetails(
-                                                                selectedValue);
-                                                      },
-                                                      validator:
-                                                          defaultCustomFieldValidator,
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
                                             ],
                                           ),
                                           SizedBox(
@@ -594,100 +507,57 @@ class SingleAssetTransferView extends StatelessWidget {
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Customer Name:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
+                                              viewModel.customerCode.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      controller: viewModel
                                                           .customerNameController,
-                                                      onChanged: (value) {
+                                                      onSelect: (value) {
                                                         viewModel
-                                                            .getDealerNamesData(
+                                                            .onSelectedNameTile(
+                                                                value);
+                                                      },
+                                                      items:
+                                                          viewModel.customerId,
+                                                      textBoxTitle:
+                                                          "Customer Name",
+                                                      onChange: (value) {
+                                                        viewModel
+                                                            .onCustomerNameChanges(
                                                                 name: value,
                                                                 type:
                                                                     "CUSTOMER");
                                                       },
-                                                      data:
-                                                          viewModel.dealerName,
-                                                      isEnabled: viewModel
-                                                          .enableCustomerDetails,
-                                                      onSelected:
-                                                          (selectedValue) {
-                                                        viewModel
-                                                            .filterCustomerDeatails(
-                                                                selectedValue);
-                                                      },
-                                                      validator:
-                                                          defaultCustomFieldValidator,
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  InsiteText(
-                                                    text: 'Customer Code:',
-                                                    size: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.01,
-                                                  ),
-                                                  Container(
-                                                    height: 35,
-                                                    width: 130,
-                                                    child:
-                                                        ReusableAutocompleteSearchView(
-                                                      reuseController: viewModel
-                                                          .customerCodeController,
-                                                      isEnabled: viewModel
-                                                          .enableCustomerDetails,
-                                                      onChanged: (value) {
+                                              viewModel.customerId.isNotEmpty
+                                                  ? SizedBox()
+                                                  : CustomAutoCompleteWidget(
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      isAlign: false,
+                                                      onSelect: (value) {
                                                         viewModel
-                                                            .getDealerNamesData(
+                                                            .onSelectedCodeTile(
+                                                                value);
+                                                      },
+                                                      controller: viewModel
+                                                          .customerCodeController,
+                                                      items: viewModel
+                                                          .customerCode,
+                                                      textBoxTitle:
+                                                          'Customer Code:',
+                                                      onChange: (value) {
+                                                        viewModel
+                                                            .onCustomerCodeChanges(
                                                                 code: int.parse(
                                                                     value),
                                                                 type:
                                                                     "CUSTOMER");
                                                       },
-                                                      data:
-                                                          viewModel.dealerCode,
-                                                      onSelected:
-                                                          (selectedValue) {
-                                                        viewModel
-                                                            .filterCustomerDeatails(
-                                                                selectedValue);
-                                                      },
-                                                      validator:
-                                                          defaultCustomFieldValidator,
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
                                             ],
                                           ),
                                           SizedBox(
@@ -937,7 +807,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 data: viewModel.totalList,
                                                 onButtonTapped: () async {
                                                   final result = await viewModel
-                                                      .subscriptionAssetTransfer();
+                                                      .subscriptionAssetRegistration();
                                                   if (result != null) {
                                                     Utils.showToast(Utils
                                                         .suceessRegistration);
@@ -948,10 +818,56 @@ class SingleAssetTransferView extends StatelessWidget {
                                           );
                                         }
                                       },
-                                      child: InsiteButton(
-                                        title: 'PREVIEW',
-                                        textColor: white,
-                                        margin: EdgeInsets.all(20),
+                                      child: GestureDetector(
+                                        onTap:  () async {
+                                        if (_formKey.currentState.validate()) {
+                                          viewModel.getTotalDataDetails();
+
+                                          Logger().wtf(
+                                              ' datalength: ${viewModel.totalList}');
+
+                                          await showGeneralDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            transitionDuration:
+                                                Duration(milliseconds: 500),
+                                            transitionBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              return FadeTransition(
+                                                opacity: animation,
+                                                child: ScaleTransition(
+                                                  scale: animation,
+                                                  child: child,
+                                                ),
+                                              );
+                                            },
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return InsitePopUp(
+                                                pageTitle: "Preview",
+                                                titles:
+                                                    viewModel.popUpCardTitles,
+                                                data: viewModel.totalList,
+                                                onButtonTapped: () async {
+                                                  final result = await viewModel
+                                                      .subscriptionAssetRegistration();
+                                                  if (result != null) {
+                                                    Utils.showToast(Utils
+                                                        .suceessRegistration);
+                                                  }
+                                                },
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                        child: InsiteButton(
+                                          title: 'PREVIEW',
+                                          textColor: white,
+                                          margin: EdgeInsets.all(20),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(

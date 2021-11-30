@@ -135,10 +135,9 @@ class ReportSummaryViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
-      Directory path = await getExternalStorageDirectory();
       data = await _smsScheduleService.getScheduleReportData();
       final Excel excelSheet = Excel.createExcel();
-      var sheetObj = excelSheet["sheet"];
+      var sheetObj = excelSheet.sheets.values.first;
       for (var i = 0; i < data.result.first.length; i++) {
         final excelDataInsert = data.result.first;
         if (i == 0) {
@@ -165,7 +164,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         sheetObj.updateCell(
             CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
       }
-      // Logger().e(path.path);
+      Directory path = await getExternalStorageDirectory();
       excelSheet.encode().then((onValue) {
         File("${path.path}/SMS_schedule.xlsx")
           ..createSync(recursive: true)

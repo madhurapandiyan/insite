@@ -26,7 +26,6 @@ class SmsManagementService extends BaseService {
           Urls.smsManagementSingleAsset +
               FilterUtils.constructQueryFromMap(queryMap),
           modelData);
-
       Logger().wtf(data.toJson());
     }
     return data;

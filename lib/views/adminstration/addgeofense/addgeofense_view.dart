@@ -291,9 +291,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                                       actions: [
                                                                         FlatButton.icon(
                                                                             onPressed: () {
-                                                                              viewModel.onColorPicked(pickerColor);
+                                                                              if (viewModel.isDrawingPolygon) {
+                                                                                viewModel.onColorPicked(pickerColor);
+                                                                              }
                                                                               viewModel.onChoosingColor();
-                                                                              Navigator.of(context).pop();
+                                                                              Navigator.of(ctx).pop();
                                                                             },
                                                                             icon: Icon(Icons.check),
                                                                             label: Text("Apply"))
@@ -405,7 +407,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             .bodyText1
                                             .color)),
                                 child: CustomDropDownWidget(
-                                  istappable:!viewModel.isVisionlinkCheck?false: !(uid != null),
+                                  istappable: !viewModel.isVisionlinkCheck
+                                      ? false
+                                      : !(uid != null),
                                   items: viewModel.dropDownlist,
                                   onChanged: (String value) {
                                     viewModel.onDropDownValueChanged(value);
