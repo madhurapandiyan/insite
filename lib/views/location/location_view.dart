@@ -9,6 +9,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
@@ -217,7 +218,7 @@ class _LocationViewState extends State<LocationView> {
                                   child: Column(
                                     children: [
                                       SizedBox(
-                                        height: 28.0,
+                                        height: 50.0,
                                       ),
                                       GestureDetector(
                                         onTap: () {
@@ -324,6 +325,62 @@ class _LocationViewState extends State<LocationView> {
                                             ),
                                           )),
                                     ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: DropdownButton(
+                                    dropdownColor:
+                                        Theme.of(context).backgroundColor,
+                                    icon: Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "assets/images/arrowdown.svg",
+                                          width: 10,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                          height: 10,
+                                        ),
+                                      ),
+                                    ),
+                                    isExpanded: false,
+                                    hint: Text(
+                                      _currentSelectedItem,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color),
+                                    ),
+                                    items: [
+                                      'MAP',
+                                      'TERRAIN',
+                                      'SATELLITE',
+                                      'HYBRID'
+                                    ]
+                                        .map((map) => DropdownMenuItem(
+                                              value: map,
+                                              child: InsiteText(
+                                                text: map,
+                                                size: 11.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ))
+                                        .toList(),
+                                    value: _currentSelectedItem,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _currentSelectedItem = value;
+                                      });
+                                    },
+                                    underline: Container(
+                                        height: 1.0,
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 0.0)))),
                                   ),
                                 ),
                                 viewModel.refreshing

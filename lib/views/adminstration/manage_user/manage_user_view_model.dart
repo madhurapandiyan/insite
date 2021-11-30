@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -24,7 +26,7 @@ class ManageUserViewModel extends InsiteViewModel {
 
   updateSearchDataToEmpty() {
     _assets = [];
-    notifyListeners();
+    // notifyListeners();
   }
 
   List<UserRow> _assets = [];
@@ -73,6 +75,16 @@ class ManageUserViewModel extends InsiteViewModel {
     });
   }
 
+  Timer debounce;
+
+  searchUsers(String searchValue) {
+    if (debounce != null) debounce.cancel();
+    debounce = Timer(Duration(seconds: 2), () {
+      _searchKeyword = searchValue;
+      getManagerUserAssetList();
+    });
+  }
+
   getManagerUserAssetList() async {
     Logger().i("getManagerUserAssetList");
     AdminManageUser result = await _manageUserService
@@ -97,6 +109,7 @@ class ManageUserViewModel extends InsiteViewModel {
         notifyListeners();
       }
     } else {
+      _assets = [];
       _loading = false;
       _loadingMore = false;
       notifyListeners();

@@ -111,7 +111,7 @@ class AssetAdminManagerUserService extends BaseService {
 
   Future<AdminManageUser> getAdminManageUserListData(
       pageNumber, String searchKey) async {
-    Logger().i("getAdminManageUserListData");
+    Logger().i("getAdminManageUserListData $isVisionLink");
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
@@ -157,7 +157,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageUser> getUser(String userId) async {
-    Logger().i("getUser");
+    Logger().i("getUser $isVisionLink");
     try {
       if (isVisionLink) {
         Map<String, String> queryMap = Map();
@@ -178,14 +178,12 @@ class AssetAdminManagerUserService extends BaseService {
         if (customerSelected != null) {
           queryMap["customerUid"] = customerSelected.CustomerUID;
         }
-        ManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()
-            .getUser(
-                Urls.adminManagerUserSumaryVL +
-                    "/" +
-                    userId +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+        ManageUser adminManageUserResponse = await MyApi().getClient().getUser(
+            Urls.adminManagerUserSumary +
+                "/" +
+                userId +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected.CustomerUID);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -460,16 +458,18 @@ class AssetAdminManagerUserService extends BaseService {
             accountSelected.CustomerUID,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                    users: users, customerUid: customerSelected.CustomerUID)
-                : DeleteUserData(users: users));
+                        users: users, customerUid: customerSelected.CustomerUID)
+                    .toJson()
+                : DeleteUserData(users: users).toJson());
         return result;
       } else {
         var result = await MyApi().getClient().deleteUsers(
             Urls.adminManagerUserSumary,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                    users: users, customerUid: customerSelected.CustomerUID)
-                : DeleteUserData(users: users),
+                        users: users, customerUid: customerSelected.CustomerUID)
+                    .toJson()
+                : DeleteUserData(users: users).toJson(),
             accountSelected.CustomerUID,
             (await _localService.getLoggedInUser()).sub,
             "in-identitymanager-identitywebapi");

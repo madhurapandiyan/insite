@@ -135,14 +135,13 @@ class ManageUserView extends StatelessWidget {
                         height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: CustomTextBox(
                           controller: viewModel.textEditingController,
                           title: "Search users",
                           onChanged: (searchText) {
                             if (searchText.isNotEmpty) {
-                              viewModel.searchKeyword = searchText;
-                              viewModel.getManagerUserAssetList();
+                              viewModel.searchUsers(searchText);
                             } else {
                               viewModel.updateSearchDataToEmpty();
                             }

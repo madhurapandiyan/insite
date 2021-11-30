@@ -6,8 +6,12 @@ class CustomTextBoxWithName extends StatelessWidget {
   final String title;
   final String text;
   final TextEditingController controller;
-
-  CustomTextBoxWithName({this.title, this.text, this.controller});
+  final TextInputType textInputType;
+  CustomTextBoxWithName(
+      {this.title,
+      this.text,
+      this.controller,
+      this.textInputType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class CustomTextBoxWithName extends StatelessWidget {
           fontStyle: FontStyle.normal,
           color: Theme.of(context).textTheme.bodyText1.color,
         ),
+        keyboardType: textInputType,
         decoration: InputDecoration(
             fillColor: black,
             hintText: title,
