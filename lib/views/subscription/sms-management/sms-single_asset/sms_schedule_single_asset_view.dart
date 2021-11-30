@@ -86,13 +86,18 @@ class _SmsScheduleSingleAssetViewState
                   SizedBox(
                     height: 20,
                   ),
-                  viewModel.nameList.isEmpty
-                      ? SingleAssetFormWidget(viewModel.onSavingForm)
+                  viewModel.singleAssetModelResponce.isEmpty
+                      ? SingleAssetFormWidget(
+                        mobileNoController: viewModel.mobileNoController,
+                        nameController: viewModel.nameController,
+                          onSaving: viewModel.onSavingForm,
+                          serialNoController: viewModel.serialNoController)
                       : Column(
                           children: [
                             Column(
-                              children:
-                                  List.generate(viewModel.nameList.length, (i) {
+                              children: List.generate(
+                                  viewModel.singleAssetModelResponce.length,
+                                  (i) {
                                 final model =
                                     viewModel.singleAssetModelResponce;
                                 return model.isEmpty
@@ -116,9 +121,9 @@ class _SmsScheduleSingleAssetViewState
                                         SerialNumber: model[0].SerialNumber,
                                         StartDate: model[0].StartDate,
                                         model: model[0].Model,
-                                        langugae: viewModel.languageList[i],
-                                        modileNo: viewModel.mobileNoList[i],
-                                        name: viewModel.nameList[i]);
+                                        langugae: viewModel.language,
+                                        modileNo: viewModel.mobileNo,
+                                        name: viewModel.name);
                               }),
                             ),
                             SizedBox(
@@ -178,13 +183,15 @@ class _SmsScheduleSingleAssetViewState
                                                           ))
                                                     ],
                                                     content: InsiteText(
-                                                      text:
-                                                          "Moblie number Updated successfully!!!.",
+                                                      text:viewModel.popUpMessage
+                                                          ,
                                                     ),
                                                   ));
                                         },
                                         textColor: white,
-                                        title: viewModel.nameList.isEmpty
+                                        title: viewModel
+                                                .singleAssetModelResponce
+                                                .isEmpty
                                             ? "Next"
                                             : "Register",
                                         height:

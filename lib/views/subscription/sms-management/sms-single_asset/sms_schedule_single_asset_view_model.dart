@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
@@ -27,6 +28,15 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     singleAssetModelResponce = val;
   }
 
+  TextEditingController _serialNoController = TextEditingController();
+  TextEditingController get serialNoController => _serialNoController;
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController get nameController => _nameController;
+
+  TextEditingController _mobileNoController = TextEditingController();
+  TextEditingController get mobileNoController => _mobileNoController;
+
   SavingSmsModel _savingSmsModel;
 
   List<SavingSmsModel> listOSavingSmsModel = [];
@@ -40,45 +50,61 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   String name;
   String mobileNo;
   String language;
+  String serialNo;
 
-  List<String> nameList = [];
-  List<String> mobileNoList = [];
-  List<String> languageList = [];
-  List<String> deviceId = [];
-  List<String> model = [];
-  List<String> date = [];
-  List<String> serialNo = [];
+  String popUpMessage;
 
- Future onSavingForm(String serialNumber, String recipientName, String recipientMobNo,
-      String lang) async {
+  // List<String> nameList = [];
+  // List<String> mobileNoList = [];
+  // List<String> languageList = [];
+  // List<String> deviceId = [];
+  // List<String> model = [];
+  // List<String> date = [];
+
+  Future onSavingForm(String serialNumber, String recipientName,
+      String recipientMobNo, String lang) async {
     try {
       showLoadingDialog();
-      nameList.add(recipientName);
-      mobileNoList.add(recipientMobNo);
-      languageList.add(lang);
-      SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
-          AssetSerial: serialNumber,
-          Name: recipientName,
-          Mobile: recipientMobNo,
-          Language: lang);
-
-      Logger().d(data.toJson());
-      listOfSingleAssetSmsSchedule.add(data);
+      SingleAssetSmsSchedule data;
+      // nameList.add(recipientName);
+      // mobileNoList.add(recipientMobNo);
+      // languageList.add(lang);
+      if (serialNumber == null ||
+          recipientMobNo == null ||
+          recipientName == null ||
+          lang == null) {
+        data = SingleAssetSmsSchedule(
+            AssetSerial: serialNo,
+            Name: name,
+            Mobile: mobileNo,
+            Language: language);
+        listOfSingleAssetSmsSchedule.add(data);
+      } else {
+        language = lang;
+        mobileNo = recipientMobNo;
+        name = recipientName;
+        serialNo = serialNumber;
+        data = SingleAssetSmsSchedule(
+            AssetSerial: serialNo,
+            Name: name,
+            Mobile: mobileNo,
+            Language: language);
+        listOfSingleAssetSmsSchedule.add(data);
+      }
       _singleAssetResponce = await _smsScheduleService
           .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
       singleAssetModelResponce = _singleAssetResponce.result;
-      for (var item in singleAssetModelResponce) {
-        deviceId.add(item.GPSDeviceID);
-        model.add(item.Model);
-        serialNo.add(item.SerialNumber);
-        date.add(item.StartDate);
-      }
+      // for (var item in singleAssetModelResponce) {
+      //   deviceId.add(item.GPSDeviceID);
+      //   model.add(item.Model);
+      //   serialNo.add(item.SerialNumber);
+      //   date.add(item.StartDate);
+      // }
       hideLoadingDialog();
       listOfSingleAssetSmsSchedule.clear();
-   
+
       notifyListeners();
     } on DioError catch (e) {
-  
       hideLoadingDialog();
       final error = DioException.fromDioError(e);
       snackbarService.showCustomSnackBar(message: e.message);
@@ -89,29 +115,27 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   onBackPressed() {
     showLoadingDialog();
     Future.delayed(Duration(seconds: 2), () {
-      nameList.clear();
-      mobileNoList.clear();
-      languageList.clear();
+      _serialNoController.text = serialNo;
+      _mobileNoController.text = mobileNo;
+      _nameController.text = name;
       singleAssetModelResponce.clear();
       hideLoadingDialog();
       notifyListeners();
     });
   }
 
-
-
   onSavingSmsModel() async {
     try {
       showLoadingDialog();
       for (var i = 0; i < singleAssetModelResponce.length; i++) {
         _savingSmsModel = SavingSmsModel(
-            AssetSerial: serialNo[i],
-            GPSDeviceID: deviceId[i],
-            Language: languageList[i],
-            Mobile: mobileNoList[i],
-            Model: model[i],
-            Name: nameList[i],
-            StartDate: date[i]);
+            AssetSerial: singleAssetModelResponce[i].SerialNumber,
+            GPSDeviceID: singleAssetModelResponce[i].GPSDeviceID,
+            Language: language,
+            Mobile: mobileNo,
+            Model: singleAssetModelResponce[i].Model,
+            Name: name,
+            StartDate: singleAssetModelResponce[i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
 
@@ -130,5 +154,4 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       notifyListeners();
     }
   }
-
 }

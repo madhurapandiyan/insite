@@ -45,7 +45,6 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-
       SubscriptionDashboardResult dashboardResult =
           await MyApi().getClientNine().getSubscriptionDashboardResults(
                 Urls.subscriptionResults +
@@ -219,7 +218,6 @@ class SubScriptionService extends BaseService {
 
   Future<dynamic> postSingleAssetTransferRegistration(
       AddAssetRegistrationData assetData) async {
-    
     var data = await MyApi()
         .getClientNine()
         .postSingleAssetTransferRegistration(

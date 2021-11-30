@@ -20,36 +20,16 @@ class SingleAssetValidateWidget extends StatelessWidget {
       this.model});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
+    return Column(children: [
       Card(
-        child: Row(
-          //  mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 30,
-              margin: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  Icon(Icons.keyboard_arrow_down),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Icon(Icons.check_box_outline_blank)
-                ],
-              ),
-            ),
-            CustomCardSmsAssetWidget(
-              date: StartDate,
-              deviceId: GPSDeviceID,
-              language: langugae,
-              mobileNo: modileNo,
-              model: model,
-              name: name,
-              serialNo: SerialNumber,
-            ),
-          ],
+        child: CustomCardSmsAssetWidget(
+          date: StartDate,
+          deviceId: GPSDeviceID,
+          language: langugae,
+          mobileNo: modileNo,
+          model: model,
+          name: name,
+          serialNo: SerialNumber,
         ),
       ),
       SizedBox(

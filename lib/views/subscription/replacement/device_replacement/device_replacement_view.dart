@@ -141,7 +141,10 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       : Container(
                                           margin: EdgeInsets.all(8),
                                           // height: 50,
-                                          color: Theme.of(context).textTheme.bodyText1.color,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color,
                                           child: Column(
                                             children: List.generate(
                                                 viewModel.searchList.length,
@@ -152,6 +155,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                               i);
                                                       FocusScope.of(context)
                                                           .unfocus();
+                                                      
                                                     },
                                                     deviceId: viewModel
                                                         .searchList[i]
@@ -357,7 +361,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                         //bgColor: tango,
                                         title: !viewModel.showNewPreview
                                             ? "Next"
-                                            : "Register",
+                                            : "Replace",
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.05,

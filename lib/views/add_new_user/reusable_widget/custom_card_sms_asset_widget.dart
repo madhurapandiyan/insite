@@ -27,12 +27,12 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      width: MediaQuery.of(context).size.width * 0.79,
+      // width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         children: [
           Table(
             border: TableBorder.all(width: 2, color: borderLineColor),
-            columnWidths: {0: FlexColumnWidth(5), 1: FlexColumnWidth(5)},
+            columnWidths: {0: FlexColumnWidth(3.5), 1: FlexColumnWidth(5)},
             children: [
               TableRow(children: [
                 Column(
@@ -51,30 +51,22 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InsiteTableRowItem(title: "Make",content: "Title",),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 5),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 2, color: borderLineColor),
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(10))),
-                        height: 100,
-                        //width: 60,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InsiteText(
-                              text: "Model",
-                            ),
-                            InsiteTextOverFlow(
-                              overflow: TextOverflow.ellipsis,
-                              text: model,
-                            ),
-                          ],
+                    InsiteTableRowItem(
+                      title: "Make",
+                      content: "Title",
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InsiteText(
+                          text: "Model",
                         ),
-                      ),
+                        InsiteTextOverFlow(
+                          overflow: TextOverflow.ellipsis,
+                          text: model,
+                        ),
+                      ],
                     )
                   ],
                 ),
@@ -101,7 +93,10 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                InsiteTableRowItem(title: "Recipient's Mobile No",content: mobileNo,)
+                InsiteTableRowItem(
+                  title: "Recipient's Mobile No",
+                  content: mobileNo,
+                )
               ]),
               TableRow(children: [
                 Container(
@@ -146,7 +141,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
               margin: EdgeInsets.all(3),
               padding: EdgeInsets.only(left: 5),
               //height: MediaQuery.of(context).size.height * 0.07,
-             width: MediaQuery.of(context).size.width * 0.80,
+              width: MediaQuery.of(context).size.width * 0.80,
               decoration: BoxDecoration(
                   border: Border.all(width: 2, color: borderLineColor),
                   borderRadius:
