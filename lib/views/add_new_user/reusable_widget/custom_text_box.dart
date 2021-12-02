@@ -18,20 +18,21 @@ class CustomTextBox extends StatelessWidget {
   final List<TextInputFormatter> textInputFormat;
   bool isenabled;
 
-  CustomTextBox(
-      {this.title,
-      this.controller,
-      this.onChanged,
-      this.textInputFormat,
-      this.focusNode,
-      this.keyPadType,
-      this.labelTitle,
-      this.onFieldSubmmit,
-      this.isenabled = true,
-      this.onSaved,
-      this.validator,
-      this.value,
-      this.suffixWidget});
+  CustomTextBox({
+    this.title,
+    this.controller,
+    this.onChanged,
+    this.textInputFormat,
+    this.focusNode,
+    this.keyPadType,
+    this.labelTitle,
+    this.onFieldSubmmit,
+    this.isenabled = true,
+    this.onSaved,
+    this.validator,
+    this.value,
+    this.suffixWidget,
+  });
 
   @override
   Widget build(BuildContext context) {

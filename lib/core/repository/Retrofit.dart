@@ -5,6 +5,8 @@ import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/asset_creation_payload.dart';
+import 'package:insite/core/models/asset_creation_reset_data.dart';
 import 'package:insite/core/models/asset_creation_response.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
@@ -1008,6 +1010,15 @@ abstract class RestClient {
   @GET("{url}")
   Future<SubscriptionDashboardDetailResult> getFleetStatusData(
       @Path() String url);
+  @POST('{url}')
+  Future<AssetCreationResetData> submitAssetCreationData(
+    @Path() String url,
+    @Body() AssetCreationPayLoad assetCreationPayLoad,
+  );
+  @GET('{url}')
+  Future<AssetCreationResetData> downloadAssetCreationData(
+    @Path() String url,
+  );
 }
 
 @JsonSerializable()

@@ -136,46 +136,51 @@ class ReportSummaryViewModel extends InsiteViewModel {
     try {
       showLoadingDialog();
       data = await _smsScheduleService.getScheduleReportData();
-      final Excel excelSheet = Excel.createExcel();
-      var sheetObj = excelSheet.sheets.values.first;
-      for (var i = 0; i < data.result.first.length; i++) {
-        final excelDataInsert = data.result.first;
-        if (i == 0) {
-          sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
-          sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
-          sheetObj.updateCell(
-              CellIndex.indexByString("C0"), "Recipient’s Name");
-          sheetObj.updateCell(CellIndex.indexByString("D0"), "Mobile Number");
-          sheetObj.updateCell(CellIndex.indexByString("E0"), "Language");
-          sheetObj.updateCell(
-              CellIndex.indexByString("F0"), "Scheduled SMS Start Date");
-        }
-        int index = i + 1;
-        sheetObj.updateCell(
-            CellIndex.indexByString("A$index"), excelDataInsert[i].GPSDeviceID);
-        sheetObj.updateCell(CellIndex.indexByString("B$index"),
-            excelDataInsert[i].SerialNumber);
-        sheetObj.updateCell(
-            CellIndex.indexByString("C$index"), excelDataInsert[i].Name);
-        sheetObj.updateCell(
-            CellIndex.indexByString("D$index"), excelDataInsert[i].Number);
-        sheetObj.updateCell(
-            CellIndex.indexByString("E$index"), excelDataInsert[i].Language);
-        sheetObj.updateCell(
-            CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
-      }
       Directory path = await getExternalStorageDirectory();
-      excelSheet.encode().then((onValue) {
-        File("${path.path}/SMS_schedule.xlsx")
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(onValue)
-          ..open(mode: FileMode.read);
-      });
-      snackbarService.showSnackbar(message: "File saved in ${path.path}");
-      // Logger().e(excelSheet.sheets.values.last.rows);
-      hideLoadingDialog();
+      if (data != null) {
+        final Excel excelSheet = Excel.createExcel();
+        var sheetObj = excelSheet.sheets.values.first;
+        for (var i = 0; i < data.result.first.length; i++) {
+          final excelDataInsert = data.result.first;
+          if (i == 0) {
+            sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
+            sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
+            sheetObj.updateCell(
+                CellIndex.indexByString("C0"), "Recipient’s Name");
+            sheetObj.updateCell(CellIndex.indexByString("D0"), "Mobile Number");
+            sheetObj.updateCell(CellIndex.indexByString("E0"), "Language");
+            sheetObj.updateCell(
+                CellIndex.indexByString("F0"), "Scheduled SMS Start Date");
+          }
+          int index = i + 1;
+          sheetObj.updateCell(CellIndex.indexByString("A$index"),
+              excelDataInsert[i].GPSDeviceID);
+          sheetObj.updateCell(CellIndex.indexByString("B$index"),
+              excelDataInsert[i].SerialNumber);
+          sheetObj.updateCell(
+              CellIndex.indexByString("C$index"), excelDataInsert[i].Name);
+          sheetObj.updateCell(
+              CellIndex.indexByString("D$index"), excelDataInsert[i].Number);
+          sheetObj.updateCell(
+              CellIndex.indexByString("E$index"), excelDataInsert[i].Language);
+          sheetObj.updateCell(
+              CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
+        }
+
+        excelSheet.encode().then((onValue) {
+          File("${path.path}/SMS_schedule.xlsx")
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(onValue)
+            ..open(mode: FileMode.read);
+        });
+        snackbarService.showSnackbar(message: "File saved in ${path.path}");
+        // Logger().e(excelSheet.sheets.values.last.rows);
+        hideLoadingDialog();
+      } else {
+        hideLoadingDialog();
+      }
     } catch (e) {
-      hideLoadingDialog();
+      // hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
