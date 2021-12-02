@@ -4,6 +4,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:load/load.dart';
 import 'package:stacked/stacked.dart';
 
 import 'single_asset_form_widget/single_asset_form_widget.dart';
@@ -88,8 +89,8 @@ class _SmsScheduleSingleAssetViewState
                   ),
                   viewModel.singleAssetModelResponce.isEmpty
                       ? SingleAssetFormWidget(
-                        mobileNoController: viewModel.mobileNoController,
-                        nameController: viewModel.nameController,
+                          mobileNoController: viewModel.mobileNoController,
+                          nameController: viewModel.nameController,
                           onSaving: viewModel.onSavingForm,
                           serialNoController: viewModel.serialNoController)
                       : Column(
@@ -154,39 +155,39 @@ class _SmsScheduleSingleAssetViewState
                                       ),
                                       InsiteButton(
                                         onTap: () async {
-                                          await viewModel.onSavingSmsModel();
-                                          showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                    backgroundColor:
-                                                        Theme.of(context)
+                                          showLoadingDialog();
+                                        await  viewModel
+                                              .onSavingSmsModel()
+                                              .then((_) => showDialog(
+                                                  context: context,
+                                                  builder: (ctx) => AlertDialog(
+                                                        backgroundColor: Theme
+                                                                .of(context)
                                                             .backgroundColor,
-                                                    actions: [
-                                                      FlatButton.icon(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            viewModel
-                                                                .onBackPressed();
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.done,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText1
-                                                                .color,
-                                                          ),
-                                                          label: InsiteText(
-                                                            text: "Okay",
-                                                          ))
-                                                    ],
-                                                    content: InsiteText(
-                                                      text:viewModel.popUpMessage
-                                                          ,
-                                                    ),
-                                                  ));
+                                                        actions: [
+                                                          FlatButton.icon(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                               },
+                                                              icon: Icon(
+                                                                Icons.done,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyText1
+                                                                    .color,
+                                                              ),
+                                                              label: InsiteText(
+                                                                text: "Okay",
+                                                              ))
+                                                        ],
+                                                        content: InsiteText(
+                                                          text:
+                                                              "Moblie number Updated successfully!!!.",
+                                                        ),
+                                                      )));
                                         },
                                         textColor: white,
                                         title: viewModel
