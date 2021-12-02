@@ -11,6 +11,8 @@ class AddAssetRegistrationData {
   int userID;
   @JsonKey(name: "asset")
   List<AssetValues> asset;
+  @JsonKey(name: "status")
+  String status;
 
   AddAssetRegistrationData({
     this.source,

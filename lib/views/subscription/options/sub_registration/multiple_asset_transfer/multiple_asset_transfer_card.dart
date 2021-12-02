@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/add_asset_registration.dart';
+import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_card_asset_registration.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_card_asset_transfer.dart';
 
-class MultipleAssetRegistrationCard extends StatelessWidget {
-  final AssetValues assetValue;
+class MultipleAssetTransferCard extends StatelessWidget {
+  const MultipleAssetTransferCard({Key key, this.transfer}) : super(key: key);
 
-  MultipleAssetRegistrationCard({this.assetValue});
+  final Transfer transfer;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,9 @@ class MultipleAssetRegistrationCard extends StatelessWidget {
                 ],
               ),
             ),
-            CustoCardMultipleAssetWidget(assetValue: assetValue)
+            CustomCardMultipeAssetTransfer(
+              transfer: transfer,
+            )
           ],
         ),
       ),
@@ -47,5 +49,6 @@ class MultipleAssetRegistrationCard extends StatelessWidget {
         height: 20,
       )
     ]);
+    ;
   }
 }

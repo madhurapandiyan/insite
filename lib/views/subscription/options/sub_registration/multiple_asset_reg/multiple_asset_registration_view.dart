@@ -193,10 +193,11 @@ class _MultipleAssetRegistrationViewState
                       : SizedBox(),
                   viewModel.dataLoaded
                       ? GestureDetector(
-                          onTap: () {
-                            final result = viewModel
+                          onTap: () async {
+                            String result = await viewModel
                                 .subscriptionMultipleAssetRegistration();
-                            if (result != null) {
+
+                            if (result == "success") {
                               Utils.showToast(Utils.suceessRegistration);
                             }
                           },

@@ -11,7 +11,10 @@ class AssetTransferData {
   int userID;
   @JsonKey(name: "transfer")
   List<Transfer> transfer;
-  AssetTransferData({this.source, this.transfer, this.userID, this.version});
+  @JsonKey(name: "status")
+  String status;
+  AssetTransferData(
+      {this.source, this.transfer, this.userID, this.version, this.status});
 
   factory AssetTransferData.fromJson(Map<String, dynamic> json) =>
       _$AssetTransferDataFromJson(json);
