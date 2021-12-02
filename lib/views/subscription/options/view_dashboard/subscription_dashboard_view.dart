@@ -68,7 +68,10 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                         name: viewModel.names[index],
                                         count: viewModel.results[index]
                                             .toStringAsFixed(0),
-                                        filter: viewModel.names[index],
+                                        filter: viewModel.names[index] ==
+                                                "Not Mapped"
+                                            ? ""
+                                            : viewModel.names[index],
                                         onClicked: () {
                                           viewModel.gotoDetailsPage(
                                               viewModel.filters[index]);
@@ -107,10 +110,16 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                         name: viewModel.modelNames[index],
                                         count: viewModel.modelCount[index]
                                             .toStringAsFixed(0),
-                                        filter: viewModel.modelNames[index],
+                                        filter: viewModel.modelNames[index] ==
+                                                "Not Mapped"
+                                            ? ""
+                                            : viewModel.modelNames[index],
                                         onClicked: () {
-                                          viewModel.gotoModelsPage(
-                                              viewModel.modelNames[index]);
+                                          viewModel.gotoModelsPage(viewModel
+                                                      .modelNames[index] ==
+                                                  "Not Mapped"
+                                              ? ""
+                                              : viewModel.modelNames[index]);
                                         },
                                       );
                                     })

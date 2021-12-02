@@ -210,20 +210,19 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onChoosingColor() {
-    String colorString = color.toString();
-    Logger().d(colorString);
-    Logger().i(colorString.contains("Color(0xff"));
-    Logger().i(colorString.contains(")"));
-    String colorValueString;
-    if (colorString.contains("Color(0xff") && colorString.contains(")")) {
-      colorValueString = colorString.replaceAll("Color(0xff", "");
-      colorValueString = colorValueString.replaceAll(")", "");
-      //colorValue = int.parse(colorValueString);
-      Logger().e(colorValueString);
+    try {
+      String colorString = color.toString();
+      String colorValueString;
+      if (colorString.contains("Color(0xff") && colorString.contains(")")) {
+        colorValueString = colorString.replaceAll("Color(0xff", "");
+        colorValueString = colorValueString.replaceAll(")", "");
+        //colorValue = int.parse(colorValueString);
+      }
+      colorValue = int.parse(colorValueString, radix: 16);
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
-    colorValue = int.parse(colorValueString, radix: 16);
-    Logger().i(colorValue);
-    notifyListeners();
   }
 
   onLocationSelected(String locationLatitude, String locationLongitude) {
@@ -443,7 +442,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
             FillColor: colorValue == null ? 658170 : colorValue);
       } else {
         geofenceRequestPayload = Geofencepayload(
-          IsFavorite: false,
+            IsFavorite: false,
             GeofenceUID: fetchedGeofenceUid == null ? null : fetchedGeofenceUid,
             ActionUTC: DateTime.now().toIso8601String(),
             Description: descriptionController.text == null
@@ -541,7 +540,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     polygon.clear();
     polyline.clear();
     circle.clear();
-    titleController.text = null ;
+    titleController.text = null;
     targetController.text = null;
     endingDate = null;
     backFillDate = null;

@@ -60,18 +60,23 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
         var excel = Excel.decodeBytes(bytes);
 
         for (var table in excel.tables.keys) {
+          Logger().w(excel.tables.keys);
           for (var i = 0; i < excel.tables[table].rows.length; i++) {
-            final excelData = excel.tables[table].rows[i];
+            Logger().e(excel.tables[table].rows.length);
+            final excelData = excel.tables[table].maxRows;
+
             if (i == 0) {
               Logger().d("null");
             } else {
-              double mobNo = excelData[2];
-              SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
-                  AssetSerial: excelData[0].toString(),
-                  Name: excelData[1].toString(),
-                  Mobile: mobNo.toInt().toString(),
-                  Language: excelData[3].toString());
-              listOfSingleAssetSmsSchedule.add(data);
+              Logger().wtf(excelData);
+              // double mobNo = excelData[2];
+              // SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
+              //     AssetSerial: excelData[0].toString(),
+              //     Name: excelData[1].toString(),
+              //     Mobile: mobNo.toInt().toString(),
+              //     Language: excelData[3].toString());
+              // listOfSingleAssetSmsSchedule.add(data);
+              //  excelData.clear();
             }
           }
         }

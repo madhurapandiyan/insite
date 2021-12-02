@@ -101,7 +101,6 @@ class _TabPageState extends State<AssetDetailView> {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
       builder:
           (BuildContext context, AssetDetailViewModel viewModel, Widget _) {
-
         return InsiteScaffold(
           screenType: ScreenType.ASSET_DETAIL,
           viewModel: viewModel,

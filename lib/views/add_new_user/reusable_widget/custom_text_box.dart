@@ -36,7 +36,6 @@ class CustomTextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 35,
       child: TextFormField(
         keyboardType: keyPadType,
         onChanged: onChanged,
@@ -46,17 +45,13 @@ class CustomTextBox extends StatelessWidget {
         focusNode: focusNode,
         autofocus: false,
         controller: controller,
-
         style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 14,
           fontStyle: FontStyle.normal,
           color: Theme.of(context).textTheme.bodyText1.color,
         ),
-        // onEditingComplete: ,
-        // onSubmitted: ,
         enabled: isenabled,
-
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
@@ -64,8 +59,6 @@ class CustomTextBox extends StatelessWidget {
             labelText: labelTitle,
             fillColor: black,
             hintText: title,
-            // errorText: validation(controller.text),
-
             errorStyle: TextStyle(color: Theme.of(context).errorColor),
             contentPadding: EdgeInsets.only(left: 12, top: 8),
             isDense: false,

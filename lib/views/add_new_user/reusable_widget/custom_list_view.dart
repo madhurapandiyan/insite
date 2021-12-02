@@ -38,7 +38,7 @@ class _CustomListViewState extends State<CustomListView> {
             imageErrorBuilder: (context, error, stackTrace) {
               Logger().e(error);
               return Image.asset("assets/images/add_user_icon_one.png",
-                  width: 36, height: 36, fit: BoxFit.fitWidth);
+                  width: 36, height: 36, fit: BoxFit.none);
             },
             fit: BoxFit.cover,
           ),

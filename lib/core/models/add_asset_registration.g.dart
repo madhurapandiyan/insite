@@ -48,11 +48,19 @@ AssetValues _$AssetValuesFromJson(Map<String, dynamic> json) {
     customerName: json['CustomerName'] as String,
     customerCode: json['CustomerCode'] as String,
     customerEmailID: json['CustomerEmailID'] as String,
+    CustomerLanguage: json['CustomerLanguage'] as String,
+    CustomerMobile: json['CustomerMobile'] as String,
+    DealerLanguage: json['DealerLanguage'] as String,
+    DealerMobile: json['DealerMobile'] as String,
   );
 }
 
 Map<String, dynamic> _$AssetValuesToJson(AssetValues instance) =>
     <String, dynamic>{
+      'CustomerMobile': instance.CustomerMobile,
+      'CustomerLanguage': instance.CustomerLanguage,
+      'DealerMobile': instance.DealerMobile,
+      'DealerLanguage': instance.DealerLanguage,
       'DeviceId': instance.deviceId,
       'MachineModel': instance.machineModel,
       'HMR': instance.hMR,

@@ -17,7 +17,7 @@ class GettingNewDeviceId extends StatefulWidget {
   final List<String> items;
   final String initialValue;
   final Function(String) onDropDownValueChange;
-  final bool showingDeviceId;
+   bool showingDeviceId;
 
   GettingNewDeviceId({
     this.controller,
@@ -98,6 +98,7 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                             setState(() {
                               widget.controller.text =
                                   widget.modelData.result.last[i].GPSDeviceID;
+                              widget.showingDeviceId = false;
                             });
                             FocusScope.of(context).unfocus();
                           },

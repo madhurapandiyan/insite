@@ -86,6 +86,9 @@ class DeviceReplacementViewModel extends InsiteViewModel {
     // Logger().wtf(searchedWord);
     if (searchedWord.length < 4) {
       _searchList.clear();
+      // Future.delayed(Duration(seconds: 2), () {
+        
+      // });
       notifyListeners();
       return null;
     } else {
@@ -106,6 +109,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   onSelectedDeviceId(int i) {
     searchTextController.text = searchList[i].containsList;
+    searchList.clear();
     notifyListeners();
   }
 
@@ -133,7 +137,6 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onGettingReplaceDeviceId(String searchWord) async {
-    
     try {
       if (searchWord.length < 4) {
         _replaceDeviceModelData = null;

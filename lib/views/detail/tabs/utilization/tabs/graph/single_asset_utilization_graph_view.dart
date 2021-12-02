@@ -51,7 +51,6 @@ class _SingleAssetUtilizationGraphViewState
       builder: (BuildContext context,
           SingleAssetUtilizationGraphViewModel viewModel, Widget _) {
         if (viewModel.loading) return InsiteProgressBar();
-
         return Stack(
           children: [
             Column(

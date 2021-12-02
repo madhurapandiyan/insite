@@ -2375,7 +2375,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    _data.addAll(updateUserData ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -2399,7 +2399,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(updateUserData?.toJson() ?? <String, dynamic>{});
+    _data.addAll(updateUserData ?? <String, dynamic>{});
     final _result = await _dio.request<Map<String, dynamic>>('$url',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -2572,7 +2572,26 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceResults(
+  Future<SingleAssetRegistrationSearchModel> getSubscriptionDeviceResults(
+      url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SingleAssetRegistrationSearchModel.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SubscriptionDashboardDetailResult> getSubcriptionDeviceListData(
       url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
@@ -3416,6 +3435,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<dynamic> postSingleAssetTransferRegistration(url, data) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(data, 'data');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<AssetTransferData> getSingleAssetTransferData(
       url, assetTransferData) async {
     ArgumentError.checkNotNull(url, 'url');
@@ -3747,6 +3786,24 @@ class _RestClient implements RestClient {
             baseUrl: baseUrl),
         data: _data);
     final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<SubscriptionDashboardDetailResult> getFleetStatusData(url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SubscriptionDashboardDetailResult.fromJson(_result.data);
     return value;
   }
 }

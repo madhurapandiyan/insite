@@ -10,7 +10,6 @@ import 'package:insite/views/subscription/transferhistory/transfer_history_view.
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
-
 import 'fleetstatus/fleet_status_view.dart';
 
 class SubscriptionViewModel extends InsiteViewModel {

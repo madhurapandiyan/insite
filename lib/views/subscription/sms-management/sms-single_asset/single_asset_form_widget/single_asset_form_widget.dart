@@ -9,7 +9,14 @@ import 'package:logger/logger.dart';
 
 class SingleAssetFormWidget extends StatefulWidget {
   final Function(String, String, String, String) onSaving;
-  SingleAssetFormWidget(this.onSaving);
+  final TextEditingController serialNoController;
+  final TextEditingController nameController;
+  final TextEditingController mobileNoController;
+  SingleAssetFormWidget(
+      {this.onSaving,
+      this.serialNoController,
+      this.mobileNoController,
+      this.nameController});
 
   @override
   _SingleAssetFormWidgetState createState() => _SingleAssetFormWidgetState();
@@ -44,7 +51,6 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-         
           ),
           child: Center(
             child: Column(
@@ -56,19 +62,16 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(nameFocus);
-                    },
-                    keyPadType: TextInputType.text,
-                    validator: serialNoValidator,
-                    onChanged: (value) {
-                      serialNo = value;
-                    },
-                  ),
+                CustomTextBox(
+                  controller: widget.serialNoController,
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(nameFocus);
+                  },
+                  keyPadType: TextInputType.text,
+                  validator: serialNoValidator,
+                  onChanged: (value) {
+                    serialNo = value;
+                  },
                 ),
                 SizedBox(
                   height: 30,
@@ -79,22 +82,19 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(mobileNoFocus);
-                    },
-                    focusNode: nameFocus,
-                    keyPadType: TextInputType.name,
-                    onChanged: (value) {
-                      name = value;
-                    },
-                    validator: serialNoValidator,
-                  ),
+                CustomTextBox(
+                  controller: widget.nameController,
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(mobileNoFocus);
+                  },
+                  focusNode: nameFocus,
+                  keyPadType: TextInputType.name,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  validator: serialNoValidator,
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 30,
                 ),
                 InsiteText(
@@ -103,22 +103,19 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: CustomTextBox(
-                    onFieldSubmmit: (_) {
-                      FocusScope.of(context).requestFocus(languageFocus);
-                    },
-                    keyPadType: TextInputType.phone,
-                    onChanged: (value) {
-                      mobileNo = value;
-                    },
-                    focusNode: mobileNoFocus,
-                    validator: modileNoValidator,
-                  ),
+                CustomTextBox(
+                  controller: widget.mobileNoController,
+                  onFieldSubmmit: (_) {
+                    FocusScope.of(context).requestFocus(languageFocus);
+                  },
+                  keyPadType: TextInputType.phone,
+                  onChanged: (value) {
+                    mobileNo = value;
+                  },
+                  focusNode: mobileNoFocus,
+                  validator: modileNoValidator,
                 ),
-                 SizedBox(
+                SizedBox(
                   height: 30,
                 ),
                 InsiteText(
@@ -129,7 +126,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.75,
-                  height: MediaQuery.of(context).size.height * 0.05,
+                  //  height: MediaQuery.of(context).size.height * 0.05,
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
