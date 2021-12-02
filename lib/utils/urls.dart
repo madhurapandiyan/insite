@@ -265,13 +265,13 @@ class Urls {
   static String getReportOfReplacement =
       "$subscriptionPrefix/subscriptionSave/replacementHistory";
   static String downloadReplacementData = "$getReportOfReplacement/download";
-  static String estimatedTargetSettingsData =
-      "/osg-in/$accountSelection/1.0/v1/assettargetsettings";
-  static String estimatedfuelBurnRateData =
-      "/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
-  static String estimatedMileageData =
-      "/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
-  static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
+  static String estimatedTargetSettingsData="/osg-in/$accountSelection/1.0/v1/assettargetsettings";
+   static String estimatedfuelBurnRateData="/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
+    static String estimatedMileageData="/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
+    static String assetIconData="/osg-in/$accountSelection/1.0/v1/Asset/";
+    static String assetCreationResetdata="$subscriptionPrefix/assetDetail/asset/activate/";
+    static String downloadResetData="$subscriptionPrefix/assetDetail/asset/activate/";
+
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

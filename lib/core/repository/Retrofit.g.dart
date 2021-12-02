@@ -3806,4 +3806,43 @@ class _RestClient implements RestClient {
     final value = SubscriptionDashboardDetailResult.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AssetCreationResetData> getAssetCreationRestData(
+      url, assetCreationPayLoad) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(assetCreationPayLoad, 'assetCreationPayLoad');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(assetCreationPayLoad?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCreationResetData.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AssetCreationResetData> getDownloadResetData(url) async {
+    ArgumentError.checkNotNull(url, 'url');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AssetCreationResetData.fromJson(_result.data);
+    return value;
+  }
 }
