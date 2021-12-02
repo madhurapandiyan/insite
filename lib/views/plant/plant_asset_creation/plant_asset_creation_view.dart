@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/views/plant/plant_asset_creation/reusable_widget/asset_creation_reset_widget.dart';
-import 'package:insite/views/plant/plant_asset_creation/reusable_widget/asset_creation_reusable_widget.dart';
+import 'package:insite/views/plant/plant_asset_creation/reusable_widget/asset_creation_validation_widget.dart';
+import 'package:insite/views/plant/plant_asset_creation/reusable_widget/asset_creation_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -84,7 +84,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                             title: "",
                             icon: Icon(Icons.download),
                             onTap: () {
-                              viewModel.getDownloadResetData();
+                              viewModel.downloadAssetCreationData();
                             },
                           ),
                         ),
@@ -152,7 +152,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                 final assetCreationData =
                                     viewModel.getassetCreationListData[index];
 
-                                return AssetCreationResetWidget(
+                                return AssetCreationValidationWidget(
                                   data: assetCreationData,
                                 );
                               }),
@@ -168,14 +168,11 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                 final dataModel =
                                     viewModel.getassetCreationListData[index];
 
-                                return AssetCreationReusablewidget(
+                                return AssetCreationWidget(
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {
                                     viewModel.getAssetSerialListValue(
                                         value, index);
-                                  },
-                                  onModelValueChange: (String value) {
-                                    viewModel.getModelListValue(value, index);
                                   },
                                   onDeviceIdValueChange: (String value) {
                                     viewModel.getDeviceIdListValue(
@@ -210,8 +207,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                       height: 40,
                       title: "Yes",
                       onTap: () {
-                        viewModel.getAssetCreationResetData();
-
+                        viewModel.submitAssetCreationData();
                         Navigator.pop(context);
                       },
                       bgColor: tuna,

@@ -1011,12 +1011,12 @@ abstract class RestClient {
   Future<SubscriptionDashboardDetailResult> getFleetStatusData(
       @Path() String url);
   @POST('{url}')
-  Future<AssetCreationResetData> getAssetCreationRestData(
+  Future<AssetCreationResetData> submitAssetCreationData(
     @Path() String url,
     @Body() AssetCreationPayLoad assetCreationPayLoad,
   );
   @GET('{url}')
-  Future<AssetCreationResetData> getDownloadResetData(
+  Future<AssetCreationResetData> downloadAssetCreationData(
     @Path() String url,
   );
 }

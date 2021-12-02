@@ -4,17 +4,17 @@ import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dar
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
-class AssetCreationResetWidget extends StatefulWidget {
+class AssetCreationValidationWidget extends StatefulWidget {
   final AssetCreationModel data;
 
-  const AssetCreationResetWidget({this.data});
+  const AssetCreationValidationWidget({this.data});
 
   @override
-  _AssetCreationResetWidgetState createState() =>
-      _AssetCreationResetWidgetState();
+  _AssetCreationValidationWidgetState createState() =>
+      _AssetCreationValidationWidgetState();
 }
 
-class _AssetCreationResetWidgetState extends State<AssetCreationResetWidget> {
+class _AssetCreationValidationWidgetState extends State<AssetCreationValidationWidget> {
  
   @override
   Widget build(BuildContext context) {
@@ -172,7 +172,7 @@ class _AssetCreationResetWidgetState extends State<AssetCreationResetWidget> {
                                 child: InsiteText(
                                   size: 14,
                                   fontWeight: FontWeight.w700,
-                                  text:widget.data.model.text,
+                                  text:widget.data.model,
                                 ),
                               )),
                           SizedBox(

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class AssetCreationModel {
   String assetSerialNo;
   String deviceId;
-  TextEditingController model;
+  String model;
   String hourMeter;
   String status;
   String message;

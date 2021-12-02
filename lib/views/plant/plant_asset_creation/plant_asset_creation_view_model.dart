@@ -49,6 +49,8 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   final formKeyScreenOne = GlobalKey<FormState>();
   final formKeyScreenTwo = GlobalKey<FormState>();
 
+  bool screenOne = false;
+
   bool _isChangingSubmitAndResetButtonState = false;
   bool get isChangingSubmitAndResetButtonState =>
       _isChangingSubmitAndResetButtonState;
@@ -58,13 +60,11 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   var _snackbarService = locator<SnackbarService>();
 
-  TextEditingController assetSerialController = TextEditingController();
-
   List<AssetCreationModel> getassetCreationListData = [
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -72,7 +72,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -80,7 +80,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -88,7 +88,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -96,7 +96,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -104,7 +104,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -112,7 +112,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -120,7 +120,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -128,7 +128,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -136,7 +136,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     AssetCreationModel(
       assetSerialNo: "",
       deviceId: "",
-      model: TextEditingController(),
+      model: "",
       hourMeter: "",
       status: "",
       message: "",
@@ -157,17 +157,17 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     for (int i = 0; i < getassetCreationListData.length; i++) {
       var data = getassetCreationListData[index];
       if (value != null) {
-        data.model.text = value;
+        data.model = value;
       }
     }
   }
 
-  getModelData() {
-    for (int i = 0; i < getassetCreationListData.length; i++) {
-      var data = getassetCreationListData[i];
-      print("model:${data.model}");
-    }
-  }
+  // getModelData() {
+  //   for (int i = 0; i < getassetCreationListData.length; i++) {
+  //     var data = getassetCreationListData[i];
+  //     print("model:${data.model}");
+  //   }
+  // }
 
   getDeviceIdListValue(String value, int index) {
     selectedIndex = index;
@@ -189,8 +189,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     } else {
       AssetCreationResponse data =
           await _plantService.getAssetCreationData(value);
-      getassetCreationListData[index].model.text = data.result.modelName;
-
+      getassetCreationListData[index].model = data.result.modelName;
       notifyListeners();
     }
   }
@@ -226,10 +225,11 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   checkResetAndSubmitButtonVisiblity(String value) {
     for (int i = 0; i < getassetCreationListData.length; i++) {
       var data = getassetCreationListData[i];
+      Logger().wtf(value.isNotEmpty);
       if (value.isNotEmpty) {
+        Logger().e(value);
         _issubmitButtonState = true;
         _isResetButtonState = true;
-
         notifyListeners();
       } else if (data.assetSerialNo == value &&
           data.deviceId == value &&
@@ -238,12 +238,14 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         _isResetButtonState = false;
         notifyListeners();
       } else {
-        return null;
+        _issubmitButtonState = false;
+        _isResetButtonState = false;
+        notifyListeners();
       }
     }
   }
 
-  getAssetCreationResetData() async {
+  submitAssetCreationData() async {
     showLoadingDialog();
 
     try {
@@ -253,25 +255,24 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
       getassetCreationListData.forEach((item) {
         if (item.assetSerialNo.isEmpty &&
             item.deviceId.isEmpty &&
-            item.model.text.isEmpty &&
+            item.model.isEmpty &&
             item.hourMeter.isEmpty) {
         } else {
           getAssetPayLoad.add(Asset(
               machineSerialNumber: item.assetSerialNo,
               deviceId: item.deviceId,
               HMRValue: item.hourMeter,
-              model: item.model.text));
+              model: item.model));
         }
       });
       if (getAssetPayLoad.isEmpty) {
         return;
       } else {
-        result = await _plantService.getAssetCreationResetData(
+        result = await _plantService.submitAssetCreationData(
             AssetCreationPayLoad(
                 Source: "THC",
                 asset: getAssetPayLoad,
                 UserID: int.parse(userId)));
-       
       }
       for (int i = 0; i < result.result.length; i++) {
         getassetCreationListData.forEach((element) {
@@ -286,80 +287,89 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
       _isChangingSubmitAndResetButtonState = true;
       _isResetButtonState = true;
       _issubmitButtonState = false;
-
+      screenOne = true;
       notifyListeners();
       hideLoadingDialog();
     } catch (e) {}
   }
 
   onClickResetButton() {
-  
-    if (result != null) {
-      _isResetButtonState = true;
-      _issubmitButtonState = false;
-      formKeyScreenTwo.currentState.reset();
-      getassetCreationListData.forEach((element) {
-        element.model.clear();
-      });
-      _isChangingSubmitAndResetButtonState = false;
-      _isResetButtonState = false;
-      notifyListeners();
-    } else {
-      formKeyScreenOne.currentState.reset();
-      _issubmitButtonState = false;
-      _isResetButtonState = false;
-      getassetCreationListData.forEach((element) {
-        element.model.clear();
-      });
-      notifyListeners();
+    try {
+      if (screenOne) {
+        _isResetButtonState = true;
+        _issubmitButtonState = false;
+
+        formKeyScreenTwo.currentState.reset();
+        getassetCreationListData.forEach((element) {
+          element.model = null;
+        });
+        screenOne = !screenOne;
+        _isChangingSubmitAndResetButtonState = false;
+        _isResetButtonState = false;
+
+        notifyListeners();
+      } else {
+        formKeyScreenOne.currentState.reset();
+
+        getassetCreationListData.forEach((element) {
+          element.model = "";
+        });
+        _issubmitButtonState = false;
+        _isResetButtonState = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
-  getDownloadResetData() async {
+  downloadAssetCreationData() async {
     try {
       showLoadingDialog();
       Directory path = await getExternalStorageDirectory();
       AssetCreationResetData result =
-          await _plantService.getDownloadResetData();
-      final Excel excelSheet = Excel.createExcel();
-      var sheetObj = excelSheet.sheets.values.first;
-      for (var i = 0; i < result.result.length; i++) {
-        final excelDataInsert = result.result[i];
-        if (i == 0) {
-          sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
-          sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
-          sheetObj.updateCell(CellIndex.indexByString("C0"), "Model");
-          sheetObj.updateCell(CellIndex.indexByString("D0"), "Hour Meter");
-          sheetObj.updateCell(CellIndex.indexByString("E0"), "Created At");
-        } else {
-          int index = i + 1;
-          sheetObj.updateCell(
-              CellIndex.indexByString("A$index"), excelDataInsert.GPSDeviceID);
+          await _plantService.downloadAssetCreationData();
+      if (result != null) {
+        final Excel excelSheet = Excel.createExcel();
+        var sheetObj = excelSheet.sheets.values.first;
+        for (var i = 0; i < result.result.length; i++) {
+          final excelDataInsert = result.result[i];
+          if (i == 0) {
+            sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
+            sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
+            sheetObj.updateCell(CellIndex.indexByString("C0"), "Model");
+            sheetObj.updateCell(CellIndex.indexByString("D0"), "Hour Meter");
+            sheetObj.updateCell(CellIndex.indexByString("E0"), "Created At");
+          } else {
+            int index = i + 1;
+            sheetObj.updateCell(CellIndex.indexByString("A$index"),
+                excelDataInsert.GPSDeviceID);
 
-          sheetObj.updateCell(
-              CellIndex.indexByString("B$index"), excelDataInsert.VIN);
-          sheetObj.updateCell(
-              CellIndex.indexByString("C$index"), excelDataInsert.Model);
-          sheetObj.updateCell(
-              CellIndex.indexByString("D$index"), excelDataInsert.HMRValue);
-          sheetObj.updateCell(CellIndex.indexByString("E$index"),
-              excelDataInsert.AssetCreationDate);
+            sheetObj.updateCell(
+                CellIndex.indexByString("B$index"), excelDataInsert.VIN);
+            sheetObj.updateCell(
+                CellIndex.indexByString("C$index"), excelDataInsert.Model);
+            sheetObj.updateCell(
+                CellIndex.indexByString("D$index"), excelDataInsert.HMRValue);
+            sheetObj.updateCell(CellIndex.indexByString("E$index"),
+                excelDataInsert.AssetCreationDate);
+          }
         }
-      }
 
-      // Logger().e(path.path);
-      excelSheet.encode().then((onValue) {
-        File("${path.path}/Asset Creation_export_20211130183645.xlsx")
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(onValue)
-          ..open(mode: FileMode.read);
-      });
-      snackbarService.showSnackbar(message: "File saved in ${path.path}");
-      Logger().w("File saved in ${path.path}");
-      // Logger().e(excelSheet.sheets.values.last.rows);
-      hideLoadingDialog();
+        excelSheet.encode().then((onValue) {
+          File("${path.path}/Asset Creation_export_20211130183645.xlsx")
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(onValue)
+            ..open(mode: FileMode.read);
+        });
+        snackbarService.showSnackbar(message: "File saved in ${path.path}");
+        Logger().w("File saved in ${path.path}");
+
+        hideLoadingDialog();
+      } else {
+        hideLoadingDialog();
+      }
     } catch (e) {
-      //hideLoadingDialog();
       Logger().e(e.toString());
     }
   }

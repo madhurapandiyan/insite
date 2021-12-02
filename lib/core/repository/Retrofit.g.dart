@@ -3808,7 +3808,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCreationResetData> getAssetCreationRestData(
+  Future<AssetCreationResetData> submitAssetCreationData(
       url, assetCreationPayLoad) async {
     ArgumentError.checkNotNull(url, 'url');
     ArgumentError.checkNotNull(assetCreationPayLoad, 'assetCreationPayLoad');
@@ -3829,7 +3829,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetCreationResetData> getDownloadResetData(url) async {
+  Future<AssetCreationResetData> downloadAssetCreationData(url) async {
     ArgumentError.checkNotNull(url, 'url');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

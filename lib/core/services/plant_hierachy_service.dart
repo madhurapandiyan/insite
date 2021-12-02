@@ -76,7 +76,7 @@ class PlantHeirarchyAssetService extends BaseService {
     return null;
   }
 
-  Future<AssetCreationResetData> getAssetCreationResetData(
+  Future<AssetCreationResetData> submitAssetCreationData(
       AssetCreationPayLoad data) async {
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
@@ -85,7 +85,7 @@ class PlantHeirarchyAssetService extends BaseService {
     } else {
       AssetCreationResetData assetCreationResetData = await MyApi()
           .getClientSix()
-          .getAssetCreationRestData(
+          .submitAssetCreationData(
               Urls.assetCreationResetdata +
                   FilterUtils.constructQueryFromMap(queryMap),
               data);
@@ -95,7 +95,7 @@ class PlantHeirarchyAssetService extends BaseService {
     return null;
   }
 
-  Future<AssetCreationResetData> getDownloadResetData() async {
+  Future<AssetCreationResetData> downloadAssetCreationData() async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
@@ -103,7 +103,7 @@ class PlantHeirarchyAssetService extends BaseService {
       } else {
         AssetCreationResetData assetCreationResetData = await MyApi()
             .getClientSix()
-            .getDownloadResetData(Urls.downloadResetData +
+            .downloadAssetCreationData(Urls.downloadResetData +
                 FilterUtils.constructQueryFromMap(queryMap));
         return assetCreationResetData;
       }
