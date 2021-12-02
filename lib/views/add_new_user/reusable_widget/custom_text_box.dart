@@ -51,10 +51,7 @@ class CustomTextBox extends StatelessWidget {
           fontStyle: FontStyle.normal,
           color: Theme.of(context).textTheme.bodyText1.color,
         ),
-        // onEditingComplete: ,
-        // onSubmitted: ,
         enabled: isenabled,
-
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
@@ -62,8 +59,6 @@ class CustomTextBox extends StatelessWidget {
             labelText: labelTitle,
             fillColor: black,
             hintText: title,
-            // errorText: validation(controller.text),
-
             errorStyle: TextStyle(color: Theme.of(context).errorColor),
             contentPadding: EdgeInsets.only(left: 12, top: 8),
             isDense: false,

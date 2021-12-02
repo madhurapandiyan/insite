@@ -77,7 +77,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     super.didUpdateWidget(oldWidget);
   }
 
-  setupListeners() {
+  setupListeners(){
     Logger().i("IndiaStackSplashView init state splash view");
     // flutterWebviewPlugin.close();
 

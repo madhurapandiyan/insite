@@ -124,9 +124,9 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     });
   }
 
-  onSavingSmsModel() async {
+  Future onSavingSmsModel() async {
     try {
-      showLoadingDialog();
+      
       for (var i = 0; i < singleAssetModelResponce.length; i++) {
         _savingSmsModel = SavingSmsModel(
             AssetSerial: singleAssetModelResponce[i].SerialNumber,
@@ -138,12 +138,18 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
             StartDate: singleAssetModelResponce[i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
-
-      Logger().d(_savingSmsModel.toJson());
-      var data = await _smsScheduleService.savingSms(listOSavingSmsModel);
+var data = await _smsScheduleService.savingSms(listOSavingSmsModel);
+// if (data["status"]=="success") {
+//  // popUpMessage="Mo"
+// }
+      _serialNoController.text =null;
+      _mobileNoController.text = null;
+      _nameController.text =null;
+      Logger().e(data);
       hideLoadingDialog();
       dummy = false;
       listOSavingSmsModel.clear();
+      singleAssetModelResponce.clear();
       notifyListeners();
     } on DioError catch (e) {
       listOSavingSmsModel.clear();
