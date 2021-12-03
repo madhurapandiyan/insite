@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class AssetCreationModel {
   String assetSerialNo;
   String deviceId;
@@ -7,6 +5,7 @@ class AssetCreationModel {
   String hourMeter;
   String status;
   String message;
+  bool isSelected;
 
   AssetCreationModel({
     this.assetSerialNo,
@@ -15,5 +14,7 @@ class AssetCreationModel {
     this.hourMeter,
     this.status,
     this.message,
+    this.isSelected=false
   });
 }
+
