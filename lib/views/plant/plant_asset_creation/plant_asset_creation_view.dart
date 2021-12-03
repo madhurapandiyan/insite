@@ -54,7 +54,6 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                         0.06,
                                     title: "Submit",
                                     fontSize: 14,
-                                  
                                     onTap: () {
                                       if (viewModel.validate()) {
                                         showDialogBox(viewModel);
@@ -68,7 +67,6 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Reset",
                                 fontSize: 14,
-                               
                                 onTap: () {
                                   //viewModel.changedResetButtonState();
                                   viewModel.onClickResetButton();
@@ -82,7 +80,8 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           padding: const EdgeInsets.only(right: 5.0),
                           child: InsiteButton(
                             title: "",
-                            icon: Icon(Icons.download),
+                            icon: Icon(Icons.download,
+                            color: appbarcolor,),
                             onTap: () {
                               viewModel.downloadAssetCreationData();
                             },
@@ -148,12 +147,17 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           child: ListView.builder(
                               itemCount:
                                   viewModel.getassetCreationListData.length,
+                                    padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final assetCreationData =
                                     viewModel.getassetCreationListData[index];
 
                                 return AssetCreationValidationWidget(
                                   data: assetCreationData,
+                                  voidCallback: (){
+                                    viewModel.onItemSelect(index);
+                                  },
+                                  
                                 );
                               }),
                         ),
@@ -164,11 +168,15 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           child: ListView.builder(
                               itemCount:
                                   viewModel.getassetCreationListData.length,
+                                    padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final dataModel =
                                     viewModel.getassetCreationListData[index];
 
                                 return AssetCreationWidget(
+                                  voidCallback: (){
+                                   viewModel.onItemSelect(index); 
+                                  },
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {
                                     viewModel.getAssetSerialListValue(
@@ -210,7 +218,6 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         viewModel.submitAssetCreationData();
                         Navigator.pop(context);
                       },
-                     
                     ),
                     InsiteButton(
                       width: 120,
