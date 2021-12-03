@@ -80,8 +80,10 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           padding: const EdgeInsets.only(right: 5.0),
                           child: InsiteButton(
                             title: "",
-                            icon: Icon(Icons.download,
-                            color: appbarcolor,),
+                            icon: Icon(
+                              Icons.download,
+                              color: appbarcolor,
+                            ),
                             onTap: () {
                               viewModel.downloadAssetCreationData();
                             },
@@ -147,17 +149,16 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           child: ListView.builder(
                               itemCount:
                                   viewModel.getassetCreationListData.length,
-                                    padding: EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final assetCreationData =
                                     viewModel.getassetCreationListData[index];
 
                                 return AssetCreationValidationWidget(
                                   data: assetCreationData,
-                                  voidCallback: (){
-                                    viewModel.onItemSelect(index);
+                                  voidCallback: () {
+                                    //viewModel.onItemSelect(index);
                                   },
-                                  
                                 );
                               }),
                         ),
@@ -168,14 +169,14 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                           child: ListView.builder(
                               itemCount:
                                   viewModel.getassetCreationListData.length,
-                                    padding: EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final dataModel =
                                     viewModel.getassetCreationListData[index];
 
                                 return AssetCreationWidget(
-                                  voidCallback: (){
-                                   viewModel.onItemSelect(index); 
+                                  voidCallback: () {
+                                   // viewModel.onItemSelect(index);
                                   },
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {

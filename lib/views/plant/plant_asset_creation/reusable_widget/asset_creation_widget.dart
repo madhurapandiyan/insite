@@ -55,16 +55,16 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: widget.data.isSelected
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(Icons.crop_square,
-                          color: widget.data.isSelected
-                              ? Theme.of(context).buttonColor
-                              : Colors.black)),
+                  // Container(
+                  //     decoration: BoxDecoration(
+                  //         color: widget.data.isSelected
+                  //             ? Theme.of(context).buttonColor
+                  //             : Theme.of(context).backgroundColor,
+                  //         borderRadius: BorderRadius.all(Radius.circular(4))),
+                  //     child: Icon(Icons.crop_square,
+                  //         color: widget.data.isSelected
+                  //             ? Theme.of(context).buttonColor
+                  //             : Colors.black)),
                 ],
               ),
             ),
