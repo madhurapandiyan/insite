@@ -54,7 +54,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                         0.06,
                                     title: "Submit",
                                     fontSize: 14,
-                                    bgColor: tango,
+                                  
                                     onTap: () {
                                       if (viewModel.validate()) {
                                         showDialogBox(viewModel);
@@ -68,7 +68,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Reset",
                                 fontSize: 14,
-                                bgColor: tango,
+                               
                                 onTap: () {
                                   //viewModel.changedResetButtonState();
                                   viewModel.onClickResetButton();
@@ -197,7 +197,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
     return showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              backgroundColor: tuna,
+              backgroundColor: Theme.of(context).backgroundColor,
               actions: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -210,7 +210,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         viewModel.submitAssetCreationData();
                         Navigator.pop(context);
                       },
-                      bgColor: tuna,
+                     
                     ),
                     InsiteButton(
                       width: 120,

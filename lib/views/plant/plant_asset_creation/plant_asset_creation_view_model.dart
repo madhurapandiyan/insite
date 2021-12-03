@@ -153,22 +153,6 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     getAssetCreationData(value, index);
   }
 
-  getModelListValue(String value, int index) {
-    for (int i = 0; i < getassetCreationListData.length; i++) {
-      var data = getassetCreationListData[index];
-      if (value != null) {
-        data.model = value;
-      }
-    }
-  }
-
-  // getModelData() {
-  //   for (int i = 0; i < getassetCreationListData.length; i++) {
-  //     var data = getassetCreationListData[i];
-  //     print("model:${data.model}");
-  //   }
-  // }
-
   getDeviceIdListValue(String value, int index) {
     selectedIndex = index;
     getassetCreationListData[index].deviceId = value;
@@ -225,9 +209,8 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   checkResetAndSubmitButtonVisiblity(String value) {
     for (int i = 0; i < getassetCreationListData.length; i++) {
       var data = getassetCreationListData[i];
-      Logger().wtf(value.isNotEmpty);
+
       if (value.isNotEmpty) {
-        Logger().e(value);
         _issubmitButtonState = true;
         _isResetButtonState = true;
         notifyListeners();
