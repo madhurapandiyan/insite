@@ -327,62 +327,62 @@ class _LocationViewState extends State<LocationView> {
                                     ],
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(left: 16.0),
-                                //   child: DropdownButton(
-                                //     dropdownColor:
-                                //         Theme.of(context).backgroundColor,
-                                //     icon: Padding(
-                                //       padding: EdgeInsets.only(right: 8.0),
-                                //       child: Container(
-                                //         child: SvgPicture.asset(
-                                //           "assets/images/arrowdown.svg",
-                                //           width: 10,
-                                //           color:
-                                //               Theme.of(context).iconTheme.color,
-                                //           height: 10,
-                                //         ),
-                                //       ),
-                                //     ),
-                                //     isExpanded: false,
-                                //     hint: Text(
-                                //       _currentSelectedItem,
-                                //       style: TextStyle(
-                                //           color: Theme.of(context)
-                                //               .textTheme
-                                //               .bodyText1
-                                //               .color),
-                                //     ),
-                                //     items: [
-                                //       'MAP',
-                                //       'TERRAIN',
-                                //       'SATELLITE',
-                                //       'HYBRID'
-                                //     ]
-                                //         .map((map) => DropdownMenuItem(
-                                //               value: map,
-                                //               child: InsiteText(
-                                //                 text: map,
-                                //                 size: 11.0,
-                                //                 fontWeight: FontWeight.bold,
-                                //               ),
-                                //             ))
-                                //         .toList(),
-                                //     value: _currentSelectedItem,
-                                //     onChanged: (value) {
-                                //       setState(() {
-                                //         _currentSelectedItem = value;
-                                //       });
-                                //     },
-                                //     underline: Container(
-                                //         height: 1.0,
-                                //         decoration: BoxDecoration(
-                                //             border: Border(
-                                //                 bottom: BorderSide(
-                                //                     color: Colors.transparent,
-                                //                     width: 0.0)))),
-                                //   ),
-                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16.0),
+                                  child: DropdownButton(
+                                    dropdownColor:
+                                        Theme.of(context).backgroundColor,
+                                    icon: Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "assets/images/arrowdown.svg",
+                                          width: 10,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                          height: 10,
+                                        ),
+                                      ),
+                                    ),
+                                    isExpanded: false,
+                                    hint: Text(
+                                      _currentSelectedItem,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              .color),
+                                    ),
+                                    items: [
+                                      'MAP',
+                                      'TERRAIN',
+                                      'SATELLITE',
+                                      'HYBRID'
+                                    ]
+                                        .map((map) => DropdownMenuItem(
+                                              value: map,
+                                              child: InsiteText(
+                                                text: map,
+                                                size: 11.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ))
+                                        .toList(),
+                                    value: _currentSelectedItem,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _currentSelectedItem = value;
+                                      });
+                                    },
+                                    underline: Container(
+                                        height: 1.0,
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 0.0)))),
+                                  ),
+                                 ),
                                 viewModel.refreshing
                                     ? InsiteProgressBar()
                                     : SizedBox()
