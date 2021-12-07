@@ -95,8 +95,8 @@ class Router {
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));
-      case locationViewRoute:
-        return MaterialPageRoute(builder: (_) => view10.LocationView());
+      // case locationViewRoute:
+      //   return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
       case loginPageRoute:

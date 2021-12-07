@@ -54,33 +54,33 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
       listOfSingleAssetSmsSchedule.clear();
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        Logger().d(data.path);
-        var bytes = File(data.path).readAsBytesSync();
-        var excel = Excel.decodeBytes(bytes);
+        // File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
+        // Logger().d(data.path);
+        // var bytes = File(data.path).readAsBytesSync();
+        // var excel = Excel.decodeBytes(bytes);
 
-        for (var table in excel.tables.keys) {
-          Logger().w(excel.tables.keys);
-          for (var i = 0; i < excel.tables[table].rows.length; i++) {
-            Logger().e(excel.tables[table].rows.length);
-            final excelData = excel.tables[table].maxRows;
+        // for (var table in excel.tables.keys) {
+        //   Logger().w(excel.tables.keys);
+        //   for (var i = 0; i < excel.tables[table].rows.length; i++) {
+        //     Logger().e(excel.tables[table].rows.length);
+        //     final excelData = excel.tables[table].maxRows;
 
-            if (i == 0) {
-              Logger().d("null");
-            } else {
-              Logger().wtf(excelData);
-              // double mobNo = excelData[2];
-              // SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
-              //     AssetSerial: excelData[0].toString(),
-              //     Name: excelData[1].toString(),
-              //     Mobile: mobNo.toInt().toString(),
-              //     Language: excelData[3].toString());
-              // listOfSingleAssetSmsSchedule.add(data);
-              //  excelData.clear();
-            }
-          }
-        }
-        onGettingMultiSmsData();
+        //     if (i == 0) {
+        //       Logger().d("null");
+        //     } else {
+        //       Logger().wtf(excelData);
+        //       // double mobNo = excelData[2];
+        //       // SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
+        //       //     AssetSerial: excelData[0].toString(),
+        //       //     Name: excelData[1].toString(),
+        //       //     Mobile: mobNo.toInt().toString(),
+        //       //     Language: excelData[3].toString());
+        //       // listOfSingleAssetSmsSchedule.add(data);
+        //       //  excelData.clear();
+        //     }
+        //   }
+        // }
+        // onGettingMultiSmsData();
       } else {
         snackbarService.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();

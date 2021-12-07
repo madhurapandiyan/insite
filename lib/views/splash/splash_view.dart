@@ -129,9 +129,9 @@ class _SplashViewState extends State<SplashView> {
   }
 
   saveToken(token, String expiryTime) {
-    Logger().i("saveToken from webview");
-    _loginService.getUser(token, false);
-    _loginService.saveExpiryTime(expiryTime);
+    // Logger().i("saveToken from webview");
+    // _loginService.getUser(token, false);
+    // _loginService.saveExpiryTime(expiryTime);
   }
 
   @override

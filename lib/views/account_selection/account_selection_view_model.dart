@@ -85,18 +85,18 @@ class AccountSelectionViewModel extends InsiteViewModel {
   }
 
   getLoggedInUserMail() async {
-    UserInfo userInfo = await _localService.getLoggedInUser();
-    _loggedInUserMail = userInfo.email;
-    notifyListeners();
+    // UserInfo userInfo = await _localService.getLoggedInUser();
+    // _loggedInUserMail = userInfo.email;
+    // notifyListeners();
   }
 
   getCustomerList() async {
-    Logger().d("getCustomerList");
-    List<Customer> result = await _loginService.getCustomers();
-    addCustomers(result);
-    Logger().d("getCustomerList " + _customers.length.toString());
-    _loading = false;
-    notifyListeners();
+    // Logger().d("getCustomerList");
+    // List<Customer> result = await _loginService.getCustomers();
+    // addCustomers(result);
+    // Logger().d("getCustomerList " + _customers.length.toString());
+    // _loading = false;
+    // notifyListeners();
   }
 
   addCustomers(List<Customer> list) {
@@ -140,43 +140,43 @@ class AccountSelectionViewModel extends InsiteViewModel {
   }
 
   Future<List<Customer>> getSubCustomerList() async {
-    Logger().d("getSubCustomerList");
-    List<Customer> result =
-        await _loginService.getSubCustomers(_accountSelected.CustomerUID);
+    // Logger().d("getSubCustomerList");
+    // List<Customer> result =
+    //     await _loginService.getSubCustomers(_accountSelected.CustomerUID);
 
-    if (result.isNotEmpty) {
-      _subCustomers.clear();
-      if (_subAccountSelected != null &&
-          _subAccountSelected.DisplayName == "ALL") {
-        _subCustomers.add(AccountData(
-            isSelected: true,
-            selectionType: AccountType.CUSTOMER,
-            value: Customer(
-                CustomerUID: "",
-                Name: "ALL ACCOUNTS",
-                CustomerType: "ALL",
-                DisplayName: "ALL ACCOUNTS",
-                Children: [])));
-      } else {
-        _subCustomers.add(AccountData(
-            isSelected: false,
-            selectionType: AccountType.CUSTOMER,
-            value: Customer(
-                CustomerUID: "",
-                Name: "ALL ACCOUNTS",
-                CustomerType: "ALL",
-                DisplayName: "ALL ACCOUNTS",
-                Children: [])));
-      }
-      addSubCustomers(result);
-    }
-    Logger().d("getSubCustomerList result " + _subCustomers.length.toString());
-    addSubCustomersToDb(_subCustomers);
+    // if (result.isNotEmpty) {
+    //   _subCustomers.clear();
+    //   if (_subAccountSelected != null &&
+    //       _subAccountSelected.DisplayName == "ALL") {
+    //     _subCustomers.add(AccountData(
+    //         isSelected: true,
+    //         selectionType: AccountType.CUSTOMER,
+    //         value: Customer(
+    //             CustomerUID: "",
+    //             Name: "ALL ACCOUNTS",
+    //             CustomerType: "ALL",
+    //             DisplayName: "ALL ACCOUNTS",
+    //             Children: [])));
+    //   } else {
+    //     _subCustomers.add(AccountData(
+    //         isSelected: false,
+    //         selectionType: AccountType.CUSTOMER,
+    //         value: Customer(
+    //             CustomerUID: "",
+    //             Name: "ALL ACCOUNTS",
+    //             CustomerType: "ALL",
+    //             DisplayName: "ALL ACCOUNTS",
+    //             Children: [])));
+    //   }
+    //   addSubCustomers(result);
+    // }
+    // Logger().d("getSubCustomerList result " + _subCustomers.length.toString());
+    // addSubCustomersToDb(_subCustomers);
 
-    _loading = false;
-    _secondaryLoading = false;
-    notifyListeners();
-    return result;
+    // _loading = false;
+    // _secondaryLoading = false;
+    // notifyListeners();
+    // return result;
   }
 
   addSubCustomersToDb(List<AccountData> list) {

@@ -106,12 +106,12 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
                 DateTime.parse(excelDataInsert[i].InsertUTC)));
       }
       Logger().e(path.path);
-      excelSheet.encode().then((onValue) {
-        File("${path.path}/Device_Replacement_Report.xlsx")
-          ..createSync(recursive: false)
-          ..writeAsBytesSync(onValue)
-          ..open(mode: FileMode.read);
-      });
+      // excelSheet.encode().then((onValue) {
+      //   File("${path.path}/Device_Replacement_Report.xlsx")
+      //     ..createSync(recursive: false)
+      //     ..writeAsBytesSync(onValue)
+      //     ..open(mode: FileMode.read);
+      // });
       hideLoadingDialog();
       snackbarService.showSnackbar(message: "File saved in ${path.path}");
      // Logger().e(excelSheet.sheets.values.last.rows);

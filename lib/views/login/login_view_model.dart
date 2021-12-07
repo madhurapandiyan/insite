@@ -24,42 +24,42 @@ class LoginViewModel extends InsiteViewModel {
   }
 
   getLoginData(String username, String password) async {
-    _loading = true;
-    notifyListeners();
-    LoginResponse result = await _loginService.getLoginData(username, password);
-    if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(), false);
-    } else {
-      snackbarService.showSnackbar(
-          message: "Something went wrong!", duration: Duration(seconds: 2));
-    }
-    Future.delayed(Duration(seconds: 1), () {
-      _loading = false;
-      notifyListeners();
-    });
-    print('data:$result');
+    // _loading = true;
+    // notifyListeners();
+    // LoginResponse result = await _loginService.getLoginData(username, password);
+    // if (result != null) {
+    //   await _localService.saveTokenInfo(result);
+    //   await _loginService.saveToken(
+    //       result.access_token, result.expires_in.toString(), false);
+    // } else {
+    //   snackbarService.showSnackbar(
+    //       message: "Something went wrong!", duration: Duration(seconds: 2));
+    // }
+    // Future.delayed(Duration(seconds: 1), () {
+    //   _loading = false;
+    //   notifyListeners();
+    // });
+    // print('data:$result');
   }
 
   getLoginDataV4() async {
-    _loading = true;
-    notifyListeners();
-    LoginResponse result =
-        await _loginService.getLoginDataV4("username", "password", "");
-    if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(), false);
-    } else {
-      snackbarService.showSnackbar(
-          message: "Something went wrong!", duration: Duration(seconds: 2));
-    }
-    Future.delayed(Duration(seconds: 1), () {
-      _loading = false;
-      notifyListeners();
-    });
-    print('data:$result');
+    // _loading = true;
+    // notifyListeners();
+    // LoginResponse result =
+    //     await _loginService.getLoginDataV4("username", "password", "");
+    // if (result != null) {
+    //   await _localService.saveTokenInfo(result);
+    //   await _loginService.saveToken(
+    //       result.access_token, result.expires_in.toString(), false);
+    // } else {
+    //   snackbarService.showSnackbar(
+    //       message: "Something went wrong!", duration: Duration(seconds: 2));
+    // }
+    // Future.delayed(Duration(seconds: 1), () {
+    //   _loading = false;
+    //   notifyListeners();
+    // });
+    // print('data:$result');
   }
 
   submit() {

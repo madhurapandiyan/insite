@@ -75,7 +75,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
-part 'Retrofit.g.dart';
+//part 'Retrofit.g.dart';
 
 // RUN THIS TO GENERATE FILES
 // flutter pub run build_runner build
@@ -97,21 +97,21 @@ part 'Retrofit.g.dart';
   baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
 )
 abstract class RestClient {
-  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+  //factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
   // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
-  @GET("/tasks")
-  Future<List<Sample>> getTasks();
+  // @GET("/tasks")
+  // Future<List<Sample>> getTasks();
 
-  @GET("/userinfo?schema=openid")
-  Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
-      @Header("Authorization") String authorization);
+  // @GET("/userinfo?schema=openid")
+  // Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
+  //     @Header("Authorization") String authorization);
 
-  @POST("/oauth/userinfo")
-  Future<UserInfo> getUserInfoV4(
-      @Header("content-type") String contentType,
-      @Header("Authorization") String authorization,
-      @Body() AccessToken accessToken);
+  // @POST("/oauth/userinfo")
+  // Future<UserInfo> getUserInfoV4(
+  //     @Header("content-type") String contentType,
+  //     @Header("Authorization") String authorization,
+  //     @Body() AccessToken accessToken);
 
   @GET(
       "/t/trimble.com/authorization/1.0.0/users/{user_guid}/organizations/{customerId}/permissions")
@@ -777,9 +777,9 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") String customeruid,
       @Body() Geofencepayload geofencepayload);
 
-  @POST("{url}")
-  Future<AuthenticatedUser> authenticateUser(
-      @Path() String url, @Body() AuthenticatePayload authenticatePayload);
+  // @POST("{url}")
+  // Future<AuthenticatedUser> authenticateUser(
+  //     @Path() String url, @Body() AuthenticatePayload authenticatePayload);
 
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoad(
@@ -1021,148 +1021,148 @@ abstract class RestClient {
   );
 }
 
-@JsonSerializable()
-class Sample {
-  bool status;
-  String msg;
-  bool logout;
-  Sample({this.status, this.logout, this.msg});
+// @JsonSerializable()
+// class Sample {
+//   bool status;
+//   String msg;
+//   bool logout;
+//   Sample({this.status, this.logout, this.msg});
 
-  factory Sample.fromJson(Map<String, dynamic> json) => _$SampleFromJson(json);
+//   factory Sample.fromJson(Map<String, dynamic> json) => _$SampleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SampleToJson(this);
-}
-
-// {
-//   "email": "abdul_kareem@trimble.com",
-//   "accountUserName": "abdul_kareem",
-//   "uuid": "f40023ea-050e-47ad-9a39-40443e4ad3a2",
-//   "lastPwdSetTimeStamp": "2020-09-26T06:22:55.602Z",
-//   "lastLoginTimeStamp": "2021-03-30T20:18:40.958Z",
-//   "lastUpdateTimeStamp": "2021-03-30T20:18:40.98Z",
-//   "accountName": "trimble.com",
-//   "sub": "abdul_kareem@trimble.com",
-//   "firstname": "Abdulkareem",
-//   "lastname": "AL",
-//   "email_verified": "true"
+//   Map<String, dynamic> toJson() => _$SampleToJson(this);
 // }
 
-@JsonSerializable()
-class UserInfo {
-  String email;
-  String accountUserName;
-  String uuid;
-  String lastPwdSetTimeStamp;
-  String lastLoginTimeStamp;
-  String lastUpdateTimeStamp;
-  String accountName;
-  String sub;
-  String firstname;
-  String lastname;
-  dynamic email_verified;
-  String given_name;
-  String family_name;
+// // {
+// //   "email": "abdul_kareem@trimble.com",
+// //   "accountUserName": "abdul_kareem",
+// //   "uuid": "f40023ea-050e-47ad-9a39-40443e4ad3a2",
+// //   "lastPwdSetTimeStamp": "2020-09-26T06:22:55.602Z",
+// //   "lastLoginTimeStamp": "2021-03-30T20:18:40.958Z",
+// //   "lastUpdateTimeStamp": "2021-03-30T20:18:40.98Z",
+// //   "accountName": "trimble.com",
+// //   "sub": "abdul_kareem@trimble.com",
+// //   "firstname": "Abdulkareem",
+// //   "lastname": "AL",
+// //   "email_verified": "true"
+// // }
 
-  UserInfo(
-      {this.email,
-      this.family_name,
-      this.given_name,
-      this.accountUserName,
-      this.uuid,
-      this.lastPwdSetTimeStamp,
-      this.lastLoginTimeStamp,
-      this.lastUpdateTimeStamp,
-      this.accountName,
-      this.sub,
-      this.firstname,
-      this.lastname,
-      this.email_verified});
+// @JsonSerializable()
+// class UserInfo {
+//   String email;
+//   String accountUserName;
+//   String uuid;
+//   String lastPwdSetTimeStamp;
+//   String lastLoginTimeStamp;
+//   String lastUpdateTimeStamp;
+//   String accountName;
+//   String sub;
+//   String firstname;
+//   String lastname;
+//   dynamic email_verified;
+//   String given_name;
+//   String family_name;
 
-  factory UserInfo.fromJson(Map<String, dynamic> json) =>
-      _$UserInfoFromJson(json);
+//   UserInfo(
+//       {this.email,
+//       this.family_name,
+//       this.given_name,
+//       this.accountUserName,
+//       this.uuid,
+//       this.lastPwdSetTimeStamp,
+//       this.lastLoginTimeStamp,
+//       this.lastUpdateTimeStamp,
+//       this.accountName,
+//       this.sub,
+//       this.firstname,
+//       this.lastname,
+//       this.email_verified});
 
-  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
-}
+//   factory UserInfo.fromJson(Map<String, dynamic> json) =>
+//       _$UserInfoFromJson(json);
 
-@JsonSerializable()
-class UserPayLoad {
-  String env;
-  String grant_type;
-  String code;
-  String redirect_uri;
-  String client_key;
-  String client_secret;
-  String tenantDomain;
+//   Map<String, dynamic> toJson() => _$UserInfoToJson(this);
+// }
 
-  UserPayLoad(
-      {this.env,
-      this.grant_type,
-      this.code,
-      this.redirect_uri,
-      this.client_key,
-      this.client_secret,
-      this.tenantDomain});
+// @JsonSerializable()
+// class UserPayLoad {
+//   String env;
+//   String grant_type;
+//   String code;
+//   String redirect_uri;
+//   String client_key;
+//   String client_secret;
+//   String tenantDomain;
 
-  factory UserPayLoad.fromJson(Map<String, dynamic> json) =>
-      _$UserPayLoadFromJson(json);
+//   UserPayLoad(
+//       {this.env,
+//       this.grant_type,
+//       this.code,
+//       this.redirect_uri,
+//       this.client_key,
+//       this.client_secret,
+//       this.tenantDomain});
 
-  Map<String, dynamic> toJson() => _$UserPayLoadToJson(this);
-}
+//   factory UserPayLoad.fromJson(Map<String, dynamic> json) =>
+//       _$UserPayLoadFromJson(json);
 
-@JsonSerializable()
-class AuthenticationResponse {
-  String access_token;
-  String token_type;
-  int expires_in;
-  AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
+//   Map<String, dynamic> toJson() => _$UserPayLoadToJson(this);
+// }
 
-  factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
-      _$AuthenticationResponseFromJson(json);
+// @JsonSerializable()
+// class AuthenticationResponse {
+//   String access_token;
+//   String token_type;
+//   int expires_in;
+//   AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
 
-  Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
-}
+//   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
+//       _$AuthenticationResponseFromJson(json);
 
-@JsonSerializable()
-class AuthenticatedUser {
-  String code;
-  String status;
-  String result;
-  AuthenticatedUser({this.code, this.status, this.result});
+//   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
+// }
 
-  factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
-      _$AuthenticatedUserFromJson(json);
+// @JsonSerializable()
+// class AuthenticatedUser {
+//   String code;
+//   String status;
+//   String result;
+//   AuthenticatedUser({this.code, this.status, this.result});
 
-  Map<String, dynamic> toJson() => _$AuthenticatedUserToJson(this);
-}
+//   factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
+//       _$AuthenticatedUserFromJson(json);
 
-@JsonSerializable()
-class AuthenticatePayload {
-  String env;
-  String grantType;
-  String code;
-  String redirectUri;
-  String client_key;
-  String clientSecret;
-  String tenantDomain;
-  String mobile;
-  String uuid;
-  String email;
+//   Map<String, dynamic> toJson() => _$AuthenticatedUserToJson(this);
+// }
 
-  AuthenticatePayload({
-    this.env = "THC",
-    this.grantType = "authorization_code",
-    this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
-    this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
-    this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
-    this.clientSecret = "testSecret",
-    this.tenantDomain = "trimble.com",
-    this.mobile = "0000000000",
-    this.uuid,
-    this.email,
-  });
+// @JsonSerializable()
+// class AuthenticatePayload {
+//   String env;
+//   String grantType;
+//   String code;
+//   String redirectUri;
+//   String client_key;
+//   String clientSecret;
+//   String tenantDomain;
+//   String mobile;
+//   String uuid;
+//   String email;
 
-  factory AuthenticatePayload.fromJson(Map<String, dynamic> json) =>
-      _$AuthenticatePayloadFromJson(json);
+//   AuthenticatePayload({
+//     this.env = "THC",
+//     this.grantType = "authorization_code",
+//     this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
+//     this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
+//     this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
+//     this.clientSecret = "testSecret",
+//     this.tenantDomain = "trimble.com",
+//     this.mobile = "0000000000",
+//     this.uuid,
+//     this.email,
+//   });
 
-  Map<String, dynamic> toJson() => _$AuthenticatePayloadToJson(this);
-}
+//   factory AuthenticatePayload.fromJson(Map<String, dynamic> json) =>
+//       _$AuthenticatePayloadFromJson(json);
+
+//   Map<String, dynamic> toJson() => _$AuthenticatePayloadToJson(this);
+// }

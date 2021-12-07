@@ -65,45 +65,45 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
       //assetValueData.clear();
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        Logger().d(data.path);
-        var bytes = File(data.path).readAsBytesSync();
-        var excel = Excel.decodeBytes(bytes);
+        // File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
+        // Logger().d(data.path);
+        // var bytes = File(data.path).readAsBytesSync();
+        // var excel = Excel.decodeBytes(bytes);
 
-        for (var i = 0;
-            i < excel.tables[excel.tables.keys.first].rows.length;
-            i++) {
-          final excelData = excel.tables[excel.tables.keys.first].rows[i];
+        // for (var i = 0;
+        //     i < excel.tables[excel.tables.keys.first].rows.length;
+        //     i++) {
+        //   final excelData = excel.tables[excel.tables.keys.first].rows[i];
 
-          if (i == 0) {
-            Logger().d("null");
-          } else {
-            Transfer assetTransferValues = Transfer(
-              deviceId: excelData[0].toString(),
-              machineModel: excelData[1].toString(),
-              machineSlNo: excelData[2].toString(),
-              dealerName: excelData[3].toString(),
-              dealerCode: excelData[4].toString(),
-              dealerEmailID: excelData[5].toString(),
-              dealerMobile: excelData[6].toString(),
-              dealerLanguage: excelData[7].toString(),
-              customerMobile: excelData[8].toString(),
-              customerLanguage: excelData[9].toString(),
-              primaryIndustry: excelData[10].toString(),
-              secondaryIndustry: excelData[11].toString(),
-              customerName: excelData[12].toString(),
-              customerCode: excelData[13].toString(),
-              customerEmailID: excelData[14].toString(),
-              commissioningDate: excelData[15].toString(),
-            );
-            assetValues.add(assetTransferValues);
-            Logger().wtf(excelData);
-          }
-        }
+        //   if (i == 0) {
+        //     Logger().d("null");
+        //   } else {
+        //     Transfer assetTransferValues = Transfer(
+        //       deviceId: excelData[0].toString(),
+        //       machineModel: excelData[1].toString(),
+        //       machineSlNo: excelData[2].toString(),
+        //       dealerName: excelData[3].toString(),
+        //       dealerCode: excelData[4].toString(),
+        //       dealerEmailID: excelData[5].toString(),
+        //       dealerMobile: excelData[6].toString(),
+        //       dealerLanguage: excelData[7].toString(),
+        //       customerMobile: excelData[8].toString(),
+        //       customerLanguage: excelData[9].toString(),
+        //       primaryIndustry: excelData[10].toString(),
+        //       secondaryIndustry: excelData[11].toString(),
+        //       customerName: excelData[12].toString(),
+        //       customerCode: excelData[13].toString(),
+        //       customerEmailID: excelData[14].toString(),
+        //       commissioningDate: excelData[15].toString(),
+        //     );
+        //     assetValues.add(assetTransferValues);
+        //     Logger().wtf(excelData);
+        //   }
+        // }
 
-        _dataLoaded = true;
-        notifyListeners();
-        hideLoadingDialog();
+        // _dataLoaded = true;
+        // notifyListeners();
+        // hideLoadingDialog();
       } else {
         snackbarService.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();

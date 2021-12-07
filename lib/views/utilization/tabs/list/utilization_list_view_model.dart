@@ -12,12 +12,12 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 
 class UtilizationListViewModel extends InsiteViewModel {
   Logger log;
   var _utilizationService = locator<AssetUtilizationService>();
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
   var _assetService = locator<AssetStatusService>();
 
   int _totalCount = 0;

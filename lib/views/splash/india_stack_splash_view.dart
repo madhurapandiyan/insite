@@ -172,21 +172,21 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   }
 
   getLoginDataV4(code) async {
-    Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    LoginResponse result =
-        await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
-    if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(), false);
-    }
+    // Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
+    // codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    // LoginResponse result =
+    //     await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
+    // if (result != null) {
+    //   await _localService.saveTokenInfo(result);
+    //   await _loginService.saveToken(
+    //       result.access_token, result.expires_in.toString(), false);
+    // }
   }
 
   saveToken(token, String expiryTime) {
-    Logger().i("IndiaStackSplashView saveToken from webview");
-    _loginService.getUser(token, false);
-    _loginService.saveExpiryTime(expiryTime);
+    // Logger().i("IndiaStackSplashView saveToken from webview");
+    // _loginService.getUser(token, false);
+    // _loginService.saveExpiryTime(expiryTime);
   }
 
   @override

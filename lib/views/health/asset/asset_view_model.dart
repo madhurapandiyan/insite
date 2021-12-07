@@ -9,11 +9,11 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 
 class AssetViewModel extends InsiteViewModel {
   var _faultService = locator<FaultService>();
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
 
   int pageNumber = 1;
   int pageSize = 20;

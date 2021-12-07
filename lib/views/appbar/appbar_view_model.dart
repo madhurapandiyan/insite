@@ -9,10 +9,10 @@ import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 
 class AppbarViewModel extends InsiteViewModel {
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
   var _localService = locator<LocalService>();
   var _localStorageService = locator<LocalStorageService>();
 

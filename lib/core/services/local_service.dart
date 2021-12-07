@@ -52,17 +52,17 @@ class LocalService extends BaseService {
     return preferences.getBool(IS_LOGGEDIN);
   }
 
-  Future<bool> saveUserInfo(UserInfo userLogin) async {
-    return await preferences.setString(USER_INFO, jsonEncode(userLogin));
-  }
+  // Future<bool> saveUserInfo(UserInfo userLogin) async {
+  //   return await preferences.setString(USER_INFO, jsonEncode(userLogin));
+  // }
 
-  Future<UserInfo> getLoggedInUser() async {
-    String data = preferences.getString(USER_INFO);
-    if (data == null) {
-      return null;
-    }
-    return UserInfo.fromJson(json.decode(data));
-  }
+  // Future<UserInfo> getLoggedInUser() async {
+  //   String data = preferences.getString(USER_INFO);
+  //   if (data == null) {
+  //     return null;
+  //   }
+  //   return UserInfo.fromJson(json.decode(data));
+  // }
 
   Future<bool> saveAccountInfo(Customer account) async {
     Logger().d("save account info " + account.CustomerUID);

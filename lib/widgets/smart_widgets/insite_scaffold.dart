@@ -11,7 +11,7 @@ import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/filter/refine.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 import 'package:insite/views/error/error_widget.dart' as error;
 
 class InsiteScaffold extends StatefulWidget {
@@ -35,7 +35,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   bool _isSearchSelected = false;
   bool _isFilterSelected = false;
   bool _isRefineSelected = false;
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
 
   @override
   void initState() {

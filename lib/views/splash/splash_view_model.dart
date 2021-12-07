@@ -81,47 +81,47 @@ class SplashViewModel extends InsiteViewModel {
   checkPermission(Customer account) async {
     try {
       if (isVisionLink) {
-        List<Permission> list = await _loginService.getPermissions();
-        if (list.isNotEmpty) {
-          _localService.setHasPermission(true);
-          if (account != null) {
-            _nagivationService.replaceWith(homeViewRoute);
-          } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
-          }
-        } else {
-          //below three lines decides to show web view or not for login
-          _localService.setHasPermission(false);
-          _localService.clearAll();
-          shouldLoadWebview = true;
-          Future.delayed(Duration(seconds: 1), () {
-            notifyListeners();
-          });
-          // _nagivationService.replaceWith(loginPageRoute);
-          // // below lines for redirecting inside app
-          // if (account != null) {
-          //   _nagivationService.replaceWith(homeViewRoute);
-          // } else {
-          //   _nagivationService.replaceWith(customerSelectionViewRoute);
-          // }
-        }
+        // List<Permission> list = await _loginService.getPermissions();
+        // if (list.isNotEmpty) {
+        //   _localService.setHasPermission(true);
+        //   if (account != null) {
+        //     _nagivationService.replaceWith(homeViewRoute);
+        //   } else {
+        //     _nagivationService.replaceWith(customerSelectionViewRoute);
+        //   }
+        // } else {
+        //   //below three lines decides to show web view or not for login
+        //   _localService.setHasPermission(false);
+        //   _localService.clearAll();
+        //   shouldLoadWebview = true;
+        //   Future.delayed(Duration(seconds: 1), () {
+        //     notifyListeners();
+        //   });
+        //   // _nagivationService.replaceWith(loginPageRoute);
+        //   // // below lines for redirecting inside app
+        //   // if (account != null) {
+        //   //   _nagivationService.replaceWith(homeViewRoute);
+        //   // } else {
+        //   //   _nagivationService.replaceWith(customerSelectionViewRoute);
+        //   // }
+        // }
       } else {
-        UserInfo userInfo = await _loginService.getLoggedInUserInfo();
-        if (userInfo == null) {
-          _localService.setHasPermission(false);
-          _localService.clearAll();
-          shouldLoadWebview = true;
-          Future.delayed(Duration(seconds: 1), () {
-            notifyListeners();
-          });
-        } else {
-          _localService.setHasPermission(true);
-          if (account != null) {
-            _nagivationService.replaceWith(homeViewRoute);
-          } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
-          }
-        }
+        // UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+        // if (userInfo == null) {
+        //   _localService.setHasPermission(false);
+        //   _localService.clearAll();
+        //   shouldLoadWebview = true;
+        //   Future.delayed(Duration(seconds: 1), () {
+        //     notifyListeners();
+        //   });
+        // } else {
+        //   _localService.setHasPermission(true);
+        //   if (account != null) {
+        //     _nagivationService.replaceWith(homeViewRoute);
+        //   } else {
+        //     _nagivationService.replaceWith(customerSelectionViewRoute);
+        //   }
+        // }
       }
     } catch (e) {
       Logger().e(e);
@@ -130,11 +130,11 @@ class SplashViewModel extends InsiteViewModel {
 
   void getLoggedInUserDetails() async {
     try {
-      UserInfo userInfo = await _loginService.getLoggedInUserInfo();
-      _localService.saveUserInfo(userInfo);
-      Logger().i("launching home get logged in user detail");
-      _nagivationService.replaceWith(homeViewRoute);
-      isProcessing = false;
+      // UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+      // _localService.saveUserInfo(userInfo);
+      // Logger().i("launching home get logged in user detail");
+      // _nagivationService.replaceWith(homeViewRoute);
+      // isProcessing = false;
     } catch (e) {
       Logger().i("getLoggedInUserDetails");
       Logger().e(e);

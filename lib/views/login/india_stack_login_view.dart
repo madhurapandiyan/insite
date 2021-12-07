@@ -217,23 +217,23 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   }
 
   saveToken(token, String expiryTime) {
-    Logger().i("IndiaStackLoginView saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    // Logger().i("IndiaStackLoginView saveToken from webview");
+    // _loginService.getUser(token, true);
+    // _loginService.saveExpiryTime(expiryTime);
   }
 
   getLoginDataV4(code) async {
-    Logger().i("IndiaStackLoginView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    LoginResponse result =
-        await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
-    if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(), false);
-    } else {
-      receivedToken = false;
-    }
+    // Logger().i("IndiaStackLoginView getLoginDataV4 for code $code");
+    // codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    // LoginResponse result =
+    //     await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
+    // if (result != null) {
+    //   await _localService.saveTokenInfo(result);
+    //   await _loginService.saveToken(
+    //       result.access_token, result.expires_in.toString(), false);
+    // } else {
+    //   receivedToken = false;
+    // }
   }
 
   @override

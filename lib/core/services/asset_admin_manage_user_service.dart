@@ -411,37 +411,39 @@ class AssetAdminManagerUserService extends BaseService {
                     user_type: userType)));
         return addUserResponse;
       } else {
-        Logger().d(
-            "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
-        Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
-        AddUser addUserResponse = await MyApi().getClient().inviteUser(
-            Urls.adminManagerUserSumary + "/Invite",
-            AddUserDataIndStack(
-                fname: firstName,
-                customerUid: accountSelected.CustomerUID,
-                lname: lastName,
-                email: email,
-                phone: phoneNumber,
-                isAssetSecurityEnabled: true,
-                src: "VisionLink",
-                company: "NYL",
-                language: "en-US",
-                address: AddressData(
-                    addressline1: address,
-                    state: state,
-                    addressline2: " ",
-                    country: country,
-                    zipcode: zipcode),
-                roles: roles,
-                details: Details(
-                    job_title: jobTitle,
-                    job_type: jobType,
-                    user_type: "Standard")),
-            accountSelected.CustomerUID,
-            (await _localService.getLoggedInUser()).sub,
-            "in-identitymanager-identitywebapi");
-        return addUserResponse;
+        // Logger().d(
+        //     "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
+        // Logger().d(
+        //     "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
+        // AddUser addUserResponse = await MyApi().getClient().inviteUser(
+        //     Urls.adminManagerUserSumary + "/Invite",
+        //     AddUserDataIndStack(
+        //         fname: firstName,
+        //         customerUid: accountSelected.CustomerUID,
+        //         lname: lastName,
+        //         email: email,
+        //         phone: phoneNumber,
+        //         isAssetSecurityEnabled: true,
+        //         src: "VisionLink",
+        //         company: "NYL",
+        //         language: "en-US",
+        //         address: AddressData(
+        //             addressline1: address,
+        //             state: state,
+        //             addressline2: " ",
+        //             country: country,
+        //             zipcode: zipcode),
+        //         roles: roles,
+        //         details: Details(
+        //             job_title: jobTitle,
+        //             job_type: jobType,
+        //             user_type: "Standard")),
+        //     accountSelected.CustomerUID,
+        //     (
+        //       await _localService.getLoggedInUser()
+        //       ).sub,
+        //     "in-identitymanager-identitywebapi");
+        // return addUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -463,17 +465,17 @@ class AssetAdminManagerUserService extends BaseService {
                 : DeleteUserData(users: users).toJson());
         return result;
       } else {
-        var result = await MyApi().getClient().deleteUsers(
-            Urls.adminManagerUserSumary,
-            customerSelected != null
-                ? DeleteUserDataIndStack(
-                        users: users, customerUid: customerSelected.CustomerUID)
-                    .toJson()
-                : DeleteUserData(users: users).toJson(),
-            accountSelected.CustomerUID,
-            (await _localService.getLoggedInUser()).sub,
-            "in-identitymanager-identitywebapi");
-        return result;
+        // var result = await MyApi().getClient().deleteUsers(
+        //     Urls.adminManagerUserSumary,
+        //     customerSelected != null
+        //         ? DeleteUserDataIndStack(
+        //                 users: users, customerUid: customerSelected.CustomerUID)
+        //             .toJson()
+        //         : DeleteUserData(users: users).toJson(),
+        //     accountSelected.CustomerUID,
+        //     (await _localService.getLoggedInUser()).sub,
+        //     "in-identitymanager-identitywebapi");
+        // return result;
       }
     } catch (e) {
       Logger().e(e.toString());

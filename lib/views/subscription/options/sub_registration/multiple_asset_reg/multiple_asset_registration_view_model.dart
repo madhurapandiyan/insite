@@ -65,43 +65,43 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
       assetValueData.clear();
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        Logger().d(data.path);
-        var bytes = File(data.path).readAsBytesSync();
-        var excel = Excel.decodeBytes(bytes);
+        // File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
+        // Logger().d(data.path);
+        // var bytes = File(data.path).readAsBytesSync();
+        // var excel = Excel.decodeBytes(bytes);
 
-        for (var table in excel.tables.keys) {
-          for (var i = 0; i < excel.tables[table].rows.length; i++) {
-            final excelData = excel.tables[table].rows[i];
+        // for (var table in excel.tables.keys) {
+        //   for (var i = 0; i < excel.tables[table].rows.length; i++) {
+        //     final excelData = excel.tables[table].rows[i];
 
-            if (i == 0) {
-              Logger().d("null");
-            } else {
-              AssetValues assetValues = AssetValues(
-                  deviceId: excelData[0].toString(),
-                  machineModel: excelData[1].toString(),
-                  machineSlNo: excelData[2].toString(),
-                  hMR: excelData[3].toInt(),
-                  hMRDate: excelData[4].toString(),
-                  plantName: excelData[5].toString(),
-                  plantCode: excelData[6].toString(),
-                  plantEmailID: excelData[7].toString(),
-                  dealerName: excelData[8].toString(),
-                  dealerCode: excelData[9].toString(),
-                  dealerEmailID: excelData[10].toString(),
-                  customerName: excelData[11].toString(),
-                  customerCode: excelData[12].toString(),
-                  customerEmailID: excelData[13].toString());
-              assetValueData.add(assetValues);
-              Logger().wtf(excelData);
-            }
-          }
-        }
+        //     if (i == 0) {
+        //       Logger().d("null");
+        //     } else {
+        //       AssetValues assetValues = AssetValues(
+        //           deviceId: excelData[0].toString(),
+        //           machineModel: excelData[1].toString(),
+        //           machineSlNo: excelData[2].toString(),
+        //           hMR: int.parse(excelData[3].toString()),
+        //           hMRDate: excelData[4].toString(),
+        //           plantName: excelData[5].toString(),
+        //           plantCode: excelData[6].toString(),
+        //           plantEmailID: excelData[7].toString(),
+        //           dealerName: excelData[8].toString(),
+        //           dealerCode: excelData[9].toString(),
+        //           dealerEmailID: excelData[10].toString(),
+        //           customerName: excelData[11].toString(),
+        //           customerCode: excelData[12].toString(),
+        //           customerEmailID: excelData[13].toString());
+        //       assetValueData.add(assetValues);
+        //       Logger().wtf(excelData);
+        //     }
+        //   }
+        // }
 
-        _dataLoaded = true;
-        notifyListeners();
-        hideLoadingDialog();
-        // onGettingMultiSmsData();
+        // _dataLoaded = true;
+        // notifyListeners();
+        // hideLoadingDialog();
+        // // onGettingMultiSmsData();
       } else {
         snackbarService.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();

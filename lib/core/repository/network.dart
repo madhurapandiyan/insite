@@ -116,7 +116,7 @@ class HttpWrapper {
 
     dio.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -132,7 +132,7 @@ class HttpWrapper {
 
     dioOne.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "Accept": "application/json",
             //"Authorization": "Bearer " + await _localService.getToken(),
@@ -148,7 +148,7 @@ class HttpWrapper {
 
     dioTwo.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -163,7 +163,7 @@ class HttpWrapper {
 
     dioThree.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -179,7 +179,7 @@ class HttpWrapper {
 
     dioFour.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -195,7 +195,7 @@ class HttpWrapper {
 
     dioFive.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers
               .addAll({"Accept": "application/json", "timezoneoffset": -330});
           return options;
@@ -208,7 +208,7 @@ class HttpWrapper {
 
     dioSix.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -224,7 +224,7 @@ class HttpWrapper {
 
     dioSeven.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -240,7 +240,7 @@ class HttpWrapper {
 
     dioEight.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -258,7 +258,7 @@ class HttpWrapper {
 
     dioNine.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -275,7 +275,7 @@ class HttpWrapper {
 
     dioTen.interceptors
       ..add(InterceptorsWrapper(
-        onRequest: (Options options) async {
+        onRequest: (RequestOptions options,RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
@@ -290,17 +290,17 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
-    client = RestClient(dio, baseUrl: AppConfig.instance.baseUrl);
-    clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
-    clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
-    clientThree = RestClient(dioThree, baseUrl: _baseUrlService);
-    clientFour = RestClient(dioFour, baseUrl: _baseUrlFour);
-    clientFive = RestClient(dioFive, baseUrl: _baseUrlFive);
-    clientSix = RestClient(dioSix, baseUrl: _baseUrlSix);
-    clientSeven = RestClient(dioSeven, baseUrl: _baseUrlSeven);
-    clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
-    clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
-    clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
+    // client = RestClient(dio, baseUrl: AppConfig.instance.baseUrl);
+    // clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
+    // clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
+    // clientThree = RestClient(dioThree, baseUrl: _baseUrlService);
+    // clientFour = RestClient(dioFour, baseUrl: _baseUrlFour);
+    // clientFive = RestClient(dioFive, baseUrl: _baseUrlFive);
+    // clientSix = RestClient(dioSix, baseUrl: _baseUrlSix);
+    // clientSeven = RestClient(dioSeven, baseUrl: _baseUrlSeven);
+    // clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
+    // clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
+    // clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

@@ -36,7 +36,7 @@ class _DashboardViewState extends State<DashboardView> {
   Fleet selectedFleet;
   String assetDropDown = "All Assets";
   bool switchDropDownState = false;
-  final GlobalKey<GoogleMapHomeWidgetState> filterLocationKey = new GlobalKey();
+  //final GlobalKey<GoogleMapHomeWidgetState> filterLocationKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -91,22 +91,22 @@ class _DashboardViewState extends State<DashboardView> {
                           value: assetDropDown,
                           items: ["All Assets", "Product Family"],
                           onChanged: (String value) {
-                            Logger().i("all assets dropdown change $value");
-                            assetDropDown = value;
-                            switchDropDownState = !switchDropDownState;
-                            if (value != "All Assets") {
-                              // "BACKHOE LOADER"
-                              FilterData filterData =
-                                  viewModel.filterDataProductFamily[0];
-                              viewModel.getFilterDataApplied(filterData);
-                              filterLocationKey.currentState
-                                  .getAssetLocationHomeFilterData(
-                                      filterData.title);
-                            } else {
-                              viewModel.getData();
-                              filterLocationKey.currentState
-                                  .getAssetLocationHomeData();
-                            }
+                            // Logger().i("all assets dropdown change $value");
+                            // assetDropDown = value;
+                            // switchDropDownState = !switchDropDownState;
+                            // if (value != "All Assets") {
+                            //   // "BACKHOE LOADER"
+                            //   FilterData filterData =
+                            //       viewModel.filterDataProductFamily[0];
+                            //   viewModel.getFilterDataApplied(filterData);
+                            //   filterLocationKey.currentState
+                            //       .getAssetLocationHomeFilterData(
+                            //           filterData.title);
+                            // } else {
+                            //   viewModel.getData();
+                            //   filterLocationKey.currentState
+                            //       .getAssetLocationHomeData();
+                            // }
                           },
                         ),
                         SizedBox(
@@ -118,12 +118,12 @@ class _DashboardViewState extends State<DashboardView> {
                                     ? FilterDropDownWidget(
                                         data: viewModel.filterDataProductFamily,
                                         onValueSelected: (value) async {
-                                          Logger().i(
-                                              "product family dropdown change $value");
-                                          viewModel.getFilterDataApplied(value);
-                                          filterLocationKey.currentState
-                                              .getAssetLocationHomeFilterData(
-                                                  value.title);
+                                          // Logger().i(
+                                          //     "product family dropdown change $value");
+                                          // viewModel.getFilterDataApplied(value);
+                                          // filterLocationKey.currentState
+                                          //     .getAssetLocationHomeFilterData(
+                                          //         value.title);
                                         },
                                       )
                                     : SizedBox(),
@@ -255,10 +255,11 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GoogleMapHomeWidget(
-                        isRefreshing: viewModel.refreshing,
-                        key: filterLocationKey,
-                      ),
+                      child: SizedBox()
+                      // GoogleMapHomeWidget(
+                      //   isRefreshing: viewModel.refreshing,
+                      //   key: filterLocationKey,
+                      // ),
                     ),
                     SizedBox(
                       height: 20.0,

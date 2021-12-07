@@ -167,12 +167,12 @@ class ReportSummaryViewModel extends InsiteViewModel {
               CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
         }
 
-        excelSheet.encode().then((onValue) {
-          File("${path.path}/SMS_schedule.xlsx")
-            ..createSync(recursive: true)
-            ..writeAsBytesSync(onValue)
-            ..open(mode: FileMode.read);
-        });
+        // excelSheet.encode().then((onValue) {
+        //   File("${path.path}/SMS_schedule.xlsx")
+        //     ..createSync(recursive: true)
+        //     ..writeAsBytesSync(onValue)
+        //     ..open(mode: FileMode.read);
+        // });
         snackbarService.showSnackbar(message: "File saved in ${path.path}");
         // Logger().e(excelSheet.sheets.values.last.rows);
         hideLoadingDialog();

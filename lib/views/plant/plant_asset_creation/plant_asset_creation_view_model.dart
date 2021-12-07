@@ -339,12 +339,12 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
           }
         }
 
-        excelSheet.encode().then((onValue) {
-          File("${path.path}/Asset Creation_export_20211130183645.xlsx")
-            ..createSync(recursive: true)
-            ..writeAsBytesSync(onValue)
-            ..open(mode: FileMode.read);
-        });
+        // excelSheet.encode().then((onValue) {
+        //   File("${path.path}/Asset Creation_export_20211130183645.xlsx")
+        //     ..createSync(recursive: true)
+        //     ..writeAsBytesSync(onValue)
+        //     ..open(mode: FileMode.read);
+        // });
         snackbarService.showSnackbar(message: "File saved in ${path.path}");
         Logger().w("File saved in ${path.path}");
 

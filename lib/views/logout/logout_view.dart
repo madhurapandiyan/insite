@@ -110,9 +110,9 @@ class _LogoutViewState extends State<LogoutView> {
   }
 
   saveToken(token, String expiryTime) {
-    Logger().i("saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    // Logger().i("saveToken from webview");
+    // _loginService.getUser(token, true);
+    // _loginService.saveExpiryTime(expiryTime);
   }
 
   @override
