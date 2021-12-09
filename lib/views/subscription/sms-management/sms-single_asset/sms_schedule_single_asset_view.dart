@@ -156,38 +156,53 @@ class _SmsScheduleSingleAssetViewState
                                       InsiteButton(
                                         onTap: () async {
                                           showLoadingDialog();
-                                        await  viewModel
-                                              .onSavingSmsModel()
-                                              .then((_) => showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                        backgroundColor: Theme
-                                                                .of(context)
-                                                            .backgroundColor,
-                                                        actions: [
-                                                          FlatButton.icon(
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                               },
-                                                              icon: Icon(
-                                                                Icons.done,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .bodyText1
-                                                                    .color,
-                                                              ),
-                                                              label: InsiteText(
-                                                                text: "Okay",
-                                                              ))
-                                                        ],
-                                                        content: InsiteText(
+                                          List status = await viewModel
+                                              .onSavingSmsModel();
+                                          if (status.isEmpty) {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      content: InsiteText(
                                                           text:
-                                                              "Moblie number Updated successfully!!!.",
-                                                        ),
-                                                      )));
+                                                              "Moblie number Updated successfully!!!."
+                                                          //"Moblie number Updated successfully!!!.",
+                                                          ),
+                                                    )
+                                                // dialogWidget(
+                                                //     dialogCtx: ctx,
+                                                //     content:
+                                                //         ,
+                                                //     ctx: context,
+                                                //     onPress: viewModel
+                                                //         .onClosingDialog())
+                                                );
+                                          } else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      content: InsiteText(
+                                                          text:
+                                                              "Serial number, Mobile number, Language and Recipient’s Name combination is already exists. Do you want to download?"
+                                                          //"Moblie number Updated successfully!!!.",
+                                                          ),
+                                                    )
+
+                                                // dialogWidget(
+                                                //       dialogCtx: ctx,
+                                                //       ctx: context,
+                                                //       onPress: viewModel
+                                                //           .onClosingDialog(),
+                                                //       content:
+                                                //           ,
+                                                //     ));
+                                                );
+                                          }
                                         },
                                         textColor: white,
                                         title: viewModel
@@ -216,4 +231,17 @@ class _SmsScheduleSingleAssetViewState
       viewModelBuilder: () => SmsScheduleSingleAssetViewModel(),
     );
   }
+}
+
+Widget dialogWidget(
+    {String content,
+    BuildContext ctx,
+    Function onPress,
+    BuildContext dialogCtx}) {
+  return AlertDialog(
+    backgroundColor: Theme.of(ctx).backgroundColor,
+    content: InsiteText(text: content
+        //"Moblie number Updated successfully!!!.",
+        ),
+  );
 }
