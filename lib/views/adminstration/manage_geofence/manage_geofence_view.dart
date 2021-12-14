@@ -32,7 +32,12 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InsiteText(
-                              text: "Manage Geofence",
+                              text: "Manage Geofence" +
+                                  " (" +
+                                  viewModel.fetchedPolygons.length.toString() +
+                                  " of " +
+                                  viewModel.fetchedPolygons.length.toString() +
+                                  " )",
                               fontWeight: FontWeight.w700,
                               size: 20,
                             ),

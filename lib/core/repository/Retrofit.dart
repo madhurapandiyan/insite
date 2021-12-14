@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -17,6 +16,7 @@ import 'package:insite/core/models/asset_mileage_settings_list_data.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
+import 'package:insite/core/models/device_type.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -33,7 +33,6 @@ import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
-
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
@@ -78,6 +77,10 @@ part 'Retrofit.g.dart';
 // RUN THIS TO GENERATE FILES
 // flutter pub run build_runner build
 // flutter pub run build_runner build --delete-conflicting-outputs
+
+// RUN THIS TO GENERATE FILES WITH FVM
+// fvm flutter pub run build_runner build
+// fvm flutter pub run build_runner build --delete-conflicting-outputs
 
 // Run this command to take build with split apks and share v7 architecture build
 // flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
@@ -722,6 +725,7 @@ abstract class RestClient {
   @GET("{url}")
   Future<SubscriptionDashboardDetailResult> getSubcriptionDeviceListData(
       @Path() String url);
+
   @GET('{url}')
   Future<HierarchyAssets> getPlantHierarchyAssetsDetails(
     @Path() String url,
@@ -866,6 +870,7 @@ abstract class RestClient {
       @Body() AssetMileageSettingData assetMileageSettingData,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") String serviceHeader);
+
   @GET('{url}')
   Future<GetAddgeofenceModel> getGeofenceInputData(@Path() String url,
       @Header("x-visionlink-customeruid") String customeruid);
@@ -900,6 +905,7 @@ abstract class RestClient {
   @GET('{url}')
   Future<SmsReportSummaryModel> gettingScheduleReportSummary(
       @Path() String url);
+
   @PUT('{url}')
   Future<dynamic> getAssetIconDataVL(
       @Path() String url,
@@ -917,6 +923,7 @@ abstract class RestClient {
   Future<SerialNumberResults> getModelNameFromMachineSerialNumber(
     @Path() String url,
   );
+
   @POST("{url}")
   Future<AddAssetRegistrationData> getSingleAssetRegistrationData(
       @Path() String url,
@@ -925,6 +932,7 @@ abstract class RestClient {
   @POST("{url}")
   Future<dynamic> postSingleAssetTransferRegistration(
       @Path() String url, @Body() AddAssetRegistrationData data);
+
   @POST("{url}")
   Future<AssetTransferData> getSingleAssetTransferData(
       @Path() String url, @Body() AssetTransferData assetTransferData);
@@ -950,6 +958,7 @@ abstract class RestClient {
   @GET("{url}")
   Future<ReplacementDeviceIdDownload> getReplacementDeviceIdDownload(
       @Path() String url);
+
   @GET('{url}')
   Future<SingleTransferDeviceId> getSingleAssetTransfersDeviceIds(
     @Path() String url,
@@ -974,6 +983,7 @@ abstract class RestClient {
   Future<AssetCreationResponse> getAssetCreationData(
     @Path() String url,
   );
+
   @POST('{url}')
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListDataVL(
@@ -1001,6 +1011,7 @@ abstract class RestClient {
       @Body() List<String> assetUId,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
+
   @POST("{url}")
   Future<dynamic> deleteSmsSchedule(
       @Path() String url, @Body() List<DeleteSmsReport> data);
@@ -1008,6 +1019,12 @@ abstract class RestClient {
   @GET("{url}")
   Future<SubscriptionDashboardDetailResult> getFleetStatusData(
       @Path() String url);
+
+  @POST("{url}")
+  Future<ListDeviceTypeResponse> getDeviceType(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 }
 
 @JsonSerializable()

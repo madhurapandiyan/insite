@@ -218,7 +218,7 @@ class _DashboardViewState extends State<DashboardView> {
                       child: IdlingLevel(
                         data: viewModel.idlingLevelData != null
                             ? viewModel.idlingLevelData.countData
-                            : null,
+                            : [],
                         isLoading: viewModel.idlingLevelDataloading,
                         onFilterSelected: (value) async {
                           await viewModel.onFilterSelected(value);

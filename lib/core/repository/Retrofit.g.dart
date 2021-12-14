@@ -3806,4 +3806,23 @@ class _RestClient implements RestClient {
     final value = SubscriptionDashboardDetailResult.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<ListDeviceTypeResponse> getDeviceType(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ListDeviceTypeResponse.fromJson(_result.data);
+    return value;
+  }
 }

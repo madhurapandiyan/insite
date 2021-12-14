@@ -20,6 +20,7 @@ import 'package:insite/utils/urls.dart';
 import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
+import 'package:insite/core/models/device_type.dart';
 
 class AssetAdminManagerUserService extends BaseService {
   var _localService = locator<LocalService>();
@@ -481,8 +482,26 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageAssetConfiguration> getAssetSettingData(
-      pageSize, pageNumber) async {
+  Future<ListDeviceTypeResponse> getDeviceTypes() async {
+    try {
+      if (isVisionLink) {
+        ListDeviceTypeResponse response = await MyApi()
+            .getClientSeven()
+            .getDeviceType(Urls.deviceTypeVL, accountSelected.CustomerUID);
+        return response;
+      } else {
+        ListDeviceTypeResponse response = await MyApi()
+            .getClientSix()
+            .getDeviceType(Urls.deviceTypes, accountSelected.CustomerUID);
+        return response;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<ManageAssetConfiguration> getAssetSettingData(pageSize, pageNumber,
+      String searchKeyword, String deviceTypeSelected) async {
     Logger().i("getAssetSettingData");
     try {
       Map<String, String> queryMap = Map();
@@ -490,6 +509,13 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["pageSize"] = pageSize.toString();
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sortColumn"] = "assetId";
+        if (searchKeyword.isNotEmpty) {
+          queryMap["filterName"] = "all";
+          queryMap["filterValue"] = searchKeyword;
+        }
+        if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
+          queryMap["deviceType"] = deviceTypeSelected;
+        }
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSeven().getAssetSettingsListDataVL(
                 Urls.assetSettingsVL +
@@ -500,6 +526,13 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["pageSize"] = pageSize.toString();
         queryMap["pageNumber"] = pageNumber.toString();
         queryMap["sortColumn"] = "assetId";
+        if (searchKeyword.isNotEmpty) {
+          queryMap["filterName"] = "all";
+          queryMap["filterValue"] = searchKeyword;
+        }
+        if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
+          queryMap["deviceType"] = deviceTypeSelected;
+        }
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSix().getAssetSettingsListData(
                 Urls.assetSettings +

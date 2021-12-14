@@ -37,7 +37,12 @@ class ManageUserView extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 21.0),
                               child: InsiteText(
-                                text: "manage users".toUpperCase(),
+                                text: "manage users".toUpperCase() +
+                                    " (" +
+                                    viewModel.assets.length.toString() +
+                                    " of " +
+                                    viewModel.totalCount.toString() +
+                                    " )",
                                 size: 14,
                                 fontWeight: FontWeight.w700,
                               ),

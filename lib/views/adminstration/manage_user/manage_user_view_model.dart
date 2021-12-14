@@ -29,6 +29,9 @@ class ManageUserViewModel extends InsiteViewModel {
     // notifyListeners();
   }
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   List<UserRow> _assets = [];
   List<UserRow> get assets => _assets;
 
@@ -78,6 +81,7 @@ class ManageUserViewModel extends InsiteViewModel {
   Timer debounce;
 
   searchUsers(String searchValue) {
+    pageNumber = 1;
     if (debounce != null) debounce.cancel();
     debounce = Timer(Duration(seconds: 2), () {
       _searchKeyword = searchValue;
@@ -90,9 +94,14 @@ class ManageUserViewModel extends InsiteViewModel {
     AdminManageUser result = await _manageUserService
         .getAdminManageUserListData(pageNumber, _searchKeyword);
     if (result != null) {
+      if (result.total != null) {
+        _totalCount = result.total.items;
+      }
       if (result.users.isNotEmpty) {
         Logger().i("list of assets " + result.users.length.toString());
-        _assets.clear();
+        if (!loadingMore) {
+          _assets.clear();
+        }
         for (var user in result.users) {
           _assets.add(UserRow(user: user, isSelected: false));
         }

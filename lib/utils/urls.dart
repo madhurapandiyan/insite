@@ -79,13 +79,13 @@ class Urls {
   // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
   // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
-  // static String tataHitachiRedirectUri =
-  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
-
   static String tataHitachiRedirectUri =
-      "https://dj8lqow8wzdep.cloudfront.net/auth";
-  static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
+      "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
+  static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+
+  // static String tataHitachiRedirectUri =
+  // "https://dj8lqow8wzdep.cloudfront.net/auth";
+  // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   static String indiaStackAdminmoduleAppClientId =
@@ -190,6 +190,8 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
   static String getAssetMileageListDataVL =
       "/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
+  static String deviceTypeVL =
+      "t/trimble.com/vss-assetsettings/1.0/devicetypes";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -266,6 +268,8 @@ class Urls {
   static String estimatedMileageData =
       "/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
   static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
+  static String deviceTypes =
+      "/osg-in/$assetSettingsMasterData/1.0/v1/assetsettings/devicetypes";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
