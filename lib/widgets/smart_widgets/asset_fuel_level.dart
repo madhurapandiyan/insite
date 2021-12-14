@@ -9,10 +9,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetFuelLevel extends StatefulWidget {
-  final List<ChartSampleData> chartData;
-  final bool isLoading;
-  final bool isRefreshing;
-  final Function(FilterData) onFilterSelected;
+  final List<ChartSampleData>? chartData;
+  final bool? isLoading;
+  final bool? isRefreshing;
+  final Function(FilterData)? onFilterSelected;
 
   AssetFuelLevel(
       {this.chartData,
@@ -98,7 +98,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
             thickness: 1.0,
             color: Theme.of(context).dividerColor,
           ),
-          (widget.isLoading || widget.isRefreshing)
+          (widget.isLoading! || widget.isRefreshing!)
               ? Expanded(child: InsiteProgressBar())
               : Row(
                   children: [
@@ -133,20 +133,20 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                                   child: Divider(
                                       thickness: 1.0, color: athenGrey));
                             },
-                            itemCount: widget.chartData.length,
+                            itemCount: widget.chartData!.length,
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             padding: EdgeInsets.symmetric(horizontal: 5.0),
                             itemBuilder: (context, index) {
-                              ChartSampleData data = widget.chartData[index];
+                              ChartSampleData data = widget.chartData![index];
                               return AssetStatusWidget(
                                 chartColor: color[index],
                                 label: Utils.getFuleLevelWidgetLabel(
                                     data.x, false),
                                 callBack: () {
-                                  if (data.y > 0) {
-                                    widget.onFilterSelected(FilterData(
+                                  if (data.y! > 0) {
+                                    widget.onFilterSelected!(FilterData(
                                         isSelected: true,
                                         count: data.y.toString(),
                                         title: data.x.toString(),

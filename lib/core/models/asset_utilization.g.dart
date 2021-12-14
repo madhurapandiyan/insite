@@ -6,30 +6,29 @@ part of 'asset_utilization.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetUtilization _$AssetUtilizationFromJson(Map<String, dynamic> json) {
-  return AssetUtilization(
-    totalDay: json['totalDay'] == null
-        ? null
-        : Hours.fromJson(json['totalDay'] as Map<String, dynamic>),
-    totalWeek: json['totalWeek'] == null
-        ? null
-        : Hours.fromJson(json['totalWeek'] as Map<String, dynamic>),
-    totalMonth: json['totalMonth'] == null
-        ? null
-        : Hours.fromJson(json['totalMonth'] as Map<String, dynamic>),
-    targetDay: json['targetDay'] == null
-        ? null
-        : Hours.fromJson(json['targetDay'] as Map<String, dynamic>),
-    targetWeek: json['targetWeek'] == null
-        ? null
-        : Hours.fromJson(json['targetWeek'] as Map<String, dynamic>),
-    targetMonth: json['targetMonth'] == null
-        ? null
-        : Hours.fromJson(json['targetMonth'] as Map<String, dynamic>),
-    code: json['code'] as int,
-    message: json['message'] as String,
-  );
-}
+AssetUtilization _$AssetUtilizationFromJson(Map<String, dynamic> json) =>
+    AssetUtilization(
+      totalDay: json['totalDay'] == null
+          ? null
+          : Hours.fromJson(json['totalDay'] as Map<String, dynamic>),
+      totalWeek: json['totalWeek'] == null
+          ? null
+          : Hours.fromJson(json['totalWeek'] as Map<String, dynamic>),
+      totalMonth: json['totalMonth'] == null
+          ? null
+          : Hours.fromJson(json['totalMonth'] as Map<String, dynamic>),
+      targetDay: json['targetDay'] == null
+          ? null
+          : Hours.fromJson(json['targetDay'] as Map<String, dynamic>),
+      targetWeek: json['targetWeek'] == null
+          ? null
+          : Hours.fromJson(json['targetWeek'] as Map<String, dynamic>),
+      targetMonth: json['targetMonth'] == null
+          ? null
+          : Hours.fromJson(json['targetMonth'] as Map<String, dynamic>),
+      code: json['code'] as int?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$AssetUtilizationToJson(AssetUtilization instance) =>
     <String, dynamic>{
@@ -43,16 +42,14 @@ Map<String, dynamic> _$AssetUtilizationToJson(AssetUtilization instance) =>
       'message': instance.message,
     };
 
-Hours _$HoursFromJson(Map<String, dynamic> json) {
-  return Hours(
-    idleHours: (json['idleHours'] as num)?.toDouble(),
-    runtimeHours: (json['runtimeHours'] as num)?.toDouble(),
-    workingHours: (json['workingHours'] as num)?.toDouble(),
-    idleFuel: (json['idleFuel'] as num)?.toDouble(),
-    runtimeFuel: (json['runtimeFuel'] as num)?.toDouble(),
-    workingFuel: (json['workingFuel'] as num)?.toDouble(),
-  );
-}
+Hours _$HoursFromJson(Map<String, dynamic> json) => Hours(
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
+      workingHours: (json['workingHours'] as num?)?.toDouble(),
+      idleFuel: (json['idleFuel'] as num?)?.toDouble(),
+      runtimeFuel: (json['runtimeFuel'] as num?)?.toDouble(),
+      workingFuel: (json['workingFuel'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$HoursToJson(Hours instance) => <String, dynamic>{
       'idleHours': instance.idleHours,

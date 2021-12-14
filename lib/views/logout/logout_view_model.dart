@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class LogoutViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   LogoutViewModel() {
     this.log = getLogger(this.runtimeType.toString());

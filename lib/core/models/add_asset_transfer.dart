@@ -4,15 +4,15 @@ part 'add_asset_transfer.g.dart';
 @JsonSerializable()
 class AssetTransferData {
   @JsonKey(name: "Source")
-  String source;
+  String? source;
   @JsonKey(name: "Version")
-  String version;
+  String? version;
   @JsonKey(name: "UserID")
-  int userID;
+  int? userID;
   @JsonKey(name: "transfer")
-  List<Transfer> transfer;
+  List<Transfer>? transfer;
   @JsonKey(name: "status")
-  String status;
+  String? status;
   AssetTransferData(
       {this.source, this.transfer, this.userID, this.version, this.status});
 
@@ -25,47 +25,47 @@ class AssetTransferData {
 @JsonSerializable()
 class Transfer {
   @JsonKey(name: "DeviceId")
-  String deviceId;
+  String? deviceId;
   @JsonKey(name: "MachineModel")
-  String machineModel;
+  String? machineModel;
   @JsonKey(name: "HMR")
-  String hMR;
+  String? hMR;
   @JsonKey(name: "HMRDate")
-  String hMRDate;
+  String? hMRDate;
   @JsonKey(name: "PlantName")
-  String plantName;
+  String? plantName;
   @JsonKey(name: "PlantCode")
-  String plantCode;
+  String? plantCode;
   @JsonKey(name: "PlantEmailID")
-  String plantEmailID;
+  String? plantEmailID;
   @JsonKey(name: "PrimaryIndustry")
-  String primaryIndustry;
+  String? primaryIndustry;
   @JsonKey(name: "SecondaryIndustry")
-  String secondaryIndustry;
+  String? secondaryIndustry;
   @JsonKey(name: "DealerLanguage")
-  String dealerLanguage;
+  String? dealerLanguage;
   @JsonKey(name: "DealerMobile")
-  String dealerMobile;
+  String? dealerMobile;
   @JsonKey(name: "CustomerLanguage")
-  String customerLanguage;
+  String? customerLanguage;
   @JsonKey(name: "CustomerMobile")
-  String customerMobile;
+  String? customerMobile;
   @JsonKey(name: "MachineSlNo")
-  String machineSlNo;
+  String? machineSlNo;
   @JsonKey(name: "CommissioningDate")
-  String commissioningDate;
+  String? commissioningDate;
   @JsonKey(name: "DealerName")
-  String dealerName;
+  String? dealerName;
   @JsonKey(name: "DealerCode")
-  String dealerCode;
+  String? dealerCode;
   @JsonKey(name: "DealerEmailID")
-  String dealerEmailID;
+  String? dealerEmailID;
   @JsonKey(name: "CustomerName")
-  String customerName;
+  String? customerName;
   @JsonKey(name: "CustomerCode")
-  String customerCode;
+  String? customerCode;
   @JsonKey(name: "CustomerEmailID")
-  String customerEmailID;
+  String? customerEmailID;
 
   Transfer(
       {this.deviceId,

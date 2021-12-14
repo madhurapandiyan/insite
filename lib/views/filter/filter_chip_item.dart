@@ -3,12 +3,12 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FilterChipItem extends StatelessWidget {
   const FilterChipItem(
-      {Key key, @required this.label, this.onClose, this.backgroundColor})
+      {Key? key, required this.label, this.onClose, this.backgroundColor})
       : super(key: key);
 
-  final String label;
-  final VoidCallback onClose;
-  final Color backgroundColor;
+  final String? label;
+  final VoidCallback? onClose;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class FilterChipItem extends StatelessWidget {
             ? backgroundColor
             : Theme.of(context).backgroundColor,
         border: Border.all(
-            color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
+            color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
         borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
@@ -31,7 +31,7 @@ class FilterChipItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InsiteText(
-              text: label.toUpperCase(),
+              text: label!.toUpperCase(),
               size: 12,
               fontWeight: FontWeight.bold,
             ),
@@ -40,7 +40,7 @@ class FilterChipItem extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                onClose();
+                onClose!();
               },
               child: Icon(
                 Icons.close,

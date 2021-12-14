@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class SingleAssetOperationChartData {
   @required
-  final DateTime startTime;
+  final DateTime? startTime;
   @required
-  final DateTime endTime;
+  final DateTime? endTime;
   @required
-  final String segmentType;
+  final String? segmentType;
   @required
-  final int duration;
+  final int? duration;
 
   SingleAssetOperationChartData(
       this.startTime, this.endTime, this.segmentType, this.duration);

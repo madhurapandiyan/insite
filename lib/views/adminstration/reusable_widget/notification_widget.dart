@@ -5,10 +5,10 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class NotificationWidget extends StatelessWidget {
-  final String headerText;
-  final bool showExapansionMenu;
-  final VoidCallback onButtonClicked;
-  final String icon;
+  final String? headerText;
+  final bool? showExapansionMenu;
+  final VoidCallback? onButtonClicked;
+  final String? icon;
 
   const NotificationWidget(
       {this.headerText,
@@ -32,7 +32,7 @@ class NotificationWidget extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                showExapansionMenu
+                showExapansionMenu!
                     ? SvgPicture.asset(
                         "assets/images/arrowdown.svg",
                         color: Theme.of(context).iconTheme.color,
@@ -42,7 +42,7 @@ class NotificationWidget extends StatelessWidget {
                   width: 15,
                 ),
                 InsiteText(
-                    text: headerText.toUpperCase(),
+                    text: headerText!.toUpperCase(),
                     fontWeight: FontWeight.w700,
                     size: 14.0),
               ],
@@ -55,7 +55,7 @@ class NotificationWidget extends StatelessWidget {
               height: 8,
             ),
             SvgPicture.asset(
-              icon,
+              icon!,
               height: 24,
               width: 24,
               color: Theme.of(context).iconTheme.color,
@@ -70,7 +70,7 @@ class NotificationWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.40,
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () {
-                    onButtonClicked();
+                    onButtonClicked!();
                   },
                   title: "add".toUpperCase() +
                       "\n" +
@@ -82,7 +82,7 @@ class NotificationWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.40,
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () {
-                    onButtonClicked();
+                    onButtonClicked!();
                   },
                   title: "manage".toUpperCase() +
                       "\n" +

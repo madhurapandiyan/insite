@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,17 +13,15 @@ import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/preview_data.dart';
-import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class SingleAssetTransferViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   bool _allowTransferAsset = false;
   bool get allowTransferAsset => _allowTransferAsset;
@@ -29,22 +29,22 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   bool _enableCustomerDetails = true;
   bool get enableCustomerDetails => _enableCustomerDetails;
 
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   int start = 0;
   int limit = 100;
 
-  String _filter;
-  String get filter => _filter;
+  String? _filter;
+  String? get filter => _filter;
 
-  PLANTSUBSCRIPTIONFILTERTYPE _filterType;
-  PLANTSUBSCRIPTIONFILTERTYPE get filterType => _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? get filterType => _filterType;
 
-  List<String> _gpsDeviceIdList = [];
-  List<String> get gpsDeviceIdList => _gpsDeviceIdList;
+  List<String?> _gpsDeviceIdList = [];
+  List<String?> get gpsDeviceIdList => _gpsDeviceIdList;
 
-  List<String> _serialNoList = [];
-  List<String> get serialNoList => _serialNoList;
+  List<String?> _serialNoList = [];
+  List<String?> get serialNoList => _serialNoList;
 
   List<Result> _deviceList = [];
   List<Result> get deviceList => _deviceList;
@@ -64,14 +64,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<HierarchyModel> _deviceListData = [];
   List<HierarchyModel> get deviceListData => _deviceListData;
 
-  List<String> _dealerName = [];
-  List<String> get dealerName => _dealerName;
+  List<String?> _dealerName = [];
+  List<String?> get dealerName => _dealerName;
 
-  List<String> _dealerCode = [];
-  List<String> get dealerCode => _dealerCode;
+  List<String?> _dealerCode = [];
+  List<String?> get dealerCode => _dealerCode;
 
-  DateTime _pickedDate = DateTime.now();
-  DateTime get pickedDate => _pickedDate;
+  DateTime? _pickedDate = DateTime.now();
+  DateTime? get pickedDate => _pickedDate;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -148,14 +148,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<PreviewData> _generalCustomerDetails = [];
   List<PreviewData> get generalCustomerDetails => _generalCustomerDetails;
 
-  List<String> _dealerId = [];
-  List<String> get dealerId => _dealerId;
+  List<String?> _dealerId = [];
+  List<String?> get dealerId => _dealerId;
 
-  List<String> _customerId = [];
-  List<String> get customerId => _customerId;
+  List<String?> _customerId = [];
+  List<String?> get customerId => _customerId;
 
-  List<String> _customerCode = [];
-  List<String> get customerCode => _customerCode;
+  List<String?> _customerCode = [];
+  List<String?> get customerCode => _customerCode;
 
   List<AssetValues> _totalAssetValues = [];
   List<AssetValues> get totalAssetValues => _totalAssetValues;
@@ -241,7 +241,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         customerEmailID: generalCustomerDetails[2].value);
     _totalTransferValues.add(deviceTransferValues);
 
-    var result = await _subscriptionService.postSingleTransferRegistration(
+    var result = await _subscriptionService!.postSingleTransferRegistration(
         transferData: _totalTransferValues);
 
     notifyListeners();
@@ -324,60 +324,60 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getSelectedDate(DateTime value) {
+  getSelectedDate(DateTime? value) {
     _pickedDate = value;
-    commisioningDateController.text = DateFormat.yMMMd().format(_pickedDate);
+    commisioningDateController.text = DateFormat.yMMMd().format(_pickedDate!);
     notifyListeners();
   }
 
   filterCustomerDeatails(String value) {
     devices.forEach((element) {
-      if (value.toLowerCase() == element.Name.toLowerCase()) {
+      if (value.toLowerCase() == element.Name!.toLowerCase()) {
         Logger().e('codet${element.Code}');
 
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
       } else if (value == element.Code) {
-        customerNameController.text = element.Name;
-        customerEmailController.text = element.Email;
-        customerCodeController.text = element.Code;
+        customerNameController.text = element.Name!;
+        customerEmailController.text = element.Email!;
+        customerCodeController.text = element.Code!;
       }
-      return false;
+     // return false;
     });
     notifyListeners();
   }
 
   filterDealerDetails(String value) {
     devices.forEach((element) {
-      if (value.toLowerCase() == element.Name.toLowerCase()) {
+      if (value.toLowerCase() == element.Name!.toLowerCase()) {
         Logger().e('codet${element.Code}');
 
-        dealerCodeController.text = element.Code;
-        dealerEmailController.text = element.Email;
+        dealerCodeController.text = element.Code!;
+        dealerEmailController.text = element.Email!;
 
         Logger().wtf('code: ${element.Code}');
       } else if (value == element.Code) {
-        dealerNameController.text = element.Name;
-        dealerEmailController.text = element.Email;
-        dealerCodeController.text = element.Code;
+        dealerNameController.text = element.Name!;
+        dealerEmailController.text = element.Email!;
+        dealerCodeController.text = element.Code!;
       }
-      return false;
+      //return false;
     });
     notifyListeners();
   }
 
   getCustomerDetailValues(String deviceID) async {
     CustomerDetails result =
-        await _subscriptionService.getCustomerDetails(deviceID);
+        await (_subscriptionService!.getCustomerDetails(deviceID) as Future<CustomerDetails>);
 
-    customerCodeController.text = result.customerResult.customerData.code;
-    customerEmailController.text = result.customerResult.customerData.email;
-    customerNameController.text = result.customerResult.customerData.name;
+    customerCodeController.text = result.customerResult!.customerData!.code!;
+    customerEmailController.text = result.customerResult!.customerData!.email!;
+    customerNameController.text = result.customerResult!.customerData!.name!;
   }
 
-  getDealerNamesData({String name, int code, String type}) async {
-    SingleAssetRegistrationSearchModel result =
-        await _subscriptionService.getSubscriptionDevicesListData(
+  getDealerNamesData({String? name, int? code, String? type}) async {
+    SingleAssetRegistrationSearchModel? result =
+        await _subscriptionService!.getSubscriptionDevicesListData(
       fitler: type,
       start: start == 0 ? start : start + 1,
       limit: limit,
@@ -386,9 +386,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
     );
     if (result != null) {
-      if (result.result.isNotEmpty) {
-        devices.addAll(result.result[1]);
-        deviceListData.addAll(result.result[1]);
+      if (result.result!.isNotEmpty) {
+        devices.addAll(result.result![1]);
+        deviceListData.addAll(result.result![1]);
 
         _loading = false;
         _loadingMore = false;
@@ -411,9 +411,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     Logger().e(value);
     _devices.forEach((element) {
       if (element.Name == value) {
-        customerNameController.text = element.Name;
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerNameController.text = element.Name!;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
         customerId.clear();
       }
     });
@@ -425,9 +425,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     _devices.forEach((element) {
       Logger().wtf(value);
       if (element.Code == value) {
-        customerNameController.text = element.Name;
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerNameController.text = element.Name!;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
         customerCode.clear();
         notifyListeners();
       }
@@ -438,9 +438,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     Logger().e(_devices.length);
     _devices.forEach((element) {
       if (element.Name == value) {
-        dealerNameController.text = element.Name;
-        dealerCodeController.text = element.Code;
-        dealerEmailController.text = element.Email;
+        dealerNameController.text = element.Name!;
+        dealerCodeController.text = element.Code!;
+        dealerEmailController.text = element.Email!;
         _dealerId.clear();
         notifyListeners();
       }
@@ -450,9 +450,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectedDealerCodeTile(String value) {
     _devices.forEach((element) {
       if (element.Code == value) {
-        dealerNameController.text = element.Name;
-        dealerCodeController.text = element.Code;
-        dealerEmailController.text = element.Email;
+        dealerNameController.text = element.Name!;
+        dealerCodeController.text = element.Code!;
+        dealerEmailController.text = element.Email!;
         _dealerCode.clear();
         notifyListeners();
       }
@@ -462,8 +462,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectedDeviceId(String value) {
     _deviceList.forEach((element) {
       if (element.gPSDeviceID == value) {
-        deviceIdController.text = element.gPSDeviceID;
-        machineSerialNumberController.text = element.vIN;
+        deviceIdController.text = element.gPSDeviceID!;
+        machineSerialNumberController.text = element.vIN!;
         _gpsDeviceIdList.clear();
         notifyListeners();
       }
@@ -473,15 +473,15 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectedSerialNo(String value) {
     _deviceList.forEach((element) {
       if (element.vIN == value) {
-        deviceIdController.text = element.gPSDeviceID;
-        machineSerialNumberController.text = element.vIN;
+        deviceIdController.text = element.gPSDeviceID!;
+        machineSerialNumberController.text = element.vIN!;
         _serialNoList.clear();
         notifyListeners();
       }
     });
   }
 
-  onCustomerNameChanges({String name, String type, int code}) async {
+  onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (name == null || name.isEmpty) {
@@ -496,16 +496,16 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         Logger().e("type");
         if (name.length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as Future<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
               notifyListeners();
@@ -521,11 +521,11 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onCustomerCodeChanges({String name, String type, int code}) async {
+  onCustomerCodeChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (code == null || code.toString().isEmpty) {
@@ -538,16 +538,16 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _devices.clear();
         if (code.toString().length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as FutureOr<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _customerCode.add(element.Code);
               notifyListeners();
@@ -563,11 +563,11 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onDealerNameChanges({String name, String type, int code}) async {
+  onDealerNameChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (name == null || name.isEmpty) {
@@ -582,16 +582,16 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         Logger().e("type");
         if (name.length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as FutureOr<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
               notifyListeners();
@@ -607,11 +607,11 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onDealerCodeChanges({String name, String type, int code}) async {
+  onDealerCodeChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (code == null || code.toString().isEmpty) {
@@ -625,16 +625,16 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
         if (code.toString().length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as FutureOr<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
               notifyListeners();
@@ -650,26 +650,26 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
   updateSerialNumberValues(String text) async {
     machineSerialNumberController.text = text;
 
-    AssetDetailsBySerialNo detailsPerSerialNo = await _subscriptionService
+    AssetDetailsBySerialNo? detailsPerSerialNo = await _subscriptionService!
         .getDeviceAssetDetailsBySerialNo(machineSerialNumberController.text);
 
     if (detailsPerSerialNo != null) {
-      if (detailsPerSerialNo.result.isNotEmpty) {
-        serialValues.addAll(detailsPerSerialNo.result);
+      if (detailsPerSerialNo.result!.isNotEmpty) {
+        serialValues.addAll(detailsPerSerialNo.result!);
 
         _loading = false;
         _loadingMore = false;
 
         serialValues.forEach((element) {
-          deviceIdController.text = element.deviceId;
-          machineModelController.text = element.model;
+          deviceIdController.text = element.deviceId!;
+          machineModelController.text = element.model!;
         });
 
         Logger().wtf(_deviceDetail);
@@ -687,19 +687,19 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   updateDeviceIdValues(String text) async {
     deviceIdController.text = text;
 
-    DeviceDetailsPerId detailsPerId = await _subscriptionService
+    DeviceDetailsPerId? detailsPerId = await _subscriptionService!
         .getDeviceDetailsPerDeviceId(deviceIdController.text);
 
     if (detailsPerId != null) {
-      if (detailsPerId.result.isNotEmpty) {
-        deviceValues.addAll(detailsPerId.result);
+      if (detailsPerId.result!.isNotEmpty) {
+        deviceValues.addAll(detailsPerId.result!);
 
         _loading = false;
         _loadingMore = false;
 
         deviceValues.forEach((element) {
-          machineSerialNumberController.text = element.serialNo;
-          machineModelController.text = element.model;
+          machineSerialNumberController.text = element.serialNo!;
+          machineModelController.text = element.model!;
         });
 
         Logger().wtf(_deviceDetail);
@@ -718,17 +718,17 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     try {
       if (text.length > 3) {
         SingleTransferDeviceId serialNoResults =
-            await _subscriptionService.getSingleTransferDeviceId(
+            await (_subscriptionService!.getSingleTransferDeviceId(
                 filter: "asset",
                 filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
                 controllerValue: text,
                 start: start == 0 ? start : start + 1,
                 limit: limit,
-                searchBy: "VIN");
+                searchBy: "VIN") as FutureOr<SingleTransferDeviceId>);
 
         if (serialNoResults != null) {
-          if (serialNoResults.result.isNotEmpty) {
-            deviceList.addAll(serialNoResults.result);
+          if (serialNoResults.result!.isNotEmpty) {
+            deviceList.addAll(serialNoResults.result!);
 
             _loading = false;
             _loadingMore = false;
@@ -743,12 +743,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           _loading = false;
           _loadingMore = false;
         }
-        Logger().wtf(serialNoResults.result.first.vIN);
+        Logger().wtf(serialNoResults.result!.first.vIN);
         notifyListeners();
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
@@ -756,17 +756,17 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     try {
       if (text.length >= 3) {
         SingleTransferDeviceId deviceIdResults =
-            await _subscriptionService.getSingleTransferDeviceId(
+            await (_subscriptionService!.getSingleTransferDeviceId(
                 filter: "asset",
                 filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
                 controllerValue: text,
                 start: start == 0 ? start : start + 1,
                 limit: limit,
-                searchBy: "GPSDeviceID");
+                searchBy: "GPSDeviceID") as FutureOr<SingleTransferDeviceId>);
 
         if (deviceIdResults != null) {
-          if (deviceIdResults.result.isNotEmpty) {
-            deviceList.addAll(deviceIdResults.result);
+          if (deviceIdResults.result!.isNotEmpty) {
+            deviceList.addAll(deviceIdResults.result!);
 
             _loading = false;
             _loadingMore = false;
@@ -781,12 +781,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           _loading = false;
           _loadingMore = false;
         }
-        Logger().wtf(deviceIdResults.result.first.gPSDeviceID);
+        Logger().wtf(deviceIdResults.result!.first.gPSDeviceID);
         notifyListeners();
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
@@ -819,12 +819,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           asset: _totalAssetValues);
 
       var result =
-          await _subscriptionService.postSingleAssetTransferRegistration(data);
+          await _subscriptionService!.postSingleAssetTransferRegistration(data);
       Logger().e(result);
       return result;
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 }

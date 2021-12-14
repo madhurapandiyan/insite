@@ -5,8 +5,8 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomCardMultipeAssetTransfer extends StatelessWidget {
-  CustomCardMultipeAssetTransfer({Key key, this.transfer}) : super(key: key);
-  final Transfer transfer;
+  CustomCardMultipeAssetTransfer({Key? key, this.transfer}) : super(key: key);
+  final Transfer? transfer;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         title: "Device ID ",
                       ),
                       InsiteRichText(
-                        title: transfer.deviceId,
+                        title: transfer!.deviceId,
                       )
                     ],
                   ),
@@ -77,7 +77,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                               ),
                               InsiteTextOverFlow(
                                 overflow: TextOverflow.ellipsis,
-                                text: transfer.machineModel,
+                                text: transfer!.machineModel,
                               ),
                             ],
                           ),
@@ -102,7 +102,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                               fontSize: 12,
                               color: tango,
                               fontWeight: FontWeight.bold),
-                          content: transfer.machineSlNo,
+                          content: transfer!.machineSlNo,
                           textColor: tango,
                         )
                       ],
@@ -119,7 +119,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Dealer Name",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.dealerName,
+                          text: transfer!.dealerName,
                         ),
                       ],
                     ),
@@ -138,7 +138,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.dealerCode,
+                          text: transfer!.dealerCode,
                         )
                       ],
                     ),
@@ -154,7 +154,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Dealer Email",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.dealerEmailID,
+                          text: transfer!.dealerEmailID,
                         )
                       ],
                     ),
@@ -173,7 +173,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.dealerMobile,
+                          text: transfer!.dealerMobile,
                         )
                       ],
                     ),
@@ -189,7 +189,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Dealer SMS Language",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.dealerLanguage,
+                          text: transfer!.dealerLanguage,
                         )
                       ],
                     ),
@@ -208,7 +208,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.customerName,
+                          text: transfer!.customerName,
                         )
                       ],
                     ),
@@ -224,7 +224,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Customer Code",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.customerCode,
+                          text: transfer!.customerCode,
                         )
                       ],
                     ),
@@ -243,7 +243,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.customerEmailID,
+                          text: transfer!.customerEmailID,
                         )
                       ],
                     ),
@@ -259,7 +259,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Customer Mobile No.",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.customerMobile,
+                          text: transfer!.customerMobile,
                         )
                       ],
                     ),
@@ -278,7 +278,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.customerLanguage,
+                          text: transfer!.customerLanguage,
                         )
                       ],
                     ),
@@ -294,7 +294,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Primary Industry",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.primaryIndustry,
+                          text: transfer!.primaryIndustry,
                         )
                       ],
                     ),
@@ -313,7 +313,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                         ),
                         InsiteTextOverFlow(
                           overflow: TextOverflow.ellipsis,
-                          text: transfer.secondaryIndustry,
+                          text: transfer!.secondaryIndustry,
                         )
                       ],
                     ),
@@ -329,7 +329,7 @@ class CustomCardMultipeAssetTransfer extends StatelessWidget {
                           text: "Commisioning Date",
                         ),
                         InsiteTextOverFlow(
-                          text: transfer.commissioningDate,
+                          text: transfer!.commissioningDate,
                         )
                       ],
                     ),

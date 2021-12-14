@@ -22,7 +22,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsViewModel>.reactive(
       builder:
-          (BuildContext context, AssetSettingsViewModel viewModel, Widget _) {
+          (BuildContext context, AssetSettingsViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ASSET_SETTINGS,
@@ -149,45 +149,46 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
   }
 
   Widget onContextMenuSelected(AssetSettingsViewModel viewModel) {
-    return PopupMenuButton<String>(
-      offset: Offset(30, 50),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-            value: "Deselect All",
-            child: InsiteText(
-              text: "Deselect All",
-              fontWeight: FontWeight.w700,
-              size: 14,
-            )),
-        viewModel.showMenu
-            ? PopupMenuItem(
-                value: "Show/Edit Target",
-                child: InsiteText(
-                  text: "Show/Edit Target",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : null,
-        viewModel.showMenu
-            ? PopupMenuItem(
-                value: "Configure",
-                child: InsiteText(
-                  text: "Configure",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : null
-      ],
-      onSelected: (value) {
-        Logger().i("value:$value");
-        viewModel.onSelectedItemClicK(value);
-      },
-      icon: Icon(
-        Icons.more_vert,
-        color: appbarcolor,
-        size: 25,
-      ),
-    );
+    return SizedBox();
+    // return PopupMenuButton<String>(
+    //   offset: Offset(30, 50),
+    //   itemBuilder: (context) => [
+    //     PopupMenuItem(
+    //         value: "Deselect All",
+    //         child: InsiteText(
+    //           text: "Deselect All",
+    //           fontWeight: FontWeight.w700,
+    //           size: 14,
+    //         )),
+    //     viewModel.showMenu
+    //         ? PopupMenuItem(
+    //             value: "Show/Edit Target",
+    //             child: InsiteText(
+    //               text: "Show/Edit Target",
+    //               fontWeight: FontWeight.w700,
+    //               size: 14,
+    //             )):null
+    //        ,
+    //     viewModel.showMenu
+    //         ? PopupMenuItem(
+    //             value: "Configure",
+    //             child: InsiteText(
+    //               text: "Configure",
+    //               fontWeight: FontWeight.w700,
+    //               size: 14,
+    //             ),
+    //           )
+    //         : null
+    //   ],
+    //   onSelected: (value) {
+    //     Logger().i("value:$value");
+    //     viewModel.onSelectedItemClicK(value);
+    //   },
+    //   icon: Icon(
+    //     Icons.more_vert,
+    //     color: appbarcolor,
+    //     size: 25,
+    //   ),
+    // );
   }
 }

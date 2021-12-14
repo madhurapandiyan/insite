@@ -8,7 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedPayLoadPerCycle extends StatefulWidget {
-  final List<String> assetUid;
+  final List<String>? assetUid;
   EstimatedPayLoadPerCycle({this.assetUid});
   
 
@@ -36,7 +36,7 @@ class _EstimatedPayLoadPerCycleState extends State<EstimatedPayLoadPerCycle> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<EstimatedVoumePayloadMileage>.reactive(
       builder: (BuildContext context, EstimatedVoumePayloadMileage viewModel,
-          Widget _) {
+          Widget? _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

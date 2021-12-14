@@ -6,15 +6,15 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ManageAssetConfigurationCard extends StatelessWidget {
-  final AssetSettingsRow assetSetting;
-  final VoidCallback voidCallback;
+  final AssetSettingsRow? assetSetting;
+  final VoidCallback? voidCallback;
   const ManageAssetConfigurationCard({this.assetSetting, this.voidCallback});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        voidCallback();
+        voidCallback!();
       },
       child: Card(
           child: Row(children: [
@@ -33,13 +33,13 @@ class ManageAssetConfigurationCard extends StatelessWidget {
               ),
               Container(
                   decoration: BoxDecoration(
-                      color: assetSetting.isSelected
+                      color: assetSetting!.isSelected
                           ? Theme.of(context).buttonColor
                           : Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Icon(
                     Icons.crop_square,
-                    color: assetSetting.isSelected
+                    color: assetSetting!.isSelected
                         ? Theme.of(context).buttonColor
                         : Colors.black,
                   )),
@@ -84,34 +84,34 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                 ),
                 InsiteTableRowItem(
                   title: 'Make :',
-                  content: assetSetting.assetSettings.assetMakeCode != null
-                      ? assetSetting.assetSettings.assetMakeCode
+                  content: assetSetting!.assetSettings!.assetMakeCode != null
+                      ? assetSetting!.assetSettings!.assetMakeCode
                       : "-",
                 ),
                 InsiteTableRowItem(
                   title: 'Model :',
-                  content: assetSetting.assetSettings.assetModel != null
-                      ? assetSetting.assetSettings.assetModel
+                  content: assetSetting!.assetSettings!.assetModel != null
+                      ? assetSetting!.assetSettings!.assetModel
                       : "-",
                 ),
               ]),
               TableRow(children: [
                 InsiteRichText(
                   title: "Asset SN :",
-                  content: assetSetting.assetSettings.assetSerialNumber != null
-                      ? assetSetting.assetSettings.assetSerialNumber
+                  content: assetSetting!.assetSettings!.assetSerialNumber != null
+                      ? assetSetting!.assetSettings!.assetSerialNumber
                       : "-",
                 ),
                 InsiteTableRowItem(
                   title: "Device ID :",
-                  content: assetSetting.assetSettings.deviceSerialNumber != null
-                      ? assetSetting.assetSettings.deviceSerialNumber
+                  content: assetSetting!.assetSettings!.deviceSerialNumber != null
+                      ? assetSetting!.assetSettings!.deviceSerialNumber
                       : "-",
                 ),
                 InsiteTableRowItem(
                   title: 'Device Type :',
-                  content: assetSetting.assetSettings.devicetype != null
-                      ? assetSetting.assetSettings.devicetype
+                  content: assetSetting!.assetSettings!.devicetype != null
+                      ? assetSetting!.assetSettings!.devicetype
                       : "-",
                 ),
               ])

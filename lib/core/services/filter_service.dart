@@ -36,11 +36,11 @@ class FilterService extends DataBaseService {
     }
   }
 
-  updateFilterInDb(List<FilterData> list) {
+  updateFilterInDb(List<FilterData?> list) {
     try {
       Logger().d("updateFilterInDb list size ${list.length}");
       clearFilterDatabase().then((value) => {
-            for (FilterData data in list) {addFilter(data)}
+            for (FilterData? data in list) {addFilter(data)}
           });
       Logger().d("filter size after update");
       print(filterBox.values.length);
@@ -49,7 +49,7 @@ class FilterService extends DataBaseService {
     }
   }
 
-  Future<List<FilterData>> getSelectedFilters() async {
+  Future<List<FilterData?>?> getSelectedFilters() async {
     try {
       Logger().d("getSelectedFilters");
       print(filterBox.values.length);
@@ -81,34 +81,34 @@ class FilterService extends DataBaseService {
     }
   }
 
-  addFilter(FilterData value) async {
-    int size = filterBox.values.length;
+  addFilter(FilterData? value) async {
+    int? size = filterBox.values.length;
     if (size == 0) {
       filterBox.add(value);
     } else {
       bool shouldAdd = true;
-      for (var i = 0; i < size; i++) {
+      for (var i = 0; i < size!; i++) {
         FilterData data = filterBox.getAt(i);
-        if (data.title == value.title) {
+        if (data.title == value!.title) {
           shouldAdd = false;
           break;
         }
       }
       if (shouldAdd) {
-        Logger().d("add filter ${value.title.toString()}");
+        Logger().d("add filter ${value!.title.toString()}");
         await filterBox.add(value);
       }
     }
   }
 
   updateFilter(FilterData value) async {
-    int size = filterBox.values.length;
+    int? size = filterBox.values.length;
     if (size == 0) {
       filterBox.add(value);
     } else {
       bool shouldUpdate = false;
       int index = 0;
-      for (var i = 0; i < size; i++) {
+      for (var i = 0; i < size!; i++) {
         FilterData data = filterBox.getAt(i);
         if (data.title == value.title) {
           shouldUpdate = true;

@@ -13,28 +13,28 @@ import '../locator.dart';
 import 'local_service.dart';
 
 class FaultService extends BaseService {
-  var _localService = locator<LocalService>();
-  Customer accountSelected;
-  Customer customerSelected;
+  LocalService? _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
   FaultService() {
     setUp();
   }
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<FaultSummaryResponse> getFaultSummaryList(
+  Future<FaultSummaryResponse?> getFaultSummaryList(
     startDate,
     endDate,
     pageSize,
     pageNumber,
-    List<FilterData> appliedFilters,
+    List<FilterData?>? appliedFilters,
   ) async {
     dynamic filters = {
       "colFilters": [
@@ -50,21 +50,21 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         FaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().faultViewSummaryURLVL(
+                ? await MyApi().getClient()!.faultViewSummaryURLVL(
                       Urls.faultViewSummaryVL +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected.CustomerUID,
+                              customerSelected!.CustomerUID,
                               "en-US",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.HEALTH),
                       filters,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     )
-                : await MyApi().getClient().faultViewSummaryURLVL(
+                : await MyApi().getClient()!.faultViewSummaryURLVL(
                       Urls.faultViewSummaryVL +
                           FilterUtils.getFilterURL(
                               startDate,
@@ -73,30 +73,30 @@ class FaultService extends BaseService {
                               pageSize,
                               null,
                               "en-US",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.HEALTH),
                       filters,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     );
         return fleetSummaryResponse;
       } else {
         FaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().faultViewSummaryURL(
+                ? await MyApi().getClient()!.faultViewSummaryURL(
                     Urls.faultViewSummary +
                         FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
                     filters,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix)
-                : await MyApi().getClient().faultViewSummaryURL(
+                : await MyApi().getClient()!.faultViewSummaryURL(
                     Urls.faultViewSummary +
                         FilterUtils.getFilterURL(
                             startDate,
@@ -105,10 +105,10 @@ class FaultService extends BaseService {
                             pageSize,
                             null,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
                     filters,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return fleetSummaryResponse;
       }
@@ -118,12 +118,12 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<AssetFaultSummaryResponse> getAssetViewSummaryList(
+  Future<AssetFaultSummaryResponse?> getAssetViewSummaryList(
     startDate,
     endDate,
     pageSize,
     pageNumber,
-    List<FilterData> appliedFilters,
+    List<FilterData?>? appliedFilters,
   ) async {
     dynamic filters = {
       "colFilters": ["asset.basic", "asset.details", "asset.dynamic"]
@@ -132,22 +132,22 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         AssetFaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().assetViewSummaryURLVL(
+                ? await MyApi().getClient()!.assetViewSummaryURLVL(
                       Urls.assetViewSummaryVL +
                           FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH,
                           ),
                       filters,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     )
-                : await MyApi().getClient().assetViewSummaryURLVL(
+                : await MyApi().getClient()!.assetViewSummaryURLVL(
                       Urls.assetViewSummaryVL +
                           FilterUtils.getFilterURL(
                               startDate,
@@ -156,31 +156,31 @@ class FaultService extends BaseService {
                               pageSize,
                               null,
                               "en-US",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.HEALTH),
                       filters,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     );
         return fleetSummaryResponse;
       } else {
         AssetFaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().assetViewSummaryURL(
+                ? await MyApi().getClient()!.assetViewSummaryURL(
                     Urls.assetViewSummary +
                         FilterUtils.getFilterURL(
                           startDate,
                           endDate,
                           pageNumber,
                           pageSize,
-                          customerSelected.CustomerUID,
+                          customerSelected!.CustomerUID,
                           "en-US",
-                          appliedFilters,
+                          appliedFilters!,
                           ScreenType.HEALTH,
                         ),
                     filters,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix)
-                : await MyApi().getClient().assetViewSummaryURL(
+                : await MyApi().getClient()!.assetViewSummaryURL(
                     Urls.assetViewSummary +
                         FilterUtils.getFilterURL(
                             startDate,
@@ -189,10 +189,10 @@ class FaultService extends BaseService {
                             pageSize,
                             null,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
                     filters,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return fleetSummaryResponse;
       }
@@ -202,13 +202,13 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<FaultSummaryResponse> getAssetViewDetailSummaryList(startDate, endDate,
-      pageSize, pageNumber, List<FilterData> appliedFilters, assetId) async {
+  Future<FaultSummaryResponse?> getAssetViewDetailSummaryList(startDate, endDate,
+      pageSize, pageNumber, List<FilterData?>? appliedFilters, assetId) async {
     try {
       if (isVisionLink) {
         FaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClientThree().assetViewDetailSummaryURLVL(
+                ? await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
                     Urls.assetHealthSummaryVL +
                         "/${assetId}/Faults" +
                         FilterUtils.getFilterURL(
@@ -216,12 +216,12 @@ class FaultService extends BaseService {
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
-                    accountSelected.CustomerUID)
-                : await MyApi().getClientThree().assetViewDetailSummaryURLVL(
+                    accountSelected!.CustomerUID)
+                : await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
                     Urls.assetHealthSummaryVL +
                         "/${assetId}/Faults" +
                         FilterUtils.getFilterURL(
@@ -231,14 +231,14 @@ class FaultService extends BaseService {
                             pageSize,
                             null,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
-                    accountSelected.CustomerUID);
+                    accountSelected!.CustomerUID);
         return fleetSummaryResponse;
       } else {
         FaultSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().assetViewDetailSummaryURL(
+                ? await MyApi().getClient()!.assetViewDetailSummaryURL(
                     Urls.assetHealthSummary +
                         "/${assetId}/Faults" +
                         FilterUtils.getFilterURL(
@@ -246,13 +246,13 @@ class FaultService extends BaseService {
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix)
-                : await MyApi().getClient().assetViewDetailSummaryURL(
+                : await MyApi().getClient()!.assetViewDetailSummaryURL(
                     Urls.assetHealthSummary +
                         "/${assetId}/Faults" +
                         FilterUtils.getFilterURL(
@@ -262,9 +262,9 @@ class FaultService extends BaseService {
                             pageSize,
                             null,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return fleetSummaryResponse;
       }
@@ -274,19 +274,19 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<HealthListResponse> getHealthListData(
-      String assetUid, endDateTime, limit, page, startDateTime) async {
+  Future<HealthListResponse?> getHealthListData(
+      String? assetUid, endDateTime, limit, page, startDateTime) async {
     try {
       if (isVisionLink) {
         HealthListResponse healthListResponse =
-            await MyApi().getClient().getHealthListDataVL(
+            await MyApi().getClient()!.getHealthListDataVL(
                   assetUid,
                   endDateTime,
                   'en-US',
                   limit,
                   page,
                   startDateTime,
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                 );
         return healthListResponse;
       } else {
@@ -308,11 +308,11 @@ class FaultService extends BaseService {
         }
         queryMap["langDesc"] = 'en-US';
         HealthListResponse healthListResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .getHealthListData(
                 Urls.assetViewDetailSummaryV1 +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 Urls.faultPrefix);
         return healthListResponse;
       }
@@ -322,33 +322,33 @@ class FaultService extends BaseService {
     return null;
   }
 
-  Future<HealthListResponse> getAssetViewLocationSummary(
-    String assetUID,
+  Future<HealthListResponse?> getAssetViewLocationSummary(
+    String? assetUID,
     startDate,
     endDate,
     page,
     limit,
-    List<FilterData> appliedFilters,
+    List<FilterData?>? appliedFilters,
   ) async {
     try {
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().assetViewLocationSummaryURLVL(
+                ? await MyApi().getClient()!.assetViewLocationSummaryURLVL(
                       Urls.assetViewDetailSummaryV1VL +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
                               page,
                               limit,
-                              customerSelected.CustomerUID,
+                              customerSelected!.CustomerUID,
                               "en-US",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.HEALTH),
                       assetUID,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     )
-                : await MyApi().getClient().assetViewLocationSummaryURLVL(
+                : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
                       Urls.assetViewDetailSummaryV1VL +
                           FilterUtils.getFilterURL(
                               startDate,
@@ -357,30 +357,30 @@ class FaultService extends BaseService {
                               limit,
                               null,
                               "en-US",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.HEALTH),
                       assetUID,
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     );
         return healthListResponse;
       } else {
         HealthListResponse healthListResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().assetViewLocationSummaryURL(
+                ? await MyApi().getClient()!.assetViewLocationSummaryURL(
                     Urls.assetViewDetailSummaryV1 +
                         FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             page,
                             limit,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
                     assetUID,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix)
-                : await MyApi().getClient().assetViewLocationSummaryURL(
+                : await MyApi().getClient()!.assetViewLocationSummaryURL(
                     Urls.assetViewDetailSummaryV1 +
                         FilterUtils.getFilterURL(
                             startDate,
@@ -389,10 +389,10 @@ class FaultService extends BaseService {
                             limit,
                             null,
                             "en-US",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.HEALTH),
                     assetUID,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return healthListResponse;
       }
@@ -402,7 +402,7 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<SingleAssetFaultResponse> getDashboardListData(
+  Future<SingleAssetFaultResponse?> getDashboardListData(
     assetUid,
     endDateTime,
     startDateTime,
@@ -410,9 +410,9 @@ class FaultService extends BaseService {
     try {
       if (isVisionLink) {
         SingleAssetFaultResponse assetCountResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .getDashboardListDataVL(
-                assetUid, endDateTime, startDateTime, accountSelected.CustomerUID);
+                assetUid, endDateTime, startDateTime, accountSelected!.CustomerUID);
         return assetCountResponse;
       } else {
         Map<String, String> queryMap = Map();
@@ -426,9 +426,9 @@ class FaultService extends BaseService {
           queryMap["endDateTime"] = endDateTime;
         }
         SingleAssetFaultResponse assetCountResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .getDashboardListData(Urls.faultSummary+FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID, Urls.faultPrefix);
+                accountSelected!.CustomerUID, Urls.faultPrefix);
         return assetCountResponse;
       }
     } catch (e) {

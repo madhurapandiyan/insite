@@ -7,12 +7,13 @@ part of 'asset_mileage_settings.dart';
 // **************************************************************************
 
 AssetMileageSettingData _$AssetMileageSettingDataFromJson(
-    Map<String, dynamic> json) {
-  return AssetMileageSettingData(
-    assetUIds: (json['assetUIds'] as List)?.map((e) => e as String)?.toList(),
-    targetValue: (json['targetValue'] as num)?.toDouble(),
-  );
-}
+        Map<String, dynamic> json) =>
+    AssetMileageSettingData(
+      assetUIds: (json['assetUIds'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      targetValue: (json['targetValue'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$AssetMileageSettingDataToJson(
         AssetMileageSettingData instance) =>

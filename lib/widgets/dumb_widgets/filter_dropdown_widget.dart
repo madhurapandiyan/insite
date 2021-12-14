@@ -3,8 +3,8 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class FilterDropDownWidget extends StatefulWidget {
-  final List<FilterData> data;
-  final Function(FilterData) onValueSelected;
+  final List<FilterData>? data;
+  final Function(FilterData?)? onValueSelected;
 
   FilterDropDownWidget({this.data, this.onValueSelected});
 
@@ -13,15 +13,15 @@ class FilterDropDownWidget extends StatefulWidget {
 }
 
 class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
-  List<FilterData> _list = [];
-  List<FilterData> _displayList = [];
-  FilterData dropDownvalue;
+  List<FilterData>? _list = [];
+  List<FilterData>? _displayList = [];
+  FilterData? dropDownvalue;
 
   @override
   void initState() {
     _list = widget.data;
     _displayList = _list;
-    dropDownvalue = _displayList[0];
+    dropDownvalue = _displayList![0];
     super.initState();
   }
 
@@ -31,7 +31,7 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
       width: MediaQuery.of(context).size.width * 0.46,
       height: MediaQuery.of(context).size.height * 0.062,
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
       child: DropdownButton(
@@ -42,13 +42,13 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
             Icons.arrow_drop_down,
             color: Theme.of(context).iconTheme.color,
           ),
-          onChanged: (FilterData value) {
+          onChanged: (FilterData? value) {
             dropDownvalue = value;
-            widget.onValueSelected(value);
+            widget.onValueSelected!(value);
             setState(() {});
           },
           // selectedItemBuilder: (context) {},
-          items: _displayList
+          items: _displayList!
               .map<DropdownMenuItem<FilterData>>((FilterData value) {
             return DropdownMenuItem<FilterData>(
                 value: value,
@@ -69,9 +69,9 @@ class _FilterDropDownWidgetState extends State<FilterDropDownWidget> {
                       width: 4,
                     ),
                     Text(
-                      value.title,
+                      value.title!,
                       style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText1.color,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
                           fontSize: 10.0,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal),

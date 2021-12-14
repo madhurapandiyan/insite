@@ -15,28 +15,28 @@ class AccountSearchViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  var _localStorageService = locator<LocalStorageService>();
+  LocalStorageService? _localStorageService = locator<LocalStorageService>();
   TextEditingController textEditingController = TextEditingController();
-  AccountData selected;
-  List<AccountData> list = [];
-  List<AccountData> displayList = [];
+  AccountData? selected;
+  List<AccountData>? list = [];
+  List<AccountData>? displayList = [];
 
   deSelect() {
-    for (var i = 0; i < displayList.length; i++) {
-      displayList[i].isSelected = false;
+    for (var i = 0; i < displayList!.length; i++) {
+      displayList![i].isSelected = false;
     }
   }
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
-  AccountSearchViewModel(AccountData accountSelected, List<AccountData> data) {
+  AccountSearchViewModel(AccountData? accountSelected, List<AccountData>? data) {
     selected = accountSelected != null ? accountSelected : null;
-    list.clear();
+    list!.clear();
     list = data;
     displayList = list;
-    Logger().i("total list length ${list.length}");
+    Logger().i("total list length ${list!.length}");
     if (selected != null) {
-      Logger().i(selected.value.DisplayName);
+      Logger().i(selected!.value!.DisplayName);
     }
     textEditingController.addListener(() {
       onSearchTextChanged(textEditingController.text);
@@ -45,9 +45,9 @@ class AccountSearchViewModel extends InsiteViewModel {
       notifyListeners();
     });
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -93,13 +93,13 @@ class AccountSearchViewModel extends InsiteViewModel {
       if (text.trim().isNotEmpty) {
         List<AccountData> tempList = [];
         tempList.clear();
-        list.forEach((item) {
-          if (item.value.DisplayName.toLowerCase().contains(text.toLowerCase()))
+        list!.forEach((item) {
+          if (item.value!.DisplayName!.toLowerCase().contains(text.toLowerCase()))
             tempList.add(item);
         });
         displayList = tempList;
-        Logger().i("total list size " + list.length.toString());
-        Logger().i("searched list size " + displayList.length.toString());
+        Logger().i("total list size " + list!.length.toString());
+        Logger().i("searched list size " + displayList!.length.toString());
         notifyListeners();
       } else {
         displayList = list;

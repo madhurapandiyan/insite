@@ -24,9 +24,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
 
   void refreshWithFilter() {
     if (isListSelected) {
-      listViewKey.currentState.onFilterApplied();
+      listViewKey.currentState!.onFilterApplied();
     } else {
-      graphViewKey.currentState.onFilterApplied();
+      graphViewKey.currentState!.onFilterApplied();
     }
   }
 
@@ -34,9 +34,9 @@ class _UtilLizationViewState extends State<UtilLizationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilLizationViewModel>.reactive(
         builder:
-            (BuildContext context, UtilLizationViewModel viewModel, Widget _) {
+            (BuildContext context, UtilLizationViewModel viewModel, Widget? _) {
           return InsiteInheritedDataProvider(
-            count: viewModel.appliedFilters.length,
+            count: viewModel.appliedFilters!.length,
             child: InsiteScaffold(
               screenType: ScreenType.UTILIZATION,
               viewModel: viewModel,

@@ -4,9 +4,9 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_card_asset_transfer.dart';
 
 class MultipleAssetTransferCard extends StatelessWidget {
-  const MultipleAssetTransferCard({Key key, this.transfer}) : super(key: key);
+  const MultipleAssetTransferCard({Key? key, this.transfer}) : super(key: key);
 
-  final Transfer transfer;
+  final Transfer? transfer;
 
   @override
   Widget build(BuildContext context) {

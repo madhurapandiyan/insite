@@ -3,12 +3,12 @@ part 'pagination.g.dart';
 
 @JsonSerializable()
 class Pagination {
-  final int pagination;
-  final int pageNumber;
-  final int pageSize;
-  final double totalCount;
-  final int totalAssets;
-  final int assetsWithoutActiveCoreSubscription;
+  final int? pagination;
+  final int? pageNumber;
+  final int? pageSize;
+  final double? totalCount;
+  final int? totalAssets;
+  final int? assetsWithoutActiveCoreSubscription;
 
   Pagination(
       {this.pageNumber,

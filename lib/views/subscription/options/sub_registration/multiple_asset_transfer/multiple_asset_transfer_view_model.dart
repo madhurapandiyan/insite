@@ -17,14 +17,14 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class MultipleAssetTransferViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   MultipleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
   ReceivePort port = ReceivePort();
 
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   List<Transfer> _assetValues = [];
   List<Transfer> get assetValues => _assetValues;
@@ -40,7 +40,7 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
       final status = await permission.Permission.storage.request();
 
       if (status.isGranted) {
-        Directory baseStorage = await getExternalStorageDirectory();
+        Directory baseStorage = await (getExternalStorageDirectory() as Future<Directory>);
         int initialIndex = baseStorage.path.indexOf("data/");
         String path = baseStorage.path
             .replaceRange(initialIndex, baseStorage.path.length, "excel");
@@ -105,11 +105,11 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
         // notifyListeners();
         // hideLoadingDialog();
       } else {
-        snackbarService.showSnackbar(message: "Permission Denied");
+        snackbarService!.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();
       }
     } catch (e) {
-      snackbarService.showSnackbar(
+      snackbarService!.showSnackbar(
           message: "Permission Denied Only Read Files From External Storage");
       hideLoadingDialog();
     }
@@ -137,10 +137,10 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
     );
     _transferData.add(deviceTransferValues);
 
-    var result = await _subscriptionService.postSingleTransferRegistration(
-        transferData: _transferData);
+    var result = await (_subscriptionService!.postSingleTransferRegistration(
+        transferData: _transferData) as Future<AssetTransferData>);
 
-    final String success = result.status;
+    final String? success = result.status;
 
     notifyListeners();
     return success;

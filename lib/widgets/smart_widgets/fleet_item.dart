@@ -6,15 +6,15 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class FleetListItem extends StatelessWidget {
-  final Fleet fleet;
-  final VoidCallback onCallback;
+  final Fleet? fleet;
+  final VoidCallback? onCallback;
   const FleetListItem({this.fleet, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onCallback();
+        onCallback!();
       },
       child: Card(
         child: Row(
@@ -52,14 +52,14 @@ class FleetListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: fleet.manufacturer + "\n" + fleet.model,
+                          title: fleet!.manufacturer! + "\n" + fleet!.model!,
                           path: fleet == null
                               ? "assets/images/EX210.png"
-                              : Utils().imageData(fleet.model),
+                              : Utils().imageData(fleet!.model!),
                         ),
                         InsiteTableRowItem(
                           title: "Last Known Status",
-                          content: fleet.status,
+                          content: fleet!.status,
                         ),
                       ],
                     ),
@@ -67,9 +67,9 @@ class FleetListItem extends StatelessWidget {
                       children: [
                         InsiteRichText(
                           title: "Serial No. ",
-                          content: fleet.assetSerialNumber,
+                          content: fleet!.assetSerialNumber,
                           onTap: () {
-                            onCallback();
+                            onCallback!();
                           },
                         ),
                         // InsiteTableRowItem(
@@ -78,9 +78,9 @@ class FleetListItem extends StatelessWidget {
                         // ),
                         InsiteTableRowItem(
                           title: "Last Reported Time      ",
-                          content: fleet.lastReportedUTC != null
+                          content: fleet!.lastReportedUTC != null
                               ? Utils.getLastReportedDateOneUTC(
-                                  fleet.lastReportedUTC)
+                                  fleet!.lastReportedUTC)
                               : "",
                         ),
                       ],
@@ -101,15 +101,15 @@ class FleetListItem extends StatelessWidget {
                             //         .toString() +
                             //     "/" +
                             //     fleet.lastReportedLocationLongitude.toString(),
-                            content: fleet.lastReportedLocation != null
-                                ? fleet.lastReportedLocation
+                            content: fleet!.lastReportedLocation != null
+                                ? fleet!.lastReportedLocation
                                 : "-",
                           ),
                           InsiteTableRowItem(
                             title: "Location - Last Reported",
-                            content: fleet.lastReportedUTC != null
+                            content: fleet!.lastReportedUTC != null
                                 ? Utils.getLastReportedDateOneUTC(
-                                    fleet.lastReportedUTC)
+                                    fleet!.lastReportedUTC)
                                 : "-",
                           ),
                           // InsiteTableRowItem(
@@ -130,23 +130,23 @@ class FleetListItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Fuel Level%",
-                          content: fleet.fuelLevelLastReported != null
-                              ? fleet.fuelLevelLastReported.toString()
+                          content: fleet!.fuelLevelLastReported != null
+                              ? fleet!.fuelLevelLastReported.toString()
                               : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Fuel - Last Reported     ",
-                          content: fleet.lastPercentFuelRemainingUTC != null
+                          content: fleet!.lastPercentFuelRemainingUTC != null
                               ? Utils.getLastReportedDateOneUTC(
-                                  fleet.lastPercentFuelRemainingUTC)
+                                  fleet!.lastPercentFuelRemainingUTC)
                               : "-",
                         ),
                       ]),
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Hr Meter",
-                          content: fleet.hourMeter != null
-                              ? fleet.hourMeter.round().toString() + " hrs"
+                          content: fleet!.hourMeter != null
+                              ? fleet!.hourMeter!.round().toString() + " hrs"
                               : "-",
                         ),
                         InsiteTableRowItem(
@@ -172,12 +172,12 @@ class FleetListItem extends StatelessWidget {
                         InsiteTableRowItem(
                           title: "Dealer Name               ",
                           content:
-                              fleet.dealerName != null ? fleet.dealerName : "-",
+                              fleet!.dealerName != null ? fleet!.dealerName : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name            ",
-                          content: fleet.universalCustomerName != null
-                              ? fleet.universalCustomerName
+                          content: fleet!.universalCustomerName != null
+                              ? fleet!.universalCustomerName
                               : "-",
                         )
                         // InsiteTableRowItem(

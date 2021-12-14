@@ -6,22 +6,20 @@ part of 'idle_percent_trend.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-IdlePercentTrend _$IdlePercentTrendFromJson(Map<String, dynamic> json) {
-  return IdlePercentTrend(
-    cumulatives: json['cumulatives'] == null
-        ? null
-        : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
-    intervals: (json['intervals'] as List)
-        ?.map((e) =>
-            e == null ? null : Interval.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pagination: json['pagination'] == null
-        ? null
-        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
-    code: json['code'] as int,
-    message: json['message'] as String,
-  );
-}
+IdlePercentTrend _$IdlePercentTrendFromJson(Map<String, dynamic> json) =>
+    IdlePercentTrend(
+      cumulatives: json['cumulatives'] == null
+          ? null
+          : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
+      intervals: (json['intervals'] as List<dynamic>?)
+          ?.map((e) => Interval.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pagination: json['pagination'] == null
+          ? null
+          : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+      code: json['code'] as int?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$IdlePercentTrendToJson(IdlePercentTrend instance) =>
     <String, dynamic>{
@@ -32,22 +30,21 @@ Map<String, dynamic> _$IdlePercentTrendToJson(IdlePercentTrend instance) =>
       'message': instance.message,
     };
 
-Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) {
-  return Cumulatives(
-    cumulativeIdlePercent: (json['cumulativeIdlePercent'] as num)?.toDouble(),
-    averageIdlePercent: (json['averageIdlePercent'] as num)?.toDouble(),
-    description: json['description'] as String,
-    startDateLocalTime: json['startDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['startDateLocalTime'] as String),
-    endDateLocalTime: json['endDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['endDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    totalDayCount: json['totalDayCount'] as int,
-    intervalType: json['intervalType'] as String,
-  );
-}
+Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) => Cumulatives(
+      cumulativeIdlePercent:
+          (json['cumulativeIdlePercent'] as num?)?.toDouble(),
+      averageIdlePercent: (json['averageIdlePercent'] as num?)?.toDouble(),
+      description: json['description'] as String?,
+      startDateLocalTime: json['startDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['startDateLocalTime'] as String),
+      endDateLocalTime: json['endDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['endDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      totalDayCount: json['totalDayCount'] as int?,
+      intervalType: json['intervalType'] as String?,
+    );
 
 Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
     <String, dynamic>{
@@ -61,21 +58,19 @@ Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
       'intervalType': instance.intervalType,
     };
 
-Interval _$IntervalFromJson(Map<String, dynamic> json) {
-  return Interval(
-    idlePercentage: (json['idlePercentage'] as num)?.toDouble(),
-    idleHours: (json['idleHours'] as num)?.toDouble(),
-    description: json['description'] as String,
-    intervalStartDateLocalTime: json['intervalStartDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['intervalStartDateLocalTime'] as String),
-    intervalEndDateLocalTime: json['intervalEndDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['intervalEndDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    dayCount: json['dayCount'] as int,
-  );
-}
+Interval _$IntervalFromJson(Map<String, dynamic> json) => Interval(
+      idlePercentage: (json['idlePercentage'] as num?)?.toDouble(),
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      description: json['description'] as String?,
+      intervalStartDateLocalTime: json['intervalStartDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['intervalStartDateLocalTime'] as String),
+      intervalEndDateLocalTime: json['intervalEndDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['intervalEndDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      dayCount: json['dayCount'] as int?,
+    );
 
 Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
       'idlePercentage': instance.idlePercentage,
@@ -89,11 +84,9 @@ Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
       'dayCount': instance.dayCount,
     };
 
-Pagination _$PaginationFromJson(Map<String, dynamic> json) {
-  return Pagination(
-    totalCount: json['totalCount'] as int,
-  );
-}
+Pagination _$PaginationFromJson(Map<String, dynamic> json) => Pagination(
+      totalCount: json['totalCount'] as int?,
+    );
 
 Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
     <String, dynamic>{

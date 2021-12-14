@@ -9,8 +9,8 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ReplacementViewModel extends InsiteViewModel {
-  Logger log;
-  final _navigationService = locator<NavigationService>();
+  Logger? log;
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   ReplacementViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -18,10 +18,10 @@ class ReplacementViewModel extends InsiteViewModel {
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.REPLACEMENTSTATUS) {
-      _navigationService.navigateWithTransition(DeviceReplacementStatusView(),
+      _navigationService!.navigateWithTransition(DeviceReplacementStatusView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.DEVICEREPLACEMENT) {
-      _navigationService.navigateWithTransition(DeviceReplacementView(),
+      _navigationService!.navigateWithTransition(DeviceReplacementView(),
           transition: "fade");
     }
   }

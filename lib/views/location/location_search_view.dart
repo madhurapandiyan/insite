@@ -12,10 +12,10 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class LocationSearch extends StatefulWidget {
-  final List<FilterData> data;
-  final FilterType filterType;
-  final Function(List<FilterData>) onApply;
-  final Function onClear;
+  final List<FilterData>? data;
+  final FilterType? filterType;
+  final Function(List<FilterData>)? onApply;
+  final Function? onClear;
   LocationSearch({this.data, this.onApply, this.onClear, this.filterType});
 
   @override
@@ -43,7 +43,7 @@ class _LocationSearchState extends State<LocationSearch> {
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   color: Theme.of(context).backgroundColor,
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               child: Column(
                 children: [
                   Padding(
@@ -55,7 +55,7 @@ class _LocationSearchState extends State<LocationSearch> {
                     ),
                   ),
                   viewModel.filterLocations
-                              .where((element) => element.isSelected)
+                              .where((element) => element.isSelected!)
                               .length >
                           0
                       ? Padding(
@@ -75,8 +75,8 @@ class _LocationSearchState extends State<LocationSearch> {
                               ),
                               InsiteButton(
                                 onTap: () {
-                                  widget.onApply(viewModel.filterLocations
-                                      .where((element) => element.isSelected)
+                                  widget.onApply!(viewModel.filterLocations
+                                      .where((element) => element.isSelected!)
                                       .toList());
                                 },
                                 textColor: Colors.white,
@@ -104,11 +104,11 @@ class _LocationSearchState extends State<LocationSearch> {
                                 return GestureDetector(
                                   onTap: () {
                                     viewModel.filterLocations[index]
-                                        .isSelected = !data.isSelected;
+                                        .isSelected = !data.isSelected!;
                                     setState(() {});
                                   },
                                   child: Container(
-                                    color: data.isSelected
+                                    color: data.isSelected!
                                         ? Theme.of(context).buttonColor
                                         : Theme.of(context).backgroundColor,
                                     padding: EdgeInsets.symmetric(
@@ -118,17 +118,17 @@ class _LocationSearchState extends State<LocationSearch> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         InsiteText(
-                                            text: data.count.isNotEmpty
+                                            text: data.count!.isNotEmpty
                                                 ? "(${data.count}) "
                                                 : "",
                                             color:
-                                                data.isSelected ? white : null,
+                                                data.isSelected! ? white : null,
                                             fontWeight: FontWeight.bold,
                                             size: 16),
                                         Expanded(
                                           child: InsiteText(
                                               text: data.title,
-                                              color: data.isSelected
+                                              color: data.isSelected!
                                                   ? white
                                                   : null,
                                               fontWeight: FontWeight.bold,

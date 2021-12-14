@@ -20,13 +20,13 @@ class IndiaStackSplashView extends StatefulWidget {
 class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
+  late StreamSubscription _onDestroy;
+  late StreamSubscription<String> _onUrlChanged;
+  late StreamSubscription<WebViewStateChanged> _onStateChanged;
+  String? token;
 
-  final _loginService = locator<LoginService>();
-  final _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
+  final LocalService? _localService = locator<LocalService>();
 
   @override
   void dispose() {
@@ -43,7 +43,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   bool receivedToken = false;
   String codeVerifier = randomAlphaNumeric(43);
   String state = randomAlphaNumeric(43);
-  String codeChallenge;
+  String? codeChallenge;
 
   @override
   void initState() {
@@ -82,15 +82,15 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     // flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
-    _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("IndiaStackSplashView destroy");
-    });
+    // _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+    //   print("IndiaStackSplashView destroy");
+    // } as void Function(Null)?);
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print(
           "IndiaStackSplashView STATE onStateChanged: ${state.type} ${state.url}");
-      if (state.url != null &&
+      if (state.url.isEmpty &&
           state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
         print("IndiaStackSplashView STATE changed with auth code: $state.url");
         try {
@@ -132,7 +132,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("IndiaStackSplashView URL changed: $url");
-        if (url != null && url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
+        if (url.isEmpty && url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
@@ -172,27 +172,27 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   }
 
   getLoginDataV4(code) async {
-    // Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
-    // codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    // LoginResponse result =
-    //     await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
-    // if (result != null) {
-    //   await _localService.saveTokenInfo(result);
-    //   await _loginService.saveToken(
-    //       result.access_token, result.expires_in.toString(), false);
-    // }
+    Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    LoginResponse? result =
+        await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
+    if (result != null) {
+      await _localService!.saveTokenInfo(result);
+      await _loginService!.saveToken(
+          result.access_token, result.expires_in.toString(), false);
+    }
   }
 
   saveToken(token, String expiryTime) {
-    // Logger().i("IndiaStackSplashView saveToken from webview");
-    // _loginService.getUser(token, false);
-    // _loginService.saveExpiryTime(expiryTime);
+    Logger().i("IndiaStackSplashView saveToken from webview");
+    _loginService!.getUser(token, false);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SplashViewModel>.reactive(
-      builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
+      builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return Scaffold(
           backgroundColor: Theme.of(context).buttonColor,

@@ -6,38 +6,33 @@ part of 'search_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SearchModel _$SearchModelFromJson(Map<String, dynamic> json) {
-  return SearchModel(
-    Err: json['Err'] as num,
-    Locations: (json['Locations'] as List)
-        ?.map((e) =>
-            e == null ? null : Location.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+SearchModel _$SearchModelFromJson(Map<String, dynamic> json) => SearchModel(
+      Err: json['Err'] as num?,
+      Locations: (json['Locations'] as List<dynamic>?)
+          ?.map((e) => Location.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$SearchModelToJson(SearchModel instance) =>
     <String, dynamic>{
       'Err': instance.Err,
-      'Locations': instance.Locations?.map((e) => e?.toJson())?.toList(),
+      'Locations': instance.Locations?.map((e) => e.toJson()).toList(),
     };
 
-Location _$LocationFromJson(Map<String, dynamic> json) {
-  return Location(
-    Address: json['Address'] == null
-        ? null
-        : AddressLocation.fromJson(json['Address'] as Map<String, dynamic>),
-    Coords: json['Coords'] == null
-        ? null
-        : Coordinate.fromJson(json['Coords'] as Map<String, dynamic>),
-    Region: json['Region'] as int,
-    POITypeID: json['POITypeID'] as int,
-    PersistentPOIID: json['PersistentPOIID'] as int,
-    SiteID: json['SiteID'] as int,
-    ResultType: json['ResultType'] as int,
-    ShortString: json['ShortString'] as String,
-  );
-}
+Location _$LocationFromJson(Map<String, dynamic> json) => Location(
+      Address: json['Address'] == null
+          ? null
+          : AddressLocation.fromJson(json['Address'] as Map<String, dynamic>),
+      Coords: json['Coords'] == null
+          ? null
+          : Coordinate.fromJson(json['Coords'] as Map<String, dynamic>),
+      Region: json['Region'] as int?,
+      POITypeID: json['POITypeID'] as int?,
+      PersistentPOIID: json['PersistentPOIID'] as int?,
+      SiteID: json['SiteID'] as int?,
+      ResultType: json['ResultType'] as int?,
+      ShortString: json['ShortString'] as String?,
+    );
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'Address': instance.Address?.toJson(),
@@ -50,19 +45,18 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
       'ShortString': instance.ShortString,
     };
 
-AddressLocation _$AddressLocationFromJson(Map<String, dynamic> json) {
-  return AddressLocation(
-    StreetAddress: json['StreetAddress'] as String,
-    City: json['City'] as String,
-    State: json['State'] as String,
-    StateName: json['StateName'] as String,
-    Zip: json['Zip'] as String,
-    County: json['County'] as String,
-    Country: json['Country'] as String,
-    CountryFullName: json['CountryFullName'] as String,
-    SPLC: json['SPLC'] as String,
-  );
-}
+AddressLocation _$AddressLocationFromJson(Map<String, dynamic> json) =>
+    AddressLocation(
+      StreetAddress: json['StreetAddress'] as String?,
+      City: json['City'] as String?,
+      State: json['State'] as String?,
+      StateName: json['StateName'] as String?,
+      Zip: json['Zip'] as String?,
+      County: json['County'] as String?,
+      Country: json['Country'] as String?,
+      CountryFullName: json['CountryFullName'] as String?,
+      SPLC: json['SPLC'] as String?,
+    );
 
 Map<String, dynamic> _$AddressLocationToJson(AddressLocation instance) =>
     <String, dynamic>{
@@ -77,12 +71,10 @@ Map<String, dynamic> _$AddressLocationToJson(AddressLocation instance) =>
       'SPLC': instance.SPLC,
     };
 
-Coordinate _$CoordinateFromJson(Map<String, dynamic> json) {
-  return Coordinate(
-    Lat: json['Lat'] as String,
-    Lon: json['Lon'] as String,
-  );
-}
+Coordinate _$CoordinateFromJson(Map<String, dynamic> json) => Coordinate(
+      Lat: json['Lat'] as String?,
+      Lon: json['Lon'] as String?,
+    );
 
 Map<String, dynamic> _$CoordinateToJson(Coordinate instance) =>
     <String, dynamic>{

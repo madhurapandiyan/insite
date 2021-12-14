@@ -1,7 +1,7 @@
 import 'enums.dart';
 
 class DateUtil {
-  static DateTime calcFromDate(DateRangeType defaultDateRange) {
+  static DateTime? calcFromDate(DateRangeType defaultDateRange) {
     switch (defaultDateRange) {
       case DateRangeType.today:
         return DateTime.now();

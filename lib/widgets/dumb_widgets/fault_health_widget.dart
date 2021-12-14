@@ -7,14 +7,14 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultWidget extends StatefulWidget {
-  final Count data;
-  final ScreenType screenType;
+  final Count? data;
+  final ScreenType? screenType;
   //final String containerText;
-  final String level;
+  final String? level;
   //final String buttonText;
-  final Color buttonColor;
-  final VoidCallback onSelected;
-  final bool showAssetCount;
+  final Color? buttonColor;
+  final VoidCallback? onSelected;
+  final bool? showAssetCount;
   FaultWidget(
       {this.data,
       this.level,
@@ -33,22 +33,22 @@ class _FaultWidgetState extends State<FaultWidget> {
     return Column(children: [
       GestureDetector(
         onTap: () {
-          widget.onSelected();
+          widget.onSelected!();
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: [
-              widget.showAssetCount
+              widget.showAssetCount!
                   ? InsiteButton(
                       textColor: Colors.white,
                       padding: EdgeInsets.all(4),
-                      title: widget.data.assetCount.toString(),
+                      title: widget.data!.assetCount.toString(),
                       width: 51,
                       height: 27,
                     )
                   : Container(),
-              widget.showAssetCount
+              widget.showAssetCount!
                   ? SizedBox(
                       width: 20,
                     )
@@ -65,7 +65,7 @@ class _FaultWidgetState extends State<FaultWidget> {
               InsiteButton(
                 bgColor: widget.buttonColor,
                 padding: EdgeInsets.all(4),
-                title: widget.data.faultCount.toString(),
+                title: widget.data!.faultCount.toString(),
                 textColor: darkGrey,
                 width: 61,
                 height: 28,

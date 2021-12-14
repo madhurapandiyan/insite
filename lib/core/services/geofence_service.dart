@@ -13,58 +13,58 @@ import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart'
 import 'package:logger/logger.dart';
 
 class Geofenceservice extends BaseService {
-  final _localService = locator<LocalService>();
-  Customer accountSelected;
-  Customer customerSelected;
+  final LocalService? _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
   Future<Geofence> getGeofenceData() async {
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
       Geofence Data = await MyApi()
-          .getClientSeven()
-          .getGeofenceDataVL(Urls.postPayLoad, customer.CustomerUID);
+          .getClientSeven()!
+          .getGeofenceDataVL(Urls.postPayLoad, customer!.CustomerUID);
       return Data;
     } else {
-      Geofence Data = await MyApi().getClient().getGeofenceData(
-          Urls.getGeofenceData, customer.CustomerUID, "in-geofence-gfapi");
+      Geofence Data = await MyApi().getClient()!.getGeofenceData(
+          Urls.getGeofenceData, customer!.CustomerUID, "in-geofence-gfapi");
       return Data;
     }
   }
 
   Future<Materialmodel> getMaterialModelData() async {
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
       Materialmodel data = await MyApi()
-          .getClientSeven()
-          .getMaterialModel(Urls.getMaterialData, customer.CustomerUID);
+          .getClientSeven()!
+          .getMaterialModel(Urls.getMaterialData, customer!.CustomerUID);
       return data;
     } else {
       Materialmodel data = await MyApi()
-          .getClientSeven()
-          .getMaterialModel(Urls.getMaterialData, customer.CustomerUID);
+          .getClientSeven()!
+          .getMaterialModel(Urls.getMaterialData, customer!.CustomerUID);
       return data;
     }
   }
 
   Future<dynamic> postGeofenceData(Geofencepayload payload) async {
     Logger().d(payload.toJson());
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
-      dynamic data = await MyApi().getClientSeven().postGeofencePayLoadVL(
-          Urls.postPayLoad, customer.CustomerUID, payload);
+      dynamic data = await MyApi().getClientSeven()!.postGeofencePayLoadVL(
+          Urls.postPayLoad, customer!.CustomerUID, payload);
     } else {
-      dynamic data = await MyApi().getClient().postGeofencePayLoad(
+      dynamic data = await MyApi().getClient()!.postGeofencePayLoad(
           Urls.getGeofenceData,
-          customer.CustomerUID,
+          customer!.CustomerUID,
           payload,
           "in-geofence-gfapi");
     }
@@ -72,14 +72,14 @@ class Geofenceservice extends BaseService {
 
   Future<dynamic> putGeofenceData(Geofencepayload payload) async {
     Logger().d(payload.toJson());
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
-      dynamic data = await MyApi().getClientSeven().putGeofencePayLoadVL(
-          Urls.postPayLoad, customer.CustomerUID, payload);
+      dynamic data = await MyApi().getClientSeven()!.putGeofencePayLoadVL(
+          Urls.postPayLoad, customer!.CustomerUID, payload);
     } else {
-      dynamic data = await MyApi().getClient().putGeofencePayLoad(
+      dynamic data = await MyApi().getClient()!.putGeofencePayLoad(
           Urls.getGeofenceData,
-          customer.CustomerUID,
+          customer!.CustomerUID,
           payload,
           "in-geofence-gfapi");
     }
@@ -87,11 +87,11 @@ class Geofenceservice extends BaseService {
 
   Future<dynamic> putGeofenceDataWithMaterial(
       GeofenceModelWithMaterialData payload) async {
-    Logger().d(payload.Input.toJson());
-    Customer customer = await _localService.getAccountInfo();
+    Logger().d(payload.Input!.toJson());
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
-      dynamic data = await MyApi().getClientSeven().putGeofenceAnotherData(
-          Urls.withMaterialData, customer.CustomerUID, payload);
+      dynamic data = await MyApi().getClientSeven()!.putGeofenceAnotherData(
+          Urls.withMaterialData, customer!.CustomerUID, payload);
     } else {
       // dynamic data = await MyApi().getClient().postGeofencePayLoad(
       //     Urls.getGeofenceData,
@@ -104,35 +104,35 @@ class Geofenceservice extends BaseService {
   Future<dynamic> postAddGeofenceData(Addgeofencemodel payload) async {
     print(payload.toJson());
     Logger().d(payload.toJson());
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
-      var data = await MyApi().getClientSeven().postGeofenceAnotherData(
-          Urls.withMaterialData, customer.CustomerUID, payload);
+      var data = await MyApi().getClientSeven()!.postGeofenceAnotherData(
+          Urls.withMaterialData, customer!.CustomerUID, payload);
     } else {
-      var data = await MyApi().getClientSeven().postGeofenceAnotherData(
-          Urls.withMaterialData, customer.CustomerUID, payload);
+      var data = await MyApi().getClientSeven()!.postGeofenceAnotherData(
+          Urls.withMaterialData, customer!.CustomerUID, payload);
     }
   }
 
   Future<void> deleteGeofence(geofenceUID, actionUTC) async {
     try {
       Map<String, String> queryMap = Map();
-      Customer customer = await _localService.getAccountInfo();
+      Customer? customer = await _localService!.getAccountInfo();
       if (isVisionLink) {
         queryMap["geofenceuid"] = geofenceUID.toString();
         queryMap["actionutc"] = actionUTC.toString();
         Logger().d(queryMap);
         Logger()
             .d(Urls.postPayLoad + FilterUtils.constructQueryFromMap(queryMap));
-        var data = MyApi().getClientSeven().deleteGeofenceVL(
+        var data = MyApi().getClientSeven()!.deleteGeofenceVL(
             Urls.postPayLoad + FilterUtils.constructQueryFromMap(queryMap),
-            customer.CustomerUID);
+            customer!.CustomerUID);
       } else {
         queryMap["geofenceuid"] = geofenceUID.toString();
         queryMap["actionutc"] = actionUTC.toString();
-        var data = MyApi().getClient().deleteGeofence(
+        var data = MyApi().getClient()!.deleteGeofence(
             Urls.getGeofenceData + FilterUtils.constructQueryFromMap(queryMap),
-            customer.CustomerUID,
+            customer!.CustomerUID,
             "in-geofence-gfapi");
       }
     } catch (e) {
@@ -140,46 +140,46 @@ class Geofenceservice extends BaseService {
     }
   }
 
-  Future<Geofencemodeldata> getSingleGeofenceData(String uid) async {
-    Customer customer = await _localService.getAccountInfo();
+  Future<Geofencemodeldata> getSingleGeofenceData(String? uid) async {
+    Customer? customer = await _localService!.getAccountInfo();
     Geofencemodeldata data;
     if (isVisionLink) {
-      data = await MyApi().getClientSeven().getSingleGeofenceVL(
-          Urls.postPayLoad + "/" + uid, customer.CustomerUID);
+      data = await MyApi().getClientSeven()!.getSingleGeofenceVL(
+          Urls.postPayLoad + "/" + uid!, customer!.CustomerUID);
     } else {
-      data = await MyApi().getClient().getSingleGeofence(
-          Urls.getGeofenceData + "/" + uid,
-          customer.CustomerUID,
+      data = await MyApi().getClient()!.getSingleGeofence(
+          Urls.getGeofenceData + "/" + uid!,
+          customer!.CustomerUID,
           "in-geofence-gfapi");
     }
     return data;
   }
 
-  Future<GetAddgeofenceModel> getGeofenceInput(String uid) async {
-    Customer customer = await _localService.getAccountInfo();
-    GetAddgeofenceModel geofenceInputsData;
+  Future<GetAddgeofenceModel> getGeofenceInput(String? uid) async {
+    Customer? customer = await _localService!.getAccountInfo();
+    GetAddgeofenceModel? geofenceInputsData;
     if (isVisionLink) {
-      geofenceInputsData = await MyApi().getClientSeven().getGeofenceInputData(
-          Urls.getGeofenceInputsUrl + uid + "/asgeofence",
-          customer.CustomerUID);
-      return geofenceInputsData;
+      geofenceInputsData = await MyApi().getClientSeven()!.getGeofenceInputData(
+          Urls.getGeofenceInputsUrl + uid! + "/asgeofence",
+          customer!.CustomerUID);
     }
+    return geofenceInputsData!;
   }
 
   Future<Null> markFavourite(String uid, String favToggle) async {
-    Customer customer = await _localService.getAccountInfo();
+    Customer? customer = await _localService!.getAccountInfo();
     String querryUrlVL = "geofenceUID=$uid";
     String querryUrl = "geofenceUIDs=$uid";
     Logger().w(favToggle);
 
     if (isVisionLink) {
-      var data = await MyApi().getClientSeven().markFavouriteVL(
+      var data = await MyApi().getClientSeven()!.markFavouriteVL(
           Urls.postPayLoad + "/" + favToggle + querryUrlVL,
-          customer.CustomerUID);
+          customer!.CustomerUID);
     } else {
-      var data = await MyApi().getClient().markFavourite(
+      var data = await MyApi().getClient()!.markFavourite(
           Urls.getGeofenceData + "/" + favToggle + querryUrl,
-          customer.CustomerUID,
+          customer!.CustomerUID,
           "in-geofence-gfapi");
     }
   }

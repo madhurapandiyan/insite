@@ -10,12 +10,12 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class GlobalSearchViewModel extends InsiteViewModel {
-  Logger log;
-  var _searchService = locator<SearchService>();
-  var _navigationService = locator<NavigationService>();
+  Logger? log;
+  SearchService? _searchService = locator<SearchService>();
+  NavigationService? _navigationService = locator<NavigationService>();
 
-  SearchData _searchData;
-  SearchData get searchData => _searchData;
+  SearchData? _searchData;
+  SearchData? get searchData => _searchData;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -27,12 +27,12 @@ class GlobalSearchViewModel extends InsiteViewModel {
 
   GlobalSearchViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _searchService.setUp();
+    _searchService!.setUp();
   }
 
   getSearchResult(type) async {
-    SearchData result =
-        await _searchService.getSearchResult(_searchKeyword, type);
+    SearchData? result =
+        await _searchService!.getSearchResult(_searchKeyword, type);
     if (result != null) {
       _searchData = result;
     } else {
@@ -49,7 +49,7 @@ class GlobalSearchViewModel extends InsiteViewModel {
 
   onDetailPageSelected(TopMatch fleet) {
     Logger().d("message $fleet");
-    _navigationService.navigateTo(assetDetailViewRoute,
+    _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
             index: 0,
             fleet: Fleet(

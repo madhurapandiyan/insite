@@ -5,15 +5,15 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class RangeSelectionWidget extends StatefulWidget {
   final String label1;
   final String label2;
-  final String label3;
+  final String? label3;
   final Function rangeChoice;
 
   const RangeSelectionWidget({
-    Key key,
-    @required this.label1,
-    @required this.label2,
-    @required this.label3,
-    @required this.rangeChoice,
+    Key? key,
+    required this.label1,
+    required this.label2,
+    required this.label3,
+    required this.rangeChoice,
   }) : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color!),
                   color: rangeChoice == 1
                       ? Theme.of(context).buttonColor
                       : Theme.of(context).backgroundColor,
@@ -60,7 +60,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     text: widget.label1.toUpperCase(),
                     color: rangeChoice == 1
                         ? white
-                        : Theme.of(context).textTheme.bodyText1.color,
+                        : Theme.of(context).textTheme.bodyText1!.color,
                     size: 8,
                     fontWeight: FontWeight.bold,
                   ),
@@ -79,7 +79,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color!),
                   color: rangeChoice == 2
                       ? Theme.of(context).buttonColor
                       : Theme.of(context).backgroundColor,
@@ -95,7 +95,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                     text: widget.label2.toUpperCase(),
                     color: rangeChoice == 2
                         ? white
-                        : Theme.of(context).textTheme.bodyText1.color,
+                        : Theme.of(context).textTheme.bodyText1!.color,
                     size: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -119,7 +119,7 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                             ? Theme.of(context).buttonColor
                             : Theme.of(context).backgroundColor,
                         border: Border.all(
-                            color: Theme.of(context).textTheme.bodyText1.color),
+                            color: Theme.of(context).textTheme.bodyText1!.color!),
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(4),
                           topRight: Radius.circular(4),
@@ -127,10 +127,10 @@ class _RangeSelectionWidgetState extends State<RangeSelectionWidget> {
                       ),
                       child: Center(
                         child: InsiteText(
-                          text: widget.label3.toUpperCase(),
+                          text: widget.label3!.toUpperCase(),
                           color: rangeChoice == 3
                               ? white
-                              : Theme.of(context).textTheme.bodyText1.color,
+                              : Theme.of(context).textTheme.bodyText1!.color,
                           size: 10,
                           fontWeight: FontWeight.bold,
                         ),

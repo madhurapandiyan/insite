@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SmsManagementViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   SmsManagementViewModel() {
     this.log = getLogger(this.runtimeType.toString());

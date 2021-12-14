@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 
 class InsiteInheritedDataProvider extends InheritedWidget {
-  final int count;
+  final int? count;
   InsiteInheritedDataProvider({
-    Widget child,
+    required Widget child,
     this.count,
   }) : super(child: child);
   @override
@@ -12,6 +12,6 @@ class InsiteInheritedDataProvider extends InheritedWidget {
     return count != oldWidget.count;
   }
 
-  static InsiteInheritedDataProvider of(BuildContext context) =>
+  static InsiteInheritedDataProvider? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InsiteInheritedDataProvider>();
 }

@@ -13,7 +13,7 @@ import 'package:stacked/stacked.dart';
 import 'health_list_view_model.dart';
 
 class HealthListView extends StatefulWidget {
-  final AssetDetail detail;
+  final AssetDetail? detail;
   HealthListView({this.detail});
 
   @override
@@ -21,17 +21,17 @@ class HealthListView extends StatefulWidget {
 }
 
 class _HealthListViewState extends State<HealthListView> {
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthListViewModel>.reactive(
-      builder: (BuildContext context, HealthListViewModel viewModel, Widget _) {
+      builder: (BuildContext context, HealthListViewModel viewModel, Widget? _) {
         return Container(
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border.all(
-                color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
+                color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Stack(
@@ -60,7 +60,7 @@ class _HealthListViewState extends State<HealthListView> {
                           width: 90,
                           bgColor: Theme.of(context).backgroundColor,
                           textColor:
-                              Theme.of(context).textTheme.bodyText1.color,
+                              Theme.of(context).textTheme.bodyText1!.color,
                           onTap: () async {
                             dateRange = [];
                             dateRange = await showDialog(
@@ -69,7 +69,7 @@ class _HealthListViewState extends State<HealthListView> {
                                   backgroundColor: transparent,
                                   child: DateRangeView()),
                             );
-                            if (dateRange != null && dateRange.isNotEmpty) {
+                            if (dateRange != null && dateRange!.isNotEmpty) {
                               viewModel.refresh();
                             }
                           },

@@ -5,8 +5,8 @@ part 'addgeofencemodel.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Addgeofencemodel {
-  final List<Geofenceinputs> Inputs;
-  final ValidationConstraintgeofence ValidationConstraint;
+  final List<Geofenceinputs>? Inputs;
+  final ValidationConstraintgeofence? ValidationConstraint;
   Addgeofencemodel({this.Inputs, this.ValidationConstraint});
   factory Addgeofencemodel.fromJson(Map<String, dynamic> json) =>
       _$AddgeofencemodelFromJson(json);
@@ -15,10 +15,10 @@ class Addgeofencemodel {
 
 @JsonSerializable(explicitToJson: true)
 class Geofenceinputs {
-  final Geofencepayload GeofenceInput;
-  final TargetData TargetInput;
-  final Backfill BackfillInput;
-  final Materials Material;
+  final Geofencepayload? GeofenceInput;
+  final TargetData? TargetInput;
+  final Backfill? BackfillInput;
+  final Materials? Material;
   Geofenceinputs(
       {this.GeofenceInput,
       this.TargetInput,
@@ -31,7 +31,7 @@ class Geofenceinputs {
 
 @JsonSerializable()
 class Backfill {
-  final String BackfillDate;
+  final String? BackfillDate;
   Backfill({this.BackfillDate});
   factory Backfill.fromJson(Map<String, dynamic> json) =>
       _$BackfillFromJson(json);
@@ -40,7 +40,7 @@ class Backfill {
 
 @JsonSerializable()
 class Materials {
-  final String MaterialUID;
+  final String? MaterialUID;
   Materials({this.MaterialUID});
   factory Materials.fromJson(Map<String, dynamic> json) =>
       _$MaterialsFromJson(json);
@@ -49,7 +49,7 @@ class Materials {
 
 @JsonSerializable()
 class ValidationConstraintgeofence {
-  final String ValidationConstraint;
+  final String? ValidationConstraint;
   ValidationConstraintgeofence({this.ValidationConstraint});
   factory ValidationConstraintgeofence.fromJson(Map<String, dynamic> json) =>
       _$ValidationConstraintgeofenceFromJson(json);
@@ -58,9 +58,9 @@ class ValidationConstraintgeofence {
 
 @JsonSerializable(explicitToJson: true)
 class GetAddgeofenceModel {
-  final ResultData Result;
-  final int Code;
-  final String Message;
+  final ResultData? Result;
+  final int? Code;
+  final String? Message;
   GetAddgeofenceModel({this.Result, this.Code, this.Message});
   factory GetAddgeofenceModel.fromJson(Map<String, dynamic> json) =>
       _$GetAddgeofenceModelFromJson(json);
@@ -69,10 +69,10 @@ class GetAddgeofenceModel {
 
 @JsonSerializable(explicitToJson: true)
 class ResultData {
-  final Geofencepayload Geofence;
-  final TargetData Target;
-  final Backfill BackfillDate;
-  final Materials MaterialData;
+  final Geofencepayload? Geofence;
+  final TargetData? Target;
+  final Backfill? BackfillDate;
+  final Materials? MaterialData;
   ResultData(
       {this.BackfillDate, this.Geofence, this.MaterialData, this.Target});
   factory ResultData.fromJson(Map<String, dynamic> json) =>
@@ -82,7 +82,7 @@ class ResultData {
 
 @JsonSerializable()
 class TargetData {
-  final double TargetVolumeInCuMeter;
+  final double? TargetVolumeInCuMeter;
   TargetData({this.TargetVolumeInCuMeter});
   factory TargetData.fromJson(Map<String, dynamic> json) =>
       _$TargetDataFromJson(json);
@@ -91,8 +91,8 @@ class TargetData {
 
 @JsonSerializable()
 class GeofenceModelWithMaterialData {
-  final Geofenceinputs Input;
-  final String GeofenceUID;
+  final Geofenceinputs? Input;
+  final String? GeofenceUID;
   GeofenceModelWithMaterialData({this.Input,this.GeofenceUID});
   factory GeofenceModelWithMaterialData.fromJson(Map<String, dynamic> json) =>
       _$GeofenceModelWithMaterialDataFromJson(json);

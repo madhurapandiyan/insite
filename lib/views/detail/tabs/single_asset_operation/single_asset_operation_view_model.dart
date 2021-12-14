@@ -10,39 +10,39 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SingleAssetOperationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _singleAssetOperationService = locator<SingleAssetOperationService>();
+  SingleAssetOperationService? _singleAssetOperationService = locator<SingleAssetOperationService>();
 
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
-  List<DateTime> _assetOperationDates = [];
-  List<DateTime> get assetOperationDates => _assetOperationDates;
+  List<DateTime?> _assetOperationDates = [];
+  List<DateTime?> get assetOperationDates => _assetOperationDates;
 
   List<SingleAssetOperationChartData> _chartData = [];
   List<SingleAssetOperationChartData> get chartData => _chartData;
 
-  DateTime _minDate;
-  DateTime get minDate => _minDate;
+  DateTime? _minDate;
+  DateTime? get minDate => _minDate;
 
-  DateTime _maxDate;
-  DateTime get maxDate => _maxDate;
+  DateTime? _maxDate;
+  DateTime? get maxDate => _maxDate;
 
   bool _loading = true;
   bool get loading => _loading;
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  SingleAssetOperation _singleAssetOperation;
-  SingleAssetOperation get singleAssetOperation => _singleAssetOperation;
+  SingleAssetOperation? _singleAssetOperation;
+  SingleAssetOperation? get singleAssetOperation => _singleAssetOperation;
 
   List<DateTime> days = [];
 
   updateDateRangeList() {
     try {
-      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate);
-      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate);
+      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate!);
+      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate!);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;
       days = List.generate(
           daysToGenerate,
@@ -54,11 +54,11 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     }
   }
 
-  SingleAssetOperationViewModel(AssetDetail detail) {
+  SingleAssetOperationViewModel(AssetDetail? detail) {
     this._assetDetail = detail;
     setUp();
     this.log = getLogger(this.runtimeType.toString());
-    _singleAssetOperationService.setUp();
+    _singleAssetOperationService!.setUp();
     updateDateRangeList();
     Future.delayed(Duration(seconds: 1), () {
       getSingleAssetOperation();
@@ -69,9 +69,9 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
 
   getSingleAssetOperation() async {
     await getDateRangeFilterData();
-    Logger().d("single asset operation " + _assetDetail.assetUid);
-    SingleAssetOperation result = await _singleAssetOperationService
-        .getSingleAssetOperation(startDate, endDate, _assetDetail.assetUid);
+    Logger().d("single asset operation " + _assetDetail!.assetUid!);
+    SingleAssetOperation? result = await _singleAssetOperationService!
+        .getSingleAssetOperation(startDate, endDate, _assetDetail!.assetUid);
     _singleAssetOperation = result;
     if (_singleAssetOperation != null) setRequiredDates();
     _loading = false;
@@ -83,9 +83,9 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     updateDateRangeList();
     _refreshing = true;
     notifyListeners();
-    Logger().d("single asset operation " + _assetDetail.assetUid);
-    SingleAssetOperation result = await _singleAssetOperationService
-        .getSingleAssetOperation(startDate, endDate, _assetDetail.assetUid);
+    Logger().d("single asset operation " + _assetDetail!.assetUid!);
+    SingleAssetOperation? result = await _singleAssetOperationService!
+        .getSingleAssetOperation(startDate, endDate, _assetDetail!.assetUid);
     _singleAssetOperation = result;
     if (_singleAssetOperation != null) setRequiredDates();
     _loading = false;
@@ -95,9 +95,9 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
 
   setRequiredDates() {
     _chartData.clear();
-    for (Asset asset in _singleAssetOperation.assetOperations.assets) {
-      for (AssetLocalDate assetLocalDate in asset.assetLocalDates) {
-        for (Segment segment in assetLocalDate.segments) {
+    for (Asset asset in _singleAssetOperation!.assetOperations!.assets!) {
+      for (AssetLocalDate assetLocalDate in asset.assetLocalDates!) {
+        for (Segment segment in assetLocalDate.segments!) {
           _assetOperationDates.add(segment.startTimeUtc);
           _assetOperationDates.add(segment.endTimeUtc);
           Logger().d(

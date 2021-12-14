@@ -75,6 +75,8 @@ import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
+part 'Retrofit.g.dart';
+
 //part 'Retrofit.g.dart';
 
 // RUN THIS TO GENERATE FILES
@@ -97,21 +99,21 @@ import 'package:insite/core/models/asset_mileage_settings.dart';
   baseUrl: "https://cloud.api.trimble.com/CTSPulseIndiastg",
 )
 abstract class RestClient {
-  //factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
-  // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
+  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+ // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
-  // @GET("/tasks")
-  // Future<List<Sample>> getTasks();
+  @GET("/tasks")
+  Future<List<Sample>> getTasks();
 
-  // @GET("/userinfo?schema=openid")
-  // Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
-  //     @Header("Authorization") String authorization);
+  @GET("/userinfo?schema=openid")
+  Future<UserInfo> getUserInfo(@Header("content-type") String? contentType,
+      @Header("Authorization") String? authorization);
 
-  // @POST("/oauth/userinfo")
-  // Future<UserInfo> getUserInfoV4(
-  //     @Header("content-type") String contentType,
-  //     @Header("Authorization") String authorization,
-  //     @Body() AccessToken accessToken);
+  @POST("/oauth/userinfo")
+  Future<UserInfo> getUserInfoV4(
+      @Header("content-type") String contentType,
+      @Header("Authorization") String authorization,
+      @Body() AccessToken accessToken);
 
   @GET(
       "/t/trimble.com/authorization/1.0.0/users/{user_guid}/organizations/{customerId}/permissions")
@@ -127,8 +129,8 @@ abstract class RestClient {
       "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
   Future<PermissionResponse> getPermissionVL(
       @Query("limit") int limit,
-      @Query("provider_id") String provider_id,
-      @Path() String customerId,
+      @Query("provider_id") String? provider_id,
+      @Path() String? customerId,
       @Header("X-VisionLink-CustomerUid") xVisonLinkCustomerId);
 
   @GET('{url}')
@@ -205,12 +207,12 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetDetail> assetDetail(
       @Path() String url,
-      @Query("assetUID") String assetUID,
+      @Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
-  Future<AssetDetail> assetDetailVL(@Query("assetUID") String assetUID,
+  Future<AssetDetail> assetDetailVL(@Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
@@ -231,7 +233,7 @@ abstract class RestClient {
   );
 
   @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/")
-  Future<List<Note>> getAssetNotesVL(@Query("assetUID") String assetUID,
+  Future<List<Note>> getAssetNotesVL(@Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @POST('{url}')
@@ -548,14 +550,14 @@ abstract class RestClient {
   @GET('{url}')
   Future<HealthListResponse> assetViewLocationSummaryURL(
       @Path() String url,
-      @Query("assetUid") String assetUid,
+      @Query("assetUid") String? assetUid,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET('{url}')
   Future<HealthListResponse> assetViewLocationSummaryURLVL(
       @Path() String url,
-      @Query("assetUid") String assetUid,
+      @Query("assetUid") String? assetUid,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
@@ -566,7 +568,7 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-service/1.0/health/FaultDetails/v1")
   Future<HealthListResponse> getHealthListDataVL(
-    @Query("assetUid") String assetUid,
+    @Query("assetUid") String? assetUid,
     @Query("endDateTime") String endDateTime,
     @Query("langDesc") String langDesc,
     @Query("limit") int limit,
@@ -583,7 +585,7 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-service/1.0/health/faultSummary/v1")
   Future<SingleAssetFaultResponse> getDashboardListDataVL(
-    @Query("assetUid") String assetUid,
+    @Query("assetUid") String? assetUid,
     @Query("endDateTime") String endDate,
     @Query("startDateTime") String startDate,
     @Header("x-visionlink-customeruid") customerId,
@@ -758,33 +760,33 @@ abstract class RestClient {
   @POST('{url}')
   Future<dynamic> postGeofenceAnotherData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Addgeofencemodel geofencepayload);
 
   @PUT('{url}')
   Future<dynamic> putGeofenceAnotherData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() GeofenceModelWithMaterialData geofencepayload);
 
   @GET("{url}")
   Future<Materialmodel> getMaterialModel(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoadVL(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Geofencepayload geofencepayload);
 
-  // @POST("{url}")
-  // Future<AuthenticatedUser> authenticateUser(
-  //     @Path() String url, @Body() AuthenticatePayload authenticatePayload);
+  @POST("{url}")
+  Future<AuthenticatedUser> authenticateUser(
+      @Path() String url, @Body() AuthenticatePayload authenticatePayload);
 
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoad(
     @Path() String url,
-    @Header("x-visionlink-customeruid") String customeruid,
+    @Header("x-visionlink-customeruid") String? customeruid,
     @Body() Geofencepayload geofencepayload,
     @Header("service") String serviceHeader,
   );
@@ -792,45 +794,45 @@ abstract class RestClient {
   @POST("{url}")
   Future<dynamic> postGeofencePayLoadVL(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Geofencepayload geofencepayload);
 
   @POST("{url}")
   Future<dynamic> postGeofencePayLoad(
     @Path() String url,
-    @Header("x-visionlink-customeruid") String customeruid,
+    @Header("x-visionlink-customeruid") String? customeruid,
     @Body() Geofencepayload geofencepayload,
     @Header("service") String serviceHeader,
   );
 
   @GET("{url}")
   Future<Geofence> getGeofenceDataVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @GET("{url}")
   Future<Geofence> getGeofenceData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @DELETE("{url}")
   Future<dynamic> deleteGeofenceVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @DELETE("{url}")
   Future<dynamic> deleteGeofence(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @GET("{url}")
   Future<Geofencemodeldata> getSingleGeofenceVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @GET("{url}")
   Future<Geofencemodeldata> getSingleGeofence(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @PUT('{url}')
@@ -870,7 +872,7 @@ abstract class RestClient {
       @Header("service") String serviceHeader);
   @GET('{url}')
   Future<GetAddgeofenceModel> getGeofenceInputData(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @POST('{url}')
   Future<SingleAssetResponce> postSingleAssetSmsSchedule(
@@ -884,17 +886,17 @@ abstract class RestClient {
 
   @POST('{url}')
   Future<EstimatedAssetSetting> getEstimatedTagetListData(@Path() String url,
-      @Body() List<String> assetUid, @Header("service") service);
+      @Body() List<String?>? assetUid, @Header("service") service);
 
   @POST('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
       @Path() String url,
-      @Body() List<String> assetUid,
+      @Body() List<String>? assetUid,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST("{url}")
   Future<SavingSmsResponce> savingSms(
-      @Path() String url, @Body() List<SavingSmsModel> singleAssetData);
+      @Path() String url, @Body() List<SavingSmsModel?> singleAssetData);
 
   @GET('{url}')
   Future<SmsReportSummaryModel> gettingReportSummary(@Path() String url);
@@ -980,27 +982,27 @@ abstract class RestClient {
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListDataVL(
           @Path() String url,
-          @Body() List<String> assetUid,
+          @Body() List<String?>? assetUid,
           @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListData(
           @Path() String url,
-          @Body() List<String> assetUid,
+          @Body() List<String?>? assetUid,
           @Header("x-visionlink-customeruid") customerId,
           @Header("service") service);
 
   @POST('{url}')
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListDataVL(
       @Path() String url,
-      @Body() List<String> assetUId,
+      @Body() List<String?>? assetUId,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
       @Path() String url,
-      @Body() List<String> assetUId,
+      @Body() List<String?>? assetUId,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
   @POST("{url}")
@@ -1021,148 +1023,148 @@ abstract class RestClient {
   );
 }
 
-// @JsonSerializable()
-// class Sample {
-//   bool status;
-//   String msg;
-//   bool logout;
-//   Sample({this.status, this.logout, this.msg});
+@JsonSerializable()
+class Sample {
+  bool? status;
+  String? msg;
+  bool? logout;
+  Sample({this.status, this.logout, this.msg});
 
-//   factory Sample.fromJson(Map<String, dynamic> json) => _$SampleFromJson(json);
+  factory Sample.fromJson(Map<String, dynamic> json) => _$SampleFromJson(json);
 
-//   Map<String, dynamic> toJson() => _$SampleToJson(this);
+  Map<String, dynamic> toJson() => _$SampleToJson(this);
+}
+
+// {
+//   "email": "abdul_kareem@trimble.com",
+//   "accountUserName": "abdul_kareem",
+//   "uuid": "f40023ea-050e-47ad-9a39-40443e4ad3a2",
+//   "lastPwdSetTimeStamp": "2020-09-26T06:22:55.602Z",
+//   "lastLoginTimeStamp": "2021-03-30T20:18:40.958Z",
+//   "lastUpdateTimeStamp": "2021-03-30T20:18:40.98Z",
+//   "accountName": "trimble.com",
+//   "sub": "abdul_kareem@trimble.com",
+//   "firstname": "Abdulkareem",
+//   "lastname": "AL",
+//   "email_verified": "true"
 // }
 
-// // {
-// //   "email": "abdul_kareem@trimble.com",
-// //   "accountUserName": "abdul_kareem",
-// //   "uuid": "f40023ea-050e-47ad-9a39-40443e4ad3a2",
-// //   "lastPwdSetTimeStamp": "2020-09-26T06:22:55.602Z",
-// //   "lastLoginTimeStamp": "2021-03-30T20:18:40.958Z",
-// //   "lastUpdateTimeStamp": "2021-03-30T20:18:40.98Z",
-// //   "accountName": "trimble.com",
-// //   "sub": "abdul_kareem@trimble.com",
-// //   "firstname": "Abdulkareem",
-// //   "lastname": "AL",
-// //   "email_verified": "true"
-// // }
+@JsonSerializable()
+class UserInfo {
+  String? email;
+  String? accountUserName;
+  String? uuid;
+  String? lastPwdSetTimeStamp;
+  String? lastLoginTimeStamp;
+  String? lastUpdateTimeStamp;
+  String? accountName;
+  String? sub;
+  String? firstname;
+  String? lastname;
+  dynamic email_verified;
+  String? given_name;
+  String? family_name;
 
-// @JsonSerializable()
-// class UserInfo {
-//   String email;
-//   String accountUserName;
-//   String uuid;
-//   String lastPwdSetTimeStamp;
-//   String lastLoginTimeStamp;
-//   String lastUpdateTimeStamp;
-//   String accountName;
-//   String sub;
-//   String firstname;
-//   String lastname;
-//   dynamic email_verified;
-//   String given_name;
-//   String family_name;
+  UserInfo(
+      {this.email,
+      this.family_name,
+      this.given_name,
+      this.accountUserName,
+      this.uuid,
+      this.lastPwdSetTimeStamp,
+      this.lastLoginTimeStamp,
+      this.lastUpdateTimeStamp,
+      this.accountName,
+      this.sub,
+      this.firstname,
+      this.lastname,
+      this.email_verified});
 
-//   UserInfo(
-//       {this.email,
-//       this.family_name,
-//       this.given_name,
-//       this.accountUserName,
-//       this.uuid,
-//       this.lastPwdSetTimeStamp,
-//       this.lastLoginTimeStamp,
-//       this.lastUpdateTimeStamp,
-//       this.accountName,
-//       this.sub,
-//       this.firstname,
-//       this.lastname,
-//       this.email_verified});
+  factory UserInfo.fromJson(Map<String, dynamic> json) =>
+      _$UserInfoFromJson(json);
 
-//   factory UserInfo.fromJson(Map<String, dynamic> json) =>
-//       _$UserInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
+}
 
-//   Map<String, dynamic> toJson() => _$UserInfoToJson(this);
-// }
+@JsonSerializable()
+class UserPayLoad {
+  String? env;
+  String? grant_type;
+  String? code;
+  String? redirect_uri;
+  String? client_key;
+  String? client_secret;
+  String? tenantDomain;
 
-// @JsonSerializable()
-// class UserPayLoad {
-//   String env;
-//   String grant_type;
-//   String code;
-//   String redirect_uri;
-//   String client_key;
-//   String client_secret;
-//   String tenantDomain;
+  UserPayLoad(
+      {this.env,
+      this.grant_type,
+      this.code,
+      this.redirect_uri,
+      this.client_key,
+      this.client_secret,
+      this.tenantDomain});
 
-//   UserPayLoad(
-//       {this.env,
-//       this.grant_type,
-//       this.code,
-//       this.redirect_uri,
-//       this.client_key,
-//       this.client_secret,
-//       this.tenantDomain});
+  factory UserPayLoad.fromJson(Map<String, dynamic> json) =>
+      _$UserPayLoadFromJson(json);
 
-//   factory UserPayLoad.fromJson(Map<String, dynamic> json) =>
-//       _$UserPayLoadFromJson(json);
+  Map<String, dynamic> toJson() => _$UserPayLoadToJson(this);
+}
 
-//   Map<String, dynamic> toJson() => _$UserPayLoadToJson(this);
-// }
+@JsonSerializable()
+class AuthenticationResponse {
+  String? access_token;
+  String? token_type;
+  int? expires_in;
+  AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
 
-// @JsonSerializable()
-// class AuthenticationResponse {
-//   String access_token;
-//   String token_type;
-//   int expires_in;
-//   AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
+  factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticationResponseFromJson(json);
 
-//   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
-//       _$AuthenticationResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
+}
 
-//   Map<String, dynamic> toJson() => _$AuthenticationResponseToJson(this);
-// }
+@JsonSerializable()
+class AuthenticatedUser {
+  String? code;
+  String? status;
+  String? result;
+  AuthenticatedUser({this.code, this.status, this.result});
 
-// @JsonSerializable()
-// class AuthenticatedUser {
-//   String code;
-//   String status;
-//   String result;
-//   AuthenticatedUser({this.code, this.status, this.result});
+  factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatedUserFromJson(json);
 
-//   factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
-//       _$AuthenticatedUserFromJson(json);
+  Map<String, dynamic> toJson() => _$AuthenticatedUserToJson(this);
+}
 
-//   Map<String, dynamic> toJson() => _$AuthenticatedUserToJson(this);
-// }
+@JsonSerializable()
+class AuthenticatePayload {
+  String? env;
+  String? grantType;
+  String? code;
+  String? redirectUri;
+  String? client_key;
+  String? clientSecret;
+  String? tenantDomain;
+  String? mobile;
+  String? uuid;
+  String? email;
 
-// @JsonSerializable()
-// class AuthenticatePayload {
-//   String env;
-//   String grantType;
-//   String code;
-//   String redirectUri;
-//   String client_key;
-//   String clientSecret;
-//   String tenantDomain;
-//   String mobile;
-//   String uuid;
-//   String email;
+  AuthenticatePayload({
+    this.env = "THC",
+    this.grantType = "authorization_code",
+    this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
+    this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
+    this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
+    this.clientSecret = "testSecret",
+    this.tenantDomain = "trimble.com",
+    this.mobile = "0000000000",
+    this.uuid,
+    this.email,
+  });
 
-//   AuthenticatePayload({
-//     this.env = "THC",
-//     this.grantType = "authorization_code",
-//     this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
-//     this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
-//     this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
-//     this.clientSecret = "testSecret",
-//     this.tenantDomain = "trimble.com",
-//     this.mobile = "0000000000",
-//     this.uuid,
-//     this.email,
-//   });
+  factory AuthenticatePayload.fromJson(Map<String, dynamic> json) =>
+      _$AuthenticatePayloadFromJson(json);
 
-//   factory AuthenticatePayload.fromJson(Map<String, dynamic> json) =>
-//       _$AuthenticatePayloadFromJson(json);
-
-//   Map<String, dynamic> toJson() => _$AuthenticatePayloadToJson(this);
-// }
+  Map<String, dynamic> toJson() => _$AuthenticatePayloadToJson(this);
+}

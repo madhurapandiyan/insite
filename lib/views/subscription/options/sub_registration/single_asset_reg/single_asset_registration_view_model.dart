@@ -17,15 +17,15 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SingleAssetRegistrationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
-  String _filter;
-  String get filter => _filter;
+  String? _filter;
+  String? get filter => _filter;
 
-  PLANTSUBSCRIPTIONFILTERTYPE _filterType;
-  PLANTSUBSCRIPTIONFILTERTYPE get filterType => _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? get filterType => _filterType;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -33,8 +33,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
-  String _assetModel = "Select Asset Model";
-  String get assetModel => _assetModel;
+  String? _assetModel = "Select Asset Model";
+  String? get assetModel => _assetModel;
 
   String _plantDetail = " ";
   String get plantDetail => _plantDetail;
@@ -51,8 +51,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  DateTime _pickedDate = DateTime.now();
-  DateTime get pickedDate => _pickedDate;
+  DateTime? _pickedDate = DateTime.now();
+  DateTime? get pickedDate => _pickedDate;
 
   int pageNumber = 0;
   int pageSize = 100;
@@ -75,26 +75,26 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<HierarchyModel> _customerDetails = [];
   List<HierarchyModel> get customerDetails => _customerDetails;
 
-  List<String> _gpsDeviceId = [];
-  List<String> get gpsDeviceId => _gpsDeviceId;
+  List<String?> _gpsDeviceId = [];
+  List<String?> get gpsDeviceId => _gpsDeviceId;
 
-  List<String> _customerId = [];
-  List<String> get customerId => _customerId;
+  List<String?> _customerId = [];
+  List<String?> get customerId => _customerId;
 
-  List<String> _dealerId = [];
-  List<String> get dealerId => _dealerId;
+  List<String?> _dealerId = [];
+  List<String?> get dealerId => _dealerId;
 
-  List<String> _dealerCode = [];
-  List<String> get dealerCode => _dealerCode;
+  List<String?> _dealerCode = [];
+  List<String?> get dealerCode => _dealerCode;
 
-  List<String> _customerCode = [];
-  List<String> get customerCode => _customerCode;
+  List<String?> _customerCode = [];
+  List<String?> get customerCode => _customerCode;
 
-  List<String> _customerEmail = [];
-  List<String> get customerEmail => _customerEmail;
+  List<String?> _customerEmail = [];
+  List<String?> get customerEmail => _customerEmail;
 
-  List<String> _modelNames = [];
-  List<String> get modelNames => _modelNames;
+  List<String?> _modelNames = [];
+  List<String?> get modelNames => _modelNames;
 
   List<String> _serialNoList = [];
   List<String> get serialNoList => _serialNoList;
@@ -141,7 +141,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<String> get plantCodes => _plantCodes;
 
   SingleAssetRegistrationViewModel(
-      String filterKey, PLANTSUBSCRIPTIONFILTERTYPE type) {
+      String? filterKey, PLANTSUBSCRIPTIONFILTERTYPE? type) {
     this.log = getLogger(this.runtimeType.toString());
     this._filter = filterKey;
     this._filterType = type;
@@ -186,14 +186,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   TextEditingController customerCodeController = TextEditingController();
   TextEditingController customerEmailController = TextEditingController();
 
-  getSelectedDate(DateTime value) {
+  getSelectedDate(DateTime? value) {
     _pickedDate = value;
-    hourMeterDateController.text = DateFormat.yMMMd().format(_pickedDate);
+    hourMeterDateController.text = DateFormat.yMMMd().format(_pickedDate!);
     notifyListeners();
   }
 
-  updateDeviceId(String value) {
-    deviceIdController.text = value;
+  updateDeviceId(String? value) {
+    deviceIdController.text = value!;
     notifyListeners();
   }
 
@@ -288,7 +288,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       machineSlNo: previewDeviceDetails[1].value,
       machineModel: previewDeviceDetails[2].value,
       hMRDate: previewDeviceDetails[3].value,
-      hMR: int.parse(previewDeviceDetails[4].value),
+      hMR: int.parse(previewDeviceDetails[4].value!),
       plantName: generalPlantDetails[0].value,
       plantCode: generalPlantDetails[1].value,
       plantEmailID: generalPlantDetails[2].value,
@@ -304,20 +304,21 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     );
     _totalAssetValues.add(deviceAssetValues);
 
-    var result = await _subscriptionService.postSingleAssetRegistration(
-        data: _totalAssetValues);
+    var result = await _subscriptionService!
+        .postSingleAssetRegistration(data: _totalAssetValues);
 
     notifyListeners();
     return result;
   }
 
-  getSubcriptionDeviceListData({String name, int code, String type}) async {
+  getSubcriptionDeviceListData(
+      {required String name, int? code, String? type}) async {
     try {
       _detailResult.clear();
       _gpsDeviceId.clear();
       if (name.length >= 3) {
-        SubscriptionDashboardDetailResult result =
-            await _subscriptionService.getSubscriptionDeviceListData(
+        SubscriptionDashboardDetailResult? result = await _subscriptionService!
+            .getSubscriptionDeviceListData(
                 filterType: filterType,
                 fitler: filter,
                 name: name,
@@ -325,8 +326,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                 limit: pageSize);
 
         if (result != null) {
-          if (result.result[1].isNotEmpty) {
-            _detailResult.addAll(result.result[1]);
+          if (result.result![1].isNotEmpty) {
+            _detailResult.addAll(result.result![1]);
 
             _loading = false;
             _loadingMore = false;
@@ -350,16 +351,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
   getModelNamebySerialNumber(String value) async {
     try {
-      SerialNumberResults results = await _subscriptionService
+      SerialNumberResults? results = await _subscriptionService!
           .getDeviceModelNameBySerialNumber(serialNumber: value);
       if (results != null) {
-        String assetModelName = results.result.modelName;
+        String? assetModelName = results.result!.modelName;
         if (modelNames.contains(assetModelName)) {
           _assetModel = assetModelName;
         } else {
@@ -369,40 +370,40 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         return 'no results found';
       }
       notifyListeners();
-      _assetModel = results.result.modelName;
-    } catch (e) {
+      _assetModel = results.result!.modelName;
+    } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
   getSubscriptionModelData() async {
     try {
       Logger().i("getApplicationAccessData");
-      SubscriptionDashboardResult result =
-          await _subscriptionService.getResultsFromSubscriptionApi();
+      SubscriptionDashboardResult? result =
+          await _subscriptionService!.getResultsFromSubscriptionApi();
       if (result == null) {
         Logger().d('no results found');
         _loading = false;
         return "no results found";
       } else {
         //model names
-        final ex70SuperPlus = result.result[2][9].modelName;
-        final ex130SuperPlus = result.result[2][3].modelName;
-        final shinRaiBx80 = result.result[2][11].modelName;
+        final ex70SuperPlus = result.result![2][9].modelName;
+        final ex130SuperPlus = result.result![2][3].modelName;
+        final shinRaiBx80 = result.result![2][11].modelName;
         final notMapped = "Not Mapped";
-        final twl5 = result.result[2][1].modelName;
-        final ex110 = result.result[2][2].modelName;
-        final ex200lc = result.result[2][4].modelName;
-        final ex210lc = result.result[2][6].modelName;
-        final ex215 = result.result[2][7].modelName;
-        final ex300 = result.result[2][8].modelName;
-        final ptl340h = result.result[2][10].modelName;
-        final shinraibx80Bviv = result.result[2][12].modelName;
-        final shinraipro = result.result[2][13].modelName;
-        final th76 = result.result[2][14].modelName;
-        final tl340h = result.result[2][15].modelName;
-        final th340hPrime = result.result[2][16].modelName;
+        final twl5 = result.result![2][1].modelName;
+        final ex110 = result.result![2][2].modelName;
+        final ex200lc = result.result![2][4].modelName;
+        final ex210lc = result.result![2][6].modelName;
+        final ex215 = result.result![2][7].modelName;
+        final ex300 = result.result![2][8].modelName;
+        final ptl340h = result.result![2][10].modelName;
+        final shinraibx80Bviv = result.result![2][12].modelName;
+        final shinraipro = result.result![2][13].modelName;
+        final th76 = result.result![2][14].modelName;
+        final tl340h = result.result![2][15].modelName;
+        final th340hPrime = result.result![2][16].modelName;
 
         _modelNames.addAll([
           "Select Asset Model",
@@ -427,18 +428,18 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _loading = false;
       }
       notifyListeners();
-    } catch (e) {
+    } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
 
     return _modelNames;
   }
 
   getSubcriptionDeviceListPerNameOrCode(
-      {String name, int code, String type}) async {
-    SingleAssetRegistrationSearchModel result =
-        await _subscriptionService.getSubscriptionDevicesListData(
+      {String? name, int? code, String? type}) async {
+    SingleAssetRegistrationSearchModel? result =
+        await _subscriptionService!.getSubscriptionDevicesListData(
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
       start: pageNumberSecond,
       name: name,
@@ -448,15 +449,15 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     );
 
     if (result != null) {
-      if (result.result.isNotEmpty) {
-        deviceDetails.addAll(result.result[1]);
+      if (result.result!.isNotEmpty) {
+        deviceDetails.addAll(result.result![1]);
         _loading = false;
         _loadingMore = false;
 
         deviceDetails.forEach((element) {
-          deviceEmailController.text = element.Email;
-          deviceCodeController.text = element.Code;
-          deviceNameController.text = element.Name;
+          deviceEmailController.text = element.Email!;
+          deviceCodeController.text = element.Code!;
+          deviceNameController.text = element.Name!;
 
           deviceCodeController.selection = TextSelection.fromPosition(
               TextPosition(offset: deviceCodeController.text.length));
@@ -485,11 +486,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  onSelectedDeviceId(String value) {
+  onSelectedDeviceId(String? value) {
     _detailResult.forEach((element) {
       if (element.GPSDeviceID == value) {
-        deviceIdController.text = element.GPSDeviceID;
-        serialNumberController.text = element.VIN;
+        deviceIdController.text = element.GPSDeviceID!;
+        serialNumberController.text = element.VIN!;
         _gpsDeviceId.clear();
         notifyListeners();
       }
@@ -500,9 +501,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     Logger().e(value);
     _devices.forEach((element) {
       if (element.Name == value) {
-        customerNameController.text = element.Name;
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerNameController.text = element.Name!;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
         customerId.clear();
       }
     });
@@ -513,9 +514,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     Logger().e(_devices.length);
     _devices.forEach((element) {
       if (element.Name == value) {
-        deviceNameController.text = element.Name;
-        deviceCodeController.text = element.Code;
-        deviceEmailController.text = element.Email;
+        deviceNameController.text = element.Name!;
+        deviceCodeController.text = element.Code!;
+        deviceEmailController.text = element.Email!;
         _dealerId.clear();
         notifyListeners();
       }
@@ -525,9 +526,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   onSelectedDealerCodeTile(String value) {
     _devices.forEach((element) {
       if (element.Code == value) {
-        deviceNameController.text = element.Name;
-        deviceCodeController.text = element.Code;
-        deviceEmailController.text = element.Email;
+        deviceNameController.text = element.Name!;
+        deviceCodeController.text = element.Code!;
+        deviceEmailController.text = element.Email!;
         _dealerCode.clear();
         notifyListeners();
       }
@@ -539,16 +540,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     _devices.forEach((element) {
       Logger().wtf(value);
       if (element.Code == value) {
-        customerNameController.text = element.Name;
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerNameController.text = element.Name!;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
         customerCode.clear();
         notifyListeners();
       }
     });
   }
 
-  onCustomerNameChanges({String name, String type, int code}) async {
+  onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
       Logger().w(_dealerId.length);
       detailResultList.clear();
@@ -564,16 +565,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         Logger().e("type");
         if (name.length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as Future<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
               notifyListeners();
@@ -589,11 +590,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onDealerNameChanges({String name, String type, int code}) async {
+  onDealerNameChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (name == null || name.isEmpty) {
@@ -606,16 +607,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _dealerId.clear();
         if (name.length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as Future<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
               notifyListeners();
@@ -631,11 +632,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onDealerCodeChanges({String name, String type, int code}) async {
+  onDealerCodeChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (code == null || code.toString().isEmpty) {
@@ -649,16 +650,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
         if (code.toString().length >= 3) {
           SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+              await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
             code: code,
             fitler: type,
             limit: pageSize,
-          );
-          if (result.result[1].isNotEmpty) {
-            result.result[1].forEach((element) {
+          ) as Future<SingleAssetRegistrationSearchModel>);
+          if (result.result![1].isNotEmpty) {
+            result.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
               notifyListeners();
@@ -674,11 +675,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  onCustomerCodeChanges({String name, String type, int code}) async {
+  onCustomerCodeChanges({String? name, String? type, int? code}) async {
     try {
       detailResultList.clear();
       if (code == null) {
@@ -691,8 +692,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _customerCode.clear();
         _devices.clear();
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel result =
-              await _subscriptionService.getSubscriptionDevicesListData(
+          SingleAssetRegistrationSearchModel? result =
+              await _subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
             name: name,
@@ -703,16 +704,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
           if (code == null) {
             return;
           } else {
-            if (result.result[1].isEmpty) {
+            if (result!.result![1].isEmpty) {
               _customerCode.clear();
-              snackbarService.showSnackbar(
+              snackbarService!.showSnackbar(
                 message: "No Data Found",
                 duration: Duration(seconds: 1),
               );
               notifyListeners();
             } else {
-              if (result.result[1].isNotEmpty) {
-                result.result[1].forEach((element) {
+              if (result.result![1].isNotEmpty) {
+                result.result![1].forEach((element) {
                   _devices.add(element);
                   _customerCode.add(element.Code);
                   notifyListeners();
@@ -730,11 +731,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: error.message!);
     }
   }
 
-  getSubcriptionListOfNameAndCode({String name, int code, String type}) async {
+  getSubcriptionListOfNameAndCode(
+      {String? name, int? code, String? type}) async {
     if (name == null || name.isEmpty) {
       customerCode.clear();
       _customerId.clear();
@@ -743,8 +745,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       name = null;
       notifyListeners();
     } else {
-      SingleAssetRegistrationSearchModel result =
-          await _subscriptionService.getSubscriptionDevicesListData(
+      SingleAssetRegistrationSearchModel? result =
+          await _subscriptionService!.getSubscriptionDevicesListData(
         filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
         start: pageNumber,
         name: name,
@@ -754,8 +756,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       );
 
       if (result != null) {
-        if (result.result[1].isNotEmpty) {
-          customerDetails.addAll(result.result[1]);
+        if (result.result![1].isNotEmpty) {
+          customerDetails.addAll(result.result![1]);
 
           customerDetails.forEach((element) {
             customerId.add(element.Name);
@@ -792,29 +794,29 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   filterCustomerDetails(String value) {
     customerDetails.forEach((element) {
-      if (value.toLowerCase() == element.Name.toLowerCase()) {
+      if (value.toLowerCase() == element.Name!.toLowerCase()) {
         Logger().e('codet${element.Code}');
-        customerCodeController.text = element.Code;
-        customerEmailController.text = element.Email;
+        customerCodeController.text = element.Code!;
+        customerEmailController.text = element.Email!;
         Logger().wtf('code: ${element.Code}');
         notifyListeners();
       } else if (value == element.Code) {
-        customerNameController.text = element.Name;
-        customerEmailController.text = element.Email;
-        customerCodeController.text = element.Code;
+        customerNameController.text = element.Name!;
+        customerEmailController.text = element.Email!;
+        customerCodeController.text = element.Code!;
 
         notifyListeners();
       }
-      return false;
+      //  return false;
     });
     notifyListeners();
   }
 
   filterDealerCode(String value) {
     customerDetails.forEach((element) {
-      if (value.toLowerCase() == element.Code.toLowerCase()) {
-        deviceNameController.text = element.Code;
-        deviceEmailController.text = element.Email;
+      if (value.toLowerCase() == element.Code!.toLowerCase()) {
+        deviceNameController.text = element.Code!;
+        deviceEmailController.text = element.Email!;
         notifyListeners();
       }
     });
@@ -822,9 +824,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   filterDealerName(String value) {
     customerDetails.forEach((element) {
-      if (value.toLowerCase() == element.Name.toLowerCase()) {
-        deviceCodeController.text = element.Code;
-        deviceEmailController.text = element.Email;
+      if (value.toLowerCase() == element.Name!.toLowerCase()) {
+        deviceCodeController.text = element.Code!;
+        deviceEmailController.text = element.Email!;
         notifyListeners();
       }
     });
@@ -833,9 +835,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   onTappingCustomerName() {
     customerCodetype = true;
     customerNameType = false;
-    customerCodeController.text = null;
-    customerEmailController.text = null;
-    customerNameController.text = null;
+    customerCodeController.clear();
+    customerEmailController.clear();
+    customerNameController.clear();
     notifyListeners();
   }
 
@@ -844,9 +846,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     Logger().w(customerNameController.text);
     customerNameType = true;
     customerCodetype = false;
-    customerNameController.text = null;
-    customerEmailController.text = null;
-    customerCodeController.text = null;
+    customerNameController.clear();
+    customerEmailController.clear();
+    customerCodeController.clear();
     notifyListeners();
   }
 }

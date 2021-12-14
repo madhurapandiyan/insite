@@ -4,10 +4,10 @@ import 'package:insite/utils/helper_methods.dart';
 import 'filter_chip_item.dart';
 
 class FilterChipView extends StatelessWidget {
-  final List<FilterData> filters;
-  final Function(FilterData) onClosed;
-  final Color backgroundColor;
-  final EdgeInsets padding;
+  final List<FilterData?>? filters;
+  final Function(FilterData)? onClosed;
+  final Color? backgroundColor;
+  final EdgeInsets? padding;
   const FilterChipView(
       {this.filters, this.onClosed, this.backgroundColor, this.padding});
 
@@ -20,13 +20,13 @@ class FilterChipView extends StatelessWidget {
         runSpacing: 4,
         spacing: 4,
         children: List.generate(
-          filters.length,
+          filters!.length,
           (index) {
-            FilterData data = filters[index];
+            FilterData data = filters![index]!;
             return FilterChipItem(
               label: Utils.getFilterTitleForChipView(data),
               onClose: () {
-                onClosed(data);
+                onClosed!(data);
               },
             );
           },

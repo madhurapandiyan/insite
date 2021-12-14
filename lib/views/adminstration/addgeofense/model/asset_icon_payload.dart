@@ -3,11 +3,11 @@ part 'asset_icon_payload.g.dart';
 
 @JsonSerializable()
 class AssetIconPayLoad {
-  String assetUID;
-  int legacyAssetID;
-  int iconKey;
-  int modelYear;
-  String actionUTC;
+  String? assetUID;
+  int? legacyAssetID;
+  int? iconKey;
+  int? modelYear;
+  String? actionUTC;
 
   AssetIconPayLoad(
       {this.assetUID,

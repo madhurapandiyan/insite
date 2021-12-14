@@ -9,19 +9,19 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class TestRouterViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _assetLocationHistoryService = locator<AssetLocationHistoryService>();
+  AssetLocationHistoryService? _assetLocationHistoryService = locator<AssetLocationHistoryService>();
 
-  AssetLocationHistory _assetLocationHistory;
-  AssetLocationHistory get assetLocationHistory => _assetLocationHistory;
+  AssetLocationHistory? _assetLocationHistory;
+  AssetLocationHistory? get assetLocationHistory => _assetLocationHistory;
 
   bool _loading = true;
   bool get loading => _loading;
 
   TestRouterViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _assetLocationHistoryService.setUp();
+    _assetLocationHistoryService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetLocationHistoryResult();
     });
@@ -36,11 +36,11 @@ class TestRouterViewModel extends InsiteViewModel {
   }
 
   // INFO WINDOW
-  bool _showInfoWindow;
-  bool _tempHidden;
-  AssetLocation _assetLocation;
-  double _leftMargin;
-  double _topMargin;
+  bool? _showInfoWindow;
+  bool? _tempHidden;
+  AssetLocation? _assetLocation;
+  double? _leftMargin;
+  double? _topMargin;
 
   void rebuildInfoWindow() {
     notifyListeners();
@@ -77,7 +77,7 @@ class TestRouterViewModel extends InsiteViewModel {
   bool get showInfoWindow =>
       (_showInfoWindow == true && _tempHidden == false) ? true : false;
 
-  double get leftMargin => _leftMargin;
-  double get topMargin => _topMargin;
-  AssetLocation get assetLocation => _assetLocation;
+  double? get leftMargin => _leftMargin;
+  double? get topMargin => _topMargin;
+  AssetLocation? get assetLocation => _assetLocation;
 }

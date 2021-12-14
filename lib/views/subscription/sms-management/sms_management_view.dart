@@ -11,9 +11,9 @@ class SmsManagementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubscriptionDashboardViewModel>.reactive(
       builder: (BuildContext context, SubscriptionDashboardViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {

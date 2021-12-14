@@ -3,13 +3,13 @@ import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class TargetReusableWidget extends StatefulWidget {
-  final String days;
-  final Function(String) onValueCycleChange;
-  final Function(String) onValueVolumeChange;
-  final Function(String) onValuePayLoadChange;
-  final double fullWeekCountCycleValue;
-  final double fullWeekVolumeCycleValue;
-  final double fullWeekPayLoadCycleValue;
+  final String? days;
+  final Function(String)? onValueCycleChange;
+  final Function(String)? onValueVolumeChange;
+  final Function(String)? onValuePayLoadChange;
+  final double? fullWeekCountCycleValue;
+  final double? fullWeekVolumeCycleValue;
+  final double? fullWeekPayLoadCycleValue;
   const TargetReusableWidget(
       {this.days,
       this.onValueCycleChange,
@@ -56,10 +56,10 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                     bottomRight: Radius.circular(10),
                   ),
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               child: IncrementDecrementwidget(
                 onValueChange: (String value) {
-                  widget.onValueCycleChange(value);
+                  widget.onValueCycleChange!(value);
                 },
                 countValue: widget.fullWeekCountCycleValue,
               ),
@@ -79,11 +79,11 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                     bottomRight: Radius.circular(10),
                   ),
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               child: IncrementDecrementwidget(
                 countValue: widget.fullWeekVolumeCycleValue,
                 onValueChange: (String value) {
-                  widget.onValueVolumeChange(value);
+                  widget.onValueVolumeChange!(value);
                 },
               ),
             ),
@@ -102,10 +102,10 @@ class _TargetReusableWidgetState extends State<TargetReusableWidget> {
                     bottomRight: Radius.circular(10),
                   ),
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               child: IncrementDecrementwidget(
                 onValueChange: (String value) {
-                  widget.onValuePayLoadChange(value);
+                  widget.onValuePayLoadChange!(value);
                 },
                 countValue: widget.fullWeekPayLoadCycleValue,
               ),

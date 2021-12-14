@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AssetSettingsFilterViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
  
 
   AssetSettingsFilterViewModel() {

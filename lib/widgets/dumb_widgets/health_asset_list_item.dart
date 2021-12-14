@@ -10,9 +10,9 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class HealthAssetListItem extends StatefulWidget {
-  final Fault fault;
-  final VoidCallback onCallback;
-  final Key key;
+  final Fault? fault;
+  final VoidCallback? onCallback;
+  final Key? key;
   const HealthAssetListItem({this.key, this.fault, this.onCallback})
       : super(key: key);
 
@@ -25,10 +25,10 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<FaultListItemViewModel>.reactive(
       builder:
-          (BuildContext context, FaultListItemViewModel viewModel, Widget _) {
+          (BuildContext context, FaultListItemViewModel viewModel, Widget? _) {
         return GestureDetector(
           onTap: () {
-            widget.onCallback();
+            widget.onCallback!();
           },
           child: Card(
             child: Row(
@@ -67,22 +67,22 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                           children: [
                             InsiteTableRowItemWithImage(
                               title: Utils.getMakeTitle(widget
-                                      .fault.asset["details"]["makeCode"]) +
+                                      .fault!.asset["details"]["makeCode"]) +
                                   "\n" +
-                                  widget.fault.asset["details"]["model"],
-                              path: widget.fault.asset["details"] != null &&
-                                      widget.fault.asset["details"]["model"] !=
+                                  widget.fault!.asset["details"]["model"],
+                              path: widget.fault!.asset["details"] != null &&
+                                      widget.fault!.asset["details"]["model"] !=
                                           null
                                   ? Utils().imageData(
-                                      widget.fault.asset["details"]["model"])
+                                      widget.fault!.asset["details"]["model"])
                                   : "assets/images/EX210.png",
                             ),
                             InsiteTableRowItem(
                               title: "Date/Time",
-                              content: widget.fault.asset != null &&
-                                      widget.fault.asset["dynamic"] != null
+                              content: widget.fault!.asset != null &&
+                                      widget.fault!.asset["dynamic"] != null
                                   ? Utils.getLastReportedDateOneUTC(
-                                      widget.fault.asset["dynamic"]
+                                      widget.fault!.asset["dynamic"]
                                           ["locationReportedTimeUTC"])
                                   : "-",
                             )
@@ -91,20 +91,20 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                         TableRow(children: [
                           InsiteRichText(
                             title: "Serial No. : ",
-                            content: widget.fault.asset["basic"] != null &&
-                                    widget.fault.asset["basic"]
+                            content: widget.fault!.asset["basic"] != null &&
+                                    widget.fault!.asset["basic"]
                                             ["serialNumber"] !=
                                         null
-                                ? widget.fault.asset["basic"]["serialNumber"]
+                                ? widget.fault!.asset["basic"]["serialNumber"]
                                 : "",
                             onTap: () {
-                              widget.onCallback();
+                              widget.onCallback!();
                             },
                           ),
                           InsiteTableRowItemWithMultipleButton(
                               title: "Fault Total",
-                              texts: widget.fault.countData != null
-                                  ? widget.fault.countData
+                              texts: widget.fault!.countData != null
+                                  ? widget.fault!.countData
                                   : []),
                         ]),
                       ],
@@ -125,27 +125,27 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "Last Reported Time : ",
-                              content: widget.fault.asset != null &&
-                                      widget.fault.asset["dynamic"] != null
+                              content: widget.fault!.asset != null &&
+                                      widget.fault!.asset["dynamic"] != null
                                   ? Utils.getLastReportedDateOneUTC(
-                                      widget.fault.asset["dynamic"]
+                                      widget.fault!.asset["dynamic"]
                                           ["locationReportedTimeUTC"])
                                   : "-",
                             ),
                             InsiteTableRowItem(
                               title: "Location : ",
-                              content: widget.fault.asset != null &&
-                                      widget.fault.asset["dynamic"] != null
-                                  ? (widget.fault.asset["dynamic"]["location"])
+                              content: widget.fault!.asset != null &&
+                                      widget.fault!.asset["dynamic"] != null
+                                  ? (widget.fault!.asset["dynamic"]["location"])
                                   : "-",
                             ),
                           ]),
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "Current Hour Meter : ",
-                              content: widget.fault.asset != null &&
-                                      widget.fault.asset["dynamic"] != null
-                                  ? (widget.fault.asset["dynamic"]["hourMeter"]
+                              content: widget.fault!.asset != null &&
+                                      widget.fault!.asset["dynamic"] != null
+                                  ? (widget.fault!.asset["dynamic"]["hourMeter"]
                                       .toString())
                                   : "-",
                             ),

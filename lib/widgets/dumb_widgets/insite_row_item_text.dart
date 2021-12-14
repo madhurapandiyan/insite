@@ -7,8 +7,8 @@ import 'insite_image.dart';
 import 'insite_text.dart';
 
 class InsiteTableRowItem extends StatelessWidget {
-  final String title;
-  final String content;
+  final String? title;
+  final String? content;
 
   const InsiteTableRowItem({
     this.title,
@@ -39,8 +39,8 @@ class InsiteTableRowItem extends StatelessWidget {
 }
 
 class InsiteTableRowItemWithImage extends StatelessWidget {
-  final String title;
-  final String path;
+  final String? title;
+  final String? path;
 
   const InsiteTableRowItemWithImage({this.title, this.path});
 
@@ -56,7 +56,7 @@ class InsiteTableRowItemWithImage extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
                 border: Border.all(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color!),
                 borderRadius: BorderRadius.all(Radius.circular(4))),
             child: InsiteImage(
               height: 30,
@@ -96,8 +96,8 @@ class InsiteTableRowItemWithImage extends StatelessWidget {
 }
 
 class InsiteTableRowItemWithIcon extends StatelessWidget {
-  final String title;
-  final String iconPath;
+  final String? title;
+  final String? iconPath;
   const InsiteTableRowItemWithIcon({this.title, this.iconPath});
 
   @override
@@ -129,9 +129,9 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
 }
 
 class InsiteTableRowItemWithButton extends StatelessWidget {
-  final String title;
-  final String content;
-  final Color buttonColor;
+  final String? title;
+  final String? content;
+  final Color? buttonColor;
   const InsiteTableRowItemWithButton({
     this.title,
     this.buttonColor,
@@ -150,7 +150,7 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.bold,
           ),
-          content.isNotEmpty
+          content!.isNotEmpty
               ? InsiteButton(
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
@@ -172,8 +172,8 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
 }
 
 class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
-  final String title;
-  final List<Count> texts;
+  final String? title;
+  final List<Count>? texts;
   const InsiteTableRowItemWithMultipleButton({
     this.title,
     this.texts,
@@ -196,10 +196,10 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: List.generate(
-                texts.length,
+                texts!.length,
                 (index) {
-                  Count text = texts[index];
-                  return text.count > 0
+                  Count text = texts![index];
+                  return text.count! > 0
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4.0, horizontal: 4),

@@ -27,18 +27,18 @@ class _HealthViewState extends State<HealthView> {
 
   void refreshWithFilter() {
     if (isListSelected) {
-      faultViewKey.currentState.onFilterApplied();
+      faultViewKey.currentState!.onFilterApplied();
     } else {
-      assetViewKey.currentState.onFilterApplied();
+      assetViewKey.currentState!.onFilterApplied();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthViewModel>.reactive(
-      builder: (BuildContext context, HealthViewModel viewModel, Widget _) {
+      builder: (BuildContext context, HealthViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             onFilterApplied: () {

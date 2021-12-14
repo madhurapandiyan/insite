@@ -7,10 +7,10 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class FaultListItemViewModel extends InsiteViewModel {
-  var _faultService = locator<FaultService>();
+  FaultService? _faultService = locator<FaultService>();
 
-  Fault _fault;
-  Fault get fault => _fault;
+  Fault? _fault;
+  Fault? get fault => _fault;
 
   bool _loaded = false;
   bool get loaded => _loaded;
@@ -27,18 +27,18 @@ class FaultListItemViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
   int pageNumber = 1;
   int pageSize = 20;
 
   FaultListItemViewModel(this._fault) {
-    Logger().d("FaultListItemViewModel ${fault.asset["uid"]}");
+    Logger().d("FaultListItemViewModel ${fault!.asset["uid"]}");
     setUp();
-    _faultService.setUp();
+    _faultService!.setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -53,24 +53,24 @@ class FaultListItemViewModel extends InsiteViewModel {
     Logger().d("getFaultViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
-    FaultSummaryResponse result =
-        await _faultService.getAssetViewDetailSummaryList(
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    FaultSummaryResponse? result =
+        await _faultService!.getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
-            fault.asset["uid"]);
+            fault!.asset["uid"]);
     if (result != null && result.faults != null) {
-      if (result.faults.isNotEmpty) {
-        _faults.addAll(result.faults);
+      if (result.faults!.isNotEmpty) {
+        _faults.addAll(result.faults!);
         _refreshing = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.faults);
+        _faults.addAll(result.faults!);
         _refreshing = false;
         _loadingMore = false;
         _shouldLoadmore = false;

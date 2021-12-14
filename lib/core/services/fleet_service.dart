@@ -11,46 +11,46 @@ import 'package:logger/logger.dart';
 import 'local_service.dart';
 
 class FleetService extends BaseService {
-  var _localService = locator<LocalService>();
-  Customer accountSelected;
-  Customer customerSelected;
+  LocalService? _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
   FleetService() {
     setUp();
   }
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<FleetSummaryResponse> getFleetSummaryList(
+  Future<FleetSummaryResponse?> getFleetSummaryList(
     startDate,
     endDate,
     pageSize,
     pageNumber,
-    List<FilterData> appliedFilters,
+    List<FilterData?>? appliedFilters,
   ) async {
     try {
       if (isVisionLink) {
         FleetSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().fleetSummaryURLVL(
+                ? await MyApi().getClient()!.fleetSummaryURLVL(
                     Urls.fleetSummaryVL +
                         FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "assetid",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.FLEET),
-                    accountSelected.CustomerUID)
-                : await MyApi().getClient().fleetSummaryURLVL(
+                    accountSelected!.CustomerUID)
+                : await MyApi().getClient()!.fleetSummaryURLVL(
                       Urls.fleetSummaryVL +
                           FilterUtils.getFilterURL(
                               startDate,
@@ -59,28 +59,28 @@ class FleetService extends BaseService {
                               pageSize,
                               null,
                               "assetid",
-                              appliedFilters,
+                              appliedFilters!,
                               ScreenType.FLEET),
-                      accountSelected.CustomerUID,
+                      accountSelected!.CustomerUID,
                     );
         return fleetSummaryResponse;
       } else {
         FleetSummaryResponse fleetSummaryResponse =
             accountSelected != null && customerSelected != null
-                ? await MyApi().getClient().fleetSummaryURL(
+                ? await MyApi().getClient()!.fleetSummaryURL(
                     Urls.fleetSummary +
                         FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             "assetid",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.FLEET),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     "in-vfleet-uf-webapi")
-                : await MyApi().getClient().fleetSummaryURL(
+                : await MyApi().getClient()!.fleetSummaryURL(
                     Urls.fleetSummary +
                         FilterUtils.getFilterURL(
                             startDate,
@@ -89,9 +89,9 @@ class FleetService extends BaseService {
                             pageSize,
                             null,
                             "assetid",
-                            appliedFilters,
+                            appliedFilters!,
                             ScreenType.FLEET),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                     "in-vfleet-uf-webapi");
         return fleetSummaryResponse;
       }

@@ -4,9 +4,9 @@ part 'subscription_serial_number_results.g.dart';
 
 @JsonSerializable()
 class SerialNumberResults {
-  Result result;
-  String status;
-  String message;
+  Result? result;
+  String? status;
+  String? message;
 
   SerialNumberResults({this.result, this.status, this.message});
   factory SerialNumberResults.fromJson(Map<String, dynamic> json) =>
@@ -16,11 +16,11 @@ class SerialNumberResults {
 
 @JsonSerializable()
 class Result {
-  String startsWith;
-  int startRange;
-  int endRange;
-  int groupClusterId;
-  String modelName;
+  String? startsWith;
+  int? startRange;
+  int? endRange;
+  int? groupClusterId;
+  String? modelName;
 
   Result(
       {this.startsWith,

@@ -3,7 +3,7 @@ part 'asset_mileage_settings_list_data.g.dart';
 
 @JsonSerializable()
 class AssetMileageSettingsListData {
-  List<AssetMileageSettings> assetMileageSettings;
+  List<AssetMileageSettings>? assetMileageSettings;
  
 
   AssetMileageSettingsListData({this.assetMileageSettings});
@@ -16,9 +16,9 @@ class AssetMileageSettingsListData {
 
 @JsonSerializable()
 class AssetMileageSettings {
-  double targetValue;
-  String startDate;
-  String assetUid;
+  double? targetValue;
+  String? startDate;
+  String? assetUid;
 
   AssetMileageSettings({this.targetValue, this.startDate, this.assetUid});
 

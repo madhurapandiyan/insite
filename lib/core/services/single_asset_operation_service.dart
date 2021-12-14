@@ -9,9 +9,9 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetOperationService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
+  LocalService? _localService = locator<LocalService>();
 
   SingleAssetOperationService() {
     setUp();
@@ -19,15 +19,15 @@ class SingleAssetOperationService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<SingleAssetOperation> getSingleAssetOperation(
-      String startDate, String endDate, String assetUID) async {
+  Future<SingleAssetOperation?> getSingleAssetOperation(
+      String? startDate, String? endDate, String? assetUID) async {
     try {
       Map<String, String> queryMap = Map();
       if (assetUID != null && assetUID.isNotEmpty) {
@@ -42,20 +42,20 @@ class SingleAssetOperationService extends BaseService {
       if (isVisionLink) {
         Logger().d("single asset operation vl");
         SingleAssetOperation response = await MyApi()
-            .getClient()
+            .getClient()!
             .singleAssetOperationVL(
                 Urls.assetoperationsegmentsVL +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return response;
       } else {
         Logger().d("single asset operation ind");
         SingleAssetOperation response = await MyApi()
-            .getClient()
+            .getClient()!
             .singleAssetOperation(
                 Urls.assetoperationsegments +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vutilization-utz-webapi");
         return response;
       }

@@ -3,9 +3,9 @@ part 'personalities.g.dart';
 
 @JsonSerializable()
 class Personality {
-  final String Name;
-  final String Description;
-  final String Value;
+  final String? Name;
+  final String? Description;
+  final String? Value;
   Personality(this.Name, this.Description, this.Value);
   factory Personality.fromJson(Map<String, dynamic> json) =>
       _$PersonalityFromJson(json);

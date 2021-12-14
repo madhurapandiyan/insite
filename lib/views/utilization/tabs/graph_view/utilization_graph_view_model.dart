@@ -8,16 +8,16 @@ import 'package:insite/core/services/asset_status_service.dart';
 import 'package:logger/logger.dart';
 
 class UtilizationGraphViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   UtilizationGraphViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _assetService.setUp();
+    _assetService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetCount();
     });
   }
-  var _assetService = locator<AssetStatusService>();
+  AssetStatusService? _assetService = locator<AssetStatusService>();
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -28,11 +28,11 @@ class UtilizationGraphViewModel extends InsiteViewModel {
   getAssetCount() async {
     await getDateRangeFilterData();
     Logger().d("getAssetCount");
-    AssetCount result =
-        await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
+    AssetCount? result =
+        await _assetService!.getAssetCount(null, FilterType.ASSET_STATUS);
     if (result != null) {
-      if (result.countData.isNotEmpty && result.countData[0].count != null) {
-        _totalCount = result.countData[0].count.toInt();
+      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+        _totalCount = result.countData![0].count!.toInt();
       }
       Logger().d("result ${result.toJson()}");
     }

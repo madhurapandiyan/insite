@@ -17,8 +17,8 @@ import 'package:stacked/stacked.dart';
 import 'add_new_user_view_model.dart';
 
 class AddNewUserView extends StatefulWidget {
-  final Users user;
-  final bool isEdit;
+  final Users? user;
+  final bool? isEdit;
   AddNewUserView({this.user, this.isEdit});
 
   @override
@@ -26,7 +26,7 @@ class AddNewUserView extends StatefulWidget {
 }
 
 class _AddNewUserViewState extends State<AddNewUserView> {
-  List<ApplicationAccess> selectedList;
+  List<ApplicationAccess>? selectedList;
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _firstNameController = new TextEditingController();
   TextEditingController _lastNameController = new TextEditingController();
@@ -36,18 +36,18 @@ class _AddNewUserViewState extends State<AddNewUserView> {
   TextEditingController _stateController = new TextEditingController();
   TextEditingController _countryController = new TextEditingController();
 
-  var viewModel;
+  late var viewModel;
 
   @override
   void initState() {
     viewModel = AddNewUserViewModel(widget.user);
     if (widget.user != null) {
-      _emailController.text = widget.user.loginId;
-      _firstNameController.text = widget.user.first_name;
-      _lastNameController.text = widget.user.last_name;
-      _phoneNumberController.text = widget.user.phone;
-      _addressController.text = widget.user.address.country;
-      _pinCodeController.text = widget.user.address.zipcode;
+      _emailController.text = widget.user!.loginId!;
+      _firstNameController.text = widget.user!.first_name!;
+      _lastNameController.text = widget.user!.last_name!;
+      _phoneNumberController.text = widget.user!.phone!;
+      _addressController.text = widget.user!.address!.country!;
+      _pinCodeController.text = widget.user!.address!.zipcode!;
       selectedList = [];
     } else {
       _emailController.text = "";
@@ -82,7 +82,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddNewUserViewModel>.reactive(
-      builder: (BuildContext context, AddNewUserViewModel viewModel, Widget _) {
+      builder: (BuildContext context, AddNewUserViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.USER_MANAGEMENT,
@@ -224,7 +224,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: CustomDropDownWidget(
                           items: viewModel.dropDownlist,
-                          onChanged: (String value) {
+                          onChanged: (String? value) {
                             unfocus();
                             viewModel.onPermissionSelected(value);
                           },
@@ -330,7 +330,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: CustomDropDownWidget(
                           items: viewModel.jobTypeList,
-                          onChanged: (String value) {
+                          onChanged: (String? value) {
                             unfocus();
                             viewModel.onJobTypeSelected(value);
                           },
@@ -366,7 +366,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: CustomDropDownWidget(
                           items: viewModel.jobTitleList,
-                          onChanged: (String value) {
+                          onChanged: (String? value) {
                             unfocus();
                             viewModel.onJobTitleSelected(value);
                           },
@@ -463,7 +463,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: CustomDropDownWidget(
                           items: viewModel.languageTypeValueList,
-                          onChanged: (String value) {
+                          onChanged: (String? value) {
                             unfocus();
                             viewModel.onlanguageTypeValueSelected(value);
                           },

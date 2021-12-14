@@ -5,14 +5,14 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class CustomCardReportSummaryWidget extends StatelessWidget {
-  final String deviceId;
-  final String serialNo;
-  final String name;
-  final String mobileNo;
-  final String language;
-  final String date;
-  final bool isSelected;
-  final Function onSelected;
+  final String? deviceId;
+  final String? serialNo;
+  final String? name;
+  final String? mobileNo;
+  final String? language;
+  final String? date;
+  final bool? isSelected;
+  final Function? onSelected;
   //final bool isExpanded;
   CustomCardReportSummaryWidget(
       {this.deviceId,
@@ -42,10 +42,10 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
                 // Icon(Icons.keyboard_arrow_down),
                 IconButton(
                     onPressed: () {
-                      onSelected();
+                      onSelected!();
                     },
                     icon: Container(
-                      color: isSelected ? Theme.of(context).buttonColor : null,
+                      color: isSelected! ? Theme.of(context).buttonColor : null,
                       child: Icon(
                         Icons.check_box_outline_blank,
                       ),
@@ -68,7 +68,7 @@ class CustomCardReportSummaryWidget extends StatelessWidget {
                         InsiteTableRowItem(
                           title: "Scheduled SMS Start Date",
                           content: Utils.getLastReportedDateFilterData(
-                              DateTime.parse(date)),
+                              DateTime.parse(date!)),
                         )
                       ])
                     ],

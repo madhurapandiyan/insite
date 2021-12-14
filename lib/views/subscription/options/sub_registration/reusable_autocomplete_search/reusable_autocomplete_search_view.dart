@@ -5,18 +5,18 @@ import 'package:insite/views/subscription/options/sub_registration/single_asset_
 import 'package:logger/logger.dart';
 
 class ReusableAutocompleteSearchView extends StatefulWidget {
-  final TextEditingController reuseController;
-  final List<String> data;
-  final String Function(String) validator;
-  final Function(String) onSelected;
-  final Function(String) onChanged;
-  final Function onTap;
+  final TextEditingController? reuseController;
+  final List<String>? data;
+  final String Function(String?)? validator;
+  final Function(String)? onSelected;
+  final Function(String)? onChanged;
+  final Function? onTap;
   bool isEnabled;
-  bool formFieldType;
-  FieldType type;
+  bool? formFieldType;
+  FieldType? type;
 
   ReusableAutocompleteSearchView(
-      {Key key,
+      {Key? key,
       this.reuseController,
       this.data,
       this.validator,
@@ -45,7 +45,7 @@ class _ReusableAutocompleteSearchViewState
         if (textEditingValue.text.isEmpty) {
           return Iterable<String>.empty();
         } else {
-          widget.data.map((e) {
+          widget.data!.map((e) {
             dataValues.add(e);
           }).toList();
           dataValues.forEach((element) {
@@ -64,7 +64,7 @@ class _ReusableAutocompleteSearchViewState
         return Container(
           height: 35,
           child: TextFormField(
-            onTap: widget.onTap,
+            onTap: widget.onTap as void Function()?,
             controller:
                 widget.formFieldType == null || widget.formFieldType == true
                     ? widget.reuseController
@@ -76,7 +76,7 @@ class _ReusableAutocompleteSearchViewState
             maxLines: 1,
             enabled: widget.isEnabled,
             style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
               fontWeight: FontWeight.w700,
               fontSize: 14,
             ),
@@ -87,19 +87,19 @@ class _ReusableAutocompleteSearchViewState
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1),
               ),
             ),

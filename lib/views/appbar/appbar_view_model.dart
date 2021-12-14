@@ -9,33 +9,34 @@ import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class AppbarViewModel extends InsiteViewModel {
-  var _navigationService = locator<service.NavigationService>();
-  var _localService = locator<LocalService>();
-  var _localStorageService = locator<LocalStorageService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
+  LocalService? _localService = locator<LocalService>();
+  LocalStorageService? _localStorageService = locator<LocalStorageService>();
 
-  Customer _accountSelected;
-  Customer get accountSelected => _accountSelected;
+  Customer? _accountSelected;
+  Customer? get accountSelected => _accountSelected;
 
-  Customer _customerSelected;
-  Customer get customerSelected => _customerSelected;
+  Customer? _customerSelected;
+  Customer? get customerSelected => _customerSelected;
 
-  ScreenType _screenType;
-  ScreenType get screenType => _screenType;
+  ScreenType? _screenType;
+  ScreenType? get screenType => _screenType;
 
   AppbarViewModel(this._screenType) {
     Future.delayed(Duration(seconds: 3), () {
       setUp();
     });
-    _localStorageService.setUp();
+    _localStorageService!.setUp();
   }
 
   setUp() async {
     try {
-      _accountSelected = await _localService.getAccountInfo();
-      _customerSelected = await _localService.getCustomerInfo();
+      _accountSelected = await _localService!.getAccountInfo();
+      _customerSelected = await _localService!.getCustomerInfo();
       notifyListeners();
     } catch (e) {
       Logger().e(e);
@@ -45,24 +46,24 @@ class AppbarViewModel extends InsiteViewModel {
   onHomePressed() {
     if (accountSelected == null) {
       Logger().i("account not selected");
-      snackbarService.showSnackbar(
+      snackbarService!.showSnackbar(
           message: "Account not selected", duration: Duration(seconds: 2));
     } else {
       if (screenType != ScreenType.HOME) {
-        _navigationService.replaceWith(homeViewRoute);
+        _navigationService!.replaceWith(homeViewRoute);
       }
     }
   }
 
   onAccountPressed() {
-    _navigationService.replaceWith(customerSelectionViewRoute);
+    _navigationService!.replaceWith(customerSelectionViewRoute);
   }
 
   Future<void> logout() async {
-   // _localService.removeTokenInfo();
-    _localService.clearAll();
-    _localStorageService.clearAll();
-    LoginResponse response = await _localService.getTokenInfo();
+    // _localService.removeTokenInfo();
+    _localService!.clearAll();
+    _localStorageService!.clearAll();
+    LoginResponse? response = await _localService!.getTokenInfo();
     Future.delayed(Duration(seconds: 2), () {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -86,9 +87,9 @@ class AppbarViewModel extends InsiteViewModel {
       //   }
       // });
       if (isVisionLink) {
-        _navigationService.replaceWith(loginViewRoute);
+        _navigationService!.replaceWith(loginViewRoute);
       } else {
-        _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+        _navigationService!.replaceWith(indiaStack.indiaStackLoginViewRoute,
             arguments: LoginArguments(response: response));
       }
     });

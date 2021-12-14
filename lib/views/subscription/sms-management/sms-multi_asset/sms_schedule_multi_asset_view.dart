@@ -26,9 +26,9 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
     IsolateNameServer.registerPortWithName(
         SmsScheduleMultiAssetViewModel().port.sendPort, 'downloader_send_port');
     SmsScheduleMultiAssetViewModel().port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+      String? id = data[0];
+      DownloadTaskStatus? status = data[1];
+      int? progress = data[2];
       setState(() {});
     });
 
@@ -44,7 +44,7 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -52,9 +52,9 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SmsScheduleMultiAssetViewModel>.reactive(
       builder: (BuildContext context, SmsScheduleMultiAssetViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -180,21 +180,21 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
 
                         // crossAxisAlignment: CrossAxisAlignment.center,
                         children: List.generate(
-                            viewModel.singleAssetModelResponce.length,
+                            viewModel.singleAssetModelResponce!.length,
                             (i) => SingleAssetValidateWidget(
                                   GPSDeviceID: viewModel
-                                      .singleAssetModelResponce[i].GPSDeviceID,
+                                      .singleAssetModelResponce![i].GPSDeviceID,
                                   SerialNumber: viewModel
-                                      .singleAssetModelResponce[i].SerialNumber,
+                                      .singleAssetModelResponce![i].SerialNumber,
                                   StartDate: viewModel
-                                      .singleAssetModelResponce[i].StartDate,
+                                      .singleAssetModelResponce![i].StartDate,
                                   langugae: viewModel.languageList[i],
                                   model: viewModel
-                                      .singleAssetModelResponce[i].Model,
+                                      .singleAssetModelResponce![i].Model,
                                   modileNo: viewModel.mobileNoList[i],
                                   name: viewModel.nameList[i],
                                 ))),
-                    viewModel.singleAssetModelResponce.isEmpty
+                    viewModel.singleAssetModelResponce!.isEmpty
                         ? SizedBox()
                         : Padding(
                             padding: const EdgeInsets.all(20),

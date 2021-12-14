@@ -3,7 +3,7 @@ part 'get_single_transfer_device_id.g.dart';
 
 @JsonSerializable()
 class SingleTransferDeviceId {
-  List<Result> result;
+  List<Result>? result;
 
   SingleTransferDeviceId({this.result});
 
@@ -16,9 +16,9 @@ class SingleTransferDeviceId {
 @JsonSerializable()
 class Result {
   @JsonKey(name: "GPSDeviceID")
-  String gPSDeviceID;
+  String? gPSDeviceID;
   @JsonKey(name: "VIN")
-  String vIN;
+  String? vIN;
 
   Result({this.gPSDeviceID, this.vIN});
 

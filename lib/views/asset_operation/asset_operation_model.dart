@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
@@ -15,10 +17,10 @@ import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart'as service;
 
 class AssetOperationViewModel extends InsiteViewModel {
-  Logger log;
-  var _assetService = locator<AssetService>();
-  var _navigationService = locator<service.NavigationService>();
-  var _assetStatusService = locator<AssetStatusService>();
+  late Logger log;
+  AssetService? _assetService = locator<AssetService>();
+  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  AssetStatusService? _assetStatusService = locator<AssetStatusService>();
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
 
@@ -30,7 +32,7 @@ class AssetOperationViewModel extends InsiteViewModel {
 
   int pageNumber = 1;
   int pageSize = 50;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -50,8 +52,8 @@ class AssetOperationViewModel extends InsiteViewModel {
 
   updateDateRangeList() {
     try {
-      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate);
-      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate);
+      DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate!);
+      DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate!);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;
       days = List.generate(
           daysToGenerate,
@@ -66,12 +68,12 @@ class AssetOperationViewModel extends InsiteViewModel {
   AssetOperationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _assetService.setUp();
-    _assetStatusService.setUp();
+    _assetService!.setUp();
+    _assetStatusService!.setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -98,13 +100,13 @@ class AssetOperationViewModel extends InsiteViewModel {
     }
     _shouldLoadmore = true;
     notifyListeners();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
-    AssetSummaryResponse result = await _assetService.getAssetSummaryList(
-        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    AssetSummaryResponse result = await (_assetService!.getAssetSummaryList(
+        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters) as FutureOr<AssetSummaryResponse>);
     if (result != null) {
       _assets.clear();
-      _assets.addAll(result.assets);
+      _assets.addAll(result.assets!);
       _loading = false;
       _refreshing = false;
       notifyListeners();
@@ -113,28 +115,28 @@ class AssetOperationViewModel extends InsiteViewModel {
       _refreshing = false;
       notifyListeners();
     }
-    Logger().i("list of assets " + result.assets.length.toString());
+    Logger().i("list of assets " + result.assets!.length.toString());
   }
 
   getAssetSummaryList() async {
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
     await getAssetOperationCount();
     updateDateRangeList();
-    AssetSummaryResponse result = await _assetService.getAssetSummaryList(
+    AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
         startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
     if (result != null) {
-      if (result.pagination.totalAssets != null) {
-        _totalCount = result.pagination.totalAssets.toInt();
+      if (result.pagination!.totalAssets != null) {
+        _totalCount = result.pagination!.totalAssets!.toInt();
       }
-      if (result.assets.isNotEmpty) {
-        Logger().i("list of assets " + result.assets.length.toString());
-        _assets.addAll(result.assets);
+      if (result.assets!.isNotEmpty) {
+        Logger().i("list of assets " + result.assets!.length.toString());
+        _assets.addAll(result.assets!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(result.assets);
+        _assets.addAll(result.assets!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -162,7 +164,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(Asset asset) {
-    _navigationService.navigateTo(assetDetailViewRoute,
+    _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
             index: 2,
             fleet: Fleet(
@@ -173,16 +175,16 @@ class AssetOperationViewModel extends InsiteViewModel {
 
   getAssetOperationCount() async {
     Logger().d("getAssetOperationCount");
-    AssetCount assetCount = await _assetStatusService.getAssetCountByFilter(
+    AssetCount? assetCount = await _assetStatusService!.getAssetCountByFilter(
         startDate,
         endDate,
         "-RuntimeHours",
         ScreenType.ASSET_OPERATION,
         appliedFilters);
     if (assetCount != null) {
-      if (assetCount.countData.isNotEmpty &&
-          assetCount.countData[0].count != null) {
-        _totalCount = assetCount.countData[0].count.toInt();
+      if (assetCount.countData!.isNotEmpty &&
+          assetCount.countData![0].count != null) {
+        _totalCount = assetCount.countData![0].count!.toInt();
       }
       Logger().d("result ${assetCount.toJson()}");
     }

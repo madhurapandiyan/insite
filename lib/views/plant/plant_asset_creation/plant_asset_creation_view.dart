@@ -19,7 +19,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlantAssetCreationViewModel>.reactive(
       builder: (BuildContext context, PlantAssetCreationViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             body: Column(
@@ -125,7 +125,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1.color),
+                            color: Theme.of(context).textTheme.bodyText1!.color!),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),

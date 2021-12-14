@@ -6,14 +6,13 @@ part of 'utilization_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UtilizationData _$UtilizationDataFromJson(Map<String, dynamic> json) {
-  return UtilizationData(
-    date: json['date'] as String,
-    lastReportedTime: json['lastReportedTime'] as String,
-    targetRuntimePerformance:
-        (json['targetRuntimePerformance'] as num)?.toDouble(),
-  );
-}
+UtilizationData _$UtilizationDataFromJson(Map<String, dynamic> json) =>
+    UtilizationData(
+      date: json['date'] as String?,
+      lastReportedTime: json['lastReportedTime'] as String?,
+      targetRuntimePerformance:
+          (json['targetRuntimePerformance'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$UtilizationDataToJson(UtilizationData instance) =>
     <String, dynamic>{
@@ -23,14 +22,12 @@ Map<String, dynamic> _$UtilizationDataToJson(UtilizationData instance) =>
     };
 
 UtilizationSummaryResponse _$UtilizationSummaryResponseFromJson(
-    Map<String, dynamic> json) {
-  return UtilizationSummaryResponse(
-    utilization: (json['utilization'] as List)
-        ?.map((e) =>
-            e == null ? null : AssetResult.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    UtilizationSummaryResponse(
+      utilization: (json['utilization'] as List<dynamic>?)
+          ?.map((e) => AssetResult.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$UtilizationSummaryResponseToJson(
         UtilizationSummaryResponse instance) =>

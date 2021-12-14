@@ -21,7 +21,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DeviceReplacementViewModel>.reactive(
       builder: (BuildContext context, DeviceReplacementViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: SingleChildScrollView(
@@ -77,8 +77,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                   width: 1,
                                   color: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
-                                      .color),
+                                      .bodyText1!
+                                      .color!),
                               borderRadius: BorderRadius.circular(20),
                               color: Theme.of(context).backgroundColor),
                         ),
@@ -143,7 +143,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                           // height: 50,
                                           color: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
+                                              .bodyText1!
                                               .color,
                                           child: Column(
                                             children: List.generate(
@@ -168,20 +168,20 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       ? Container()
                                       : ShowingOldDeviceDetail(
                                           Vin: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .VIN,
                                           date: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .S_StartDate,
                                           deviceId: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .GPSDeviceID,
                                           modelName: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .Model,
                                         ),
                                   InsiteButton(
@@ -237,30 +237,30 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                           initialValue: viewModel.initialvalue,
                                           items: viewModel.dropDownValues,
                                           modelName: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .Model,
                                           oldDeviceId: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .GPSDeviceID,
                                         )
                                       : ShowingNewDeviceDetail(
                                           oldDeviceId: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .GPSDeviceID,
                                           modelName: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .Model,
                                           machineSerialNo: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .VIN,
                                           startDate: viewModel
-                                              .deviceSearchModelResponse
-                                              .result
+                                              .deviceSearchModelResponse!
+                                              .result!
                                               .S_StartDate,
                                           newDeviceId: viewModel
                                               .replaceDeviceIdController.text,
@@ -275,7 +275,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       InsiteButton(
                                         textColor: Theme.of(context)
                                             .textTheme
-                                            .bodyText2
+                                            .bodyText2!
                                             .color,
                                         onTap: () {
                                           if (viewModel.isBackPressed) {
@@ -354,7 +354,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                           ],
                                                           content: InsiteText(
                                                             text:
-                                                                "Are you sure, do you want to replace ${viewModel.deviceSearchModelResponse.result.GPSDeviceID} with ${viewModel.replaceDeviceIdController.text}?",
+                                                                "Are you sure, do you want to replace ${viewModel.deviceSearchModelResponse!.result!.GPSDeviceID} with ${viewModel.replaceDeviceIdController.text}?",
                                                           ),
                                                         ));
                                               },

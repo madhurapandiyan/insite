@@ -3,7 +3,7 @@ import 'package:insite/core/repository/db.dart';
 import 'package:logger/logger.dart';
 
 class DateRangeService extends DataBaseService {
-  Future<List<String>> getDateRangeFilters() async {
+  Future<List<String?>?> getDateRangeFilters() async {
     try {
       int size = await filterBox.values.length;
       Logger().d("getDateRangeFilters " + size.toString());
@@ -31,13 +31,13 @@ class DateRangeService extends DataBaseService {
   }
 
   updateDateFilter(FilterData value) async {
-    int size = filterBox.values.length;
+    int? size = filterBox.values.length;
     if (size == 0) {
       filterBox.add(value);
     } else {
       bool shouldUpdate = false;
       int index = -1;
-      for (var i = 0; i < size; i++) {
+      for (var i = 0; i < size!; i++) {
         FilterData data = filterBox.getAt(i);
         if (data.type == value.type) {
           shouldUpdate = true;

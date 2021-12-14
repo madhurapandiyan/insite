@@ -8,14 +8,14 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Notes extends StatelessWidget {
   const Notes({
-    Key key,
-    @required this.controller,
-    @required this.onTap,
-    @required this.isLoading,
-    @required this.notes,
+    Key? key,
+    required this.controller,
+    required this.onTap,
+    required this.isLoading,
+    required this.notes,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final Function onTap;
   final bool isLoading;
   final List<Note> notes;
@@ -96,7 +96,7 @@ class Notes extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           maxLines: null,
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return 'Please enter some text';
                             }
                             return null;
@@ -127,7 +127,7 @@ class Notes extends StatelessWidget {
                         showLoad: isLoading,
                         width: 90,
                         height: 40,
-                        onTap: onTap,
+                        onTap: onTap as void Function()?,
                         textColor: white,
                       ),
                     ),

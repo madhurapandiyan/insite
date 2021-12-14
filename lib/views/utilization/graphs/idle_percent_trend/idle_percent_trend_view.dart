@@ -6,11 +6,11 @@ import 'package:stacked/stacked.dart';
 import 'idle_percent_trend_view_model.dart';
 
 class IdlePercentTrendView extends StatefulWidget {
-  final int rangeChoice;
-  final String startDate;
-  final String endDate;
+  final int? rangeChoice;
+  final String? startDate;
+  final String? endDate;
   const IdlePercentTrendView(
-      {Key key, this.rangeChoice, this.startDate, this.endDate})
+      {Key? key, this.rangeChoice, this.startDate, this.endDate})
       : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
     super.initState();
   }
 
-  var viewModel;
+  late var viewModel;
 
   @override
   void dispose() {
@@ -43,7 +43,7 @@ class IdlePercentTrendViewState extends State<IdlePercentTrendView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<IdlePercentTrendViewModel>.reactive(
       builder: (BuildContext context, IdlePercentTrendViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

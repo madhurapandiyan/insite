@@ -5,7 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:flutter/src/painting/basic_types.dart' as axis;
 
 class DateSlider extends StatelessWidget {
-  final List<SliderData> list;
+  final List<SliderData>? list;
   const DateSlider({this.list});
 
   @override
@@ -13,9 +13,9 @@ class DateSlider extends StatelessWidget {
     return Container(
       height: 140,
       child: ListView.builder(
-        itemCount: list.length,
+        itemCount: list!.length,
         itemBuilder: (context, index) {
-          SliderData data = list[index];
+          SliderData data = list![index];
           return Column(
             children: [
               Padding(
@@ -41,7 +41,7 @@ class DateSlider extends StatelessWidget {
                 width: 50,
               ),
               Padding(padding: EdgeInsets.all(2)),
-              data.value.isEmpty
+              data.value!.isEmpty
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InsiteText(
@@ -68,8 +68,8 @@ class DateSlider extends StatelessWidget {
 }
 
 class SliderData {
-  final String date;
-  final String day;
-  final String value;
+  final String? date;
+  final String? day;
+  final String? value;
   SliderData({this.date, this.day, this.value});
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FilterItemWidget extends StatefulWidget {
-  final String text;
-  final Widget body;
+  final String? text;
+  final Widget? body;
 
   const FilterItemWidget({this.text, this.body});
 

@@ -73,10 +73,10 @@ class Router {
       case fleetViewRoute:
         return MaterialPageRoute(builder: (_) => view3.FleetView());
       case indiaStackLoginViewRoute:
-        var loginArgs = settings.arguments as view4.LoginArguments;
+        var loginArgs = settings.arguments as view4.LoginArguments?;
         return MaterialPageRoute(
             builder: (_) => view4.IndiaStackLoginView(
-                  arguments: loginArgs.response,
+                  arguments: loginArgs!.response,
                 ));
         return MaterialPageRoute(builder: (_) => view4.IndiaStackLoginView());
       case indiaStackLogoutViewRoute:
@@ -88,10 +88,10 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs = settings.arguments as view9.DetailArguments;
+        var fleetArgs = settings.arguments as view9.DetailArguments?;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
-                  fleet: fleetArgs.fleet,
+                  fleet: fleetArgs!.fleet,
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));

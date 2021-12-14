@@ -6,12 +6,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdleTrendGraph extends StatelessWidget {
   final int rangeSelection;
-  final IdlePercentTrend idlePercentTrend;
+  final IdlePercentTrend? idlePercentTrend;
 
   const IdleTrendGraph({
-    Key key,
-    @required this.rangeSelection,
-    @required this.idlePercentTrend,
+    Key? key,
+    required this.rangeSelection,
+    required this.idlePercentTrend,
   }) : super(key: key);
 
   @override
@@ -20,15 +20,15 @@ class IdleTrendGraph extends StatelessWidget {
       child: SfCartesianChart(
         title: ChartTitle(
             textStyle:
-                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+                TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
             text: ''),
         primaryXAxis: CategoryAxis(
           title: AxisTitle(
               text: '',
               textStyle: TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color)),
+                  color: Theme.of(context).textTheme.bodyText1!.color)),
           labelStyle:
-              TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+              TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
           majorGridLines: MajorGridLines(width: 0),
           labelRotation: 270,
         ),
@@ -37,11 +37,11 @@ class IdleTrendGraph extends StatelessWidget {
             title: AxisTitle(
                 text: '',
                 textStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1!.color)),
             numberFormat: NumberFormat.compact(),
             axisLine: AxisLine(width: 1),
             labelStyle:
-                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+                TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
             majorGridLines: MajorGridLines(width: 0),
             minimum: 0,
             maximum: 100,
@@ -59,9 +59,9 @@ class IdleTrendGraph extends StatelessWidget {
     if (idlePercentTrend == null)
       return <SplineSeries<CumulativeChartData, String>>[];
 
-    for (var item in idlePercentTrend.intervals) {
+    for (var item in idlePercentTrend!.intervals!) {
       chartData.add(CumulativeChartData(
-          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),
+          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime!),
           item.idlePercentage));
     }
 
@@ -81,7 +81,7 @@ class IdleTrendGraph extends StatelessWidget {
 
 class CumulativeChartData {
   final String x;
-  final double percentage;
+  final double? percentage;
 
   CumulativeChartData(
     this.x,

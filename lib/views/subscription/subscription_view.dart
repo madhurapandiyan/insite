@@ -11,9 +11,9 @@ class SubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubscriptionViewModel>.reactive(
       builder:
-          (BuildContext context, SubscriptionViewModel viewModel, Widget _) {
+          (BuildContext context, SubscriptionViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.SUBSCRIPTION,

@@ -44,37 +44,37 @@ part 'asset_detail.g.dart';
 
 @JsonSerializable()
 class AssetDetail {
-  final String assetUid;
-  final String assetSerialNumber;
-  final String makeCode;
-  final String manufacturer;
-  final String model;
-  final double year;
-  final int assetIcon;
-  final String productFamily;
-  final String status;
-  final String customStateDescription;
-  final String dealerName;
-  final double hourMeter;
-  final String dealerCustomerNumber;
-  final String accountName;
-  final String universalCustomerIdentifier;
-  final String universalCustomerName;
-  final String lastReportedLocation;
-  final double lastReportedLocationLatitude;
-  final double lastReportedLocationLongitude;
-  final double fuelLevelLastReported;
-  final String lastPercentFuelRemainingUTC;
-  final String fuelReportedTimeUTC;
-  final double lifetimeFuel;
-  final String lastReportedTimeUTC;
-  final String lastLocationUpdateUTC;
-  final double percentDEFRemaining;
-  final double lifetimeDEFLiters;
-  final String lastLifetimeDEFLitersUTC;
-  final String lastPercentDEFRemainingUTC;
-  final List<Device> devices;
-  final List<ServicePlan> activeServicePlans;
+  final String? assetUid;
+  final String? assetSerialNumber;
+  final String? makeCode;
+  final String? manufacturer;
+  final String? model;
+  final double? year;
+  final int? assetIcon;
+  final String? productFamily;
+  final String? status;
+  final String? customStateDescription;
+  final String? dealerName;
+  final double? hourMeter;
+  final String? dealerCustomerNumber;
+  final String? accountName;
+  final String? universalCustomerIdentifier;
+  final String? universalCustomerName;
+  final String? lastReportedLocation;
+  final double? lastReportedLocationLatitude;
+  final double? lastReportedLocationLongitude;
+  final double? fuelLevelLastReported;
+  final String? lastPercentFuelRemainingUTC;
+  final String? fuelReportedTimeUTC;
+  final double? lifetimeFuel;
+  final String? lastReportedTimeUTC;
+  final String? lastLocationUpdateUTC;
+  final double? percentDEFRemaining;
+  final double? lifetimeDEFLiters;
+  final String? lastLifetimeDEFLitersUTC;
+  final String? lastPercentDEFRemainingUTC;
+  final List<Device>? devices;
+  final List<ServicePlan>? activeServicePlans;
   AssetDetail(
       this.assetUid,
       this.assetSerialNumber,

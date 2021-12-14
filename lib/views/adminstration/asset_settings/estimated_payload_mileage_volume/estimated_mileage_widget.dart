@@ -8,7 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedMileage extends StatefulWidget {
-  final List<String> assetUids;
+  final List<String?>? assetUids;
   const EstimatedMileage({this.assetUids});
 
   @override
@@ -30,7 +30,7 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<EstimatedVoumePayloadMileage>.reactive(
       builder: (BuildContext context, EstimatedVoumePayloadMileage viewModel,
-          Widget _) {
+          Widget? _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -73,7 +73,7 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                                 fontWeight: FontWeight.w700,
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .color),
                             keyboardType: TextInputType.numberWithOptions(
                               decimal: false,

@@ -15,11 +15,11 @@ import 'package:stacked_services/stacked_services.dart'as service;
 import 'package:insite/views/error/error_widget.dart' as error;
 
 class InsiteScaffold extends StatefulWidget {
-  final ScreenType screenType;
-  final Widget body;
-  final InsiteViewModel viewModel;
-  final VoidCallback onFilterApplied;
-  final VoidCallback onRefineApplied;
+  final ScreenType? screenType;
+  final Widget? body;
+  final InsiteViewModel? viewModel;
+  final VoidCallback? onFilterApplied;
+  final VoidCallback? onRefineApplied;
   InsiteScaffold(
       {this.screenType,
       this.body,
@@ -35,7 +35,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   bool _isSearchSelected = false;
   bool _isFilterSelected = false;
   bool _isRefineSelected = false;
-  var _navigationService = locator<service.NavigationService>();
+  service.NavigationService? _navigationService = locator<service.NavigationService>();
 
   @override
   void initState() {
@@ -122,7 +122,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
             });
           },
         ),
-        body: widget.viewModel.youDontHavePermission
+        body: widget.viewModel!.youDontHavePermission
             ? error.ErrorWidget(
                 title: "",
                 onTap: (value) {
@@ -134,7 +134,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                     "You do not have access to this application, please contact your Administrator to get access",
               )
             : Stack(children: [
-                widget.body,
+                widget.body!,
                 _isSearchSelected
                     ? GlobalSearchView(
                         onSelected: (TopMatch value) {
@@ -163,9 +163,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     );
   }
 
-  onErrorActionClicked(ErrorAction action, InsiteViewModel viewModel) {
+  onErrorActionClicked(ErrorAction action, InsiteViewModel? viewModel) {
     if (action == ErrorAction.LOGIN) {
-      viewModel.login();
+      viewModel!.login();
     } else if (action == ErrorAction.LOGIN) {}
   }
 
@@ -174,7 +174,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
       _isFilterSelected = !_isFilterSelected;
     });
     if (bool) {
-      widget.onFilterApplied();
+      widget.onFilterApplied!();
     }
   }
 
@@ -183,7 +183,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
       _isRefineSelected = !_isRefineSelected;
     });
     if (bool) {
-      widget.onRefineApplied();
+      widget.onRefineApplied!();
     }
   }
 
@@ -191,7 +191,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
     setState(() {
       _isSearchSelected = !_isSearchSelected;
     });
-    _navigationService.navigateTo(assetDetailViewRoute,
+    _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
             index: 0,
             type: widget.screenType,

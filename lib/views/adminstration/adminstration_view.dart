@@ -19,7 +19,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AdminstrationViewModel>.reactive(
       builder:
-          (BuildContext context, AdminstrationViewModel viewModel, Widget _) {
+          (BuildContext context, AdminstrationViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           screenType: ScreenType.ADMINISTRATION,

@@ -5,11 +5,11 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class AssetSettingWidget extends StatelessWidget {
-  final String headerText;
-  final VoidCallback onButtonClicked;
-  final String buttonText;
+  final String? headerText;
+  final VoidCallback? onButtonClicked;
+  final String? buttonText;
   final bool showExapansionMenu;
-  final String icon;
+  final String? icon;
 
   const AssetSettingWidget(
       {this.headerText,
@@ -46,7 +46,7 @@ class AssetSettingWidget extends StatelessWidget {
                   width: 15,
                 ),
                 InsiteText(
-                    text: headerText.toUpperCase(),
+                    text: headerText!.toUpperCase(),
                     fontWeight: FontWeight.w700,
                     size: 14.0),
               ],
@@ -59,7 +59,7 @@ class AssetSettingWidget extends StatelessWidget {
               height: 8,
             ),
             SvgPicture.asset(
-              icon,
+              icon!,
               height: 24,
               width: 24,
               color: Theme.of(context).iconTheme.color,
@@ -67,11 +67,11 @@ class AssetSettingWidget extends StatelessWidget {
             InsiteButton(
               width: MediaQuery.of(context).size.width * 0.71,
               height: MediaQuery.of(context).size.height * 0.05,
-              title: buttonText.toUpperCase(),
+              title: buttonText!.toUpperCase(),
               textColor: white,
               fontSize: 10,
               onTap: () {
-                onButtonClicked();
+                onButtonClicked!();
               },
               margin: EdgeInsets.all(5),
             )

@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import 'asset_settings_filter_view_model.dart';
 
 class AssetSettingsFilterView extends StatefulWidget {
-  final List<String> assetUids;
+  final List<String?>? assetUids;
 
   AssetSettingsFilterView({this.assetUids});
 
@@ -31,7 +31,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsFilterViewModel>.reactive(
       builder: (BuildContext context, AssetSettingsFilterViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           screenType: ScreenType.ASSET_SETTINGS_FILTER,
@@ -46,7 +46,7 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                     bottomRight: Radius.circular(8),
                   ),
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               child: ListView(
                 children: [
                   SizedBox(

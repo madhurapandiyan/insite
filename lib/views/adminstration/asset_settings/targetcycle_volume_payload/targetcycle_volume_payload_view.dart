@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class TargetCycleVolumePayloadWidget extends StatefulWidget {
-  final List<String> assetUids;
+  final List<String>? assetUids;
   TargetCycleVolumePayloadWidget({this.assetUids});
 
   @override
@@ -21,8 +21,8 @@ class TargetCycleVolumePayloadWidget extends StatefulWidget {
 
 class _TargetCycleVolumePayloadWidgetState
     extends State<TargetCycleVolumePayloadWidget> {
-  DateTime startDate;
-  DateTime endDate;
+  DateTime? startDate;
+  DateTime? endDate;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _TargetCycleVolumePayloadWidgetState
   Widget build(BuildContext context) {
     return ViewModelBuilder<TargetCycleVolumePayloadViewModel>.reactive(
       builder: (BuildContext context,
-          TargetCycleVolumePayloadViewModel viewModel, Widget _) {
+          TargetCycleVolumePayloadViewModel viewModel, Widget? _) {
         return Column(
           children: [
             SizedBox(
@@ -53,7 +53,7 @@ class _TargetCycleVolumePayloadWidgetState
                   text: "Start Time",
                   fontWeight: FontWeight.w700,
                   size: 14,
-                  color: Theme.of(context).textTheme.bodyText1.backgroundColor,
+                  color: Theme.of(context).textTheme.bodyText1!.backgroundColor,
                 ),
                 SizedBox(
                   width: 120,
@@ -62,7 +62,7 @@ class _TargetCycleVolumePayloadWidgetState
                   text: "End Time",
                   fontWeight: FontWeight.w700,
                   size: 14,
-                  color: Theme.of(context).textTheme.bodyText1.backgroundColor,
+                  color: Theme.of(context).textTheme.bodyText1!.backgroundColor,
                 )
               ],
             ),
@@ -87,7 +87,7 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
@@ -115,14 +115,14 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
                           controller: viewModel.endDateInput,
                           voidCallback: () async {
                             await getEndDatePicker(viewModel);
-                            viewModel.getDateFilter(startDate, endDate);
+                            viewModel.getDateFilter(startDate!, endDate!);
                           },
                         )),
                   ),
@@ -153,7 +153,7 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Container(
                       color: viewModel.isChangeCycleState ? tango : null,
                     ),
@@ -186,7 +186,7 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Container(
                       color: viewModel.isChangeVolumeState ? tango : null,
                     ),
@@ -219,7 +219,7 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Container(
                       color: viewModel.isChangePayLoadSate ? tango : null,
                     ),
@@ -264,7 +264,7 @@ class _TargetCycleVolumePayloadWidgetState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: viewModel.isChangeCycleState
                         ? Row(
                             children: [
@@ -334,8 +334,8 @@ class _TargetCycleVolumePayloadWidgetState
                             border: Border.all(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    .color)),
+                                    .bodyText1!
+                                    .color!)),
                         child: viewModel.isChangeVolumeState
                             ? Row(
                                 children: [
@@ -409,7 +409,7 @@ class _TargetCycleVolumePayloadWidgetState
                           ),
                           border: Border.all(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color)),
+                                  Theme.of(context).textTheme.bodyText1!.color!)),
                       child: viewModel.isChangePayLoadSate
                           ? Row(
                               children: [
@@ -562,7 +562,7 @@ class _TargetCycleVolumePayloadWidgetState
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101))
-        .then((value) => startDate = value);
+        .then((value) => (startDate = value)!);
 
     if (pickedStartdate != null) {
       print(pickedStartdate);
@@ -581,7 +581,7 @@ class _TargetCycleVolumePayloadWidgetState
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101))
-        .then((value) => endDate = value);
+        .then((value) => (endDate = value)!);
 
     if (pickedEndDate != null) {
       print(pickedEndDate);

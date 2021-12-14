@@ -6,17 +6,17 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class TotalFuelBurnedViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _utilizationGraphService = locator<UtilizationGraphsService>();
+  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
 
   String _range = 'daily';
   set range(String range) {
     this._range = range;
   }
 
-  TotalFuelBurned _totalFuelBurned;
-  TotalFuelBurned get totalFuelBurned => _totalFuelBurned;
+  TotalFuelBurned? _totalFuelBurned;
+  TotalFuelBurned? get totalFuelBurned => _totalFuelBurned;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -34,7 +34,7 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
 
   getTotalFuelBurned() async {
     _isSwitching = true;
-    TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
+    TotalFuelBurned? result = await _utilizationGraphService!.getTotalFuelBurned(
         _range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _totalFuelBurned = null;
@@ -48,8 +48,8 @@ class TotalFuelBurnedViewModel extends InsiteViewModel {
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
-    TotalFuelBurned result = await _utilizationGraphService.getTotalFuelBurned(
-        _range, startDate, endDate, 1, 25, true);
+    TotalFuelBurned result = await (_utilizationGraphService!.getTotalFuelBurned(
+        _range, startDate, endDate, 1, 25, true) as Future<TotalFuelBurned>);
     if (result.cumulatives == null)
       _totalFuelBurned = null;
     else

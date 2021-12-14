@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'search_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class SearchModel {
-  final num Err;
-  final List<Location> Locations;
+  final num? Err;
+  final List<Location>? Locations;
   SearchModel({this.Err, this.Locations});
   factory SearchModel.fromJson(Map<String, dynamic> json) =>
       _$SearchModelFromJson(json);
@@ -13,14 +13,14 @@ class SearchModel {
 }
 @JsonSerializable(explicitToJson: true)
 class Location {
-  final AddressLocation Address;
-  final Coordinate Coords;
-  final int Region;
-  final int POITypeID;
-  final int PersistentPOIID;
-  final int SiteID;
-  final int ResultType;
-  final String ShortString;
+  final AddressLocation? Address;
+  final Coordinate? Coords;
+  final int? Region;
+  final int? POITypeID;
+  final int? PersistentPOIID;
+  final int? SiteID;
+  final int? ResultType;
+  final String? ShortString;
   Location(
       {this.Address,
       this.Coords,
@@ -37,15 +37,15 @@ class Location {
 }
 @JsonSerializable()
 class AddressLocation {
-  final String StreetAddress;
-  final String City;
-  final String State;
-  final String StateName;
-  final String Zip;
-  final String County;
-  final String Country;
-  final String CountryFullName;
-  final String SPLC;
+  final String? StreetAddress;
+  final String? City;
+  final String? State;
+  final String? StateName;
+  final String? Zip;
+  final String? County;
+  final String? Country;
+  final String? CountryFullName;
+  final String? SPLC;
   AddressLocation(
       {this.StreetAddress,
       this.City,
@@ -63,8 +63,8 @@ class AddressLocation {
 }
 @JsonSerializable()
 class Coordinate {
-  final String Lat;
-  final String Lon;
+  final String? Lat;
+  final String? Lon;
   Coordinate({this.Lat, this.Lon});
     factory Coordinate.fromJson(Map<String, dynamic> json) =>
       _$CoordinateFromJson(json);

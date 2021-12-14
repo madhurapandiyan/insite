@@ -10,9 +10,9 @@ class RunTimeCumulative {
     this.message,
   });
 
-  Cumulatives cumulatives;
-  int code;
-  String message;
+  Cumulatives? cumulatives;
+  int? code;
+  String? message;
 
   factory RunTimeCumulative.fromJson(Map<String, dynamic> json) =>
       _$RunTimeCumulativeFromJson(json);
@@ -34,15 +34,15 @@ class Cumulatives {
     this.intervalType,
   });
 
-  double cumulativeHours;
-  double averageHours;
-  Totals totals;
-  String description;
-  DateTime startDateLocalTime;
-  DateTime endDateLocalTime;
-  int totalAssetCount;
-  int totalDayCount;
-  String intervalType;
+  double? cumulativeHours;
+  double? averageHours;
+  Totals? totals;
+  String? description;
+  DateTime? startDateLocalTime;
+  DateTime? endDateLocalTime;
+  int? totalAssetCount;
+  int? totalDayCount;
+  String? intervalType;
 
   factory Cumulatives.fromJson(Map<String, dynamic> json) =>
       _$CumulativesFromJson(json);
@@ -58,9 +58,9 @@ class Totals {
     this.runtimeHours,
   });
 
-  double idleHours;
-  double workingHours;
-  double runtimeHours;
+  double? idleHours;
+  double? workingHours;
+  double? runtimeHours;
 
   factory Totals.fromJson(Map<String, dynamic> json) => _$TotalsFromJson(json);
 
@@ -75,9 +75,9 @@ class FuelBurnedCumulative {
     this.message,
   });
 
-  FuelBurnedCumulatives cumulatives;
-  int code;
-  String message;
+  FuelBurnedCumulatives? cumulatives;
+  int? code;
+  String? message;
 
   factory FuelBurnedCumulative.fromJson(Map<String, dynamic> json) =>
       _$FuelBurnedCumulativeFromJson(json);
@@ -99,15 +99,15 @@ class FuelBurnedCumulatives {
     this.intervalType,
   });
 
-  double totalFuelBurned;
-  double averageFuelBurned;
-  FuelBurnedTotals totals;
-  String description;
-  DateTime startDateLocalTime;
-  DateTime endDateLocalTime;
-  int totalAssetCount;
-  int totalDayCount;
-  String intervalType;
+  double? totalFuelBurned;
+  double? averageFuelBurned;
+  FuelBurnedTotals? totals;
+  String? description;
+  DateTime? startDateLocalTime;
+  DateTime? endDateLocalTime;
+  int? totalAssetCount;
+  int? totalDayCount;
+  String? intervalType;
 
   factory FuelBurnedCumulatives.fromJson(Map<String, dynamic> json) =>
       _$FuelBurnedCumulativesFromJson(json);
@@ -123,9 +123,9 @@ class FuelBurnedTotals {
     this.runtimeFuelBurned,
   });
 
-  double idleFuelBurned;
-  double workingFuelBurned;
-  double runtimeFuelBurned;
+  double? idleFuelBurned;
+  double? workingFuelBurned;
+  double? runtimeFuelBurned;
 
   factory FuelBurnedTotals.fromJson(Map<String, dynamic> json) =>
       _$FuelBurnedTotalsFromJson(json);

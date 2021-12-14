@@ -3,12 +3,12 @@ part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
-  String access_token;
-  String refresh_token;
-  String scope;
-  String id_token;
-  String token_type;
-  int expires_in;
+  String? access_token;
+  String? refresh_token;
+  String? scope;
+  String? id_token;
+  String? token_type;
+  int? expires_in;
 
   LoginResponse(
       {this.access_token,

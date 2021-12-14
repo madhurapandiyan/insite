@@ -3,7 +3,7 @@ part 'asset_fuel_burn_rate_settings_list_data.g.dart';
 
 @JsonSerializable()
 class AssetFuelBurnRateSettingsListData {
-  List<AssetFuelBurnRateSettings> assetFuelBurnRateSettings;
+  List<AssetFuelBurnRateSettings>? assetFuelBurnRateSettings;
   
 
   AssetFuelBurnRateSettingsListData(
@@ -16,10 +16,10 @@ class AssetFuelBurnRateSettingsListData {
 
 @JsonSerializable()
 class AssetFuelBurnRateSettings {
-  double idleTargetValue;
-  double workTargetValue;
-  String startDate;
-  String assetUid;
+  double? idleTargetValue;
+  double? workTargetValue;
+  String? startDate;
+  String? assetUid;
 
   AssetFuelBurnRateSettings(
       {this.idleTargetValue,

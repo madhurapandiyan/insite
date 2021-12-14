@@ -7,15 +7,12 @@ part of 'get_asset_details_by_serial_no.dart';
 // **************************************************************************
 
 AssetDetailsBySerialNo _$AssetDetailsBySerialNoFromJson(
-    Map<String, dynamic> json) {
-  return AssetDetailsBySerialNo(
-    result: (json['result'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ResultsValues.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    AssetDetailsBySerialNo(
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => ResultsValues.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AssetDetailsBySerialNoToJson(
         AssetDetailsBySerialNo instance) =>
@@ -23,12 +20,11 @@ Map<String, dynamic> _$AssetDetailsBySerialNoToJson(
       'result': instance.result,
     };
 
-ResultsValues _$ResultsValuesFromJson(Map<String, dynamic> json) {
-  return ResultsValues(
-    model: json['Model'] as String,
-    deviceId: json['GPSDeviceID'] as String,
-  );
-}
+ResultsValues _$ResultsValuesFromJson(Map<String, dynamic> json) =>
+    ResultsValues(
+      model: json['Model'] as String?,
+      deviceId: json['GPSDeviceID'] as String?,
+    );
 
 Map<String, dynamic> _$ResultsValuesToJson(ResultsValues instance) =>
     <String, dynamic>{

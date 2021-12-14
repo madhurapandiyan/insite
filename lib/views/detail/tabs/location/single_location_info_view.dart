@@ -5,8 +5,8 @@ import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class SingleInfoView extends StatelessWidget {
-  final AssetLocation assetLocation;
-  const SingleInfoView({Key key, this.assetLocation}) : super(key: key);
+  final AssetLocation? assetLocation;
+  const SingleInfoView({Key? key, this.assetLocation}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SingleInfoView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   color: Theme.of(context).backgroundColor,
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               padding: EdgeInsets.all(8),
               child: Column(
                 children: [
@@ -38,7 +38,7 @@ class SingleInfoView extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             size: 10.0),
                         InsiteText(
-                            text: assetLocation.locationEventLocalTime
+                            text: assetLocation!.locationEventLocalTime
                                     .toString()
                                     .split('T')
                                     .first
@@ -46,19 +46,19 @@ class SingleInfoView extends StatelessWidget {
                                     .split(' ')
                                     .first +
                                 '/' +
-                                assetLocation.locationEventLocalTime
+                                assetLocation!.locationEventLocalTime
                                     .toString()
                                     .split('T')
                                     .first
                                     .split('-')[1] +
                                 '/' +
-                                assetLocation.locationEventLocalTime
+                                assetLocation!.locationEventLocalTime
                                     .toString()
                                     .split('T')
                                     .first
                                     .split('-')[0] +
                                 ' ' +
-                                assetLocation.locationEventLocalTime
+                                assetLocation!.locationEventLocalTime
                                     .toString()
                                     .split('T')
                                     .last
@@ -66,13 +66,13 @@ class SingleInfoView extends StatelessWidget {
                                     .split(' ')
                                     .last +
                                 ':' +
-                                assetLocation.locationEventLocalTime
+                                assetLocation!.locationEventLocalTime
                                     .toString()
                                     .split('T')
                                     .last
                                     .split(':')[1] +
                                 ' ' +
-                                assetLocation.locationEventLocalTimeZoneAbbrev,
+                                assetLocation!.locationEventLocalTimeZoneAbbrev!,
                             size: 8.0),
                       ],
                     ),
@@ -92,8 +92,8 @@ class SingleInfoView extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             size: 10.0),
                         InsiteText(
-                            text: assetLocation.address != null
-                                ? getAddressText(assetLocation.address)
+                            text: assetLocation!.address != null
+                                ? getAddressText(assetLocation!.address!)
                                 : "",
                             size: 8.0),
                       ],
@@ -113,10 +113,10 @@ class SingleInfoView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InsiteText(
-                            text: "Hours: ${assetLocation.hourmeter} Hrs",
+                            text: "Hours: ${assetLocation!.hourmeter} Hrs",
                             size: 8.0),
                         InsiteText(
-                            text: "Odometer: ${assetLocation.odometer} Hrs",
+                            text: "Odometer: ${assetLocation!.odometer} Hrs",
                             size: 8.0),
                       ],
                     ),
@@ -140,19 +140,19 @@ class SingleInfoView extends StatelessWidget {
     );
   }
 
-  String getAddressText(Address address) {
+  String? getAddressText(Address address) {
     print("getAddressText ${address.streetAddress}");
-    String text = "";
+    String? text = "";
     text = address.streetAddress != null
-        ? address.streetAddress
-        : "" + ',' + address.city != null
-            ? address.city
-            : "" + ',' + address.county != null
-                ? address.county
-                : "" + ',' + address.state != null
-                    ? address.state
-                    : "" + ' ' + address.zip != null
-                        ? address.zip
+        ? address.streetAddress!
+        : "" + ',' + address.city! != null
+            ? address.city!
+            : "" + ',' + address.county! != null
+                ? address.county!
+                : "" + ',' + address.state! != null
+                    ? address.state!
+                    : "" + ' ' + address.zip! != null
+                        ? address.zip!
                         : "";
     return text;
   }

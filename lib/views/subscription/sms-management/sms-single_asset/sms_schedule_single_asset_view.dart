@@ -23,7 +23,7 @@ class _SmsScheduleSingleAssetViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<SmsScheduleSingleAssetViewModel>.reactive(
       builder: (BuildContext context, SmsScheduleSingleAssetViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
           body: SingleChildScrollView(
             child: Padding(
@@ -69,8 +69,10 @@ class _SmsScheduleSingleAssetViewState
                           color: Theme.of(context).backgroundColor,
                           border: Border.all(
                               width: 1,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1.color),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -87,20 +89,20 @@ class _SmsScheduleSingleAssetViewState
                   SizedBox(
                     height: 20,
                   ),
-                  viewModel.singleAssetModelResponce.isEmpty
+                  viewModel.singleAssetModelResponce!.isEmpty
                       ? SingleAssetFormWidget(
                           mobileNoController: viewModel.mobileNoController,
                           nameController: viewModel.nameController,
-                          onSaving: viewModel.onSavingForm,
+                          onSaving:  viewModel.onSavingForm,
                           serialNoController: viewModel.serialNoController)
                       : Column(
                           children: [
                             Column(
                               children: List.generate(
-                                  viewModel.singleAssetModelResponce.length,
+                                  viewModel.singleAssetModelResponce!.length,
                                   (i) {
                                 final model =
-                                    viewModel.singleAssetModelResponce;
+                                    viewModel.singleAssetModelResponce!;
                                 return model.isEmpty
                                     ? Column(
                                         crossAxisAlignment:
@@ -130,7 +132,7 @@ class _SmsScheduleSingleAssetViewState
                             SizedBox(
                               height: 30,
                             ),
-                            viewModel.singleAssetModelResponce.isEmpty
+                            viewModel.singleAssetModelResponce!.isEmpty
                                 ? SizedBox()
                                 : Row(
                                     mainAxisAlignment:
@@ -139,7 +141,7 @@ class _SmsScheduleSingleAssetViewState
                                       InsiteButton(
                                         textColor: Theme.of(context)
                                             .textTheme
-                                            .bodyText2
+                                            .bodyText2!
                                             .color,
                                         onTap: () {
                                           viewModel.onBackPressed();
@@ -156,7 +158,7 @@ class _SmsScheduleSingleAssetViewState
                                       InsiteButton(
                                         onTap: () async {
                                           showLoadingDialog();
-                                        await  viewModel
+                                          await viewModel
                                               .onSavingSmsModel()
                                               .then((_) => showDialog(
                                                   context: context,
@@ -170,13 +172,13 @@ class _SmsScheduleSingleAssetViewState
                                                                 Navigator.of(
                                                                         context)
                                                                     .pop();
-                                                               },
+                                                              },
                                                               icon: Icon(
                                                                 Icons.done,
                                                                 color: Theme.of(
                                                                         context)
                                                                     .textTheme
-                                                                    .bodyText1
+                                                                    .bodyText1!
                                                                     .color,
                                                               ),
                                                               label: InsiteText(
@@ -191,7 +193,7 @@ class _SmsScheduleSingleAssetViewState
                                         },
                                         textColor: white,
                                         title: viewModel
-                                                .singleAssetModelResponce
+                                                .singleAssetModelResponce!
                                                 .isEmpty
                                             ? "Next"
                                             : "Register",

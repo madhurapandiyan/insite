@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
@@ -21,7 +23,7 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   InsiteViewModel() {
     try {
-      if (AppConfig.instance.apiFlavor == "visionlink") {
+      if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
@@ -34,10 +36,10 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
-  var navigationService = locator<NavigationService>();
-  var _filterService = locator<FilterService>();
-  var _dateRangeService = locator<DateRangeService>();
-  var snackbarService = locator<SnackbarService>();
+  NavigationService? navigationService = locator<NavigationService>();
+  FilterService? _filterService = locator<FilterService>();
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
+  SnackbarService? snackbarService = locator<SnackbarService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;
@@ -51,20 +53,20 @@ abstract class InsiteViewModel extends BaseViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  String _startDate = DateFormat('yyyy-MM-dd').format(
+  String? _startDate = DateFormat('yyyy-MM-dd').format(
       DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
-  set startDate(String startDate) {
+  set startDate(String? startDate) {
     this._startDate = startDate;
   }
 
-  String get startDate => _startDate;
+  String? get startDate => _startDate;
 
-  String _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set endDate(String endDate) {
+  String? _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  set endDate(String? endDate) {
     this._endDate = endDate;
   }
 
-  String get endDate => _endDate;
+  String? get endDate => _endDate;
 
   DateRangeType _dateType = DateRangeType.currentWeek;
   set dateType(DateRangeType dateType) {
@@ -74,58 +76,59 @@ abstract class InsiteViewModel extends BaseViewModel {
   DateRangeType get dateType => _dateType;
 
   setUp() {
-    _filterService.setUp();
-    _dateRangeService.setUp();
+    _filterService!.setUp();
+    _dateRangeService!.setUp();
   }
 
   login() {
     Future.delayed(Duration(seconds: 2), () {
-      navigationService.replaceWith(logoutViewRoute);
+      navigationService!.replaceWith(logoutViewRoute);
     });
   }
 
-  updateFilterInDb(List<FilterData> selectedFilterData) {
-    _filterService.updateFilterInDb(selectedFilterData);
+  updateFilterInDb(List<FilterData?> selectedFilterData) {
+    _filterService!.updateFilterInDb(selectedFilterData);
   }
 
   clearFilterOfTypeInDb(type) {
-    _filterService.clearFilterOfTypeInDb(type);
+    _filterService!.clearFilterOfTypeInDb(type);
   }
 
   getSelectedFilterData() async {
-    appliedFilters = await _filterService.getSelectedFilters();
-    Logger().d("getSelectedFilterData ${appliedFilters.length.toString()}");
+    appliedFilters = await _filterService!.getSelectedFilters();
+    Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
     notifyListeners();
   }
 
   removeFilter(value) async {
     Logger().d("removeFilter title " + value.title.toString());
-    await _filterService.removeFilter(value);
+    await _filterService!.removeFilter(value);
     getSelectedFilterData();
   }
 
   addFilter(FilterData data) async {
     print("addFilter title " + data.title.toString());
-    await _filterService.addFilter(data);
+    await _filterService!.addFilter(data);
   }
 
   Future clearFilterDb() async {
-    return await _filterService.clearFilterDatabase();
+    return await _filterService!.clearFilterDatabase();
   }
 
   Future clearDashboardFiltersDb() async {
-    await _filterService.clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
-    await _filterService.clearFilterOfTypeInDb(FilterType.SEVERITY);
-    await _filterService.clearFilterOfTypeInDb(FilterType.IDLING_LEVEL);
-    await _filterService.clearFilterOfTypeInDb(FilterType.FUEL_LEVEL);
-    await _filterService.clearFilterOfTypeInDb(FilterType.ASSET_STATUS);
+    await _filterService!.clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
+    await _filterService!.clearFilterOfTypeInDb(FilterType.SEVERITY);
+    await _filterService!.clearFilterOfTypeInDb(FilterType.IDLING_LEVEL);
+    await _filterService!.clearFilterOfTypeInDb(FilterType.FUEL_LEVEL);
+    await _filterService!.clearFilterOfTypeInDb(FilterType.ASSET_STATUS);
     notifyListeners();
   }
 
   getDateRangeFilterData() async {
     Logger().d("getDateRangeFilterData");
-    List<String> appliedFilters = await _dateRangeService.getDateRangeFilters();
-    Logger().d(appliedFilters.length.toString());
+    List<String?>? appliedFilters =
+        await (_dateRangeService!.getDateRangeFilters());
+    Logger().d(appliedFilters!.length.toString());
     if (appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];
       endDate = appliedFilters[1];
@@ -139,11 +142,11 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
-  bool isAlreadSelected(String name, FilterType type) {
+  bool isAlreadSelected(String? name, FilterType type) {
     try {
-      var item = appliedFilters.isNotEmpty
-          ? appliedFilters.firstWhere(
-              (element) => element.title == name && element.type == type,
+      var item = appliedFilters!.isNotEmpty
+          ? appliedFilters!.firstWhere(
+              (element) => element!.title == name && element.type == type,
               orElse: () {
                 return null;
               },
@@ -158,5 +161,5 @@ abstract class InsiteViewModel extends BaseViewModel {
     }
   }
 
-  List<FilterData> appliedFilters = [];
+  List<FilterData?>? appliedFilters = [];
 }

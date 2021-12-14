@@ -13,12 +13,12 @@ class UtilizationSummary {
     this.averageMonth,
   });
 
-  AverageDay totalDay;
-  AverageDay totalWeek;
-  AverageDay totalMonth;
-  AverageDay averageDay;
-  AverageDay averageWeek;
-  AverageDay averageMonth;
+  AverageDay? totalDay;
+  AverageDay? totalWeek;
+  AverageDay? totalMonth;
+  AverageDay? averageDay;
+  AverageDay? averageWeek;
+  AverageDay? averageMonth;
 
   factory UtilizationSummary.fromJson(Map<String, dynamic> json) =>
       _$UtilizationSummaryFromJson(json);
@@ -34,9 +34,9 @@ class AverageDay {
     this.workingHours,
   });
 
-  double idleHours;
-  double runtimeHours;
-  double workingHours;
+  double? idleHours;
+  double? runtimeHours;
+  double? workingHours;
 
   factory AverageDay.fromJson(Map<String, dynamic> json) =>
       _$AverageDayFromJson(json);

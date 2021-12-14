@@ -13,9 +13,9 @@ import 'package:insite/core/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ReportSummaryViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  final _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService = locator<SmsManagementService>();
 
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -32,14 +32,14 @@ class ReportSummaryViewModel extends InsiteViewModel {
     });
   }
 
-  SmsReportSummaryModel _smsReportSummaryModel;
-  SmsReportSummaryModel get smsReportSummaryModel => _smsReportSummaryModel;
+  SmsReportSummaryModel? _smsReportSummaryModel;
+  SmsReportSummaryModel? get smsReportSummaryModel => _smsReportSummaryModel;
 
   List<ReportSummaryModel> modelDataList = [];
-  List<int> selectedId = [];
+  List<int?> selectedId = [];
   List<DeleteSmsReport> deleteSmsReport = [];
 
-  SmsReportSummaryModel data;
+  SmsReportSummaryModel? data;
 
   bool isLoading = true;
   bool isLoadMore = false;
@@ -52,14 +52,14 @@ class ReportSummaryViewModel extends InsiteViewModel {
   getReportSummaryData() async {
     try {
       _smsReportSummaryModel =
-          await _smsScheduleService.getsmsReportSummaryModel(startCount);
-      for (var i = 0; i < _smsReportSummaryModel.result.length; i++) {
+          await _smsScheduleService!.getsmsReportSummaryModel(startCount);
+      for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
         if (i == 0) {
           Logger().wtf(null);
           isLoading = false;
           notifyListeners();
         } else {
-          _smsReportSummaryModel.result[1].forEach((element) {
+          _smsReportSummaryModel!.result![1].forEach((element) {
             modelDataList.add(element);
           });
           for (var i = 0; i < modelDataList.length; i++) {
@@ -81,8 +81,8 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onSelected(int i) {
     try {
-      modelDataList[i].isSelected = !modelDataList[i].isSelected;
-      if (modelDataList[i].isSelected) {
+      modelDataList[i].isSelected = !modelDataList[i].isSelected!;
+      if (modelDataList[i].isSelected!) {
         selectedId.add(modelDataList[i].ID);
       } else if (modelDataList[i].isSelected == false) {
         selectedId.remove(modelDataList[i].ID);
@@ -121,7 +121,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         notifyListeners();
       });
       var data =
-          await _smsScheduleService.deleteSmsScheduleReport(deleteSmsReport);
+          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();
@@ -135,13 +135,13 @@ class ReportSummaryViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
-      data = await _smsScheduleService.getScheduleReportData();
-      Directory path = await getExternalStorageDirectory();
+      data = await _smsScheduleService!.getScheduleReportData();
+      Directory? path = await getExternalStorageDirectory();
       if (data != null) {
         final Excel excelSheet = Excel.createExcel();
         var sheetObj = excelSheet.sheets.values.first;
-        for (var i = 0; i < data.result.first.length; i++) {
-          final excelDataInsert = data.result.first;
+        for (var i = 0; i < data!.result!.first.length; i++) {
+          final excelDataInsert = data!.result!.first;
           if (i == 0) {
             sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
             sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
@@ -173,7 +173,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         //     ..writeAsBytesSync(onValue)
         //     ..open(mode: FileMode.read);
         // });
-        snackbarService.showSnackbar(message: "File saved in ${path.path}");
+        snackbarService!.showSnackbar(message: "File saved in ${path!.path}");
         // Logger().e(excelSheet.sheets.values.last.rows);
         hideLoadingDialog();
       } else {

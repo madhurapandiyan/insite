@@ -10,7 +10,7 @@ class FleetStatusViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
   
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   bool _showDownload = false;
   bool get showDownload => _showDownload;
@@ -24,15 +24,15 @@ class FleetStatusViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   FleetStatusViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -40,7 +40,7 @@ class FleetStatusViewModel extends InsiteViewModel {
       getFleetStatusData();
     });
   }
-  Logger log;
+  late Logger log;
 
   _loadMore() {
     log.i("shouldLoadmore and is already loadingMore " +
@@ -57,16 +57,16 @@ class FleetStatusViewModel extends InsiteViewModel {
 
   getFleetStatusData() async {
     Logger().i("getFleetStatusData");
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getFleetStatusData(
+    SubscriptionDashboardDetailResult? result =
+        await _subscriptionService!.getFleetStatusData(
       start: start == 0 ? start : start + 1,
       limit: limit,
     );
 
     if (result != null) {
-      if (result.result.isNotEmpty) {
+      if (result.result!.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result[1]);
+        devices.addAll(result.result![1]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();

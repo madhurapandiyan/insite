@@ -6,13 +6,13 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomCardSmsAssetWidget extends StatelessWidget {
-  final String serialNo;
-  final String date;
-  final String deviceId;
-  final String name;
-  final String language;
-  final String mobileNo;
-  final String model;
+  final String? serialNo;
+  final String? date;
+  final String? deviceId;
+  final String? name;
+  final String? language;
+  final String? mobileNo;
+  final String? model;
 
   CustomCardSmsAssetWidget(
       {this.deviceId,
@@ -159,7 +159,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                   InsiteTextOverFlow(
                     overflow: TextOverflow.ellipsis,
                     text: Utils.getLastReportedDateFilterData(
-                        DateFormat("yyyy-MM-dd").parse(date)),
+                        DateFormat("yyyy-MM-dd").parse(date!)),
                   )
                 ],
               ),

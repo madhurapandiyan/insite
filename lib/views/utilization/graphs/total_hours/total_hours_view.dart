@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 import 'total_hours_view_model.dart';
 
 class TotalHoursView extends StatefulWidget {
-  final String startDate;
-  final String endDate;
-  const TotalHoursView({Key key, this.startDate, this.endDate})
+  final String? startDate;
+  final String? endDate;
+  const TotalHoursView({Key? key, this.startDate, this.endDate})
       : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class TotalHoursView extends StatefulWidget {
 class TotalHoursViewState extends State<TotalHoursView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
-  var viewModel;
+  late var viewModel;
   List<bool> shouldShowLabel = [true, true, true];
   @override
   void initState() {
@@ -41,7 +41,7 @@ class TotalHoursViewState extends State<TotalHoursView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalHoursViewModel>.reactive(
-      builder: (BuildContext context, TotalHoursViewModel viewModel, Widget _) {
+      builder: (BuildContext context, TotalHoursViewModel viewModel, Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

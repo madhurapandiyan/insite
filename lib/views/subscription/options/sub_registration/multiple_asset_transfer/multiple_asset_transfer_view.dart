@@ -6,12 +6,10 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view_model.dart';
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_transfer/multiple_asset_transfer_card.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'multiple_asset_transfer_view_model.dart';
 
@@ -29,9 +27,9 @@ class _MultipleAssetTransferViewState extends State<MultipleAssetTransferView> {
     IsolateNameServer.registerPortWithName(
         MultipleAssetTransferViewModel().port.sendPort, 'downloader_send_port');
     MultipleAssetTransferViewModel().port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+      String? id = data[0];
+      DownloadTaskStatus? status = data[1];
+      int? progress = data[2];
       setState(() {});
     });
 
@@ -47,7 +45,7 @@ class _MultipleAssetTransferViewState extends State<MultipleAssetTransferView> {
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -55,9 +53,9 @@ class _MultipleAssetTransferViewState extends State<MultipleAssetTransferView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<MultipleAssetTransferViewModel>.reactive(
       builder: (BuildContext context, MultipleAssetTransferViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {

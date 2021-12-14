@@ -19,11 +19,11 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class SubScriptionService extends BaseService {
-  var _localService = locator<LocalService>();
+  LocalService? _localService = locator<LocalService>();
 
-  Customer accountSelected;
-  Customer customerSelected;
-  String token;
+  Customer? accountSelected;
+  Customer? customerSelected;
+  String? token;
 
   SubScriptionService() {
     setUp();
@@ -31,22 +31,22 @@ class SubScriptionService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
-      token = await _localService.getToken();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
+      token = await _localService!.getToken();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<SubscriptionDashboardResult> getResultsFromSubscriptionApi() async {
+  Future<SubscriptionDashboardResult?> getResultsFromSubscriptionApi() async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
       SubscriptionDashboardResult dashboardResult =
-          await MyApi().getClientNine().getSubscriptionDashboardResults(
+          await MyApi().getClientNine()!.getSubscriptionDashboardResults(
                 Urls.subscriptionResults +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -62,13 +62,13 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SubscriptionDashboardDetailResult> getSubscriptionDeviceListData(
-      {String fitler,
-      int start,
-      int limit,
-      String name,
-      int code,
-      PLANTSUBSCRIPTIONFILTERTYPE filterType}) async {
+  Future<SubscriptionDashboardDetailResult?> getSubscriptionDeviceListData(
+      {String? fitler,
+      int? start,
+      int? limit,
+      String? name,
+      int? code,
+      PLANTSUBSCRIPTIONFILTERTYPE? filterType}) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -99,7 +99,7 @@ class SubScriptionService extends BaseService {
       }
 
       SubscriptionDashboardDetailResult dashboardResult =
-          await MyApi().getClientNine().getSubcriptionDeviceListData(
+          await MyApi().getClientNine()!.getSubcriptionDeviceListData(
                 filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
                     ? Urls.plantHierarchyAssetsResult +
                         FilterUtils.constructQueryFromMap(queryMap)
@@ -117,13 +117,13 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SingleAssetRegistrationSearchModel> getSubscriptionDevicesListData(
-      {String fitler,
-      int start,
-      int limit,
-      String name,
-      int code,
-      PLANTSUBSCRIPTIONFILTERTYPE filterType}) async {
+  Future<SingleAssetRegistrationSearchModel?> getSubscriptionDevicesListData(
+      {String? fitler,
+      int? start,
+      int? limit,
+      String? name,
+      int? code,
+      PLANTSUBSCRIPTIONFILTERTYPE? filterType}) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -154,7 +154,7 @@ class SubScriptionService extends BaseService {
       }
 
       SingleAssetRegistrationSearchModel dashboardResult =
-          await MyApi().getClientNine().getSubscriptionDeviceResults(
+          await MyApi().getClientNine()!.getSubscriptionDeviceResults(
                 filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
                     ? Urls.plantHierarchyAssetsResult +
                         FilterUtils.constructQueryFromMap(queryMap)
@@ -172,8 +172,8 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SerialNumberResults> getDeviceModelNameBySerialNumber(
-      {String serialNumber}) async {
+  Future<SerialNumberResults?> getDeviceModelNameBySerialNumber(
+      {String? serialNumber}) async {
     try {
       Map<String, String> queryMap = Map();
 
@@ -185,7 +185,7 @@ class SubScriptionService extends BaseService {
       }
 
       SerialNumberResults serialNumberResults =
-          await MyApi().getClientNine().getModelNameFromMachineSerialNumber(
+          await MyApi().getClientNine()!.getModelNameFromMachineSerialNumber(
                 Urls.serialNumberSearch +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -200,14 +200,14 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<AssetTransferData> postSingleTransferRegistration(
-      {List<Transfer> transferData}) async {
+  Future<AssetTransferData?> postSingleTransferRegistration(
+      {List<Transfer>? transferData}) async {
     var body = AssetTransferData(
         source: "THC", version: "2.1", userID: 58839, transfer: transferData);
 
     try {
       AssetTransferData addAssetRegistrationData = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getSingleAssetTransferData(Urls.singleAssetRegistration, body);
 
       return addAssetRegistrationData;
@@ -220,14 +220,14 @@ class SubScriptionService extends BaseService {
   Future<dynamic> postSingleAssetTransferRegistration(
       AddAssetRegistrationData assetData) async {
     var data = await MyApi()
-        .getClientNine()
+        .getClientNine()!
         .postSingleAssetTransferRegistration(
             Urls.singleAssetRegistration, assetData);
     return data;
   }
 
-  Future<AddAssetRegistrationData> postSingleAssetRegistration(
-      {List<AssetValues> data}) async {
+  Future<AddAssetRegistrationData?> postSingleAssetRegistration(
+      {List<AssetValues>? data}) async {
     var body = AddAssetRegistrationData(
       source: "THC",
       version: "2.1",
@@ -236,7 +236,7 @@ class SubScriptionService extends BaseService {
     );
     try {
       AddAssetRegistrationData addAssetRegistrationData = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getSingleAssetRegistrationData(Urls.singleAssetRegistration, body);
       return addAssetRegistrationData;
     } catch (e) {
@@ -245,9 +245,9 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SubscriptionDashboardDetailResult> getFleetStatusData({
-    int start,
-    int limit,
+  Future<SubscriptionDashboardDetailResult?> getFleetStatusData({
+    int? start,
+    int? limit,
   }) async {
     try {
       Map<String, String> queryMap = Map();
@@ -262,7 +262,7 @@ class SubScriptionService extends BaseService {
       }
 
       SubscriptionDashboardDetailResult dashboardResult = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getFleetStatusData(Urls.subscriptionResult +
               FilterUtils.constructQueryFromMap(queryMap));
       if (dashboardResult == null) {
@@ -276,9 +276,9 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SubscriptionDashboardDetailResult> getTransferHistoryViewData({
-    int start,
-    int limit,
+  Future<SubscriptionDashboardDetailResult?> getTransferHistoryViewData({
+    int? start,
+    int? limit,
   }) async {
     try {
       Map<String, String> queryMap = Map();
@@ -293,7 +293,7 @@ class SubScriptionService extends BaseService {
       }
 
       SubscriptionDashboardDetailResult dashboardResult = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getFleetStatusData(Urls.transferHistoryResult +
               FilterUtils.constructQueryFromMap(queryMap));
       if (dashboardResult == null) {
@@ -307,7 +307,7 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<DeviceDetailsPerId> getDeviceDetailsPerDeviceId(
+  Future<DeviceDetailsPerId?> getDeviceDetailsPerDeviceId(
       String controllerValue) async {
     try {
       Map<String, String> queryMap = Map();
@@ -322,7 +322,7 @@ class SubScriptionService extends BaseService {
       }
 
       DeviceDetailsPerId deviceDetailsPerId = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getDeviceDetailsPerDeviceId(Urls.singleAssetSearchDeviceIdData +
               FilterUtils.constructQueryFromMap(queryMap));
 
@@ -334,21 +334,21 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SingleTransferDeviceId> getSingleTransferDeviceId({
-    String filter,
-    PLANTSUBSCRIPTIONFILTERTYPE filterType,
-    String controllerValue,
-    int start,
-    int limit,
-    String searchBy,
+  Future<SingleTransferDeviceId?> getSingleTransferDeviceId({
+    String? filter,
+    PLANTSUBSCRIPTIONFILTERTYPE? filterType,
+    String? controllerValue,
+    int? start,
+    int? limit,
+    String? searchBy,
   }) async {
     try {
-      Map<String, String> queryMap = Map();
+      Map<String, String?> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (accountSelected.CustomerUID != null) {
-        queryMap["UserUID"] = accountSelected.CustomerUID;
+      if (accountSelected!.CustomerUID != null) {
+        queryMap["UserUID"] = accountSelected!.CustomerUID;
       }
       if (filter != null) {
         if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
@@ -374,7 +374,7 @@ class SubScriptionService extends BaseService {
         queryMap["limit"] = limit.toString();
       }
       SingleTransferDeviceId singleTransferDeviceIds =
-          await MyApi().getClientNine().getSingleAssetTransfersDeviceIds(
+          await MyApi().getClientNine()!.getSingleAssetTransfersDeviceIds(
                 Urls.singleAssetTransferDeviceId +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -386,14 +386,14 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<CustomerDetails> getCustomerDetails(String deviceID) async {
+  Future<CustomerDetails?> getCustomerDetails(String deviceID) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["oemName"] = "THC";
       }
       CustomerDetails customerDetails = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getExitingCustomerDetails(Urls.getExistingCustomerDetails +
               deviceID +
               FilterUtils.constructQueryFromMap(queryMap));
@@ -405,7 +405,7 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<AssetDetailsBySerialNo> getDeviceAssetDetailsBySerialNo(
+  Future<AssetDetailsBySerialNo?> getDeviceAssetDetailsBySerialNo(
       String text) async {
     try {
       Map<String, String> queryMap = Map();
@@ -418,7 +418,7 @@ class SubScriptionService extends BaseService {
       }
 
       AssetDetailsBySerialNo assetDetailsBySerialNo = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .getDeviceDetailsPerSerialNo(Urls.singleAssetSerchBySerialNo +
               FilterUtils.constructQueryFromMap(queryMap));
       return assetDetailsBySerialNo;

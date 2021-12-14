@@ -3,9 +3,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PopupCard extends StatelessWidget {
   const PopupCard({this.rows, this.cardTitle, this.height});
-  final List<Widget> rows;
-  final String cardTitle;
-  final double height;
+  final List<Widget>? rows;
+  final String? cardTitle;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class PopupCard extends StatelessWidget {
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: rows,
+                children: rows!,
               ),
             ],
           ),

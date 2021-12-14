@@ -13,8 +13,8 @@ import 'package:insite/widgets/smart_widgets/single_asset_utilization.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetDashbaord extends StatefulWidget {
-  final AssetDetail detail;
-  final Function(int) switchTab;
+  final AssetDetail? detail;
+  final Function(int)? switchTab;
   AssetDashbaord({this.detail, this.switchTab});
 
   @override
@@ -22,7 +22,7 @@ class AssetDashbaord extends StatefulWidget {
 }
 
 class _AssetDashbaordState extends State<AssetDashbaord> {
-  TextEditingController notesController;
+  TextEditingController? notesController;
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
 
   @override
   void dispose() {
-    notesController.dispose();
+    notesController!.dispose();
     super.dispose();
   }
 
@@ -39,7 +39,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDashboardViewModel>.reactive(
       builder:
-          (BuildContext context, AssetDashboardViewModel viewModel, Widget _) {
+          (BuildContext context, AssetDashboardViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
@@ -51,7 +51,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
               color: Theme.of(context).backgroundColor,
               border: Border.all(
                     width: 1,
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
               ),
               shape: BoxShape.rectangle,
             ),
@@ -81,26 +81,26 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           liquidColor: Theme.of(context).buttonColor,
                           title: "Fuel Level",
                           value: widget.detail != null &&
-                                  widget.detail.fuelLevelLastReported != null
-                              ? widget.detail.fuelLevelLastReported
+                                  widget.detail!.fuelLevelLastReported != null
+                              ? widget.detail!.fuelLevelLastReported!
                                   .roundToDouble()
                               : null,
-                          lifeTimeFuel: widget.detail.lifetimeFuel != null
+                          lifeTimeFuel: widget.detail!.lifetimeFuel != null
                               ? "lifetime fuel :\n" +
-                                  widget.detail.lifetimeFuel
+                                  widget.detail!.lifetimeFuel!
                                       .round()
                                       .toString() +
                                   " liters"
                               : "",
                           percentage: widget.detail != null &&
-                                  widget.detail.fuelLevelLastReported != null
-                              ? widget.detail.fuelLevelLastReported.toString()
+                                  widget.detail!.fuelLevelLastReported != null
+                              ? widget.detail!.fuelLevelLastReported.toString()
                               : null,
                           lastReported:
-                              widget.detail.fuelReportedTimeUTC != null
+                              widget.detail!.fuelReportedTimeUTC != null
                                   ? "Last Reported Time: ".toUpperCase() +
                                       Utils.getLastReportedDateOneUTC(
-                                          widget.detail.fuelReportedTimeUTC)
+                                          widget.detail!.fuelReportedTimeUTC)
                                   : "No Data Received"),
                     ),
                     SizedBox(
@@ -133,27 +133,27 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       child: FuelLevel(
                           liquidColor: Theme.of(context).buttonColor,
                           value: widget.detail != null &&
-                                  widget.detail.percentDEFRemaining != null
-                              ? widget.detail.percentDEFRemaining.toDouble()
+                                  widget.detail!.percentDEFRemaining != null
+                              ? widget.detail!.percentDEFRemaining!.toDouble()
                               : null,
                           title: "Diesel Exhaust Fluid (DEF) Level ",
-                          lifeTimeFuel: widget.detail.lifetimeDEFLiters != null
+                          lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null
                               ? "lifetime fuel :\n" +
-                                  widget.detail.lifetimeDEFLiters
+                                  widget.detail!.lifetimeDEFLiters!
                                       .round()
                                       .toString() +
                                   " liters"
                               : "",
                           percentage: widget.detail != null &&
-                                  widget.detail.percentDEFRemaining != null
-                              ? widget.detail.percentDEFRemaining.toString()
+                                  widget.detail!.percentDEFRemaining != null
+                              ? widget.detail!.percentDEFRemaining.toString()
                               : null,
                           lastReported: widget
-                                      .detail.lastPercentDEFRemainingUTC !=
+                                      .detail!.lastPercentDEFRemainingUTC !=
                                   null
                               ? "Last Reported Time: ".toUpperCase() +
                                   Utils.getLastReportedDateOneUTC(
-                                      widget.detail.lastPercentDEFRemainingUTC)
+                                      widget.detail!.lastPercentDEFRemainingUTC)
                               : "No Data Received"),
                     ),
                     SizedBox(
@@ -166,32 +166,32 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             ),
                             child: GoogleMapDetailWidget(
                                 isLoading: false,
-                                latitude: viewModel.assetDetail
+                                latitude: viewModel.assetDetail!
                                             .lastReportedLocationLatitude !=
                                         null
-                                    ? viewModel.assetDetail
+                                    ? viewModel.assetDetail!
                                         .lastReportedLocationLatitude
                                     : null,
                                 screenType: ScreenType.ASSET_DETAIL,
-                                status: widget.detail.lastLocationUpdateUTC !=
+                                status: widget.detail!.lastLocationUpdateUTC !=
                                         null
                                     ? "Last Reported Time: ".toUpperCase() +
                                         Utils.getLastReportedDateOneUTC(
-                                            widget.detail.lastLocationUpdateUTC)
+                                            widget.detail!.lastLocationUpdateUTC)
                                     : "No Data Receiveed",
                                 onMarkerTap: () {
-                                  widget.switchTab(3);
+                                  widget.switchTab!(3);
                                 },
                                 initLocation: null,
                                 location: viewModel
-                                            .assetDetail.lastReportedLocation !=
+                                            .assetDetail!.lastReportedLocation !=
                                         null
-                                    ? viewModel.assetDetail.lastReportedLocation
+                                    ? viewModel.assetDetail!.lastReportedLocation
                                     : "",
-                                longitude: viewModel.assetDetail
+                                longitude: viewModel.assetDetail!
                                             .lastReportedLocationLongitude !=
                                         null
-                                    ? viewModel.assetDetail
+                                    ? viewModel.assetDetail!
                                         .lastReportedLocationLongitude
                                     : null),
                           )
@@ -207,9 +207,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         controller: notesController,
                         notes: viewModel.assetNotes,
                         onTap: () {
-                          if (notesController.text.isNotEmpty) {
-                            viewModel.postNotes(notesController.text);
-                            notesController.text = "";
+                          if (notesController!.text.isNotEmpty) {
+                            viewModel.postNotes(notesController!.text);
+                            notesController!.text = "";
                           }
                         },
                         isLoading: viewModel.postingNote,

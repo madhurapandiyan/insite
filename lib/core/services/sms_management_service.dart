@@ -12,9 +12,9 @@ import 'package:insite/views/subscription/sms-management/model/sms_single_asset_
 import 'package:logger/logger.dart';
 
 class SmsManagementService extends BaseService {
-  Future<SingleAssetResponce> postSingleAssetResponce(
+  Future<SingleAssetResponce?> postSingleAssetResponce(
       List<SingleAssetSmsSchedule> modelData) async {
-    SingleAssetResponce data;
+    SingleAssetResponce? data;
     Logger().d(modelData.last.toJson());
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
@@ -22,7 +22,7 @@ class SmsManagementService extends BaseService {
         FilterUtils.constructQueryFromMap(queryMap));
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().postSingleAssetSmsSchedule(
+      data = await MyApi().getClientNine()!.postSingleAssetSmsSchedule(
           Urls.smsManagementSingleAsset +
               FilterUtils.constructQueryFromMap(queryMap),
           modelData);
@@ -31,16 +31,16 @@ class SmsManagementService extends BaseService {
     return data;
   }
 
-  Future<dynamic> savingSms(List<SavingSmsModel> model) async {
-    Logger().wtf(model.first.toJson());
+  Future<dynamic> savingSms(List<SavingSmsModel?> model) async {
+    Logger().wtf(model.first!.toJson());
     if (isVisionLink) {
     } else {
-      var data = MyApi().getClientNine().savingSms(Urls.savingSms, model);
+      var data = MyApi().getClientNine()!.savingSms(Urls.savingSms, model);
     }
   }
 
-  Future<SmsReportSummaryModel> getsmsReportSummaryModel(int startCount) async {
-    SmsReportSummaryModel data;
+  Future<SmsReportSummaryModel?> getsmsReportSummaryModel(int startCount) async {
+    SmsReportSummaryModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["start"] = startCount.toString();
@@ -49,20 +49,20 @@ class SmsManagementService extends BaseService {
         FilterUtils.constructQueryFromMap(queryMap));
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().gettingReportSummary(
+      data = await MyApi().getClientNine()!.gettingReportSummary(
           Urls.smsManagementScheduleReportSummary +
               FilterUtils.constructQueryFromMap(queryMap));
     }
     return data;
   }
 
-  Future<SmsReportSummaryModel> getScheduleReportData() async {
-    SmsReportSummaryModel data;
+  Future<SmsReportSummaryModel?> getScheduleReportData() async {
+    SmsReportSummaryModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().gettingScheduleReportSummary(
+      data = await MyApi().getClientNine()!.gettingScheduleReportSummary(
           Urls.getScheduleReportData +
               FilterUtils.constructQueryFromMap(queryMap));
     }
@@ -71,11 +71,11 @@ class SmsManagementService extends BaseService {
 
   Future<dynamic> deleteSmsScheduleReport(
       List<DeleteSmsReport> reportId) async {
-    Map<String, String> queryMap = Map();
+    Map<String, String?> queryMap = Map();
     queryMap["UserID"] = await locator<LocalService>().getUserId();
     if (isVisionLink) {
     } else {
-      var data = await MyApi().getClientNine().deleteSmsSchedule(
+      var data = await MyApi().getClientNine()!.deleteSmsSchedule(
           Urls.deleteSmsScheduleReport +
               FilterUtils.constructQueryFromMap(queryMap),
           reportId);

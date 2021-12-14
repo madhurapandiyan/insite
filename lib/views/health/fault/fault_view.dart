@@ -14,7 +14,7 @@ import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 
 class FaultView extends StatefulWidget {
-  FaultView({Key key}) : super(key: key);
+  FaultView({Key? key}) : super(key: key);
 
   @override
   FaultViewState createState() => FaultViewState();
@@ -25,8 +25,8 @@ class FaultViewState extends State<FaultView> {
     viewModel.refresh();
   }
 
-  List<DateTime> dateRange = [];
-  var viewModel;
+  List<DateTime>? dateRange = [];
+  late var viewModel;
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class FaultViewState extends State<FaultView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FaultViewModel>.reactive(
-      builder: (BuildContext context, FaultViewModel model, Widget _) {
+      builder: (BuildContext context, FaultViewModel model, Widget? _) {
         return Stack(
           children: [
             Column(
@@ -64,7 +64,7 @@ class FaultViewState extends State<FaultView> {
                         width: 90,
                         title: "Date Range",
                         bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1.color,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -73,7 +73,7 @@ class FaultViewState extends State<FaultView> {
                                 backgroundColor: transparent,
                                 child: DateRangeView()),
                           );
-                          if (dateRange != null && dateRange.isNotEmpty) {
+                          if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
                           }
                         },
@@ -98,7 +98,7 @@ class FaultViewState extends State<FaultView> {
                                   EdgeInsets.only(left: 12, right: 12, top: 4),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                Fault fault = viewModel.faults[index];
+                                Fault? fault = viewModel.faults[index];
                                 return FaultListItem(
                                   fault: fault,
                                   onCallback: () {

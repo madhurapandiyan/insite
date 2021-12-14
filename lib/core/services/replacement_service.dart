@@ -11,8 +11,8 @@ import 'package:insite/views/subscription/replacement/model/replacement_model.da
 import 'package:logger/logger.dart';
 
 class ReplacementService extends BaseService {
-  Future<DeviceSearchModel> getDeviceSearchModel(String searchWord) async {
-    DeviceSearchModel data;
+  Future<DeviceSearchModel?> getDeviceSearchModel(String searchWord) async {
+    DeviceSearchModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["gSearch"] = "GPSDeviceID_Fleet_smartSearch";
@@ -21,21 +21,21 @@ class ReplacementService extends BaseService {
     queryMap["limit"] = "100";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().getDeviceSearchModel(
+      data = await MyApi().getClientNine()!.getDeviceSearchModel(
           Urls.masterSearchDeviceId +
               FilterUtils.constructQueryFromMap(queryMap));
     }
     return data;
   }
 
-  Future<DeviceSearchModelResponse> getDeviceSearchModelResponse(
+  Future<DeviceSearchModelResponse?> getDeviceSearchModelResponse(
       String deviceId) async {
-    DeviceSearchModelResponse data;
+    DeviceSearchModelResponse? data;
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().getDeviceSearchModelResponse(
+      data = await MyApi().getClientNine()!.getDeviceSearchModelResponse(
           Urls.getSearchModelResponse +
               "$deviceId/" +
               FilterUtils.constructQueryFromMap(queryMap));
@@ -43,8 +43,8 @@ class ReplacementService extends BaseService {
     return data;
   }
 
-  Future<ReplaceDeviceModel> getReplaceDeviceModel(String searchWord) async {
-    ReplaceDeviceModel data;
+  Future<ReplaceDeviceModel?> getReplaceDeviceModel(String searchWord) async {
+    ReplaceDeviceModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["status"] = "inactive";
@@ -53,7 +53,7 @@ class ReplacementService extends BaseService {
     queryMap["limit"] = "100";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().getReplaceDeviceModel(
+      data = await MyApi().getClientNine()!.getReplaceDeviceModel(
           Urls.getReplaceDeviceIdModel +
               FilterUtils.constructQueryFromMap(queryMap));
     }
@@ -65,22 +65,22 @@ class ReplacementService extends BaseService {
     if (isVisionLink) {
     } else {
       var data = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .postNewDeviceId(Urls.saveNewDeviceId, replacementModeldata);
       Logger().d(data);
     }
   }
 
-  Future<TotalDeviceReplacementStatusModel>
+  Future<TotalDeviceReplacementStatusModel?>
       getTotalDeviceReplacementStatusModel(int startCount) async {
-    TotalDeviceReplacementStatusModel data;
+    TotalDeviceReplacementStatusModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["start"] = startCount.toString();
     queryMap["limit"] = "16";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().getRepalcementDeviceStatus(
+      data = await MyApi().getClientNine()!.getRepalcementDeviceStatus(
           Urls.getReportOfReplacement +
               FilterUtils.constructQueryFromMap(queryMap));
       return data;
@@ -88,13 +88,13 @@ class ReplacementService extends BaseService {
     return data;
   }
 
-  Future<ReplacementDeviceIdDownload> getReplacementDeviceIdDownload() async {
-    ReplacementDeviceIdDownload data;
+  Future<ReplacementDeviceIdDownload?> getReplacementDeviceIdDownload() async {
+    ReplacementDeviceIdDownload? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     if (isVisionLink) {
     } else {
-      data = await MyApi().getClientNine().getReplacementDeviceIdDownload(
+      data = await MyApi().getClientNine()!.getReplacementDeviceIdDownload(
           Urls.downloadReplacementData +
               FilterUtils.constructQueryFromMap(queryMap));
     }

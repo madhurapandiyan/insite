@@ -9,22 +9,22 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class LocationSearchViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _assetLocationService = locator<AssetLocationService>();
+  AssetLocationService? _assetLocationService = locator<AssetLocationService>();
 
   bool _loading = false;
   bool get loading => _loading;
 
-  List<LocationSearchData> _locations = [];
-  List<LocationSearchData> get locations => _locations;
+  List<LocationSearchData>? _locations = [];
+  List<LocationSearchData>? get locations => _locations;
 
   List<FilterData> _filterLocations = [];
   List<FilterData> get filterLocations => _filterLocations;
 
   LocationSearchViewModel(ScreenType type) {
     this.log = getLogger(this.runtimeType.toString());
-    _assetLocationService.setUp();
+    _assetLocationService!.setUp();
     if (type == ScreenType.SEARCH) {
       // searchLocation("");
     }
@@ -34,20 +34,20 @@ class LocationSearchViewModel extends InsiteViewModel {
   }
 
   searchLocation(query) async {
-    List<LocationSearchData> result =
-        await _assetLocationService.searchLocation(10, query);
+    List<LocationSearchData>? result =
+        await _assetLocationService!.searchLocation(10, query);
     _locations = result;
-    if (_locations != null && _locations.isNotEmpty) {
+    if (_locations != null && _locations!.isNotEmpty) {
       _filterLocations.clear();
-      for (LocationSearchData data in _locations) {
+      for (LocationSearchData data in _locations!) {
         FilterData filterData = FilterData(
-            count: data.Address.Zip,
+            count: data.Address!.Zip,
             isSelected: isAlreadSelected(
-                data.Address.City + data.Address.Country,
+                data.Address!.City! + data.Address!.Country!,
                 FilterType.LOCATION_SEARCH),
-            title: data.Address.City + data.Address.Country,
+            title: data.Address!.City! + data.Address!.Country!,
             type: FilterType.LOCATION_SEARCH,
-            extras: [data.Coords.Lat, data.Coords.Lon, 10.toString()]);
+            extras: [data.Coords!.Lat, data.Coords!.Lon, 10.toString()]);
         _filterLocations.add(filterData);
       }
     }

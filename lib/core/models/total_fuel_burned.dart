@@ -12,11 +12,11 @@ class TotalFuelBurned {
     this.message,
   });
 
-  Cumulatives cumulatives;
-  List<Interval> intervals;
-  Pagination pagination;
-  int code;
-  String message;
+  Cumulatives? cumulatives;
+  List<Interval>? intervals;
+  Pagination? pagination;
+  int? code;
+  String? message;
 
   factory TotalFuelBurned.fromJson(Map<String, dynamic> json) =>
       _$TotalFuelBurnedFromJson(json);
@@ -37,14 +37,14 @@ class Cumulatives {
     this.intervalType,
   });
 
-  double cumulativeFuelBurned;
-  double averageFuelBurned;
-  String description;
-  DateTime startDateLocalTime;
-  DateTime endDateLocalTime;
-  int totalAssetCount;
-  int totalDayCount;
-  String intervalType;
+  double? cumulativeFuelBurned;
+  double? averageFuelBurned;
+  String? description;
+  DateTime? startDateLocalTime;
+  DateTime? endDateLocalTime;
+  int? totalAssetCount;
+  int? totalDayCount;
+  String? intervalType;
 
   factory Cumulatives.fromJson(Map<String, dynamic> json) =>
       _$CumulativesFromJson(json);
@@ -65,14 +65,14 @@ class Interval {
     this.dayCount,
   });
 
-  double totalFuelBurned;
-  double averageFuelBurned;
-  Totals totals;
-  String description;
-  DateTime intervalStartDateLocalTime;
-  DateTime intervalEndDateLocalTime;
-  int totalAssetCount;
-  int dayCount;
+  double? totalFuelBurned;
+  double? averageFuelBurned;
+  Totals? totals;
+  String? description;
+  DateTime? intervalStartDateLocalTime;
+  DateTime? intervalEndDateLocalTime;
+  int? totalAssetCount;
+  int? dayCount;
 
   factory Interval.fromJson(Map<String, dynamic> json) =>
       _$IntervalFromJson(json);
@@ -88,9 +88,9 @@ class Totals {
     this.runtimeFuelBurned,
   });
 
-  double idleFuelBurned;
-  double workingFuelBurned;
-  double runtimeFuelBurned;
+  double? idleFuelBurned;
+  double? workingFuelBurned;
+  double? runtimeFuelBurned;
 
   factory Totals.fromJson(Map<String, dynamic> json) => _$TotalsFromJson(json);
 
@@ -103,7 +103,7 @@ class Pagination {
     this.totalCount,
   });
 
-  int totalCount;
+  int? totalCount;
 
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);

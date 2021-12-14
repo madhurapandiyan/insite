@@ -4,9 +4,9 @@ part 'asset_creation_response.g.dart';
 
 @JsonSerializable()
 class AssetCreationResponse {
-  String code;
-  String status;
-  Result result;
+  String? code;
+  String? status;
+  Result? result;
 
   AssetCreationResponse({this.code, this.status, this.result});
 
@@ -17,11 +17,11 @@ class AssetCreationResponse {
 
 @JsonSerializable()
 class Result {
-  String startsWith;
-  int startRange;
-  int endRange;
-  int groupClusterId;
-  String modelName;
+  String? startsWith;
+  int? startRange;
+  int? endRange;
+  int? groupClusterId;
+  String? modelName;
 
   Result(
       {this.startsWith,

@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'cumulative_view_model.dart';
 
 class CumulativeView extends StatefulWidget {
-  const CumulativeView({Key key}) : super(key: key);
+  const CumulativeView({Key? key}) : super(key: key);
 
   @override
   CumulativeViewState createState() => CumulativeViewState();
@@ -17,7 +17,7 @@ class CumulativeView extends StatefulWidget {
 
 class CumulativeViewState extends State<CumulativeView> {
   int rangeChoice = 1;
-  var viewModel;
+  late var viewModel;
   List<bool> shouldShowLabel = [true, true, true];
 
   @override
@@ -39,7 +39,7 @@ class CumulativeViewState extends State<CumulativeView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CumulativeViewModel>.reactive(
-      builder: (BuildContext context, CumulativeViewModel viewModel, Widget _) {
+      builder: (BuildContext context, CumulativeViewModel viewModel, Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

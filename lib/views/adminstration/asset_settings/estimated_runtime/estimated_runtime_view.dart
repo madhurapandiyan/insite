@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/custom_widgets/days_reusable_widget.dart';
 import 'package:insite/views/adminstration/asset_settings/estimated_runtime/estimated_runtime_viewmodel.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
-import 'package:load/load.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
-  final List<String> assetUids;
+  final List<String?>? assetUids;
 
   EstimatedRunTimeWidgetView({this.assetUids});
 
@@ -27,9 +23,9 @@ class EstimatedRunTimeWidgetView extends StatefulWidget {
 class _EstimatedRunTimeWidgetViewState
     extends State<EstimatedRunTimeWidgetView> {
   String dropDownValue = "Hours";
-  DateTime startDate;
-  DateTime endDate;
-  var viewModel;
+  DateTime? startDate;
+  DateTime? endDate;
+  late var viewModel;
 
   @override
   void initState() {
@@ -48,7 +44,7 @@ class _EstimatedRunTimeWidgetViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<EstimatedRuntimeViewModel>.reactive(
       builder: (BuildContext context, EstimatedRuntimeViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return Column(
           children: [
             Row(
@@ -60,7 +56,7 @@ class _EstimatedRunTimeWidgetViewState
                   text: "Start Time",
                   fontWeight: FontWeight.w700,
                   size: 14,
-                  color: Theme.of(context).textTheme.bodyText1.backgroundColor,
+                  color: Theme.of(context).textTheme.bodyText1!.backgroundColor,
                 ),
                 SizedBox(
                   width: 120,
@@ -69,7 +65,7 @@ class _EstimatedRunTimeWidgetViewState
                   text: "End Time",
                   fontWeight: FontWeight.w700,
                   size: 14,
-                  color: Theme.of(context).textTheme.bodyText1.backgroundColor,
+                  color: Theme.of(context).textTheme.bodyText1!.backgroundColor,
                 )
               ],
             ),
@@ -94,7 +90,7 @@ class _EstimatedRunTimeWidgetViewState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
@@ -122,14 +118,14 @@ class _EstimatedRunTimeWidgetViewState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
                           controller: viewModel.endDateController,
                           voidCallback: () async {
                             await getEndDatePicker(viewModel);
-                            viewModel.getDateFilter(startDate, endDate);
+                            viewModel.getDateFilter(startDate!, endDate!);
                           },
                         )),
                   ),
@@ -160,7 +156,7 @@ class _EstimatedRunTimeWidgetViewState
                           ),
                           border: Border.all(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color)),
+                                  Theme.of(context).textTheme.bodyText1!.color!)),
                       child: Container(
                         color:
                             viewModel.isSelectedFullWeekTarget ? tango : null,
@@ -193,7 +189,7 @@ class _EstimatedRunTimeWidgetViewState
                           ),
                           border: Border.all(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color)),
+                                  Theme.of(context).textTheme.bodyText1!.color!)),
                       child: Container(
                         color: viewModel.isSelectedFullWeekIdle ? tango : null,
                       ),
@@ -223,14 +219,14 @@ class _EstimatedRunTimeWidgetViewState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: CustomDropDownWidget(
                         items: ["Hours", "%"],
                         value: dropDownValue,
-                        onChanged: (String value) {
-                          dropDownValue = value;
+                        onChanged: (String? value) {
+                          dropDownValue = value!;
                           viewModel.onChangeStateValue();
                           setState(() {});
                         },
@@ -269,7 +265,7 @@ class _EstimatedRunTimeWidgetViewState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: viewModel.isSelectedFullWeekTarget
                         ? Stack(
                             children: [
@@ -283,7 +279,7 @@ class _EstimatedRunTimeWidgetViewState
                                     fontWeight: FontWeight.w700,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .color),
                                 controller: viewModel.fulltargetTimeController,
                                 keyboardType: TextInputType.numberWithOptions(
@@ -338,7 +334,7 @@ class _EstimatedRunTimeWidgetViewState
                         ),
                         border: Border.all(
                             color:
-                                Theme.of(context).textTheme.bodyText1.color)),
+                                Theme.of(context).textTheme.bodyText1!.color!)),
                     child: viewModel.isSelectedFullWeekIdle
                         ? Stack(
                             children: [
@@ -352,7 +348,7 @@ class _EstimatedRunTimeWidgetViewState
                                     fontWeight: FontWeight.w700,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .color),
                                 controller: viewModel.fullIdleTimeController,
                                 keyboardType: TextInputType.numberWithOptions(
@@ -480,7 +476,7 @@ class _EstimatedRunTimeWidgetViewState
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101))
-        .then((value) => startDate = value);
+        .then((value) => (startDate = value)!);
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
@@ -499,7 +495,7 @@ class _EstimatedRunTimeWidgetViewState
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101))
-        .then((value) => endDate = value);
+        .then((value) => (endDate = value)!);
 
     if (pickedEndDate != null) {
       print(pickedEndDate);

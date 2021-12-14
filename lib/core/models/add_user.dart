@@ -7,7 +7,7 @@ class AddUser {
     this.userUid,
   });
 
-  String userUid;
+  String? userUid;
 
   factory AddUser.fromJson(Map<String, dynamic> json) =>
       _$AddUserFromJson(json);

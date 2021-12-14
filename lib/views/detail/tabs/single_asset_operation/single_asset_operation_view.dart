@@ -18,7 +18,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'single_asset_operation_view_model.dart';
 
 class SingleAssetOperationView extends StatefulWidget {
-  final AssetDetail detail;
+  final AssetDetail? detail;
   SingleAssetOperationView({this.detail});
 
   @override
@@ -27,10 +27,10 @@ class SingleAssetOperationView extends StatefulWidget {
 }
 
 class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
 
   final CalendarController calendarController = CalendarController();
-  CalendarView _view = CalendarView.week;
+  CalendarView? _view = CalendarView.week;
 
   double sfCalendarTimeIntervalHeight = 40;
 
@@ -38,7 +38,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetOperationViewModel>.reactive(
       builder: (BuildContext context, SingleAssetOperationViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
@@ -64,7 +64,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                             height: 30,
                             bgColor: Theme.of(context).backgroundColor,
                             textColor:
-                                Theme.of(context).textTheme.bodyText1.color,
+                                Theme.of(context).textTheme.bodyText1!.color,
                             onTap: () {
                               viewModel.refresh();
                             },
@@ -87,7 +87,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                 width: 90,
                                 bgColor: Theme.of(context).backgroundColor,
                                 textColor:
-                                    Theme.of(context).textTheme.bodyText1.color,
+                                    Theme.of(context).textTheme.bodyText1!.color,
                                 onTap: () async {
                                   dateRange = await showDialog(
                                     context: context,
@@ -96,7 +96,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                         child: DateRangeView()),
                                   );
                                   if (dateRange != null &&
-                                      dateRange.isNotEmpty) {
+                                      dateRange!.isNotEmpty) {
                                     setState(() {
                                       dateRange = dateRange;
                                     });
@@ -126,34 +126,34 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   InsiteTableRowItem(
                                     title: 'Last Event Time',
                                     content: viewModel
-                                                .singleAssetOperation
-                                                .assetOperations
-                                                .assets
+                                                .singleAssetOperation!
+                                                .assetOperations!
+                                                .assets!
                                                 .first
-                                                .assetLastReceivedEvent
+                                                .assetLastReceivedEvent!
                                                 .lastReceivedEventTimeLocal !=
                                             null
                                         ? Utils.getLastReportedDateOneLocalUTC(
                                             viewModel
-                                                .singleAssetOperation
-                                                .assetOperations
-                                                .assets
+                                                .singleAssetOperation!
+                                                .assetOperations!
+                                                .assets!
                                                 .first
-                                                .assetLastReceivedEvent
+                                                .assetLastReceivedEvent!
                                                 .lastReceivedEventTimeLocal)
                                         : "-",
                                   ),
                                   InsiteTableRowItem(
                                     title: 'Distance Travelled',
                                     content: viewModel
-                                                .singleAssetOperation
-                                                .assetOperations
-                                                .assets
+                                                .singleAssetOperation!
+                                                .assetOperations!
+                                                .assets!
                                                 .first
                                                 .distanceTravelledKilometers ==
                                             null
                                         ? '-'
-                                        : '${viewModel.singleAssetOperation.assetOperations.assets.first.distanceTravelledKilometers.round()} km',
+                                        : '${viewModel.singleAssetOperation!.assetOperations!.assets!.first.distanceTravelledKilometers!.round()} km',
                                   ),
                                 ],
                               ),
@@ -176,19 +176,19 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   InsiteTableRowItem(
                                     title: 'Total Duration ',
                                     content: viewModel
-                                                .singleAssetOperation
-                                                .assetOperations
-                                                .assets
+                                                .singleAssetOperation!
+                                                .assetOperations!
+                                                .assets!
                                                 .first
                                                 .dateRangeRuntimeDuration !=
                                             null
                                         ? Utils.formatHHmm(Duration(
                                                     seconds: viewModel
-                                                        .singleAssetOperation
-                                                        .assetOperations
-                                                        .assets
+                                                        .singleAssetOperation!
+                                                        .assetOperations!
+                                                        .assets!
                                                         .first
-                                                        .dateRangeRuntimeDuration
+                                                        .dateRangeRuntimeDuration!
                                                         .toInt())
                                                 .inSeconds)
                                             .toString()
@@ -209,7 +209,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                       Theme.of(context).backgroundColor,
                                   cellBorderColor: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .color,
                                   showCurrentTimeIndicator: false,
                                   controller: calendarController,
@@ -250,24 +250,24 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                     timeTextStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color),
                                   ),
                                   minDate: DateFormat("yyyy-MM-dd")
-                                      .parse(viewModel.startDate),
+                                      .parse(viewModel.startDate!),
                                   maxDate: DateFormat("yyyy-MM-dd")
-                                      .parse(viewModel.endDate),
+                                      .parse(viewModel.endDate!),
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
                                     dayTextStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color),
                                     dateTextStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color),
                                     backgroundColor:
                                         Theme.of(context).backgroundColor,
@@ -375,7 +375,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             calendarController.view != CalendarView.month)) {
       return;
     }
-    SchedulerBinding.instance?.addPostFrameCallback((Duration timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
       setState(() {
         _view = calendarController.view;
       });
@@ -389,8 +389,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
       if (chartData.isNotEmpty)
         for (SingleAssetOperationChartData item in chartData) {
           final Appointment chartPlot = Appointment(
-            startTime: item.startTime.toLocal(),
-            endTime: item.endTime.toLocal(),
+            startTime: item.startTime!.toLocal(),
+            endTime: item.endTime!.toLocal(),
             color: Theme.of(context).buttonColor,
             subject: "",
             notes: item.duration.toString(),

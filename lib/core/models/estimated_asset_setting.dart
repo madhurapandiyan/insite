@@ -3,7 +3,7 @@ part 'estimated_asset_setting.g.dart';
 
 @JsonSerializable()
 class EstimatedAssetSetting {
-  List<AssetTargetSettings> assetTargetSettings;
+  List<AssetTargetSettings>? assetTargetSettings;
 
   EstimatedAssetSetting({this.assetTargetSettings});
 
@@ -15,11 +15,11 @@ class EstimatedAssetSetting {
 
 @JsonSerializable()
 class AssetTargetSettings {
-  Runtime runtime;
-  Idle idle;
-  String startDate;
-  String endDate;
-  String assetUid;
+  Runtime? runtime;
+  Idle? idle;
+  String? startDate;
+  String? endDate;
+  String? assetUid;
 
   AssetTargetSettings(
       {this.runtime, this.idle, this.startDate, this.endDate, this.assetUid});
@@ -32,13 +32,13 @@ class AssetTargetSettings {
 
 @JsonSerializable()
 class Runtime {
-  double sunday;
-  double monday;
-  double tuesday;
-  double wednesday;
-  double thursday;
-  double friday;
-  double saturday;
+  double? sunday;
+  double? monday;
+  double? tuesday;
+  double? wednesday;
+  double? thursday;
+  double? friday;
+  double? saturday;
 
   Runtime(
       {this.sunday,
@@ -57,13 +57,13 @@ class Runtime {
 
 @JsonSerializable()
 class Idle {
-  double sunday;
-  double monday;
-  double tuesday;
-  double wednesday;
-  double thursday;
-  double friday;
-  double saturday;
+  double? sunday;
+  double? monday;
+  double? tuesday;
+  double? wednesday;
+  double? thursday;
+  double? friday;
+  double? saturday;
 
   Idle(
       {this.sunday,

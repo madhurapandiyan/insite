@@ -12,11 +12,11 @@ class FuelBurnRateTrend {
     this.message,
   });
 
-  Cumulatives cumulatives;
-  List<Interval> intervals;
-  Pagination pagination;
-  int code;
-  String message;
+  Cumulatives? cumulatives;
+  List<Interval>? intervals;
+  Pagination? pagination;
+  int? code;
+  String? message;
 
   factory FuelBurnRateTrend.fromJson(Map<String, dynamic> json) =>
       _$FuelBurnRateTrendFromJson(json);
@@ -39,12 +39,12 @@ class Cumulatives {
 
   dynamic cumulativeFuelBurnRate;
   dynamic averageFuelBurnRate;
-  String description;
-  DateTime startDateLocalTime;
-  DateTime endDateLocalTime;
-  int totalAssetCount;
-  int totalDayCount;
-  String intervalType;
+  String? description;
+  DateTime? startDateLocalTime;
+  DateTime? endDateLocalTime;
+  int? totalAssetCount;
+  int? totalDayCount;
+  String? intervalType;
 
   factory Cumulatives.fromJson(Map<String, dynamic> json) =>
       _$CumulativesFromJson(json);
@@ -63,12 +63,12 @@ class Interval {
     this.dayCount,
   });
 
-  Burnrates burnrates;
-  String description;
-  DateTime intervalStartDateLocalTime;
-  DateTime intervalEndDateLocalTime;
-  int totalAssetCount;
-  int dayCount;
+  Burnrates? burnrates;
+  String? description;
+  DateTime? intervalStartDateLocalTime;
+  DateTime? intervalEndDateLocalTime;
+  int? totalAssetCount;
+  int? dayCount;
 
   factory Interval.fromJson(Map<String, dynamic> json) =>
       _$IntervalFromJson(json);
@@ -84,9 +84,9 @@ class Burnrates {
     this.workingFuelBurnRate,
   });
 
-  double runtimeFuelBurnRate;
-  double idleFuelBurnRate;
-  double workingFuelBurnRate;
+  double? runtimeFuelBurnRate;
+  double? idleFuelBurnRate;
+  double? workingFuelBurnRate;
 
   factory Burnrates.fromJson(Map<String, dynamic> json) =>
       _$BurnratesFromJson(json);
@@ -100,7 +100,7 @@ class Pagination {
     this.totalCount,
   });
 
-  int totalCount;
+  int? totalCount;
 
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);

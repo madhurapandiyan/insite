@@ -3,7 +3,7 @@ part 'subscription_dashboard_details.g.dart';
 
 @JsonSerializable()
 class SubscriptionDashboardDetailResult {
-  List<List<DetailResult>> result;
+  List<List<DetailResult>>? result;
   SubscriptionDashboardDetailResult({this.result});
   factory SubscriptionDashboardDetailResult.fromJson(
           Map<String, dynamic> json) =>
@@ -25,100 +25,100 @@ class SubscriptionDashboardDetailResult {
 class DetailResult {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "totalDevice")
-  double totalDevice;
+  double? totalDevice;
 
   @JsonKey(name: "GPSDeviceID")
-  String GPSDeviceID;
+  String? GPSDeviceID;
 
   @JsonKey(name: "VIN")
-  String VIN;
+  String? VIN;
 
   @JsonKey(name: "Model")
-  String Model;
+  String? Model;
 
   @JsonKey(name: "ActualStartDate")
-  String ActualStartDate;
+  String? ActualStartDate;
 
   @JsonKey(name: "SubscriptionStartDate")
-  String SubscriptionStartDate;
+  String? SubscriptionStartDate;
 
   @JsonKey(name: "SubscriptionEndDate")
-  String SubscriptionEndDate;
+  String? SubscriptionEndDate;
 
   @JsonKey(name: "ProductFamily")
-  String ProductFamily;
+  String? ProductFamily;
 
   @JsonKey(name: "CustomerName")
-  String CustomerName;
+  String? CustomerName;
 
   @JsonKey(name: "CustomerCode")
-  String CustomerCode;
+  String? CustomerCode;
 
   @JsonKey(name: "DealerName")
-  String DealerName;
+  String? DealerName;
 
   @JsonKey(name: "DealerCode")
-  String DealerCode;
+  String? DealerCode;
 
   @JsonKey(name: "NetworkProvider")
-  String NetworkProvider;
+  String? NetworkProvider;
 
   @JsonKey(name: "CommissioningDate")
-  String CommissioningDate;
+  String? CommissioningDate;
 
   @JsonKey(name: "SecondaryIndustry")
-  String SecondaryIndustry;
+  String? SecondaryIndustry;
 
   @JsonKey(name: "PrimaryIndustry")
-  String PrimaryIndustry;
+  String? PrimaryIndustry;
 
   @JsonKey(name: "OEMName")
-  String OEMName;
+  String? OEMName;
 
   @JsonKey(name: "ID")
-  int ID;
+  int? ID;
 
   @JsonKey(name: "Name")
-  String Name;
+  String? Name;
 
   @JsonKey(name: "UserName")
-  String UserName;
+  String? UserName;
 
   @JsonKey(name: "Email")
-  String Email;
+  String? Email;
 
   @JsonKey(name: "Code")
-  String Code;
+  String? Code;
 
   @JsonKey(name: "vin")
-  String vin;
+  String? vin;
 
   @JsonKey(name: "fk_AssetId")
-  int fk_AssetId;
+  int? fk_AssetId;
 
   @JsonKey(name: "SourceName1")
-  String SourceName1;
+  String? SourceName1;
 
   @JsonKey(name: "SourceName2")
-  String SourceName2;
+  String? SourceName2;
 
   @JsonKey(name: "DestinationName1")
-  String DestinationName1;
+  String? DestinationName1;
 
   @JsonKey(name: "DestinationName2")
-  String DestinationName2;
+  String? DestinationName2;
 
   @JsonKey(name: "SourceCustomerType")
-  String SourceCustomerType;
+  String? SourceCustomerType;
 
   @JsonKey(name: "DestinationCustomerType")
-  String DestinationCustomerType;
+  String? DestinationCustomerType;
 
   @JsonKey(name: "Status")
-  String Status;
+  String? Status;
 
   @JsonKey(name: "InsertUTC")
-  String InsertUTC;
+  String? InsertUTC;
 
   DetailResult(
       {this.totalDevice,

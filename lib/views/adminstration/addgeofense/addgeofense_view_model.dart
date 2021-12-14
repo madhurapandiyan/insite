@@ -27,45 +27,45 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AddgeofenseViewModel extends InsiteViewModel {
-  final _geofenceService = locator<Geofenceservice>();
-  var _navigationService = locator<NavigationService>();
-  Logger log;
+  final Geofenceservice? _geofenceService = locator<Geofenceservice>();
+  NavigationService? _navigationService = locator<NavigationService>();
+  Logger? log;
 
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     isVisionlinkCheck = isVisionLink;
     Logger().w(isVisionlinkCheck);
-    if (isVisionlinkCheck) {
+    if (isVisionlinkCheck!) {
       getMaterialData();
     }
   }
   double zoomValue = 1;
 
-  Geofencepayload geofenceRequestPayload;
+  Geofencepayload? geofenceRequestPayload;
 
-  Addgeofencemodel addGeofencePayLoad;
+  late Addgeofencemodel addGeofencePayLoad;
 
-  GeofenceModelWithMaterialData geofenceWithMaterialData;
+  late GeofenceModelWithMaterialData geofenceWithMaterialData;
 
-  AssetLocationData _assetLocation;
-  AssetLocationData get assetLocation => _assetLocation;
+  AssetLocationData? _assetLocation;
+  AssetLocationData? get assetLocation => _assetLocation;
 
-  String finalPolygonWKTstring;
-  Set<Circle> _circle = {};
-  Set<Circle> get circle => _circle;
+  String? finalPolygonWKTstring;
+  Set<Circle>? _circle = {};
+  Set<Circle>? get circle => _circle;
 
-  Set<Polygon> _polygon = {};
-  Set<Polygon> get polygon => _polygon;
+  Set<Polygon>? _polygon = {};
+  Set<Polygon>? get polygon => _polygon;
 
-  Set<Polyline> _polyline = {};
-  Set<Polyline> get polyline => _polyline;
+  Set<Polyline>? _polyline = {};
+  Set<Polyline>? get polyline => _polyline;
 
   List<LatLng> _listOfLatLong = [];
   List<LatLng> get listOfLatLong => _listOfLatLong;
 
-  List<LatLng> correctedListofLatlang = [];
+  List<LatLng?> correctedListofLatlang = [];
 
-  bool isVisionlinkCheck;
+  bool? isVisionlinkCheck;
 
   bool isDrawingPolygon = false;
 
@@ -81,29 +81,29 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   Color color = tango;
 
-  int colorValue;
+  int? colorValue;
 
-  Materialmodel _materialData;
-  Materialmodel get materialData => _materialData;
+  Materialmodel? _materialData;
+  Materialmodel? get materialData => _materialData;
 
   List<List<num>> listOfNumber = [];
 
-  double onZoomLatitude;
-  double onZoomLongitude;
+  double? onZoomLatitude;
+  double? onZoomLongitude;
 
   List<m.Material> materialModelList = [];
-  DateTime backFillDate;
-  DateTime endingDate;
+  DateTime? backFillDate;
+  DateTime? endingDate;
   DateTime actionUTC = DateTime.now();
   //String geofenceType = "Generic";
-  String materialUID;
+  String? materialUID;
   String fetchedGeofenceName = "null";
-  String fetchedGeofenceUid;
-  String titleText;
-  String descriptionText;
-  String targetText;
-  String fetchedGeofenceType;
-  String initialValue = "Generic";
+  String? fetchedGeofenceUid;
+  String? titleText;
+  String? descriptionText;
+  String? targetText;
+  String? fetchedGeofenceType;
+  String? initialValue = "Generic";
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var targetController = TextEditingController();
@@ -122,7 +122,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     "Landfill"
   ];
 
-  String initialName = "select";
+  String? initialName = "select";
   String initialMapType = "MAP";
   List<String> mapType = ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID'];
   CustomInfoWindowController customInfoWindowController =
@@ -131,11 +131,11 @@ class AddgeofenseViewModel extends InsiteViewModel {
   CameraPosition centerPosition =
       CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
 
-  LatLng lastLatLong;
+  LatLng? lastLatLong;
 
 //navigation
   onRespectivePageNavigation() {
-    _navigationService.navigateToView(ManageGeofenceView());
+    _navigationService!.navigateToView(ManageGeofenceView());
   }
 
 //datepick
@@ -153,8 +153,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Future<void> plus(double zoomVal) async {
     final controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(onZoomLatitude == null ? 30.666 : onZoomLatitude,
-            onZoomLongitude == null ? 76.8127 : onZoomLongitude),
+        target: LatLng(onZoomLatitude ?? 30.666,
+            onZoomLongitude ?? 76.8127),
         zoom: zoomVal)));
     notifyListeners();
   }
@@ -162,8 +162,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Future<void> minus(double zoomVal) async {
     final GoogleMapController controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(onZoomLatitude == null ? 30.666 : onZoomLatitude,
-            onZoomLongitude == null ? 76.8127 : onZoomLongitude),
+        target: LatLng(onZoomLatitude == null ? 30.666 : onZoomLatitude!,
+            onZoomLongitude == null ? 76.8127 : onZoomLongitude!),
         zoom: zoomVal)));
     notifyListeners();
   }
@@ -176,9 +176,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onChangePolygonColor() {
-    _polygon.clear();
-    _polyline.clear();
-    _circle.clear();
+    _polygon!.clear();
+    _polyline!.clear();
+    _circle!.clear();
     Polyline userPolyline;
     Polygon userPolygon;
     LatLng lastLatLng = _listOfLatLong.first;
@@ -197,22 +197,23 @@ class AddgeofenseViewModel extends InsiteViewModel {
         visible: true,
       );
       userPolygon = Polygon(
-          //strokeColor: color,
+          strokeColor: color,
           strokeWidth: 3,
           polygonId: PolygonId(DateTime.now().toString()),
           fillColor: color,
           visible: true,
           points: _listOfLatLong);
+      _polygon!.add(userPolygon);
+      _polyline!.add(userPolyline);
     }
-    _polygon.add(userPolygon);
-    _polyline.add(userPolyline);
+
     notifyListeners();
   }
 
   onChoosingColor() {
     try {
       String colorString = color.toString();
-      String colorValueString;
+      late String colorValueString;
       if (colorString.contains("Color(0xff") && colorString.contains(")")) {
         colorValueString = colorString.replaceAll("Color(0xff", "");
         colorValueString = colorValueString.replaceAll(")", "");
@@ -260,9 +261,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   onEditButtonClicked() {
     isDrawingPolygon = !isDrawingPolygon;
-    _polygon.clear();
-    _polyline.clear();
-    _circle.clear();
+    _polygon!.clear();
+    _polyline!.clear();
+    _circle!.clear();
     _listOfLatLong.clear();
     notifyListeners();
   }
@@ -316,9 +317,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
         circleId: CircleId(DateTime.now().toString()),
         center: userLatlong,
         fillColor: Colors.white);
-    _polygon.add(userPolygon);
-    _polyline.add(userPolyline);
-    _circle.add(userCircle);
+    _polygon!.add(userPolygon);
+    _polyline!.add(userPolyline);
+    _circle!.add(userCircle);
     //colorValue = int.parse(color.toString());
     Logger().e(_circle);
     isPolygonsCreated = false;
@@ -328,26 +329,26 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   getMaterialData() async {
     try {
-      _materialData = await _geofenceService.getMaterialModelData();
-      for (var i = 0; i < _materialData.materials.length; i++) {
-        m.Material extractedMaterial = _materialData.materials[i];
+      _materialData = await _geofenceService!.getMaterialModelData();
+      for (var i = 0; i < _materialData!.materials!.length; i++) {
+        m.Material extractedMaterial = _materialData!.materials![i];
         materialModelList.add(extractedMaterial);
       }
 
       Logger().e(materialModelList.length);
-    } catch (e) {
+    } on DioError catch (e) {
       Logger().e(e);
       final val = DioException.fromDioError(e);
       Logger().e(val.message);
-      snackbarService.showSnackbar(message: val.message);
+      snackbarService!.showSnackbar(message: val.message!);
     }
     notifyListeners();
   }
 
   materialSelection(String value) {
     Logger().i("query typeed " + value);
-    for (var i = 0; i < _materialData.materials.length; i++) {
-      m.Material extractedMaterial = _materialData.materials[i];
+    for (var i = 0; i < _materialData!.materials!.length; i++) {
+      m.Material extractedMaterial = _materialData!.materials![i];
       materialModelList.add(extractedMaterial);
     }
     Logger().e(materialModelList.length);
@@ -357,7 +358,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
         List<m.Material> tempList = [];
         tempList.clear();
         materialModelList.forEach((item) {
-          if (item.name.contains(value.toUpperCase())) tempList.add(item);
+          if (item.name!.contains(value.toUpperCase())) tempList.add(item);
         });
         materialModelList = tempList;
         notifyListeners();
@@ -375,8 +376,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
       lastLatLong = correctedListofLatlang.first;
       correctedListofLatlang.add(lastLatLong);
       for (var i = 0; i < correctedListofLatlang.length; i++) {
-        double latitude = correctedListofLatlang[i].latitude;
-        double longitude = correctedListofLatlang[i].longitude;
+        double latitude = correctedListofLatlang[i]!.latitude;
+        double longitude = correctedListofLatlang[i]!.longitude;
         List<num> json = [longitude, latitude];
         Logger().d(json);
         listOfNumber.add(json);
@@ -435,7 +436,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                 ? null
                 : descriptionController.text,
             GeofenceName: titleController.text,
-            EndDate: endingDate == null ? null : endingDate.toIso8601String(),
+            EndDate: endingDate == null ? null : endingDate!.toIso8601String(),
             GeometryWKT: finalPolygonWKTstring,
             GeofenceType: initialValue,
             IsTransparent: false,
@@ -449,7 +450,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                 ? null
                 : descriptionController.text,
             GeofenceName: titleController.text,
-            EndDate: endingDate == null ? null : endingDate.toIso8601String(),
+            EndDate: endingDate == null ? null : endingDate!.toIso8601String(),
             GeometryWKT: finalPolygonWKTstring,
             GeofenceType: initialValue,
             IsTransparent: false,
@@ -457,7 +458,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
         Backfill backfill = Backfill(
             BackfillDate:
-                backFillDate == null ? null : backFillDate.toIso8601String());
+                backFillDate == null ? null : backFillDate!.toIso8601String());
 
         TargetData target = TargetData(
             TargetVolumeInCuMeter: targetController.text.isEmpty
@@ -494,13 +495,13 @@ class AddgeofenseViewModel extends InsiteViewModel {
             initialValue == dropDownlist[1] ||
             initialValue == dropDownlist[7]) {
           var data =
-              await _geofenceService.postGeofenceData(geofenceRequestPayload);
-          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+              await _geofenceService!.postGeofenceData(geofenceRequestPayload!);
+          _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         } else {
           var data =
-              await _geofenceService.postAddGeofenceData(addGeofencePayLoad);
-          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+              await _geofenceService!.postAddGeofenceData(addGeofencePayLoad);
+          _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         }
       } else {
@@ -508,13 +509,13 @@ class AddgeofenseViewModel extends InsiteViewModel {
         if (initialValue == dropDownlist[0] ||
             initialValue == dropDownlist[1] ||
             initialValue == dropDownlist[7]) {
-          await _geofenceService.putGeofenceData(geofenceRequestPayload);
-          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+          await _geofenceService!.putGeofenceData(geofenceRequestPayload!);
+          _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         } else {
-          await _geofenceService
+          await _geofenceService!
               .putGeofenceDataWithMaterial(geofenceWithMaterialData);
-          _navigationService.clearTillFirstAndShowView(ManageGeofenceView());
+          _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         }
       }
@@ -530,18 +531,18 @@ class AddgeofenseViewModel extends InsiteViewModel {
       hideLoadingDialog();
       final val = DioException.fromDioError(e);
 
-      snackbarService.showSnackbar(message: val.message);
+      snackbarService!.showSnackbar(message: val.message!);
       Logger().e(e.message);
     }
     notifyListeners();
   }
 
   onCancelButtonClicked() {
-    polygon.clear();
-    polyline.clear();
-    circle.clear();
-    titleController.text = null;
-    targetController.text = null;
+    polygon!.clear();
+    polyline!.clear();
+    circle!.clear();
+    titleController.clear();
+    targetController.clear();
     endingDate = null;
     backFillDate = null;
     initialValue = dropDownlist[0];
@@ -559,38 +560,38 @@ class AddgeofenseViewModel extends InsiteViewModel {
     listOfLatLong.clear();
     listOfNumber.clear();
     correctedListofLatlang = [];
-    polygon.clear();
-    polyline.clear();
-    circle.clear();
+    polygon!.clear();
+    polyline!.clear();
+    circle!.clear();
     listOfLatLong.clear();
     notifyListeners();
   }
 
-  getGeofenceData(String uid) async {
+  getGeofenceData(String? uid) async {
     Logger().e("FUNCTION");
     fetchedGeofenceUid = uid;
     Geofencemodeldata data;
     GetAddgeofenceModel geofenceInputsData;
     try {
       if (fetchedGeofenceUid != null) {
-        data = await _geofenceService.getSingleGeofenceData(uid);
+        data = await _geofenceService!.getSingleGeofenceData(uid);
         fetchedGeofenceType = data.GeofenceType;
         if (data.GeofenceType == dropDownlist[2] ||
             data.GeofenceType == dropDownlist[3] ||
             data.GeofenceType == dropDownlist[4] ||
             data.GeofenceType == dropDownlist[5] ||
             data.GeofenceType == dropDownlist[6]) {
-          geofenceInputsData = await _geofenceService.getGeofenceInput(uid);
-          Logger().wtf(geofenceInputsData.Result.toJson());
+          geofenceInputsData = await _geofenceService!.getGeofenceInput(uid);
+          Logger().wtf(geofenceInputsData.Result!.toJson());
           Logger().d("mappiy");
           targetController.text =
-              geofenceInputsData.Result.Target.TargetVolumeInCuMeter == null
-                  ? 0.0
-                  : geofenceInputsData.Result.Target.TargetVolumeInCuMeter
+              geofenceInputsData.Result!.Target!.TargetVolumeInCuMeter == null
+                  ? 0.0.toString()
+                  : geofenceInputsData.Result!.Target!.TargetVolumeInCuMeter
                       .toString();
         }
-        titleController.text = data.GeofenceName;
-        descriptionController.text = data.Description;
+        titleController.text = data.GeofenceName.toString();
+        descriptionController.text = data.Description.toString();
         initialValue = data.GeofenceType == "Unknown"
             ? dropDownlist[4]
             : data.GeofenceType;
@@ -602,11 +603,11 @@ class AddgeofenseViewModel extends InsiteViewModel {
         return data;
       }
       isLoading = false;
-    } catch (e) {
+    } on DioError catch (e) {
       isLoading = false;
       Logger().e(e.toString());
       var error = DioException.fromDioError(e);
-      snackbarService.showSnackbar(message: error.message);
+      snackbarService!.showSnackbar(message: error.message!);
     }
   }
 
@@ -620,13 +621,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
       Polygon fetchedSinglePolygon;
       Polyline fetchedSinglePolyline;
       // Logger().e(polygonString);
-      final geometryPolygon = Geo.wktProjected.parse(finalPolygonWKTstring);
+      final geometryPolygon =
+          Geo.wktProjected.parse(finalPolygonWKTstring!) as Geo.Polygon;
       fetchedPolygons.add(geometryPolygon);
       final pointSeriesList = fetchedPolygons.first.exterior.chain;
       Logger().w(pointSeriesList);
       for (var item in pointSeriesList) {
-        fetchedLatitude = item.y;
-        fetchedLongitude = item.x;
+        fetchedLatitude = item.y as double;
+        fetchedLongitude = item.x as double;
         final LatLng latitudeLongitude =
             LatLng(fetchedLatitude, fetchedLongitude);
         fetchedLatlng.add(latitudeLongitude);
@@ -635,7 +637,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
       onZoomLatitude = _listOfLatLong.first.latitude;
       onZoomLongitude = _listOfLatLong.first.longitude;
       centerPosition = CameraPosition(
-          target: LatLng(onZoomLatitude, onZoomLongitude), zoom: 5);
+          target: LatLng(onZoomLatitude!, onZoomLongitude!), zoom: 5);
 
       fetchedSinglePolygon = Polygon(
           strokeColor: color,
@@ -654,8 +656,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
           color: color,
           visible: true,
           points: fetchedLatlng);
-      _polygon.add(fetchedSinglePolygon);
-      _polyline.add(fetchedSinglePolyline);
+      _polygon!.add(fetchedSinglePolygon);
+      _polyline!.add(fetchedSinglePolyline);
       Logger().d(_polygon);
       Logger().d(fetchedSinglePolygon);
       isPolygonsCreated = false;

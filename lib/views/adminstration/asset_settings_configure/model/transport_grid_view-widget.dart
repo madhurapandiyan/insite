@@ -4,17 +4,17 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class TransportGridViewWidget extends StatelessWidget {
-  final VoidCallback voidCallback;
-  final int selectedIndex;
-  final int index;
-  final ConfigureGridViewModel items;
+  final VoidCallback? voidCallback;
+  final int? selectedIndex;
+  final int? index;
+  final ConfigureGridViewModel? items;
   const TransportGridViewWidget({ this.voidCallback,this.selectedIndex,this.index ,this.items}); 
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-       voidCallback();
+       voidCallback!();
       },
       child: Card(
         semanticContainer: true,
@@ -29,7 +29,7 @@ class TransportGridViewWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                items.image,
+                items!.image!,
                 color: selectedIndex != null &&
                         selectedIndex == index
                     ? Colors.white
@@ -44,7 +44,7 @@ class TransportGridViewWidget extends StatelessWidget {
                       : Theme.of(context).iconTheme.color,
                   fontWeight: FontWeight.bold,
                   size: 12,
-                  text: items.modelName),
+                  text: items!.modelName),
             ],
           ),
         ),

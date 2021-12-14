@@ -7,15 +7,15 @@ part of 'device_search_model_response.dart';
 // **************************************************************************
 
 DeviceSearchModelResponse _$DeviceSearchModelResponseFromJson(
-    Map<String, dynamic> json) {
-  return DeviceSearchModelResponse(
-    code: json['code'] as String,
-    status: json['status'] as String,
-    result: json['result'] == null
-        ? null
-        : DeviceSearchResponce.fromJson(json['result'] as Map<String, dynamic>),
-  );
-}
+        Map<String, dynamic> json) =>
+    DeviceSearchModelResponse(
+      code: json['code'] as String?,
+      status: json['status'] as String?,
+      result: json['result'] == null
+          ? null
+          : DeviceSearchResponce.fromJson(
+              json['result'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$DeviceSearchModelResponseToJson(
         DeviceSearchModelResponse instance) =>
@@ -25,17 +25,17 @@ Map<String, dynamic> _$DeviceSearchModelResponseToJson(
       'result': instance.result,
     };
 
-DeviceSearchResponce _$DeviceSearchResponceFromJson(Map<String, dynamic> json) {
-  return DeviceSearchResponce(
-    AssetID: json['AssetID'] as int,
-    GPSDeviceID: json['GPSDeviceID'] as String,
-    VIN: json['VIN'] as String,
-    Model: json['Model'] as String,
-    TankCapacity: json['TankCapacity'] as int,
-    S_StartDate: json['S_StartDate'] as String,
-    S_EndDate: json['S_EndDate'] as String,
-  );
-}
+DeviceSearchResponce _$DeviceSearchResponceFromJson(
+        Map<String, dynamic> json) =>
+    DeviceSearchResponce(
+      AssetID: json['AssetID'] as int?,
+      GPSDeviceID: json['GPSDeviceID'] as String?,
+      VIN: json['VIN'] as String?,
+      Model: json['Model'] as String?,
+      TankCapacity: json['TankCapacity'] as int?,
+      S_StartDate: json['S_StartDate'] as String?,
+      S_EndDate: json['S_EndDate'] as String?,
+    );
 
 Map<String, dynamic> _$DeviceSearchResponceToJson(
         DeviceSearchResponce instance) =>

@@ -12,11 +12,11 @@ class SingleAssetUtilization {
     this.message,
   });
 
-  List<Range> daily;
-  List<Range> weekly;
-  List<Range> monthly;
-  double code;
-  String message;
+  List<Range>? daily;
+  List<Range>? weekly;
+  List<Range>? monthly;
+  double? code;
+  String? message;
 
   factory SingleAssetUtilization.fromJson(Map<String, dynamic> json) =>
       _$SingleAssetUtilizationFromJson(json);
@@ -33,10 +33,10 @@ class Range {
     this.data,
   });
 
-  String aggregateType;
-  DateTime startDate;
-  DateTime endDate;
-  Data data;
+  String? aggregateType;
+  DateTime? startDate;
+  DateTime? endDate;
+  Data? data;
 
   factory Range.fromJson(Map<String, dynamic> json) => _$RangeFromJson(json);
 
@@ -99,28 +99,28 @@ class Data {
 
   dynamic capabilities;
   dynamic message;
-  DateTime date;
-  double idleHours;
-  bool supportsIdle;
-  double runtimeHours;
-  String workDefinitionType;
-  double workingHours;
-  double distanceTravelledKilometers;
-  double idleEfficiency;
-  double workingEfficiency;
-  List<String> idleEfficiencyCalloutTypes;
-  List<String> workingEfficiencyCalloutTypes;
-  List<String> targetIdlePerformanceCalloutTypes;
-  double targetIdlePerformance;
-  double targetIdle;
-  double targetRuntime;
-  double targetRuntimePerformance;
-  List<String> runtimeHoursCalloutTypes;
-  List<String> idleHoursCalloutTypes;
-  List<String> workingHoursCalloutTypes;
-  double lastRuntimeHourMeter;
-  double lastOdometerMeter;
-  double lastIdleHourMeter;
+  DateTime? date;
+  double? idleHours;
+  bool? supportsIdle;
+  double? runtimeHours;
+  String? workDefinitionType;
+  double? workingHours;
+  double? distanceTravelledKilometers;
+  double? idleEfficiency;
+  double? workingEfficiency;
+  List<String>? idleEfficiencyCalloutTypes;
+  List<String>? workingEfficiencyCalloutTypes;
+  List<String>? targetIdlePerformanceCalloutTypes;
+  double? targetIdlePerformance;
+  double? targetIdle;
+  double? targetRuntime;
+  double? targetRuntimePerformance;
+  List<String>? runtimeHoursCalloutTypes;
+  List<String>? idleHoursCalloutTypes;
+  List<String>? workingHoursCalloutTypes;
+  double? lastRuntimeHourMeter;
+  double? lastOdometerMeter;
+  double? lastIdleHourMeter;
   dynamic lastRuntimeFuelConsumptionLitersMeter;
   dynamic lastIdleFuelConsumptionLitersMeter;
   dynamic runtimeFuelConsumedLiters;
@@ -129,23 +129,23 @@ class Data {
   dynamic runtimeFuelConsumptionRate;
   dynamic workingFuelConsumptionRate;
   dynamic idleFuelConsumptionRate;
-  List<String> idleFuelConsumptionRateCalloutTypes;
-  List<String> workingFuelConsumptionRateCalloutTypes;
+  List<String>? idleFuelConsumptionRateCalloutTypes;
+  List<String>? workingFuelConsumptionRateCalloutTypes;
   dynamic kmsPerRuntimeFuelConsumedLiter;
-  List<String> runtimeFuelConsumedLitersCalloutTypes;
-  List<String> idleFuelConsumedLitersCalloutTypes;
-  List<String> workingFuelConsumedLitersCalloutTypes;
-  List<String> runtimeFuelConsumptionLitersMeterCalloutTypes;
-  List<String> idleFuelConsumptionLitersMeterCalloutTypes;
-  List<String> runtimeHoursMeterCalloutTypes;
-  List<String> idleHoursMeterCalloutTypes;
-  DateTime lastReportedTime;
-  String lastReportedTimeZoneAbbrev;
-  List<String> dailyreportedtimeTypes;
-  DateTime firstEngineStartTime;
-  DateTime lastEngineStopTime;
-  String firstEngineStartTimeZoneAbbrev;
-  String lastEngineStopTimeZoneAbbrev;
+  List<String>? runtimeFuelConsumedLitersCalloutTypes;
+  List<String>? idleFuelConsumedLitersCalloutTypes;
+  List<String>? workingFuelConsumedLitersCalloutTypes;
+  List<String>? runtimeFuelConsumptionLitersMeterCalloutTypes;
+  List<String>? idleFuelConsumptionLitersMeterCalloutTypes;
+  List<String>? runtimeHoursMeterCalloutTypes;
+  List<String>? idleHoursMeterCalloutTypes;
+  DateTime? lastReportedTime;
+  String? lastReportedTimeZoneAbbrev;
+  List<String>? dailyreportedtimeTypes;
+  DateTime? firstEngineStartTime;
+  DateTime? lastEngineStopTime;
+  String? firstEngineStartTimeZoneAbbrev;
+  String? lastEngineStopTimeZoneAbbrev;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 

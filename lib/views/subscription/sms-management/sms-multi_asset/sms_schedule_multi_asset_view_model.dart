@@ -19,34 +19,35 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   SmsScheduleMultiAssetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
 
-  final _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService =
+      locator<SmsManagementService>();
 
   List<SingleAssetSmsSchedule> listOfSingleAssetSmsSchedule = [];
 
-  SingleAssetResponce _singleAssetResponce;
-  SingleAssetResponce get singleAssetResponce => _singleAssetResponce;
+  SingleAssetResponce? _singleAssetResponce;
+  SingleAssetResponce? get singleAssetResponce => _singleAssetResponce;
 
-  List<SingleAssetModelResponce> singleAssetModelResponce = [];
+  List<SingleAssetModelResponce>? singleAssetModelResponce = [];
 
-  SavingSmsModel _savingSmsModel;
+  SavingSmsModel? _savingSmsModel;
 
-  List<SavingSmsModel> listOSavingSmsModel = [];
+  List<SavingSmsModel?> listOSavingSmsModel = [];
 
   ReceivePort port = ReceivePort();
 
-  List<String> nameList = [];
-  List<String> mobileNoList = [];
-  List<String> languageList = [];
+  List<String?> nameList = [];
+  List<String?> mobileNoList = [];
+  List<String?> languageList = [];
   List<String> deviceId = [];
   List<String> model = [];
   List<String> date = [];
-  List<String> serialNo = [];
+  List<String?> serialNo = [];
 
   onUpload() async {
     try {
@@ -82,11 +83,11 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
         // }
         // onGettingMultiSmsData();
       } else {
-        snackbarService.showSnackbar(message: "Permission Denied");
+        snackbarService!.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();
       }
     } catch (e) {
-      snackbarService.showSnackbar(
+      snackbarService!.showSnackbar(
           message: "Permission Denied Only Read Files From External Storage");
       hideLoadingDialog();
     }
@@ -96,7 +97,8 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
     try {
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        Directory baseStorage = await getExternalStorageDirectory();
+        Directory baseStorage =
+            await (getExternalStorageDirectory() as Future<Directory>);
         int initialIndex = baseStorage.path.indexOf("data/");
         String path = baseStorage.path
             .replaceRange(initialIndex, baseStorage.path.length, "excel");
@@ -123,26 +125,26 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
         nameList.clear();
         mobileNoList.clear();
         languageList.clear();
-        _singleAssetResponce = await _smsScheduleService
+        _singleAssetResponce = await _smsScheduleService!
             .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
-        singleAssetModelResponce = _singleAssetResponce.result;
+        singleAssetModelResponce = _singleAssetResponce!.result;
 
         for (var item in listOfSingleAssetSmsSchedule) {
           nameList.add(item.Name);
           mobileNoList.add(item.Mobile);
           languageList.add(item.Language);
         }
-        for (var item in singleAssetModelResponce) {
+        for (var item in singleAssetModelResponce!) {
           serialNo.add(item.SerialNumber);
         }
         notifyListeners();
         hideLoadingDialog();
       }
-    } catch (e) {
+    } on DioError catch (e) {
       Logger().e(e.toString());
 
       final errorMsg = DioException.fromDioError(e);
-      snackbarService.showSnackbar(message: errorMsg.message);
+      snackbarService!.showSnackbar(message: errorMsg.message!);
     }
   }
 
@@ -152,7 +154,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
       nameList.clear();
       mobileNoList.clear();
       languageList.clear();
-      singleAssetModelResponce.clear();
+      singleAssetModelResponce!.clear();
       hideLoadingDialog();
       notifyListeners();
     });
@@ -160,19 +162,19 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
 
   Future onSavingSmsModel() async {
     try {
-      for (var i = 0; i < singleAssetModelResponce.length; i++) {
+      for (var i = 0; i < singleAssetModelResponce!.length; i++) {
         _savingSmsModel = SavingSmsModel(
             AssetSerial: serialNo[i],
-            GPSDeviceID: singleAssetModelResponce[i].GPSDeviceID,
+            GPSDeviceID: singleAssetModelResponce![i].GPSDeviceID,
             Language: languageList[i],
             Mobile: mobileNoList[i],
-            Model: singleAssetModelResponce[i].Model,
+            Model: singleAssetModelResponce![i].Model,
             Name: nameList[i],
-            StartDate: singleAssetModelResponce[i].StartDate);
+            StartDate: singleAssetModelResponce![i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
-      Logger().d(_savingSmsModel.toJson());
-      var data = await _smsScheduleService.savingSms(listOSavingSmsModel);
+      Logger().d(_savingSmsModel!.toJson());
+      var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
 
       listOSavingSmsModel.clear();
       notifyListeners();
@@ -180,7 +182,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
       listOSavingSmsModel.clear();
       hideLoadingDialog();
       final error = DioException.fromDioError(e);
-      snackbarService.showSnackbar(message: error.message);
+      snackbarService!.showSnackbar(message: error.message!);
       notifyListeners();
     }
   }

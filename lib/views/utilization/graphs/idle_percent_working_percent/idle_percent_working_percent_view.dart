@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 import 'idle_percent_working_percent_view_model.dart';
 
 class IdlePercentWorkingPercentView extends StatefulWidget {
-  final Function(int) updateCount;
+  final Function(int)? updateCount;
   const IdlePercentWorkingPercentView({
-    Key key,
+    Key? key,
     this.updateCount,
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class IdlePercentWorkingPercentView extends StatefulWidget {
 
 class IdlePercentWorkingPercentViewState
     extends State<IdlePercentWorkingPercentView> {
-  var viewModel;
+  late var viewModel;
 
   @override
   void initState() {
@@ -44,10 +44,10 @@ class IdlePercentWorkingPercentViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<IdlePercentWorkingPercentViewModel>.reactive(
       builder: (BuildContext context,
-          IdlePercentWorkingPercentViewModel viewModel, Widget _) {
+          IdlePercentWorkingPercentViewModel viewModel, Widget? _) {
         if (viewModel.update) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.updateCount(viewModel.utilLizationListData.length);
+            widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });
         }
@@ -96,7 +96,7 @@ class IdlePercentWorkingPercentViewState
                                               : viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .idleEfficiency *
+                                                      .idleEfficiency! *
                                                   100
                                           : viewModel
                                                       .utilLizationListData[
@@ -107,7 +107,7 @@ class IdlePercentWorkingPercentViewState
                                               : viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .workingEfficiency *
+                                                      .workingEfficiency! *
                                                   100,
                                       color: rangeChoice == 1
                                           ? Theme.of(context).buttonColor

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class InsiteDialog extends StatelessWidget {
-  final String title;
-  final String message;
-  final VoidCallback onPositiveActionClicked;
-  final VoidCallback onNegativeActionClicked;
+  final String? title;
+  final String? message;
+  final VoidCallback? onPositiveActionClicked;
+  final VoidCallback? onNegativeActionClicked;
   const InsiteDialog(
-      {Key key,
+      {Key? key,
       this.message,
       this.title,
       this.onPositiveActionClicked,
@@ -37,7 +37,7 @@ class InsiteDialog extends StatelessWidget {
                 text: "NO",
               ),
               onPressed: () async {
-                onNegativeActionClicked();
+                onNegativeActionClicked!();
               },
             ),
             SizedBox(
@@ -48,7 +48,7 @@ class InsiteDialog extends StatelessWidget {
                 text: 'YES',
               ),
               onPressed: () async {
-                onPositiveActionClicked();
+                onPositiveActionClicked!();
               },
             ),
           ]),
@@ -59,10 +59,10 @@ class InsiteDialog extends StatelessWidget {
 }
 
 class InsiteInfoDialog extends StatelessWidget {
-  final String title;
-  final String message;
-  final VoidCallback onOkClicked;
-  const InsiteInfoDialog({Key key, this.message, this.title, this.onOkClicked})
+  final String? title;
+  final String? message;
+  final VoidCallback? onOkClicked;
+  const InsiteInfoDialog({Key? key, this.message, this.title, this.onOkClicked})
       : super(key: key);
 
   @override
@@ -91,7 +91,7 @@ class InsiteInfoDialog extends StatelessWidget {
                 text: 'OK',
               ),
               onPressed: () async {
-                onOkClicked();
+                onOkClicked!();
               },
             ),
           ]),

@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import 'fleet_status_view_model.dart';
 
 class FleetStatusView extends StatefulWidget {
-  FleetStatusView({Key key}) : super(key: key);
+  FleetStatusView({Key? key}) : super(key: key);
 
   @override
   _FleetStatusViewState createState() => _FleetStatusViewState();
@@ -23,7 +23,7 @@ class _FleetStatusViewState extends State<FleetStatusView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<FleetStatusViewModel>.reactive(
       builder:
-          (BuildContext context, FleetStatusViewModel viewModel, Widget _) {
+          (BuildContext context, FleetStatusViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: Stack(

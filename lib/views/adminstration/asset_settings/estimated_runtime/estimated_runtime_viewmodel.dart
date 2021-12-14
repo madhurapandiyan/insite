@@ -14,16 +14,16 @@ import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class EstimatedRuntimeViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   TextEditingController fulltargetTimeController = TextEditingController();
   TextEditingController fullIdleTimeController = TextEditingController();
 
-  List<String> _assetUid;
-  List<String> get assetUId => _assetUid;
-  String percentData;
+  List<String?>? _assetUid;
+  List<String?>? get assetUId => _assetUid;
+  String? percentData;
 
-  List<dynamic> dummydata;
+  List<dynamic>? dummydata;
 
   bool _isSelectedFullWeekTarget = false;
   bool get isSelectedFullWeekTarget => _isSelectedFullWeekTarget;
@@ -31,26 +31,26 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   bool _isSelectedFullWeekIdle = false;
   bool get isSelectedFullWeekIdle => _isSelectedFullWeekIdle;
 
-  double _percentageData;
-  double get percentageData => _percentageData;
+  double? _percentageData;
+  double? get percentageData => _percentageData;
 
   TextEditingController startDateController = new TextEditingController();
 
   TextEditingController endDateController = new TextEditingController();
 
-  var _snackBarService = locator<SnackbarService>();
+  SnackbarService? _snackBarService = locator<SnackbarService>();
 
   List<double> getPercenData = [];
 
-  Runtime dateFilterRuntimeValue;
-  Idle dateFilterIdleValue;
+  Runtime? dateFilterRuntimeValue;
+  Idle? dateFilterIdleValue;
 
   List<double> getIdleData = [];
 
   bool isChangingState = false;
   bool get changedState => isChangingState;
 
-  var _manageUserService = locator<AssetAdminManagerUserService>();
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
 
   getStartDateData(String formattedDate) {
     startDateController.text = formattedDate;
@@ -85,7 +85,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   List<IncrementDecrementValue> createdCountValue = [];
 
-  EstimatedRuntimeViewModel(List<String> assetUidList) {
+  EstimatedRuntimeViewModel(List<String?>? assetUidList) {
     Logger().i("viewModel:$assetUidList");
     _assetUid = assetUidList;
     this.log = getLogger(this.runtimeType.toString());
@@ -270,17 +270,17 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   }
 
   getAssetSettingTargetData(
-      DateTime startDate, DateTime endDate, BuildContext context) async {
+      DateTime? startDate, DateTime? endDate, BuildContext context) async {
     if (startDate == null) {
-      _snackBarService.showSnackbar(message: "StartDate must not be  null");
+      _snackBarService!.showSnackbar(message: "StartDate must not be  null");
       return;
     } else if (endDate == null) {
-      _snackBarService.showSnackbar(message: "EndDate must not be  null");
+      _snackBarService!.showSnackbar(message: "EndDate must not be  null");
       return;
     }
 
-    var result = await _manageUserService.getAssetTargetSettingsData(
-        assetUId,
+    var result = await _manageUserService!.getAssetTargetSettingsData(
+        assetUId!,
         startDate,
         endDate,
         Idle(
@@ -311,44 +311,44 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  EstimatedAssetSetting result;
+  EstimatedAssetSetting? result;
   List<IncrementDecrementValue> dateFilterUpdateListValue = [];
 
   getEstimatedTargetSettingsData() async {
     try {
       result =
-          await _manageUserService.getEstimatedTargetSettingListData(assetUId);
+          await _manageUserService!.getEstimatedTargetSettingListData(assetUId);
 
       if (result != null) {
-        for (var i = 0; i < result.assetTargetSettings.length; i++) {
-          final data = result.assetTargetSettings[i];
+        for (var i = 0; i < result!.assetTargetSettings!.length; i++) {
+          final data = result!.assetTargetSettings![i];
           var sun = IncrementDecrementValue(
-              idleCount: data.idle.sunday.toDouble(),
-              runTimecount: data.runtime.sunday.toDouble(),
+              idleCount: data.idle!.sunday!.toDouble(),
+              runTimecount: data.runtime!.sunday!.toDouble(),
               runtimeDays: "Sun");
           var mon = IncrementDecrementValue(
-              idleCount: data.idle.monday.toDouble(),
-              runTimecount: data.runtime.monday.toDouble(),
+              idleCount: data.idle!.monday!.toDouble(),
+              runTimecount: data.runtime!.monday!.toDouble(),
               runtimeDays: "Mon");
           var tue = IncrementDecrementValue(
-              idleCount: data.idle.tuesday.toDouble(),
-              runTimecount: data.runtime.tuesday.toDouble(),
+              idleCount: data.idle!.tuesday!.toDouble(),
+              runTimecount: data.runtime!.tuesday!.toDouble(),
               runtimeDays: "Tue");
           var wed = IncrementDecrementValue(
-              idleCount: data.idle.wednesday.toDouble(),
-              runTimecount: data.runtime.wednesday.toDouble(),
+              idleCount: data.idle!.wednesday!.toDouble(),
+              runTimecount: data.runtime!.wednesday!.toDouble(),
               runtimeDays: "Wed");
           var thu = IncrementDecrementValue(
-              idleCount: data.idle.thursday.toDouble(),
-              runTimecount: data.runtime.thursday.toDouble(),
+              idleCount: data.idle!.thursday!.toDouble(),
+              runTimecount: data.runtime!.thursday!.toDouble(),
               runtimeDays: "Thu");
           var fri = IncrementDecrementValue(
-              idleCount: data.idle.friday.toDouble(),
-              runTimecount: data.runtime.friday.toDouble(),
+              idleCount: data.idle!.friday!.toDouble(),
+              runTimecount: data.runtime!.friday!.toDouble(),
               runtimeDays: "Fri");
           var sat = IncrementDecrementValue(
-              idleCount: data.idle.saturday.toDouble(),
-              runTimecount: data.runtime.saturday.toDouble(),
+              idleCount: data.idle!.saturday!.toDouble(),
+              runTimecount: data.runtime!.saturday!.toDouble(),
               runtimeDays: "Sat");
           dateFilterUpdateListValue.addAll([sun, mon, tue, wed, thu, fri, sat]);
         }
@@ -381,7 +381,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     try {
       var startDateString = Utils.getLastReportedDateTwoFilter(startDate);
       var endDateString = Utils.getLastReportedDateTwoFilter(endDate);
-      result.assetTargetSettings.forEach((element) {
+      result!.assetTargetSettings!.forEach((element) {
         if (element.startDate == startDateString &&
             element.endDate == endDateString) {
           dateFilterRuntimeValue = element.runtime;
@@ -390,32 +390,32 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       });
 
       var sunT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.sunday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.sunday.toDouble(),
+          idleCount: dateFilterIdleValue!.sunday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.sunday!.toDouble(),
           runtimeDays: "Sun");
       var monT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.monday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.monday.toDouble(),
+          idleCount: dateFilterIdleValue!.monday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.monday!.toDouble(),
           runtimeDays: "Mon");
       var tueT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.tuesday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.tuesday.toDouble(),
+          idleCount: dateFilterIdleValue!.tuesday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.tuesday!.toDouble(),
           runtimeDays: "Tue");
       var wedT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.wednesday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.wednesday.toDouble(),
+          idleCount: dateFilterIdleValue!.wednesday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.wednesday!.toDouble(),
           runtimeDays: "Wed");
       var thuT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.thursday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.thursday.toDouble(),
+          idleCount: dateFilterIdleValue!.thursday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.thursday!.toDouble(),
           runtimeDays: "Thu");
       var friT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.friday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.friday.toDouble(),
+          idleCount: dateFilterIdleValue!.friday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.friday!.toDouble(),
           runtimeDays: "Fri");
       var satT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue.saturday.toDouble(),
-          runTimecount: dateFilterRuntimeValue.saturday.toDouble(),
+          idleCount: dateFilterIdleValue!.saturday!.toDouble(),
+          runTimecount: dateFilterRuntimeValue!.saturday!.toDouble(),
           runtimeDays: "Sat");
       dateFilterUpdateListValue
           .addAll([sunT, monT, tueT, wedT, thuT, friT, satT]);

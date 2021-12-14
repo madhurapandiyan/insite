@@ -4,20 +4,20 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class FuelLevel extends StatelessWidget {
   const FuelLevel({
-    Key key,
-    @required this.liquidColor,
-    @required this.title,
-    @required this.value,
-    @required this.lifeTimeFuel,
-    @required this.percentage,
-    @required this.lastReported,
+    Key? key,
+    required this.liquidColor,
+    required this.title,
+    required this.value,
+    required this.lifeTimeFuel,
+    required this.percentage,
+    required this.lastReported,
   }) : super(key: key);
 
   final Color liquidColor;
   final String title;
-  final double value;
+  final double? value;
   final String lifeTimeFuel;
-  final String percentage;
+  final String? percentage;
   final String lastReported;
 
   @override
@@ -79,16 +79,16 @@ class FuelLevel extends StatelessWidget {
                                 child: LiquidCircularProgressIndicator(
                                   valueColor:
                                       AlwaysStoppedAnimation(liquidColor),
-                                  value: value / 100,
+                                  value: value! / 100,
                                   center: InsiteText(
-                                      text: percentage + "%",
+                                      text: percentage! + "%",
                                       fontWeight: FontWeight.bold,
                                       size: 25),
                                   backgroundColor:
                                       Theme.of(context).backgroundColor,
                                   borderColor: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .color,
                                   borderWidth: 2.0,
                                   direction: Axis.vertical,

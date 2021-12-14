@@ -8,10 +8,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetFormWidget extends StatefulWidget {
-  final Function(String, String, String, String) onSaving;
-  final TextEditingController serialNoController;
-  final TextEditingController nameController;
-  final TextEditingController mobileNoController;
+  final Function(String?, String?, String?, String)? onSaving;
+  final TextEditingController? serialNoController;
+  final TextEditingController? nameController;
+  final TextEditingController? mobileNoController;
   SingleAssetFormWidget(
       {this.onSaving,
       this.serialNoController,
@@ -35,9 +35,9 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
   var nameFocus = FocusNode();
   var mobileNoFocus = FocusNode();
   var languageFocus = FocusNode();
-  String serialNo;
-  String name;
-  String mobileNo;
+  String? serialNo;
+  String? name;
+  String? mobileNo;
   String value = "English";
 
   @override
@@ -68,7 +68,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     FocusScope.of(context).requestFocus(nameFocus);
                   },
                   keyPadType: TextInputType.text,
-                  validator: serialNoValidator,
+                  validator: serialNoValidator as dynamic Function(String)?,
                   onChanged: (value) {
                     serialNo = value;
                   },
@@ -92,7 +92,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                   onChanged: (value) {
                     name = value;
                   },
-                  validator: serialNoValidator,
+                  validator: serialNoValidator as dynamic Function(String)?,
                 ),
                 SizedBox(
                   height: 30,
@@ -113,7 +113,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     mobileNo = value;
                   },
                   focusNode: mobileNoFocus,
-                  validator: modileNoValidator,
+                  validator: modileNoValidator as dynamic Function(String)?,
                 ),
                 SizedBox(
                   height: 30,
@@ -131,7 +131,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       border: Border.all(
-                          color: Theme.of(context).textTheme.bodyText1.color,
+                          color: Theme.of(context).textTheme.bodyText1!.color!,
                           width: 1)),
                   child: CustomDropDownWidget(
                     onFocus: languageFocus,
@@ -140,7 +140,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     onChanged: (val) {
                       Logger().e(val);
                       setState(() {
-                        value = val;
+                        value = val!;
                       });
                     },
                   ),
@@ -153,9 +153,9 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                   width: MediaQuery.of(context).size.width * 0.75,
                   height: MediaQuery.of(context).size.height * 0.05,
                   onTap: () {
-                    final valid = formKey.currentState.validate();
+                    final valid = formKey.currentState!.validate();
                     if (valid) {
-                      widget.onSaving(serialNo, name, mobileNo, value);
+                      widget.onSaving!(serialNo, name, mobileNo, value);
                     }
                   },
                   title: "Submit",

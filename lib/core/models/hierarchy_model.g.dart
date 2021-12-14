@@ -7,19 +7,16 @@ part of 'hierarchy_model.dart';
 // **************************************************************************
 
 SingleAssetRegistrationSearchModel _$SingleAssetRegistrationSearchModelFromJson(
-    Map<String, dynamic> json) {
-  return SingleAssetRegistrationSearchModel(
-    code: json['code'] as String,
-    status: json['status'] as String,
-    result: (json['result'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) => e == null
-                ? null
-                : HierarchyModel.fromJson(e as Map<String, dynamic>))
-            ?.toList())
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    SingleAssetRegistrationSearchModel(
+      code: json['code'] as String?,
+      status: json['status'] as String?,
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => (e as List<dynamic>)
+              .map((e) => HierarchyModel.fromJson(e as Map<String, dynamic>))
+              .toList())
+          .toList(),
+    );
 
 Map<String, dynamic> _$SingleAssetRegistrationSearchModelToJson(
         SingleAssetRegistrationSearchModel instance) =>
@@ -29,15 +26,14 @@ Map<String, dynamic> _$SingleAssetRegistrationSearchModelToJson(
       'result': instance.result,
     };
 
-HierarchyModel _$HierarchyModelFromJson(Map<String, dynamic> json) {
-  return HierarchyModel(
-    ID: json['ID'] as int,
-    Name: json['Name'] as String,
-    UserName: json['UserName'] as String,
-    Email: json['Email'] as String,
-    Code: json['Code'] as String,
-  );
-}
+HierarchyModel _$HierarchyModelFromJson(Map<String, dynamic> json) =>
+    HierarchyModel(
+      ID: json['ID'] as int?,
+      Name: json['Name'] as String?,
+      UserName: json['UserName'] as String?,
+      Email: json['Email'] as String?,
+      Code: json['Code'] as String?,
+    );
 
 Map<String, dynamic> _$HierarchyModelToJson(HierarchyModel instance) =>
     <String, dynamic>{

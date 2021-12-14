@@ -12,9 +12,9 @@ class PlantHierachyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlantHierachyViewModel>.reactive(
       builder:
-          (BuildContext context, PlantHierachyViewModel viewModel, Widget _) {
+          (BuildContext context, PlantHierachyViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -90,7 +90,7 @@ class PlantHierachyView extends StatelessWidget {
                                                   viewModel.filterType[index]);
                                             },
                                             name: viewModel.assetType[index],
-                                            count: viewModel.assetCount[index]
+                                            count: viewModel.assetCount[index]!
                                                 .toStringAsFixed(0),
                                             filter:
                                                 viewModel.filterType[index]);

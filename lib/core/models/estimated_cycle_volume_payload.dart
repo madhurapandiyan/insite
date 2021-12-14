@@ -3,7 +3,7 @@ part 'estimated_cycle_volume_payload.g.dart';
 
 @JsonSerializable()
 class EstimatedCycleVolumePayLoad {
-  List<AssetProductivitySettings> assetProductivitySettings;
+  List<AssetProductivitySettings>? assetProductivitySettings;
 
   EstimatedCycleVolumePayLoad({this.assetProductivitySettings});
 
@@ -14,12 +14,12 @@ class EstimatedCycleVolumePayLoad {
 
 @JsonSerializable()
 class AssetProductivitySettings {
-  Cycles cycles;
-  Volumes volumes;
-  PayLoad payload;
-  String startDate;
-  String endDate;
-  String assetUid;
+  Cycles? cycles;
+  Volumes? volumes;
+  PayLoad? payload;
+  String? startDate;
+  String? endDate;
+  String? assetUid;
 
   AssetProductivitySettings(
       {this.cycles,
@@ -37,13 +37,13 @@ class AssetProductivitySettings {
 
 @JsonSerializable()
 class Cycles {
-  double sunday;
-  double monday;
-  double tuesday;
-  double wednesday;
-  double thursday;
-  double friday;
-  double saturday;
+  double? sunday;
+  double? monday;
+  double? tuesday;
+  double? wednesday;
+  double? thursday;
+  double? friday;
+  double? saturday;
 
   Cycles(
       {this.sunday,
@@ -61,13 +61,13 @@ class Cycles {
 
 @JsonSerializable()
 class Volumes {
-  double sunday;
-  double monday;
-  double tuesday;
-  double wednesday;
-  double thursday;
-  double friday;
-  double saturday;
+  double? sunday;
+  double? monday;
+  double? tuesday;
+  double? wednesday;
+  double? thursday;
+  double? friday;
+  double? saturday;
 
   Volumes(
       {this.sunday,
@@ -86,13 +86,13 @@ class Volumes {
 
 @JsonSerializable()
 class PayLoad{
-   double sunday;
-  double monday;
-  double tuesday;
-  double wednesday;
-  double thursday;
-  double friday;
-  double saturday;
+   double? sunday;
+  double? monday;
+  double? tuesday;
+  double? wednesday;
+  double? thursday;
+  double? friday;
+  double? saturday;
 
   PayLoad(
       {this.sunday,

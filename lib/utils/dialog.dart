@@ -8,7 +8,7 @@ class ProgressDialog {
   ProgressDialog.internal();
 
   factory ProgressDialog() => _instance;
-  static BuildContext _context;
+  static late BuildContext _context;
 
   static void dismiss() {
     if (_isLoading) {

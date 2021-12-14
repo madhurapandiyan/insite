@@ -3,7 +3,7 @@ part 'device_details_per_id.g.dart';
 
 @JsonSerializable()
 class DeviceDetailsPerId {
-  List<ResultData> result;
+  List<ResultData>? result;
 
   DeviceDetailsPerId({this.result});
   factory DeviceDetailsPerId.fromJson(Map<String, dynamic> json) =>
@@ -15,9 +15,9 @@ class DeviceDetailsPerId {
 @JsonSerializable()
 class ResultData {
   @JsonKey(name: "VIN")
-  String serialNo;
+  String? serialNo;
   @JsonKey(name: "Model")
-  String model;
+  String? model;
 
   ResultData({this.serialNo, this.model});
   factory ResultData.fromJson(Map<String, dynamic> json) =>

@@ -4,11 +4,11 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PingDevice extends StatelessWidget {
-  final AssetDetail assetDetail;
+  final AssetDetail? assetDetail;
   const PingDevice({
-    Key key,
+    Key? key,
     this.assetDetail,
-    @required this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   final Function onTap;
@@ -57,15 +57,15 @@ class PingDevice extends StatelessWidget {
                 TableRow(children: [
                   InsiteTableRowItem(
                     title: "Registered Dealer",
-                    content: assetDetail.dealerName,
+                    content: assetDetail!.dealerName,
                   ),
                   InsiteTableRowItem(
                     title: "Device Type",
-                    content: assetDetail.devices[0].deviceType,
+                    content: assetDetail!.devices![0].deviceType,
                   ),
                   InsiteTableRowItem(
                     title: "Serial No.",
-                    content: assetDetail.devices[0].deviceSerialNumber,
+                    content: assetDetail!.devices![0].deviceSerialNumber,
                   ),
                 ])
               ],
