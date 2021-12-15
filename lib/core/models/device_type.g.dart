@@ -10,7 +10,7 @@ DeviceType _$DeviceTypeFromJson(Map<String, dynamic> json) {
   return DeviceType(
     id: json['id'] as String,
     name: json['name'] as String,
-    assetCount: json['assetCount'] as String,
+    assetCount: (json['assetCount'] as num)?.toDouble(),
   );
 }
 
@@ -35,4 +35,17 @@ Map<String, dynamic> _$ListDeviceTypeResponseToJson(
         ListDeviceTypeResponse instance) =>
     <String, dynamic>{
       'deviceTypes': instance.deviceTypes,
+    };
+
+DeviceTypeRequest _$DeviceTypeRequestFromJson(Map<String, dynamic> json) {
+  return DeviceTypeRequest(
+    allAssets: json['allAssets'] as bool,
+    assetUID: (json['assetUID'] as List)?.map((e) => e as String)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$DeviceTypeRequestToJson(DeviceTypeRequest instance) =>
+    <String, dynamic>{
+      'allAssets': instance.allAssets,
+      'assetUID': instance.assetUID,
     };

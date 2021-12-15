@@ -10,6 +10,7 @@ import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
@@ -111,42 +112,37 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AdminManageUser> getAdminManageUserListData(
-      pageNumber, String searchKey) async {
-    Logger().i("getAdminManageUserListData $isVisionLink");
+      pageNumber, String searchKey, List<FilterData> appliedFilters) async {
+    Logger().i(
+        "getAdminManageUserListData $isVisionLink filters count ${appliedFilters.length}");
     try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      if (searchKey.isNotEmpty) {
+        queryMap["searchKey"] = searchKey;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUid"] = customerSelected.CustomerUID;
+      }
       if (isVisionLink) {
-        Map<String, String> queryMap = Map();
-        queryMap["pageNumber"] = pageNumber.toString();
-        if (searchKey.isNotEmpty) {
-          queryMap["searchKey"] = searchKey;
-        }
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected.CustomerUID;
-        }
         queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()
             .getAdminManagerUserListDataVL(
                 Urls.adminManagerUserSumaryVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.constructQueryFromMap(queryMap) +
+                    FilterUtils.getUserFilterURL(appliedFilters),
                 accountSelected.CustomerUID);
         return adminManageUserResponse;
       } else {
-        Map<String, String> queryMap = Map();
-        queryMap["pageNumber"] = pageNumber.toString();
-        if (searchKey.isNotEmpty) {
-          queryMap["searchKey"] = searchKey;
-        }
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected.CustomerUID;
-        }
         queryMap["sort"] = "Email";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClient()
             .getAdminManagerUserListData(
                 Urls.adminManagerUserSumary +
                     "/List" +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.constructQueryFromMap(queryMap) +
+                    FilterUtils.getUserFilterURL(appliedFilters),
                 accountSelected.CustomerUID,
                 "in-identitymanager-identitywebapi");
         return adminManageUserResponse;
@@ -484,15 +480,22 @@ class AssetAdminManagerUserService extends BaseService {
 
   Future<ListDeviceTypeResponse> getDeviceTypes() async {
     try {
+      DeviceTypeRequest request =
+          DeviceTypeRequest(allAssets: true, assetUID: []);
       if (isVisionLink) {
         ListDeviceTypeResponse response = await MyApi()
             .getClientSeven()
-            .getDeviceType(Urls.deviceTypeVL, accountSelected.CustomerUID);
+            .getDeviceTypeVL(
+                Urls.deviceTypeVL, request, accountSelected.CustomerUID);
         return response;
       } else {
-        ListDeviceTypeResponse response = await MyApi()
-            .getClientSix()
-            .getDeviceType(Urls.deviceTypes, accountSelected.CustomerUID);
+        ListDeviceTypeResponse response =
+            await MyApi().getClientSix().getDeviceType(
+                  Urls.deviceTypes,
+                  request,
+                  Urls.assetSettingsPrefix,
+                  accountSelected.CustomerUID,
+                );
         return response;
       }
     } catch (e) {

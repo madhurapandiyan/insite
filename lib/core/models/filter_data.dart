@@ -58,6 +58,10 @@ enum FilterType {
   ASSET_STATUS,
   @HiveField(15)
   SEVERITY,
+  @HiveField(16)
+  JOBTYPE,
+  @HiveField(17)
+  USERTYPE,
 }
 
 @HiveType(typeId: 2)

@@ -5,7 +5,7 @@ part 'device_type.g.dart';
 class DeviceType {
   final String id;
   final String name;
-  final String assetCount;
+  final double assetCount;
   DeviceType({this.id, this.name, this.assetCount});
   factory DeviceType.fromJson(Map<String, dynamic> json) =>
       _$DeviceTypeFromJson(json);
@@ -21,4 +21,15 @@ class ListDeviceTypeResponse {
       _$ListDeviceTypeResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ListDeviceTypeResponseToJson(this);
+}
+
+@JsonSerializable()
+class DeviceTypeRequest {
+  final bool allAssets;
+  final List<String> assetUID;
+  DeviceTypeRequest({this.allAssets, this.assetUID});
+  factory DeviceTypeRequest.fromJson(Map<String, dynamic> json) =>
+      _$DeviceTypeRequestFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceTypeRequestToJson(this);
 }

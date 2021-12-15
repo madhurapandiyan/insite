@@ -322,6 +322,16 @@ abstract class RestClient {
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
+  Future<AssetCount> userCount(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") service);
+
+  @GET('{url}')
+  Future<AssetCount> userCountVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
   Future<location.AssetLocationData> assetLocationVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
@@ -1021,8 +1031,17 @@ abstract class RestClient {
       @Path() String url);
 
   @POST("{url}")
+  Future<ListDeviceTypeResponse> getDeviceTypeVL(
+    @Path() String url,
+    @Body() DeviceTypeRequest assetUId,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @POST("{url}")
   Future<ListDeviceTypeResponse> getDeviceType(
     @Path() String url,
+    @Body() DeviceTypeRequest assetUId,
+    @Header("service") service,
     @Header("x-visionlink-customeruid") customerId,
   );
 }

@@ -17,7 +17,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   var _navigationservice = locator<NavigationService>();
   TextEditingController textEditingController = TextEditingController();
 
-  List<String> deviceTypeList = ["ALL", "TAP76"];
+  List<String> deviceTypeList = ["ALL"];
   String deviceTypeSelected = "ALL";
 
   onDeviceTypeSelected(value) {
@@ -50,9 +50,6 @@ class AssetSettingsViewModel extends InsiteViewModel {
   List<AssetSettingsRow> _assets = [];
   List<AssetSettingsRow> get asset => _assets;
 
-  List<DeviceType> _deviceTypes = [];
-  List<DeviceType> get deviceTypes => _deviceTypes;
-
   bool _loading = true;
   bool get loading => _loading;
 
@@ -81,7 +78,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
     ListDeviceTypeResponse result = await _manageUserService.getDeviceTypes();
     if (result != null) {
       for (DeviceType deviceType in result.deviceTypes) {
-        deviceTypes.add(deviceType);
+        deviceTypeList.add(deviceType.name);
       }
     }
     notifyListeners();

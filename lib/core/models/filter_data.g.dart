@@ -45,6 +45,10 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.ASSET_STATUS;
       case 15:
         return FilterType.SEVERITY;
+      case 16:
+        return FilterType.JOBTYPE;
+      case 17:
+        return FilterType.USERTYPE;
       default:
         return null;
     }
@@ -100,6 +104,12 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.SEVERITY:
         writer.writeByte(15);
+        break;
+      case FilterType.JOBTYPE:
+        writer.writeByte(16);
+        break;
+      case FilterType.USERTYPE:
+        writer.writeByte(17);
         break;
     }
   }

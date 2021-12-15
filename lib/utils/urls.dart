@@ -192,6 +192,7 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
   static String deviceTypeVL =
       "t/trimble.com/vss-assetsettings/1.0/devicetypes";
+  static String userCount = "$identity/2.0/Users/Count";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -268,8 +269,8 @@ class Urls {
   static String estimatedMileageData =
       "/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
   static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
-  static String deviceTypes =
-      "/osg-in/$assetSettingsMasterData/1.0/v1/assetsettings/devicetypes";
+  static String deviceTypes = "/osg-in/$accountSelection/1.0/v1/devicetypes";
+  static String userCountVL = "/t/trimble.com/vss-identityapi/2.0/Users/Count";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -306,6 +307,8 @@ class Urls {
   static String faultPrefix = "in-fault-us-fault-api";
   static String fleetMapPrefix = "in-vassethistory-ah-webapi";
   static String assetprefix = "in-vassetmetadata-am-webapi";
+  static String assetSettingsPrefix = "in-vlmasterdata-api-vlmd-assetsettings";
+  static String userCountPrefix = "in-identitymanager-identitywebapi";
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";

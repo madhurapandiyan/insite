@@ -19,8 +19,19 @@ class CountData {
   String countOf;
   @HiveField(2)
   int count;
-  CountData({
-    this.countOf,
-    this.count,
-  });
+  @HiveField(3)
+  int assetCount;
+  @HiveField(4)
+  int faultCount;
+  @HiveField(5)
+  int id;
+  @HiveField(6)
+  String name;
+  CountData(
+      {this.countOf,
+      this.count,
+      this.assetCount,
+      this.faultCount,
+      this.id,
+      this.name});
 }
