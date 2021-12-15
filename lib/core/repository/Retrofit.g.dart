@@ -3935,4 +3935,46 @@ class _RestClient implements RestClient {
     final value = AssetCreationResetData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<CheckUserResponse> checkUserVL(url, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{r'x-visionlink-customeruid': customerId},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CheckUserResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<CheckUserResponse> checkUser(url, service, customerId) async {
+    ArgumentError.checkNotNull(url, 'url');
+    ArgumentError.checkNotNull(service, 'service');
+    ArgumentError.checkNotNull(customerId, 'customerId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('$url',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{
+              r'service': service,
+              r'x-visionlink-customeruid': customerId
+            },
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CheckUserResponse.fromJson(_result.data);
+    return value;
+  }
 }

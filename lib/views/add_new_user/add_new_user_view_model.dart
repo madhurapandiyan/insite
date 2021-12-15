@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -5,6 +6,7 @@ import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/core/models/user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 import 'package:load/load.dart';
@@ -15,6 +17,16 @@ class AddNewUserViewModel extends InsiteViewModel {
   Logger log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
 
+  List<ApplicationAccess> selectedList;
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController firstNameController = new TextEditingController();
+  TextEditingController lastNameController = new TextEditingController();
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController addressController = new TextEditingController();
+  TextEditingController pinCodeController = new TextEditingController();
+  TextEditingController stateController = new TextEditingController();
+  TextEditingController countryController = new TextEditingController();
+
   List<ApplicationAccessData> _assetsData = [];
   List<ApplicationAccessData> get assetsData => _assetsData;
 
@@ -24,6 +36,9 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool _allowAccessToSecurity = false;
   bool get allowAccessToSecurity => _allowAccessToSecurity;
+
+  bool _enableAdd = false;
+  bool get enableAdd => _enableAdd;
 
   bool _setDefaultPreferenceToUser = false;
   bool get setDefaultPreferenceToUser => _setDefaultPreferenceToUser;
@@ -75,8 +90,28 @@ class AddNewUserViewModel extends InsiteViewModel {
   int lastApplicationAccessSelectedIndex;
   String dropDownValue;
 
-  AddNewUserViewModel(Users user) {
+  AddNewUserViewModel(Users user, bool isEdit) {
     this.user = user;
+    this._enableAdd = isEdit;
+    if (user != null) {
+      emailController.text = user.loginId;
+      firstNameController.text = user.first_name;
+      lastNameController.text = user.last_name;
+      phoneNumberController.text = user.phone;
+      addressController.text = user.address.country;
+      pinCodeController.text = user.address.zipcode;
+      selectedList = [];
+    } else {
+      emailController.text = "";
+      firstNameController.text = "";
+      lastNameController.text = "";
+      phoneNumberController.text = "";
+      addressController.text = "";
+      pinCodeController.text = "";
+      countryController.text = "";
+      stateController.text = "";
+      selectedList = [];
+    }
     _manageUserService.setUp();
     this.log = getLogger(this.runtimeType.toString());
     showLoadingDialog();
@@ -119,6 +154,29 @@ class AddNewUserViewModel extends InsiteViewModel {
       }
     }
     notifyListeners();
+  }
+
+  onMaildIdCheckClicked() async {
+    if (emailController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Email is empty");
+      return;
+    }
+    showLoadingDialog();
+    CheckUserResponse response =
+        await _manageUserService.checkUser(emailController.text);
+    if (response != null) {
+      if (response.users != null && response.users.isNotEmpty) {
+        snackbarService.showSnackbar(message: "User is already available");
+        _enableAdd = false;
+      } else {
+        _enableAdd = true;
+      }
+      hideLoadingDialog();
+    } else {
+      _enableAdd = false;
+      snackbarService.showSnackbar(message: "Checking user details failed");
+      hideLoadingDialog();
+    }
   }
 
   onPermissionRemoved(ApplicationSelectedDropDown value, int index) {

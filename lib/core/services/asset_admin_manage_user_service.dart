@@ -13,6 +13,7 @@ import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/core/models/user.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -144,7 +145,7 @@ class AssetAdminManagerUserService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap) +
                     FilterUtils.getUserFilterURL(appliedFilters),
                 accountSelected.CustomerUID,
-                "in-identitymanager-identitywebapi");
+                Urls.userCountPrefix);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -185,8 +186,38 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
+  }
+
+  Future<CheckUserResponse> checkUser(String mail) async {
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["EmailID"] = mail;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUid"] = customerSelected.CustomerUID;
+      }
+      if (isVisionLink) {
+        CheckUserResponse response = await MyApi().getClientSeven().checkUserVL(
+            Urls.adminManagerUserSumaryVL +
+                "/List" +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected.CustomerUID);
+        return response;
+      } else {
+        CheckUserResponse response = await MyApi().getClient().checkUser(
+            Urls.adminManagerUserSumary +
+                "/List" +
+                FilterUtils.constructQueryFromMap(queryMap),
+            Urls.userCountPrefix,
+            accountSelected.CustomerUID);
+        return response;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<ApplicationData> getApplicationsData() async {
