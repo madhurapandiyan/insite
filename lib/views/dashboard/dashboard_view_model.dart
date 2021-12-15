@@ -251,7 +251,6 @@ class DashboardViewModel extends InsiteViewModel {
         _isSwitching = false;
       }
     }
-
     _idlingLevelDataloading = false;
     notifyListeners();
   }

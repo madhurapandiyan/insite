@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -28,6 +27,9 @@ class ManageUserViewModel extends InsiteViewModel {
     _assets = [];
     // notifyListeners();
   }
+
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
 
   List<UserRow> _assets = [];
   List<UserRow> get assets => _assets;
@@ -62,6 +64,7 @@ class ManageUserViewModel extends InsiteViewModel {
 
   ManageUserViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    setUp();
     _manageUserService.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -69,6 +72,9 @@ class ManageUserViewModel extends InsiteViewModel {
           scrollController.position.maxScrollExtent) {
         _loadMore();
       }
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      getSelectedFilterData();
     });
     Future.delayed(Duration(seconds: 2), () {
       getManagerUserAssetList();
@@ -78,6 +84,7 @@ class ManageUserViewModel extends InsiteViewModel {
   Timer debounce;
 
   searchUsers(String searchValue) {
+    pageNumber = 1;
     if (debounce != null) debounce.cancel();
     debounce = Timer(Duration(seconds: 2), () {
       _searchKeyword = searchValue;
@@ -88,11 +95,16 @@ class ManageUserViewModel extends InsiteViewModel {
   getManagerUserAssetList() async {
     Logger().i("getManagerUserAssetList");
     AdminManageUser result = await _manageUserService
-        .getAdminManageUserListData(pageNumber, _searchKeyword);
+        .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters);
     if (result != null) {
+      if (result.total != null) {
+        _totalCount = result.total.items;
+      }
       if (result.users.isNotEmpty) {
         Logger().i("list of assets " + result.users.length.toString());
-        _assets.clear();
+        if (!loadingMore) {
+          _assets.clear();
+        }
         for (var user in result.users) {
           _assets.add(UserRow(user: user, isSelected: false));
         }
@@ -112,6 +124,7 @@ class ManageUserViewModel extends InsiteViewModel {
       _assets = [];
       _loading = false;
       _loadingMore = false;
+      _refreshing = false;
       notifyListeners();
     }
   }
@@ -193,6 +206,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   deleteUsersFromList(List<String> ids) async {
+    Logger().i("deleteUsersFromList");
     for (int i = 0; i < assets.length; i++) {
       var data = assets[i];
       for (int j = 0; j < ids.length; j++) {
@@ -206,6 +220,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   checkEditAndDeleteVisibility() {
+    Logger().i("checkEditAndDeleteVisibility");
     try {
       var count = 0;
       for (int i = 0; i < _assets.length; i++) {
@@ -248,6 +263,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onCardButtonSelected(Users user) {
+    Logger().i("onCardButtonSelected");
     _navigationService.navigateWithTransition(
         AddNewUserView(
           user: user,
@@ -257,6 +273,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onAddNewUserClicked() {
+    Logger().i("onAddNewUserClicked");
     _navigationService.navigateWithTransition(
         AddNewUserView(
           isEdit: false,
@@ -265,30 +282,45 @@ class ManageUserViewModel extends InsiteViewModel {
         transition: "fade");
   }
 
-  // void refresh() async {
-  //   pageNumber = 1;
-
-  //   if (_assets.isEmpty) {
-  //     _loading = true;
-  //   } else {
-  //     _refreshing = true;
-  //   }
-  //   _shouldLoadmore = true;
-  //   notifyListeners();
-
-  //   AdminManageUser result =
-  //       await _manageUserService.getAdminManageUserListData(pageNumber);
-  //   if (result != null) {
-  //     _assets.clear();
-  //     _assets.addAll(result.users);
-  //     _loading = false;
-  //     _refreshing = false;
-  //     notifyListeners();
-  //   } else {
-  //     _loading = false;
-  //     _refreshing = false;
-  //     notifyListeners();
-  //   }
-  //   Logger().i("list of assets " + result.users.length.toString());
-  // }
+  void refresh() async {
+    Logger().i("refresh");
+    await getSelectedFilterData();
+    pageNumber = 1;
+    _refreshing = true;
+    _shouldLoadmore = true;
+    notifyListeners();
+    AdminManageUser result = await _manageUserService
+        .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters);
+    if (result != null) {
+      if (result.total != null) {
+        _totalCount = result.total.items;
+      }
+      if (result.users.isNotEmpty) {
+        Logger().i("list of assets " + result.users.length.toString());
+        _assets.clear();
+        for (var user in result.users) {
+          _assets.add(UserRow(user: user, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _refreshing = false;
+        notifyListeners();
+      } else {
+        for (var user in result.users) {
+          _assets.add(UserRow(user: user, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        _refreshing = false;
+        notifyListeners();
+      }
+    } else {
+      _assets = [];
+      _loading = false;
+      _loadingMore = false;
+      _refreshing = false;
+      notifyListeners();
+    }
+  }
 }

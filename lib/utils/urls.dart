@@ -82,6 +82,10 @@ class Urls {
   static String tataHitachiRedirectUri =
       "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
   static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+
+  // static String tataHitachiRedirectUri =
+  // "https://dj8lqow8wzdep.cloudfront.net/auth";
+  // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   // static String tataHitachiRedirectUri =
@@ -196,6 +200,9 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
   static String getAssetMileageListDataVL =
       "/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
+  static String deviceTypeVL =
+      "t/trimble.com/vss-assetsettings/1.0/devicetypes";
+  static String userCount = "$identity/2.0/Users/Count";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -265,13 +272,17 @@ class Urls {
   static String getReportOfReplacement =
       "$subscriptionPrefix/subscriptionSave/replacementHistory";
   static String downloadReplacementData = "$getReportOfReplacement/download";
-  static String estimatedTargetSettingsData="/osg-in/$accountSelection/1.0/v1/assettargetsettings";
-   static String estimatedfuelBurnRateData="/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
-    static String estimatedMileageData="/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
-    static String assetIconData="/osg-in/$accountSelection/1.0/v1/Asset/";
-    static String assetCreationResetdata="$subscriptionPrefix/assetDetail/asset/activate/";
-    static String downloadResetData="$subscriptionPrefix/assetDetail/asset/activate/";
-
+  static String estimatedTargetSettingsData =
+      "/osg-in/$accountSelection/1.0/v1/assettargetsettings";
+  static String estimatedfuelBurnRateData =
+      "/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
+  static String estimatedMileageData =
+      "/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
+  static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
+  static String deviceTypes = "/osg-in/$accountSelection/1.0/v1/devicetypes";
+  static String userCountVL = "/t/trimble.com/vss-identityapi/2.0/Users/Count";
+  static String assetCreationResetdata="$subscriptionPrefix/assetDetail/asset/activate/";
+  static String downloadResetData="$subscriptionPrefix/assetDetail/asset/activate/";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -308,6 +319,8 @@ class Urls {
   static String faultPrefix = "in-fault-us-fault-api";
   static String fleetMapPrefix = "in-vassethistory-ah-webapi";
   static String assetprefix = "in-vassetmetadata-am-webapi";
+  static String assetSettingsPrefix = "in-vlmasterdata-api-vlmd-assetsettings";
+  static String userCountPrefix = "in-identitymanager-identitywebapi";
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";

@@ -20,6 +20,9 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> filterSeverity = [];
+  List<FilterData> filterDataJobType = [];
+  List<FilterData> filterDataUserType = [];
+
   List<FilterData> selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -75,6 +78,14 @@ class FilterViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
+    AssetCount resultJobType =
+        await _assetService.getAssetCount("JobType", FilterType.JOBTYPE);
+    addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
+
+    AssetCount resultUserType =
+        await _assetService.getAssetCount("UserType", FilterType.USERTYPE);
+    addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
+
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
@@ -116,6 +127,22 @@ class FilterViewModel extends InsiteViewModel {
               type: type);
           filterData.add(data);
         }
+      }
+    }
+  }
+
+  addUserData(filterData, AssetCount resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData.isNotEmpty) {
+      for (Count countData in resultModel.countData) {
+        FilterData data = FilterData(
+            count: countData.count.toString(),
+            title: countData.name,
+            isSelected: isAlreadSelected(countData.countOf, type),
+            extras: [countData.id.toString()],
+            type: type);
+        filterData.add(data);
       }
     }
   }

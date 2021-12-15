@@ -33,6 +33,8 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterFuelLevelKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterIdlingLevelKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterSeverityKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterJobTypeKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterUserTypeKey = new GlobalKey();
 
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
@@ -57,8 +59,12 @@ class _FilterViewState extends State<FilterView> {
       filterFuelLevelKey.currentState.deSelectFromOutSide(data);
     } else if (data.type == FilterType.IDLING_LEVEL) {
       filterIdlingLevelKey.currentState.deSelectFromOutSide(data);
-    } else if (data.type == FilterType.IDLING_LEVEL) {
+    } else if (data.type == FilterType.SEVERITY) {
       filterSeverityKey.currentState.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.JOBTYPE) {
+      filterJobTypeKey.currentState.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.USERTYPE) {
+      filterUserTypeKey.currentState.deSelectFromOutSide(data);
     }
   }
 
@@ -142,65 +148,76 @@ class _FilterViewState extends State<FilterView> {
                                     height: 8,
                                   )
                                 : SizedBox(),
-                            FilterItem(
-                              filterType: FilterType.ALL_ASSETS,
-                              key: filterAssetStatusKey,
-                              data: viewModel.filterDataAllAssets,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.ALL_ASSETS);
-                              },
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.ALL_ASSETS);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.ALL_ASSETS,
+                                    key: filterAssetStatusKey,
+                                    data: viewModel.filterDataAllAssets,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.ALL_ASSETS);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.ALL_ASSETS);
+                                    },
+                                  )
+                                : SizedBox(),
+
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.PRODUCT_FAMILY,
-                              key: filterProductFamilyKey,
-                              data: viewModel.filterDataProductFamily,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.PRODUCT_FAMILY);
-                              },
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.PRODUCT_FAMILY);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.PRODUCT_FAMILY,
+                                    key: filterProductFamilyKey,
+                                    data: viewModel.filterDataProductFamily,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.PRODUCT_FAMILY);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.PRODUCT_FAMILY);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.MAKE,
-                              key: filterMakeKey,
-                              data: viewModel.filterDataMake,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.MAKE);
-                              },
-                              onClear: () {
-                                viewModel.onFilterCleared(FilterType.MAKE);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.MAKE,
+                                    key: filterMakeKey,
+                                    data: viewModel.filterDataMake,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.MAKE);
+                                    },
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.MAKE);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.MODEL,
-                              key: filterModelKey,
-                              data: viewModel.filterDataModel,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.MODEL);
-                              },
-                              onClear: () {
-                                viewModel.onFilterCleared(FilterType.MODEL);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.MODEL,
+                                    key: filterModelKey,
+                                    data: viewModel.filterDataModel,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.MODEL);
+                                    },
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.MODEL);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
@@ -220,18 +237,20 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            LocationSearch(
-                              filterType: FilterType.LOCATION_SEARCH,
-                              data: [],
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.LOCATION_SEARCH);
-                              },
-                              onClear: () {
-                                viewModel.onFilterCleared(
-                                    FilterType.LOCATION_SEARCH);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? LocationSearch(
+                                    filterType: FilterType.LOCATION_SEARCH,
+                                    data: [],
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.LOCATION_SEARCH);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.LOCATION_SEARCH);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
@@ -251,72 +270,82 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.ASSET_COMMISION_DATE,
-                              key: filterAssetCommisionDateKey,
-                              data: [],
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.ASSET_COMMISION_DATE);
-                              },
-                              onClear: () {
-                                viewModel.onFilterCleared(
-                                    FilterType.ASSET_COMMISION_DATE);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.ASSET_COMMISION_DATE,
+                                    key: filterAssetCommisionDateKey,
+                                    data: [],
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(list,
+                                          FilterType.ASSET_COMMISION_DATE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.ASSET_COMMISION_DATE);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.SUBSCRIPTION_DATE,
-                              key: filterSubscriptionTypesKey,
-                              data: viewModel.filterDataSubscription,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.SUBSCRIPTION_DATE);
-                              },
-                              onClear: () {
-                                viewModel.onFilterCleared(
-                                    FilterType.SUBSCRIPTION_DATE);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.SUBSCRIPTION_DATE,
+                                    key: filterSubscriptionTypesKey,
+                                    data: viewModel.filterDataSubscription,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.SUBSCRIPTION_DATE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.SUBSCRIPTION_DATE);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.DEVICE_TYPE,
-                              key: filterDeviceTypeKey,
-                              data: viewModel.filterDataDeviceType,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.DEVICE_TYPE);
-                              },
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.DEVICE_TYPE);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.DEVICE_TYPE,
+                                    key: filterDeviceTypeKey,
+                                    data: viewModel.filterDataDeviceType,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.DEVICE_TYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.DEVICE_TYPE);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            FilterItem(
-                              filterType: FilterType.FUEL_LEVEL,
-                              key: filterFuelLevelKey,
-                              data: viewModel.filterDataFuelLevel,
-                              onApply: (List<FilterData> list) {
-                                viewModel.onFilterSelected(
-                                    list, FilterType.FUEL_LEVEL);
-                              },
-                              isSingleSelection: true,
-                              onClear: () {
-                                viewModel
-                                    .onFilterCleared(FilterType.FUEL_LEVEL);
-                              },
-                            ),
+                            widget.screenType != ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.FUEL_LEVEL,
+                                    key: filterFuelLevelKey,
+                                    data: viewModel.filterDataFuelLevel,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.FUEL_LEVEL);
+                                    },
+                                    isSingleSelection: true,
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.FUEL_LEVEL);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.HEALTH
+                            widget.screenType != ScreenType.HEALTH &&
+                                    widget.screenType !=
+                                        ScreenType.USER_MANAGEMENT
                                 ? FilterItem(
                                     filterType: FilterType.IDLING_LEVEL,
                                     key: filterIdlingLevelKey,
@@ -335,7 +364,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType == ScreenType.HEALTH
+                            widget.screenType == ScreenType.HEALTH &&
+                                    widget.screenType !=
+                                        ScreenType.USER_MANAGEMENT
                                 ? FilterItem(
                                     filterType: FilterType.SEVERITY,
                                     key: filterSeverityKey,
@@ -351,6 +382,38 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
+                            widget.screenType == ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.JOBTYPE,
+                                    key: filterJobTypeKey,
+                                    data: viewModel.filterDataJobType,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.JOBTYPE);
+                                    },
+                                    isSingleSelection: true,
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.JOBTYPE);
+                                    },
+                                  )
+                                : SizedBox(),
+                            widget.screenType == ScreenType.USER_MANAGEMENT
+                                ? FilterItem(
+                                    filterType: FilterType.USERTYPE,
+                                    key: filterUserTypeKey,
+                                    data: viewModel.filterDataUserType,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.USERTYPE);
+                                    },
+                                    isSingleSelection: true,
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.USERTYPE);
+                                    },
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 8,
                             ),
@@ -359,9 +422,7 @@ class _FilterViewState extends State<FilterView> {
                       ),
                     ),
                   ),
-                  viewModel.isRefreshing
-                      ? InsiteProgressBar()
-                      : SizedBox()
+                  viewModel.isRefreshing ? InsiteProgressBar() : SizedBox()
                 ],
               );
       },

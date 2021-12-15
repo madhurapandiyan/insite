@@ -24,6 +24,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   bool isLoading = true;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   List<Set<Polyline>> _fetchedPolygons = [];
   List<Set<Polyline>> get fetchedPolygons => _fetchedPolygons;
 
@@ -38,30 +41,30 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   getGeofencedata() async {
     List<String> listOfWKTstring = [];
-
-    //MapLatLng latlo = MapLatLng(latitude, longitude);
-    List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
-    _geofence = await _geofenceservice.getGeofenceData();
-    Logger().i(_geofence.toJson());
     try {
-      for (var i = 0; i < _geofence.Geofences.length; i++) {
-        String wktText = _geofence.Geofences[i].GeometryWKT;
-        //Logger().e(_geofence.Geofences.last.GeometryWKT);
-        listOfWKTstring.add(wktText);
-        final geofenceData = geo.wktProjected.parse(listOfWKTstring[i]);
-        //Logger().d(geofenceData);
-        //Logger().d(_polygonData);
-        _polygonData.add(geofenceData);
-        // Logger().e(_polygonData);
-        final points = _polygonData[i].exterior.chain;
-        //Logger().d(points);
-        listOfPointSeries.add(points);
+      //MapLatLng latlo = MapLatLng(latitude, longitude);
+      List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
+      _geofence = await _geofenceservice.getGeofenceData();
+      Logger().i(_geofence.toJson());
+      if (_geofence != null) {
+        for (var i = 0; i < _geofence.Geofences.length; i++) {
+          String wktText = _geofence.Geofences[i].GeometryWKT;
+          //Logger().e(_geofence.Geofences.last.GeometryWKT);
+          listOfWKTstring.add(wktText);
+          final geofenceData = geo.wktProjected.parse(listOfWKTstring[i]);
+          //Logger().d(geofenceData);
+          //Logger().d(_polygonData);
+          _polygonData.add(geofenceData);
+          // Logger().e(_polygonData);
+          final points = _polygonData[i].exterior.chain;
+          //Logger().d(points);
+          listOfPointSeries.add(points);
+        }
+        getEncodedPolylines(listOfPointSeries);
       }
-      getEncodedPolylines(listOfPointSeries);
     } catch (e) {
       Logger().e(e.toString());
     }
-
     notifyListeners();
   }
 
@@ -81,7 +84,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   deleteGeofence(uid, actionUTC, int i) async {
     try {
       geofence.Geofences.removeAt(i);
-      var data = await _geofenceservice.deleteGeofence(uid, actionUTC);
+      await _geofenceservice.deleteGeofence(uid, actionUTC);
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());

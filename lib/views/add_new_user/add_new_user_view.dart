@@ -254,56 +254,56 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 15,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 55.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: InsiteText(
-                        text: "Asset Security",
-                        fontWeight: FontWeight.w700,
-                        size: 14,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      viewModel.allowAccessToSecurityClicked();
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 53.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: viewModel.allowAccessToSecurity
-                                      ? Theme.of(context).buttonColor
-                                      : Theme.of(context).backgroundColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4))),
-                              child: Icon(
-                                Icons.crop_square,
-                                color: viewModel.allowAccessToSecurity
-                                    ? Theme.of(context).buttonColor
-                                    : Colors.black,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        InsiteText(
-                          text: "Allow access to asset security",
-                          fontWeight: FontWeight.w700,
-                          size: 14,
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 55.0),
+                  //   child: Align(
+                  //     alignment: Alignment.topLeft,
+                  //     child: InsiteText(
+                  //       text: "Asset Security",
+                  //       fontWeight: FontWeight.w700,
+                  //       size: 14,
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     viewModel.allowAccessToSecurityClicked();
+                  //   },
+                  //   child: Row(
+                  //     children: [
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(left: 53.0),
+                  //         child: Container(
+                  //             decoration: BoxDecoration(
+                  //                 color: viewModel.allowAccessToSecurity
+                  //                     ? Theme.of(context).buttonColor
+                  //                     : Theme.of(context).backgroundColor,
+                  //                 borderRadius:
+                  //                     BorderRadius.all(Radius.circular(4))),
+                  //             child: Icon(
+                  //               Icons.crop_square,
+                  //               color: viewModel.allowAccessToSecurity
+                  //                   ? Theme.of(context).buttonColor
+                  //                   : Colors.black,
+                  //             )),
+                  //       ),
+                  //       SizedBox(
+                  //         width: 20,
+                  //       ),
+                  //       InsiteText(
+                  //         text: "Allow access to asset security",
+                  //         fontWeight: FontWeight.w700,
+                  //         size: 14,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(left: 55.0),
                     child: Align(
@@ -473,57 +473,57 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 53.0),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: InsiteText(
-                          text: "Preferences",
-                          size: 14,
-                          fontWeight: FontWeight.w700,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      viewModel.onDefaultPreferenceClicked();
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 53.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: viewModel.setDefaultPreferenceToUser
-                                      ? Theme.of(context).buttonColor
-                                      : Theme.of(context).backgroundColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4))),
-                              child: Icon(
-                                Icons.crop_square,
-                                color: viewModel.allowAccessToSecurity
-                                    ? Theme.of(context).buttonColor
-                                    : Colors.black,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        InsiteText(
-                          text: "Click here to set this user's default" +
-                              "\n" +
-                              "preferences . ",
-                          fontWeight: FontWeight.w700,
-                          size: 14,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 53.0),
+                  //   child: Align(
+                  //       alignment: Alignment.topLeft,
+                  //       child: InsiteText(
+                  //         text: "Preferences",
+                  //         size: 14,
+                  //         fontWeight: FontWeight.w700,
+                  //       )),
+                  // ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     viewModel.onDefaultPreferenceClicked();
+                  //   },
+                  //   child: Row(
+                  //     children: [
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(left: 53.0),
+                  //         child: Container(
+                  //             decoration: BoxDecoration(
+                  //                 color: viewModel.setDefaultPreferenceToUser
+                  //                     ? Theme.of(context).buttonColor
+                  //                     : Theme.of(context).backgroundColor,
+                  //                 borderRadius:
+                  //                     BorderRadius.all(Radius.circular(4))),
+                  //             child: Icon(
+                  //               Icons.crop_square,
+                  //               color: viewModel.allowAccessToSecurity
+                  //                   ? Theme.of(context).buttonColor
+                  //                   : Colors.black,
+                  //             )),
+                  //       ),
+                  //       SizedBox(
+                  //         width: 20,
+                  //       ),
+                  //       InsiteText(
+                  //         text: "Click here to set this user's default" +
+                  //             "\n" +
+                  //             "preferences . ",
+                  //         fontWeight: FontWeight.w700,
+                  //         size: 14,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 30,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(left: 53.0),
                     child: Align(

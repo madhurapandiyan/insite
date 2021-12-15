@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/device_type.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart';
@@ -13,9 +15,23 @@ class AssetSettingsViewModel extends InsiteViewModel {
   Logger log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
   var _navigationservice = locator<NavigationService>();
+  TextEditingController textEditingController = TextEditingController();
+
+  List<String> deviceTypeList = ["ALL"];
+  String deviceTypeSelected = "ALL";
+
+  onDeviceTypeSelected(value) {
+    deviceTypeSelected = value;
+    notifyListeners();
+    pageNumber = 1;
+    getAssetSettingListData();
+  }
 
   int pageSize = 20;
   int pageNumber = 1;
+
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
 
   bool _showEdit = false;
   bool get showEdit => _showEdit;
@@ -23,11 +39,11 @@ class AssetSettingsViewModel extends InsiteViewModel {
   bool _showMenu = false;
   bool get showMenu => _showMenu;
 
-  bool _isRefreshing = false;
-  bool get isRefreshing => _isRefreshing;
-
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
+
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
 
   ScrollController scrollController;
 
@@ -54,23 +70,38 @@ class AssetSettingsViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 1), () {
       getAssetSettingListData();
+      getDeviceTypeData();
     });
+  }
+
+  getDeviceTypeData() async {
+    ListDeviceTypeResponse result = await _manageUserService.getDeviceTypes();
+    if (result != null) {
+      for (DeviceType deviceType in result.deviceTypes) {
+        deviceTypeList.add(deviceType.name);
+      }
+    }
+    notifyListeners();
   }
 
   getAssetSettingListData() async {
     ManageAssetConfiguration result =
-        await _manageUserService.getAssetSettingData(pageSize, pageNumber);
-
-    if (result.assetSettings.isNotEmpty) {
+        await _manageUserService.getAssetSettingData(
+            pageSize, pageNumber, _searchKeyword, deviceTypeSelected);
+    if (result != null && result.assetSettings.isNotEmpty) {
+      if (result.pageInfo != null) {
+        _totalCount = result.pageInfo.totalRecords;
+      }
+      if (!loadingMore) {
+        _assets.clear();
+      }
       for (var assetSetting in result.assetSettings) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
-
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
-
       notifyListeners();
     } else {
       for (var assetSetting in result.assetSettings) {
@@ -80,9 +111,29 @@ class AssetSettingsViewModel extends InsiteViewModel {
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
-
       notifyListeners();
     }
+  }
+
+  Timer debounce;
+
+  String _searchKeyword = '';
+  set searchKeyword(String keyword) {
+    this._searchKeyword = keyword;
+  }
+
+  searchAssets(String searchValue) {
+    pageNumber = 1;
+    if (debounce != null) debounce.cancel();
+    debounce = Timer(Duration(seconds: 2), () {
+      _searchKeyword = searchValue;
+      getAssetSettingListData();
+    });
+  }
+
+  updateSearchDataToEmpty() {
+    _assets = [];
+    // notifyListeners();
   }
 
   _loadMore() {
@@ -131,17 +182,11 @@ class AssetSettingsViewModel extends InsiteViewModel {
         }
       }
       if (count > 0) {
-        if (count > 1) {
-          _showMenu = false;
-          _showDeSelect = true;
-          _showEdit = true;
-        } else {
-          _showMenu = true;
-          _showDeSelect = true;
-          _showEdit = true;
-        }
+        _showMenu = true;
+        _showDeSelect = true;
+        _showEdit = true;
       } else {
-        _showEdit = false;
+        _showMenu = false;
         _showEdit = false;
         _showDeSelect = false;
       }
