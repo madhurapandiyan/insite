@@ -33,13 +33,12 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           children: [
                             InsiteText(
                               text: "Manage Geofence" +
-                                  " (" +
-                                  viewModel.fetchedPolygons.length.toString() +
-                                  " of " +
-                                  viewModel.fetchedPolygons.length.toString() +
+                                  " ( " +
+                                  viewModel.geofence.Geofences.length
+                                      .toString() +
                                   " )",
                               fontWeight: FontWeight.w700,
-                              size: 20,
+                              size: 18,
                             ),
                             InsiteButton(
                               onTap: () {
@@ -48,7 +47,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               textColor: white,
                               title: "ADD GEOFENCE",
                               height: mediaQuery.size.height * 0.05,
-                              width: mediaQuery.size.width * 0.4,
+                              width: mediaQuery.size.width * 0.3,
                             )
                           ],
                         ),
@@ -65,6 +64,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           : Expanded(
                               child: ListView.builder(
                                 itemCount: viewModel.geofence.Geofences.length,
+                                padding: EdgeInsets.symmetric(horizontal: 10),
                                 itemBuilder: (BuildContext context, int i) {
                                   var model = viewModel.geofence.Geofences;
                                   return ManageGeofenceWidget(

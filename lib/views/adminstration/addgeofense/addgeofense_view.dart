@@ -4,7 +4,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
@@ -101,7 +100,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                         height: mediaquerry.size.height * 0.55,
                         margin:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        padding: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: theme.cardColor,
@@ -350,9 +349,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   width: double.infinity,
                                   height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
-                                    //value: viewModel.fetchedGeofenceName,
                                     focusNode: viewModel.titleFocus,
-                                    title: "title",
+                                    title: "Title",
                                     controller: viewModel.titleController,
                                   )),
                               Container(
@@ -385,38 +383,38 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     title: "Description",
                                     controller: viewModel.descriptionController,
                                   )),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 10),
-                                child: InsiteText(
-                                  text: "Type :",
-                                ),
-                              ),
-                              Container(
-                                width: double.maxFinite,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                margin: EdgeInsets.all(10),
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        width: 1,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            .color)),
-                                child: CustomDropDownWidget(
-                                  istappable: !viewModel.isVisionlinkCheck
-                                      ? false
-                                      : !(uid != null),
-                                  items: viewModel.dropDownlist,
-                                  onChanged: (String value) {
-                                    viewModel.onDropDownValueChanged(value);
-                                  },
-                                  value: viewModel.initialValue,
-                                ),
-                              ),
+                              // Padding(
+                              //   padding:
+                              //       const EdgeInsets.only(top: 20, bottom: 10),
+                              //   child: InsiteText(
+                              //     text: "Type :",
+                              //   ),
+                              // ),
+                              // Container(
+                              //   width: double.maxFinite,
+                              //   height:
+                              //       MediaQuery.of(context).size.height * 0.05,
+                              //   margin: EdgeInsets.all(10),
+                              //   padding: EdgeInsets.all(10),
+                              //   decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(20),
+                              //       border: Border.all(
+                              //           width: 1,
+                              //           color: Theme.of(context)
+                              //               .textTheme
+                              //               .bodyText1
+                              //               .color)),
+                              //   child: CustomDropDownWidget(
+                              //     istappable: !viewModel.isVisionlinkCheck
+                              //         ? false
+                              //         : !(uid != null),
+                              //     items: viewModel.dropDownlist,
+                              //     onChanged: (String value) {
+                              //       viewModel.onDropDownValueChanged(value);
+                              //     },
+                              //     value: viewModel.initialValue,
+                              //   ),
+                              // ),
                               if (viewModel.initialValue ==
                                       viewModel.dropDownlist[2] ||
                                   viewModel.initialValue ==
@@ -780,21 +778,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     ),
                                     InsiteButton(
                                       textColor: white,
-                                      onTap: viewModel.isPolygonsCreated ||
-                                              viewModel
-                                                  .titleController.text.isEmpty
-                                          ? () {
-                                              print(
-                                                  viewModel.isPolygonsCreated);
-                                              print(viewModel.titleController
-                                                  .text.isEmpty);
-                                            }
-                                          : () {
-                                              FocusScope.of(context).unfocus();
-                                              Logger().e(viewModel
-                                                  .titleController.text);
-                                              viewModel.onSavingData();
-                                            },
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        viewModel.onSavingData();
+                                      },
                                       height: mediaquerry.size.height * 0.05,
                                       width: mediaquerry.size.width * 0.4,
                                       title: "Save",

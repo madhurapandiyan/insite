@@ -50,6 +50,7 @@ import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/core/models/user.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
@@ -1052,10 +1053,23 @@ abstract class RestClient {
     @Path() String url,
     @Body() AssetCreationPayLoad assetCreationPayLoad,
   );
-  
+
   @GET('{url}')
   Future<AssetCreationResetData> downloadAssetCreationData(
     @Path() String url,
+  );
+
+  @GET("{url}")
+  Future<CheckUserResponse> checkUserVL(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @GET("{url}")
+  Future<CheckUserResponse> checkUser(
+    @Path() String url,
+    @Header("service") service,
+    @Header("x-visionlink-customeruid") customerId,
   );
 }
 
