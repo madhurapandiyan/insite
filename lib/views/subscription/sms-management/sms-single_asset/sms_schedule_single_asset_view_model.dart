@@ -45,8 +45,6 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
 
   bool isLoading = true;
 
-  bool dummy = false;
-
   String name;
   String mobileNo;
   String language;
@@ -124,9 +122,16 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     });
   }
 
-  onSavingSmsModel() async {
+  onClosingDialog() {
+    singleAssetModelResponce.clear();
+    _serialNoController.clear();
+    _mobileNoController.clear();
+    _nameController.clear();
+    notifyListeners();
+  }
+
+  Future<List<SavingSmsModel>> onSavingSmsModel() async {
     try {
-      showLoadingDialog();
       for (var i = 0; i < singleAssetModelResponce.length; i++) {
         _savingSmsModel = SavingSmsModel(
             AssetSerial: singleAssetModelResponce[i].SerialNumber,
@@ -138,17 +143,17 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
             StartDate: singleAssetModelResponce[i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
-
-      Logger().d(_savingSmsModel.toJson());
-      var data = await _smsScheduleService.savingSms(listOSavingSmsModel);
+      SavingSmsResponce data =
+          await _smsScheduleService.savingSms(listOSavingSmsModel);
+      Logger().e(data);
       hideLoadingDialog();
-      dummy = false;
       listOSavingSmsModel.clear();
+      onClosingDialog();
       notifyListeners();
+      return data.AssetSerialNo;
     } on DioError catch (e) {
       listOSavingSmsModel.clear();
       hideLoadingDialog();
-      dummy = false;
       final error = DioException.fromDioError(e);
       snackbarService.showSnackbar(message: error.message);
       notifyListeners();

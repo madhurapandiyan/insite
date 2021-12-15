@@ -58,7 +58,8 @@ class AppbarViewModel extends InsiteViewModel {
     _navigationService.replaceWith(customerSelectionViewRoute);
   }
 
-  void logout() async {
+  Future<void> logout() async {
+   // _localService.removeTokenInfo();
     _localService.clearAll();
     _localStorageService.clearAll();
     LoginResponse response = await _localService.getTokenInfo();

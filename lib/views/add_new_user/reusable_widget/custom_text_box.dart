@@ -18,20 +18,21 @@ class CustomTextBox extends StatelessWidget {
   final List<TextInputFormatter> textInputFormat;
   bool isenabled;
 
-  CustomTextBox(
-      {this.title,
-      this.controller,
-      this.onChanged,
-      this.textInputFormat,
-      this.focusNode,
-      this.keyPadType,
-      this.labelTitle,
-      this.onFieldSubmmit,
-      this.isenabled = true,
-      this.onSaved,
-      this.validator,
-      this.value,
-      this.suffixWidget});
+  CustomTextBox({
+    this.title,
+    this.controller,
+    this.onChanged,
+    this.textInputFormat,
+    this.focusNode,
+    this.keyPadType,
+    this.labelTitle,
+    this.onFieldSubmmit,
+    this.isenabled = true,
+    this.onSaved,
+    this.validator,
+    this.value,
+    this.suffixWidget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +52,7 @@ class CustomTextBox extends StatelessWidget {
           fontStyle: FontStyle.normal,
           color: Theme.of(context).textTheme.bodyText1.color,
         ),
-        // onEditingComplete: ,
-        // onSubmitted: ,
         enabled: isenabled,
-
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
@@ -62,8 +60,6 @@ class CustomTextBox extends StatelessWidget {
             labelText: labelTitle,
             fillColor: black,
             hintText: title,
-            // errorText: validation(controller.text),
-
             errorStyle: TextStyle(color: Theme.of(context).errorColor),
             contentPadding: EdgeInsets.only(left: 12, top: 8),
             isDense: false,

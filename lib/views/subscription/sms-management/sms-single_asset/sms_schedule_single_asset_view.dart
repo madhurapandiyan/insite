@@ -4,6 +4,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:load/load.dart';
 import 'package:stacked/stacked.dart';
 
 import 'single_asset_form_widget/single_asset_form_widget.dart';
@@ -88,8 +89,8 @@ class _SmsScheduleSingleAssetViewState
                   ),
                   viewModel.singleAssetModelResponce.isEmpty
                       ? SingleAssetFormWidget(
-                        mobileNoController: viewModel.mobileNoController,
-                        nameController: viewModel.nameController,
+                          mobileNoController: viewModel.mobileNoController,
+                          nameController: viewModel.nameController,
                           onSaving: viewModel.onSavingForm,
                           serialNoController: viewModel.serialNoController)
                       : Column(
@@ -154,39 +155,54 @@ class _SmsScheduleSingleAssetViewState
                                       ),
                                       InsiteButton(
                                         onTap: () async {
-                                          await viewModel.onSavingSmsModel();
-                                          showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .backgroundColor,
-                                                    actions: [
-                                                      FlatButton.icon(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            viewModel
-                                                                .onBackPressed();
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.done,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText1
-                                                                .color,
+                                          showLoadingDialog();
+                                          List status = await viewModel
+                                              .onSavingSmsModel();
+                                          if (status.isEmpty) {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      content: InsiteText(
+                                                          text:
+                                                              "Moblie number Updated successfully!!!."
+                                                          //"Moblie number Updated successfully!!!.",
                                                           ),
-                                                          label: InsiteText(
-                                                            text: "Okay",
-                                                          ))
-                                                    ],
-                                                    content: InsiteText(
-                                                      text:viewModel.popUpMessage
-                                                          ,
-                                                    ),
-                                                  ));
+                                                    )
+                                                // dialogWidget(
+                                                //     dialogCtx: ctx,
+                                                //     content:
+                                                //         ,
+                                                //     ctx: context,
+                                                //     onPress: viewModel
+                                                //         .onClosingDialog())
+                                                );
+                                          } else {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      content: InsiteText(
+                                                          text:
+                                                              "Serial number, Mobile number, Language and Recipient’s Name combination is already exists. Do you want to download?"
+                                                          //"Moblie number Updated successfully!!!.",
+                                                          ),
+                                                    )
+
+                                                // dialogWidget(
+                                                //       dialogCtx: ctx,
+                                                //       ctx: context,
+                                                //       onPress: viewModel
+                                                //           .onClosingDialog(),
+                                                //       content:
+                                                //           ,
+                                                //     ));
+                                                );
+                                          }
                                         },
                                         textColor: white,
                                         title: viewModel
@@ -215,4 +231,17 @@ class _SmsScheduleSingleAssetViewState
       viewModelBuilder: () => SmsScheduleSingleAssetViewModel(),
     );
   }
+}
+
+Widget dialogWidget(
+    {String content,
+    BuildContext ctx,
+    Function onPress,
+    BuildContext dialogCtx}) {
+  return AlertDialog(
+    backgroundColor: Theme.of(ctx).backgroundColor,
+    content: InsiteText(text: content
+        //"Moblie number Updated successfully!!!.",
+        ),
+  );
 }

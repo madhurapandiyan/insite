@@ -209,6 +209,7 @@ class SubScriptionService extends BaseService {
       AssetTransferData addAssetRegistrationData = await MyApi()
           .getClientNine()
           .getSingleAssetTransferData(Urls.singleAssetRegistration, body);
+
       return addAssetRegistrationData;
     } catch (e) {
       Logger().e(e.toString());

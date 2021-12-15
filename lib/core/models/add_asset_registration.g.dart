@@ -16,7 +16,7 @@ AddAssetRegistrationData _$AddAssetRegistrationDataFromJson(
         ?.map((e) =>
             e == null ? null : AssetValues.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  );
+  )..status = json['status'] as String;
 }
 
 Map<String, dynamic> _$AddAssetRegistrationDataToJson(
@@ -26,6 +26,7 @@ Map<String, dynamic> _$AddAssetRegistrationDataToJson(
       'Version': instance.version,
       'UserID': instance.userID,
       'asset': instance.asset,
+      'status': instance.status,
     };
 
 AssetValues _$AssetValuesFromJson(Map<String, dynamic> json) {

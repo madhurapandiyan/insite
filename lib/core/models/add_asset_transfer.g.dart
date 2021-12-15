@@ -15,6 +15,7 @@ AssetTransferData _$AssetTransferDataFromJson(Map<String, dynamic> json) {
         ?.toList(),
     userID: json['UserID'] as int,
     version: json['Version'] as String,
+    status: json['status'] as String,
   );
 }
 
@@ -24,6 +25,7 @@ Map<String, dynamic> _$AssetTransferDataToJson(AssetTransferData instance) =>
       'Version': instance.version,
       'UserID': instance.userID,
       'transfer': instance.transfer,
+      'status': instance.status,
     };
 
 Transfer _$TransferFromJson(Map<String, dynamic> json) {
