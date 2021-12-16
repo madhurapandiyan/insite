@@ -80,18 +80,9 @@ class Urls {
   // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   static String tataHitachiRedirectUri =
-      "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
-
-  // static String tataHitachiRedirectUri =
-  // "https://dj8lqow8wzdep.cloudfront.net/auth";
-  // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
-  static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
-
-  // static String tataHitachiRedirectUri =
-  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
-  // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
+  "https://dj8lqow8wzdep.cloudfront.net/auth";
+  static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
+  static String tataHitachiApplicationName = "Frame-Administrator-IND";
 
   //   static String tataHitachiRedirectUri =
   //     "https://d20xyexn0ovnlx.cloudfront.net/auth";
@@ -281,8 +272,10 @@ class Urls {
   static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
   static String deviceTypes = "/osg-in/$accountSelection/1.0/v1/devicetypes";
   static String userCountVL = "/t/trimble.com/vss-identityapi/2.0/Users/Count";
-  static String assetCreationResetdata="$subscriptionPrefix/assetDetail/asset/activate/";
-  static String downloadResetData="$subscriptionPrefix/assetDetail/asset/activate/";
+  static String assetCreationResetdata =
+      "$subscriptionPrefix/assetDetail/asset/activate/";
+  static String downloadResetData =
+      "$subscriptionPrefix/assetDetail/asset/activate/";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

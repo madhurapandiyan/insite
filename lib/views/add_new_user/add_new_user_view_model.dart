@@ -257,6 +257,9 @@ class AddNewUserViewModel extends InsiteViewModel {
     country,
     zipcode,
   ) async {
+    if (!validate()) {
+      return;
+    }
     showLoadingDialog();
     try {
       List<Role> roles = [];
