@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -9,6 +10,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
+import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -157,26 +159,35 @@ class AddNewUserViewModel extends InsiteViewModel {
   }
 
   onMaildIdCheckClicked() async {
-    if (emailController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Email is empty");
-      return;
-    }
-    showLoadingDialog();
-    CheckUserResponse response =
-        await _manageUserService.checkUser(emailController.text);
-    if (response != null) {
-      if (response.users != null && response.users.isNotEmpty) {
-        snackbarService.showSnackbar(message: "User is already available");
-        _enableAdd = false;
+    try {
+      if (emailController.text.isEmpty) {
+        snackbarService.showSnackbar(message: "Email is empty");
+        return;
+      }
+      showLoadingDialog();
+      CheckUserResponse response =
+          await _manageUserService.checkUser(emailController.text);
+      if (response != null) {
+        if (response.users != null && response.users.isNotEmpty) {
+          snackbarService.showSnackbar(message: "User is already available");
+          _enableAdd = false;
+        } else {
+          _enableAdd = true;
+        }
+        hideLoadingDialog();
       } else {
+        _enableAdd = false;
+        snackbarService.showSnackbar(message: "Checking user details failed");
+        hideLoadingDialog();
+      }
+    } on DioError catch (e) {
+      Logger().e(e.type);
+      hideLoadingDialog();
+      if (e.type == DioErrorType.DEFAULT) {
         _enableAdd = true;
       }
-      hideLoadingDialog();
-    } else {
-      _enableAdd = false;
-      snackbarService.showSnackbar(message: "Checking user details failed");
-      hideLoadingDialog();
     }
+    notifyListeners();
   }
 
   onPermissionRemoved(ApplicationSelectedDropDown value, int index) {
