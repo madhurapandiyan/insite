@@ -539,17 +539,20 @@ class AssetAdminManagerUserService extends BaseService {
     Logger().i("getAssetSettingData");
     try {
       Map<String, String> queryMap = Map();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["sortColumn"] = "assetId";
+      if (searchKeyword.isNotEmpty) {
+        queryMap["filterName"] = "all";
+        queryMap["filterValue"] = searchKeyword;
+      }
+      if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
+        queryMap["deviceType"] = deviceTypeSelected;
+      }
+      if (customerSelected != null) {
+        queryMap["subAccountCustomerUid"] = customerSelected.CustomerUID;
+      }
       if (isVisionLink) {
-        queryMap["pageSize"] = pageSize.toString();
-        queryMap["pageNumber"] = pageNumber.toString();
-        queryMap["sortColumn"] = "assetId";
-        if (searchKeyword.isNotEmpty) {
-          queryMap["filterName"] = "all";
-          queryMap["filterValue"] = searchKeyword;
-        }
-        if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
-          queryMap["deviceType"] = deviceTypeSelected;
-        }
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSeven().getAssetSettingsListDataVL(
                 Urls.assetSettingsVL +
@@ -557,16 +560,6 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected.CustomerUID);
         return manageAssetConfigurationResponse;
       } else {
-        queryMap["pageSize"] = pageSize.toString();
-        queryMap["pageNumber"] = pageNumber.toString();
-        queryMap["sortColumn"] = "assetId";
-        if (searchKeyword.isNotEmpty) {
-          queryMap["filterName"] = "all";
-          queryMap["filterValue"] = searchKeyword;
-        }
-        if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
-          queryMap["deviceType"] = deviceTypeSelected;
-        }
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSix().getAssetSettingsListData(
                 Urls.assetSettings +
