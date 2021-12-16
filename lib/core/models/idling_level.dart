@@ -3,7 +3,7 @@ part 'idling_level.g.dart';
 
 @JsonSerializable()
 class IdlingLevelData {
-  List<CountDatum> countData;
+  List<CountDatum>? countData;
   IdlingLevelData({
     this.countData,
   });
@@ -16,8 +16,8 @@ class IdlingLevelData {
 
 @JsonSerializable()
 class CountDatum {
-  String countOf;
-  int count;
+  String? countOf;
+  int? count;
   CountDatum({
     this.countOf,
     this.count,

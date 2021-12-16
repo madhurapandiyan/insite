@@ -27,7 +27,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AccountSelectionViewModel>.reactive(
       builder: (BuildContext context, AccountSelectionViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: InsiteAppBar(
@@ -63,11 +63,11 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          viewModel.loggedInUserMail,
+                          viewModel.loggedInUserMail!,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color,
+                                  Theme.of(context).textTheme.bodyText1!.color,
                               fontWeight: FontWeight.bold,
                               fontSize: 18),
                         ),
@@ -105,9 +105,9 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                           horizontal: 16, vertical: 8),
                                       child: AccountSelectionDropDownWidget(
                                         selectionType: AccountType.ACCOUNT,
-                                        onSelected: (AccountData value) {
+                                        onSelected: (AccountData? value) {
                                           viewModel
-                                              .setAccountSelected(value.value);
+                                              .setAccountSelected(value!.value);
                                         },
                                         onReset: () {
                                           viewModel.resetSelection();
@@ -127,9 +127,9 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                           horizontal: 16, vertical: 8),
                                       child: AccountSearchView(
                                         selectionType: AccountType.ACCOUNT,
-                                        onSelected: (AccountData value) {
+                                        onSelected: (AccountData? value) {
                                           viewModel
-                                              .setAccountSelected(value.value);
+                                              .setAccountSelected(value!.value);
                                         },
                                         onReset: () {
                                           viewModel.resetSelection();
@@ -152,7 +152,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                         selectionType: AccountType.CUSTOMER,
                                         onSelected: (value) {
                                           viewModel.setSubAccountSelected(
-                                              value.value);
+                                              value!.value!);
                                           viewModel.onCustomerSelected();
                                         },
                                         onReset: () {

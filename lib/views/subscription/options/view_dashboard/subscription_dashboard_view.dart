@@ -20,9 +20,9 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubscriptionDashboardViewModel>.reactive(
       builder: (BuildContext context, SubscriptionDashboardViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             //screenType: ScreenType,
@@ -66,7 +66,7 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                     itemBuilder: (context, index) {
                                       return InsiteTitleCountRow(
                                         name: viewModel.names[index],
-                                        count: viewModel.results[index]
+                                        count: viewModel.results[index]!
                                             .toStringAsFixed(0),
                                         filter: viewModel.names[index] ==
                                                 "Not Mapped"
@@ -108,7 +108,7 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                     itemBuilder: (context, index) {
                                       return InsiteTitleCountRow(
                                         name: viewModel.modelNames[index],
-                                        count: viewModel.modelCount[index]
+                                        count: viewModel.modelCount[index]!
                                             .toStringAsFixed(0),
                                         filter: viewModel.modelNames[index] ==
                                                 "Not Mapped"

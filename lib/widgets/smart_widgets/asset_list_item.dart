@@ -8,9 +8,9 @@ import 'package:intl/intl.dart';
 import 'insite_expansion_tile.dart';
 
 class AssetOperationListItem extends StatelessWidget {
-  final Asset asset;
-  final List<DateTime> days;
-  final VoidCallback onCallback;
+  final Asset? asset;
+  final List<DateTime>? days;
+  final VoidCallback? onCallback;
   const AssetOperationListItem({
     this.asset,
     this.onCallback,
@@ -21,7 +21,7 @@ class AssetOperationListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onCallback();
+        onCallback!();
       },
       child: Card(
         child: Row(
@@ -61,19 +61,19 @@ class AssetOperationListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: asset != null
-                              ? Utils.getMakeTitle(asset.makeCode) +
+                              ? Utils.getMakeTitle(asset!.makeCode!) +
                                   "\n" +
-                                  asset.model
+                                  asset!.model!
                               : "",
                           path: asset == null
                               ? "assets/images/EX210.png"
-                              : Utils().imageData(asset.model),
+                              : Utils().imageData(asset!.model!),
                         ),
                         InsiteTableRowItem(
                           title: "Total Duration",
-                          content: asset.dateRangeRuntimeDuration != null
+                          content: asset!.dateRangeRuntimeDuration != null
                               ? Utils.formatHHmm(Duration(
-                                      seconds: asset.dateRangeRuntimeDuration
+                                      seconds: asset!.dateRangeRuntimeDuration!
                                           .toInt())
                                   .inSeconds)
                               : "-",
@@ -84,16 +84,16 @@ class AssetOperationListItem extends StatelessWidget {
                       children: [
                         InsiteRichText(
                           title: "Serial No. ",
-                          content: asset.serialNumber,
+                          content: asset!.serialNumber,
                           onTap: () {
-                            onCallback();
+                            onCallback!();
                           },
                         ),
                         InsiteTableRowItem(
                           title: "Distance Travelled Kilometers",
                           content: asset != null &&
-                                  asset.distanceTravelledKilometers != null
-                              ? asset.distanceTravelledKilometers
+                                  asset!.distanceTravelledKilometers != null
+                              ? asset!.distanceTravelledKilometers!
                                   .round()
                                   .toString()
                               : "-",
@@ -118,13 +118,13 @@ class AssetOperationListItem extends StatelessWidget {
 
   List<SliderData> getSliderData() {
     List<SliderData> list = [];
-    for (DateTime time in days) {
+    for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
       SliderData data = SliderData(
           day: day,
           date: time.day.toString(),
           value: getMatchingDate(time) != null
-              ? (getMatchingDate(time).totalRuntimeDurationSeconds / (60 * 60))
+              ? (getMatchingDate(time)!.totalRuntimeDurationSeconds! / (60 * 60))
                   .toStringAsFixed(1)
               : "");
       list.add(data);
@@ -132,10 +132,10 @@ class AssetOperationListItem extends StatelessWidget {
     return list;
   }
 
-  AssetLocalDate getMatchingDate(DateTime matchDateTime) {
-    AssetLocalDate matchingDate;
-    for (AssetLocalDate assetDate in asset.assetLocalDates) {
-      DateTime dateTime = DateTime.parse(assetDate.assetLocalDate);
+  AssetLocalDate? getMatchingDate(DateTime matchDateTime) {
+    AssetLocalDate? matchingDate;
+    for (AssetLocalDate assetDate in asset!.assetLocalDates!) {
+      DateTime dateTime = DateTime.parse(assetDate.assetLocalDate!);
       if (matchDateTime == dateTime) {
         matchingDate = assetDate;
         break;

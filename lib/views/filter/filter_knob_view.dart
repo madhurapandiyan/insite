@@ -3,7 +3,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/widgets/dumb_widgets/fleet_knob.dart';
 
 class FleetKnobView extends StatefulWidget {
-  final List<FilterData> data;
+  final List<FilterData>? data;
   const FleetKnobView({this.data});
 
   @override
@@ -17,10 +17,10 @@ class _FleetKnobViewState extends State<FleetKnobView> {
       padding: EdgeInsets.symmetric(horizontal: 8),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        FilterData data = widget.data[index];
+        FilterData data = widget.data![index];
         return FleetKnob(filterData: data);
       },
-      itemCount: widget.data.length,
+      itemCount: widget.data!.length,
     );
   }
 }

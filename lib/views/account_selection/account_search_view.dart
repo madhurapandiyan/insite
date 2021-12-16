@@ -8,11 +8,11 @@ import 'package:stacked/stacked.dart';
 import 'account_search_view_model.dart';
 
 class AccountSearchView extends StatefulWidget {
-  final AccountType selectionType;
-  final AccountData selected;
-  final Function(AccountData) onSelected;
-  final VoidCallback onReset;
-  final List<AccountData> list;
+  final AccountType? selectionType;
+  final AccountData? selected;
+  final Function(AccountData?)? onSelected;
+  final VoidCallback? onReset;
+  final List<AccountData>? list;
   AccountSearchView(
       {this.selectionType,
       this.selected,
@@ -42,18 +42,18 @@ class _AccountSearchViewState extends State<AccountSearchView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AccountSearchViewModel>.reactive(
       builder:
-          (BuildContext context, AccountSearchViewModel viewModel, Widget _) {
+          (BuildContext context, AccountSearchViewModel viewModel, Widget? _) {
         return AppExpansionTile(
           backgroundColor: Theme.of(context).backgroundColor,
           title: Text(
             viewModel.selected != null
-                ? viewModel.selected.value.DisplayName
+                ? viewModel.selected!.value!.DisplayName!
                 : widget.selectionType == AccountType.ACCOUNT
                     ? "Select"
                     : "Search and Select",
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-                color: Theme.of(context).textTheme.bodyText1.color,
+                color: Theme.of(context).textTheme.bodyText1!.color,
                 fontWeight: FontWeight.bold,
                 fontSize: 18),
           ),
@@ -63,9 +63,9 @@ class _AccountSearchViewState extends State<AccountSearchView> {
               decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                   border: Border.all(
-                      color: Theme.of(context).textTheme.bodyText1.color)),
+                      color: Theme.of(context).textTheme.bodyText1!.color!)),
               height:
-                  viewModel.displayList.isNotEmpty && viewModel.selected != null
+                  viewModel.displayList!.isNotEmpty && viewModel.selected != null
                       ? MediaQuery.of(context).size.height * 0.42
                       : MediaQuery.of(context).size.height * 0.32,
               child: Column(
@@ -74,7 +74,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     child: Column(
                       children: [
-                        viewModel.list.isNotEmpty
+                        viewModel.list!.isNotEmpty
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SearchBox(
@@ -86,16 +86,16 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                             : SizedBox(),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: viewModel.displayList.length,
+                            itemCount: viewModel.displayList!.length,
                             controller: viewModel.scrollController,
                             // shrinkWrap: true,
                             // physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              AccountData data = viewModel.displayList[index];
+                              AccountData data = viewModel.displayList![index];
                               return GestureDetector(
                                 onTap: () {
                                   viewModel.deSelect();
-                                  viewModel.displayList[index].isSelected =
+                                  viewModel.displayList![index].isSelected =
                                       true;
                                   viewModel.selected = data;
                                   setState(() {});
@@ -104,7 +104,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                   //     value: customer));
                                 },
                                 child: Container(
-                                  color: viewModel.displayList[index].isSelected
+                                  color: viewModel.displayList![index].isSelected!
                                       ? Theme.of(context).buttonColor
                                       : Theme.of(context).backgroundColor,
                                   padding: EdgeInsets.symmetric(
@@ -115,16 +115,16 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          data.value.DisplayName,
+                                          data.value!.DisplayName!,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: viewModel
-                                                      .displayList[index]
-                                                      .isSelected
+                                                      .displayList![index]
+                                                      .isSelected!
                                                   ? Colors.white
                                                   : Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
+                                                      .bodyText1!
                                                       .color,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
@@ -151,7 +151,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                       ],
                     ),
                   ),
-                  viewModel.displayList.isNotEmpty && viewModel.selected != null
+                  viewModel.displayList!.isNotEmpty && viewModel.selected != null
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.1,
                           padding: EdgeInsets.all(10),
@@ -165,7 +165,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                         viewModel.deSelect();
                                         viewModel.selected = null;
                                         setState(() {});
-                                        widget.onReset();
+                                        widget.onReset!();
                                       },
                                       width: 100,
                                       height: 48,
@@ -181,9 +181,9 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                 width: 100,
                                 textColor: Colors.white,
                                 onTap: () {
-                                  expansionTile.currentState.collapse();
+                                  expansionTile.currentState!.collapse();
                                   if (viewModel.selected != null) {
-                                    widget.onSelected(viewModel.selected);
+                                    widget.onSelected!(viewModel.selected);
                                   }
                                 },
                                 title: "SELECT",

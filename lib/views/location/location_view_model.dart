@@ -20,24 +20,27 @@ import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/widgets/dumb_widgets/location_info_window_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart' as service;
 import 'dart:math' as Math;
 import 'package:flutter_map/flutter_map.dart' as flutter_map;
-import 'package:latlong/latlong.dart' as latlng;
+import 'package:latlong2/latlong.dart' as latlng;
 
 class LocationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
   var _assetLocationService = locator<AssetLocationService>();
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
   Set<Marker> markers = Set();
   List<LatLng> latlngs = [];
-  List<ClusterItem<InsiteMarker>> clusterMarkers = [];
+  List<InsiteMarker> clusterMarkers = [];
+
   bool _loading = true;
   bool get loading => _loading;
-  CustomInfoWindowController customInfoWindowController =
+  CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
+  CustomInfoWindowController get customInfoWindowController =>
+      _customInfoWindowController;
   Completer<GoogleMapController> controller = Completer();
-  ClusterManager manager;
+  ClusterManager? manager;
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -47,11 +50,11 @@ class LocationViewModel extends InsiteViewModel {
   ScreenType _pageType = ScreenType.LOCATION;
   ScreenType get pageType => _pageType;
 
-  int _totalCount = 0;
-  int get totalCount => _totalCount;
+  int? _totalCount = 0;
+  int? get totalCount => _totalCount;
 
-  AssetLocationData _assetLocation;
-  AssetLocationData get assetLocation => _assetLocation;
+  AssetLocationData? _assetLocation;
+  AssetLocationData? get assetLocation => _assetLocation;
 
   int pageNumber = 1;
   int pageSize = 2500;
@@ -60,19 +63,19 @@ class LocationViewModel extends InsiteViewModel {
 
   clusterMarker() {
     int index = 1;
-    List<MapRecord> assetLocationList = assetLocation.mapRecords;
+    List<MapRecord?>? assetLocationList = assetLocation!.mapRecords!;
     Logger().i("map records size ${assetLocationList.length}");
     clusterMarkers.clear();
     latlngs.clear();
     allMarkers.clear();
     for (var assetLocation in assetLocationList) {
-      if (assetLocation.lastReportedLocationLatitude != null &&
+      if (assetLocation!.lastReportedLocationLatitude != null &&
           assetLocation.lastReportedLocationLongitude != null) {
         allMarkers.add(
           flutter_map.Marker(
             point: latlng.LatLng(
-              assetLocation.lastReportedLocationLatitude,
-              assetLocation.lastReportedLocationLongitude,
+              assetLocation.lastReportedLocationLatitude!,
+              assetLocation.lastReportedLocationLongitude!,
             ),
             builder: (context) => const Icon(
               Icons.location_on,
@@ -81,19 +84,13 @@ class LocationViewModel extends InsiteViewModel {
             ),
           ),
         );
-        latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
-            assetLocation.lastReportedLocationLongitude));
-        clusterMarkers.add(
-          ClusterItem(
-              LatLng(assetLocation.lastReportedLocationLatitude,
-                  assetLocation.lastReportedLocationLongitude),
-              item: InsiteMarker(
-                markerId: MarkerId('${index++}'),
-                mapData: assetLocation,
-                position: LatLng(assetLocation.lastReportedLocationLatitude,
-                    assetLocation.lastReportedLocationLongitude),
-              )),
-        );
+        latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude!,
+            assetLocation.lastReportedLocationLongitude!));
+        clusterMarkers.add(InsiteMarker(
+            markerId: MarkerId('${index++}'),
+            mapData: assetLocation,
+            latLng: LatLng(assetLocation.lastReportedLocationLatitude!,
+                assetLocation.lastReportedLocationLongitude!)));
       }
     }
     Logger().i("all markers size ${allMarkers.length}");
@@ -101,9 +98,7 @@ class LocationViewModel extends InsiteViewModel {
 
   ClusterManager initClusterManager() {
     return ClusterManager<InsiteMarker>(clusterMarkers, _updateMarkers,
-        markerBuilder: _markerBuilder,
-        initialZoom: 5,
-        stopClusteringZoom: 10.0);
+        markerBuilder: _markerBuilder, stopClusteringZoom: 10.0);
   }
 
   void _updateMarkers(Set<Marker> markers) {
@@ -119,34 +114,35 @@ class LocationViewModel extends InsiteViewModel {
           markerId: MarkerId(cluster.getId()),
           position: cluster.location,
           onTap: () {
-            customInfoWindowController.addInfoWindow(
+            _customInfoWindowController.addInfoWindow!(
                 LocationInfoWindowWidget(
                   assetCount: cluster.count,
                   type: pageType,
-                  infoText: cluster.items.toList()[0].mapData.assetSerialNumber,
+                  infoText:
+                      cluster.items.toList()[0].mapData!.assetSerialNumber,
                   onCustomWindowClose: () {
-                    customInfoWindowController.hideInfoWindow();
+                    _customInfoWindowController.hideInfoWindow!();
                   },
                   onFleetPageSelectedTap: () {
-                    customInfoWindowController.hideInfoWindow();
+                    _customInfoWindowController.hideInfoWindow!();
                     if (cluster.count > 1) {
-                      onFleetPageSelected(cluster.markers.toList(), false);
+                      onFleetPageSelected(cluster.items.toList(), false);
                     } else {
                       onDetailPageSelected(
-                          cluster.items.toList()[0].mapData, 0);
+                          cluster.items.toList()[0].mapData!, 0);
                     }
                   },
                   onTapWithZoom: () {
-                    customInfoWindowController.hideInfoWindow();
+                    _customInfoWindowController.hideInfoWindow!();
                     if (cluster.count > 1) {
                       if (pageType == ScreenType.DASHBOARD) {
-                        onFleetPageSelected(cluster.markers.toList(), true);
+                        onFleetPageSelected(cluster.items.toList(), true);
                       } else {
-                        refreshCluster(cluster.markers.toList());
+                        refreshCluster(cluster.items.toList());
                       }
                     } else {
                       onDetailPageSelected(
-                          cluster.items.toList()[0].mapData, 3);
+                          cluster.items.toList()[0].mapData!, 3);
                     }
                   },
                 ),
@@ -163,7 +159,7 @@ class LocationViewModel extends InsiteViewModel {
         ImageConfiguration.empty, "assets/images/marker.png");
   }
 
-  Future<BitmapDescriptor> _getMarkerBitmap(int size, {String text}) async {
+  Future<BitmapDescriptor> _getMarkerBitmap(int size, {String? text}) async {
     if (kIsWeb) size = (size / 2).floor();
 
     final PictureRecorder pictureRecorder = PictureRecorder();
@@ -195,13 +191,12 @@ class LocationViewModel extends InsiteViewModel {
     final img = await pictureRecorder.endRecording().toImage(size, size);
     final data = await img.toByteData(format: ImageByteFormat.png);
 
-    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
-  onFleetPageSelected(
-      List<ClusterItem<InsiteMarker>> list, shouldGoToLocationPage) async {
+  onFleetPageSelected(List<InsiteMarker> list, shouldGoToLocationPage) async {
     List<LatLng> selectedClustorLatLnglist = [];
-    for (ClusterItem<InsiteMarker> item in list) {
+    for (InsiteMarker item in list) {
       selectedClustorLatLnglist.add(item.location);
     }
     LatLngBounds bounds = getBound(selectedClustorLatLnglist);
@@ -276,7 +271,7 @@ class LocationViewModel extends InsiteViewModel {
     markers.clear();
     latlngs.clear();
     notifyListeners();
-    AssetLocationData result = await _assetLocationService.getAssetLocation(
+    AssetLocationData? result = await _assetLocationService.getAssetLocation(
         startDate,
         endDate,
         pageNumber,
@@ -285,16 +280,16 @@ class LocationViewModel extends InsiteViewModel {
         appliedFilters);
     if (result != null) {
       _assetLocation = result;
-      _totalCount = result.pagination.totalCount;
+      _totalCount = result.pagination!.totalCount;
       clusterMarker();
-      manager.updateMap();
+      manager!.updateMap();
     }
     _loading = false;
     _refreshing = false;
     notifyListeners();
   }
 
-  refreshCluster(List<ClusterItem<InsiteMarker>> list) async {
+  refreshCluster(List<InsiteMarker> list) async {
     Logger().d("refreshCluster with size of  ${list.length}");
     _refreshing = true;
     clusterMarkers.clear();
@@ -302,7 +297,7 @@ class LocationViewModel extends InsiteViewModel {
     latlngs.clear();
     notifyListeners();
     List<LatLng> selectedClustorLatLnglist = [];
-    for (ClusterItem<InsiteMarker> item in list) {
+    for (InsiteMarker item in list) {
       selectedClustorLatLnglist.add(item.location);
     }
     LatLngBounds bounds = getBound(selectedClustorLatLnglist);
@@ -313,7 +308,7 @@ class LocationViewModel extends InsiteViewModel {
     Logger().d("lat lng northeast ${bounds.northeast}");
     Logger().d("lat lng southwest ${bounds.southwest}");
     Logger().d("radius between southwest northeast $radiusKm");
-    AssetLocationData result =
+    AssetLocationData? result =
         await _assetLocationService.getAssetLocationWithCluster(
             pageNumber,
             pageSize,
@@ -323,9 +318,9 @@ class LocationViewModel extends InsiteViewModel {
             radiusKm);
     if (result != null) {
       _assetLocation = result;
-      _totalCount = result.pagination.totalCount;
+      _totalCount = result.pagination!.totalCount;
       clusterMarker();
-      manager.updateMap();
+      manager!.updateMap();
     }
     _loading = false;
     _refreshing = false;
@@ -335,7 +330,7 @@ class LocationViewModel extends InsiteViewModel {
 
   getAssetLocationHome() async {
     print('getAssetLocationHome');
-    AssetLocationData result =
+    AssetLocationData? result =
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber, pageSize, '-lastlocationupdateutc');
     if (result != null) {
@@ -349,7 +344,7 @@ class LocationViewModel extends InsiteViewModel {
   getAssetLocation() async {
     await getSelectedFilterData();
     Logger().d("getAssetLocation");
-    AssetLocationData result = await _assetLocationService.getAssetLocation(
+    AssetLocationData? result = await _assetLocationService.getAssetLocation(
       startDate,
       endDate,
       pageNumber,
@@ -359,7 +354,7 @@ class LocationViewModel extends InsiteViewModel {
     );
     if (result != null) {
       _assetLocation = result;
-      _totalCount = result.pagination.totalCount;
+      _totalCount = result.pagination!.totalCount;
       clusterMarker();
     }
     _loading = false;
@@ -381,19 +376,20 @@ class LocationViewModel extends InsiteViewModel {
 
   LatLngBounds getBound(list) {
     assert(list.isNotEmpty);
-    double x0, x1, y0, y1;
+    double? x0, x1, y0, y1;
     for (LatLng latLng in list) {
       if (x0 == null) {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
       } else {
-        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude > x1!) x1 = latLng.latitude;
         if (latLng.latitude < x0) x0 = latLng.latitude;
-        if (latLng.longitude > y1) y1 = latLng.longitude;
-        if (latLng.longitude < y0) y0 = latLng.longitude;
+        if (latLng.longitude > y1!) y1 = latLng.longitude;
+        if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
+    return LatLngBounds(
+        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 
   //finds the distance between two latlng values
@@ -420,13 +416,13 @@ class LocationViewModel extends InsiteViewModel {
   getLocationFilterData(dropDownValue) async {
     _refreshing = true;
     notifyListeners();
-    AssetLocationData result = await _assetLocationService
+    AssetLocationData? result = await _assetLocationService
         .getLocationFilterData(dropDownValue, pageNumber, pageSize);
     if (result != null) {
       _assetLocation = result;
-      _totalCount = result.pagination.totalCount;
+      _totalCount = result.pagination!.totalCount;
       clusterMarker();
-      manager.updateMap();
+      manager!.updateMap();
     }
     _loading = false;
     _refreshing = false;
@@ -438,3 +434,12 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 }
+
+// class Place with ClusterItem {
+//   final String? name;
+//   final LatLng latLng;
+
+//   Place({this.name, required this.latLng});
+
+
+// }

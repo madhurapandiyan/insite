@@ -4,15 +4,15 @@ import 'package:insite/widgets/dumb_widgets/bar_wdiget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class BarChartWidget extends StatelessWidget {
-  final String title;
-  final double workingValue;
-  final double idleValue;
-  final double runningValue;
-  final double totalGreatestNumber;
-  final double averageGreatestNumber;
-  final bool isAverageButtonSelected;
-  final List<bool> shouldShowLabel;
-  final VoidCallback onTap;
+  final String? title;
+  final double? workingValue;
+  final double? idleValue;
+  final double? runningValue;
+  final double? totalGreatestNumber;
+  final double? averageGreatestNumber;
+  final bool? isAverageButtonSelected;
+  final List<bool>? shouldShowLabel;
+  final VoidCallback? onTap;
   const BarChartWidget(
       {this.title,
       this.onTap,
@@ -35,7 +35,7 @@ class BarChartWidget extends StatelessWidget {
             Radius.circular(8),
           ),
           border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1.color)),
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!)),
       child: Column(
         children: [
           Expanded(
@@ -45,36 +45,36 @@ class BarChartWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  shouldShowLabel[0]
+                  shouldShowLabel![0]
                       ? BarWidget(
                           value: workingValue,
                           color: emerald,
                           onColumnSelected: () {
-                            onTap();
+                            onTap!();
                           },
                           averageGreatestNumber: averageGreatestNumber,
                           isAverageButtonSelected: isAverageButtonSelected,
                           totalGreatestNumber: totalGreatestNumber,
                         )
                       : SizedBox(),
-                  shouldShowLabel[1]
+                  shouldShowLabel![1]
                       ? BarWidget(
                           value: idleValue,
                           color: burntSienna,
                           onColumnSelected: () {
-                            onTap();
+                            onTap!();
                           },
                           averageGreatestNumber: averageGreatestNumber,
                           isAverageButtonSelected: isAverageButtonSelected,
                           totalGreatestNumber: totalGreatestNumber,
                         )
                       : SizedBox(),
-                  shouldShowLabel[2]
+                  shouldShowLabel![2]
                       ? BarWidget(
                           value: runningValue,
                           color: creamCan,
                           onColumnSelected: () {
-                            onTap();
+                            onTap!();
                           },
                           averageGreatestNumber: averageGreatestNumber,
                           isAverageButtonSelected: isAverageButtonSelected,
@@ -87,7 +87,7 @@ class BarChartWidget extends StatelessWidget {
           ),
           Divider(
             height: 1,
-            color: Theme.of(context).textTheme.bodyText1.color,
+            color: Theme.of(context).textTheme.bodyText1!.color,
           ),
           Expanded(
             child: Container(
@@ -101,7 +101,7 @@ class BarChartWidget extends StatelessWidget {
               ),
               child: Center(
                 child: InsiteText(
-                    text: title.toUpperCase(),
+                    text: title!.toUpperCase(),
                     size: 10,
                     fontWeight: FontWeight.bold),
               ),

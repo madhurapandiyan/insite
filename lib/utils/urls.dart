@@ -100,7 +100,7 @@ class Urls {
 
   static String tenantDomain = "Trimble.com";
 
-  static getV4LogoutUrl(String token, redirecturi) {
+  static getV4LogoutUrl(String? token, redirecturi) {
     String url = Urls.idTokenBaseUrl +
         "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
     return url;

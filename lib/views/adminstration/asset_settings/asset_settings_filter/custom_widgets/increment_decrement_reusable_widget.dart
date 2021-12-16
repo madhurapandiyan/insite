@@ -4,8 +4,8 @@ import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:logger/logger.dart';
 
 class IncrementDecrementwidget extends StatefulWidget {
-  final Function(String) onValueChange;
-  final double countValue;
+  final Function(String)? onValueChange;
+  final double? countValue;
 
   const IncrementDecrementwidget({
     this.onValueChange,
@@ -51,14 +51,14 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
             style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: Theme.of(context).textTheme.bodyText1.color),
+                color: Theme.of(context).textTheme.bodyText1!.color),
             controller: fullWeekValue,
             keyboardType: TextInputType.numberWithOptions(
               decimal: false,
               signed: true,
             ),
             inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
           ),
         ),
@@ -102,7 +102,7 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
 
       currentValue++;
       fullWeekValue.text = currentValue.toString();
-      widget.onValueChange(fullWeekValue.text);
+      widget.onValueChange!(fullWeekValue.text);
       setState(() {});
     } catch (e) {
       // Logger().e(e.toString());
@@ -118,7 +118,7 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
       }
       currentValue--;
       fullWeekValue.text = (currentValue > 0 ? currentValue : 0).toString();
-      widget.onValueChange(fullWeekValue.text);
+      widget.onValueChange!(fullWeekValue.text);
       setState(() {});
     } catch (e) {
       //Logger().e(e.toString());

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class EmptyView extends StatelessWidget {
-  final String title;
-  final Color bg;
+  final String? title;
+  final Color? bg;
   const EmptyView({this.title, this.bg});
 
   @override

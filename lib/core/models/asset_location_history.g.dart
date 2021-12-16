@@ -6,21 +6,19 @@ part of 'asset_location_history.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetLocationHistory _$AssetLocationHistoryFromJson(Map<String, dynamic> json) {
-  return AssetLocationHistory(
-    pagination: json['pagination'] == null
-        ? null
-        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
-    links: json['links'] == null
-        ? null
-        : Links.fromJson(json['links'] as Map<String, dynamic>),
-    assetLocation: (json['assetLocation'] as List)
-        ?.map((e) => e == null
-            ? null
-            : AssetLocation.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+AssetLocationHistory _$AssetLocationHistoryFromJson(
+        Map<String, dynamic> json) =>
+    AssetLocationHistory(
+      pagination: json['pagination'] == null
+          ? null
+          : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+      links: json['links'] == null
+          ? null
+          : Links.fromJson(json['links'] as Map<String, dynamic>),
+      assetLocation: (json['assetLocation'] as List<dynamic>?)
+          ?.map((e) => AssetLocation.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AssetLocationHistoryToJson(
         AssetLocationHistory instance) =>
@@ -30,31 +28,30 @@ Map<String, dynamic> _$AssetLocationHistoryToJson(
       'assetLocation': instance.assetLocation,
     };
 
-AssetLocation _$AssetLocationFromJson(Map<String, dynamic> json) {
-  return AssetLocation(
-    assetEventHistoryId: json['assetEventHistoryId'] as int,
-    assetIdentifier: json['assetIdentifier'] as String,
-    serialNumber: json['serialNumber'] as String,
-    makeCode: json['makeCode'] as String,
-    model: json['model'] as String,
-    locationEventUtc: json['locationEventUtc'] == null
-        ? null
-        : DateTime.parse(json['locationEventUtc'] as String),
-    locationEventLocalTime: json['locationEventLocalTime'] == null
-        ? null
-        : DateTime.parse(json['locationEventLocalTime'] as String),
-    locationEventLocalTimeZoneAbbrev:
-        json['locationEventLocalTimeZoneAbbrev'] as String,
-    latitude: (json['latitude'] as num)?.toDouble(),
-    longitude: (json['longitude'] as num)?.toDouble(),
-    address: json['address'] == null
-        ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>),
-    odometer: (json['odometer'] as num)?.toDouble(),
-    hourmeter: (json['hourmeter'] as num)?.toDouble(),
-    assetStatus: json['assetStatus'] as String,
-  );
-}
+AssetLocation _$AssetLocationFromJson(Map<String, dynamic> json) =>
+    AssetLocation(
+      assetEventHistoryId: json['assetEventHistoryId'] as int?,
+      assetIdentifier: json['assetIdentifier'] as String?,
+      serialNumber: json['serialNumber'] as String?,
+      makeCode: json['makeCode'] as String?,
+      model: json['model'] as String?,
+      locationEventUtc: json['locationEventUtc'] == null
+          ? null
+          : DateTime.parse(json['locationEventUtc'] as String),
+      locationEventLocalTime: json['locationEventLocalTime'] == null
+          ? null
+          : DateTime.parse(json['locationEventLocalTime'] as String),
+      locationEventLocalTimeZoneAbbrev:
+          json['locationEventLocalTimeZoneAbbrev'] as String?,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+      address: json['address'] == null
+          ? null
+          : Address.fromJson(json['address'] as Map<String, dynamic>),
+      odometer: (json['odometer'] as num?)?.toDouble(),
+      hourmeter: (json['hourmeter'] as num?)?.toDouble(),
+      assetStatus: json['assetStatus'] as String?,
+    );
 
 Map<String, dynamic> _$AssetLocationToJson(AssetLocation instance) =>
     <String, dynamic>{
@@ -76,16 +73,14 @@ Map<String, dynamic> _$AssetLocationToJson(AssetLocation instance) =>
       'assetStatus': instance.assetStatus,
     };
 
-Address _$AddressFromJson(Map<String, dynamic> json) {
-  return Address(
-    streetAddress: json['streetAddress'] as String,
-    city: json['city'] as String,
-    state: json['state'] as String,
-    county: json['county'] as String,
-    country: json['country'] as String,
-    zip: json['zip'] as String,
-  );
-}
+Address _$AddressFromJson(Map<String, dynamic> json) => Address(
+      streetAddress: json['streetAddress'] as String?,
+      city: json['city'] as String?,
+      state: json['state'] as String?,
+      county: json['county'] as String?,
+      country: json['country'] as String?,
+      zip: json['zip'] as String?,
+    );
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'streetAddress': instance.streetAddress,
@@ -96,13 +91,11 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'zip': instance.zip,
     };
 
-Pagination _$PaginationFromJson(Map<String, dynamic> json) {
-  return Pagination(
-    totalCount: json['totalCount'] as int,
-    pageNumber: json['pageNumber'] as int,
-    pageSize: json['pageSize'] as int,
-  );
-}
+Pagination _$PaginationFromJson(Map<String, dynamic> json) => Pagination(
+      totalCount: json['totalCount'] as int?,
+      pageNumber: json['pageNumber'] as int?,
+      pageSize: json['pageSize'] as int?,
+    );
 
 Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
     <String, dynamic>{

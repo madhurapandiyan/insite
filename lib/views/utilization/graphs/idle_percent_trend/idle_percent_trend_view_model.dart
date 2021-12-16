@@ -6,9 +6,9 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class IdlePercentTrendViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _utilizationGraphService = locator<UtilizationGraphsService>();
+  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
 
   String _range = 'daily';
   set range(String range) {
@@ -21,8 +21,8 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
   bool _isSwitching = false;
   bool get isSwitching => _isSwitching;
 
-  IdlePercentTrend _idlePercentTrend;
-  IdlePercentTrend get idlePercentTrend => _idlePercentTrend;
+  IdlePercentTrend? _idlePercentTrend;
+  IdlePercentTrend? get idlePercentTrend => _idlePercentTrend;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -34,7 +34,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
 
   getIdlePercentTrend() async {
     _isSwitching = true;
-    IdlePercentTrend result = await _utilizationGraphService
+    IdlePercentTrend? result = await _utilizationGraphService!
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _idlePercentTrend = null;
@@ -54,7 +54,7 @@ class IdlePercentTrendViewModel extends InsiteViewModel {
     _isRefreshing = true;
     notifyListeners();
     await getDateRangeFilterData();
-    IdlePercentTrend result = await _utilizationGraphService
+    IdlePercentTrend? result = await _utilizationGraphService!
         .getIdlePercentTrend(_range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _idlePercentTrend = null;

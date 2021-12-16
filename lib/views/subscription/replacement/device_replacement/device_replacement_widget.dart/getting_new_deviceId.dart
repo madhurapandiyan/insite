@@ -9,15 +9,15 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'deviceId_widget_list.dart';
 
 class GettingNewDeviceId extends StatefulWidget {
-  final String oldDeviceId;
-  final ReplaceDeviceModel modelData;
-  final String modelName;
-  final Function(String) onChange;
-  final TextEditingController controller;
-  final List<String> items;
-  final String initialValue;
-  final Function(String) onDropDownValueChange;
-   bool showingDeviceId;
+  final String? oldDeviceId;
+  final ReplaceDeviceModel? modelData;
+  final String? modelName;
+  final Function(String)? onChange;
+  final TextEditingController? controller;
+  final List<String>? items;
+  final String? initialValue;
+  final Function(String)? onDropDownValueChange;
+   bool? showingDeviceId;
 
   GettingNewDeviceId({
     this.controller,
@@ -78,11 +78,11 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
           child: CustomTextBox(
             controller: widget.controller,
             onChanged: (value) {
-              widget.onChange(value);
+              widget.onChange!(value);
             },
           ),
         ),
-        widget.showingDeviceId
+        widget.showingDeviceId!
             ? SizedBox(
                 height: 20,
               )
@@ -92,18 +92,18 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                 color: white,
                 child: Column(
                   children: List.generate(
-                      widget.modelData.result.last.length,
+                      widget.modelData!.result!.last.length,
                       (i) => DeviceIdListWidget(
                           onSelected: () {
                             setState(() {
-                              widget.controller.text =
-                                  widget.modelData.result.last[i].GPSDeviceID;
+                              widget.controller!.text =
+                                  widget.modelData!.result!.last[i].GPSDeviceID!;
                               widget.showingDeviceId = false;
                             });
                             FocusScope.of(context).unfocus();
                           },
                           deviceId:
-                              widget.modelData.result.last[i].GPSDeviceID)),
+                              widget.modelData!.result!.last[i].GPSDeviceID)),
                 ),
               ),
         SizedBox(
@@ -124,12 +124,12 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                     width: 2,
-                    color: Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1!.color!)),
             child: CustomDropDownWidget(
               items: widget.items,
               value: widget.initialValue,
               onChanged: (value) {
-                widget.onDropDownValueChange(value);
+                widget.onDropDownValueChange!(value!);
               },
             ),
           ),

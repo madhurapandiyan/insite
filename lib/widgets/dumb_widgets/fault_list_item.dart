@@ -6,15 +6,15 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class FaultListItem extends StatelessWidget {
-  final Fault fault;
-  final VoidCallback onCallback;
+  final Fault? fault;
+  final VoidCallback? onCallback;
   const FaultListItem({this.fault, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onCallback();
+        onCallback!();
       },
       child: Card(
         child: Row(
@@ -52,21 +52,21 @@ class FaultListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: Utils.getMakeTitle(
-                                  fault.asset['details']["makeCode"]) +
+                                  fault!.asset!['details']["makeCode"]) +
                               "\n" +
-                              fault.asset["details"]["model"],
-                          path: fault.asset["details"] != null &&
-                                  fault.asset["details"]["model"] != null
+                              fault?.asset["details"]["model"],
+                          path: fault?.asset["details"] != null &&
+                                  fault?.asset["details"]["model"] != null
                               ? Utils()
-                                  .imageData(fault.asset["details"]["model"])
+                                  .imageData(fault!.asset!["details"]["model"])
                               : "assets/images/EX210.png",
                         ),
                         InsiteTableRowItem(
                           title: "Date/Time :",
-                          content: fault.basic != null &&
-                                  fault.basic.faultOccuredUTC != null
+                          content: fault!.basic != null &&
+                                  fault!.basic!.faultOccuredUTC != null
                               ? Utils.getLastReportedDateOneUTC(
-                                  fault.basic.faultOccuredUTC)
+                                  fault!.basic!.faultOccuredUTC)
                               : "-",
                         )
                       ],
@@ -74,12 +74,12 @@ class FaultListItem extends StatelessWidget {
                     TableRow(children: [
                       InsiteRichText(
                         title: "Serial No. : ",
-                        content: fault.asset["basic"] != null &&
-                                fault.asset["basic"]["serialNumber"] != null
-                            ? fault.asset["basic"]["serialNumber"]
+                        content: fault!.asset["basic"] != null &&
+                                fault!.asset["basic"]["serialNumber"] != null
+                            ? fault!.asset["basic"]["serialNumber"]
                             : "",
                         onTap: () {
-                          onCallback();
+                          onCallback!();
                         },
                       ),
                       Table(
@@ -93,10 +93,10 @@ class FaultListItem extends StatelessWidget {
                             InsiteTableRowItemWithButton(
                               title: "Severity : ",
                               buttonColor:
-                                  Utils.getFaultColor(fault.basic.severity),
-                              content: fault.basic != null &&
-                                      fault.basic.severity != null
-                                  ? Utils.getFaultLabel(fault.basic.severity)
+                                  Utils.getFaultColor(fault!.basic!.severity),
+                              content: fault!.basic != null &&
+                                      fault!.basic!.severity != null
+                                  ? Utils.getFaultLabel(fault!.basic!.severity!)
                                   : "",
                             ),
                           ])
@@ -113,31 +113,31 @@ class FaultListItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteRichText(
                           title: "Source : ",
-                          content:
-                              fault.basic != null && fault.basic.source != null
-                                  ? fault.basic.source
-                                  : "",
+                          content: fault!.basic != null &&
+                                  fault!.basic!.source != null
+                              ? fault!.basic!.source
+                              : "",
                           style: TextStyle(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color),
+                                  Theme.of(context).textTheme.bodyText1!.color),
                           onTap: () {
-                            onCallback();
+                            onCallback!();
                           },
                         ),
                       ]),
                       TableRow(children: [
                         InsiteRichText(
                           title: "Description : ",
-                          content: fault.basic != null &&
-                                  fault.basic.description != null
-                              ? fault.basic.description
+                          content: fault!.basic != null &&
+                                  fault!.basic!.description != null
+                              ? fault!.basic!.description
                               : "",
                           onTap: () {
-                            onCallback();
+                            onCallback!();
                           },
                           style: TextStyle(
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color),
+                                  Theme.of(context).textTheme.bodyText1!.color),
                         ),
                       ]),
                     ],

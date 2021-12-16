@@ -9,17 +9,18 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class FaultViewModel extends InsiteViewModel {
-  var _faultService = locator<FaultService>();
-  var _navigationService = locator<NavigationService>();
+  FaultService? _faultService = locator<FaultService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
 
   int pageNumber = 1;
   int pageSize = 20;
 
-  int _totalCount = 0;
-  int get totalCount => _totalCount;
+  int? _totalCount = 0;
+  int? get totalCount => _totalCount;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -36,10 +37,35 @@ class FaultViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
-  ScrollController scrollController;
+  late ScrollController scrollController;
+
+  final String faultQueryString = """
+  query faultDataSummary{
+  faultdata(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
+    
+    faults{
+      details {
+        faultCode
+        faultReceivedUTC
+        dataLinkType
+        occurrences
+        url
+      }
+    }
+    page
+    limit
+    total
+    pageLinks {
+      rel
+      href
+      method
+    }
+  }
+}
+  """;
   FaultViewModel() {
     setUp();
-    _faultService.setUp();
+    _faultService!.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -56,23 +82,25 @@ class FaultViewModel extends InsiteViewModel {
     Logger().d("getFaultViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
-    FaultSummaryResponse result = await _faultService.getFaultSummaryList(
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    FaultSummaryResponse? result = await _faultService!.getFaultSummaryList(
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
-        appliedFilters);
+        appliedFilters,
+        faultQueryString);
+    Logger().wtf(result!.faults![0].toJson());
     if (result != null) {
       _totalCount = result.total;
-      if (result.faults.isNotEmpty) {
-        _faults.addAll(result.faults);
+      if (result.faults!.isNotEmpty) {
+        _faults.addAll(result.faults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.faults);
+        _faults.addAll(result.faults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -98,18 +126,19 @@ class FaultViewModel extends InsiteViewModel {
     }
     _shouldLoadmore = true;
     notifyListeners();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
-    FaultSummaryResponse result = await _faultService.getFaultSummaryList(
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    FaultSummaryResponse? result = await _faultService!.getFaultSummaryList(
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
-        appliedFilters);
+        appliedFilters,
+        faultQueryString);
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();
-      _faults.addAll(result.faults);
+      _faults.addAll(result.faults!);
       _refreshing = false;
       _loading = false;
       notifyListeners();
@@ -136,7 +165,7 @@ class FaultViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(Fault fleet) {
-    _navigationService.navigateTo(
+    _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(

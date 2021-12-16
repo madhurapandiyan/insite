@@ -77,6 +77,8 @@ import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 part 'Retrofit.g.dart';
 
+//part 'Retrofit.g.dart';
+
 // RUN THIS TO GENERATE FILES
 // flutter pub run build_runner build
 // flutter pub run build_runner build --delete-conflicting-outputs
@@ -98,14 +100,14 @@ part 'Retrofit.g.dart';
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
-  // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
+ // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
 
   @GET("/userinfo?schema=openid")
-  Future<UserInfo> getUserInfo(@Header("content-type") String contentType,
-      @Header("Authorization") String authorization);
+  Future<UserInfo> getUserInfo(@Header("content-type") String? contentType,
+      @Header("Authorization") String? authorization);
 
   @POST("/oauth/userinfo")
   Future<UserInfo> getUserInfoV4(
@@ -127,8 +129,8 @@ abstract class RestClient {
       "/t/trimble.com/authorization/1.0.0/users/organizations/{customerId}/permissions")
   Future<PermissionResponse> getPermissionVL(
       @Query("limit") int limit,
-      @Query("provider_id") String provider_id,
-      @Path() String customerId,
+      @Query("provider_id") String? provider_id,
+      @Path() String? customerId,
       @Header("X-VisionLink-CustomerUid") xVisonLinkCustomerId);
 
   @GET('{url}')
@@ -205,12 +207,12 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetDetail> assetDetail(
       @Path() String url,
-      @Query("assetUID") String assetUID,
+      @Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET("/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1")
-  Future<AssetDetail> assetDetailVL(@Query("assetUID") String assetUID,
+  Future<AssetDetail> assetDetailVL(@Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
@@ -231,7 +233,7 @@ abstract class RestClient {
   );
 
   @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/")
-  Future<List<Note>> getAssetNotesVL(@Query("assetUID") String assetUID,
+  Future<List<Note>> getAssetNotesVL(@Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @POST('{url}')
@@ -548,14 +550,14 @@ abstract class RestClient {
   @GET('{url}')
   Future<HealthListResponse> assetViewLocationSummaryURL(
       @Path() String url,
-      @Query("assetUid") String assetUid,
+      @Query("assetUid") String? assetUid,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET('{url}')
   Future<HealthListResponse> assetViewLocationSummaryURLVL(
       @Path() String url,
-      @Query("assetUid") String assetUid,
+      @Query("assetUid") String? assetUid,
       @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
@@ -566,7 +568,7 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-service/1.0/health/FaultDetails/v1")
   Future<HealthListResponse> getHealthListDataVL(
-    @Query("assetUid") String assetUid,
+    @Query("assetUid") String? assetUid,
     @Query("endDateTime") String endDateTime,
     @Query("langDesc") String langDesc,
     @Query("limit") int limit,
@@ -583,7 +585,7 @@ abstract class RestClient {
 
   @GET("/t/trimble.com/vss-service/1.0/health/faultSummary/v1")
   Future<SingleAssetFaultResponse> getDashboardListDataVL(
-    @Query("assetUid") String assetUid,
+    @Query("assetUid") String? assetUid,
     @Query("endDateTime") String endDate,
     @Query("startDateTime") String startDate,
     @Header("x-visionlink-customeruid") customerId,
@@ -758,23 +760,23 @@ abstract class RestClient {
   @POST('{url}')
   Future<dynamic> postGeofenceAnotherData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Addgeofencemodel geofencepayload);
 
   @PUT('{url}')
   Future<dynamic> putGeofenceAnotherData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() GeofenceModelWithMaterialData geofencepayload);
 
   @GET("{url}")
   Future<Materialmodel> getMaterialModel(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoadVL(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Geofencepayload geofencepayload);
 
   @POST("{url}")
@@ -784,7 +786,7 @@ abstract class RestClient {
   @PUT("{url}")
   Future<dynamic> putGeofencePayLoad(
     @Path() String url,
-    @Header("x-visionlink-customeruid") String customeruid,
+    @Header("x-visionlink-customeruid") String? customeruid,
     @Body() Geofencepayload geofencepayload,
     @Header("service") String serviceHeader,
   );
@@ -792,45 +794,45 @@ abstract class RestClient {
   @POST("{url}")
   Future<dynamic> postGeofencePayLoadVL(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Body() Geofencepayload geofencepayload);
 
   @POST("{url}")
   Future<dynamic> postGeofencePayLoad(
     @Path() String url,
-    @Header("x-visionlink-customeruid") String customeruid,
+    @Header("x-visionlink-customeruid") String? customeruid,
     @Body() Geofencepayload geofencepayload,
     @Header("service") String serviceHeader,
   );
 
   @GET("{url}")
   Future<Geofence> getGeofenceDataVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @GET("{url}")
   Future<Geofence> getGeofenceData(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @DELETE("{url}")
   Future<dynamic> deleteGeofenceVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @DELETE("{url}")
   Future<dynamic> deleteGeofence(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @GET("{url}")
   Future<Geofencemodeldata> getSingleGeofenceVL(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @GET("{url}")
   Future<Geofencemodeldata> getSingleGeofence(
       @Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid,
+      @Header("x-visionlink-customeruid") String? customeruid,
       @Header("service") String service);
 
   @PUT('{url}')
@@ -870,7 +872,7 @@ abstract class RestClient {
       @Header("service") String serviceHeader);
   @GET('{url}')
   Future<GetAddgeofenceModel> getGeofenceInputData(@Path() String url,
-      @Header("x-visionlink-customeruid") String customeruid);
+      @Header("x-visionlink-customeruid") String? customeruid);
 
   @POST('{url}')
   Future<SingleAssetResponce> postSingleAssetSmsSchedule(
@@ -884,17 +886,17 @@ abstract class RestClient {
 
   @POST('{url}')
   Future<EstimatedAssetSetting> getEstimatedTagetListData(@Path() String url,
-      @Body() List<String> assetUid, @Header("service") service);
+      @Body() List<String?>? assetUid, @Header("service") service);
 
   @POST('{url}')
   Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
       @Path() String url,
-      @Body() List<String> assetUid,
+      @Body() List<String>? assetUid,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST("{url}")
   Future<SavingSmsResponce> savingSms(
-      @Path() String url, @Body() List<SavingSmsModel> singleAssetData);
+      @Path() String url, @Body() List<SavingSmsModel?> singleAssetData);
 
   @GET('{url}')
   Future<SmsReportSummaryModel> gettingReportSummary(@Path() String url);
@@ -980,27 +982,27 @@ abstract class RestClient {
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListDataVL(
           @Path() String url,
-          @Body() List<String> assetUid,
+          @Body() List<String?>? assetUid,
           @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListData(
           @Path() String url,
-          @Body() List<String> assetUid,
+          @Body() List<String?>? assetUid,
           @Header("x-visionlink-customeruid") customerId,
           @Header("service") service);
 
   @POST('{url}')
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListDataVL(
       @Path() String url,
-      @Body() List<String> assetUId,
+      @Body() List<String?>? assetUId,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
       @Path() String url,
-      @Body() List<String> assetUId,
+      @Body() List<String?>? assetUId,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") service);
   @POST("{url}")
@@ -1023,9 +1025,9 @@ abstract class RestClient {
 
 @JsonSerializable()
 class Sample {
-  bool status;
-  String msg;
-  bool logout;
+  bool? status;
+  String? msg;
+  bool? logout;
   Sample({this.status, this.logout, this.msg});
 
   factory Sample.fromJson(Map<String, dynamic> json) => _$SampleFromJson(json);
@@ -1049,19 +1051,19 @@ class Sample {
 
 @JsonSerializable()
 class UserInfo {
-  String email;
-  String accountUserName;
-  String uuid;
-  String lastPwdSetTimeStamp;
-  String lastLoginTimeStamp;
-  String lastUpdateTimeStamp;
-  String accountName;
-  String sub;
-  String firstname;
-  String lastname;
+  String? email;
+  String? accountUserName;
+  String? uuid;
+  String? lastPwdSetTimeStamp;
+  String? lastLoginTimeStamp;
+  String? lastUpdateTimeStamp;
+  String? accountName;
+  String? sub;
+  String? firstname;
+  String? lastname;
   dynamic email_verified;
-  String given_name;
-  String family_name;
+  String? given_name;
+  String? family_name;
 
   UserInfo(
       {this.email,
@@ -1086,13 +1088,13 @@ class UserInfo {
 
 @JsonSerializable()
 class UserPayLoad {
-  String env;
-  String grant_type;
-  String code;
-  String redirect_uri;
-  String client_key;
-  String client_secret;
-  String tenantDomain;
+  String? env;
+  String? grant_type;
+  String? code;
+  String? redirect_uri;
+  String? client_key;
+  String? client_secret;
+  String? tenantDomain;
 
   UserPayLoad(
       {this.env,
@@ -1111,9 +1113,9 @@ class UserPayLoad {
 
 @JsonSerializable()
 class AuthenticationResponse {
-  String access_token;
-  String token_type;
-  int expires_in;
+  String? access_token;
+  String? token_type;
+  int? expires_in;
   AuthenticationResponse({this.access_token, this.token_type, this.expires_in});
 
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
@@ -1124,9 +1126,9 @@ class AuthenticationResponse {
 
 @JsonSerializable()
 class AuthenticatedUser {
-  String code;
-  String status;
-  String result;
+  String? code;
+  String? status;
+  String? result;
   AuthenticatedUser({this.code, this.status, this.result});
 
   factory AuthenticatedUser.fromJson(Map<String, dynamic> json) =>
@@ -1137,16 +1139,16 @@ class AuthenticatedUser {
 
 @JsonSerializable()
 class AuthenticatePayload {
-  String env;
-  String grantType;
-  String code;
-  String redirectUri;
-  String client_key;
-  String clientSecret;
-  String tenantDomain;
-  String mobile;
-  String uuid;
-  String email;
+  String? env;
+  String? grantType;
+  String? code;
+  String? redirectUri;
+  String? client_key;
+  String? clientSecret;
+  String? tenantDomain;
+  String? mobile;
+  String? uuid;
+  String? email;
 
   AuthenticatePayload({
     this.env = "THC",

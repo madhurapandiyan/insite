@@ -12,8 +12,8 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AdminstrationViewModel extends InsiteViewModel {
-  Logger log;
-  var _navigationService = locator<NavigationService>();
+  Logger? log;
+  NavigationService? _navigationService = locator<NavigationService>();
 
   AdminstrationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -23,26 +23,26 @@ class AdminstrationViewModel extends InsiteViewModel {
     Logger().d("selectedValue:$value");
     if (value == AdminAssetsButtonType.ADDNEWUSER) {
       print("button is tapped");
-      _navigationService.navigateWithTransition(
+      _navigationService!.navigateWithTransition(
           AddNewUserView(
             isEdit: false,
             user: null,
           ),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.MANAGEUSER) {
-      _navigationService.navigateWithTransition(ManageUserView(),
+      _navigationService!.navigateWithTransition(ManageUserView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.ADDNEWGEOFENCES) {
-      _navigationService.navigateWithTransition(AddgeofenseView(),
+      _navigationService!.navigateWithTransition(AddgeofenseView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.MANAGEGEOFENCES) {
-      _navigationService.navigateWithTransition(ManageGeofenceView(),
+      _navigationService!.navigateWithTransition(ManageGeofenceView(),
           transition: "fade");
     }
   }
 
   onAssetSettingStateButtonClicked() {
-    _navigationService.navigateWithTransition(AssetSettingsView(),
+    _navigationService!.navigateWithTransition(AssetSettingsView(),
     transition: "fade");
   }
 }

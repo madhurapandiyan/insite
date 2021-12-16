@@ -8,14 +8,14 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashboardBarChartWidget extends StatefulWidget {
-  final List<ChartSampleData> data;
-  final String title;
-  final String title2;
-  final bool isLoading;
-  final bool isRefreshing;
-  final Function(String) onFilterSelected;
+  final List<ChartSampleData>? data;
+  final String? title;
+  final String? title2;
+  final bool? isLoading;
+  final bool? isRefreshing;
+  final Function(String?)? onFilterSelected;
   const DashboardBarChartWidget(
-      {Key key,
+      {Key? key,
       this.data,
       this.title2,
       this.title,
@@ -64,12 +64,12 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                       ),
                     ],
                   ),
-                  !widget.isLoading
+                  !widget.isLoading!
                       ? InsiteButton(
                           title: widget.title2,
                           textColor: Colors.white,
                           onTap: () {
-                            widget.onFilterSelected("total");
+                            widget.onFilterSelected!("total");
                           },
                         )
                       : SizedBox()
@@ -100,7 +100,7 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
               thickness: 1.0,
               color: Theme.of(context).dividerColor,
             ),
-            (widget.isLoading || widget.isRefreshing)
+            (widget.isLoading! || widget.isRefreshing!)
                 ? Expanded(child: InsiteProgressBar())
                 : Row(
                     children: [
@@ -140,17 +140,17 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                               },
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: widget.data.length,
+                              itemCount: widget.data!.length,
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.only(right: 10.0),
                               itemBuilder: (context, index) {
                                 ChartSampleData assetStatusData =
-                                    widget.data[index];
+                                    widget.data![index];
                                 return AssetStatusWidget(
                                   chartColor: colors[index],
                                   label: assetStatusData.x,
                                   callBack: () {
-                                    widget.onFilterSelected(assetStatusData.z);
+                                    widget.onFilterSelected!(assetStatusData.z);
                                   },
                                 );
                               }),
@@ -166,9 +166,9 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
 
   List<DoughnutSeries<ChartSampleData, String>> _getLegendDefaultSeries() {
     if (widget.data != null) {
-      for (int i = widget.data.length - 1; i >= 0; i--) {
-        if (widget.data[i].y.round() == 0) {
-          widget.data.removeAt(i);
+      for (int i = widget.data!.length - 1; i >= 0; i--) {
+        if (widget.data![i].y!.round() == 0) {
+          widget.data!.removeAt(i);
         }
       }
     }
@@ -184,7 +184,7 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
               connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
               textStyle: new TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal),

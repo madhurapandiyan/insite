@@ -3,7 +3,7 @@ part 'application.g.dart';
 
 @JsonSerializable()
 class ApplicationData {
-  final List<Application> applications;
+  final List<Application>? applications;
   ApplicationData({this.applications});
   factory ApplicationData.fromJson(Map<String, dynamic> json) =>
       _$ApplicationDataFromJson(json);
@@ -13,17 +13,17 @@ class ApplicationData {
 
 @JsonSerializable()
 class Application {
-  final String appUID;
-  final String iconUrl;
-  final String appUrl;
-  final String marketUrl;
-  final String name;
-  final bool enabled;
-  final int displayOrder;
-  final String tpaasAppName;
-  final double tpaasAppId;
-  final String appOwner;
-  final int welcomePageInd;
+  final String? appUID;
+  final String? iconUrl;
+  final String? appUrl;
+  final String? marketUrl;
+  final String? name;
+  final bool? enabled;
+  final int? displayOrder;
+  final String? tpaasAppName;
+  final double? tpaasAppId;
+  final String? appOwner;
+  final int? welcomePageInd;
   Application(
       {this.appOwner,
       this.iconUrl,

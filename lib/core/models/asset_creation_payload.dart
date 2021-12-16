@@ -3,9 +3,9 @@ part 'asset_creation_payload.g.dart';
 
 @JsonSerializable()
 class AssetCreationPayLoad {
-  String Source;
-  int UserID;
-  List<Asset> asset;
+  String? Source;
+  int? UserID;
+  List<Asset>? asset;
 
   AssetCreationPayLoad({this.Source, this.UserID, this.asset});
 
@@ -17,10 +17,10 @@ class AssetCreationPayLoad {
 
 @JsonSerializable()
 class Asset {
-  String machineSerialNumber;
-  String model;
-  String deviceId;
-  String HMRValue;
+  String? machineSerialNumber;
+  String? model;
+  String? deviceId;
+  String? HMRValue;
 
   Asset({this.machineSerialNumber, this.model, this.deviceId, this.HMRValue});
 

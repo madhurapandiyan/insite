@@ -12,10 +12,10 @@ class AssetLocationData {
     this.countData,
   });
 
-  Pagination pagination;
-  Links links;
-  List<MapRecord> mapRecords;
-  List<CountDatum> countData;
+  Pagination? pagination;
+  Links? links;
+  List<MapRecord?>? mapRecords;
+  List<CountDatum>? countData;
 
   factory AssetLocationData.fromJson(Map<String, dynamic> json) =>
       _$AssetLocationDataFromJson(json);
@@ -30,8 +30,8 @@ class CountDatum {
     this.count,
   });
 
-  String countOf;
-  int count;
+  String? countOf;
+  int? count;
 
   factory CountDatum.fromJson(Map<String, dynamic> json) =>
       _$CountDatumFromJson(json);
@@ -61,23 +61,23 @@ class MapRecord {
     this.lastLocationUpdateUtc,
   });
 
-  String assetIdentifier;
-  String assetSerialNumber;
-  String manufacturer;
-  String makeCode;
-  String model;
-  int assetIcon;
-  String status;
-  double hourMeter;
-  double odometer;
-  double lastReportedLocationLatitude;
-  double lastReportedLocationLongitude;
-  String lastReportedLocation;
-  DateTime lastReportedUtc;
-  double fuelLevelLastReported;
-  int notifications;
-  List<dynamic> geofences;
-  DateTime lastLocationUpdateUtc;
+  String? assetIdentifier;
+  String? assetSerialNumber;
+  String? manufacturer;
+  String? makeCode;
+  String? model;
+  int? assetIcon;
+  String? status;
+  double? hourMeter;
+  double? odometer;
+  double? lastReportedLocationLatitude;
+  double? lastReportedLocationLongitude;
+  String? lastReportedLocation;
+  DateTime? lastReportedUtc;
+  double? fuelLevelLastReported;
+  int? notifications;
+  List<dynamic>? geofences;
+  DateTime? lastLocationUpdateUtc;
 
   factory MapRecord.fromJson(Map<String, dynamic> json) =>
       _$MapRecordFromJson(json);
@@ -93,9 +93,9 @@ class Pagination {
     this.pageSize,
   });
 
-  int totalCount;
-  int pageNumber;
-  int pageSize;
+  int? totalCount;
+  int? pageNumber;
+  int? pageSize;
 
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);

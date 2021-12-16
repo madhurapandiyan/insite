@@ -4,15 +4,15 @@ part 'add_asset_registration.g.dart';
 @JsonSerializable()
 class AddAssetRegistrationData {
   @JsonKey(name: "Source")
-  String source;
+  String? source;
   @JsonKey(name: "Version")
-  String version;
+  String? version;
   @JsonKey(name: "UserID")
-  int userID;
+  int? userID;
   @JsonKey(name: "asset")
-  List<AssetValues> asset;
+  List<AssetValues>? asset;
   @JsonKey(name: "status")
-  String status;
+  String? status;
 
   AddAssetRegistrationData({
     this.source,
@@ -30,47 +30,47 @@ class AddAssetRegistrationData {
 @JsonSerializable()
 class AssetValues {
   @JsonKey(name: "CustomerMobile")
-  String CustomerMobile;
+  String? CustomerMobile;
   @JsonKey(name: "CustomerLanguage")
-  String CustomerLanguage;
+  String? CustomerLanguage;
   @JsonKey(name: "DealerMobile")
-  String DealerMobile;
+  String? DealerMobile;
   @JsonKey(name: "DealerLanguage")
-  String DealerLanguage;
+  String? DealerLanguage;
   @JsonKey(name: "DeviceId")
-  String deviceId;
+  String? deviceId;
   @JsonKey(name: "MachineModel")
-  String machineModel;
+  String? machineModel;
   @JsonKey(name: "HMR")
-  int hMR;
+  int? hMR;
   @JsonKey(name: "HMRDate")
-  String hMRDate;
+  String? hMRDate;
   @JsonKey(name: "PrimaryIndustry")
-  String primaryIndustry;
+  String? primaryIndustry;
   @JsonKey(name: "SecondaryIndustry")
-  String secondaryIndustry;
+  String? secondaryIndustry;
   @JsonKey(name: "MachineSlNo")
-  String machineSlNo;
+  String? machineSlNo;
   @JsonKey(name: "CommissioningDate")
-  String commissioningDate;
+  String? commissioningDate;
   @JsonKey(name: "PlantName")
-  String plantName;
+  String? plantName;
   @JsonKey(name: "PlantCode")
-  String plantCode;
+  String? plantCode;
   @JsonKey(name: "PlantEmailID")
-  String plantEmailID;
+  String? plantEmailID;
   @JsonKey(name: "DealerName")
-  String dealerName;
+  String? dealerName;
   @JsonKey(name: "DealerCode")
-  String dealerCode;
+  String? dealerCode;
   @JsonKey(name: "DealerEmailID")
-  String dealerEmailID;
+  String? dealerEmailID;
   @JsonKey(name: "CustomerName")
-  String customerName;
+  String? customerName;
   @JsonKey(name: "CustomerCode")
-  String customerCode;
+  String? customerCode;
   @JsonKey(name: "CustomerEmailID")
-  String customerEmailID;
+  String? customerEmailID;
 
   AssetValues(
       {this.deviceId,

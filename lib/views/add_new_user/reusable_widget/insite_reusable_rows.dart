@@ -3,8 +3,8 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class InsitePopupRow extends StatelessWidget {
   const InsitePopupRow({this.title, this.value});
-  final String title;
-  final String value;
+  final String? title;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {

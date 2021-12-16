@@ -14,16 +14,16 @@ import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
 class UtilizationListView extends StatefulWidget {
-  const UtilizationListView({Key key}) : super(key: key);
+  const UtilizationListView({Key? key}) : super(key: key);
 
   @override
   UtilizationListViewState createState() => UtilizationListViewState();
 }
 
 class UtilizationListViewState extends State<UtilizationListView> {
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
 
-  var viewModel;
+  late var viewModel;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
         builder: (BuildContext context, UtilizationListViewModel viewModel,
-            Widget _) {
+            Widget? _) {
           return Stack(
             children: [
               Column(
@@ -73,7 +73,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                           width: 90,
                           bgColor: Theme.of(context).backgroundColor,
                           textColor:
-                              Theme.of(context).textTheme.bodyText1.color,
+                              Theme.of(context).textTheme.bodyText1!.color,
                           onTap: () async {
                             dateRange = [];
                             dateRange = await showDialog(
@@ -82,7 +82,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                   backgroundColor: transparent,
                                   child: DateRangeView()),
                             );
-                            if (dateRange != null && dateRange.isNotEmpty) {
+                            if (dateRange != null && dateRange!.isNotEmpty) {
                               viewModel.refresh();
                             }
                           },

@@ -7,11 +7,11 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AssetDetailViewModel extends InsiteViewModel {
-  var _assetService = locator<AssetService>();
-  Logger log;
-  Fleet fleet;
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetService? _assetService = locator<AssetService>();
+  Logger? log;
+  Fleet? fleet;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -19,11 +19,11 @@ class AssetDetailViewModel extends InsiteViewModel {
   AssetDetailViewModel(this.fleet) {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _assetService.setUp();
+    _assetService!.setUp();
     try {
-      Logger().i("asset choosen assetSerialNumber " + fleet.assetSerialNumber);
-      Logger().i("asset choosen assetIdentifier " + fleet.assetIdentifier);
-      Logger().i("asset choosen assetId " + fleet.assetId);
+      Logger().i("asset choosen assetSerialNumber " + fleet!.assetSerialNumber!);
+      Logger().i("asset choosen assetIdentifier " + fleet!.assetIdentifier!);
+      //Logger().i("asset choosen assetId " + fleet!.assetId!);
     } catch (e) {
       Logger().e(e);
     }
@@ -33,8 +33,8 @@ class AssetDetailViewModel extends InsiteViewModel {
   }
 
   getAssetDetail() async {
-    AssetDetail assetDetail =
-        await _assetService.getAssetDetail(fleet.assetIdentifier);
+    AssetDetail? assetDetail =
+        await _assetService!.getAssetDetail(fleet!.assetIdentifier);
     _assetDetail = assetDetail;
     _loading = false;
     notifyListeners();

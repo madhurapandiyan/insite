@@ -13,9 +13,9 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ManageUserViewModel extends InsiteViewModel {
-  Logger log;
-  var _manageUserService = locator<AssetAdminManagerUserService>();
-  var _navigationService = locator<NavigationService>();
+  late Logger log;
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  NavigationService? _navigationService = locator<NavigationService>();
 
   TextEditingController textEditingController = TextEditingController();
 
@@ -32,8 +32,8 @@ class ManageUserViewModel extends InsiteViewModel {
   List<UserRow> _assets = [];
   List<UserRow> get assets => _assets;
 
-  Users _user;
-  Users get userData => _user;
+  Users? _user;
+  Users? get userData => _user;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -55,18 +55,18 @@ class ManageUserViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   bool _loading = true;
   bool get loading => _loading;
 
   ManageUserViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _manageUserService.setUp();
+    _manageUserService!.setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -75,10 +75,10 @@ class ManageUserViewModel extends InsiteViewModel {
     });
   }
 
-  Timer debounce;
+  Timer? debounce;
 
   searchUsers(String searchValue) {
-    if (debounce != null) debounce.cancel();
+    if (debounce != null) debounce!.cancel();
     debounce = Timer(Duration(seconds: 2), () {
       _searchKeyword = searchValue;
       getManagerUserAssetList();
@@ -87,20 +87,20 @@ class ManageUserViewModel extends InsiteViewModel {
 
   getManagerUserAssetList() async {
     Logger().i("getManagerUserAssetList");
-    AdminManageUser result = await _manageUserService
+    AdminManageUser? result = await _manageUserService!
         .getAdminManageUserListData(pageNumber, _searchKeyword);
     if (result != null) {
-      if (result.users.isNotEmpty) {
-        Logger().i("list of assets " + result.users.length.toString());
+      if (result.users!.isNotEmpty) {
+        Logger().i("list of assets " + result.users!.length.toString());
         _assets.clear();
-        for (var user in result.users) {
+        for (var user in result.users!) {
           _assets.add(UserRow(user: user, isSelected: false));
         }
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        for (var user in result.users) {
+        for (var user in result.users!) {
           _assets.add(UserRow(user: user, isSelected: false));
         }
         _loading = false;
@@ -144,7 +144,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onDeleteClicked(BuildContext context) async {
-    bool value = await showDialog(
+    bool? value = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
@@ -170,20 +170,20 @@ class ManageUserViewModel extends InsiteViewModel {
   deleteSelectedUsers() async {
     Logger().i("deleteSelectedUsers");
     if (showDelete) {
-      List<String> userIds = [];
+      List<String?> userIds = [];
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(data.user.userUid);
+          userIds.add(data.user!.userUid);
         }
       }
       if (userIds.isNotEmpty) {
         showLoadingDialog();
-        var result = await _manageUserService.deleteUsers(userIds);
+        var result = await _manageUserService!.deleteUsers(userIds);
         if (result != null) {
-          snackbarService.showSnackbar(message: "Deleted successfully");
+          snackbarService!.showSnackbar(message: "Deleted successfully");
         } else {
-          snackbarService.showSnackbar(message: "Deleting failed");
+          snackbarService!.showSnackbar(message: "Deleting failed");
         }
         await deleteUsersFromList(userIds);
         hideLoadingDialog();
@@ -192,11 +192,11 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
-  deleteUsersFromList(List<String> ids) async {
+  deleteUsersFromList(List<String?> ids) async {
     for (int i = 0; i < assets.length; i++) {
       var data = assets[i];
       for (int j = 0; j < ids.length; j++) {
-        if (data.user.userUid == ids[j]) {
+        if (data.user!.userUid == ids[j]) {
           assets.removeAt(i);
         }
       }
@@ -247,8 +247,8 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
-  onCardButtonSelected(Users user) {
-    _navigationService.navigateWithTransition(
+  onCardButtonSelected(Users? user) {
+    _navigationService!.navigateWithTransition(
         AddNewUserView(
           user: user,
           isEdit: true,
@@ -257,7 +257,7 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onAddNewUserClicked() {
-    _navigationService.navigateWithTransition(
+    _navigationService!.navigateWithTransition(
         AddNewUserView(
           isEdit: false,
           user: null,

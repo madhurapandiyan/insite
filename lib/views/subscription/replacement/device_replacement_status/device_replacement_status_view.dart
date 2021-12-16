@@ -13,7 +13,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DeviceReplacementStatusViewModel>.reactive(
       builder: (BuildContext context,
-          DeviceReplacementStatusViewModel viewModel, Widget _) {
+          DeviceReplacementStatusViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: viewModel.isLoading
@@ -47,7 +47,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   size: 20,
                                   text:
-                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel.result.first.first.count} ",
+                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel!.result!.first.first.count} ",
                                 ),
                                 InsiteButton(
                                     height: MediaQuery.of(context).size.height *

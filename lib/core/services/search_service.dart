@@ -9,9 +9,9 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class SearchService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
+  LocalService? _localService = locator<LocalService>();
 
   SearchService() {
     setUp();
@@ -19,46 +19,46 @@ class SearchService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<SearchData> getSearchResult(String searchKeyword, String type) async {
+  Future<SearchData?> getSearchResult(String searchKeyword, String? type) async {
     try {
       if (searchKeyword != null &&
           searchKeyword.isNotEmpty &&
           accountSelected != null) {
-        Map<String, String> queryMap = Map();
+        Map<String, String?> queryMap = Map();
         if (type == "ID") {
           queryMap["assetIDContains"] = searchKeyword;
           if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected.CustomerUID;
+            queryMap["customerUID"] = customerSelected!.CustomerUID;
           }
         } else if (type == "S/N") {
           queryMap["snContains"] = searchKeyword;
           if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected.CustomerUID;
+            queryMap["customerUID"] = customerSelected!.CustomerUID;
           }
         } else {
           queryMap["snContains"] = searchKeyword;
           queryMap["assetIDContains"] = searchKeyword;
           if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected.CustomerUID;
+            queryMap["customerUID"] = customerSelected!.CustomerUID;
           }
         }
         if (isVisionLink) {
-          SearchData searchResponse = await MyApi().getClient().searchVL(
+          SearchData searchResponse = await MyApi().getClient()!.searchVL(
                 Urls.searchVL + FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
               );
           return searchResponse;
         } else {
-          SearchData searchResponse = await MyApi().getClient().search(
+          SearchData searchResponse = await MyApi().getClient()!.search(
               Urls.search + FilterUtils.constructQueryFromMap(queryMap),
-              accountSelected.CustomerUID,
+              accountSelected!.CustomerUID,
               Urls.vfleetPrefix);
           return searchResponse;
         }

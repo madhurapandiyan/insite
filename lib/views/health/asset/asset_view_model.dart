@@ -9,17 +9,18 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class AssetViewModel extends InsiteViewModel {
-  var _faultService = locator<FaultService>();
-  var _navigationService = locator<NavigationService>();
+  FaultService? _faultService = locator<FaultService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
 
   int pageNumber = 1;
   int pageSize = 20;
 
-  int _totalCount = 0;
-  int get totalCount => _totalCount;
+  int? _totalCount = 0;
+  int? get totalCount => _totalCount;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -36,10 +37,58 @@ class AssetViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
-  ScrollController scrollController;
+  final String assetFaultQuery = """
+  query assetDataSummary{
+  assetData(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
+    pageLinks {
+      rel
+      href
+      method
+    }
+    assetFaults{
+      asset {
+        uid
+        basic {
+          serialNumber
+        }
+        details {
+          makeCode
+          model
+          productFamily
+          assetIcon
+          dealerCode
+          dealerCustomerName
+          dealerName
+          universalCustomerName
+        }
+        dynamic {
+          status
+          locationLatitude
+          locationLongitude
+          location
+          hourMeter
+          odometer
+          locationReportedTimeUTC
+        }
+      }
+      countData {
+        countOf
+        count
+      }
+    }
+    page
+    limit
+    total
+    
+    
+  }
+}
+
+  """;
+  late ScrollController scrollController;
   AssetViewModel() {
     setUp();
-    _faultService.setUp();
+    _faultService!.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -56,22 +105,23 @@ class AssetViewModel extends InsiteViewModel {
     Logger().d("getAssetViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    AssetFaultSummaryResponse result =
-        await _faultService.getAssetViewSummaryList(
+    AssetFaultSummaryResponse? result = await _faultService!
+        .getAssetViewSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
-            appliedFilters);
+            appliedFilters,
+            assetFaultQuery);
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
-      if (result.assetFaults.isNotEmpty) {
-        _faults.addAll(result.assetFaults);
+      if (result.assetFaults!.isNotEmpty) {
+        _faults.addAll(result.assetFaults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.assetFaults);
+        _faults.addAll(result.assetFaults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -97,20 +147,21 @@ class AssetViewModel extends InsiteViewModel {
     }
     _shouldLoadmore = true;
     notifyListeners();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
-    AssetFaultSummaryResponse result =
-        await _faultService.getAssetViewSummaryList(
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    AssetFaultSummaryResponse? result = await _faultService!
+        .getAssetViewSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
-            appliedFilters);
+            appliedFilters,
+            assetFaultQuery);
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();
       if (result.assetFaults != null) {
-        _faults.addAll(result.assetFaults);
+        _faults.addAll(result.assetFaults!);
       }
       _refreshing = false;
       _loading = false;
@@ -138,7 +189,7 @@ class AssetViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(Fault fleet) {
-    _navigationService.navigateTo(
+    _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(

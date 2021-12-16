@@ -14,7 +14,7 @@ import 'package:stacked/stacked.dart';
 import 'asset_view_model.dart';
 
 class AssetView extends StatefulWidget {
-  AssetView({Key key}) : super(key: key);
+  AssetView({Key? key}) : super(key: key);
 
   @override
   AssetViewState createState() => AssetViewState();
@@ -25,8 +25,8 @@ class AssetViewState extends State<AssetView> {
     viewModel.refresh();
   }
 
-  var viewModel;
-  List<DateTime> dateRange = [];
+  late var viewModel;
+  List<DateTime>? dateRange = [];
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class AssetViewState extends State<AssetView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetViewModel>.reactive(
       viewModelBuilder: () => viewModel,
-      builder: (BuildContext context, AssetViewModel model, Widget _) {
+      builder: (BuildContext context, AssetViewModel model, Widget? _) {
         return Stack(
           children: [
             Column(
@@ -65,7 +65,7 @@ class AssetViewState extends State<AssetView> {
                         width: 90,
                         title: "Date Range",
                         bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1.color,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -74,7 +74,7 @@ class AssetViewState extends State<AssetView> {
                                 backgroundColor: transparent,
                                 child: DateRangeView()),
                           );
-                          if (dateRange != null && dateRange.isNotEmpty) {
+                          if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
                           }
                         },
@@ -99,7 +99,7 @@ class AssetViewState extends State<AssetView> {
                                   EdgeInsets.only(left: 16, right: 16, top: 4),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                Fault fault = viewModel.faults[index];
+                                Fault? fault = viewModel.faults[index];
                                 return HealthAssetListItem(
                                   key: UniqueKey(),
                                   fault: fault,

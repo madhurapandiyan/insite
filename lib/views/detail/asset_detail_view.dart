@@ -18,9 +18,9 @@ import 'package:stacked/stacked.dart';
 import 'asset_detail_view_model.dart';
 
 class AssetDetailView extends StatefulWidget {
-  final Fleet fleet;
-  final int tabIndex;
-  final ScreenType type;
+  final Fleet? fleet;
+  final int? tabIndex;
+  final ScreenType? type;
   AssetDetailView({this.fleet, this.tabIndex, this.type = ScreenType.FLEET});
 
   @override
@@ -28,14 +28,14 @@ class AssetDetailView extends StatefulWidget {
 }
 
 class DetailArguments {
-  final Fleet fleet;
-  final int index;
-  final ScreenType type;
+  final Fleet? fleet;
+  final int? index;
+  final ScreenType? type;
   DetailArguments({this.fleet, this.index, this.type = ScreenType.FLEET});
 }
 
 class _TabPageState extends State<AssetDetailView> {
-  int selectedTabIndex = 0;
+  int? selectedTabIndex = 0;
   @override
   void initState() {
     selectedTabIndex = widget.tabIndex;
@@ -100,7 +100,7 @@ class _TabPageState extends State<AssetDetailView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
       builder:
-          (BuildContext context, AssetDetailViewModel viewModel, Widget _) {
+          (BuildContext context, AssetDetailViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           screenType: ScreenType.ASSET_DETAIL,
           viewModel: viewModel,
@@ -122,12 +122,12 @@ class _TabPageState extends State<AssetDetailView> {
                           BoxShadow(
                               blurRadius: 1.0,
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color)
+                                  Theme.of(context).textTheme.bodyText1!.color!)
                         ],
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1.color),
+                            color: Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: Table(children: [
@@ -171,7 +171,7 @@ class _TabPageState extends State<AssetDetailView> {
                                               onTap: () {},
                                               content:
                                                   viewModel.assetDetail != null
-                                                      ? viewModel.assetDetail
+                                                      ? viewModel.assetDetail!
                                                           .assetSerialNumber
                                                       : "",
                                             ),
@@ -183,7 +183,7 @@ class _TabPageState extends State<AssetDetailView> {
                                       SizedBox(height: 15.0),
                                       Text(
                                         viewModel.assetDetail != null
-                                            ? viewModel.assetDetail.dealerName
+                                            ? viewModel.assetDetail!.dealerName!
                                             : "",
                                         maxLines: 2,
                                         style: TextStyle(
@@ -192,7 +192,7 @@ class _TabPageState extends State<AssetDetailView> {
                                             fontWeight: FontWeight.w700,
                                             color: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
+                                                .bodyText1!
                                                 .color,
                                             fontSize: 12.0),
                                       )
@@ -220,7 +220,7 @@ class _TabPageState extends State<AssetDetailView> {
                           border: Border.all(
                               width: 1,
                               color:
-                                  Theme.of(context).textTheme.bodyText1.color),
+                                  Theme.of(context).textTheme.bodyText1!.color!),
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
@@ -234,11 +234,11 @@ class _TabPageState extends State<AssetDetailView> {
                             Expanded(
                               child: InsiteText(
                                   text: viewModel.assetDetail != null
-                                      ? viewModel.assetDetail
+                                      ? viewModel.assetDetail!
                                                   .universalCustomerName !=
                                               null
                                           ? viewModel
-                                              .assetDetail.universalCustomerName
+                                              .assetDetail!.universalCustomerName
                                           : "-"
                                       : "-",
                                   fontWeight: FontWeight.w700,
@@ -347,7 +347,7 @@ class _TabPageState extends State<AssetDetailView> {
               semanticContainer: true,
               shape: RoundedRectangleBorder(
                 side: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color!),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
@@ -367,7 +367,7 @@ class _TabPageState extends State<AssetDetailView> {
                   side: BorderSide(
                       color: selectedTabIndex == index
                           ? Theme.of(context).backgroundColor
-                          : Theme.of(context).textTheme.bodyText1.color),
+                          : Theme.of(context).textTheme.bodyText1!.color!),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(

@@ -14,11 +14,11 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class PlantHeirarchyAssetService extends BaseService {
-  var _localService = locator<LocalService>();
+  LocalService? _localService = locator<LocalService>();
 
-  Customer accountSelected;
-  Customer customerSelected;
-  String token;
+  Customer? accountSelected;
+  Customer? customerSelected;
+  String? token;
 
   PlantHeirarchyAssetService() {
     setUp();
@@ -26,15 +26,15 @@ class PlantHeirarchyAssetService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
-      token = await _localService.getToken();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
+      token = await _localService!.getToken();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<HierarchyAssets> getResultsFromPlantHierchyApi() async {
+  Future<HierarchyAssets?> getResultsFromPlantHierchyApi() async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -42,7 +42,7 @@ class PlantHeirarchyAssetService extends BaseService {
       }
 
       HierarchyAssets heierarchyssetsResults =
-          await MyApi().getClientNine().getPlantHierarchyAssetsDetails(
+          await MyApi().getClientNine()!.getPlantHierarchyAssetsDetails(
                 Urls.plantHierarchyAssetsResult +
                     FilterUtils.constructQueryFromMap(queryMap),
               );
@@ -59,14 +59,14 @@ class PlantHeirarchyAssetService extends BaseService {
     }
   }
 
-  Future<AssetCreationResponse> getAssetCreationData(
+  Future<AssetCreationResponse?> getAssetCreationData(
       String machineSerialNumber) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
       queryMap["machineSerialNumber"] = machineSerialNumber;
       AssetCreationResponse assetCreationResponse = await MyApi()
-          .getClientSix()
+          .getClientSix()!
           .getAssetCreationData(Urls.plantAssetCreationResult +
               FilterUtils.constructQueryFromMap(queryMap));
       return assetCreationResponse;
@@ -76,7 +76,7 @@ class PlantHeirarchyAssetService extends BaseService {
     return null;
   }
 
-  Future<AssetCreationResetData> submitAssetCreationData(
+  Future<AssetCreationResetData?> submitAssetCreationData(
       AssetCreationPayLoad data) async {
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
@@ -84,7 +84,7 @@ class PlantHeirarchyAssetService extends BaseService {
     if (isVisionLink) {
     } else {
       AssetCreationResetData assetCreationResetData = await MyApi()
-          .getClientSix()
+          .getClientSix()!
           .submitAssetCreationData(
               Urls.assetCreationResetdata +
                   FilterUtils.constructQueryFromMap(queryMap),
@@ -95,14 +95,14 @@ class PlantHeirarchyAssetService extends BaseService {
     return null;
   }
 
-  Future<AssetCreationResetData> downloadAssetCreationData() async {
+  Future<AssetCreationResetData?> downloadAssetCreationData() async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
       if (isVisionLink) {
       } else {
         AssetCreationResetData assetCreationResetData = await MyApi()
-            .getClientSix()
+            .getClientSix()!
             .downloadAssetCreationData(Urls.downloadResetData +
                 FilterUtils.constructQueryFromMap(queryMap));
         return assetCreationResetData;

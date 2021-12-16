@@ -4,12 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_card.dart';
-import 'package:insite/views/subscription/sms-management/sms-multi_asset/sms_schedule_multi_asset_view_model.dart';
-import 'package:insite/views/subscription/sms-management/sms-single_asset/single_asset_validate_widget/single_asset_validate_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -32,9 +29,9 @@ class _MultipleAssetRegistrationViewState
         MultipleAssetRegistrationViewModel().port.sendPort,
         'downloader_send_port');
     MultipleAssetRegistrationViewModel().port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+      String? id = data[0];
+      DownloadTaskStatus? status = data[1];
+      int? progress = data[2];
       setState(() {});
     });
 
@@ -50,7 +47,7 @@ class _MultipleAssetRegistrationViewState
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -58,9 +55,9 @@ class _MultipleAssetRegistrationViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<MultipleAssetRegistrationViewModel>.reactive(
       builder: (BuildContext context,
-          MultipleAssetRegistrationViewModel viewModel, Widget _) {
+          MultipleAssetRegistrationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {

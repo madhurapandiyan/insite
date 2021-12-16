@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ShowingOldDeviceDetail extends StatelessWidget {
-  final String deviceId;
-  final String Vin;
-  final String modelName;
-  final String date;
+  final String? deviceId;
+  final String? Vin;
+  final String? modelName;
+  final String? date;
   ShowingOldDeviceDetail({this.deviceId, this.modelName, this.Vin, this.date});
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,8 @@ class ManageAssetConfiguration {
     this.pageInfo,
   });
 
-  List<AssetSetting> assetSettings;
-  PageInfo pageInfo;
+  List<AssetSetting>? assetSettings;
+  PageInfo? pageInfo;
 
   factory ManageAssetConfiguration.fromJson(Map<String, dynamic> json) =>
       _$ManageAssetConfigurationFromJson(json);
@@ -39,23 +39,23 @@ class AssetSetting {
     this.totalSwitches,
   });
 
-  String assetUid;
+  String? assetUid;
   dynamic assetId;
-  String assetSerialNumber;
-  String assetModel;
-  String assetMakeCode;
-  int assetIconKey;
-  String deviceSerialNumber;
-  String devicetype;
-  bool targetStatus;
-  double hoursMeter;
-  double movingOrStoppedThreshold;
-  int movingThresholdsDuration;
-  double movingThresholdsRadius;
-  double odometer;
-  int workDefinition;
-  int configuredSwitches;
-  int totalSwitches;
+  String? assetSerialNumber;
+  String? assetModel;
+  String? assetMakeCode;
+  int? assetIconKey;
+  String? deviceSerialNumber;
+  String? devicetype;
+  bool? targetStatus;
+  double? hoursMeter;
+  double? movingOrStoppedThreshold;
+  int? movingThresholdsDuration;
+  double? movingThresholdsRadius;
+  double? odometer;
+  int? workDefinition;
+  int? configuredSwitches;
+  int? totalSwitches;
 
   factory AssetSetting.fromJson(Map<String, dynamic> json) =>
       _$AssetSettingFromJson(json);
@@ -71,10 +71,10 @@ class PageInfo {
     this.currentPageSize,
   });
 
-  int totalRecords;
-  int totalPages;
-  int currentPageNumber;
-  int currentPageSize;
+  int? totalRecords;
+  int? totalPages;
+  int? currentPageNumber;
+  int? currentPageSize;
 
   factory PageInfo.fromJson(Map<String, dynamic> json) =>
       _$PageInfoFromJson(json);
@@ -82,7 +82,7 @@ class PageInfo {
   Map<String, dynamic> toJson() => _$PageInfoToJson(this);
 }
  class AssetSettingsRow{
-   final AssetSetting assetSettings;
+   final AssetSetting? assetSettings;
     bool isSelected;
    AssetSettingsRow({this.assetSettings,this.isSelected=false});
  }

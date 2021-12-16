@@ -12,45 +12,48 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  final _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService =
+      locator<SmsManagementService>();
 
   SmsScheduleSingleAssetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
   List<SingleAssetSmsSchedule> listOfSingleAssetSmsSchedule = [];
 
-  SingleAssetResponce _singleAssetResponce;
-  SingleAssetResponce get singleAssetResponce => _singleAssetResponce;
+  SingleAssetResponce? _singleAssetResponce;
+  SingleAssetResponce? get singleAssetResponce => _singleAssetResponce;
 
   set singleAssetModelResponceSetter(List<SingleAssetModelResponce> val) {
     singleAssetModelResponce = val;
   }
 
-  TextEditingController _serialNoController = TextEditingController();
-  TextEditingController get serialNoController => _serialNoController;
+  TextEditingController? _serialNoController = TextEditingController();
+  TextEditingController? get serialNoController => _serialNoController;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController get nameController => _nameController;
+  TextEditingController? _nameController = TextEditingController();
+  TextEditingController? get nameController => _nameController;
 
-  TextEditingController _mobileNoController = TextEditingController();
-  TextEditingController get mobileNoController => _mobileNoController;
+  TextEditingController? _mobileNoController = TextEditingController();
+  TextEditingController? get mobileNoController => _mobileNoController;
 
-  SavingSmsModel _savingSmsModel;
+  SavingSmsModel? _savingSmsModel;
 
-  List<SavingSmsModel> listOSavingSmsModel = [];
+  List<SavingSmsModel?> listOSavingSmsModel = [];
 
-  List<SingleAssetModelResponce> singleAssetModelResponce = [];
+  List<SingleAssetModelResponce>? singleAssetModelResponce = [];
 
   bool isLoading = true;
 
-  String name;
-  String mobileNo;
-  String language;
-  String serialNo;
+  bool dummy = false;
 
-  String popUpMessage;
+  String? name;
+  String? mobileNo;
+  String? language;
+  String? serialNo;
+
+  String? popUpMessage;
 
   // List<String> nameList = [];
   // List<String> mobileNoList = [];
@@ -59,8 +62,8 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   // List<String> model = [];
   // List<String> date = [];
 
-  Future onSavingForm(String serialNumber, String recipientName,
-      String recipientMobNo, String lang) async {
+  onSavingForm(String? serialNumber, String? recipientName,
+      String? recipientMobNo, String? lang) async {
     try {
       showLoadingDialog();
       SingleAssetSmsSchedule data;
@@ -89,9 +92,9 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
             Language: language);
         listOfSingleAssetSmsSchedule.add(data);
       }
-      _singleAssetResponce = await _smsScheduleService
+      _singleAssetResponce = await _smsScheduleService!
           .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
-      singleAssetModelResponce = _singleAssetResponce.result;
+      singleAssetModelResponce = _singleAssetResponce!.result;
       // for (var item in singleAssetModelResponce) {
       //   deviceId.add(item.GPSDeviceID);
       //   model.add(item.Model);
@@ -105,7 +108,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     } on DioError catch (e) {
       hideLoadingDialog();
       final error = DioException.fromDioError(e);
-      snackbarService.showCustomSnackBar(message: e.message);
+      snackbarService!.showCustomSnackBar(message: e.message);
       notifyListeners();
     }
   }
@@ -113,49 +116,47 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   onBackPressed() {
     showLoadingDialog();
     Future.delayed(Duration(seconds: 2), () {
-      _serialNoController.text = serialNo;
-      _mobileNoController.text = mobileNo;
-      _nameController.text = name;
-      singleAssetModelResponce.clear();
+      _serialNoController!.text = serialNo!;
+      _mobileNoController!.text = mobileNo!;
+      _nameController!.text = name!;
+      singleAssetModelResponce!.clear();
       hideLoadingDialog();
       notifyListeners();
     });
   }
 
-  onClosingDialog() {
-    singleAssetModelResponce.clear();
-    _serialNoController.clear();
-    _mobileNoController.clear();
-    _nameController.clear();
-    notifyListeners();
-  }
-
-  Future<List<SavingSmsModel>> onSavingSmsModel() async {
+  Future onSavingSmsModel() async {
     try {
-      for (var i = 0; i < singleAssetModelResponce.length; i++) {
+      for (var i = 0; i < singleAssetModelResponce!.length; i++) {
         _savingSmsModel = SavingSmsModel(
-            AssetSerial: singleAssetModelResponce[i].SerialNumber,
-            GPSDeviceID: singleAssetModelResponce[i].GPSDeviceID,
+            AssetSerial: singleAssetModelResponce![i].SerialNumber,
+            GPSDeviceID: singleAssetModelResponce![i].GPSDeviceID,
             Language: language,
             Mobile: mobileNo,
-            Model: singleAssetModelResponce[i].Model,
+            Model: singleAssetModelResponce![i].Model,
             Name: name,
-            StartDate: singleAssetModelResponce[i].StartDate);
+            StartDate: singleAssetModelResponce![i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
-      SavingSmsResponce data =
-          await _smsScheduleService.savingSms(listOSavingSmsModel);
+      var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
+// if (data["status"]=="success") {
+//  // popUpMessage="Mo"
+// }
+      _serialNoController!.clear();
+      _mobileNoController!.clear();
+      _nameController!.clear();
       Logger().e(data);
       hideLoadingDialog();
+      dummy = false;
       listOSavingSmsModel.clear();
-      onClosingDialog();
+      singleAssetModelResponce!.clear();
       notifyListeners();
-      return data.AssetSerialNo;
     } on DioError catch (e) {
       listOSavingSmsModel.clear();
       hideLoadingDialog();
+      dummy = false;
       final error = DioException.fromDioError(e);
-      snackbarService.showSnackbar(message: error.message);
+      snackbarService!.showSnackbar(message: error.message!);
       notifyListeners();
     }
   }

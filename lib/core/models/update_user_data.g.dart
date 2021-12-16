@@ -6,22 +6,21 @@ part of 'update_user_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) {
-  return UpdateResponse(
-    isUpdated: json['isUpdated'] as bool,
-  );
-}
+UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
+    UpdateResponse(
+      isUpdated: json['isUpdated'] as bool?,
+    );
 
 Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) =>
     <String, dynamic>{
       'isUpdated': instance.isUpdated,
     };
 
-DeleteUserData _$DeleteUserDataFromJson(Map<String, dynamic> json) {
-  return DeleteUserData(
-    users: (json['users'] as List)?.map((e) => e as String)?.toList(),
-  );
-}
+DeleteUserData _$DeleteUserDataFromJson(Map<String, dynamic> json) =>
+    DeleteUserData(
+      users:
+          (json['users'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    );
 
 Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) =>
     <String, dynamic>{
@@ -29,12 +28,12 @@ Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) =>
     };
 
 DeleteUserDataIndStack _$DeleteUserDataIndStackFromJson(
-    Map<String, dynamic> json) {
-  return DeleteUserDataIndStack(
-    users: (json['users'] as List)?.map((e) => e as String)?.toList(),
-    customerUid: json['customerUid'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    DeleteUserDataIndStack(
+      users:
+          (json['users'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      customerUid: json['customerUid'] as String?,
+    );
 
 Map<String, dynamic> _$DeleteUserDataIndStackToJson(
         DeleteUserDataIndStack instance) =>
@@ -43,29 +42,26 @@ Map<String, dynamic> _$DeleteUserDataIndStackToJson(
       'customerUid': instance.customerUid,
     };
 
-AddUserData _$AddUserDataFromJson(Map<String, dynamic> json) {
-  return AddUserData(
-    fname: json['fname'] as String,
-    lname: json['lname'] as String,
-    cwsEmail: json['cwsEmail'] as String,
-    sso_id: json['sso_id'] as String,
-    phone: json['phone'] as String,
-    isCATSSOUserCreation: json['isCATSSOUserCreation'] as bool,
-    address: json['address'] == null
-        ? null
-        : AddressData.fromJson(json['address'] as Map<String, dynamic>),
-    details: json['details'] == null
-        ? null
-        : Details.fromJson(json['details'] as Map<String, dynamic>),
-    roles: (json['roles'] as List)
-        ?.map(
-            (e) => e == null ? null : Role.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    src: json['src'] as String,
-    company: json['company'] as String,
-    language: json['language'] as String,
-  );
-}
+AddUserData _$AddUserDataFromJson(Map<String, dynamic> json) => AddUserData(
+      fname: json['fname'] as String?,
+      lname: json['lname'] as String?,
+      cwsEmail: json['cwsEmail'] as String?,
+      sso_id: json['sso_id'] as String?,
+      phone: json['phone'] as String?,
+      isCATSSOUserCreation: json['isCATSSOUserCreation'] as bool?,
+      address: json['address'] == null
+          ? null
+          : AddressData.fromJson(json['address'] as Map<String, dynamic>),
+      details: json['details'] == null
+          ? null
+          : Details.fromJson(json['details'] as Map<String, dynamic>),
+      roles: (json['roles'] as List<dynamic>?)
+          ?.map((e) => Role.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      src: json['src'] as String?,
+      company: json['company'] as String?,
+      language: json['language'] as String?,
+    );
 
 Map<String, dynamic> _$AddUserDataToJson(AddUserData instance) =>
     <String, dynamic>{
@@ -83,29 +79,27 @@ Map<String, dynamic> _$AddUserDataToJson(AddUserData instance) =>
       'language': instance.language,
     };
 
-AddUserDataIndStack _$AddUserDataIndStackFromJson(Map<String, dynamic> json) {
-  return AddUserDataIndStack(
-    fname: json['fname'] as String,
-    lname: json['lname'] as String,
-    email: json['email'] as String,
-    phone: json['phone'] as String,
-    address: json['address'] == null
-        ? null
-        : AddressData.fromJson(json['address'] as Map<String, dynamic>),
-    details: json['details'] == null
-        ? null
-        : Details.fromJson(json['details'] as Map<String, dynamic>),
-    roles: (json['roles'] as List)
-        ?.map(
-            (e) => e == null ? null : Role.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    src: json['src'] as String,
-    isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool,
-    company: json['company'] as String,
-    language: json['language'] as String,
-    customerUid: json['customerUid'] as String,
-  );
-}
+AddUserDataIndStack _$AddUserDataIndStackFromJson(Map<String, dynamic> json) =>
+    AddUserDataIndStack(
+      fname: json['fname'] as String?,
+      lname: json['lname'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      address: json['address'] == null
+          ? null
+          : AddressData.fromJson(json['address'] as Map<String, dynamic>),
+      details: json['details'] == null
+          ? null
+          : Details.fromJson(json['details'] as Map<String, dynamic>),
+      roles: (json['roles'] as List<dynamic>?)
+          ?.map((e) => Role.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      src: json['src'] as String?,
+      isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool?,
+      company: json['company'] as String?,
+      language: json['language'] as String?,
+      customerUid: json['customerUid'] as String?,
+    );
 
 Map<String, dynamic> _$AddUserDataIndStackToJson(
         AddUserDataIndStack instance) =>
@@ -124,29 +118,27 @@ Map<String, dynamic> _$AddUserDataIndStackToJson(
       'isAssetSecurityEnabled': instance.isAssetSecurityEnabled,
     };
 
-UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) {
-  return UpdateUserData(
-    fname: json['fname'] as String,
-    lname: json['lname'] as String,
-    cwsEmail: json['cwsEmail'] as String,
-    sso_id: json['sso_id'] as String,
-    phone: json['phone'] as String,
-    isCatssoUserCreation: json['isCatssoUserCreation'] as bool,
-    address: json['address'] == null
-        ? null
-        : AddressData.fromJson(json['address'] as Map<String, dynamic>),
-    details: json['details'] == null
-        ? null
-        : Details.fromJson(json['details'] as Map<String, dynamic>),
-    roles: (json['roles'] as List)
-        ?.map(
-            (e) => e == null ? null : Role.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    src: json['src'] as String,
-    company: json['company'] as String,
-    language: json['language'] as String,
-  );
-}
+UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) =>
+    UpdateUserData(
+      fname: json['fname'] as String?,
+      lname: json['lname'] as String?,
+      cwsEmail: json['cwsEmail'] as String?,
+      sso_id: json['sso_id'] as String?,
+      phone: json['phone'] as String?,
+      isCatssoUserCreation: json['isCatssoUserCreation'] as bool?,
+      address: json['address'] == null
+          ? null
+          : AddressData.fromJson(json['address'] as Map<String, dynamic>),
+      details: json['details'] == null
+          ? null
+          : Details.fromJson(json['details'] as Map<String, dynamic>),
+      roles: (json['roles'] as List<dynamic>?)
+          ?.map((e) => Role.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      src: json['src'] as String?,
+      company: json['company'] as String?,
+      language: json['language'] as String?,
+    );
 
 Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
     <String, dynamic>{
@@ -164,15 +156,13 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'language': instance.language,
     };
 
-AddressData _$AddressDataFromJson(Map<String, dynamic> json) {
-  return AddressData(
-    addressline1: json['addressline1'] as String,
-    addressline2: json['addressline2'] as String,
-    country: json['country'] as String,
-    state: json['state'] as String,
-    zipcode: json['zipcode'] as String,
-  );
-}
+AddressData _$AddressDataFromJson(Map<String, dynamic> json) => AddressData(
+      addressline1: json['addressline1'] as String?,
+      addressline2: json['addressline2'] as String?,
+      country: json['country'] as String?,
+      state: json['state'] as String?,
+      zipcode: json['zipcode'] as String?,
+    );
 
 Map<String, dynamic> _$AddressDataToJson(AddressData instance) =>
     <String, dynamic>{
@@ -183,13 +173,11 @@ Map<String, dynamic> _$AddressDataToJson(AddressData instance) =>
       'zipcode': instance.zipcode,
     };
 
-Details _$DetailsFromJson(Map<String, dynamic> json) {
-  return Details(
-    job_title: json['job_title'] as String,
-    job_type: json['job_type'] as String,
-    user_type: json['user_type'] as String,
-  );
-}
+Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
+      job_title: json['job_title'] as String?,
+      job_type: json['job_type'] as String?,
+      user_type: json['user_type'] as String?,
+    );
 
 Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
       'job_title': instance.job_title,
@@ -197,12 +185,10 @@ Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
       'user_type': instance.user_type,
     };
 
-Role _$RoleFromJson(Map<String, dynamic> json) {
-  return Role(
-    role_id: json['role_id'] as int,
-    application_name: json['application_name'] as String,
-  );
-}
+Role _$RoleFromJson(Map<String, dynamic> json) => Role(
+      role_id: json['role_id'] as int?,
+      application_name: json['application_name'] as String?,
+    );
 
 Map<String, dynamic> _$RoleToJson(Role instance) => <String, dynamic>{
       'role_id': instance.role_id,

@@ -10,8 +10,8 @@ import 'filter_chip_view.dart';
 import 'filter_view_model.dart';
 
 class Refine extends StatefulWidget {
-  final Function(bool) onRefineApplied;
-  final ScreenType screenType;
+  final Function(bool)? onRefineApplied;
+  final ScreenType? screenType;
   Refine({this.onRefineApplied, this.screenType});
 
   @override
@@ -22,7 +22,7 @@ class _RefineState extends State<Refine> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FilterViewModel>.reactive(
-      builder: (BuildContext context, FilterViewModel viewModel, Widget _) {
+      builder: (BuildContext context, FilterViewModel viewModel, Widget? _) {
         return viewModel.loading
             ? Container(
                 decoration: BoxDecoration(
@@ -32,7 +32,7 @@ class _RefineState extends State<Refine> {
                       bottomRight: Radius.circular(8),
                     ),
                     border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color!)),
                 height: MediaQuery.of(context).size.height * 0.8,
                 child: Center(child: InsiteProgressBar()))
             : Stack(
@@ -49,8 +49,8 @@ class _RefineState extends State<Refine> {
                             border: Border.all(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    .color)),
+                                    .bodyText1!
+                                    .color!)),
                         padding: EdgeInsets.all(16),
                         child: Column(
                           children: [
@@ -79,7 +79,7 @@ class _RefineState extends State<Refine> {
                             SizedBox(
                               height: 20,
                             ),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? FilterChipView(
                                     filters: viewModel.selectedFilterData,
                                     onClosed: (value) {
@@ -98,7 +98,7 @@ class _RefineState extends State<Refine> {
                                       title: "No Filter Selected",
                                     ),
                                   ),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? SizedBox(
                                     height: 20,
                                   )
@@ -111,7 +111,7 @@ class _RefineState extends State<Refine> {
                                   onTap: () {
                                     viewModel.onFilterApplied();
                                     Future.delayed(Duration(seconds: 2), () {
-                                      widget.onRefineApplied(true);
+                                      widget.onRefineApplied!(true);
                                     });
                                   },
                                   width: 100,
@@ -125,7 +125,7 @@ class _RefineState extends State<Refine> {
                                 InsiteButton(
                                   bgColor: Theme.of(context).backgroundColor,
                                   onTap: () {
-                                    widget.onRefineApplied(false);
+                                    widget.onRefineApplied!(false);
                                   },
                                   width: 100,
                                   height: 40,
@@ -133,7 +133,7 @@ class _RefineState extends State<Refine> {
                                 ),
                               ],
                             ),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? SizedBox(
                                     height: 8,
                                   )

@@ -10,28 +10,28 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SubRegistrationViewModel extends InsiteViewModel {
-  Logger log;
-  var _navigationService = locator<NavigationService>();
+  Logger? log;
+  NavigationService? _navigationService = locator<NavigationService>();
 
   SubRegistrationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.SINGLEASSETREG) {
-      _navigationService.navigateWithTransition(
+      _navigationService!.navigateWithTransition(
           SingleAssetRegistrationView(
             filterKey: "total",
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
           ),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.SINGLEASSETTRANSFER) {
-      _navigationService.navigateWithTransition(SingleAssetTransferView(),
+      _navigationService!.navigateWithTransition(SingleAssetTransferView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.MULTIPLEASSETREG) {
-      _navigationService.navigateWithTransition(MultipleAssetRegistrationView(),
+      _navigationService!.navigateWithTransition(MultipleAssetRegistrationView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.MULTIPLEASSESTTRANSFER) {
-      _navigationService.navigateWithTransition(MultipleAssetTransferView(),
+      _navigationService!.navigateWithTransition(MultipleAssetTransferView(),
           transition: "fade");
     }
   }

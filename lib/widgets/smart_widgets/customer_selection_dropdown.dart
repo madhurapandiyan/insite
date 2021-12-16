@@ -7,11 +7,11 @@ import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
 class AccountSelectionDropDownWidget extends StatefulWidget {
-  final AccountType selectionType;
-  final AccountData selected;
-  final Function(AccountData) onSelected;
-  final VoidCallback onReset;
-  final List<AccountData> list;
+  final AccountType? selectionType;
+  final AccountData? selected;
+  final Function(AccountData?)? onSelected;
+  final VoidCallback? onReset;
+  final List<AccountData>? list;
   AccountSelectionDropDownWidget(
       {this.selectionType,
       this.selected,
@@ -30,9 +30,9 @@ class _AccountSelectionDropDownWidgetState
   bool isExpanded = false;
   final GlobalKey<AppExpansionTileState> expansionTile = new GlobalKey();
 
-  AccountData selected;
-  List<AccountData> _list = [];
-  List<AccountData> _displayList = [];
+  AccountData? selected;
+  List<AccountData>? _list = [];
+  List<AccountData>? _displayList = [];
   // int showCount = 500;
 
   onSearchTextChanged(String text) async {
@@ -41,13 +41,13 @@ class _AccountSelectionDropDownWidgetState
       if (text.trim().isNotEmpty) {
         List<AccountData> tempList = [];
         tempList.clear();
-        _list.forEach((item) {
-          if (item.value.DisplayName.toLowerCase().contains(text))
+        _list!.forEach((item) {
+          if (item.value!.DisplayName!.toLowerCase().contains(text))
             tempList.add(item);
         });
         _displayList = tempList;
-        Logger().i("total list size " + _list.length.toString());
-        Logger().i("searched list size " + _displayList.length.toString());
+        Logger().i("total list size " + _list!.length.toString());
+        Logger().i("searched list size " + _displayList!.length.toString());
         setState(() {});
       } else {
         _displayList = _list;
@@ -60,7 +60,7 @@ class _AccountSelectionDropDownWidgetState
   void initState() {
     super.initState();
     selected = widget.selected != null ? widget.selected : null;
-    _list.clear();
+    _list!.clear();
     // if (widget.list.length > showCount) {
     // _list = widget.list.take(showCount).toList();
     // } else {
@@ -68,7 +68,7 @@ class _AccountSelectionDropDownWidgetState
     // }
     _displayList = _list;
     if (selected != null) {
-      Logger().i(selected.value.DisplayName);
+      Logger().i(selected!.value!.DisplayName);
     }
     _textEditingController.addListener(() {
       onSearchTextChanged(_textEditingController.text);
@@ -92,8 +92,8 @@ class _AccountSelectionDropDownWidgetState
   }
 
   deSelect() {
-    for (var i = 0; i < _displayList.length; i++) {
-      _displayList[i].isSelected = false;
+    for (var i = 0; i < _displayList!.length; i++) {
+      _displayList![i].isSelected = false;
     }
   }
 
@@ -103,13 +103,13 @@ class _AccountSelectionDropDownWidgetState
       backgroundColor: Theme.of(context).cardColor,
       title: Text(
         selected != null
-            ? selected.value.DisplayName
+            ? selected!.value!.DisplayName!
             : widget.selectionType == AccountType.ACCOUNT
                 ? "Select"
                 : "Search and Select",
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-            color: Theme.of(context).textTheme.bodyText1.color,
+            color: Theme.of(context).textTheme.bodyText1!.color,
             fontWeight: FontWeight.bold,
             fontSize: 18),
       ),
@@ -119,8 +119,8 @@ class _AccountSelectionDropDownWidgetState
           decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1.color)),
-          height: _displayList.isNotEmpty && selected != null
+                  color: Theme.of(context).textTheme.bodyText1!.color!)),
+          height: _displayList!.isNotEmpty && selected != null
               ? MediaQuery.of(context).size.height * 0.42
               : MediaQuery.of(context).size.height * 0.32,
           child: Column(
@@ -130,7 +130,7 @@ class _AccountSelectionDropDownWidgetState
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      _list.isNotEmpty
+                      _list!.isNotEmpty
                           ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: SearchBox(
@@ -142,15 +142,15 @@ class _AccountSelectionDropDownWidgetState
                           : SizedBox(),
                       showList
                           ? ListView.builder(
-                              itemCount: _displayList.length,
+                              itemCount: _displayList!.length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
-                                AccountData data = _displayList[index];
+                                AccountData data = _displayList![index];
                                 return GestureDetector(
                                   onTap: () {
                                     deSelect();
-                                    _displayList[index].isSelected = true;
+                                    _displayList![index].isSelected = true;
                                     selected = data;
                                     setState(() {});
                                     // widget.onSelected(AccountData(
@@ -158,7 +158,7 @@ class _AccountSelectionDropDownWidgetState
                                     //     value: customer));
                                   },
                                   child: Container(
-                                    color: _displayList[index].isSelected
+                                    color: _displayList![index].isSelected!
                                         ? Theme.of(context).buttonColor
                                         : Theme.of(context).backgroundColor,
                                     padding: EdgeInsets.symmetric(
@@ -169,15 +169,15 @@ class _AccountSelectionDropDownWidgetState
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            data.value.DisplayName,
+                                            data.value!.DisplayName!,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                color: _displayList[index]
-                                                        .isSelected
+                                                color: _displayList![index]
+                                                        .isSelected!
                                                     ? Colors.white
                                                     : Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1
+                                                        .bodyText1!
                                                         .color,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
@@ -210,7 +210,7 @@ class _AccountSelectionDropDownWidgetState
                   ),
                 ),
               ),
-              _displayList.isNotEmpty && selected != null
+              _displayList!.isNotEmpty && selected != null
                   ? Container(
                       height: MediaQuery.of(context).size.height * 0.1,
                       child: Row(
@@ -222,7 +222,7 @@ class _AccountSelectionDropDownWidgetState
                                     deSelect();
                                     selected = null;
                                     setState(() {});
-                                    widget.onReset();
+                                    widget.onReset!();
                                   },
                                   width: 100,
                                   height: 48,
@@ -238,9 +238,9 @@ class _AccountSelectionDropDownWidgetState
                             width: 100,
                             textColor: Colors.white,
                             onTap: () {
-                              expansionTile.currentState.collapse();
+                              expansionTile.currentState!.collapse();
                               if (selected != null) {
-                                widget.onSelected(selected);
+                                widget.onSelected!(selected);
                               }
                             },
                             title: "SELECT",

@@ -17,9 +17,9 @@ class AssetCountDataAdapter extends TypeAdapter<AssetCountData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AssetCountData(
-      counts: (fields[1] as List)?.cast<CountData>(),
-      type: fields[2] as FilterType,
-      subType: fields[3] as FilterSubType,
+      counts: (fields[1] as List?)?.cast<CountData>(),
+      type: fields[2] as FilterType?,
+      subType: fields[3] as FilterSubType?,
     );
   }
 
@@ -57,8 +57,8 @@ class CountDataAdapter extends TypeAdapter<CountData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CountData(
-      countOf: fields[1] as String,
-      count: fields[2] as int,
+      countOf: fields[1] as String?,
+      count: fields[2] as int?,
     );
   }
 

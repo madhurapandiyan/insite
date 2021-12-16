@@ -7,9 +7,9 @@ import 'package:stacked/stacked.dart';
 import 'distance_travelled_view_model.dart';
 
 class DistanceTravelledView extends StatefulWidget {
-  final Function(int) updateCount;
+  final Function(int)? updateCount;
   const DistanceTravelledView({
-    Key key,
+    Key? key,
     this.updateCount,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class DistanceTravelledView extends StatefulWidget {
 }
 
 class DistanceTravelledViewState extends State<DistanceTravelledView> {
-  var viewModel;
+  late var viewModel;
 
   @override
   void initState() {
@@ -40,10 +40,10 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DistanceTravelledViewModel>.reactive(
       builder: (BuildContext context, DistanceTravelledViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.updateCount(viewModel.utilLizationListData.length);
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });
         }
@@ -79,7 +79,7 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
                                           ? 0
                                           : viewModel
                                                   .utilLizationListData[index]
-                                                  .distanceTravelledKilometers /
+                                                  .distanceTravelledKilometers! /
                                               1000,
                                       color: creamCan);
                                 })

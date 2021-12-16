@@ -6,18 +6,18 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class UtilizationListItem extends StatelessWidget {
-  final AssetResult utilizationData;
-  final bool isShowingInDetailPage;
-  final VoidCallback onCallback;
+  final AssetResult? utilizationData;
+  final bool? isShowingInDetailPage;
+  final VoidCallback? onCallback;
   UtilizationListItem(
       {this.utilizationData, this.isShowingInDetailPage, this.onCallback});
 
   @override
   Widget build(BuildContext context) {
-    return isShowingInDetailPage
+    return isShowingInDetailPage!
         ? GestureDetector(
             onTap: () {
-              onCallback();
+              onCallback!();
             },
             child: Card(
               child: Row(
@@ -41,17 +41,17 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteTableRowItemWithIcon(
                                 iconPath: "-",
-                                title: utilizationData.lastReportedTime != null
+                                title: utilizationData!.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
-                                        utilizationData.lastReportedTime)
+                                        utilizationData!.lastReportedTime)
                                     : "",
                               ),
                               InsiteTableRowItem(
                                 title: "Last Reported Time ",
                                 content:
-                                    utilizationData.lastReportedTime != null
+                                    utilizationData!.lastReportedTime != null
                                         ? Utils.getLastReportedDateOne(
-                                            utilizationData.lastReportedTime)
+                                            utilizationData!.lastReportedTime)
                                         : "",
                               ),
                               InsiteTableRowItem(
@@ -65,8 +65,8 @@ class UtilizationListItem extends StatelessWidget {
                                 //             .toStringAsFixed(2) +
                                 //         " %"
                                 //     : "",
-                                content: utilizationData.runtimeHours != null
-                                    ? utilizationData.runtimeHours
+                                content: utilizationData!.runtimeHours != null
+                                    ? utilizationData!.runtimeHours!
                                         .toStringAsFixed(1)
                                     : "-",
                               ),
@@ -111,38 +111,38 @@ class UtilizationListItem extends StatelessWidget {
                                     TableRow(children: [
                                       InsiteTableRowItem(
                                         title: "Meter",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .lastRuntimeHourMeter !=
                                                 null
-                                            ? utilizationData
-                                                .lastRuntimeHourMeter
+                                            ? utilizationData!
+                                                .lastRuntimeHourMeter!
                                                 .toStringAsFixed(1)
                                             : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Daily",
                                         content:
-                                            utilizationData.runtimeHours != null
-                                                ? utilizationData.runtimeHours
+                                            utilizationData!.runtimeHours != null
+                                                ? utilizationData!.runtimeHours!
                                                     .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Target",
                                         content:
-                                            utilizationData.targetRuntime !=
+                                            utilizationData!.targetRuntime !=
                                                     null
-                                                ? utilizationData.targetRuntime
+                                                ? utilizationData!.targetRuntime!
                                                     .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .targetRuntimePerformance !=
                                                 null
-                                            ? (utilizationData
-                                                            .targetRuntimePerformance *
+                                            ? (utilizationData!
+                                                            .targetRuntimePerformance! *
                                                         100)
                                                     .toStringAsFixed(2) +
                                                 " %"
@@ -157,21 +157,21 @@ class UtilizationListItem extends StatelessWidget {
                                         ),
                                         InsiteTableRowItem(
                                           title: "Fuel Burned",
-                                          content: utilizationData
+                                          content: utilizationData!
                                                       .runtimeFuelConsumedLiters !=
                                                   null
-                                              ? utilizationData
-                                                  .runtimeFuelConsumedLiters
+                                              ? utilizationData!
+                                                  .runtimeFuelConsumedLiters!
                                                   .toStringAsFixed(1)
                                               : "-",
                                         ),
                                         InsiteTableRowItem(
                                           title: "Burned Rate",
-                                          content: utilizationData
+                                          content: utilizationData!
                                                       .runtimeFuelConsumptionRate !=
                                                   null
-                                              ? utilizationData
-                                                  .runtimeFuelConsumptionRate
+                                              ? utilizationData!
+                                                  .runtimeFuelConsumptionRate!
                                                   .toStringAsFixed(2)
                                               : "-",
                                         ),
@@ -197,36 +197,36 @@ class UtilizationListItem extends StatelessWidget {
                                     children: [
                                       InsiteTableRowItem(
                                         title: "Meter",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .lastIdleHourMeter !=
                                                 null
-                                            ? utilizationData.lastIdleHourMeter
+                                            ? utilizationData!.lastIdleHourMeter!
                                                 .toStringAsFixed(1)
                                             : "",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Daily",
                                         content:
-                                            utilizationData.idleHours != null
-                                                ? utilizationData.idleHours
+                                            utilizationData!.idleHours != null
+                                                ? utilizationData!.idleHours!
                                                     .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Target",
                                         content:
-                                            utilizationData.targetIdle != null
-                                                ? utilizationData.targetIdle
+                                            utilizationData!.targetIdle != null
+                                                ? utilizationData!.targetIdle!
                                                     .toStringAsFixed(1)
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .targetIdlePerformance !=
                                                 null
-                                            ? (utilizationData
-                                                            .targetIdlePerformance *
+                                            ? (utilizationData!
+                                                            .targetIdlePerformance! *
                                                         100)
                                                     .toStringAsFixed(2) +
                                                 " %"
@@ -241,15 +241,15 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Working",
-                                  content: utilizationData.workingHours != null
-                                      ? utilizationData.workingHours
+                                  content: utilizationData!.workingHours != null
+                                      ? utilizationData!.workingHours!
                                           .toStringAsFixed(1)
                                       : "-",
                                 ),
                                 InsiteTableRowItem(
                                   title: "Daily",
-                                  content: utilizationData.workingHours != null
-                                      ? utilizationData.workingHours
+                                  content: utilizationData!.workingHours != null
+                                      ? utilizationData!.workingHours!
                                           .toStringAsFixed(1)
                                       : "-",
                                 ),
@@ -266,7 +266,7 @@ class UtilizationListItem extends StatelessWidget {
           )
         : GestureDetector(
             onTap: () {
-              onCallback();
+              onCallback!();
             },
             child: Card(
               child: Row(
@@ -324,19 +324,19 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithImage(
-                                title: utilizationData.manufacturer != null
-                                    ? utilizationData.manufacturer
-                                    : "" + "\n" + utilizationData.model != null
-                                        ? utilizationData.model
+                                title: utilizationData!.manufacturer != null
+                                    ? utilizationData!.manufacturer
+                                    : "" + "\n" + utilizationData!.model! != null
+                                        ? utilizationData!.model
                                         : "",
                                 path: utilizationData == null
                                     ? "assets/images/EX210.png"
-                                    : Utils().imageData(utilizationData.model),
+                                    : Utils().imageData(utilizationData!.model!),
                               ),
                               InsiteTableRowItem(
                                 title: "Runime Hours",
                                 content:
-                                    utilizationData.runtimeHours.toString(),
+                                    utilizationData!.runtimeHours.toString(),
                               ),
                             ],
                           ),
@@ -344,15 +344,15 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteRichText(
                                 title: "Serial No. ",
-                                content: utilizationData.assetSerialNumber,
+                                content: utilizationData!.assetSerialNumber,
                                 onTap: () {
-                                  onCallback();
+                                  onCallback!();
                                 },
                               ),
                               InsiteTableRowItem(
                                 title: "Working Time Hours",
                                 content:
-                                    utilizationData.workingHours.toString(),
+                                    utilizationData!.workingHours.toString(),
                               ),
                             ],
                           ),
@@ -361,14 +361,14 @@ class UtilizationListItem extends StatelessWidget {
                               InsiteTableRowItem(
                                 title: "Last Utiization Report",
                                 content:
-                                    utilizationData.lastReportedTime != null
+                                    utilizationData!.lastReportedTime != null
                                         ? Utils.getLastReportedDateOne(
-                                            utilizationData.lastReportedTime)
+                                            utilizationData!.lastReportedTime)
                                         : '-',
                               ),
                               InsiteTableRowItem(
                                 title: "Idle Hours",
-                                content: utilizationData.idleHours.toString(),
+                                content: utilizationData!.idleHours.toString(),
                               ),
                             ],
                           ),
@@ -405,8 +405,8 @@ class UtilizationListItem extends StatelessWidget {
                               children: [
                                 InsiteTableRowItem(
                                   title: "Runtime Target",
-                                  content: utilizationData.targetRuntime != null
-                                      ? utilizationData.targetRuntime.toString()
+                                  content: utilizationData!.targetRuntime != null
+                                      ? utilizationData!.targetRuntime.toString()
                                       : "-",
                                 ),
                                 Table(
@@ -426,8 +426,8 @@ class UtilizationListItem extends StatelessWidget {
                                       InsiteTableRowItem(
                                         title: "Daily",
                                         content:
-                                            utilizationData.runtimeHours != null
-                                                ? utilizationData.runtimeHours
+                                            utilizationData!.runtimeHours != null
+                                                ? utilizationData!.runtimeHours
                                                     .toString()
                                                 : "-",
                                       ),
@@ -442,11 +442,11 @@ class UtilizationListItem extends StatelessWidget {
                                       // ),
                                       InsiteTableRowItem(
                                         title: "Performance",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .targetRuntimePerformance !=
                                                 null
-                                            ? (utilizationData
-                                                            .targetRuntimePerformance *
+                                            ? (utilizationData!
+                                                            .targetRuntimePerformance! *
                                                         100)
                                                     .toStringAsFixed(2) +
                                                 " %"
@@ -454,11 +454,11 @@ class UtilizationListItem extends StatelessWidget {
                                       ),
                                       InsiteTableRowItem(
                                         title: "Fuel Burned",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .runtimeFuelConsumedLiters !=
                                                 null
-                                            ? utilizationData
-                                                .runtimeFuelConsumedLiters
+                                            ? utilizationData!
+                                                .runtimeFuelConsumedLiters!
                                                 .toStringAsFixed(1)
                                             : "-",
                                       )
@@ -470,8 +470,8 @@ class UtilizationListItem extends StatelessWidget {
                             TableRow(children: [
                               InsiteTableRowItem(
                                 title: "Idle Target",
-                                content: utilizationData.targetIdle != null
-                                    ? utilizationData.targetIdle.toString()
+                                content: utilizationData!.targetIdle != null
+                                    ? utilizationData!.targetIdle.toString()
                                     : "-",
                               ),
                               Table(
@@ -496,18 +496,18 @@ class UtilizationListItem extends StatelessWidget {
                                       InsiteTableRowItem(
                                         title: "Daily",
                                         content:
-                                            utilizationData.idleHours != null
-                                                ? utilizationData.idleHours
+                                            utilizationData!.idleHours != null
+                                                ? utilizationData!.idleHours
                                                     .toString()
                                                 : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
-                                        content: utilizationData
+                                        content: utilizationData!
                                                     .targetIdlePerformance !=
                                                 null
-                                            ? (utilizationData
-                                                            .targetIdlePerformance *
+                                            ? (utilizationData!
+                                                            .targetIdlePerformance! *
                                                         100)
                                                     .toStringAsFixed(2) +
                                                 " %"

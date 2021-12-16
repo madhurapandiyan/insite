@@ -7,7 +7,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedBurnRateWidget extends StatefulWidget {
-  final List<String> assetUids;
+  final List<String?>? assetUids;
   EstimatedBurnRateWidget({this.assetUids});
 
   @override
@@ -20,7 +20,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<EstimatedBurnRateViewModel>.reactive(
       builder: (BuildContext context, EstimatedBurnRateViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -88,7 +88,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                                 fontWeight: FontWeight.w700,
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .color),
                             controller: viewModel.workingcontroller,
                             keyboardType: TextInputType.numberWithOptions(
@@ -96,7 +96,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(
@@ -173,14 +173,14 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                                 fontWeight: FontWeight.w700,
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .color),
                             keyboardType: TextInputType.numberWithOptions(
                               decimal: false,
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

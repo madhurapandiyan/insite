@@ -4,9 +4,9 @@ part 'admin_manage_user.g.dart';
 
 @JsonSerializable()
 class AdminManageUser {
-  Links links;
-  Total total;
-  List<Users> users;
+  Links? links;
+  Total? total;
+  List<Users>? users;
 
   AdminManageUser({this.links, this.total, this.users});
 
@@ -18,8 +18,8 @@ class AdminManageUser {
 
 @JsonSerializable()
 class Links {
-  String next;
-  String last;
+  String? next;
+  String? last;
 
   Links({this.next, this.last});
 
@@ -30,8 +30,8 @@ class Links {
 
 @JsonSerializable()
 class Total {
-  int items;
-  int pages;
+  int? items;
+  int? pages;
 
   Total({this.items, this.pages});
 
@@ -42,20 +42,20 @@ class Total {
 
 @JsonSerializable()
 class Users {
-  String userUid;
-  String first_name;
-  String last_name;
-  String loginId;
-  String job_type;
-  String job_title;
-  String user_type;
-  Address address;
-  List<ApplicationAccess> application_access;
-  String createdOn;
-  String lastLoginDate;
-  String createdBy;
-  String emailVerified;
-  String phone;
+  String? userUid;
+  String? first_name;
+  String? last_name;
+  String? loginId;
+  String? job_type;
+  String? job_title;
+  String? user_type;
+  Address? address;
+  List<ApplicationAccess>? application_access;
+  String? createdOn;
+  String? lastLoginDate;
+  String? createdBy;
+  String? emailVerified;
+  String? phone;
 
   Users(
       {this.userUid,
@@ -80,9 +80,9 @@ class Users {
 
 @JsonSerializable()
 class Address {
-  String country;
-  String zipcode;
-  String city;
+  String? country;
+  String? zipcode;
+  String? city;
 
   Address({this.country, this.zipcode, this.city});
 
@@ -94,10 +94,10 @@ class Address {
 
 @JsonSerializable()
 class ApplicationAccess {
-  String userUID;
-  String role_name;
-  String applicationIconUrl;
-  String applicationName;
+  String? userUID;
+  String? role_name;
+  String? applicationIconUrl;
+  String? applicationName;
   ApplicationAccess({
     this.userUID,
     this.role_name,
@@ -113,9 +113,9 @@ class ApplicationAccess {
 
 @JsonSerializable()
 class ApplicationAccessData {
-  Application application;
-  bool isSelected;
-  bool isPermissionSelected;
+  Application? application;
+  bool? isSelected;
+  bool? isPermissionSelected;
   ApplicationAccessData(
       {this.application,
       this.isSelected = false,
@@ -128,7 +128,7 @@ class ApplicationAccessData {
 
 @JsonSerializable()
 class ManageUser {
-  Users user;
+  Users? user;
 
   ManageUser({this.user});
 
@@ -139,7 +139,7 @@ class ManageUser {
 }
 
 class UserRow {
-  final Users user;
+  final Users? user;
   bool isSelected;
   UserRow({this.user, this.isSelected = false});
 }

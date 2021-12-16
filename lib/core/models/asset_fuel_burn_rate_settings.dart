@@ -10,8 +10,8 @@ class AddSettings {
         
     });
 
-    List<AssetFuelBurnRateSetting> assetFuelBurnRateSettings;
-    List<dynamic> errors;
+    List<AssetFuelBurnRateSetting>? assetFuelBurnRateSettings;
+    List<dynamic>? errors;
  
 
     factory AddSettings.fromJson(Map<String, dynamic> json) => _$AddSettingsFromJson(json);
@@ -29,10 +29,10 @@ class AssetFuelBurnRateSetting {
        
     });
     
-    double idleTargetValue;
-    double workTargetValue;
-    DateTime startDate;
-      List< String> assetUIds;
+    double? idleTargetValue;
+    double? workTargetValue;
+    DateTime? startDate;
+      List< String>? assetUIds;
   
 
     factory AssetFuelBurnRateSetting.fromJson(Map<String, dynamic> json) => _$AssetFuelBurnRateSettingFromJson(json);

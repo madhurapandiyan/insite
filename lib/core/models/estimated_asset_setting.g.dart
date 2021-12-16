@@ -7,15 +7,12 @@ part of 'estimated_asset_setting.dart';
 // **************************************************************************
 
 EstimatedAssetSetting _$EstimatedAssetSettingFromJson(
-    Map<String, dynamic> json) {
-  return EstimatedAssetSetting(
-    assetTargetSettings: (json['assetTargetSettings'] as List)
-        ?.map((e) => e == null
-            ? null
-            : AssetTargetSettings.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    EstimatedAssetSetting(
+      assetTargetSettings: (json['assetTargetSettings'] as List<dynamic>?)
+          ?.map((e) => AssetTargetSettings.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$EstimatedAssetSettingToJson(
         EstimatedAssetSetting instance) =>
@@ -23,19 +20,18 @@ Map<String, dynamic> _$EstimatedAssetSettingToJson(
       'assetTargetSettings': instance.assetTargetSettings,
     };
 
-AssetTargetSettings _$AssetTargetSettingsFromJson(Map<String, dynamic> json) {
-  return AssetTargetSettings(
-    runtime: json['runtime'] == null
-        ? null
-        : Runtime.fromJson(json['runtime'] as Map<String, dynamic>),
-    idle: json['idle'] == null
-        ? null
-        : Idle.fromJson(json['idle'] as Map<String, dynamic>),
-    startDate: json['startDate'] as String,
-    endDate: json['endDate'] as String,
-    assetUid: json['assetUid'] as String,
-  );
-}
+AssetTargetSettings _$AssetTargetSettingsFromJson(Map<String, dynamic> json) =>
+    AssetTargetSettings(
+      runtime: json['runtime'] == null
+          ? null
+          : Runtime.fromJson(json['runtime'] as Map<String, dynamic>),
+      idle: json['idle'] == null
+          ? null
+          : Idle.fromJson(json['idle'] as Map<String, dynamic>),
+      startDate: json['startDate'] as String?,
+      endDate: json['endDate'] as String?,
+      assetUid: json['assetUid'] as String?,
+    );
 
 Map<String, dynamic> _$AssetTargetSettingsToJson(
         AssetTargetSettings instance) =>
@@ -47,17 +43,15 @@ Map<String, dynamic> _$AssetTargetSettingsToJson(
       'assetUid': instance.assetUid,
     };
 
-Runtime _$RuntimeFromJson(Map<String, dynamic> json) {
-  return Runtime(
-    sunday: (json['sunday'] as num)?.toDouble(),
-    monday: (json['monday'] as num)?.toDouble(),
-    tuesday: (json['tuesday'] as num)?.toDouble(),
-    wednesday: (json['wednesday'] as num)?.toDouble(),
-    thursday: (json['thursday'] as num)?.toDouble(),
-    friday: (json['friday'] as num)?.toDouble(),
-    saturday: (json['saturday'] as num)?.toDouble(),
-  );
-}
+Runtime _$RuntimeFromJson(Map<String, dynamic> json) => Runtime(
+      sunday: (json['sunday'] as num?)?.toDouble(),
+      monday: (json['monday'] as num?)?.toDouble(),
+      tuesday: (json['tuesday'] as num?)?.toDouble(),
+      wednesday: (json['wednesday'] as num?)?.toDouble(),
+      thursday: (json['thursday'] as num?)?.toDouble(),
+      friday: (json['friday'] as num?)?.toDouble(),
+      saturday: (json['saturday'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$RuntimeToJson(Runtime instance) => <String, dynamic>{
       'sunday': instance.sunday,
@@ -69,17 +63,15 @@ Map<String, dynamic> _$RuntimeToJson(Runtime instance) => <String, dynamic>{
       'saturday': instance.saturday,
     };
 
-Idle _$IdleFromJson(Map<String, dynamic> json) {
-  return Idle(
-    sunday: (json['sunday'] as num)?.toDouble(),
-    monday: (json['monday'] as num)?.toDouble(),
-    tuesday: (json['tuesday'] as num)?.toDouble(),
-    wednesday: (json['wednesday'] as num)?.toDouble(),
-    thursday: (json['thursday'] as num)?.toDouble(),
-    friday: (json['friday'] as num)?.toDouble(),
-    saturday: (json['saturday'] as num)?.toDouble(),
-  );
-}
+Idle _$IdleFromJson(Map<String, dynamic> json) => Idle(
+      sunday: (json['sunday'] as num?)?.toDouble(),
+      monday: (json['monday'] as num?)?.toDouble(),
+      tuesday: (json['tuesday'] as num?)?.toDouble(),
+      wednesday: (json['wednesday'] as num?)?.toDouble(),
+      thursday: (json['thursday'] as num?)?.toDouble(),
+      friday: (json['friday'] as num?)?.toDouble(),
+      saturday: (json['saturday'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$IdleToJson(Idle instance) => <String, dynamic>{
       'sunday': instance.sunday,

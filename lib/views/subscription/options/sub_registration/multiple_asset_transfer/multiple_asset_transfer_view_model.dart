@@ -17,14 +17,14 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class MultipleAssetTransferViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   MultipleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
   ReceivePort port = ReceivePort();
 
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   List<Transfer> _assetValues = [];
   List<Transfer> get assetValues => _assetValues;
@@ -40,7 +40,7 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
       final status = await permission.Permission.storage.request();
 
       if (status.isGranted) {
-        Directory baseStorage = await getExternalStorageDirectory();
+        Directory baseStorage = await (getExternalStorageDirectory() as Future<Directory>);
         int initialIndex = baseStorage.path.indexOf("data/");
         String path = baseStorage.path
             .replaceRange(initialIndex, baseStorage.path.length, "excel");
@@ -65,51 +65,51 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
       //assetValueData.clear();
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        Logger().d(data.path);
-        var bytes = File(data.path).readAsBytesSync();
-        var excel = Excel.decodeBytes(bytes);
+        // File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
+        // Logger().d(data.path);
+        // var bytes = File(data.path).readAsBytesSync();
+        // var excel = Excel.decodeBytes(bytes);
 
-        for (var i = 0;
-            i < excel.tables[excel.tables.keys.first].rows.length;
-            i++) {
-          final excelData = excel.tables[excel.tables.keys.first].rows[i];
+        // for (var i = 0;
+        //     i < excel.tables[excel.tables.keys.first].rows.length;
+        //     i++) {
+        //   final excelData = excel.tables[excel.tables.keys.first].rows[i];
 
-          if (i == 0) {
-            Logger().d("null");
-          } else {
-            Transfer assetTransferValues = Transfer(
-              deviceId: excelData[0].toString(),
-              machineModel: excelData[1].toString(),
-              machineSlNo: excelData[2].toString(),
-              dealerName: excelData[3].toString(),
-              dealerCode: excelData[4].toString(),
-              dealerEmailID: excelData[5].toString(),
-              dealerMobile: excelData[6].toString(),
-              dealerLanguage: excelData[7].toString(),
-              customerMobile: excelData[8].toString(),
-              customerLanguage: excelData[9].toString(),
-              primaryIndustry: excelData[10].toString(),
-              secondaryIndustry: excelData[11].toString(),
-              customerName: excelData[12].toString(),
-              customerCode: excelData[13].toString(),
-              customerEmailID: excelData[14].toString(),
-              commissioningDate: excelData[15].toString(),
-            );
-            assetValues.add(assetTransferValues);
-            Logger().wtf(excelData);
-          }
-        }
+        //   if (i == 0) {
+        //     Logger().d("null");
+        //   } else {
+        //     Transfer assetTransferValues = Transfer(
+        //       deviceId: excelData[0].toString(),
+        //       machineModel: excelData[1].toString(),
+        //       machineSlNo: excelData[2].toString(),
+        //       dealerName: excelData[3].toString(),
+        //       dealerCode: excelData[4].toString(),
+        //       dealerEmailID: excelData[5].toString(),
+        //       dealerMobile: excelData[6].toString(),
+        //       dealerLanguage: excelData[7].toString(),
+        //       customerMobile: excelData[8].toString(),
+        //       customerLanguage: excelData[9].toString(),
+        //       primaryIndustry: excelData[10].toString(),
+        //       secondaryIndustry: excelData[11].toString(),
+        //       customerName: excelData[12].toString(),
+        //       customerCode: excelData[13].toString(),
+        //       customerEmailID: excelData[14].toString(),
+        //       commissioningDate: excelData[15].toString(),
+        //     );
+        //     assetValues.add(assetTransferValues);
+        //     Logger().wtf(excelData);
+        //   }
+        // }
 
-        _dataLoaded = true;
-        notifyListeners();
-        hideLoadingDialog();
+        // _dataLoaded = true;
+        // notifyListeners();
+        // hideLoadingDialog();
       } else {
-        snackbarService.showSnackbar(message: "Permission Denied");
+        snackbarService!.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();
       }
     } catch (e) {
-      snackbarService.showSnackbar(
+      snackbarService!.showSnackbar(
           message: "Permission Denied Only Read Files From External Storage");
       hideLoadingDialog();
     }
@@ -137,10 +137,10 @@ class MultipleAssetTransferViewModel extends InsiteViewModel {
     );
     _transferData.add(deviceTransferValues);
 
-    var result = await _subscriptionService.postSingleTransferRegistration(
-        transferData: _transferData);
+    var result = await (_subscriptionService!.postSingleTransferRegistration(
+        transferData: _transferData) as Future<AssetTransferData>);
 
-    final String success = result.status;
+    final String? success = result.status;
 
     notifyListeners();
     return success;

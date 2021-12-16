@@ -4,7 +4,7 @@ part 'prefill_customer_details.g.dart';
 @JsonSerializable()
 class CustomerDetails {
   @JsonKey(name: "result")
-  CustomerResult customerResult;
+  CustomerResult? customerResult;
   CustomerDetails({this.customerResult});
 
   factory CustomerDetails.fromJson(Map<String, dynamic> json) =>
@@ -16,7 +16,7 @@ class CustomerDetails {
 @JsonSerializable()
 class CustomerResult {
   @JsonKey(name: "Customer")
-  CustomerData customerData;
+  CustomerData? customerData;
 
   CustomerResult({this.customerData});
 
@@ -29,11 +29,11 @@ class CustomerResult {
 @JsonSerializable()
 class CustomerData {
   @JsonKey(name: "Name")
-  String name;
+  String? name;
   @JsonKey(name: "Code")
-  String code;
+  String? code;
   @JsonKey(name: "Email")
-  String email;
+  String? email;
 
   CustomerData({this.name, this.code, this.email});
 

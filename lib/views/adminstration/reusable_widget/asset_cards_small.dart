@@ -7,12 +7,12 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class AssetCardsSmall extends StatefulWidget {
-  final String icon;
-  final String headerText;
-  final double height;
+  final String? icon;
+  final String? headerText;
+  final double? height;
   final bool showExapansionMenu;
-  final List<AdminAssetsButtonType> buttonTitle;
-  final Function(AdminAssetsButtonType value) onCallbackSelected;
+  final List<AdminAssetsButtonType>? buttonTitle;
+  final Function(AdminAssetsButtonType value)? onCallbackSelected;
 
   AssetCardsSmall(
       {this.icon,
@@ -55,7 +55,7 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
                   width: 15,
                 ),
                 InsiteText(
-                    text: widget.headerText.toUpperCase(),
+                    text: widget.headerText!.toUpperCase(),
                     fontWeight: FontWeight.w700,
                     size: 12.0),
               ],
@@ -68,7 +68,7 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
               height: 8,
             ),
             SvgPicture.asset(
-              widget.icon,
+              widget.icon!,
               height: 24,
               width: 24,
               color: Theme.of(context).iconTheme.color,
@@ -78,7 +78,7 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
             ),
             Flexible(
               child: ListView.builder(
-                  itemCount: widget.buttonTitle.length,
+                  itemCount: widget.buttonTitle!.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (builder, index) {
@@ -86,13 +86,13 @@ class _AssetCardsSmallState extends State<AssetCardsSmall> {
                         height: MediaQuery.of(context).size.height * 0.043,
                         margin: EdgeInsets.all(4),
                         title: Utils.getAdminModuleMenuTitle(
-                            widget.buttonTitle[index]),
+                            widget.buttonTitle![index]),
                         textColor: white,
                         fontSize: 10,
                         onTap: () {
                           AdminAssetsButtonType value =
-                              widget.buttonTitle[index];
-                          widget.onCallbackSelected(value);
+                              widget.buttonTitle![index];
+                          widget.onCallbackSelected!(value);
                         });
                   }),
             )

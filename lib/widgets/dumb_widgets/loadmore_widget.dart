@@ -5,7 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'insite_progressbar.dart';
 
 class LoadMore extends StatelessWidget {
-  const LoadMore({Key key}) : super(key: key);
+  const LoadMore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,14 @@ class LoadMore extends StatelessWidget {
 }
 
 class LoadMoreText extends StatelessWidget {
-  final VoidCallback onClick;
+  final VoidCallback? onClick;
   const LoadMoreText({this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onClick();
+        onClick!();
       },
       child: Container(
         height: 48,

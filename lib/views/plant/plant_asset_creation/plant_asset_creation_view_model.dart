@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:excel/excel.dart';
@@ -18,25 +19,25 @@ import 'package:path_provider/path_provider.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PlantAssetCreationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _localService = locator<LocalService>();
+  LocalService? _localService = locator<LocalService>();
 
   PlantAssetCreationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
 
-  var _plantService = locator<PlantHeirarchyAssetService>();
+  PlantHeirarchyAssetService? _plantService = locator<PlantHeirarchyAssetService>();
 
-  int selectedIndex;
+  late int selectedIndex;
 
-  String assetSerialValue;
+  String? assetSerialValue;
 
-  String deviceValue;
+  String? deviceValue;
 
-  String hourMeterValue;
+  String? hourMeterValue;
 
-  AssetCreationResetData result;
+  AssetCreationResetData? result;
 
   bool _issubmitButtonState = false;
   bool get issubmitButtonState => _issubmitButtonState;
@@ -58,7 +59,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   bool _containerState = false;
   bool get containerState => _containerState;
 
-  var _snackbarService = locator<SnackbarService>();
+  SnackbarService? _snackbarService = locator<SnackbarService>();
 
   List<AssetCreationModel> getassetCreationListData = [
     AssetCreationModel(
@@ -172,23 +173,23 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
       return null;
     } else {
       AssetCreationResponse data =
-          await _plantService.getAssetCreationData(value);
-      getassetCreationListData[index].model = data.result.modelName;
+          await (_plantService!.getAssetCreationData(value) as FutureOr<AssetCreationResponse>);
+      getassetCreationListData[index].model = data.result!.modelName;
       notifyListeners();
     }
   }
 
   bool validate() {
     try {
-      if (getassetCreationListData[selectedIndex].assetSerialNo.length < 9 &&
-          getassetCreationListData[selectedIndex].assetSerialNo.isEmpty) {
-        _snackbarService.showSnackbar(
+      if (getassetCreationListData[selectedIndex].assetSerialNo!.length < 9 &&
+          getassetCreationListData[selectedIndex].assetSerialNo!.isEmpty) {
+        _snackbarService!.showSnackbar(
             message:
                 "Request contains special character or character length is less than 8, Please recheck & retry!!!");
         return false;
-      } else if (getassetCreationListData[selectedIndex].deviceId.isEmpty &&
-          getassetCreationListData[selectedIndex].deviceId.length < 9) {
-        _snackbarService.showSnackbar(
+      } else if (getassetCreationListData[selectedIndex].deviceId!.isEmpty &&
+          getassetCreationListData[selectedIndex].deviceId!.length < 9) {
+        _snackbarService!.showSnackbar(
             message:
                 "Request contains special character or character length is less than 8, Please recheck & retry!!!");
         return false;
@@ -232,14 +233,14 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     showLoadingDialog();
 
     try {
-      String userId = await _localService.getUserId();
+      String? userId = await _localService!.getUserId();
       List<Asset> getAssetPayLoad = [];
       Logger().d(getassetCreationListData.length);
       getassetCreationListData.forEach((item) {
-        if (item.assetSerialNo.isEmpty &&
-            item.deviceId.isEmpty &&
-            item.model.isEmpty &&
-            item.hourMeter.isEmpty) {
+        if (item.assetSerialNo!.isEmpty &&
+            item.deviceId!.isEmpty &&
+            item.model!.isEmpty &&
+            item.hourMeter!.isEmpty) {
         } else {
           getAssetPayLoad.add(Asset(
               machineSerialNumber: item.assetSerialNo,
@@ -251,18 +252,18 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
       if (getAssetPayLoad.isEmpty) {
         return;
       } else {
-        result = await _plantService.submitAssetCreationData(
+        result = await _plantService!.submitAssetCreationData(
             AssetCreationPayLoad(
                 Source: "THC",
                 asset: getAssetPayLoad,
-                UserID: int.parse(userId)));
+                UserID: int.parse(userId!)));
       }
-      for (int i = 0; i < result.result.length; i++) {
+      for (int i = 0; i < result!.result!.length; i++) {
         getassetCreationListData.forEach((element) {
-          if (element.assetSerialNo.trim().toUpperCase() ==
-              result.result[i].vin) {
-            element.status = result.result[i].status;
-            element.message = result.result[i].message;
+          if (element.assetSerialNo!.trim().toUpperCase() ==
+              result!.result![i].vin) {
+            element.status = result!.result![i].status;
+            element.message = result!.result![i].message;
           }
         });
       }
@@ -282,7 +283,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         _isResetButtonState = true;
         _issubmitButtonState = false;
 
-        formKeyScreenTwo.currentState.reset();
+        formKeyScreenTwo.currentState!.reset();
         getassetCreationListData.forEach((element) {
           element.model = null;
         });
@@ -292,7 +293,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
         notifyListeners();
       } else {
-        formKeyScreenOne.currentState.reset();
+        formKeyScreenOne.currentState!.reset();
 
         getassetCreationListData.forEach((element) {
           element.model = "";
@@ -309,14 +310,14 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   downloadAssetCreationData() async {
     try {
       showLoadingDialog();
-      Directory path = await getExternalStorageDirectory();
-      AssetCreationResetData result =
-          await _plantService.downloadAssetCreationData();
+      Directory? path = await getExternalStorageDirectory();
+      AssetCreationResetData? result =
+          await _plantService!.downloadAssetCreationData();
       if (result != null) {
         final Excel excelSheet = Excel.createExcel();
         var sheetObj = excelSheet.sheets.values.first;
-        for (var i = 0; i < result.result.length; i++) {
-          final excelDataInsert = result.result[i];
+        for (var i = 0; i < result.result!.length; i++) {
+          final excelDataInsert = result.result![i];
           if (i == 0) {
             sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
             sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
@@ -339,13 +340,13 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
           }
         }
 
-        excelSheet.encode().then((onValue) {
-          File("${path.path}/Asset Creation_export_20211130183645.xlsx")
-            ..createSync(recursive: true)
-            ..writeAsBytesSync(onValue)
-            ..open(mode: FileMode.read);
-        });
-        snackbarService.showSnackbar(message: "File saved in ${path.path}");
+        // excelSheet.encode().then((onValue) {
+        //   File("${path.path}/Asset Creation_export_20211130183645.xlsx")
+        //     ..createSync(recursive: true)
+        //     ..writeAsBytesSync(onValue)
+        //     ..open(mode: FileMode.read);
+        // });
+        snackbarService!.showSnackbar(message: "File saved in ${path!.path}");
         Logger().w("File saved in ${path.path}");
 
         hideLoadingDialog();

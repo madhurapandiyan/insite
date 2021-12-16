@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomDatePicker extends StatelessWidget {
-  final TextEditingController controller;
-  final VoidCallback voidCallback;
+  final TextEditingController? controller;
+  final VoidCallback? voidCallback;
   const CustomDatePicker({this.controller, this.voidCallback});
 
   @override
@@ -12,13 +12,13 @@ class CustomDatePicker extends StatelessWidget {
       style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w900,
-          color: Theme.of(context).textTheme.bodyText1.color),
+          color: Theme.of(context).textTheme.bodyText1!.color),
       decoration: InputDecoration(
         hintText: "  MM/DD/YYYY",
         hintStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
-            color: Theme.of(context).textTheme.bodyText1.color),
+            color: Theme.of(context).textTheme.bodyText1!.color),
         suffixIcon: IconButton(
             padding: EdgeInsets.only(bottom: 3.0),
             icon: Icon(
@@ -27,7 +27,7 @@ class CustomDatePicker extends StatelessWidget {
               size: 14,
             ),
             onPressed: () {
-              voidCallback();
+              voidCallback!();
             }),
         border: InputBorder.none,
       ),

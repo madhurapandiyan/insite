@@ -3,7 +3,7 @@ part 'get_asset_details_by_serial_no.g.dart';
 
 @JsonSerializable()
 class AssetDetailsBySerialNo {
-  List<ResultsValues> result;
+  List<ResultsValues>? result;
   AssetDetailsBySerialNo({this.result});
 
   factory AssetDetailsBySerialNo.fromJson(Map<String, dynamic> json) =>
@@ -15,10 +15,10 @@ class AssetDetailsBySerialNo {
 @JsonSerializable()
 class ResultsValues {
   @JsonKey(name: "Model")
-  String model;
+  String? model;
 
   @JsonKey(name: "GPSDeviceID")
-  String deviceId;
+  String? deviceId;
 
   ResultsValues({this.model, this.deviceId});
 

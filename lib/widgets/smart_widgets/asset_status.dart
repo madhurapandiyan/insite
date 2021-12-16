@@ -9,10 +9,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetStatus extends StatefulWidget {
-  final List<ChartSampleData> statusChartData;
-  final bool isLoading;
-  final bool isRefreshing;
-  final Function(FilterData) onFilterSelected;
+  final List<ChartSampleData>? statusChartData;
+  final bool? isLoading;
+  final bool? isRefreshing;
+  final Function(FilterData)? onFilterSelected;
   AssetStatus(
       {this.statusChartData,
       this.isLoading,
@@ -92,7 +92,7 @@ class _AssetStatusState extends State<AssetStatus> {
               thickness: 1.0,
               color: Theme.of(context).dividerColor,
             ),
-            (widget.isLoading || widget.isRefreshing)
+            (widget.isLoading! || widget.isRefreshing!)
                 ? Expanded(child: InsiteProgressBar())
                 : Row(
                     children: [
@@ -136,17 +136,17 @@ class _AssetStatusState extends State<AssetStatus> {
                               },
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: widget.statusChartData.length,
+                              itemCount: widget.statusChartData!.length,
                               scrollDirection: Axis.vertical,
                               padding: EdgeInsets.symmetric(horizontal: 5.0),
                               itemBuilder: (context, index) {
                                 ChartSampleData assetStatusData =
-                                    widget.statusChartData[index];
+                                    widget.statusChartData![index];
                                 return AssetStatusWidget(
                                   chartColor: colors[index],
                                   label: assetStatusData.x,
                                   callBack: () {
-                                    widget.onFilterSelected(FilterData(
+                                    widget.onFilterSelected!(FilterData(
                                         isSelected: true,
                                         count: assetStatusData.y.toString(),
                                         title: assetStatusData.x,
@@ -166,9 +166,9 @@ class _AssetStatusState extends State<AssetStatus> {
 
   List<DoughnutSeries<ChartSampleData, String>> _getLegendDefaultSeries() {
     if (widget.statusChartData != null) {
-      for (int i = widget.statusChartData.length - 1; i >= 0; i--) {
-        if (widget.statusChartData[i].y.round() == 0) {
-          widget.statusChartData.removeAt(i);
+      for (int i = widget.statusChartData!.length - 1; i >= 0; i--) {
+        if (widget.statusChartData![i].y!.round() == 0) {
+          widget.statusChartData!.removeAt(i);
         }
       }
     }
@@ -184,7 +184,7 @@ class _AssetStatusState extends State<AssetStatus> {
               connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
               textStyle: new TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal),

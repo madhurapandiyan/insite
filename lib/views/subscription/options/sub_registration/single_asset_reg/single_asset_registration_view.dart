@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
-import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/base_autocomplete.dart';
-import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart';
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/custom_auto_complete_widget.dart';
-import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
@@ -24,8 +20,8 @@ import 'single_asset_registration_view_model.dart';
 class SingleAssetRegistrationView extends StatefulWidget {
   //final String status;
   SingleAssetRegistrationView({this.filterKey, this.filterType});
-  final String filterKey;
-  final PLANTSUBSCRIPTIONFILTERTYPE filterType;
+  final String? filterKey;
+  final PLANTSUBSCRIPTIONFILTERTYPE? filterType;
 
   @override
   _SingleAssetRegistrationViewState createState() =>
@@ -44,9 +40,9 @@ class _SingleAssetRegistrationViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetRegistrationViewModel>.reactive(
       builder: (BuildContext context,
-          SingleAssetRegistrationViewModel viewModel, Widget _) {
+          SingleAssetRegistrationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -96,18 +92,22 @@ class _SingleAssetRegistrationViewState
                                                   : CustomAutoCompleteWidget(
                                                       onChange: (value) {
                                                         viewModel
-                                                            .getSubcriptionDeviceListData(name: value);
+                                                            .getSubcriptionDeviceListData(
+                                                                name: value);
                                                       },
                                                       textBoxTitle:
                                                           "Device ID:",
                                                       validator:
-                                                          defaultCustomFieldValidator,
+                                                          defaultCustomFieldValidator
+                                                              as String Function(
+                                                                  String)?,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
                                                           (selectedString) {
                                                         viewModel
-                                                            .onSelectedDeviceId(selectedString);
+                                                            .onSelectedDeviceId(
+                                                                selectedString);
                                                       },
                                                       controller: viewModel
                                                           .deviceIdController,
@@ -123,7 +123,9 @@ class _SingleAssetRegistrationViewState
                                                                 value);
                                                       },
                                                       validator:
-                                                          defaultCustomFieldValidator,
+                                                          defaultCustomFieldValidator
+                                                              as String Function(
+                                                                  String)?,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
@@ -164,8 +166,8 @@ class _SingleAssetRegistrationViewState
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color,
+                                                          .bodyText1!
+                                                          .color!,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -177,9 +179,9 @@ class _SingleAssetRegistrationViewState
                                                       : viewModel.assetModel,
                                                   items: viewModel.modelNames,
                                                   // enableHint: false,
-                                                  onChanged: (String value) {
+                                                  onChanged: (String? value) {
                                                     viewModel.updateModelValue(
-                                                        value);
+                                                        value!);
                                                   },
                                                 ),
                                               ),
@@ -219,8 +221,8 @@ class _SingleAssetRegistrationViewState
                                                           color:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .bodyText1
-                                                                  .color,
+                                                                  .bodyText1!
+                                                                  .color!,
                                                         ),
                                                         borderRadius:
                                                             BorderRadius
@@ -236,7 +238,7 @@ class _SingleAssetRegistrationViewState
                                                                 null
                                                             ? DateTime.now()
                                                             : viewModel
-                                                                .pickedDate,
+                                                                .pickedDate!,
                                                         firstDate: DateTime
                                                                 .now()
                                                             .subtract(Duration(
@@ -281,7 +283,9 @@ class _SingleAssetRegistrationViewState
                                                                 .digitsOnly
                                                           ],
                                                           validator:
-                                                              defaultCustomFieldValidator)),
+                                                              defaultCustomFieldValidator
+                                                                  as dynamic Function(
+                                                                      String)?)),
                                                 ],
                                               ),
                                             ],
@@ -314,8 +318,8 @@ class _SingleAssetRegistrationViewState
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color,
+                                                          .bodyText1!
+                                                          .color!,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -326,7 +330,7 @@ class _SingleAssetRegistrationViewState
                                                   //  enableHint: false,
                                                   onChanged: (value) {
                                                     viewModel.updateplantDEtail(
-                                                        value);
+                                                        value!);
                                                   },
                                                 ),
                                               ),
@@ -380,7 +384,7 @@ class _SingleAssetRegistrationViewState
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedDealerNameTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items: viewModel.dealerId,
                                                       textBoxTitle:
@@ -403,7 +407,7 @@ class _SingleAssetRegistrationViewState
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedDealerCodeTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items:
                                                           viewModel.dealerCode,
@@ -447,7 +451,9 @@ class _SingleAssetRegistrationViewState
                                                   controller: viewModel
                                                       .deviceEmailController,
                                                   validator:
-                                                      defaultCustomFieldValidator,
+                                                      defaultCustomFieldValidator
+                                                          as dynamic Function(
+                                                              String)?,
                                                 ),
                                               ),
                                               SizedBox(
@@ -502,7 +508,7 @@ class _SingleAssetRegistrationViewState
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedNameTile(
-                                                                value);
+                                                                value!);
                                                         //FocusNode().unfocus();
                                                       },
                                                       items:
@@ -526,7 +532,7 @@ class _SingleAssetRegistrationViewState
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedCodeTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       controller: viewModel
                                                           .customerCodeController,
@@ -573,7 +579,9 @@ class _SingleAssetRegistrationViewState
                                                   controller: viewModel
                                                       .customerEmailController,
                                                   validator:
-                                                      defaultCustomFieldValidator,
+                                                      defaultCustomFieldValidator
+                                                          as dynamic Function(
+                                                              String)?,
                                                 ),
                                               ),
                                             ],
@@ -583,10 +591,11 @@ class _SingleAssetRegistrationViewState
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState!.validate()) {
                                           viewModel.getTotalDataDetails();
 
-                                          Logger().wtf(' datalength: ${viewModel.totalList}');
+                                          Logger().wtf(
+                                              ' datalength: ${viewModel.totalList}');
 
                                           await showGeneralDialog(
                                             context: context,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -19,19 +18,19 @@ class LogoutView extends StatefulWidget {
 
 class _LogoutViewState extends State<LogoutView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
+  StreamSubscription? _onDestroy;
+  StreamSubscription<String>? _onUrlChanged;
+  StreamSubscription<WebViewStateChanged>? _onStateChanged;
+  String? token;
 
-  final _loginService = locator<LoginService>();
+  final LoginService? _loginService = locator<LoginService>();
 
   @override
   void dispose() {
     Logger().i("dispose state splash view");
-    _onDestroy.cancel();
-    _onUrlChanged.cancel();
-    _onStateChanged.cancel();
+    _onDestroy!.cancel();
+    _onUrlChanged!.cancel();
+    _onStateChanged!.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
@@ -67,10 +66,10 @@ class _LogoutViewState extends State<LogoutView> {
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print("onStateChanged: ${state.type} ${state.url}");
-      if (state == WebViewState.finishLoad) {
+      if (state.type == WebViewState.finishLoad) {
         isLoading = false;
         setState(() {});
-      } else if (state == WebViewState.startLoad) {
+      } else if (state.type == WebViewState.startLoad) {
         isLoading = true;
       }
     });
@@ -79,7 +78,7 @@ class _LogoutViewState extends State<LogoutView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("URL changed: $url");
-        if (url != null &&
+        if (url.isEmpty &&
             url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
           print("URL changed with access token: $url");
           try {
@@ -111,14 +110,14 @@ class _LogoutViewState extends State<LogoutView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    _loginService!.getUser(token, true);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LogoutViewModel>.reactive(
-      builder: (BuildContext context, LogoutViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LogoutViewModel viewModel, Widget? _) {
         return WillPopScope(
           onWillPop: () {
             return onBackPressed();

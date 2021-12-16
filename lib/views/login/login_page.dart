@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
-      builder: (BuildContext context, LoginViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
         return Scaffold(
           body: Container(
             height: MediaQuery.of(context).size.height,
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: LoginTextField(
                                 controller: viewModel.usernameController,
                                 validator: (email) {
-                                  if (email.isEmpty ||
+                                  if (email!.isEmpty ||
                                       !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                           .hasMatch(email)) {
                                     return "Enter a Email ID";
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                                 obsecure: true,
                                 controller: viewModel.passwordController,
                                 validator: (pass) {
-                                  if (pass.isEmpty) {
+                                  if (pass!.isEmpty) {
                                     return "Enter a Password";
                                   }
                                   return null;

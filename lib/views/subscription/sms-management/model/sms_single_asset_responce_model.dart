@@ -3,9 +3,9 @@ part 'sms_single_asset_responce_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class SingleAssetResponce {
-  final String code;
-  final String status;
-  final List<SingleAssetModelResponce> result;
+  final String? code;
+  final String? status;
+  final List<SingleAssetModelResponce>? result;
   SingleAssetResponce({this.code, this.status, this.result});
 
     factory SingleAssetResponce.fromJson(Map<String, dynamic> json) =>
@@ -16,10 +16,10 @@ class SingleAssetResponce {
 
 @JsonSerializable()
 class SingleAssetModelResponce {
-  final String GPSDeviceID;
-  final String SerialNumber;
-  final String Model;
-  final String StartDate;
+  final String? GPSDeviceID;
+  final String? SerialNumber;
+  final String? Model;
+  final String? StartDate;
   SingleAssetModelResponce({this.GPSDeviceID,this.SerialNumber,this.Model,this.StartDate});
 
   factory SingleAssetModelResponce.fromJson(Map<String, dynamic> json) =>

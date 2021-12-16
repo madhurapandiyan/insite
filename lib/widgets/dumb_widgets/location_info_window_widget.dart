@@ -7,12 +7,12 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'insite_text.dart';
 
 class LocationInfoWindowWidget extends StatelessWidget {
-  final int assetCount;
-  final String infoText;
-  final VoidCallback onCustomWindowClose;
-  final VoidCallback onFleetPageSelectedTap;
-  final VoidCallback onTapWithZoom;
-  final ScreenType type;
+  final int? assetCount;
+  final String? infoText;
+  final VoidCallback? onCustomWindowClose;
+  final VoidCallback? onFleetPageSelectedTap;
+  final VoidCallback? onTapWithZoom;
+  final ScreenType? type;
   LocationInfoWindowWidget(
       {this.assetCount,
       this.type,
@@ -30,7 +30,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border:
-                Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+                Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -62,7 +62,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 38, top: 5.0, bottom: 5.0),
                   child: InsiteText(
-                    text: assetCount > 1
+                    text: assetCount! > 1
                         ? assetCount.toString() + " " + "Assets"
                         : "Serialnumber \n $infoText",
                     size: 13.0,
@@ -78,7 +78,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: Theme.of(context).buttonColor,
-                  title: assetCount > 1
+                  title: assetCount! > 1
                       ? type == ScreenType.DASHBOARD
                           ? "  Fleet List  "
                           : "  Fleet List  "
@@ -93,7 +93,7 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.06,
                   fontSize: 12,
                   bgColor: Theme.of(context).buttonColor,
-                  title: assetCount > 1
+                  title: assetCount! > 1
                       ? type == ScreenType.DASHBOARD
                           ? " Location "
                           : "Zoom to cluster"

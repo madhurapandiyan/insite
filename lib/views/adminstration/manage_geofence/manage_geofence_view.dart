@@ -19,7 +19,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
     var mediaQuery = MediaQuery.of(context);
     return ViewModelBuilder<ManageGeofenceViewModel>.reactive(
       builder:
-          (BuildContext context, ManageGeofenceViewModel viewModel, Widget _) {
+          (BuildContext context, ManageGeofenceViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             body: viewModel.isLoading
@@ -48,7 +48,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           ],
                         ),
                       ),
-                      viewModel.geofence.Geofences.isEmpty
+                      viewModel.geofence!.Geofences!.isEmpty
                           ? Expanded(
                               child: Center(
                                 child: InsiteText(
@@ -59,14 +59,14 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             )
                           : Expanded(
                               child: ListView.builder(
-                                itemCount: viewModel.geofence.Geofences.length,
+                                itemCount: viewModel.geofence!.Geofences!.length,
                                 itemBuilder: (BuildContext context, int i) {
-                                  var model = viewModel.geofence.Geofences;
+                                  var model = viewModel.geofence!.Geofences!;
                                   return ManageGeofenceWidget(
                                     encodedPolyline: viewModel.listOfEncoded[i],
                                     isFav: model[i].IsFavorite,
                                     onFavourite: (uid) {
-                                      viewModel.markFavouriteStatus(uid, i);
+                                      viewModel.markFavouriteStatus(uid!, i);
                                     },
                                     onNavigation: () {
                                       viewModel

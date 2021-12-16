@@ -13,16 +13,16 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class DeviceReplacementViewModel extends InsiteViewModel {
-  Logger log;
-  final replacementService = locator<ReplacementService>();
-  final _localService = locator<LocalService>();
+  Logger? log;
+  final ReplacementService? replacementService = locator<ReplacementService>();
+  final LocalService? _localService = locator<LocalService>();
 
   DeviceReplacementViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     getUserId();
   }
 
-  String userId;
+  String? userId;
   bool initialAlign = false;
   bool finalAlign = false;
   bool showingOldPreview = false;
@@ -33,8 +33,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   List<DeviceContainsList> _searchList = [];
   List<DeviceContainsList> get searchList => _searchList;
 
-  DeviceSearchModelResponse _deviceSearchModelResponse;
-  DeviceSearchModelResponse get deviceSearchModelResponse =>
+  DeviceSearchModelResponse? _deviceSearchModelResponse;
+  DeviceSearchModelResponse? get deviceSearchModelResponse =>
       _deviceSearchModelResponse;
 
   var searchTextController = TextEditingController();
@@ -50,8 +50,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   String initialvalue = "Select Reason *";
 
-  ReplaceDeviceModel _replaceDeviceModelData;
-  ReplaceDeviceModel get replaceDeviceModelData => _replaceDeviceModelData;
+  ReplaceDeviceModel? _replaceDeviceModelData;
+  ReplaceDeviceModel? get replaceDeviceModelData => _replaceDeviceModelData;
 
   onDropDownChanged(String value) {
     initialvalue = value;
@@ -59,7 +59,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   getUserId() async {
-    userId = await _localService.getUserId();
+    userId = await _localService!.getUserId();
     Logger().d(userId);
   }
 
@@ -92,14 +92,14 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       notifyListeners();
       return null;
     } else {
-      DeviceSearchModel data =
-          await replacementService.getDeviceSearchModel(searchedWord);
-      data.result.forEach((element) {
+      DeviceSearchModel? data =
+          await (replacementService!.getDeviceSearchModel(searchedWord) as Future<DeviceSearchModel>);
+      data.result!.forEach((element) {
         _searchList = element;
       });
       Logger().w(_searchList.length);
       if (_searchList.isEmpty) {
-        snackbarService.showSnackbar(message: "No Data Found");
+        snackbarService!.showSnackbar(message: "No Data Found");
       }
 
       notifyListeners();
@@ -108,7 +108,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onSelectedDeviceId(int i) {
-    searchTextController.text = searchList[i].containsList;
+    searchTextController.text = searchList[i].containsList!;
     searchList.clear();
     notifyListeners();
   }
@@ -116,16 +116,16 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   onSelectedNewDeviceId(int i) {
     Logger().e("uiyoih");
     replaceDeviceIdController.text =
-        _replaceDeviceModelData.result.first[i].GPSDeviceID;
+        _replaceDeviceModelData!.result!.first[i].GPSDeviceID!;
   }
 
   onSearchingDeviceId() async {
     try {
       showLoadingDialog();
       _searchList.clear();
-      _deviceSearchModelResponse = await replacementService
+      _deviceSearchModelResponse = await replacementService!
           .getDeviceSearchModelResponse(searchTextController.text);
-      Logger().e(_deviceSearchModelResponse.result.toJson());
+      Logger().e(_deviceSearchModelResponse!.result!.toJson());
       initialAlign = !initialAlign;
 
       notifyListeners();
@@ -140,12 +140,12 @@ class DeviceReplacementViewModel extends InsiteViewModel {
     try {
       if (searchWord.length < 4) {
         _replaceDeviceModelData = null;
-        _replaceDeviceModelData.result.last.clear();
+        _replaceDeviceModelData!.result!.last.clear();
         notifyListeners();
       } else {
         _replaceDeviceModelData =
-            await replacementService.getReplaceDeviceModel(searchWord);
-        Logger().d(_replaceDeviceModelData.result.last.first.toJson());
+            await replacementService!.getReplaceDeviceModel(searchWord);
+        Logger().d(_replaceDeviceModelData!.result!.last.first.toJson());
         notifyListeners();
       }
     } catch (e) {}
@@ -158,21 +158,21 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       notifyListeners();
       NewDeviceIdDetail NewdeviceData = NewDeviceIdDetail(
           Reason: initialvalue,
-          VIN: deviceSearchModelResponse.result.VIN,
+          VIN: deviceSearchModelResponse!.result!.VIN,
           NewDeviceId: replaceDeviceIdController.text,
-          OldDeviceId: deviceSearchModelResponse.result.GPSDeviceID);
+          OldDeviceId: deviceSearchModelResponse!.result!.GPSDeviceID);
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
-          UserID: int.parse(userId) ?? 58839,
+          UserID: int.parse(userId!) ,
           Version: 2.1,
           device: [NewdeviceData]);
 
       Logger().d(replacementData.toJson());
-      var data = await replacementService.savingReplacement(replacementData);
+      var data = await replacementService!.savingReplacement(replacementData);
       searchList.clear();
-      navigationService.clearTillFirstAndShowView(
+      navigationService!.clearTillFirstAndShowView(
         DeviceReplacementStatusView(),
       );
       hideLoadingDialog();

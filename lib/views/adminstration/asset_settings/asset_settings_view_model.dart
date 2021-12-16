@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -10,9 +12,9 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AssetSettingsViewModel extends InsiteViewModel {
-  Logger log;
-  var _manageUserService = locator<AssetAdminManagerUserService>();
-  var _navigationservice = locator<NavigationService>();
+  late Logger log;
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  NavigationService? _navigationservice = locator<NavigationService>();
 
   int pageSize = 20;
   int pageNumber = 1;
@@ -29,7 +31,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   List<AssetSettingsRow> _assets = [];
   List<AssetSettingsRow> get asset => _assets;
@@ -46,9 +48,9 @@ class AssetSettingsViewModel extends InsiteViewModel {
   AssetSettingsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -59,10 +61,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   getAssetSettingListData() async {
     ManageAssetConfiguration result =
-        await _manageUserService.getAssetSettingData(pageSize, pageNumber);
+        await (_manageUserService!.getAssetSettingData(pageSize, pageNumber) as FutureOr<ManageAssetConfiguration>);
 
-    if (result.assetSettings.isNotEmpty) {
-      for (var assetSetting in result.assetSettings) {
+    if (result.assetSettings!.isNotEmpty) {
+      for (var assetSetting in result.assetSettings!) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
@@ -73,7 +75,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
       notifyListeners();
     } else {
-      for (var assetSetting in result.assetSettings) {
+      for (var assetSetting in result.assetSettings!) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
@@ -150,10 +152,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onClickEditselected() {
-    List<String> assetUids = [];
+    List<String?> assetUids = [];
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
-        assetUids.add(_assets[i].assetSettings.assetUid);
+        assetUids.add(_assets[i].assetSettings!.assetUid);
       }
     }
 
@@ -170,8 +172,8 @@ class AssetSettingsViewModel extends InsiteViewModel {
     }
   }
 
-  onCardButtonSelected(List<String> assetUid) async {
-    var result = await _navigationservice.navigateWithTransition(
+  onCardButtonSelected(List<String?> assetUid) async {
+    var result = await _navigationservice!.navigateWithTransition(
         AssetSettingsFilterView(
           assetUids: assetUid,
         ),
@@ -190,17 +192,17 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onItemSelectConfigure() {
-    String configureAssetUId;
+    String? configureAssetUId;
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
-        configureAssetUId = _assets[i].assetSettings.assetUid;
+        configureAssetUId = _assets[i].assetSettings!.assetUid;
       }
     }
     onClickRespectiveConfigurePage(configureAssetUId);
   }
 
-  onClickRespectiveConfigurePage(String assetUid) {
-    _navigationservice.navigateWithTransition(
+  onClickRespectiveConfigurePage(String? assetUid) {
+    _navigationservice!.navigateWithTransition(
         AssetSettingsConfigureView(
           assetUids: assetUid,
         ),

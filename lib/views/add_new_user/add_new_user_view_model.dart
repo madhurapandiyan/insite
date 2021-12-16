@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -12,8 +14,8 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
-  Logger log;
-  var _manageUserService = locator<AssetAdminManagerUserService>();
+  Logger? log;
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
 
   List<ApplicationAccessData> _assetsData = [];
   List<ApplicationAccessData> get assetsData => _assetsData;
@@ -28,7 +30,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   bool _setDefaultPreferenceToUser = false;
   bool get setDefaultPreferenceToUser => _setDefaultPreferenceToUser;
 
-  Users user;
+  Users? user;
   List<String> dropDownlist = [
     "Administrator",
     "Contributor",
@@ -52,7 +54,7 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   List<String> languageTypeValueList = ["Tamil", "English"];
 
-  String jobTypeValue;
+  String? jobTypeValue;
 
   onJobTypeSelected(value) {
     jobTypeValue = value;
@@ -69,15 +71,15 @@ class AddNewUserViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  String jobTitleValue;
-  String languageTypeValue;
+  String? jobTitleValue;
+  String? languageTypeValue;
 
-  int lastApplicationAccessSelectedIndex;
-  String dropDownValue;
+  int? lastApplicationAccessSelectedIndex;
+  String? dropDownValue;
 
-  AddNewUserViewModel(Users user) {
+  AddNewUserViewModel(Users? user) {
     this.user = user;
-    _manageUserService.setUp();
+    _manageUserService!.setUp();
     this.log = getLogger(this.runtimeType.toString());
     showLoadingDialog();
     Future.delayed(Duration(seconds: 1), () {
@@ -96,7 +98,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   onApplicationAccessSelection(int index) {
     Logger().i("onApplicationAccessSelection $index");
     try {
-      _assetsData[index].isSelected = !_assetsData[index].isSelected;
+      _assetsData[index].isSelected = !_assetsData[index].isSelected!;
       lastApplicationAccessSelectedIndex = index;
       print("lastApplicationAccessSelectedIndex:$index");
       notifyListeners();
@@ -108,13 +110,13 @@ class AddNewUserViewModel extends InsiteViewModel {
     dropDownValue = value;
     for (var i = 0; i < assetsData.length; i++) {
       var data = assetsData[i];
-      if (data.isSelected && !data.isPermissionSelected) {
+      if (data.isSelected! && !data.isPermissionSelected!) {
         assetsData[i].isPermissionSelected = true;
         var applicationData = ApplicationSelectedDropDown(
             accessData: data,
             value: value,
-            key: data.application.appUID,
-            applicationName: data.application.tpaasAppName);
+            key: data.application!.appUID,
+            applicationName: data.application!.tpaasAppName);
         applicationSelectedDropDownList.add(applicationData);
       }
     }
@@ -126,8 +128,8 @@ class AddNewUserViewModel extends InsiteViewModel {
       Logger().i("onPermissionSelected ${value.value}  $index");
       for (var i = 0; i < assetsData.length; i++) {
         var data = assetsData[i];
-        if (value.key == data.application.appUID) {
-          if (data.isPermissionSelected) {
+        if (value.key == data.application!.appUID) {
+          if (data.isPermissionSelected!) {
             assetsData[i].isSelected = false;
             assetsData[i].isPermissionSelected = false;
           }
@@ -140,12 +142,12 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getApplicationAccessData() async {
     Logger().i("getApplicationAccessData");
-    ApplicationData applicationData =
-        await _manageUserService.getApplicationsData();
-    if (applicationData != null && applicationData.applications.isNotEmpty) {
-      Logger().i("applications length ${applicationData.applications.length}");
-      for (var application in applicationData.applications.take(4)) {
-        if (application.enabled) {
+    ApplicationData? applicationData =
+        await _manageUserService!.getApplicationsData();
+    if (applicationData != null && applicationData.applications!.isNotEmpty) {
+      Logger().i("applications length ${applicationData.applications!.length}");
+      for (var application in applicationData.applications!.take(4)) {
+        if (application.enabled!) {
           _assetsData.add(ApplicationAccessData(
               application: application, isSelected: false));
         }
@@ -156,26 +158,26 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getUser() async {
     Logger().i("getUser ");
-    ManageUser result = await _manageUserService.getUser(user.userUid);
+    ManageUser? result = await _manageUserService!.getUser(user!.userUid);
     try {
       if (result != null) {
         this.user = result.user;
-        jobTypeValue = result.user.job_type;
-        jobTitleValue = result.user.job_title;
-        Logger().i("getUser ${result.user.application_access.length}");
-        for (var applicationAccess in result.user.application_access) {
+        jobTypeValue = result.user!.job_type;
+        jobTitleValue = result.user!.job_title;
+        Logger().i("getUser ${result.user!.application_access!.length}");
+        for (var applicationAccess in result.user!.application_access!) {
           for (int i = 0; i < assetsData.length; i++) {
             var data = assetsData[i];
-            if (data.application.tpaasAppName ==
+            if (data.application!.tpaasAppName ==
                 applicationAccess.applicationName) {
               assetsData[i].isSelected = true;
               assetsData[i].isPermissionSelected = true;
               Logger().i("getUser ${applicationAccess.role_name}");
               var applicationData = ApplicationSelectedDropDown(
                   accessData: data,
-                  applicationName: data.application.tpaasAppName,
+                  applicationName: data.application!.tpaasAppName,
                   value: applicationAccess.role_name,
-                  key: data.application.appUID);
+                  key: data.application!.appUID);
               applicationSelectedDropDownList.add(applicationData);
             }
           }
@@ -205,9 +207,9 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse roleDataResponse =
-            await _manageUserService.getRoles(data.applicationName);
-        for (int j = 0; j < roleDataResponse.role_list.length; j++) {
-          RoleData roleData = roleDataResponse.role_list[j];
+            await (_manageUserService!.getRoles(data.applicationName) as FutureOr<RoleDataResponse>);
+        for (int j = 0; j < roleDataResponse.role_list!.length; j++) {
+          RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
@@ -219,7 +221,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      UpdateResponse updateResponse = await _manageUserService.getSaveUserData(
+      UpdateResponse? updateResponse = await _manageUserService!.getSaveUserData(
           firstName,
           lastName,
           email,
@@ -232,12 +234,12 @@ class AddNewUserViewModel extends InsiteViewModel {
           zipcode,
           userType,
           roles,
-          user.userUid);
+          user!.userUid);
       hideLoadingDialog();
       if (updateResponse != null) {
-        snackbarService.showSnackbar(message: "Updated successfully");
+        snackbarService!.showSnackbar(message: "Updated successfully");
       } else {
-        snackbarService.showSnackbar(message: "Updating user failed");
+        snackbarService!.showSnackbar(message: "Updating user failed");
       }
     } catch (e) {
       hideLoadingDialog();
@@ -247,7 +249,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   onParticularItemSelected(String value) {
     for (int i = 0; i < assetsData.length; i++) {
       var data = assetsData[i];
-      if (!data.isPermissionSelected && data.isSelected) {
+      if (!data.isPermissionSelected! && data.isSelected!) {
         assetsData[i].isPermissionSelected = true;
       }
     }
@@ -284,9 +286,9 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse roleDataResponse =
-            await _manageUserService.getRoles(data.applicationName);
-        for (int j = 0; j < roleDataResponse.role_list.length; j++) {
-          RoleData roleData = roleDataResponse.role_list[j];
+            await (_manageUserService!.getRoles(data.applicationName) as FutureOr<RoleDataResponse>);
+        for (int j = 0; j < roleDataResponse.role_list!.length; j++) {
+          RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
@@ -298,7 +300,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      AddUser result = await _manageUserService.getAddUserData(
+      AddUser? result = await _manageUserService!.getAddUserData(
           firstName,
           lastName,
           email,
@@ -313,9 +315,9 @@ class AddNewUserViewModel extends InsiteViewModel {
           sso_id,
           roles);
       if (result != null) {
-        snackbarService.showSnackbar(message: "Added successfully");
+        snackbarService!.showSnackbar(message: "Added successfully");
       } else {
-        snackbarService.showSnackbar(message: "Adding user failed");
+        snackbarService!.showSnackbar(message: "Adding user failed");
       }
       hideLoadingDialog();
     } catch (e) {

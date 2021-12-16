@@ -6,7 +6,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class FleetKnob extends StatelessWidget {
   const FleetKnob({this.filterData});
 
-  final FilterData filterData;
+  final FilterData? filterData;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class FleetKnob extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               InsiteText(
-                text: filterData.count,
+                text: filterData!.count,
                 size: 14,
                 fontWeight: FontWeight.bold,
               ),
@@ -65,7 +65,7 @@ class FleetKnob extends StatelessWidget {
                 height: 10,
               ),
               InsiteText(
-                text: filterData.title.toUpperCase(),
+                text: filterData!.title!.toUpperCase(),
                 size: 12,
                 fontWeight: FontWeight.bold,
               )

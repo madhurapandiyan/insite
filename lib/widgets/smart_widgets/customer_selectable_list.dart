@@ -7,10 +7,10 @@ import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:logger/logger.dart';
 
 class CustomerSelectableList extends StatefulWidget {
-  final Function(AccountData) onSelected;
-  final AccountType selectionType;
-  final AccountData selectedData;
-  final List<AccountData> list;
+  final Function(AccountData)? onSelected;
+  final AccountType? selectionType;
+  final AccountData? selectedData;
+  final List<AccountData>? list;
   CustomerSelectableList(
       {this.onSelected, this.selectionType, this.list, this.selectedData});
 
@@ -19,21 +19,21 @@ class CustomerSelectableList extends StatefulWidget {
 }
 
 class _CustomerSelectableListState extends State<CustomerSelectableList> {
-  int selectedIndex;
-  AccountData selected;
-  List<AccountData> _list = [];
-  List<AccountData> _searchList = [];
+  int? selectedIndex;
+  AccountData? selected;
+  List<AccountData>? _list = [];
+  List<AccountData>? _searchList = [];
   TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     Logger().d("customer list");
-    Logger().d(widget.list.length);
+    Logger().d(widget.list!.length);
     selected = widget.selectedData != null ? widget.selectedData : null;
-    _list.clear();
+    _list!.clear();
     _list = widget.list;
     _searchList = _list;
-    Logger().i("init total list size " + _list.length.toString());
+    Logger().i("init total list size " + _list!.length.toString());
     _textEditingController.addListener(() {
       onSearchTextChanged(_textEditingController.text);
     });
@@ -45,17 +45,17 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
     if (text != null && text.trim().isNotEmpty) {
       List<AccountData> tempList = [];
       tempList.clear();
-      _list.forEach((item) {
-        if (item.value.DisplayName.toLowerCase().contains(text))
+      _list!.forEach((item) {
+        if (item.value!.DisplayName!.toLowerCase().contains(text))
           tempList.add(item);
       });
       _searchList = tempList;
-      Logger().i("total list size " + _list.length.toString());
-      Logger().i("searched list size " + _searchList.length.toString());
+      Logger().i("total list size " + _list!.length.toString());
+      Logger().i("searched list size " + _searchList!.length.toString());
       setState(() {});
     } else {
-      if (_searchList.isNotEmpty) {
-        _searchList.clear();
+      if (_searchList!.isNotEmpty) {
+        _searchList!.clear();
         selectedIndex = null;
         if (_textEditingController != null && text.isEmpty) {
           setState(() {});
@@ -84,19 +84,19 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
           ),
         ),
         Expanded(
-          child: _searchList.length != 0 ||
+          child: _searchList!.length != 0 ||
                   _textEditingController.text.isNotEmpty
               ? ListView.builder(
-                  itemCount: _searchList.length,
+                  itemCount: _searchList!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    Customer customer = _searchList[index].value;
+                    Customer customer = _searchList![index].value!;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
                         });
-                        widget.onSelected(AccountData(
+                        widget.onSelected!(AccountData(
                             selectionType: widget.selectionType,
                             value: customer));
                       },
@@ -109,7 +109,7 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                           children: [
                             Expanded(
                               child: Text(
-                                customer.DisplayName,
+                                customer.DisplayName!,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
@@ -130,16 +130,16 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                   },
                 )
               : ListView.builder(
-                  itemCount: _list.length,
+                  itemCount: _list!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    Customer customer = _list[index].value;
+                    Customer customer = _list![index].value!;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
                         });
-                        widget.onSelected(AccountData(
+                        widget.onSelected!(AccountData(
                             selectionType: widget.selectionType,
                             value: customer));
                       },
@@ -152,7 +152,7 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
                           children: [
                             Expanded(
                               child: Text(
-                                customer.DisplayName,
+                                customer.DisplayName!,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
@@ -186,7 +186,7 @@ class _CustomerSelectableListState extends State<CustomerSelectableList> {
       return selectedIndex != null && selectedIndex == index
           ? Theme.of(context).buttonColor
           : selected != null &&
-                  selected.value.CustomerUID == customer.CustomerUID
+                  selected!.value!.CustomerUID == customer.CustomerUID
               ? Theme.of(context).buttonColor
               : Theme.of(context).backgroundColor;
     }

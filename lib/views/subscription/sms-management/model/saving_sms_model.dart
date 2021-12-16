@@ -3,15 +3,15 @@ part 'saving_sms_model.g.dart';
 
 @JsonSerializable()
 class SavingSmsModel {
-  final String AssetSerial;
-  final String Name;
-  final String Mobile;
-  final String Language;
-  final String GPSDeviceID;
-  final String StartDate;
-  final String Model;
-  final String img;
-  final int UserID;
+  final String? AssetSerial;
+  final String? Name;
+  final String? Mobile;
+  final String? Language;
+  final String? GPSDeviceID;
+  final String? StartDate;
+  final String? Model;
+  final String? img;
+  final int? UserID;
   SavingSmsModel(
       {this.AssetSerial,
       this.GPSDeviceID,
@@ -30,10 +30,10 @@ class SavingSmsModel {
 
 @JsonSerializable()
 class SavingSmsResponce {
-  final int code;
-  final String status;
-  final String message;
-  final List<SavingSmsModel> AssetSerialNo;
+  final int? code;
+  final String? status;
+  final String? message;
+  final List<SavingSmsModel>? AssetSerialNo;
 
   SavingSmsResponce({this.AssetSerialNo, this.code, this.message, this.status});
   factory SavingSmsResponce.fromJson(Map<String, dynamic> json) =>

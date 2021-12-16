@@ -20,18 +20,18 @@ import 'package:logger/logger.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AssetLocationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _assetLocationHistoryService = locator<AssetLocationHistoryService>();
-  var _faultService = locator<FaultService>();
+  AssetLocationHistoryService? _assetLocationHistoryService = locator<AssetLocationHistoryService>();
+  FaultService? _faultService = locator<FaultService>();
 
-  AssetLocationHistory _assetLocationHistory;
-  AssetLocationHistory get assetLocationHistory => _assetLocationHistory;
+  AssetLocationHistory? _assetLocationHistory;
+  AssetLocationHistory? get assetLocationHistory => _assetLocationHistory;
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
 
-  HealthListResponse _healthListResponse;
-  HealthListResponse get healthListResponse => _healthListResponse;
+  HealthListResponse? _healthListResponse;
+  HealthListResponse? get healthListResponse => _healthListResponse;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -43,19 +43,19 @@ class AssetLocationViewModel extends InsiteViewModel {
   List<LatLng> latlngs = [];
   int index = 1;
 
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
-  ScreenType _pageType = ScreenType.LOCATION;
-  ScreenType get pageType => _pageType;
+  ScreenType? _pageType = ScreenType.LOCATION;
+  ScreenType? get pageType => _pageType;
 
   AssetLocationViewModel(detail, type) {
     this._assetDetail = detail;
     this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _assetLocationHistoryService.setUp();
-    _faultService.setUp();
+    _assetLocationHistoryService!.setUp();
+    _faultService!.setUp();
     customInfoWindowController = CustomInfoWindowController();
     Future.delayed(Duration(seconds: 1), () {
       if (_pageType == ScreenType.HEALTH) {
@@ -68,8 +68,8 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   getAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
-    AssetLocationHistory result = await _assetLocationHistoryService
-        .getAssetLocationHistory(startDate, endDate, assetDetail.assetUid);
+    AssetLocationHistory? result = await _assetLocationHistoryService!
+        .getAssetLocationHistory(startDate, endDate, assetDetail!.assetUid);
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
@@ -84,8 +84,8 @@ class AssetLocationViewModel extends InsiteViewModel {
     latlngs.cast();
     _refreshing = true;
     notifyListeners();
-    AssetLocationHistory result = await _assetLocationHistoryService
-        .getAssetLocationHistory(startDate, endDate, assetDetail.assetUid);
+    AssetLocationHistory? result = await _assetLocationHistoryService!
+        .getAssetLocationHistory(startDate, endDate, assetDetail!.assetUid);
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
@@ -98,17 +98,17 @@ class AssetLocationViewModel extends InsiteViewModel {
   updateMarkers() {
     markers.clear();
     latlngs.clear();
-    for (var assetLocation in assetLocationHistory.assetLocation) {
-      latlngs.add(LatLng(assetLocation.latitude, assetLocation.longitude));
+    for (var assetLocation in assetLocationHistory!.assetLocation!) {
+      latlngs.add(LatLng(assetLocation.latitude!, assetLocation.longitude!));
       markers.add(Marker(
           markerId: MarkerId('${index++}'),
-          position: LatLng(assetLocation.latitude, assetLocation.longitude),
+          position: LatLng(assetLocation.latitude!, assetLocation.longitude!),
           onTap: () {
-            customInfoWindowController.addInfoWindow(
+            customInfoWindowController.addInfoWindow!(
               SingleInfoView(
                 assetLocation: assetLocation,
               ),
-              LatLng(assetLocation.latitude, assetLocation.longitude),
+              LatLng(assetLocation.latitude!, assetLocation.longitude!),
             );
           }));
     }
@@ -118,8 +118,8 @@ class AssetLocationViewModel extends InsiteViewModel {
   getFaultAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     await getSelectedFilterData();
-    HealthListResponse result = await _faultService.getAssetViewLocationSummary(
-        assetDetail.assetUid,
+    HealthListResponse? result = await _faultService!.getAssetViewLocationSummary(
+        assetDetail!.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         null,
@@ -140,8 +140,8 @@ class AssetLocationViewModel extends InsiteViewModel {
     latlngs.cast();
     _refreshing = true;
     notifyListeners();
-    HealthListResponse result = await _faultService.getAssetViewLocationSummary(
-        assetDetail.assetUid,
+    HealthListResponse? result = await _faultService!.getAssetViewLocationSummary(
+        assetDetail!.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
         null,
@@ -159,17 +159,17 @@ class AssetLocationViewModel extends InsiteViewModel {
   updateMarkersForFault() {
     markers.clear();
     latlngs.clear();
-    for (var assetLocation in _healthListResponse.assetData.faults) {
+    for (var assetLocation in _healthListResponse!.assetData!.faults!) {
       if (assetLocation.lastReportedLocationLatitude != null &&
           assetLocation.lastReportedLocationLongitude != null) {
-        latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude,
-            assetLocation.lastReportedLocationLongitude));
+        latlngs.add(LatLng(assetLocation.lastReportedLocationLatitude!,
+            assetLocation.lastReportedLocationLongitude!));
         markers.add(Marker(
             markerId: MarkerId('${index++}'),
-            position: LatLng(assetLocation.lastReportedLocationLatitude,
-                assetLocation.lastReportedLocationLongitude),
+            position: LatLng(assetLocation.lastReportedLocationLatitude!,
+                assetLocation.lastReportedLocationLongitude!),
             onTap: () {
-              customInfoWindowController.addInfoWindow(
+              customInfoWindowController.addInfoWindow!(
                 Column(
                   children: [
                     Expanded(
@@ -235,7 +235,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                                   ),
                                   Text(
                                     assetLocation.lastReportedLocation != null
-                                        ? assetLocation.lastReportedLocation
+                                        ? assetLocation.lastReportedLocation!
                                         : "",
                                     style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -267,7 +267,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                                   ),
                                   Text(
                                     assetLocation.description != null
-                                        ? assetLocation.description
+                                        ? assetLocation.description!
                                         : "",
                                     style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -299,7 +299,7 @@ class AssetLocationViewModel extends InsiteViewModel {
                                   ),
                                   Text(
                                     assetLocation.faultCode != null
-                                        ? assetLocation.faultCode
+                                        ? assetLocation.faultCode!
                                         : "",
                                     style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -348,8 +348,8 @@ class AssetLocationViewModel extends InsiteViewModel {
                     ),
                   ],
                 ),
-                LatLng(assetLocation.lastReportedLocationLatitude,
-                    assetLocation.lastReportedLocationLongitude),
+                LatLng(assetLocation.lastReportedLocationLatitude!,
+                    assetLocation.lastReportedLocationLongitude!),
               );
             }));
       }
@@ -359,29 +359,29 @@ class AssetLocationViewModel extends InsiteViewModel {
 
   // INFO WINDOW
 
-  bool _showInfoWindow;
-  bool _tempHidden;
-  AssetLocation _assetLocation;
-  double _leftMargin;
-  double _topMargin;
+  bool? _showInfoWindow;
+  bool? _tempHidden;
+  AssetLocation? _assetLocation;
+  double? _leftMargin;
+  double? _topMargin;
 
   void rebuildInfoWindow() {
     notifyListeners();
   }
 
-  String getAddressText(Address address) {
+  String? getAddressText(Address address) {
     print("getAddressText ${address.streetAddress}");
-    String text = "";
+    String? text = "";
     text = address.streetAddress != null
-        ? address.streetAddress
-        : "" + ',' + address.city != null
-            ? address.city
-            : "" + ',' + address.county != null
-                ? address.county
-                : "" + ',' + address.state != null
-                    ? address.state
-                    : "" + ' ' + address.zip != null
-                        ? address.zip
+        ? address.streetAddress!
+        : "" + ',' + address.city! != null
+            ? address.city!
+            : "" + ',' + address.county! != null
+                ? address.county!
+                : "" + ',' + address.state! != null
+                    ? address.state!
+                    : "" + ' ' + address.zip! != null
+                        ? address.zip!
                         : "";
     return text;
   }
@@ -417,24 +417,24 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool get showInfoWindow =>
       (_showInfoWindow == true && _tempHidden == false) ? true : false;
 
-  double get leftMargin => _leftMargin;
-  double get topMargin => _topMargin;
-  AssetLocation get assetLocation => _assetLocation;
+  double? get leftMargin => _leftMargin;
+  double? get topMargin => _topMargin;
+  AssetLocation? get assetLocation => _assetLocation;
 
   LatLngBounds getBound() {
     assert(latlngs.isNotEmpty);
-    double x0, x1, y0, y1;
+    double? x0, x1, y0, y1;
     for (LatLng latLng in latlngs) {
       if (x0 == null) {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
       } else {
-        if (latLng.latitude > x1) x1 = latLng.latitude;
+        if (latLng.latitude > x1!) x1 = latLng.latitude;
         if (latLng.latitude < x0) x0 = latLng.latitude;
-        if (latLng.longitude > y1) y1 = latLng.longitude;
-        if (latLng.longitude < y0) y0 = latLng.longitude;
+        if (latLng.longitude > y1!) y1 = latLng.longitude;
+        if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
+    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }

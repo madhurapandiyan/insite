@@ -12,9 +12,9 @@ class SubRegistrationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubRegistrationViewModel>.reactive(
       builder:
-          (BuildContext context, SubRegistrationViewModel viewModel, Widget _) {
+          (BuildContext context, SubRegistrationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {

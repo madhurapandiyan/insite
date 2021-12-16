@@ -3,7 +3,7 @@ part 'plant_heirarchy.g.dart';
 
 @JsonSerializable()
 class HierarchyAssets {
-  List<List<Result>> result;
+  List<List<Result>>? result;
   HierarchyAssets({this.result});
   factory HierarchyAssets.fromJson(Map<String, dynamic> json) =>
       _$HierarchyAssetsFromJson(json);
@@ -14,16 +14,16 @@ class HierarchyAssets {
 class Result {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "Customer_Count")
-  int customerCount;
+  int? customerCount;
 
   @JsonKey(name: "Dealer_Count")
-  int dealerCount;
+  int? dealerCount;
 
   @JsonKey(name: "Plant_Count")
-  int plantCount;
+  int? plantCount;
 
   @JsonKey(name: "TotelAssets")
-  int totalAssets;
+  int? totalAssets;
 
   Result(
       {this.customerCount,

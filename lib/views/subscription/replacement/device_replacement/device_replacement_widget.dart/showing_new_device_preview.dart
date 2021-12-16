@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ShowingNewDeviceDetail extends StatelessWidget {
-  final String oldDeviceId;
-  final String newDeviceId;
-  final String machineSerialNo;
-  final String modelName;
-  final String startDate;
+  final String? oldDeviceId;
+  final String? newDeviceId;
+  final String? machineSerialNo;
+  final String? modelName;
+  final String? startDate;
   ShowingNewDeviceDetail(
       {this.oldDeviceId,
       this.machineSerialNo,

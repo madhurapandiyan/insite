@@ -10,15 +10,15 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
-  Logger log;
-  var _assetSingleHistoryService = locator<AssetService>();
-  var _assetUtilizationService = locator<AssetUtilizationService>();
+  Logger? log;
+  AssetService? _assetSingleHistoryService = locator<AssetService>();
+  AssetUtilizationService? _assetUtilizationService = locator<AssetUtilizationService>();
 
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
-  AssetUtilization _assetUtilization;
-  AssetUtilization get assetUtilization => _assetUtilization;
+  AssetUtilization? _assetUtilization;
+  AssetUtilization? get assetUtilization => _assetUtilization;
 
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
@@ -29,13 +29,13 @@ class AssetDashboardViewModel extends InsiteViewModel {
   bool _postingNote = false;
   bool get postingNote => _postingNote;
 
-  double _utilizationGreatestValue;
-  double get utilizationGreatestValue => _utilizationGreatestValue;
+  double? _utilizationGreatestValue;
+  double? get utilizationGreatestValue => _utilizationGreatestValue;
 
-  AssetDashboardViewModel(AssetDetail detail) {
+  AssetDashboardViewModel(AssetDetail? detail) {
     this._assetDetail = detail;
     this.log = getLogger(this.runtimeType.toString());
-    _assetSingleHistoryService.setUp();
+    _assetSingleHistoryService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetDetail();
       getAssetUtilization();
@@ -44,29 +44,29 @@ class AssetDashboardViewModel extends InsiteViewModel {
   }
 
   getAssetUtilization() async {
-    AssetUtilization result = await _assetUtilizationService.getAssetUtilGraphDate(
-        assetDetail.assetUid,
+    AssetUtilization? result = await _assetUtilizationService!.getAssetUtilGraphDate(
+        assetDetail!.assetUid,
         '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
     _utilizationGreatestValue = Utils.greatestOfThree(
-        _assetUtilization.totalDay.runtimeHours,
-        _assetUtilization.totalWeek.runtimeHours,
-        _assetUtilization.totalMonth.runtimeHours);
+        _assetUtilization!.totalDay!.runtimeHours!,
+        _assetUtilization!.totalWeek!.runtimeHours!,
+        _assetUtilization!.totalMonth!.runtimeHours);
     _loading = false;
     notifyListeners();
   }
 
   getAssetDetail() async {
-    AssetDetail result =
-        await _assetSingleHistoryService.getAssetDetail(assetDetail.assetUid);
+    AssetDetail? result =
+        await _assetSingleHistoryService!.getAssetDetail(assetDetail!.assetUid);
     _assetDetail = result;
     _loading = false;
     notifyListeners();
   }
 
   getNotes() async {
-    List<Note> result =
-        await _assetSingleHistoryService.getAssetNotes(assetDetail.assetUid);
+    List<Note>? result =
+        await _assetSingleHistoryService!.getAssetNotes(assetDetail!.assetUid);
     if (result != null) {
       _assetNotes = result;
     }
@@ -77,7 +77,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
   postNotes(note) async {
     _postingNote = true;
     notifyListeners();
-    await _assetSingleHistoryService.postNotes(assetDetail.assetUid, note);
+    await _assetSingleHistoryService!.postNotes(assetDetail!.assetUid, note);
     await getNotes();
     _postingNote = false;
     notifyListeners();

@@ -17,10 +17,11 @@ import 'local_service.dart';
 class LoginService extends BaseService {
   final _nagivationService = locator<NavigationService>();
   final _localService = locator<LocalService>();
-  UserInfo userInfo;
+  UserInfo? userInfo;
 
-  Future<UserInfo> getLoggedInUserInfo() async {
+  Future<UserInfo?> getLoggedInUserInfo() async {
     try {
+      String? token = await _localService.getToken();
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
       //     env: "dev",
@@ -30,15 +31,16 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "insite://mobile");
+      Logger().wtf('token: $token');
       if (isVisionLink) {
-        UserInfo userInfo = await MyApi().getClientOne().getUserInfo(
-            "application/json",
-            "Bearer" + " " + await _localService.getToken());
+        UserInfo userInfo = await MyApi()
+            .getClientOne()!
+            .getUserInfo("application/json", "Bearer" + " " + token);
         return userInfo;
       } else {
-        UserInfo userInfo = await MyApi().getClientFive().getUserInfoV4(
+        UserInfo userInfo = await MyApi().getClientFive()!.getUserInfoV4(
             "application/x-www-form-urlencoded",
-            "Bearer" + " " + await _localService.getToken(),
+            "Bearer" + " " + token,
             AccessToken(access_token: await _localService.getToken()));
         return userInfo;
       }
@@ -48,18 +50,18 @@ class LoginService extends BaseService {
     }
   }
 
-  Future<AuthenticatedUser> getAuthenticateUserId() async {
-    AuthenticatedUser userAuthenticateStatus;
+  Future<AuthenticatedUser?> getAuthenticateUserId() async {
+    AuthenticatedUser? userAuthenticateStatus;
     AuthenticatePayload data =
-        AuthenticatePayload(uuid: userInfo.sub, email: userInfo.email);
+        AuthenticatePayload(uuid: userInfo!.sub, email: userInfo!.email);
     Logger().d(data.toJson());
     if (isVisionLink) {
     } else {
       userAuthenticateStatus = await MyApi()
-          .getClientNine()
+          .getClientNine()!
           .authenticateUser(Urls.authenticateUrl, data);
       await _localService
-          .saveUserId(Utils.getUserId(userAuthenticateStatus.result));
+          .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
     }
 
     return userAuthenticateStatus;
@@ -103,12 +105,12 @@ class LoginService extends BaseService {
     _localService.saveExpiryTime(expiryTime);
   }
 
-  Future<List<Customer>> getCustomers() async {
+  Future<List<Customer>?> getCustomers() async {
     if (isVisionLink) {
       try {
         CustomersResponse response =
-            await MyApi().getClient().accountHierarchyVL(true);
-        List<Customer> list = response.Customers;
+            await MyApi().getClient()!.accountHierarchyVL(true);
+        List<Customer>? list = response.Customers;
         return list;
       } catch (e) {
         Logger().e(e);
@@ -116,9 +118,11 @@ class LoginService extends BaseService {
       }
     } else {
       try {
-        CustomersResponse response = await MyApi().getClient().accountHierarchy(
-            Urls.accounthierarchy, true, "in-vlmasterdata-api-vlmd-customer");
-        List<Customer> list = response.Customers;
+        CustomersResponse response = await MyApi()
+            .getClient()!
+            .accountHierarchy(Urls.accounthierarchy, true,
+                "in-vlmasterdata-api-vlmd-customer");
+        List<Customer>? list = response.Customers;
         return list;
       } catch (e) {
         Logger().e(e);
@@ -127,24 +131,24 @@ class LoginService extends BaseService {
     }
   }
 
-  Future<List<Customer>> getSubCustomers(customerId) async {
+  Future<List<Customer>?> getSubCustomers(customerId) async {
     try {
       if (isVisionLink) {
         CustomersResponse response =
-            await MyApi().getClient().accountHierarchyChildrenVL(customerId);
-        List<Customer> list = [];
-        if (response.Customers.isNotEmpty) {
-          list = response.Customers[0].Children;
+            await MyApi().getClient()!.accountHierarchyChildrenVL(customerId);
+        List<Customer>? list = [];
+        if (response.Customers!.isNotEmpty) {
+          list = response.Customers![0].Children;
         }
         return list;
       } else {
         CustomersResponse response = await MyApi()
-            .getClient()
+            .getClient()!
             .accountHierarchyChildren(Urls.accounthierarchy, customerId,
                 "in-vlmasterdata-api-vlmd-customer");
-        List<Customer> list = [];
-        if (response.Customers.isNotEmpty) {
-          list = response.Customers[0].Children;
+        List<Customer>? list = [];
+        if (response.Customers!.isNotEmpty) {
+          list = response.Customers![0].Children;
         }
         return list;
       }
@@ -154,29 +158,28 @@ class LoginService extends BaseService {
     }
   }
 
-  Future<List<Permission>> getPermissions() async {
+  Future<List<Permission>?> getPermissions() async {
     try {
       if (isVisionLink) {
-        Customer customer = await _localService.getAccountInfo();
-        PermissionResponse response = await MyApi().getClient().getPermissionVL(
-            10000,
-            "Prod-VLUnifiedFleet",
-            customer.CustomerUID,
-            customer.CustomerUID);
-        List<Permission> list = [];
-        if (response != null && response.permission_list.isNotEmpty) {
+        Customer? customer = await _localService.getAccountInfo();
+        PermissionResponse response = await MyApi()
+            .getClient()!
+            .getPermissionVL(10000, "Prod-VLUnifiedFleet",
+                customer!.CustomerUID, customer.CustomerUID);
+        List<Permission>? list = [];
+        if (response != null && response.permission_list!.isNotEmpty) {
           list = response.permission_list;
         }
         return list;
       } else {
-        UserInfo userInfo = await _localService.getLoggedInUser();
-        Customer customer = await _localService.getAccountInfo();
+        UserInfo? userInfo = await _localService.getLoggedInUser();
+        Customer? customer = await _localService.getAccountInfo();
         PermissionResponse response = await MyApi()
-            .getClientFour()
-            .getPermission(10000, "Frame-Fleet-in", customer.CustomerUID,
-                customer.CustomerUID, userInfo.uuid);
-        List<Permission> list = [];
-        if (response != null && response.permission_list.isNotEmpty) {
+            .getClientFour()!
+            .getPermission(10000, "Frame-Fleet-in", customer!.CustomerUID,
+                customer.CustomerUID!, userInfo!.uuid!);
+        List<Permission>? list = [];
+        if (response != null && response.permission_list!.isNotEmpty) {
           list = response.permission_list;
         }
         return list;
@@ -187,12 +190,12 @@ class LoginService extends BaseService {
     }
   }
 
-  Future<LoginResponse> getLoginData(
+  Future<LoginResponse?> getLoginData(
     username,
     password,
   ) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientOne().getToken(
+      LoginResponse loginResponse = await MyApi().getClientOne()!.getToken(
           username,
           password,
           'password',
@@ -207,10 +210,10 @@ class LoginService extends BaseService {
     return null;
   }
 
-  Future<LoginResponse> getLoginDataV4(
+  Future<LoginResponse?> getLoginDataV4(
       code, code_challenge, code_verifier) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientFive().getTokenV4(
+      LoginResponse loginResponse = await MyApi().getClientFive()!.getTokenV4(
           GetTokenData(
               code: code,
               code_challenge: code_challenge,
@@ -227,10 +230,10 @@ class LoginService extends BaseService {
     return null;
   }
 
-  Future<LoginResponse> getTokenWithoutLogin() async {
+  Future<LoginResponse?> getTokenWithoutLogin() async {
     try {
       LoginResponse loginResponse = await MyApi()
-          .getClientFive()
+          .getClientFive()!
           .getTokenWithoutLogin(
               Urls.idTokenKey, "application/x-www-form-urlencoded");
       if (loginResponse != null) {

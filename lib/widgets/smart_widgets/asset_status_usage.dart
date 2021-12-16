@@ -8,8 +8,8 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AssetStatusUsage extends StatefulWidget {
-  final List<ChartSampleData> statusChartData;
-  final bool isLoading;
+  final List<ChartSampleData>? statusChartData;
+  final bool? isLoading;
 
   AssetStatusUsage({this.statusChartData, this.isLoading});
   @override
@@ -95,7 +95,7 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
             thickness: 1.0,
             color: black,
           ),
-          widget.isLoading
+          widget.isLoading!
               ? Expanded(child: InsiteProgressBar())
               : new Row(
                   children: [
@@ -136,14 +136,14 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
                                   child: Divider(
                                       thickness: 1.0, color: athenGrey));
                             },
-                            itemCount: widget.statusChartData.length,
+                            itemCount: widget.statusChartData!.length,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             physics: ClampingScrollPhysics(),
                             padding: EdgeInsets.symmetric(horizontal: 5.0),
                             itemBuilder: (context, index) {
                               ChartSampleData assetStatusData =
-                                  widget.statusChartData[index];
+                                  widget.statusChartData![index];
                               return AssetStatusUsageWidget(
                                 chartHrsData: chartHrsData[index],
                                 chartColor: colors[index],
@@ -161,9 +161,9 @@ class _AssetStatusUsageState extends State<AssetStatusUsage> {
 
   List<DoughnutSeries<ChartSampleData, String>> _getLegendDefaultSeries() {
     if (widget.statusChartData != null) {
-      for (int i = widget.statusChartData.length - 1; i >= 0; i--) {
-        if (widget.statusChartData[i].y.round() == 0) {
-          widget.statusChartData.removeAt(i);
+      for (int i = widget.statusChartData!.length - 1; i >= 0; i--) {
+        if (widget.statusChartData![i].y!.round() == 0) {
+          widget.statusChartData!.removeAt(i);
         }
       }
     }

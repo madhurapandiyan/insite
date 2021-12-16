@@ -16,20 +16,20 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:stacked/stacked.dart';
 
 class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final ScreenType screenType;
-  final double height;
-  final bool isSearchSelected;
-  final bool isFilterSelected;
-  final VoidCallback onSearchTap;
-  final VoidCallback onFilterTap;
-  final VoidCallback onRefineTap;
-  final bool shouldShowAccount;
-  final bool shouldShowSearch;
+  final ScreenType? screenType;
+  final double? height;
+  final bool? isSearchSelected;
+  final bool? isFilterSelected;
+  final VoidCallback? onSearchTap;
+  final VoidCallback? onFilterTap;
+  final VoidCallback? onRefineTap;
+  final bool? shouldShowAccount;
+  final bool? shouldShowSearch;
   final bool shouldShowTitle;
-  final bool shouldShowFilter;
+  final bool? shouldShowFilter;
   final bool shouldShowRefine;
   final bool isRefineSelected;
-  final bool shouldShowLogout;
+  final bool? shouldShowLogout;
   InsiteAppBar({
     this.screenType,
     this.onFilterTap,
@@ -47,7 +47,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.height,
   });
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize => Size.fromHeight(height!);
 
   var searchBorder = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -59,11 +59,11 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final count = InsiteInheritedDataProvider.of(context) != null
-        ? InsiteInheritedDataProvider.of(context).count
+        ? InsiteInheritedDataProvider.of(context)!.count
         : 0;
     return ViewModelBuilder<AppbarViewModel>.reactive(
       viewModelBuilder: () => AppbarViewModel(screenType),
-      builder: (BuildContext context, AppbarViewModel viewModel, Widget _) {
+      builder: (BuildContext context, AppbarViewModel viewModel, Widget? _) {
         return Column(
           children: [
             AppBar(
@@ -91,7 +91,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   InsiteImage(
                     height: 65,
                     width: 65,
-                    path: AppConfig.instance.iconPath,
+                    path: AppConfig.instance!.iconPath,
                   ),
                   SizedBox(
                     width: 20,
@@ -106,7 +106,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
               actions: [
-                shouldShowAccount
+                shouldShowAccount!
                     ? IconButton(
                         icon: Icon(
                           Icons.account_circle_rounded,
@@ -130,7 +130,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
-                                  onRefineTap();
+                                  onRefineTap!();
                                 },
                               )
                             : IconButton(
@@ -141,14 +141,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
-                                  onRefineTap();
+                                  onRefineTap!();
                                 },
                               ),
                       )
                     : SizedBox(),
-                shouldShowFilter
+                shouldShowFilter!
                     ? Container(
-                        color: isFilterSelected
+                        color: isFilterSelected!
                             ? Theme.of(context).buttonColor
                             : appbarcolor,
                         child: count != null && count > 0
@@ -163,47 +163,47 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     "assets/images/filter.svg",
-                                    color: isFilterSelected
+                                    color: isFilterSelected!
                                         ? white
                                         : Theme.of(context).buttonColor,
                                   ),
                                   onPressed: () {
-                                    onFilterTap();
+                                    onFilterTap!();
                                   },
                                 ),
                               )
                             : IconButton(
                                 icon: SvgPicture.asset(
                                   "assets/images/filter.svg",
-                                  color: isFilterSelected
+                                  color: isFilterSelected!
                                       ? white
                                       : Theme.of(context).buttonColor,
                                 ),
                                 onPressed: () {
-                                  onFilterTap();
+                                  onFilterTap!();
                                 },
                               ),
                       )
                     : SizedBox(),
-                shouldShowSearch
+                shouldShowSearch!
                     ? Container(
-                        color: isSearchSelected
+                        color: isSearchSelected!
                             ? Theme.of(context).buttonColor
                             : appbarcolor,
                         child: IconButton(
                           icon: SvgPicture.asset(
                             "assets/images/searchs.svg",
-                            color: isSearchSelected
+                            color: isSearchSelected!
                                 ? white
                                 : Theme.of(context).buttonColor,
                           ),
                           onPressed: () {
-                            onSearchTap();
+                            onSearchTap!();
                           },
                         ),
                       )
                     : SizedBox(),
-                shouldShowLogout
+                shouldShowLogout!
                     ? IconButton(
                         icon: Icon(
                           Icons.logout,
@@ -221,14 +221,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: InsiteTextOverFlow(
                       text: viewModel.accountSelected != null &&
                               viewModel.customerSelected != null
-                          ? viewModel.customerSelected.DisplayName != null
-                              ? viewModel.customerSelected.DisplayName
-                              : viewModel.accountSelected.DisplayName != null
-                                  ? viewModel.accountSelected.DisplayName
+                          ? viewModel.customerSelected!.DisplayName != null
+                              ? viewModel.customerSelected!.DisplayName
+                              : viewModel.accountSelected!.DisplayName != null
+                                  ? viewModel.accountSelected!.DisplayName
                                   : ""
                           : viewModel.accountSelected != null &&
-                                  viewModel.accountSelected.DisplayName != null
-                              ? viewModel.accountSelected.DisplayName
+                                  viewModel.accountSelected!.DisplayName != null
+                              ? viewModel.accountSelected!.DisplayName
                               : "",
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.normal,
@@ -243,7 +243,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void showLogoutPrompt(AppbarViewModel viewModel, BuildContext context) async {
-    bool value = await showDialog(
+    bool? value = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(

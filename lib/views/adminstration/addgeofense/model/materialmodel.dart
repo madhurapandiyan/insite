@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'materialmodel.g.dart';
 @JsonSerializable()
 class Materialmodel {
-  final List<Material> materials;
+  final List<Material>? materials;
   Materialmodel({this.materials});
 
   factory Materialmodel.fromJson(Map<String, dynamic> json) =>
@@ -12,9 +12,9 @@ class Materialmodel {
 }
 @JsonSerializable()
 class Material {
-  final String materialUid;
-  final String name;
-  final double density;
+  final String? materialUid;
+  final String? name;
+  final double? density;
   Material({this.materialUid, this.name, this.density});
   factory Material.fromJson(Map<String, dynamic> json) =>
       _$MaterialFromJson(json);

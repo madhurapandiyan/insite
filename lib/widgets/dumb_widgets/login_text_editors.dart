@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
 class LoginTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final FormFieldValidator<String> validator;
-  final String hint;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+  final String? hint;
   final bool obsecure;
   const LoginTextField(
-      {Key key,
+      {Key? key,
       this.controller,
       this.validator,
       this.hint,

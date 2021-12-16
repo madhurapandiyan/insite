@@ -16,7 +16,7 @@ class ManageUserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ManageUserViewModel>.reactive(
-      builder: (BuildContext context, ManageUserViewModel viewModel, Widget _) {
+      builder: (BuildContext context, ManageUserViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ADMINISTRATION,

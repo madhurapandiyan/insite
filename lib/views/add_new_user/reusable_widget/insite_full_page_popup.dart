@@ -11,18 +11,18 @@ import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 
 class InsitePopUp extends StatefulWidget {
-  final String pageTitle;
+  final String? pageTitle;
   InsitePopUp({this.pageTitle, this.titles, this.data, this.onButtonTapped});
-  final List<String> titles;
-  List<List<PreviewData>> data;
-  final Function onButtonTapped;
+  final List<String>? titles;
+  List<List<PreviewData>>? data;
+  final Function? onButtonTapped;
 
   @override
   _InsitePopUpState createState() => _InsitePopUpState();
 }
 
 class _InsitePopUpState extends State<InsitePopUp> {
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   bool shouldPop = true;
 
@@ -75,19 +75,19 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   PopupCard(
-                    cardTitle: widget.titles[0],
+                    cardTitle: widget.titles![0],
                     rows: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.45,
                         child: ListView.builder(
-                            itemCount: widget.data[0].length,
+                            itemCount: widget.data![0].length,
                             itemBuilder: (context, int index) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InsitePopupRow(
-                                    title: widget.data[0][index].title,
-                                    value: widget.data[0][index].value,
+                                    title: widget.data![0][index].title,
+                                    value: widget.data![0][index].value,
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -99,20 +99,20 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     ],
                   ),
                   PopupCard(
-                    cardTitle: widget.titles[1],
+                    cardTitle: widget.titles![1],
                     height: MediaQuery.of(context).size.height * 0.35,
                     rows: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.25,
                         child: ListView.builder(
-                            itemCount: widget.data[1].length,
+                            itemCount: widget.data![1].length,
                             itemBuilder: (context, int index) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InsitePopupRow(
-                                    title: widget.data[1][index].title,
-                                    value: widget.data[1][index].value,
+                                    title: widget.data![1][index].title,
+                                    value: widget.data![1][index].value,
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -124,20 +124,20 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     ],
                   ),
                   PopupCard(
-                    cardTitle: widget.titles[2],
+                    cardTitle: widget.titles![2],
                     height: MediaQuery.of(context).size.height * 0.35,
                     rows: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.25,
                         child: ListView.builder(
-                            itemCount: widget.data[2].length,
+                            itemCount: widget.data![2].length,
                             itemBuilder: (context, int index) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InsitePopupRow(
-                                    title: widget.data[2][index].title,
-                                    value: widget.data[2][index].value,
+                                    title: widget.data![2][index].title,
+                                    value: widget.data![2][index].value,
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -149,20 +149,20 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     ],
                   ),
                   PopupCard(
-                    cardTitle: widget.titles[3],
+                    cardTitle: widget.titles![3],
                     height: MediaQuery.of(context).size.height * 0.35,
                     rows: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.25,
                         child: ListView.builder(
-                            itemCount: widget.data[3].length,
+                            itemCount: widget.data![3].length,
                             itemBuilder: (context, int index) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InsitePopupRow(
-                                    title: widget.data[3][index].title,
-                                    value: widget.data[3][index].value,
+                                    title: widget.data![3][index].title,
+                                    value: widget.data![3][index].value,
                                   ),
                                   SizedBox(
                                     height: 20,
@@ -174,7 +174,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     ],
                   ),
                   GestureDetector(
-                    onTap: widget.onButtonTapped,
+                    onTap: widget.onButtonTapped as void Function()?,
                     child: Center(
                       child: InsiteButton(
                         width: 150,

@@ -3,7 +3,7 @@ part 'update_user_data.g.dart';
 
 @JsonSerializable()
 class UpdateResponse {
-  final bool isUpdated;
+  final bool? isUpdated;
 
   UpdateResponse({this.isUpdated});
 
@@ -14,7 +14,7 @@ class UpdateResponse {
 
 @JsonSerializable()
 class DeleteUserData {
-  List<String> users;
+  List<String>? users;
   DeleteUserData({
     this.users,
   });
@@ -26,8 +26,8 @@ class DeleteUserData {
 
 @JsonSerializable()
 class DeleteUserDataIndStack {
-  List<String> users;
-  String customerUid;
+  List<String>? users;
+  String? customerUid;
   DeleteUserDataIndStack({this.users, this.customerUid});
   factory DeleteUserDataIndStack.fromJson(Map<String, dynamic> json) =>
       _$DeleteUserDataIndStackFromJson(json);
@@ -52,18 +52,18 @@ class AddUserData {
     this.language,
   });
 
-  String fname;
-  String lname;
-  String cwsEmail;
-  String phone;
-  String sso_id;
-  String company;
-  bool isCATSSOUserCreation;
-  AddressData address;
-  Details details;
-  List<Role> roles;
-  String src;
-  String language;
+  String? fname;
+  String? lname;
+  String? cwsEmail;
+  String? phone;
+  String? sso_id;
+  String? company;
+  bool? isCATSSOUserCreation;
+  AddressData? address;
+  Details? details;
+  List<Role>? roles;
+  String? src;
+  String? language;
 
   factory AddUserData.fromJson(Map<String, dynamic> json) =>
       _$AddUserDataFromJson(json);
@@ -87,18 +87,18 @@ class AddUserDataIndStack {
       this.language,
       this.customerUid});
 
-  String fname;
-  String lname;
-  String email;
-  String phone;
-  String company;
-  AddressData address;
-  Details details;
-  List<Role> roles;
-  String src;
-  String language;
-  String customerUid;
-  bool isAssetSecurityEnabled;
+  String? fname;
+  String? lname;
+  String? email;
+  String? phone;
+  String? company;
+  AddressData? address;
+  Details? details;
+  List<Role>? roles;
+  String? src;
+  String? language;
+  String? customerUid;
+  bool? isAssetSecurityEnabled;
   factory AddUserDataIndStack.fromJson(Map<String, dynamic> json) =>
       _$AddUserDataIndStackFromJson(json);
 
@@ -121,18 +121,18 @@ class UpdateUserData {
       this.company,
       this.language});
 
-  String fname;
-  String lname;
-  String cwsEmail;
-  String phone;
-  String sso_id;
-  bool isCatssoUserCreation;
-  AddressData address;
-  Details details;
-  List<Role> roles;
-  String src;
-  String company;
-  String language;
+  String? fname;
+  String? lname;
+  String? cwsEmail;
+  String? phone;
+  String? sso_id;
+  bool? isCatssoUserCreation;
+  AddressData? address;
+  Details? details;
+  List<Role>? roles;
+  String? src;
+  String? company;
+  String? language;
 
   factory UpdateUserData.fromJson(Map<String, dynamic> json) =>
       _$UpdateUserDataFromJson(json);
@@ -142,11 +142,11 @@ class UpdateUserData {
 
 @JsonSerializable()
 class AddressData {
-  String addressline1;
-  String addressline2;
-  String country;
-  String state;
-  String zipcode;
+  String? addressline1;
+  String? addressline2;
+  String? country;
+  String? state;
+  String? zipcode;
   AddressData(
       {this.addressline1,
       this.addressline2,
@@ -168,9 +168,9 @@ class Details {
     this.user_type,
   });
 
-  String job_title;
-  String job_type;
-  String user_type;
+  String? job_title;
+  String? job_type;
+  String? user_type;
 
   factory Details.fromJson(Map<String, dynamic> json) =>
       _$DetailsFromJson(json);
@@ -184,8 +184,8 @@ class Role {
     this.application_name,
   });
 
-  int role_id;
-  String application_name;
+  int? role_id;
+  String? application_name;
 
   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 

@@ -19,13 +19,13 @@ class TestRouterView extends StatefulWidget {
 }
 
 class _TestRouterViewState extends State<TestRouterView> {
-  String _currentSelectedItem = "MAP";
+  String? _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
 
-  GoogleMapController mapController;
-  BitmapDescriptor mapMarker;
+  GoogleMapController? mapController;
+  BitmapDescriptor? mapMarker;
 
   Set<Marker> _markers = Set();
   CustomInfoWindowController _customInfoWindowController =
@@ -40,20 +40,20 @@ class _TestRouterViewState extends State<TestRouterView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TestRouterViewModel>.reactive(
-      builder: (BuildContext context, TestRouterViewModel viewModel, Widget _) {
+      builder: (BuildContext context, TestRouterViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
           int index = 1;
           List<AssetLocation> assetLocationList =
-              viewModel.assetLocationHistory.assetLocation;
+              viewModel.assetLocationHistory!.assetLocation!;
           for (var assetLocation in assetLocationList) {
             _markers.add(Marker(
                 markerId: MarkerId('${index++}'),
                 position:
-                    LatLng(assetLocation.latitude, assetLocation.longitude),
+                    LatLng(assetLocation.latitude!, assetLocation.longitude!),
                 onTap: () {
-                  _customInfoWindowController.addInfoWindow(
+                  _customInfoWindowController.addInfoWindow!(
                     Column(
                       children: [
                         Expanded(
@@ -118,7 +118,7 @@ class _TestRouterViewState extends State<TestRouterView> {
                                                 .split(':')[1] +
                                             ' ' +
                                             assetLocation
-                                                .locationEventLocalTimeZoneAbbrev,
+                                                .locationEventLocalTimeZoneAbbrev!,
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
                                             color: textcolor,
@@ -144,15 +144,15 @@ class _TestRouterViewState extends State<TestRouterView> {
                                             fontSize: 10.0),
                                       ),
                                       Text(
-                                        assetLocation.address.streetAddress +
+                                        assetLocation.address!.streetAddress! +
                                             ',' +
-                                            assetLocation.address.city +
+                                            assetLocation.address!.city! +
                                             ',' +
-                                            assetLocation.address.county +
+                                            assetLocation.address!.county! +
                                             ',' +
-                                            assetLocation.address.state +
+                                            assetLocation.address!.state! +
                                             ' ' +
-                                            assetLocation.address.zip,
+                                            assetLocation.address!.zip!,
                                         style: TextStyle(
                                             fontFamily: 'Roboto',
                                             color: textcolor,
@@ -206,7 +206,7 @@ class _TestRouterViewState extends State<TestRouterView> {
                         ),
                       ],
                     ),
-                    LatLng(assetLocation.latitude, assetLocation.longitude),
+                    LatLng(assetLocation.latitude!, assetLocation.longitude!),
                   );
                 }));
           }
@@ -288,7 +288,7 @@ class _TestRouterViewState extends State<TestRouterView> {
                                         ),
                                         isExpanded: true,
                                         hint: new Text(
-                                          _currentSelectedItem,
+                                          _currentSelectedItem!,
                                         ),
                                         items: [
                                           'MAP',
@@ -310,7 +310,7 @@ class _TestRouterViewState extends State<TestRouterView> {
                                                 ))
                                             .toList(),
                                         value: _currentSelectedItem,
-                                        onChanged: (value) {
+                                        onChanged: (dynamic value) {
                                           setState(() {
                                             _currentSelectedItem = value;
                                           });
@@ -380,11 +380,11 @@ class _TestRouterViewState extends State<TestRouterView> {
                                   GoogleMap(
                                     onTap: (position) {
                                       _customInfoWindowController
-                                          .hideInfoWindow();
+                                          .hideInfoWindow!();
                                     },
                                     onCameraMove: (position) {
                                       _customInfoWindowController
-                                          .onCameraMove();
+                                          .onCameraMove!();
                                     },
                                     onMapCreated:
                                         (GoogleMapController controller) async {

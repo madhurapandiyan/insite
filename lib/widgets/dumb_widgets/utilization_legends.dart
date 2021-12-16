@@ -11,14 +11,14 @@ class UtilizationLegends extends StatefulWidget {
   final Color color3;
   final Function shouldShowLabel;
   const UtilizationLegends({
-    Key key,
-    @required this.label1,
-    @required this.label2,
-    @required this.label3,
-    @required this.color1,
-    @required this.color2,
-    @required this.color3,
-    @required this.shouldShowLabel,
+    Key? key,
+    required this.label1,
+    required this.label2,
+    required this.label3,
+    required this.color1,
+    required this.color2,
+    required this.color3,
+    required this.shouldShowLabel,
   }) : super(key: key);
 
   @override

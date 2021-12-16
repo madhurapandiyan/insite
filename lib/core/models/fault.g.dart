@@ -6,21 +6,19 @@ part of 'fault.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FaultSummaryResponse _$FaultSummaryResponseFromJson(Map<String, dynamic> json) {
-  return FaultSummaryResponse(
-    faults: (json['faults'] as List)
-        ?.map(
-            (e) => e == null ? null : Fault.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pageLinks: (json['pageLinks'] as List)
-        ?.map(
-            (e) => e == null ? null : Links.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    limit: json['limit'] as int,
-    page: json['page'] as int,
-    total: json['total'] as int,
-  );
-}
+FaultSummaryResponse _$FaultSummaryResponseFromJson(
+        Map<String, dynamic> json) =>
+    FaultSummaryResponse(
+      faults: (json['faults'] as List<dynamic>?)
+          ?.map((e) => Fault.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pageLinks: (json['pageLinks'] as List<dynamic>?)
+          ?.map((e) => Links.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      limit: json['limit'] as int?,
+      page: json['page'] as int?,
+      total: json['total'] as int?,
+    );
 
 Map<String, dynamic> _$FaultSummaryResponseToJson(
         FaultSummaryResponse instance) =>
@@ -32,28 +30,25 @@ Map<String, dynamic> _$FaultSummaryResponseToJson(
       'total': instance.total,
     };
 
-Fault _$FaultFromJson(Map<String, dynamic> json) {
-  return Fault(
-    asset: json['asset'],
-    basic: json['basic'] == null
-        ? null
-        : FaultBasic.fromJson(json['basic'] as Map<String, dynamic>),
-    details: json['details'] == null
-        ? null
-        : FaultDetails.fromJson(json['details'] as Map<String, dynamic>),
-    countData: (json['countData'] as List)
-        ?.map(
-            (e) => e == null ? null : Count.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    description: json['description'] as String,
-    faultCode: json['faultCode'] as String,
-    hours: (json['hours'] as num)?.toDouble(),
-    faultType: json['faultType'] as String,
-    faultOccuredUTC: json['faultOccuredUTC'] as String,
-    severityLabel: json['severityLabel'] as String,
-    source: json['source'] as String,
-  );
-}
+Fault _$FaultFromJson(Map<String, dynamic> json) => Fault(
+      asset: json['asset'],
+      basic: json['basic'] == null
+          ? null
+          : FaultBasic.fromJson(json['basic'] as Map<String, dynamic>),
+      details: json['details'] == null
+          ? null
+          : FaultDetails.fromJson(json['details'] as Map<String, dynamic>),
+      countData: (json['countData'] as List<dynamic>?)
+          ?.map((e) => Count.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      description: json['description'] as String?,
+      faultCode: json['faultCode'] as String?,
+      hours: (json['hours'] as num?)?.toDouble(),
+      faultType: json['faultType'] as String?,
+      faultOccuredUTC: json['faultOccuredUTC'] as String?,
+      severityLabel: json['severityLabel'] as String?,
+      source: json['source'] as String?,
+    );
 
 Map<String, dynamic> _$FaultToJson(Fault instance) => <String, dynamic>{
       'asset': instance.asset,
@@ -69,13 +64,11 @@ Map<String, dynamic> _$FaultToJson(Fault instance) => <String, dynamic>{
       'countData': instance.countData,
     };
 
-FaultAsset _$FaultAssetFromJson(Map<String, dynamic> json) {
-  return FaultAsset(
-    uid: json['uid'] as String,
-    basic: json['basic'],
-    details: json['details'],
-  );
-}
+FaultAsset _$FaultAssetFromJson(Map<String, dynamic> json) => FaultAsset(
+      uid: json['uid'] as String?,
+      basic: json['basic'],
+      details: json['details'],
+    );
 
 Map<String, dynamic> _$FaultAssetToJson(FaultAsset instance) =>
     <String, dynamic>{
@@ -84,15 +77,13 @@ Map<String, dynamic> _$FaultAssetToJson(FaultAsset instance) =>
       'details': instance.details,
     };
 
-FaultDynamic _$FaultDynamicFromJson(Map<String, dynamic> json) {
-  return FaultDynamic(
-    status: json['status'] as String,
-    location: json['location'] as String,
-    locationReportedTimeUTC: json['locationReportedTimeUTC'] as String,
-    hourMeter: json['hourMeter'] as String,
-    odometer: json['odometer'] as String,
-  );
-}
+FaultDynamic _$FaultDynamicFromJson(Map<String, dynamic> json) => FaultDynamic(
+      status: json['status'] as String?,
+      location: json['location'] as String?,
+      locationReportedTimeUTC: json['locationReportedTimeUTC'] as String?,
+      hourMeter: json['hourMeter'] as String?,
+      odometer: json['odometer'] as String?,
+    );
 
 Map<String, dynamic> _$FaultDynamicToJson(FaultDynamic instance) =>
     <String, dynamic>{
@@ -103,16 +94,14 @@ Map<String, dynamic> _$FaultDynamicToJson(FaultDynamic instance) =>
       'odometer': instance.odometer,
     };
 
-FaultBasic _$FaultBasicFromJson(Map<String, dynamic> json) {
-  return FaultBasic(
-    faultIdentifiers: json['faultIdentifiers'] as String,
-    description: json['description'] as String,
-    source: json['source'] as String,
-    faultOccuredUTC: json['faultOccuredUTC'] as String,
-    faultType: json['faultType'] as String,
-    severity: json['severity'] as String,
-  );
-}
+FaultBasic _$FaultBasicFromJson(Map<String, dynamic> json) => FaultBasic(
+      faultIdentifiers: json['faultIdentifiers'] as String?,
+      description: json['description'] as String?,
+      source: json['source'] as String?,
+      faultOccuredUTC: json['faultOccuredUTC'] as String?,
+      faultType: json['faultType'] as String?,
+      severity: json['severity'] as String?,
+    );
 
 Map<String, dynamic> _$FaultBasicToJson(FaultBasic instance) =>
     <String, dynamic>{
@@ -124,33 +113,30 @@ Map<String, dynamic> _$FaultBasicToJson(FaultBasic instance) =>
       'faultOccuredUTC': instance.faultOccuredUTC,
     };
 
-FaultDetails _$FaultDetailsFromJson(Map<String, dynamic> json) {
-  return FaultDetails(
-    faultReceivedUTC: json['faultReceivedUTC'] as String,
-  );
-}
+FaultDetails _$FaultDetailsFromJson(Map<String, dynamic> json) => FaultDetails(
+      faultReceivedUTC: json['faultReceivedUTC'] as String?,
+      faultCode: json['faultCode'] as String?,
+    );
 
 Map<String, dynamic> _$FaultDetailsToJson(FaultDetails instance) =>
     <String, dynamic>{
       'faultReceivedUTC': instance.faultReceivedUTC,
+      'faultCode': instance.faultCode,
     };
 
 AssetFaultSummaryResponse _$AssetFaultSummaryResponseFromJson(
-    Map<String, dynamic> json) {
-  return AssetFaultSummaryResponse(
-    assetFaults: (json['assetFaults'] as List)
-        ?.map(
-            (e) => e == null ? null : Fault.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pageLinks: (json['pageLinks'] as List)
-        ?.map(
-            (e) => e == null ? null : Links.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    limit: json['limit'] as int,
-    page: json['page'] as int,
-    total: json['total'] as int,
-  );
-}
+        Map<String, dynamic> json) =>
+    AssetFaultSummaryResponse(
+      assetFaults: (json['assetFaults'] as List<dynamic>?)
+          ?.map((e) => Fault.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pageLinks: (json['pageLinks'] as List<dynamic>?)
+          ?.map((e) => Links.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      limit: json['limit'] as int?,
+      page: json['page'] as int?,
+      total: json['total'] as int?,
+    );
 
 Map<String, dynamic> _$AssetFaultSummaryResponseToJson(
         AssetFaultSummaryResponse instance) =>

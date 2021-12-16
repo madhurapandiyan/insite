@@ -4,9 +4,9 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class PlantListItem extends StatelessWidget {
-  final DetailResult detailResult;
-  final VoidCallback onCallback;
-  const PlantListItem({Key key, this.detailResult, this.onCallback})
+  final DetailResult? detailResult;
+  final VoidCallback? onCallback;
+  const PlantListItem({Key? key, this.detailResult, this.onCallback})
       : super(key: key);
 
   @override
@@ -50,12 +50,12 @@ class PlantListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Plant Name : ",
                         content:
-                            detailResult.Name != null ? detailResult.Name : "",
+                            detailResult!.Name != null ? detailResult!.Name : "",
                       ),
                       InsiteTableRowItem(
                         title: "User Name : ",
-                        content: detailResult.UserName != null
-                            ? detailResult.UserName
+                        content: detailResult!.UserName != null
+                            ? detailResult!.UserName
                             : "",
                       ),
                     ],
@@ -65,12 +65,12 @@ class PlantListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Plant Code : ",
                         content:
-                            detailResult.Code != null ? detailResult.Code : "",
+                            detailResult!.Code != null ? detailResult!.Code : "",
                       ),
                       InsiteTableRowItem(
                         title: "Plant Email Id : ",
-                        content: detailResult.Email != null
-                            ? detailResult.Email
+                        content: detailResult!.Email != null
+                            ? detailResult!.Email
                             : "",
                       ),
                     ],

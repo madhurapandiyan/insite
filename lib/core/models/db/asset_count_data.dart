@@ -5,20 +5,20 @@ part 'asset_count_data.g.dart';
 @HiveType(typeId: 3)
 class AssetCountData {
   @HiveField(1)
-  List<CountData> counts;
+  List<CountData>? counts;
   @HiveField(2)
-  final FilterType type;
+  final FilterType? type;
   @HiveField(3)
-  final FilterSubType subType;
+  final FilterSubType? subType;
   AssetCountData({this.counts, this.type, this.subType});
 }
 
 @HiveType(typeId: 4)
 class CountData {
   @HiveField(1)
-  String countOf;
+  String? countOf;
   @HiveField(2)
-  int count;
+  int? count;
   CountData({
     this.countOf,
     this.count,

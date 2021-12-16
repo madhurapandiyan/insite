@@ -4,17 +4,17 @@ part 'filter_data.g.dart';
 @HiveType(typeId: 0)
 class FilterData {
   @HiveField(0)
-  final String title;
+  final String? title;
   @HiveField(1)
-  final String count;
+  final String? count;
   @HiveField(2)
-  final FilterType type;
+  final FilterType? type;
   @HiveField(3)
-  bool isSelected;
+  bool? isSelected;
   @HiveField(4)
-  List<String> extras;
+  List<String?>? extras;
   @HiveField(5)
-  final FilterSubType subType;
+  final FilterSubType? subType;
   FilterData(
       {this.count,
       this.title,

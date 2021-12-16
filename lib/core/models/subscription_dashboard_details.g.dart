@@ -7,17 +7,14 @@ part of 'subscription_dashboard_details.dart';
 // **************************************************************************
 
 SubscriptionDashboardDetailResult _$SubscriptionDashboardDetailResultFromJson(
-    Map<String, dynamic> json) {
-  return SubscriptionDashboardDetailResult(
-    result: (json['result'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) => e == null
-                ? null
-                : DetailResult.fromJson(e as Map<String, dynamic>))
-            ?.toList())
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    SubscriptionDashboardDetailResult(
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => (e as List<dynamic>)
+              .map((e) => DetailResult.fromJson(e as Map<String, dynamic>))
+              .toList())
+          .toList(),
+    );
 
 Map<String, dynamic> _$SubscriptionDashboardDetailResultToJson(
         SubscriptionDashboardDetailResult instance) =>
@@ -25,42 +22,40 @@ Map<String, dynamic> _$SubscriptionDashboardDetailResultToJson(
       'result': instance.result,
     };
 
-DetailResult _$DetailResultFromJson(Map<String, dynamic> json) {
-  return DetailResult(
-    totalDevice: (json['totalDevice'] as num)?.toDouble(),
-    ActualStartDate: json['ActualStartDate'] as String,
-    CustomerCode: json['CustomerCode'] as String,
-    CustomerName: json['CustomerName'] as String,
-    DealerCode: json['DealerCode'] as String,
-    Code: json['Code'] as String,
-    Email: json['Email'] as String,
-    ID: json['ID'] as int,
-    Name: json['Name'] as String,
-    UserName: json['UserName'] as String,
-    OEMName: json['OEMName'] as String,
-    DealerName: json['DealerName'] as String,
-    CommissioningDate: json['CommissioningDate'] as String,
-    PrimaryIndustry: json['PrimaryIndustry'] as String,
-    SecondaryIndustry: json['SecondaryIndustry'] as String,
-    GPSDeviceID: json['GPSDeviceID'] as String,
-    Model: json['Model'] as String,
-    SubscriptionEndDate: json['SubscriptionEndDate'] as String,
-    SubscriptionStartDate: json['SubscriptionStartDate'] as String,
-    VIN: json['VIN'] as String,
-    NetworkProvider: json['NetworkProvider'] as String,
-    ProductFamily: json['ProductFamily'] as String,
-    fk_AssetId: json['fk_AssetId'] as int,
-    SourceName1: json['SourceName1'] as String,
-    SourceName2: json['SourceName2'] as String,
-    DestinationName1: json['DestinationName1'] as String,
-    DestinationName2: json['DestinationName2'] as String,
-    DestinationCustomerType: json['DestinationCustomerType'] as String,
-    InsertUTC: json['InsertUTC'] as String,
-    SourceCustomerType: json['SourceCustomerType'] as String,
-    Status: json['Status'] as String,
-    vin: json['vin'] as String,
-  );
-}
+DetailResult _$DetailResultFromJson(Map<String, dynamic> json) => DetailResult(
+      totalDevice: (json['totalDevice'] as num?)?.toDouble(),
+      ActualStartDate: json['ActualStartDate'] as String?,
+      CustomerCode: json['CustomerCode'] as String?,
+      CustomerName: json['CustomerName'] as String?,
+      DealerCode: json['DealerCode'] as String?,
+      Code: json['Code'] as String?,
+      Email: json['Email'] as String?,
+      ID: json['ID'] as int?,
+      Name: json['Name'] as String?,
+      UserName: json['UserName'] as String?,
+      OEMName: json['OEMName'] as String?,
+      DealerName: json['DealerName'] as String?,
+      CommissioningDate: json['CommissioningDate'] as String?,
+      PrimaryIndustry: json['PrimaryIndustry'] as String?,
+      SecondaryIndustry: json['SecondaryIndustry'] as String?,
+      GPSDeviceID: json['GPSDeviceID'] as String?,
+      Model: json['Model'] as String?,
+      SubscriptionEndDate: json['SubscriptionEndDate'] as String?,
+      SubscriptionStartDate: json['SubscriptionStartDate'] as String?,
+      VIN: json['VIN'] as String?,
+      NetworkProvider: json['NetworkProvider'] as String?,
+      ProductFamily: json['ProductFamily'] as String?,
+      fk_AssetId: json['fk_AssetId'] as int?,
+      SourceName1: json['SourceName1'] as String?,
+      SourceName2: json['SourceName2'] as String?,
+      DestinationName1: json['DestinationName1'] as String?,
+      DestinationName2: json['DestinationName2'] as String?,
+      DestinationCustomerType: json['DestinationCustomerType'] as String?,
+      InsertUTC: json['InsertUTC'] as String?,
+      SourceCustomerType: json['SourceCustomerType'] as String?,
+      Status: json['Status'] as String?,
+      vin: json['vin'] as String?,
+    );
 
 Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
     <String, dynamic>{

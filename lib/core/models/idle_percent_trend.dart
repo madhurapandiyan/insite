@@ -12,11 +12,11 @@ class IdlePercentTrend {
     this.message,
   });
 
-  Cumulatives cumulatives;
-  List<Interval> intervals;
-  Pagination pagination;
-  int code;
-  String message;
+  Cumulatives? cumulatives;
+  List<Interval>? intervals;
+  Pagination? pagination;
+  int? code;
+  String? message;
 
   factory IdlePercentTrend.fromJson(Map<String, dynamic> json) =>
       _$IdlePercentTrendFromJson(json);
@@ -37,14 +37,14 @@ class Cumulatives {
     this.intervalType,
   });
 
-  double cumulativeIdlePercent;
-  double averageIdlePercent;
-  String description;
-  DateTime startDateLocalTime;
-  DateTime endDateLocalTime;
-  int totalAssetCount;
-  int totalDayCount;
-  String intervalType;
+  double? cumulativeIdlePercent;
+  double? averageIdlePercent;
+  String? description;
+  DateTime? startDateLocalTime;
+  DateTime? endDateLocalTime;
+  int? totalAssetCount;
+  int? totalDayCount;
+  String? intervalType;
 
   factory Cumulatives.fromJson(Map<String, dynamic> json) =>
       _$CumulativesFromJson(json);
@@ -64,13 +64,13 @@ class Interval {
     this.dayCount,
   });
 
-  double idlePercentage;
-  double idleHours;
-  String description;
-  DateTime intervalStartDateLocalTime;
-  DateTime intervalEndDateLocalTime;
-  int totalAssetCount;
-  int dayCount;
+  double? idlePercentage;
+  double? idleHours;
+  String? description;
+  DateTime? intervalStartDateLocalTime;
+  DateTime? intervalEndDateLocalTime;
+  int? totalAssetCount;
+  int? dayCount;
 
   factory Interval.fromJson(Map<String, dynamic> json) =>
       _$IntervalFromJson(json);
@@ -84,7 +84,7 @@ class Pagination {
     this.totalCount,
   });
 
-  int totalCount;
+  int? totalCount;
 
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);

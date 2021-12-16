@@ -15,22 +15,22 @@ import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 import 'package:logger/logger.dart';
 
 class AssetUtilizationWidget extends StatefulWidget {
-  final UtilizationSummary assetUtilization;
-  final double totalGreatestNumber;
-  final double averageGreatestNumber;
+  final UtilizationSummary? assetUtilization;
+  final double? totalGreatestNumber;
+  final double? averageGreatestNumber;
   final bool isLoading;
-  final bool isRefreshing;
-  final Function(FilterData) onFilterSelected;
+  final bool? isRefreshing;
+  final Function(FilterData)? onFilterSelected;
 
   @override
   _AssetUtilizationWidgetState createState() => _AssetUtilizationWidgetState();
 
   const AssetUtilizationWidget(
-      {Key key,
-      @required this.assetUtilization,
-      @required this.totalGreatestNumber,
-      @required this.averageGreatestNumber,
-      @required this.isLoading,
+      {Key? key,
+      required this.assetUtilization,
+      required this.totalGreatestNumber,
+      required this.averageGreatestNumber,
+      required this.isLoading,
       this.onFilterSelected,
       this.isRefreshing})
       : super(key: key);
@@ -80,7 +80,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                 thickness: 1,
               ),
             ),
-            (widget.isLoading || widget.isRefreshing)
+            (widget.isLoading || widget.isRefreshing!)
                 ? Expanded(
                     child: InsiteProgressBar(),
                   )
@@ -133,17 +133,17 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                         widget.totalGreatestNumber,
                                     shouldShowLabel: shouldShowLabel,
                                     workingValue: Utils.checkNull(widget
-                                        .assetUtilization
-                                        .averageDay
+                                        .assetUtilization!
+                                        .averageDay!
                                         .workingHours),
                                     onTap: () {
                                       onFilterSelected(DateRangeType.today);
                                     },
                                     idleValue: Utils.checkNull(widget
-                                        .assetUtilization.averageDay.idleHours),
+                                        .assetUtilization!.averageDay!.idleHours),
                                     runningValue: Utils.checkNull(widget
-                                        .assetUtilization
-                                        .averageDay
+                                        .assetUtilization!
+                                        .averageDay!
                                         .runtimeHours))
                                 : BarChartWidget(
                                     title: 'Today',
@@ -159,14 +159,14 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     shouldShowLabel: shouldShowLabel,
                                     workingValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .totalDay
+                                            .assetUtilization!
+                                            .totalDay!
                                             .workingHours)
                                         : 0,
                                     idleValue: widget.assetUtilization != null
-                                        ? Utils.checkNull(widget.assetUtilization.totalDay.idleHours)
+                                        ? Utils.checkNull(widget.assetUtilization!.totalDay!.idleHours)
                                         : 0,
-                                    runningValue: Utils.checkNull(widget.assetUtilization.totalDay.runtimeHours)),
+                                    runningValue: Utils.checkNull(widget.assetUtilization!.totalDay!.runtimeHours)),
                             isAverageButtonSelected &&
                                     widget.assetUtilization != null
                                 ? BarChartWidget(
@@ -184,20 +184,20 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     shouldShowLabel: shouldShowLabel,
                                     workingValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .averageWeek
+                                            .assetUtilization!
+                                            .averageWeek!
                                             .workingHours)
                                         : 0,
                                     idleValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .averageWeek
+                                            .assetUtilization!
+                                            .averageWeek!
                                             .idleHours)
                                         : 0,
                                     runningValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .averageWeek
+                                            .assetUtilization!
+                                            .averageWeek!
                                             .runtimeHours)
                                         : 0)
                                 : BarChartWidget(
@@ -214,9 +214,9 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                         widget.totalGreatestNumber,
                                     shouldShowLabel: shouldShowLabel,
                                     workingValue:
-                                        widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization.totalWeek.workingHours) : 0,
-                                    idleValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization.totalWeek.idleHours) : 0,
-                                    runningValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization.totalWeek.runtimeHours) : 0),
+                                        widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.workingHours) : 0,
+                                    idleValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.idleHours) : 0,
+                                    runningValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.runtimeHours) : 0),
                             isAverageButtonSelected &&
                                     widget.assetUtilization != null
                                 ? BarChartWidget(
@@ -235,21 +235,21 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     workingValue:
                                         widget.assetUtilization != null
                                             ? Utils.checkNull(widget
-                                                .assetUtilization
-                                                .averageMonth
+                                                .assetUtilization!
+                                                .averageMonth!
                                                 .workingHours)
                                             : 0,
                                     idleValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .averageMonth
+                                            .assetUtilization!
+                                            .averageMonth!
                                             .idleHours)
                                         : 0,
                                     runningValue: widget.assetUtilization !=
                                             null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .averageMonth
+                                            .assetUtilization!
+                                            .averageMonth!
                                             .runtimeHours)
                                         : 0)
                                 : BarChartWidget(
@@ -268,21 +268,21 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     workingValue:
                                         widget.assetUtilization != null
                                             ? Utils.checkNull(widget
-                                                .assetUtilization
-                                                .totalMonth
+                                                .assetUtilization!
+                                                .totalMonth!
                                                 .workingHours)
                                             : 0,
                                     idleValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
-                                            .assetUtilization
-                                            .totalMonth
+                                            .assetUtilization!
+                                            .totalMonth!
                                             .idleHours)
                                         : 0,
                                     runningValue:
                                         widget.assetUtilization != null
                                             ? Utils.checkNull(widget
-                                                .assetUtilization
-                                                .totalMonth
+                                                .assetUtilization!
+                                                .totalMonth!
                                                 .runtimeHours)
                                             : 0,
                                   )
@@ -300,7 +300,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
   onFilterSelected(DateRangeType dateRangeType) {
     Logger().d(
         "on asset utilization filter selected ${describeEnum(dateRangeType)}");
-    DateTime fromDate, toDate;
+    DateTime? fromDate, toDate;
     fromDate = DateUtil.calcFromDate(dateRangeType);
     toDate = DateTime.now();
     Logger().d("from date ${fromDate} to date ${toDate}");
@@ -308,13 +308,13 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
         title: "Date Range",
         count: describeEnum(dateRangeType),
         extras: [
-          '${fromDate.year}-${fromDate.month}-${fromDate.day}',
+          '${fromDate!.year}-${fromDate.month}-${fromDate.day}',
           '${toDate.year}-${toDate.month}-${toDate.day}',
           describeEnum(dateRangeType)
         ],
         isSelected: true,
         type: FilterType.DATE_RANGE);
-    widget.onFilterSelected(data);
+    widget.onFilterSelected!(data);
   }
 
   Container barChart(String title, double workingValue, double idleValue,

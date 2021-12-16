@@ -10,7 +10,7 @@ class TransferHistoryViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   bool _showDownload = false;
   bool get showDownload => _showDownload;
@@ -23,7 +23,7 @@ class TransferHistoryViewModel extends InsiteViewModel {
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   int start = 0;
   int limit = 50;
@@ -35,9 +35,9 @@ class TransferHistoryViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -48,15 +48,15 @@ class TransferHistoryViewModel extends InsiteViewModel {
 
   getTransferHistoryViewData() async {
     Logger().i("getTransferHistoryViewData");
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getTransferHistoryViewData(
+    SubscriptionDashboardDetailResult? result =
+        await _subscriptionService!.getTransferHistoryViewData(
       start: start == 0 ? start : start + 1,
       limit: limit,
     );
     if (result != null) {
-      if (result.result.isNotEmpty) {
+      if (result.result!.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result[0]);
+        devices.addAll(result.result![0]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -86,5 +86,5 @@ class TransferHistoryViewModel extends InsiteViewModel {
     }
   }
 
-  Logger log;
+  late Logger log;
 }

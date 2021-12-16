@@ -5,12 +5,12 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class InsiteTitleCountRow extends StatelessWidget {
   const InsiteTitleCountRow(
-      {Key key, this.name, this.count, this.filter, this.onClicked})
+      {Key? key, this.name, this.count, this.filter, this.onClicked})
       : super(key: key);
-  final String name;
-  final String count;
-  final String filter;
-  final VoidCallback onClicked;
+  final String? name;
+  final String? count;
+  final String? filter;
+  final VoidCallback? onClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class InsiteTitleCountRow extends StatelessWidget {
                 textColor: white,
                 title: count,
                 onTap: () {
-                  onClicked();
+                  onClicked!();
                 },
               ),
             ],

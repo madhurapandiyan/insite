@@ -6,16 +6,16 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/utilization_legends.dart';
 
 class SingleAssetUtilizationWidget extends StatefulWidget {
-  final AssetUtilization assetUtilization;
-  final double greatestNumber;
+  final AssetUtilization? assetUtilization;
+  final double? greatestNumber;
   @override
   _SingleAssetUtilizationWidgetState createState() =>
       _SingleAssetUtilizationWidgetState();
 
   const SingleAssetUtilizationWidget({
-    Key key,
-    @required this.assetUtilization,
-    @required this.greatestNumber,
+    Key? key,
+    required this.assetUtilization,
+    required this.greatestNumber,
   }) : super(key: key);
 }
 
@@ -84,29 +84,29 @@ class _SingleAssetUtilizationWidgetState
                         barChart(
                           'Today',
                           Utils.checkNull(
-                              widget.assetUtilization.totalDay.workingHours),
+                              widget.assetUtilization!.totalDay!.workingHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalDay.idleHours),
+                              widget.assetUtilization!.totalDay!.idleHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalDay.runtimeHours),
+                              widget.assetUtilization!.totalDay!.runtimeHours),
                         ),
                         barChart(
                           'Current Week',
                           Utils.checkNull(
-                              widget.assetUtilization.totalWeek.workingHours),
+                              widget.assetUtilization!.totalWeek!.workingHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalWeek.idleHours),
+                              widget.assetUtilization!.totalWeek!.idleHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalWeek.runtimeHours),
+                              widget.assetUtilization!.totalWeek!.runtimeHours),
                         ),
                         barChart(
                           'Current Month',
                           Utils.checkNull(
-                              widget.assetUtilization.totalMonth.workingHours),
+                              widget.assetUtilization!.totalMonth!.workingHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalMonth.idleHours),
+                              widget.assetUtilization!.totalMonth!.idleHours),
                           Utils.checkNull(
-                              widget.assetUtilization.totalMonth.runtimeHours),
+                              widget.assetUtilization!.totalMonth!.runtimeHours),
                         ),
                       ],
                     ),
@@ -131,7 +131,7 @@ class _SingleAssetUtilizationWidgetState
               Radius.circular(8),
             ),
             border:
-                Border.all(color: Theme.of(context).textTheme.bodyText1.color)),
+                Border.all(color: Theme.of(context).textTheme.bodyText1!.color!)),
         child: Column(
           children: [
             Expanded(
@@ -164,7 +164,7 @@ class _SingleAssetUtilizationWidgetState
             ),
             Divider(
               height: 1,
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
             Expanded(
               child: Container(
@@ -217,7 +217,7 @@ class _SingleAssetUtilizationWidgetState
               //     ((value /
               //             widget.assetUtilization.totalMonth.runtimeHours) *
               //         100)),
-              : ((((value / widget.greatestNumber) * 100) / totalBarHeight) *
+              : ((((value / widget.greatestNumber!) * 100) / totalBarHeight) *
                   100),
           decoration: BoxDecoration(
             color: color,

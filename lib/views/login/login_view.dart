@@ -17,20 +17,20 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
+   StreamSubscription? _onDestroy;
+   StreamSubscription<String>? _onUrlChanged;
+   StreamSubscription<WebViewStateChanged>? _onStateChanged;
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
   bool isLoading = false;
-  var _navigationService = locator<NavigationService>();
-  final _localService = locator<LocalService>();
-  final _loginService = locator<LoginService>();
+  NavigationService? _navigationService = locator<NavigationService>();
+  final LocalService? _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
 
   @override
   void dispose() {
-    _onDestroy.cancel();
-    _onUrlChanged.cancel();
-    _onStateChanged.cancel();
+    _onDestroy!.cancel();
+    _onUrlChanged!.cancel();
+    _onStateChanged!.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
@@ -41,9 +41,9 @@ class _LoginViewState extends State<LoginView> {
     flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
-    _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("destroy");
-    });
+    // _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+    //   print("destroy");
+    // } as void Function(Null)?);
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
@@ -136,14 +136,14 @@ class _LoginViewState extends State<LoginView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    _loginService!.getUser(token, true);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
-      builder: (BuildContext context, LoginViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
         return Scaffold(
           body: SafeArea(
             child: Stack(

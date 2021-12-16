@@ -26,9 +26,9 @@ class _FleetViewState extends State<FleetView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FleetViewModel>.reactive(
-      builder: (BuildContext context, FleetViewModel viewModel, Widget _) {
+      builder: (BuildContext context, FleetViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.FLEET,

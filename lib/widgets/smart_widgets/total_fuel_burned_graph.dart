@@ -6,12 +6,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TotalFuelBurnedGraph extends StatelessWidget {
   final int rangeSelection;
-  final TotalFuelBurned totalFuelBurned;
-  final List<bool> shouldShowLabel;
+  final TotalFuelBurned? totalFuelBurned;
+  final List<bool>? shouldShowLabel;
   const TotalFuelBurnedGraph(
-      {Key key,
-      @required this.rangeSelection,
-      @required this.totalFuelBurned,
+      {Key? key,
+      required this.rangeSelection,
+      required this.totalFuelBurned,
       this.shouldShowLabel})
       : super(key: key);
 
@@ -22,7 +22,7 @@ class TotalFuelBurnedGraph extends StatelessWidget {
           ? SfCartesianChart(
               title: ChartTitle(
                   textStyle: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color),
                   text: rangeSelection == 1
                       ? 'Daily average: NA'
                       : rangeSelection == 2
@@ -32,9 +32,9 @@ class TotalFuelBurnedGraph extends StatelessWidget {
                 title: AxisTitle(
                     text: '',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
@@ -42,11 +42,11 @@ class TotalFuelBurnedGraph extends StatelessWidget {
                 title: AxisTitle(
                     text: '',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),
@@ -56,19 +56,19 @@ class TotalFuelBurnedGraph extends StatelessWidget {
           : SfCartesianChart(
               title: ChartTitle(
                   textStyle: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color),
                   text: rangeSelection == 1
-                      ? 'Daily average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
+                      ? 'Daily average: ${totalFuelBurned!.cumulatives!.averageFuelBurned!.toStringAsFixed(2)} Liters'
                       : rangeSelection == 2
-                          ? 'Weekly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
-                          : 'Monthly average: ${totalFuelBurned.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'),
+                          ? 'Weekly average: ${totalFuelBurned!.cumulatives!.averageFuelBurned!.toStringAsFixed(2)} Liters'
+                          : 'Monthly average: ${totalFuelBurned!.cumulatives!.averageFuelBurned!.toStringAsFixed(2)} Liters'),
               primaryXAxis: CategoryAxis(
                 title: AxisTitle(
                     text: '',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: _getStackedColumnSeries(),
@@ -76,11 +76,11 @@ class TotalFuelBurnedGraph extends StatelessWidget {
                 title: AxisTitle(
                     text: '',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 numberFormat: NumberFormat.compact(),
                 axisLine: AxisLine(width: 1),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               tooltipBehavior: TooltipBehavior(),
@@ -97,17 +97,17 @@ class TotalFuelBurnedGraph extends StatelessWidget {
     if (totalFuelBurned == null)
       return <StackedColumnSeries<CumulativeChartData, String>>[];
 
-    for (var item in totalFuelBurned.intervals) {
+    for (var item in totalFuelBurned!.intervals!) {
       chartData.add(CumulativeChartData(
-          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),
+          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime!),
           item.totalFuelBurned,
-          item.totals.runtimeFuelBurned,
-          item.totals.workingFuelBurned,
-          item.totals.idleFuelBurned));
+          item.totals!.runtimeFuelBurned,
+          item.totals!.workingFuelBurned,
+          item.totals!.idleFuelBurned));
     }
 
     return <StackedColumnSeries<CumulativeChartData, String>>[
-      shouldShowLabel[0]
+      shouldShowLabel![0]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: emerald,
@@ -121,7 +121,7 @@ class TotalFuelBurnedGraph extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[1]
+      shouldShowLabel![1]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: burntSienna,
@@ -135,7 +135,7 @@ class TotalFuelBurnedGraph extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[2]
+      shouldShowLabel![2]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: creamCan,
@@ -155,10 +155,10 @@ class TotalFuelBurnedGraph extends StatelessWidget {
 
 class CumulativeChartData {
   final String x;
-  final double totalFuelBurned;
-  final double runtime;
-  final double working;
-  final double idle;
+  final double? totalFuelBurned;
+  final double? runtime;
+  final double? working;
+  final double? idle;
 
   CumulativeChartData(
       this.x, this.totalFuelBurned, this.runtime, this.working, this.idle);

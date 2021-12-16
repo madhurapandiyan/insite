@@ -3,9 +3,9 @@ part 'search_data.g.dart';
 
 @JsonSerializable()
 class TopMatch {
-  final String assetUID;
-  final String assetID;
-  final String serialNumber;
+  final String? assetUID;
+  final String? assetID;
+  final String? serialNumber;
 
   TopMatch({this.assetID, this.assetUID, this.serialNumber});
 
@@ -17,8 +17,8 @@ class TopMatch {
 
 @JsonSerializable()
 class SearchData {
-  final int totalCount;
-  final List<TopMatch> topMatches;
+  final int? totalCount;
+  final List<TopMatch>? topMatches;
 
   SearchData({this.totalCount, this.topMatches});
 

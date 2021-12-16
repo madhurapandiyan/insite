@@ -1,4 +1,4 @@
 class ApplicationName {
-  String tPassname;
+  String? tPassname;
   ApplicationName({this.tPassname});
 }

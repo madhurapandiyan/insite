@@ -4,12 +4,12 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 
 class ErrorWidget extends StatelessWidget {
-  final String title;
-  final String description;
-  final String actionTitle;
-  final String path;
-  final bool showAction;
-  final Function(ErrorAction) onTap;
+  final String? title;
+  final String? description;
+  final String? actionTitle;
+  final String? path;
+  final bool? showAction;
+  final Function(ErrorAction)? onTap;
   const ErrorWidget(
       {this.path,
       this.title,
@@ -26,13 +26,13 @@ class ErrorWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          title,
+          title!,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20),
         ),
         Text(
-          description,
+          description!,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
@@ -40,11 +40,11 @@ class ErrorWidget extends StatelessWidget {
         SizedBox(
           height: 40,
         ),
-        showAction
+        showAction!
             ? InsiteButton(
                 title: "Login",
                 onTap: () {
-                  onTap(ErrorAction.LOGIN);
+                  onTap!(ErrorAction.LOGIN);
                 },
                 bgColor: Theme.of(context).buttonColor,
                 textColor: Colors.white,

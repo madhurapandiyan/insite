@@ -13,9 +13,9 @@ import 'package:stacked_services/stacked_services.dart';
 import 'fleetstatus/fleet_status_view.dart';
 
 class SubscriptionViewModel extends InsiteViewModel {
-  Logger log;
-  var _navigationService = locator<NavigationService>();
-  var _subscriptionService = locator<SubScriptionService>();
+  Logger? log;
+  NavigationService? _navigationService = locator<NavigationService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   SubscriptionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -23,22 +23,22 @@ class SubscriptionViewModel extends InsiteViewModel {
 
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(SubscriptionDashboardView(),
+      _navigationService!.navigateWithTransition(SubscriptionDashboardView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWSMSMANAGEMENT) {
-      navigationService.navigateWithTransition(SmsManagementView(),
+      navigationService!.navigateWithTransition(SmsManagementView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWREGISTRATION) {
-      navigationService.navigateWithTransition(SubRegistrationView(),
+      navigationService!.navigateWithTransition(SubRegistrationView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWREPLACEMENT) {
-      navigationService.navigateWithTransition(ReplacementView(),
+      navigationService!.navigateWithTransition(ReplacementView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWFLEETSTATUS) {
-      navigationService.navigateWithTransition(FleetStatusView(),
+      navigationService!.navigateWithTransition(FleetStatusView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWTRANSFERHISTORY) {
-      navigationService.navigateWithTransition(TransferHistoryView(),
+      navigationService!.navigateWithTransition(TransferHistoryView(),
           transition: "fade");
     }
   }

@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class InsiteText extends StatelessWidget {
-  final String text;
-  final Color color;
-  final double size;
+  final String? text;
+  final Color? color;
+  final double? size;
 
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
   const InsiteText({this.text, this.color, this.fontWeight, this.size});
 
   const InsiteText.overflow(
@@ -14,11 +14,11 @@ class InsiteText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
+    return Text(text!,
         style: TextStyle(
           color: color != null
               ? color
-              : Theme.of(context).textTheme.bodyText1.color,
+              : Theme.of(context).textTheme.bodyText1!.color,
           fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
           fontSize: size,
         ));
@@ -26,22 +26,22 @@ class InsiteText extends StatelessWidget {
 }
 
 class InsiteTextAlign extends StatelessWidget {
-  final String text;
-  final Color color;
-  final double size;
-  final TextAlign textAlign;
-  final FontWeight fontWeight;
+  final String? text;
+  final Color? color;
+  final double? size;
+  final TextAlign? textAlign;
+  final FontWeight? fontWeight;
   const InsiteTextAlign(
       {this.text, this.textAlign, this.color, this.fontWeight, this.size});
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
+    return Text(text!,
         textAlign: textAlign,
         style: TextStyle(
           color: color != null
               ? color
-              : Theme.of(context).textTheme.bodyText1.color,
+              : Theme.of(context).textTheme.bodyText1!.color,
           fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
           fontSize: size,
         ));
@@ -49,11 +49,11 @@ class InsiteTextAlign extends StatelessWidget {
 }
 
 class InsiteTextWithPadding extends StatelessWidget {
-  final String text;
-  final Color color;
-  final double size;
-  final EdgeInsets padding;
-  final FontWeight fontWeight;
+  final String? text;
+  final Color? color;
+  final double? size;
+  final EdgeInsets? padding;
+  final FontWeight? fontWeight;
   const InsiteTextWithPadding(
       {this.text, this.color, this.fontWeight, this.padding, this.size});
 
@@ -61,11 +61,11 @@ class InsiteTextWithPadding extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
-      child: Text(text,
+      child: Text(text!,
           style: TextStyle(
             color: color != null
                 ? color
-                : Theme.of(context).textTheme.bodyText1.color,
+                : Theme.of(context).textTheme.bodyText1!.color,
             fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
             fontSize: size,
           )),
@@ -74,22 +74,22 @@ class InsiteTextWithPadding extends StatelessWidget {
 }
 
 class InsiteTextOverFlow extends StatelessWidget {
-  final String text;
-  final Color color;
-  final double size;
-  final FontWeight fontWeight;
-  final TextOverflow overflow;
+  final String? text;
+  final Color? color;
+  final double? size;
+  final FontWeight? fontWeight;
+  final TextOverflow? overflow;
   const InsiteTextOverFlow(
       {this.text, this.overflow, this.color, this.fontWeight, this.size});
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
+    return Text(text!,
         overflow: overflow != null ? overflow : TextOverflow.ellipsis,
         style: TextStyle(
           color: color != null
               ? color
-              : Theme.of(context).textTheme.bodyText1.color,
+              : Theme.of(context).textTheme.bodyText1!.color,
           fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
           fontSize: size,
         ));
@@ -97,11 +97,11 @@ class InsiteTextOverFlow extends StatelessWidget {
 }
 
 class InsiteRichText extends StatelessWidget {
-  final String title;
-  final String content;
-  final Color textColor;
-  final VoidCallback onTap;
-  final TextStyle style;
+  final String? title;
+  final String? content;
+  final Color? textColor;
+  final VoidCallback? onTap;
+  final TextStyle? style;
   const InsiteRichText(
       {this.title, this.content, this.textColor, this.onTap, this.style});
 
@@ -114,13 +114,13 @@ class InsiteRichText extends StatelessWidget {
         TextSpan(
             text: title,
             style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             )),
         TextSpan(
           text: content,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              onTap();
+              onTap!();
             },
           style: style != null
               ? style

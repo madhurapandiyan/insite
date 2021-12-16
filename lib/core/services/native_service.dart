@@ -3,11 +3,11 @@ import 'package:insite/core/services/local_service.dart';
 
 class NativeService {
   final platform = const MethodChannel('com.trimble.insite.flutterchannel');
-  final LocalService localService;
+  final LocalService? localService;
 
   NativeService(this.localService) {}
 
-  Future<String> openLogin() async {
+  Future<String?> openLogin() async {
     return await platform.invokeMethod('open_login');
   }
 }

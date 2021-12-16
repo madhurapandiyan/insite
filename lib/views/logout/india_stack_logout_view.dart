@@ -21,12 +21,12 @@ class IndiaStackLogoutView extends StatefulWidget {
 
 class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
+  late StreamSubscription _onDestroy;
+  late StreamSubscription<String> _onUrlChanged;
+  late StreamSubscription<WebViewStateChanged> _onStateChanged;
 
-  final _loginService = locator<LoginService>();
-  final _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
+  final LocalService? _localService = locator<LocalService>();
 
   @override
   void dispose() {
@@ -41,7 +41,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   bool receivedToken = false;
   String codeVerifier = randomAlphaNumeric(43);
   String state = randomAlphaNumeric(43);
-  String codeChallenge;
+  String? codeChallenge;
 
   @override
   void initState() {
@@ -174,18 +174,18 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("IndiaStackLogoutView saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    _loginService!.getUser(token, true);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackLogoutView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    LoginResponse result =
-        await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
+    LoginResponse? result =
+        await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
+      await _localService!.saveTokenInfo(result);
+      await _loginService!.saveToken(
           result.access_token, result.expires_in.toString(), true);
     }
   }
@@ -193,7 +193,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LogoutViewModel>.reactive(
-      builder: (BuildContext context, LogoutViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LogoutViewModel viewModel, Widget? _) {
         return WillPopScope(
           onWillPop: () {
             return onBackPressed();

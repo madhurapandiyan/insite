@@ -9,12 +9,12 @@ import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class FleetViewModel extends InsiteViewModel {
-  var _fleetService = locator<FleetService>();
-  var _navigationService = locator<NavigationService>();
+  FleetService? _fleetService = locator<FleetService>();
+  NavigationService? _navigationService = locator<NavigationService>();
 
   int pageNumber = 1;
   int pageSize = 50;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   List<Fleet> _assets = [];
   List<Fleet> get assets => _assets;
@@ -34,13 +34,72 @@ class FleetViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
+  final String fleetSummary = """query fleetSummary{
+  fleetSummary{
+    links {
+      prev
+      next
+      self
+    }   
+    pagination {
+      totalAsset
+      totalCount
+      assetsWithoutActiveCoreSubscription
+      pageNumber
+      pageSize
+    }
+     fleetRecords {
+      assetIdentifier
+      assetSerialNumber
+      manufacturer
+      makeCode
+      model
+      assetIcon
+      productFamily
+      status
+      lastReportedLocation
+      lastPercentDEFRemainingUTC
+      lastReportedUTC
+      lastReportedTime
+      notifications
+      assetId
+      customStateDescription
+      modelYear
+      dealerCustomerNumber
+      dealerCode
+      dealerName
+      fuelLevelLastReported
+      lastReportedLocationLatitude
+      lastReportedLocationLongitude
+      universalCustomerIdentifier
+      universalCustomerName
+      source
+      hourMeter
+      lifetimeFuelLiters
+      lastLocationUpdateUTC
+      lastPercentFuelRemainingTime
+      percentDEFRemaining
+      lastPercentDEFRemainingTime
+      fuelReportedTime
+      lastPercentFuelRemainingUTC
+      esn
+      odometer
+    }
+    
+  }
+  
+}
+
+
+  """;
+
   FleetViewModel() {
-    _fleetService.setUp();
+    _fleetService!.setUp();
     setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -53,20 +112,20 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   getFleetSummaryList() async {
-    FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, appliedFilters);
+    FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
+        startDate, endDate, pageSize, pageNumber, fleetSummary, appliedFilters);
     if (result != null) {
-      if (result.pagination.totalCount != null) {
-        _totalCount = result.pagination.totalCount.toInt();
+      if (result.pagination!.totalCount != null) {
+        _totalCount = result.pagination!.totalCount!.toInt();
       }
-      if (result.fleetRecords != null && result.fleetRecords.isNotEmpty) {
-        Logger().i("list of assets " + result.fleetRecords.length.toString());
-        _assets.addAll(result.fleetRecords);
+      if (result.fleetRecords != null && result.fleetRecords!.isNotEmpty) {
+        Logger().i("list of assets " + result.fleetRecords!.length.toString());
+        _assets.addAll(result.fleetRecords!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(result.fleetRecords);
+        _assets.addAll(result.fleetRecords!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -80,7 +139,7 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(Fleet fleet) {
-    _navigationService.navigateTo(assetDetailViewRoute,
+    _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
           fleet: fleet,
           index: 0,
@@ -88,7 +147,7 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   onHomeSelected() {
-    _navigationService.replaceWith(homeViewRoute);
+    _navigationService!.replaceWith(homeViewRoute);
   }
 
   _loadMore() {
@@ -112,16 +171,16 @@ class FleetViewModel extends InsiteViewModel {
     _isRefreshing = true;
     _shouldLoadmore = true;
     notifyListeners();
-    FleetSummaryResponse result = await _fleetService.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, appliedFilters);
+    FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
+        startDate, endDate, pageSize, pageNumber, fleetSummary, appliedFilters);
     if (result != null &&
         result.fleetRecords != null &&
-        result.fleetRecords.isNotEmpty) {
-      if (result.pagination.totalCount != null) {
-        _totalCount = result.pagination.totalCount.toInt();
+        result.fleetRecords!.isNotEmpty) {
+      if (result.pagination!.totalCount != null) {
+        _totalCount = result.pagination!.totalCount!.toInt();
       }
       _assets.clear();
-      _assets.addAll(result.fleetRecords);
+      _assets.addAll(result.fleetRecords!);
       _isRefreshing = false;
       notifyListeners();
     } else {

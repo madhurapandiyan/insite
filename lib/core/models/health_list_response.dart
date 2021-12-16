@@ -3,7 +3,7 @@ part 'health_list_response.g.dart';
 
 @JsonSerializable()
 class HealthListResponse {
-  FaultAssetData assetData;
+  FaultAssetData? assetData;
   HealthListResponse({this.assetData});
   factory HealthListResponse.fromJson(Map<String, dynamic> json) =>
       _$HealthListResponseFromJson(json);
@@ -12,8 +12,8 @@ class HealthListResponse {
 
 @JsonSerializable()
 class FaultAssetData {
-  String assetUid;
-  List<Fault> faults;
+  String? assetUid;
+  List<Fault>? faults;
   FaultAssetData({this.faults, this.assetUid});
   factory FaultAssetData.fromJson(Map<String, dynamic> json) =>
       _$FaultAssetDataFromJson(json);
@@ -22,15 +22,15 @@ class FaultAssetData {
 
 @JsonSerializable()
 class Fault {
-  String description;
-  String lastReportedLocation;
-  double hours;
-  String severityLabel;
-  String lastReportedTimeUTC;
-  String source;
-  String faultCode;
-  double lastReportedLocationLatitude;
-  double lastReportedLocationLongitude;
+  String? description;
+  String? lastReportedLocation;
+  double? hours;
+  String? severityLabel;
+  String? lastReportedTimeUTC;
+  String? source;
+  String? faultCode;
+  double? lastReportedLocationLatitude;
+  double? lastReportedLocationLongitude;
 
   Fault(
       {this.description,

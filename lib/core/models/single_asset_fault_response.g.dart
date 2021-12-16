@@ -7,14 +7,12 @@ part of 'single_asset_fault_response.dart';
 // **************************************************************************
 
 SingleAssetFaultResponse _$SingleAssetFaultResponseFromJson(
-    Map<String, dynamic> json) {
-  return SingleAssetFaultResponse(
-    summaryData: (json['summaryData'] as List)
-        ?.map((e) =>
-            e == null ? null : SummaryData.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    SingleAssetFaultResponse(
+      summaryData: (json['summaryData'] as List<dynamic>?)
+          ?.map((e) => SummaryData.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$SingleAssetFaultResponseToJson(
         SingleAssetFaultResponse instance) =>
@@ -22,14 +20,11 @@ Map<String, dynamic> _$SingleAssetFaultResponseToJson(
       'summaryData': instance.summaryData,
     };
 
-SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) {
-  return SummaryData(
-    countData: (json['countData'] as List)
-        ?.map(
-            (e) => e == null ? null : Count.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+SummaryData _$SummaryDataFromJson(Map<String, dynamic> json) => SummaryData(
+      countData: (json['countData'] as List<dynamic>?)
+          ?.map((e) => Count.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$SummaryDataToJson(SummaryData instance) =>
     <String, dynamic>{

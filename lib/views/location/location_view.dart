@@ -24,7 +24,7 @@ class _LocationViewState extends State<LocationView> {
   String _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
   MapType currentType = MapType.normal;
-  List<DateTime> dateRange;
+  List<DateTime>? dateRange;
 
   @override
   void initState() {
@@ -39,9 +39,9 @@ class _LocationViewState extends State<LocationView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LocationViewModel>.reactive(
-      builder: (BuildContext context, LocationViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LocationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.LOCATION,
@@ -74,11 +74,11 @@ class _LocationViewState extends State<LocationView> {
                                   bgColor: Theme.of(context).backgroundColor,
                                   textColor: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .color,
                                   onTap: () {
                                     viewModel.customInfoWindowController
-                                        .hideInfoWindow();
+                                        .hideInfoWindow!();
                                     viewModel.refresh();
                                   },
                                 ),
@@ -86,57 +86,57 @@ class _LocationViewState extends State<LocationView> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // Text(
-                                    //   Utils.getDateInFormatddMMyyyy(
-                                    //           viewModel.startDate) +
-                                    //       " - " +
-                                    //       Utils.getDateInFormatddMMyyyy(
-                                    //           viewModel.endDate),
-                                    //   style: TextStyle(
-                                    //       color: white,
-                                    //       fontWeight: FontWeight.bold,
-                                    //       fontSize: 12),
-                                    // ),
+                                    // // // Text(
+                                    // // //   Utils.getDateInFormatddMMyyyy(
+                                    // // //           viewModel.startDate) +
+                                    // // //       " - " +
+                                    // // //       Utils.getDateInFormatddMMyyyy(
+                                    // // //           viewModel.endDate),
+                                    // // //   style: TextStyle(
+                                    // // //       color: white,
+                                    // // //       fontWeight: FontWeight.bold,
+                                    // // //       fontSize: 12),
+                                    // // // ),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    // GestureDetector(
-                                    //   onTap: () async {
-                                    //     dateRange = await showDialog(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) =>
-                                    //           Dialog(
-                                    //               backgroundColor: transparent,
-                                    //               child: DateRangeView()),
-                                    //     );
-                                    //     if (dateRange != null &&
-                                    //         dateRange.isNotEmpty) {
-                                    //       viewModel.customInfoWindowController
-                                    //           .hideInfoWindow();
-                                    //       viewModel.refresh();
-                                    //     }
-                                    //   },
-                                    //   child: Container(
-                                    //     width: 90,
-                                    //     height: 30,
-                                    //     decoration: BoxDecoration(
-                                    //       color: tuna,
-                                    //       borderRadius: BorderRadius.all(
-                                    //         Radius.circular(4),
-                                    //       ),
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //         'Date Range',
-                                    //         style: TextStyle(
-                                    //           color: white,
-                                    //           fontSize: 12,
-                                    //           fontWeight: FontWeight.bold,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                    // // // GestureDetector(
+                                    // // //   onTap: () async {
+                                    // // //     dateRange = await showDialog(
+                                    // // //       context: context,
+                                    // // //       builder: (BuildContext context) =>
+                                    // // //           Dialog(
+                                    // // //               backgroundColor: transparent,
+                                    // // //               child: DateRangeView()),
+                                    // // //     );
+                                    // // //     if (dateRange != null &&
+                                    // // //         dateRange.isNotEmpty) {
+                                    // // //       viewModel.customInfoWindowController
+                                    // // //           .hideInfoWindow();
+                                    // // //       viewModel.refresh();
+                                    // // //     }
+                                    // // //   },
+                                    // // //   child: Container(
+                                    // // //     width: 90,
+                                    // // //     height: 30,
+                                    // // //     decoration: BoxDecoration(
+                                    // // //       color: tuna,
+                                    // // //       borderRadius: BorderRadius.all(
+                                    // // //         Radius.circular(4),
+                                    // // //       ),
+                                    // // //     ),
+                                    // // //     child: Center(
+                                    // // //       child: Text(
+                                    // // //         'Date Range',
+                                    // // //         style: TextStyle(
+                                    // // //           color: white,
+                                    // // //           fontSize: 12,
+                                    // // //           fontWeight: FontWeight.bold,
+                                    // // //         ),
+                                    // // //       ),
+                                    // // //     ),
+                                    // // //   ),
+                                    // // // ),
                                   ],
                                 ),
                               ],
@@ -148,15 +148,15 @@ class _LocationViewState extends State<LocationView> {
                                 GoogleMap(
                                   onCameraMove: (position) {
                                     viewModel.customInfoWindowController
-                                        .onCameraMove();
+                                        .onCameraMove!();
                                     viewModel.manager != null
-                                        ? viewModel.manager
+                                        ? viewModel.manager!
                                             .onCameraMove(position)
                                         : SizedBox();
                                   },
                                   onTap: (argument) {
                                     viewModel.customInfoWindowController
-                                        .hideInfoWindow();
+                                        .hideInfoWindow!();
                                   },
                                   onMapCreated:
                                       (GoogleMapController controller) async {
@@ -164,13 +164,13 @@ class _LocationViewState extends State<LocationView> {
                                         .googleMapController = controller;
                                     viewModel.controller.complete(controller);
                                     viewModel.manager != null
-                                        ? viewModel.manager
-                                            .setMapController(controller)
+                                        ? viewModel.manager!
+                                            .setMapId(controller.mapId)
                                         : SizedBox();
                                     viewModel.zoomToMarkers();
                                   },
                                   onCameraIdle: viewModel.manager != null
-                                      ? viewModel.manager.updateMap
+                                      ? viewModel.manager!.updateMap
                                       : null,
                                   mapType: _changemap(),
                                   compassEnabled: true,
@@ -179,26 +179,29 @@ class _LocationViewState extends State<LocationView> {
                                   initialCameraPosition: viewModel
                                                   .assetLocation !=
                                               null &&
-                                          viewModel.assetLocation.mapRecords
+                                          viewModel.assetLocation!.mapRecords!
                                               .isNotEmpty &&
-                                          viewModel.assetLocation.mapRecords
+                                          viewModel.assetLocation!.mapRecords!
                                                   .first !=
                                               null &&
-                                          viewModel.assetLocation.mapRecords.first
+                                          viewModel
+                                                  .assetLocation!
+                                                  .mapRecords!
+                                                  .first!
                                                   .lastReportedLocationLatitude !=
                                               null
                                       ? CameraPosition(
                                           target: LatLng(
                                               viewModel
-                                                  .assetLocation
-                                                  .mapRecords
-                                                  .first
-                                                  .lastReportedLocationLatitude,
+                                                  .assetLocation!
+                                                  .mapRecords!
+                                                  .first!
+                                                  .lastReportedLocationLatitude!,
                                               viewModel
-                                                  .assetLocation
-                                                  .mapRecords
-                                                  .first
-                                                  .lastReportedLocationLongitude),
+                                                  .assetLocation!
+                                                  .mapRecords!
+                                                  .first!
+                                                  .lastReportedLocationLongitude!),
                                           zoom: 5)
                                       : CameraPosition(
                                           target: LatLng(30.666, 76.8127),
@@ -227,15 +230,15 @@ class _LocationViewState extends State<LocationView> {
                                               zoomVal,
                                               LatLng(
                                                   viewModel
-                                                      .assetLocation
-                                                      .mapRecords
-                                                      .first
-                                                      .lastReportedLocationLatitude,
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLatitude!,
                                                   viewModel
-                                                      .assetLocation
-                                                      .mapRecords
-                                                      .first
-                                                      .lastReportedLocationLongitude),
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLongitude!),
                                               viewModel);
                                         },
                                         child: Container(
@@ -251,16 +254,16 @@ class _LocationViewState extends State<LocationView> {
                                                 blurRadius: 1.0,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .bodyText1
-                                                    .color,
+                                                    .bodyText1!
+                                                    .color!,
                                               ),
                                             ],
                                             border: Border.all(
                                                 width: 1.0,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .bodyText1
-                                                    .color),
+                                                    .bodyText1!
+                                                    .color!),
                                             shape: BoxShape.rectangle,
                                           ),
                                           child: SvgPicture.asset(
@@ -281,15 +284,15 @@ class _LocationViewState extends State<LocationView> {
                                                 zoomVal,
                                                 LatLng(
                                                     viewModel
-                                                        .assetLocation
-                                                        .mapRecords
-                                                        .first
-                                                        .lastReportedLocationLatitude,
+                                                        .assetLocation!
+                                                        .mapRecords!
+                                                        .first!
+                                                        .lastReportedLocationLatitude!,
                                                     viewModel
-                                                        .assetLocation
-                                                        .mapRecords
-                                                        .first
-                                                        .lastReportedLocationLongitude),
+                                                        .assetLocation!
+                                                        .mapRecords!
+                                                        .first!
+                                                        .lastReportedLocationLongitude!),
                                                 viewModel);
                                           },
                                           child: Container(
@@ -305,16 +308,16 @@ class _LocationViewState extends State<LocationView> {
                                                   blurRadius: 1.0,
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
-                                                      .color,
+                                                      .bodyText1!
+                                                      .color!,
                                                 ),
                                               ],
                                               border: Border.all(
                                                   width: 1.0,
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
-                                                      .color),
+                                                      .bodyText1!
+                                                      .color!),
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
@@ -350,7 +353,7 @@ class _LocationViewState extends State<LocationView> {
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
+                                              .bodyText1!
                                               .color),
                                     ),
                                     items: [
@@ -369,9 +372,9 @@ class _LocationViewState extends State<LocationView> {
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
-                                    onChanged: (value) {
+                                    onChanged: (String? value) {
                                       setState(() {
-                                        _currentSelectedItem = value;
+                                        _currentSelectedItem = value!;
                                       });
                                     },
                                     underline: Container(
@@ -382,7 +385,7 @@ class _LocationViewState extends State<LocationView> {
                                                     color: Colors.transparent,
                                                     width: 0.0)))),
                                   ),
-                                 ),
+                                ),
                                 viewModel.refreshing
                                     ? InsiteProgressBar()
                                     : SizedBox()

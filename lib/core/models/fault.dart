@@ -5,11 +5,11 @@ part 'fault.g.dart';
 
 @JsonSerializable()
 class FaultSummaryResponse {
-  final List<Links> pageLinks;
-  final List<Fault> faults;
-  final int page;
-  final int limit;
-  final int total;
+  final List<Links>? pageLinks;
+  final List<Fault>? faults;
+  final int? page;
+  final int? limit;
+  final int? total;
   FaultSummaryResponse(
       {this.faults, this.pageLinks, this.limit, this.page, this.total});
 
@@ -23,16 +23,16 @@ class FaultSummaryResponse {
 @JsonSerializable()
 class Fault {
   final dynamic asset;
-  final String description;
-  final String faultType;
-  final double hours;
-  final String severityLabel;
-  final String faultOccuredUTC;
-  final String source;
-  final String faultCode;
-  final FaultBasic basic;
-  final FaultDetails details;
-  final List<Count> countData;
+  final String? description;
+  final String? faultType;
+  final double? hours;
+  final String? severityLabel;
+  final String? faultOccuredUTC;
+  final String? source;
+  final String? faultCode;
+  final FaultBasic? basic;
+  final FaultDetails? details;
+  final List<Count>? countData;
 
   Fault(
       {this.asset,
@@ -56,7 +56,7 @@ class Fault {
 
 @JsonSerializable()
 class FaultAsset {
-  final String uid;
+  final String? uid;
   final dynamic basic;
   final dynamic details;
   FaultAsset({this.uid, this.basic, this.details});
@@ -70,11 +70,11 @@ class FaultAsset {
 
 @JsonSerializable()
 class FaultDynamic {
-  final String status;
-  final String location;
-  final String locationReportedTimeUTC;
-  final String hourMeter;
-  final String odometer;
+  final String? status;
+  final String? location;
+  final String? locationReportedTimeUTC;
+  final String? hourMeter;
+  final String? odometer;
   FaultDynamic(
       {this.status,
       this.location,
@@ -91,12 +91,12 @@ class FaultDynamic {
 
 @JsonSerializable()
 class FaultBasic {
-  final String faultIdentifiers;
-  final String description;
-  final String source;
-  final String severity;
-  final String faultType;
-  final String faultOccuredUTC;
+  final String? faultIdentifiers;
+  final String? description;
+  final String? source;
+  final String? severity;
+  final String? faultType;
+  final String? faultOccuredUTC;
   FaultBasic(
       {this.faultIdentifiers,
       this.description,
@@ -114,8 +114,9 @@ class FaultBasic {
 
 @JsonSerializable()
 class FaultDetails {
-  final String faultReceivedUTC;
-  FaultDetails({this.faultReceivedUTC});
+  final String? faultReceivedUTC;
+  final String? faultCode;
+  FaultDetails({this.faultReceivedUTC, this.faultCode});
 
   factory FaultDetails.fromJson(Map<String, dynamic> json) {
     return _$FaultDetailsFromJson(json);
@@ -126,11 +127,11 @@ class FaultDetails {
 
 @JsonSerializable()
 class AssetFaultSummaryResponse {
-  final List<Links> pageLinks;
-  final List<Fault> assetFaults;
-  final int page;
-  final int limit;
-  final int total;
+  final List<Links>? pageLinks;
+  final List<Fault>? assetFaults;
+  final int? page;
+  final int? limit;
+  final int? total;
   AssetFaultSummaryResponse(
       {this.assetFaults, this.pageLinks, this.limit, this.page, this.total});
 

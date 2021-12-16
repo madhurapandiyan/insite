@@ -3,9 +3,9 @@ part 'device_search_model.g.dart';
 
 @JsonSerializable()
 class DeviceSearchModel {
-  final String code;
-  final String status;
-  final List<List<DeviceContainsList>> result;
+  final String? code;
+  final String? status;
+  final List<List<DeviceContainsList>>? result;
   DeviceSearchModel({this.code,this.result,this.status});
 
   factory DeviceSearchModel.fromJson(Map<String, dynamic> json) =>
@@ -16,8 +16,8 @@ class DeviceSearchModel {
 
 @JsonSerializable()
 class DeviceContainsList {
-  final int count;
-  final String containsList;
+  final int? count;
+  final String? containsList;
 DeviceContainsList({this.count,this.containsList});
 
     factory DeviceContainsList.fromJson(Map<String, dynamic> json) =>

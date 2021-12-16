@@ -3,10 +3,10 @@ part 'preference.g.dart';
 
 @JsonSerializable()
 class Preference {
-  final String PreferenceKeyName;
-  final String PreferenceJson;
-  final String PreferenceKeyUID;
-  final String SchemaVersion;
+  final String? PreferenceKeyName;
+  final String? PreferenceJson;
+  final String? PreferenceKeyUID;
+  final String? SchemaVersion;
   Preference(
       {this.PreferenceKeyName,
       this.PreferenceJson,

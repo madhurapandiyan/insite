@@ -3,13 +3,13 @@ part 'note.g.dart';
 
 @JsonSerializable()
 class Note {
-  final String userAssetNoteUID;
-  final String assetUID;
-  final String userUID;
-  final String userName;
-  final String assetUserNote;
-  final String lastModifiedUTC;
-  final bool enableDeleteButton;
+  final String? userAssetNoteUID;
+  final String? assetUID;
+  final String? userUID;
+  final String? userName;
+  final String? assetUserNote;
+  final String? lastModifiedUTC;
+  final bool? enableDeleteButton;
 
   Note(
       {this.userAssetNoteUID,
@@ -27,8 +27,8 @@ class Note {
 
 @JsonSerializable()
 class PostNote {
-  final String assetUID;
-  final String assetUserNote;
+  final String? assetUID;
+  final String? assetUserNote;
 
   PostNote({this.assetUID, this.assetUserNote});
 
@@ -40,8 +40,8 @@ class PostNote {
 
 @JsonSerializable()
 class PingPostDeviceData {
-  final String AssetUID;
-  final String DeviceUID;
+  final String? AssetUID;
+  final String? DeviceUID;
 
   PingPostDeviceData({this.AssetUID, this.DeviceUID});
 
@@ -53,13 +53,13 @@ class PingPostDeviceData {
 
 @JsonSerializable()
 class PingDeviceData {
-  final String DeviceUID;
-  final String AssetUID;
-  final String DevicePingLogUID;
-  final String RequestStatusID;
-  final String RequestState;
-  final String RequestTimeUTC;
-  final String RequestExpiryTimeUTC;
+  final String? DeviceUID;
+  final String? AssetUID;
+  final String? DevicePingLogUID;
+  final String? RequestStatusID;
+  final String? RequestState;
+  final String? RequestTimeUTC;
+  final String? RequestExpiryTimeUTC;
 
   PingDeviceData(
       {this.AssetUID,

@@ -4,8 +4,8 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ReusableDropDown extends StatelessWidget {
-  final String title;
-  final String name;
+  final String? title;
+  final String? name;
   ReusableDropDown({this.title, this.name});
 
   @override

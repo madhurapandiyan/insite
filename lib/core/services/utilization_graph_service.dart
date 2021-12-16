@@ -13,9 +13,9 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class UtilizationGraphsService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
+  LocalService? _localService = locator<LocalService>();
 
   UtilizationGraphsService() {
     setUp();
@@ -23,15 +23,15 @@ class UtilizationGraphsService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<RunTimeCumulative> getRunTimeCumulative(
-      String startDate, String endDate) async {
+  Future<RunTimeCumulative?> getRunTimeCumulative(
+      String? startDate, String? endDate) async {
     try {
       if (isVisionLink) {
         if (startDate != null &&
@@ -39,9 +39,9 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           RunTimeCumulative response = await MyApi()
-              .getClient()
+              .getClient()!
               .runtimeCumulativeVL(
-                  startDate, endDate, accountSelected.CustomerUID);
+                  startDate, endDate, accountSelected!.CustomerUID);
           if (response != null) {
             return response;
           }
@@ -60,11 +60,11 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           RunTimeCumulative response = await MyApi()
-              .getClient()
+              .getClient()!
               .runtimeCumulative(
                   Urls.runTimeCumulative +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
             return response;
@@ -79,8 +79,8 @@ class UtilizationGraphsService extends BaseService {
     }
   }
 
-  Future<FuelBurnedCumulative> getFuelBurnedCumulative(
-      String startDate, String endDate) async {
+  Future<FuelBurnedCumulative?> getFuelBurnedCumulative(
+      String? startDate, String? endDate) async {
     try {
       if (isVisionLink) {
         if (startDate != null &&
@@ -88,9 +88,9 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           FuelBurnedCumulative response = await MyApi()
-              .getClient()
+              .getClient()!
               .fuelBurnedCumulativeVL(
-                  startDate, endDate, accountSelected.CustomerUID);
+                  startDate, endDate, accountSelected!.CustomerUID);
           if (response != null) {
             return response;
           }
@@ -109,11 +109,11 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           FuelBurnedCumulative response = await MyApi()
-              .getClient()
+              .getClient()!
               .fuelBurnedCumulative(
                   Urls.fuelBurnedCumulative +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
             return response;
@@ -128,10 +128,10 @@ class UtilizationGraphsService extends BaseService {
     }
   }
 
-  Future<TotalHours> getTotalHours(
+  Future<TotalHours?> getTotalHours(
     String interval,
-    String startDate,
-    String endDate,
+    String? startDate,
+    String? endDate,
     int pageNumber,
     int pageSize,
     bool includepagination,
@@ -142,14 +142,14 @@ class UtilizationGraphsService extends BaseService {
             startDate.isNotEmpty &&
             endDate != null &&
             endDate.isNotEmpty) {
-          TotalHours response = await MyApi().getClient().getTotalHoursVL(
+          TotalHours response = await MyApi().getClient()!.getTotalHoursVL(
                 interval,
                 startDate,
                 endDate,
                 pageNumber,
                 pageSize,
                 includepagination,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
               );
           if (response != null) {
             return response;
@@ -180,10 +180,10 @@ class UtilizationGraphsService extends BaseService {
             startDate.isNotEmpty &&
             endDate != null &&
             endDate.isNotEmpty) {
-          TotalHours response = await MyApi().getClient().getTotalHours(
+          TotalHours response = await MyApi().getClient()!.getTotalHours(
               Urls.runTimeTotalHours +
                   FilterUtils.constructQueryFromMap(queryMap),
-              accountSelected.CustomerUID,
+              accountSelected!.CustomerUID,
               Urls.vfleetPrefix);
           if (response != null) {
             return response;
@@ -198,10 +198,10 @@ class UtilizationGraphsService extends BaseService {
     }
   }
 
-  Future<TotalFuelBurned> getTotalFuelBurned(
+  Future<TotalFuelBurned?> getTotalFuelBurned(
     String interval,
-    String startDate,
-    String endDate,
+    String? startDate,
+    String? endDate,
     int pageNumber,
     int pageSize,
     bool includepagination,
@@ -213,14 +213,14 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           TotalFuelBurned response =
-              await MyApi().getClient().getTotalFuelBurnedVL(
+              await MyApi().getClient()!.getTotalFuelBurnedVL(
                     interval,
                     startDate,
                     endDate,
                     pageNumber,
                     pageSize,
                     includepagination,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (response != null) {
             return response;
@@ -252,11 +252,11 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           TotalFuelBurned response = await MyApi()
-              .getClient()
+              .getClient()!
               .getTotalFuelBurned(
                   Urls.fuelBurnedTotalHours +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
             return response;
@@ -271,10 +271,10 @@ class UtilizationGraphsService extends BaseService {
     }
   }
 
-  Future<IdlePercentTrend> getIdlePercentTrend(
+  Future<IdlePercentTrend?> getIdlePercentTrend(
     String interval,
-    String startDate,
-    String endDate,
+    String? startDate,
+    String? endDate,
     int pageNumber,
     int pageSize,
     bool includepagination,
@@ -286,14 +286,14 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           IdlePercentTrend response =
-              await MyApi().getClient().getIdlePercentTrendVL(
+              await MyApi().getClient()!.getIdlePercentTrendVL(
                     interval,
                     startDate,
                     endDate,
                     pageNumber,
                     pageSize,
                     includepagination,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (response != null) {
             return response;
@@ -325,11 +325,11 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           IdlePercentTrend response = await MyApi()
-              .getClient()
+              .getClient()!
               .getIdlePercentTrend(
                   Urls.idlePercent +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
             return response;
@@ -344,10 +344,10 @@ class UtilizationGraphsService extends BaseService {
     }
   }
 
-  Future<FuelBurnRateTrend> getFuelBurnRateTrend(
+  Future<FuelBurnRateTrend?> getFuelBurnRateTrend(
     String interval,
-    String startDate,
-    String endDate,
+    String? startDate,
+    String? endDate,
     int pageNumber,
     int pageSize,
     bool includepagination,
@@ -359,14 +359,14 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           FuelBurnRateTrend response =
-              await MyApi().getClient().getFuelBurnRateTrendVL(
+              await MyApi().getClient()!.getFuelBurnRateTrendVL(
                     interval,
                     startDate,
                     endDate,
                     pageNumber,
                     pageSize,
                     includepagination,
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (response != null) {
             return response;
@@ -399,11 +399,11 @@ class UtilizationGraphsService extends BaseService {
             endDate != null &&
             endDate.isNotEmpty) {
           FuelBurnRateTrend response = await MyApi()
-              .getClient()
+              .getClient()!
               .getFuelBurnRateTrend(
                   Urls.fuelPercent +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
           if (response != null) {
             return response;

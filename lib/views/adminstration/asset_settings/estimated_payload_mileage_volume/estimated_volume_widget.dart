@@ -31,7 +31,7 @@ class _EstimatedVolumeWidgetState extends State<EstimatedVolumeWidget> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<EstimatedVoumePayloadMileage>.reactive(
       builder: (BuildContext context, EstimatedVoumePayloadMileage viewModel,
-          Widget _) {
+          Widget? _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,8 +72,7 @@ class _EstimatedVolumeWidgetState extends State<EstimatedVolumeWidget> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              // ignore: deprecated_member_use
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

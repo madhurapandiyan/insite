@@ -3,13 +3,13 @@ part 'token.g.dart';
 
 @JsonSerializable()
 class GetTokenData {
-  final String grant_type;
-  final String client_id;
-  final String redirect_uri;
-  final String code;
-  final String code_challenge;
-  final String code_verifier;
-  final String tenantDomain;
+  final String? grant_type;
+  final String? client_id;
+  final String? redirect_uri;
+  final String? code;
+  final String? code_challenge;
+  final String? code_verifier;
+  final String? tenantDomain;
 
   GetTokenData(
       {this.grant_type,
@@ -28,7 +28,7 @@ class GetTokenData {
 
 @JsonSerializable()
 class AccessToken {
-  final String access_token;
+  final String? access_token;
 
   AccessToken({this.access_token});
 
