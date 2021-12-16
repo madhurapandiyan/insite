@@ -485,20 +485,20 @@ class AddgeofenseViewModel extends InsiteViewModel {
         snackbarService.showSnackbar(message: "Geofence not drawn in map");
         return;
       }
-      if (titleController.text.isEmpty && descriptionController.text.isEmpty) {
-        snackbarService.showSnackbar(
-            message: "Please enter title and description to proceed");
-        return;
-      }
+      // if (titleController.text.isEmpty && descriptionController.text.isEmpty) {
+      //   snackbarService.showSnackbar(
+      //       message: "Please enter title and description to proceed");
+      //   return;
+      // }
       if (titleController.text.isEmpty) {
         snackbarService.showSnackbar(message: "Please enter title to proceed");
         return;
       }
-      if (descriptionController.text.isEmpty) {
-        snackbarService.showSnackbar(
-            message: "Please enter description to proceed");
-        return;
-      }
+      // if (descriptionController.text.isEmpty) {
+      //   snackbarService.showSnackbar(
+      //       message: "Please enter description to proceed");
+      //   return;
+      // }
       if (endingDate == null && !isNoendDate) {
         snackbarService.showSnackbar(
             message: "Please select an end date or select the check box");

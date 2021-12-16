@@ -97,6 +97,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                     CustomTextBox(
                       title: "Email",
                       controller: viewModel.emailController,
+                      keyPadType: TextInputType.emailAddress,
                       onChanged: (value) {},
                     ),
                     SizedBox(
@@ -373,6 +374,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                   Expanded(
                                     child: CustomTextBox(
                                       title: "Pin code",
+                                      keyPadType: TextInputType.number,
                                       controller: viewModel.pinCodeController,
                                     ),
                                   ),

@@ -257,6 +257,9 @@ class AddNewUserViewModel extends InsiteViewModel {
     country,
     zipcode,
   ) async {
+    if (!validate()) {
+      return;
+    }
     showLoadingDialog();
     try {
       List<Role> roles = [];
@@ -337,6 +340,9 @@ class AddNewUserViewModel extends InsiteViewModel {
     sso_id,
   ) async {
     try {
+      if (!validate()) {
+        return;
+      }
       showLoadingDialog();
       List<Role> roles = [];
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
@@ -379,5 +385,68 @@ class AddNewUserViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e);
     }
+  }
+
+  bool validate() {
+    if (emailController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Email is empty");
+      return false;
+    }
+
+    if (firstNameController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "First name is empty");
+      return false;
+    }
+
+    if (lastNameController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Last name is empty");
+      return false;
+    }
+
+    if (phoneNumberController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Phone number is empty");
+      return false;
+    }
+
+    if (addressController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Address is empty");
+      return false;
+    }
+
+    if (countryController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Country is empty");
+      return false;
+    }
+
+    if (stateController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "State is empty");
+      return false;
+    }
+
+    if (pinCodeController.text.isEmpty) {
+      snackbarService.showSnackbar(message: "Pincode is empty");
+      return false;
+    }
+
+    if (applicationSelectedDropDownList.isEmpty) {
+      snackbarService.showSnackbar(message: "Roles not selected");
+      return false;
+    }
+
+    if (jobTypeValue == null || jobTypeValue.isEmpty) {
+      snackbarService.showSnackbar(message: "Job type not selected");
+      return false;
+    }
+
+    if (jobTitleValue == null || jobTitleValue.isEmpty) {
+      snackbarService.showSnackbar(message: "Job title not selected");
+      return false;
+    }
+
+    if (languageTypeValue == null || languageTypeValue.isEmpty) {
+      snackbarService.showSnackbar(message: "language not selected");
+      return false;
+    }
+    return true;
   }
 }

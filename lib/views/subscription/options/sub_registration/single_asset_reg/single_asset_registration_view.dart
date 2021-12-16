@@ -96,7 +96,8 @@ class _SingleAssetRegistrationViewState
                                                   : CustomAutoCompleteWidget(
                                                       onChange: (value) {
                                                         viewModel
-                                                            .getSubcriptionDeviceListData(name: value);
+                                                            .getSubcriptionDeviceListData(
+                                                                name: value);
                                                       },
                                                       textBoxTitle:
                                                           "Device ID:",
@@ -107,7 +108,8 @@ class _SingleAssetRegistrationViewState
                                                       onSelect:
                                                           (selectedString) {
                                                         viewModel
-                                                            .onSelectedDeviceId(selectedString);
+                                                            .onSelectedDeviceId(
+                                                                selectedString);
                                                       },
                                                       controller: viewModel
                                                           .deviceIdController,
@@ -586,7 +588,8 @@ class _SingleAssetRegistrationViewState
                                         if (_formKey.currentState.validate()) {
                                           viewModel.getTotalDataDetails();
 
-                                          Logger().wtf(' datalength: ${viewModel.totalList}');
+                                          Logger().wtf(
+                                              ' datalength: ${viewModel.totalList}');
 
                                           await showGeneralDialog(
                                             context: context,
