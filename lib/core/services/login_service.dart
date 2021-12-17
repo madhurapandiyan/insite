@@ -22,6 +22,7 @@ class LoginService extends BaseService {
   Future<UserInfo?> getLoggedInUserInfo() async {
     try {
       String? token = await _localService.getToken();
+      Logger().e(token);
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
       //     env: "dev",
@@ -41,6 +42,8 @@ class LoginService extends BaseService {
             "application/x-www-form-urlencoded",
             "Bearer" + " " + token,
             AccessToken(access_token: await _localService.getToken()));
+        Logger().d(userInfo.toJson());
+        await _localService.saveUserInfo(userInfo);
         return userInfo;
       }
     } catch (e) {
@@ -165,7 +168,7 @@ class LoginService extends BaseService {
             .getClient()!
             .getPermissionVL(10000, "Prod-VLUnifiedFleet",
                 customer!.CustomerUID, customer.CustomerUID);
-       List<Permission>? list = [];
+        List<Permission>? list = [];
         if (response != null && response.permission_list!.isNotEmpty) {
           list = response.permission_list;
         }

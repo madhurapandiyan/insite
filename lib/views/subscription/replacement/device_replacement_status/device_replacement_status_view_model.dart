@@ -61,7 +61,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
-      Directory path = await (getExternalStorageDirectory() as Future<Directory>);
+      Directory? path = await (getExternalStorageDirectory());
       var data = await replacementService!.getReplacementDeviceIdDownload();
       Logger().d(data!.toJson());
       final Excel excelSheet = Excel.createExcel();
@@ -105,7 +105,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
             Utils.getLastReportedDateFilterData(
                 DateTime.parse(excelDataInsert[i].InsertUTC!)));
       }
-      Logger().e(path.path);
+      Logger().e(path!.path);
       // excelSheet.encode().then((onValue) {
       //   File("${path.path}/Device_Replacement_Report.xlsx")
       //     ..createSync(recursive: false)

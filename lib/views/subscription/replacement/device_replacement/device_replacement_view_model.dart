@@ -29,6 +29,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   bool showNewPreview = false;
   bool isBackPressed = false;
   bool showingDialog = false;
+  bool isGettingOldDeviceId = false;
+  bool isGettingNewDeviceId = false;
 
   List<DeviceContainsList> _searchList = [];
   List<DeviceContainsList> get searchList => _searchList;
@@ -71,44 +73,54 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   showingOldDeviceIdPreview() {
-    Logger().d("mapko");
-    if (isBackPressed) {
-      return;
-    } else {
-      showingOldPreview = !showingOldPreview;
-      notifyListeners();
-      // showingOldPreview = false;
+    isGettingNewDeviceId = false;
+    showingOldPreview = !showingOldPreview;
+    notifyListeners();
+    // showingOldPreview = false;
+  }
 
-    }
+  onBackPressedInNewDeviceIdPreview() async {
+    showNewPreview = false;
+    notifyListeners();
+    Future.delayed(Duration(seconds: 1), () {
+      showNewPreview = true;
+    });
   }
 
   onEnteringDeviceId(String searchedWord) async {
-    // Logger().wtf(searchedWord);
-    if (searchedWord.length < 4) {
-      _searchList.clear();
-      // Future.delayed(Duration(seconds: 2), () {
-        
-      // });
-      notifyListeners();
-      return null;
-    } else {
-      DeviceSearchModel? data =
-          await (replacementService!.getDeviceSearchModel(searchedWord) as Future<DeviceSearchModel>);
-      data.result!.forEach((element) {
-        _searchList = element;
-      });
-      Logger().w(_searchList.length);
-      if (_searchList.isEmpty) {
-        snackbarService!.showSnackbar(message: "No Data Found");
-      }
+    try {
+      if (searchedWord.length < 4) {
+        _searchList.clear();
+        // Future.delayed(Duration(seconds: 2), () {
 
+        // });
+        notifyListeners();
+        return null;
+      } else {
+        DeviceSearchModel? data =
+            await replacementService!.getDeviceSearchModel(searchedWord);
+        data!.result!.forEach((element) {
+          _searchList = element;
+        });
+        Logger().w(_searchList.length);
+        if (_searchList.isEmpty) {
+          snackbarService!.showSnackbar(message: "No Data Found");
+        }
+      }
       notifyListeners();
+    } catch (e) {
+      snackbarService!.showSnackbar(message: "No Data Found");
+      Logger().e(e.toString());
     }
-    notifyListeners();
+    // Logger().wtf(searchedWord);
   }
 
   onSelectedDeviceId(int i) {
-    searchTextController.text = searchList[i].containsList!;
+    if (isGettingOldDeviceId) {
+      searchTextController.text = searchList[i].containsList!;
+    } else {
+      searchTextController.text = searchList[i].containsList!;
+    }
     searchList.clear();
     notifyListeners();
   }
@@ -125,8 +137,9 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       _searchList.clear();
       _deviceSearchModelResponse = await replacementService!
           .getDeviceSearchModelResponse(searchTextController.text);
+      isGettingOldDeviceId = true;
       Logger().e(_deviceSearchModelResponse!.result!.toJson());
-      initialAlign = !initialAlign;
+      initialAlign = true;
 
       notifyListeners();
       hideLoadingDialog();
@@ -140,12 +153,14 @@ class DeviceReplacementViewModel extends InsiteViewModel {
     try {
       if (searchWord.length < 4) {
         _replaceDeviceModelData = null;
+        isGettingNewDeviceId = false;
         _replaceDeviceModelData!.result!.last.clear();
         notifyListeners();
       } else {
         _replaceDeviceModelData =
             await replacementService!.getReplaceDeviceModel(searchWord);
         Logger().d(_replaceDeviceModelData!.result!.last.first.toJson());
+        isGettingNewDeviceId = true;
         notifyListeners();
       }
     } catch (e) {}
@@ -156,6 +171,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       showLoadingDialog();
       finalAlign = true;
       notifyListeners();
+     
       NewDeviceIdDetail NewdeviceData = NewDeviceIdDetail(
           Reason: initialvalue,
           VIN: deviceSearchModelResponse!.result!.VIN,
@@ -163,9 +179,11 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           OldDeviceId: deviceSearchModelResponse!.result!.GPSDeviceID);
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
+    
+      Logger().e(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
-          UserID: int.parse(userId!) ,
+          UserID: int.parse(userId!),
           Version: 2.1,
           device: [NewdeviceData]);
 
@@ -182,4 +200,5 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       hideLoadingDialog();
     }
   }
+
 }

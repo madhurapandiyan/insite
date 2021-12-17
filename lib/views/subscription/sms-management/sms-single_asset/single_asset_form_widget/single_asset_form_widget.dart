@@ -68,7 +68,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     FocusScope.of(context).requestFocus(nameFocus);
                   },
                   keyPadType: TextInputType.text,
-                  validator: serialNoValidator as dynamic Function(String)?,
+                  validator: serialNoValidator ,
                   onChanged: (value) {
                     serialNo = value;
                   },
@@ -92,7 +92,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                   onChanged: (value) {
                     name = value;
                   },
-                  validator: serialNoValidator as dynamic Function(String)?,
+                  validator: serialNoValidator ,
                 ),
                 SizedBox(
                   height: 30,
@@ -113,7 +113,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     mobileNo = value;
                   },
                   focusNode: mobileNoFocus,
-                  validator: modileNoValidator as dynamic Function(String)?,
+                  validator: modileNoValidator ,
                 ),
                 SizedBox(
                   height: 30,

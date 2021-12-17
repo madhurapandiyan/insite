@@ -77,7 +77,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     super.didUpdateWidget(oldWidget);
   }
 
-  setupListeners(){
+  setupListeners() {
     Logger().i("IndiaStackSplashView init state splash view");
     // flutterWebviewPlugin.close();
 
@@ -132,7 +132,9 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("IndiaStackSplashView URL changed: $url");
-        if (url.isEmpty && url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
+        Logger().i(url);
+        if (url.isEmpty &&
+            url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
@@ -178,8 +180,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService!.saveTokenInfo(result);
-      await _loginService!.saveToken(
-          result.access_token, result.expires_in.toString(), false);
+      await _loginService!
+          .saveToken(result.access_token, result.expires_in.toString(), false);
     }
   }
 

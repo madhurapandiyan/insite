@@ -12,7 +12,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
   final Function(String?)? onSelect;
   final bool? isAlign;
   final TextInputType? keyboardType;
- final String Function(String)? validator;
+ final dynamic Function(String)? validator;
   CustomAutoCompleteWidget(
       {this.items,
       this.isAlign,

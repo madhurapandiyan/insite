@@ -12,7 +12,7 @@ import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart' as permission;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -53,23 +53,40 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
     try {
       showLoadingDialog();
       listOfSingleAssetSmsSchedule.clear();
-      final status = await permission.Permission.storage.request();
+      final status = await Permission.storage.request();
       if (status.isGranted) {
-        // File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        // Logger().d(data.path);
-        // var bytes = File(data.path).readAsBytesSync();
-        // var excel = Excel.decodeBytes(bytes);
+        file_picker.FilePickerResult? data =
+            await file_picker.FilePicker.platform.pickFiles(
+                allowedExtensions: ["xlsx"], type: file_picker.FileType.custom);
+        //Logger().d(data!.paths);
+        var bytes = File(data!.paths.first!).readAsBytesSync();
+        var excel = Excel.decodeBytes(bytes);
+        for (var table in excel.tables.keys) {
+          Logger().w(excel.tables[table]!.rows);
+          for (var i = 0; i < excel.tables[table]!.rows.length; i++) {
+            var data = excel.tables[table]!.rows;
+            if (i==0) {
+              
+            }
+            data.forEach((element) {});
+          }
+        }
 
         // for (var table in excel.tables.keys) {
-        //   Logger().w(excel.tables.keys);
-        //   for (var i = 0; i < excel.tables[table].rows.length; i++) {
-        //     Logger().e(excel.tables[table].rows.length);
-        //     final excelData = excel.tables[table].maxRows;
+        //   Logger().w(excel.tables[table]!.rows);
+        //   for (var i = 0; i < excel.tables[table]!.rows.length; i++) {
+        //     for (List<Data?> data in excel.tables[table]!.rows) {
+        //       data.forEach((element) {
+        //         print(element!.value);
+        //       });
+        //     }
+        //     // Logger().e(excel.tables[table]!.rows.length);
+        //     final excelData = excel.tables[table]!;
+        //     //Logger().e(excelData.rows.first.first);
 
         //     if (i == 0) {
         //       Logger().d("null");
         //     } else {
-        //       Logger().wtf(excelData);
         //       // double mobNo = excelData[2];
         //       // SingleAssetSmsSchedule data = SingleAssetSmsSchedule(
         //       //     AssetSerial: excelData[0].toString(),
@@ -81,7 +98,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
         //     }
         //   }
         // }
-        // onGettingMultiSmsData();
+        //  onGettingMultiSmsData();
       } else {
         snackbarService!.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();
@@ -95,11 +112,10 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
 
   onSampleDownload() async {
     try {
-      final status = await permission.Permission.storage.request();
+      final status = await Permission.storage.request();
       if (status.isGranted) {
-        Directory baseStorage =
-            await (getExternalStorageDirectory() as Future<Directory>);
-        int initialIndex = baseStorage.path.indexOf("data/");
+        Directory? baseStorage = await getExternalStorageDirectory();
+        int initialIndex = baseStorage!.path.indexOf("data/");
         String path = baseStorage.path
             .replaceRange(initialIndex, baseStorage.path.length, "excel");
         // baseStorage = Directory(path);
@@ -119,7 +135,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
 
   onGettingMultiSmsData() async {
     try {
-      if (listOfSingleAssetSmsSchedule == null) {
+      if (listOfSingleAssetSmsSchedule.isEmpty) {
         notifyListeners();
       } else {
         nameList.clear();

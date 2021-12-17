@@ -64,6 +64,7 @@ class AppbarViewModel extends InsiteViewModel {
     _localService!.clearAll();
     _localStorageService!.clearAll();
     LoginResponse? response = await _localService!.getTokenInfo();
+    Logger().d(response!.toJson());
     Future.delayed(Duration(seconds: 2), () {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {

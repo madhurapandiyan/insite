@@ -51,20 +51,33 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InsiteTableRowItem(
-                      title: "Make",
-                      content: "Title",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InsiteText(
+                          text: "Make",
+                        ),
+                        Container(
+                          width: 60,
+                          child: InsiteTextOverFlow(
+                            overflow: TextOverflow.ellipsis,
+                            text: model,
+                          ),
+                        ),
+                      ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InsiteText(
                           text: "Model",
                         ),
-                        InsiteTextOverFlow(
-                          overflow: TextOverflow.ellipsis,
-                          text: model,
+                        Container(
+                          width: 100,
+                          child: InsiteTextOverFlow(
+                            overflow: TextOverflow.ellipsis,
+                            text: model,
+                          ),
                         ),
                       ],
                     )

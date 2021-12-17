@@ -99,8 +99,7 @@ class _SingleAssetRegistrationViewState
                                                           "Device ID:",
                                                       validator:
                                                           defaultCustomFieldValidator
-                                                              as String Function(
-                                                                  String)?,
+                                                              ,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
@@ -124,8 +123,7 @@ class _SingleAssetRegistrationViewState
                                                       },
                                                       validator:
                                                           defaultCustomFieldValidator
-                                                              as String Function(
-                                                                  String)?,
+                                                              ,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
@@ -284,8 +282,7 @@ class _SingleAssetRegistrationViewState
                                                           ],
                                                           validator:
                                                               defaultCustomFieldValidator
-                                                                  as dynamic Function(
-                                                                      String)?)),
+                                                                  )),
                                                 ],
                                               ),
                                             ],
@@ -452,8 +449,7 @@ class _SingleAssetRegistrationViewState
                                                       .deviceEmailController,
                                                   validator:
                                                       defaultCustomFieldValidator
-                                                          as dynamic Function(
-                                                              String)?,
+                                                          ,
                                                 ),
                                               ),
                                               SizedBox(
@@ -580,8 +576,7 @@ class _SingleAssetRegistrationViewState
                                                       .customerEmailController,
                                                   validator:
                                                       defaultCustomFieldValidator
-                                                          as dynamic Function(
-                                                              String)?,
+                                                          ,
                                                 ),
                                               ),
                                             ],

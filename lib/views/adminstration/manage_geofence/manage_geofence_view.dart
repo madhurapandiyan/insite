@@ -24,67 +24,69 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
             viewModel: viewModel,
             body: viewModel.isLoading
                 ? Center(child: InsiteProgressBar())
-                : Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InsiteText(
-                              text: "Manage Geofence",
-                              fontWeight: FontWeight.w700,
-                              size: 20,
-                            ),
-                            InsiteButton(
-                              onTap: () {
-                                viewModel.onNavigation(null);
-                              },
-                              textColor: white,
-                              title: "ADD GEOFENCE",
-                              height: mediaQuery.size.height * 0.05,
-                              width: mediaQuery.size.width * 0.4,
-                            )
-                          ],
-                        ),
-                      ),
-                      viewModel.geofence!.Geofences!.isEmpty
-                          ? Expanded(
-                              child: Center(
-                                child: InsiteText(
-                                  text: "No geofence is added",
-                                  size: 20,
-                                ),
+                : SingleChildScrollView(
+                  child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InsiteText(
+                                text: "Manage Geofence",
+                                fontWeight: FontWeight.w700,
+                                size: 20,
                               ),
-                            )
-                          : Expanded(
-                              child: ListView.builder(
-                                itemCount: viewModel.geofence!.Geofences!.length,
-                                itemBuilder: (BuildContext context, int i) {
-                                  var model = viewModel.geofence!.Geofences!;
-                                  return ManageGeofenceWidget(
-                                    encodedPolyline: viewModel.listOfEncoded[i],
-                                    isFav: model[i].IsFavorite,
-                                    onFavourite: (uid) {
-                                      viewModel.markFavouriteStatus(uid!, i);
-                                    },
-                                    onNavigation: () {
-                                      viewModel
-                                          .onNavigation(model[i].GeofenceUID);
-                                    },
-                                    ondeleting: (uid, actionutc) {
-                                      viewModel.deleteGeofence(
-                                          uid, actionutc, i);
-                                    },
-                                    geofenceName: model[i].GeofenceName,
-                                    geofenceDate: model[i].EndDate,
-                                    geofenceUID: model[i].GeofenceUID,
-                                  );
+                              InsiteButton(
+                                onTap: () {
+                                  viewModel.onNavigation(null);
                                 },
-                              ),
-                            ),
-                    ],
-                  ));
+                                textColor: white,
+                                title: "ADD GEOFENCE",
+                                height: mediaQuery.size.height * 0.05,
+                                width: mediaQuery.size.width * 0.4,
+                              )
+                            ],
+                          ),
+                        ),
+                        viewModel.geofence!.Geofences!.isEmpty
+                            ? Expanded(
+                                child: Center(
+                                  child: InsiteText(
+                                    text: "No geofence is added",
+                                    size: 20,
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: List.generate(
+                                    viewModel.geofence!.Geofences!.length, (i) {
+                                var model = viewModel.geofence!.Geofences!;
+                                return Column(
+                                  children: [
+                                    ManageGeofenceWidget(
+                                      encodedPolyline: viewModel.listOfEncoded[i],
+                                      isFav: model[i].IsFavorite,
+                                      onFavourite: (uid) {
+                                        viewModel.markFavouriteStatus(uid!, i);
+                                      },
+                                      onNavigation: () {
+                                        viewModel.onNavigation(model[i].GeofenceUID);
+                                      },
+                                      ondeleting: (uid, actionutc) {
+                                        viewModel.deleteGeofence(uid, actionutc, i);
+                                      },
+                                      geofenceName: model[i].GeofenceName,
+                                      geofenceDate: model[i].EndDate,
+                                      geofenceUID: model[i].GeofenceUID,
+                                    ),
+                                    SizedBox(height: 10,)
+                                  ],
+                                );
+                              }))
+                      ],
+                    ),
+                ));
       },
       viewModelBuilder: () => ManageGeofenceViewModel(),
     );

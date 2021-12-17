@@ -204,6 +204,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
 
   Widget getGraphView(UtilizationGraphType utilizationGraphType, startDate,
       endDate, update(int)) {
+    Logger().e(utilizationGraphType);
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(
@@ -213,7 +214,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.RUNTIMEHOURS:
         return RuntimeHoursView(
           key: runTimeHoursKey,
@@ -222,7 +223,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.DISTANCETRAVELLED:
         return DistanceTravelledView(
           key: distanceTravelledKey,
@@ -231,35 +232,34 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.CUMULATIVE:
         return CumulativeView(
           key: cumulativeKey,
         );
-        break;
+
       case UtilizationGraphType.TOTALHOURS:
         return TotalHoursView(
           key: totalHoursKey,
         );
-        break;
+
       case UtilizationGraphType.TOTALFUELBURNED:
         return TotalFuelBurnedView(
           key: totalFuelBurnedKey,
         );
-        break;
+
       case UtilizationGraphType.IDLETREND:
         return IdlePercentTrendView(
           key: idleTrendKey,
         );
-        break;
+
       case UtilizationGraphType.FUELBURNRATETREND:
         return FuelBurnRateTrendView(
           key: fuelBurnTrendKey,
         );
-        break;
+
       default:
         return Container();
-        break;
     }
   }
 }

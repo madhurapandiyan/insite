@@ -15,7 +15,8 @@ AssetLocationData _$AssetLocationDataFromJson(Map<String, dynamic> json) =>
           ? null
           : Links.fromJson(json['links'] as Map<String, dynamic>),
       mapRecords: (json['mapRecords'] as List<dynamic>?)
-          ?.map((e) => MapRecord.fromJson(e as Map<String, dynamic>))
+          ?.map((e) =>
+              e == null ? null : MapRecord.fromJson(e as Map<String, dynamic>))
           .toList(),
       countData: (json['countData'] as List<dynamic>?)
           ?.map((e) => CountDatum.fromJson(e as Map<String, dynamic>))

@@ -34,7 +34,7 @@ class LocalService extends BaseService {
 
   Future saveDummyToken() async {
     String token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjM5NDc5NTMwLCJuYmYiOjE2Mzk0NzU5MzAsImlhdCI6MTYzOTQ3NTkzMCwianRpIjoiYmQ0NmQ4ZWQzNjZiNDlkOWE3YzZiNjRlMjVlMWQ0MDUiLCJqd3RfdmVyIjoyLCJzdWIiOiIxZDAyMmI1YS0yZTRhLTRmNWItYmQ4MS1hZDJhNzU5NzdlMjEiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2Mzk0NzU5MjksImF6cCI6ImFmMmIwM2QwLTdiMjctNDFlYi04YTNhLTk1Yjg5ZDIwZjc4ZCIsImF1ZCI6WyJhZjJiMDNkMC03YjI3LTQxZWItOGEzYS05NWI4OWQyMGY3OGQiXSwic2NvcGUiOiJQcm9kLVZpc2lvbkxpbmtBZG1pbmlzdHJhdG9yIn0.h7QjIK8RHd-Gm7rtVxbkTnhlzuykx1lD74wHTVLLVh8Lj0UBL3JgtZRlaJKjPMJoSSCUq6IRbzxqnTWqtzclQG42cH0vYVqW_ubCxtOthvoqgRvyQilNU52OiEiZOGwogaIPH9aTWTEF2FCfq8gMfeWBZEagLaANo45VihBryKhQ8X4ZmhjwzyQ7tETOGh-qk4vy-bxwydEr6v23237Vo3IFtWClF5eD4AdUgUVCjQ55-nkyQi_ujxQnDKENFtTUGdwgDe7DoCBkpsHzGph5KU5PVvs3BiEZH0gXV4IKC9oBqsie3yiAoA9qrfLTF18K1YyCCFK6gt4X431Gw65fOQ";
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJvYXV0aF9wYXJhbWV0ZXJzIjp7ImNsaWVudF9pZCI6Ijg5NDUyNDVkLTU5NzAtNDAxNS04NmQzLTQwNDk3NmI5YWY1ZiIsImNvZGVfY2hhbGxlbmdlIjoiQlQ3OFZQdUFTTDUxYTl4MHIwVVhjT0xCMUhKT3lJaWFZa2xVbFVOa2FQWSIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJub25jZSI6ImZmZXlzZHp6enFvZjlocG41eHVpdWpmdWllaGRwN2pmZWV3dWRkb3NtQUwiLCJyZWRpcmVjdF91cmkiOiJodHRwczovL2QxejVxYTh5YzJ1aG5jLmNsb3VkZnJvbnQubmV0L2F1dGgiLCJyZXNwb25zZV90eXBlIjoiY29kZSIsInNjb3BlIjoib3BlbmlkIE9TRy1JTi1QVUxTRS1BUFAtUFJPRCIsInN0YXRlIjoiZmZleXNkenp6cW9mOWhwbjV4dWl1amZ1aWVoZHA3amZlZXd1ZGRvc21BTCJ9LCJleHRyYV9wYXJhbWV0ZXJzIjp7Im5hdmlnYXRpb25SZWRpcmVjdFVyaSI6Ii8ifX0.sN5FfQc5qdmK8HROVqJ_SXkjU-oVMLGmttFvL80A_lXV35CsNIi4o60I7190AbADE9xSEZT49YhDYz1Z7ANNBSf_IlkrLBiLScVaq1vYxaT8-GEa6m4vlW-sss83fQ-vthHbH5bItlO1n-ISL-zXEH9-2iqJ9rNyxVyL2KfFHVNiSgxXxkWJ1Ln61Ze4gXhLFXLPiWA2Rfm_U7KPT_Xpe-bfYtPVLmWCwrauX3dQquDBIoAoAVgr5ZIl5pHdTC1ePPqBP7Hcn9oIQTFxc3aibbeJ3ld83ezZ4tzsT_CoQH9IlDqIaG3GKgiellhdBeaNzBvL21BgAqpI5rbYnFgq3g";
     return await preferences!.setString(TOKEN, token);
   }
 
@@ -76,12 +76,23 @@ class LocalService extends BaseService {
   }
 
   Future saveAccountInfoData() async {
-    Customer value = Customer(
-        CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-        Children: [],
-        CustomerType: "Dealer",
-        DisplayName: "(8050) Tata Hitachi Corporate Office",
-        Name: "Tata Hitachi Corporate Office");
+    Customer value;
+    if (isVisionLink) {
+      value = Customer(
+          CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    } else {
+      value = Customer(
+          CustomerUID: "1857723c-ada1-11eb-8529-0242ac130003",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    }
+
     return await preferences!.setString(ACCOUNT_INFO, jsonEncode(value));
   }
 

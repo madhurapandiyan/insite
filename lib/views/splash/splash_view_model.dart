@@ -39,10 +39,9 @@ class SplashViewModel extends InsiteViewModel {
         debugPrint(methodCall.arguments);
         getLoggedInUserDetails();
         return "This data from flutter.....";
-        break;
+
       default:
         return "Nothing";
-        break;
     }
   }
 
@@ -51,7 +50,7 @@ class SplashViewModel extends InsiteViewModel {
       bool? val = await _localService!.getIsloggedIn();
       Customer? account = await _localService!.getAccountInfo();
       Logger().d("checkLoggedIn " + val.toString());
-      val = true;
+     // val = true;
       if (val == null || !val) {
         //use this user name and password
         // nitin_r@gmail.com
@@ -109,6 +108,7 @@ class SplashViewModel extends InsiteViewModel {
           // }
         }
       } else {
+        //await _localService!.saveDummyToken();
         UserInfo? userInfo = await _loginService!.getLoggedInUserInfo();
         if (userInfo == null) {
           _localService!.setHasPermission(false);

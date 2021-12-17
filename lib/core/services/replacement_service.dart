@@ -20,6 +20,7 @@ class ReplacementService extends BaseService {
     queryMap["start"] = "0";
     queryMap["limit"] = "100";
     if (isVisionLink) {
+      
     } else {
       data = await MyApi().getClientNine()!.getDeviceSearchModel(
           Urls.masterSearchDeviceId +

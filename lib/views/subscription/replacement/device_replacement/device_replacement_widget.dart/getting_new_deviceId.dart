@@ -17,19 +17,20 @@ class GettingNewDeviceId extends StatefulWidget {
   final List<String>? items;
   final String? initialValue;
   final Function(String)? onDropDownValueChange;
-   bool? showingDeviceId;
 
-  GettingNewDeviceId({
-    this.controller,
-    this.oldDeviceId,
-    this.modelName,
-    this.modelData,
-    this.onChange,
-    this.initialValue,
-    this.showingDeviceId,
-    this.onDropDownValueChange,
-    this.items,
-  });
+  bool? showingDeviceId;
+
+  GettingNewDeviceId(
+      {this.controller,
+      this.oldDeviceId,
+      this.modelName,
+      this.modelData,
+      this.onChange,
+      this.initialValue,
+      this.showingDeviceId,
+      this.onDropDownValueChange,
+      this.items,
+     });
 
   @override
   _GettingNewDeviceIdState createState() => _GettingNewDeviceIdState();
@@ -83,10 +84,8 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
           ),
         ),
         widget.showingDeviceId!
-            ? SizedBox(
-                height: 20,
-              )
-            : Container(
+            ? 
+           Container(
                 //margin: EdgeInsets.all(8),
                 // height: 50,
                 color: white,
@@ -96,15 +95,16 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                       (i) => DeviceIdListWidget(
                           onSelected: () {
                             setState(() {
-                              widget.controller!.text =
-                                  widget.modelData!.result!.last[i].GPSDeviceID!;
+                              widget.controller!.text = widget
+                                  .modelData!.result!.last[i].GPSDeviceID!;
                               widget.showingDeviceId = false;
                             });
-                            FocusScope.of(context).unfocus();
                           },
                           deviceId:
                               widget.modelData!.result!.last[i].GPSDeviceID)),
                 ),
+              ):SizedBox(
+                height: 20,
               ),
         SizedBox(
           height: 20,

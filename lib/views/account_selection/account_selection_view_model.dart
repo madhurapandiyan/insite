@@ -86,7 +86,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   getLoggedInUserMail() async {
     UserInfo? userInfo = await _localService!.getLoggedInUser();
-    _loggedInUserMail = userInfo!.email;
+    Logger().wtf(userInfo!.toJson());
+    _loggedInUserMail = userInfo.email;
     notifyListeners();
   }
 
@@ -194,12 +195,22 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   setAccountSelected(value) async {
     Logger().d("setAccountSelected $value");
-    value = Customer(
-        CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-        Children: [],
-        CustomerType: "Dealer",
-        DisplayName: "(8050) Tata Hitachi Corporate Office",
-        Name: "Tata Hitachi Corporate Office");
+    if (isVisionLink) {
+      value = Customer(
+          CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    } else {
+      value = Customer(
+          CustomerUID: "1857723c-ada1-11eb-8529-0242ac130003",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    }
+
     _accountSelected = value;
     _subAccountSelected = null;
     _subCustomers.clear();
@@ -226,7 +237,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
         CustomerType: "ALL",
         DisplayName: "ALL ACCOUNTS",
         Name: "ALL ACCOUNTS");
-_subAccountSelected = value;
+    _subAccountSelected = value;
     _localService!.saveAccountInfo(accountSelected!);
     if (value.CustomerType != "ALL") {
       _localService!.saveCustomerInfo(value);
