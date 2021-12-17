@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
+import 'package:insite/core/services/graphql_schemas.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -11,6 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 class FleetViewModel extends InsiteViewModel {
   FleetService? _fleetService = locator<FleetService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 50;
@@ -34,65 +36,6 @@ class FleetViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  final String fleetSummary = """query fleetSummary{
-  fleetSummary{
-    links {
-      prev
-      next
-      self
-    }   
-    pagination {
-      totalAsset
-      totalCount
-      assetsWithoutActiveCoreSubscription
-      pageNumber
-      pageSize
-    }
-     fleetRecords {
-      assetIdentifier
-      assetSerialNumber
-      manufacturer
-      makeCode
-      model
-      assetIcon
-      productFamily
-      status
-      lastReportedLocation
-      lastPercentDEFRemainingUTC
-      lastReportedUTC
-      lastReportedTime
-      notifications
-      assetId
-      customStateDescription
-      modelYear
-      dealerCustomerNumber
-      dealerCode
-      dealerName
-      fuelLevelLastReported
-      lastReportedLocationLatitude
-      lastReportedLocationLongitude
-      universalCustomerIdentifier
-      universalCustomerName
-      source
-      hourMeter
-      lifetimeFuelLiters
-      lastLocationUpdateUTC
-      lastPercentFuelRemainingTime
-      percentDEFRemaining
-      lastPercentDEFRemainingTime
-      fuelReportedTime
-      lastPercentFuelRemainingUTC
-      esn
-      odometer
-    }
-    
-  }
-  
-}
-
-
-  """;
-
   FleetViewModel() {
     _fleetService!.setUp();
     setUp();
@@ -113,7 +56,12 @@ class FleetViewModel extends InsiteViewModel {
 
   getFleetSummaryList() async {
     FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, fleetSummary, appliedFilters);
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        _graphqlSchemaService!.fleetSummary,
+        appliedFilters);
     if (result != null) {
       if (result.pagination!.totalCount != null) {
         _totalCount = result.pagination!.totalCount!.toInt();
@@ -172,7 +120,12 @@ class FleetViewModel extends InsiteViewModel {
     _shouldLoadmore = true;
     notifyListeners();
     FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, fleetSummary, appliedFilters);
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        _graphqlSchemaService!.fleetSummary,
+        appliedFilters);
     if (result != null &&
         result.fleetRecords != null &&
         result.fleetRecords!.isNotEmpty) {

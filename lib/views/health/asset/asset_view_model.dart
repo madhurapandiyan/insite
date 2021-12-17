@@ -5,6 +5,7 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -15,6 +16,7 @@ class AssetViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -37,54 +39,6 @@ class AssetViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
-  final String assetFaultQuery = """
-  query assetDataSummary{
-  assetData(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
-    pageLinks {
-      rel
-      href
-      method
-    }
-    assetFaults{
-      asset {
-        uid
-        basic {
-          serialNumber
-        }
-        details {
-          makeCode
-          model
-          productFamily
-          assetIcon
-          dealerCode
-          dealerCustomerName
-          dealerName
-          universalCustomerName
-        }
-        dynamic {
-          status
-          locationLatitude
-          locationLongitude
-          location
-          hourMeter
-          odometer
-          locationReportedTimeUTC
-        }
-      }
-      countData {
-        countOf
-        count
-      }
-    }
-    page
-    limit
-    total
-    
-    
-  }
-}
-
-  """;
   late ScrollController scrollController;
   AssetViewModel() {
     setUp();
@@ -112,7 +66,7 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            assetFaultQuery);
+            _graphqlSchemaService!.assetFaultQuery);
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
@@ -156,7 +110,7 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            assetFaultQuery);
+            _graphqlSchemaService!.assetFaultQuery);
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

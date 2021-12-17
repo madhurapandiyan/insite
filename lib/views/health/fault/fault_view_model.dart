@@ -5,6 +5,7 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -15,6 +16,7 @@ class FaultViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -39,30 +41,6 @@ class FaultViewModel extends InsiteViewModel {
 
   late ScrollController scrollController;
 
-  final String faultQueryString = """
-  query faultDataSummary{
-  faultdata(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
-    
-    faults{
-      details {
-        faultCode
-        faultReceivedUTC
-        dataLinkType
-        occurrences
-        url
-      }
-    }
-    page
-    limit
-    total
-    pageLinks {
-      rel
-      href
-      method
-    }
-  }
-}
-  """;
   FaultViewModel() {
     setUp();
     _faultService!.setUp();
@@ -90,8 +68,8 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        faultQueryString);
-    Logger().wtf(result!.faults![0].toJson());
+        _graphqlSchemaService!.faultQueryString);
+
     if (result != null) {
       _totalCount = result.total;
       if (result.faults!.isNotEmpty) {
@@ -134,7 +112,7 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        faultQueryString);
+        _graphqlSchemaService!.faultQueryString);
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

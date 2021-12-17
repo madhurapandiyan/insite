@@ -24,6 +24,19 @@ class FilterViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
+  final String assetCount = """
+query faultDataSummary{
+ getDashboardAsset{
+  countData{
+    count
+    countOf
+  }
+}
+  
+}
+
+  """;
+
   FilterViewModel() {
     setUp();
     _assetService!.setUp();
@@ -34,12 +47,12 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   getFilterData() async {
-    AssetCount? resultModel =
-        await _assetService!.getAssetCount("model", FilterType.MODEL);
+    AssetCount? resultModel = await _assetService!
+        .getAssetCount("model", FilterType.MODEL, assetCount);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
-    AssetCount? resultDeviceType =
-        await _assetService!.getAssetCount("deviceType", FilterType.DEVICE_TYPE);
+    AssetCount? resultDeviceType = await _assetService!
+        .getAssetCount("deviceType", FilterType.DEVICE_TYPE, assetCount);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -47,17 +60,17 @@ class FilterViewModel extends InsiteViewModel {
     // addData(filterDataSubscription, resultSubscriptiontype,
     //     FilterType.SUBSCRIPTION_DATE);
 
-    AssetCount? resultManufacturer =
-        await _assetService!.getAssetCount("manufacturer", FilterType.MAKE);
+    AssetCount? resultManufacturer = await _assetService!
+        .getAssetCount("manufacturer", FilterType.MAKE, assetCount);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
-    AssetCount? resultProductfamily = await _assetService!.getAssetCount(
-        "productfamily", FilterType.PRODUCT_FAMILY);
+    AssetCount? resultProductfamily = await _assetService!
+        .getAssetCount("productfamily", FilterType.PRODUCT_FAMILY, assetCount);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
-    AssetCount? resultAllAssets =
-        await _assetService!.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
+    AssetCount? resultAllAssets = await _assetService!
+        .getAssetCount("assetstatus", FilterType.ALL_ASSETS, assetCount);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     AssetCount? resultFuelLevel =
@@ -65,8 +78,8 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL, null);
+    AssetCount? resultIdlingLevel = await _assetService!
+        .getIdlingLevelData(startDate, endDate, FilterType.IDLING_LEVEL, null);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 

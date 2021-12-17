@@ -4,6 +4,7 @@ import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -31,7 +32,7 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getAssetCount(key, FilterType type) async {
+  Future<AssetCount?> getAssetCount(key, FilterType type, query) async {
     Logger().d("getAssetCount $type");
     try {
       AssetCount? assetCountFromLocal =
@@ -41,56 +42,68 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        if (isVisionLink) {
-          Map<String, String?> queryMap = Map();
-          if (key != null) {
-            queryMap["grouping"] = key;
-          }
-          if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected!.CustomerUID;
-          }
-          AssetCount assetStatusResponse = await MyApi()
-              .getClient()!
-              .assetCountVL(
-                  Urls.assetCountSummaryVL +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID);
-          if (assetStatusResponse != null) {
-            bool updated = await updateAssetCount(assetStatusResponse, type);
-            Logger().d("updated $updated");
-            if (updated) {
-              return assetStatusResponse;
-            } else {
-              return null;
-            }
-          } else {
-            return null;
-          }
+        if (enableGraphQl) {
+          var data = await Network().getGraphqlData(query);
+
+          AssetCount assetCountFromGraphql =
+              AssetCount.fromJson(data.data!['getDashboardAsset']);
+
+          Logger().wtf(
+              'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$assetCountFromGraphql');
+
+          return assetCountFromGraphql;
         } else {
-          Map<String, String?> queryMap = Map();
-          if (key != null) {
-            queryMap["grouping"] = key;
-          }
-          if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected!.CustomerUID;
-          }
-          AssetCount assetStatusResponse = await MyApi()
-              .getClient()!
-              .assetCount(
-                  Urls.assetCountSummary +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID,
-                  Urls.vfleetPrefix);
-          if (assetStatusResponse != null) {
-            bool updated = await updateAssetCount(assetStatusResponse, type);
-            Logger().d("updated $updated");
-            if (updated) {
-              return assetStatusResponse;
+          if (isVisionLink) {
+            Map<String, String?> queryMap = Map();
+            if (key != null) {
+              queryMap["grouping"] = key;
+            }
+            if (customerSelected != null) {
+              queryMap["customerUID"] = customerSelected!.CustomerUID;
+            }
+            AssetCount assetStatusResponse = await MyApi()
+                .getClient()!
+                .assetCountVL(
+                    Urls.assetCountSummaryVL +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected!.CustomerUID);
+            if (assetStatusResponse != null) {
+              bool updated = await updateAssetCount(assetStatusResponse, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetStatusResponse;
+              } else {
+                return null;
+              }
             } else {
               return null;
             }
           } else {
-            return null;
+            Map<String, String?> queryMap = Map();
+            if (key != null) {
+              queryMap["grouping"] = key;
+            }
+            if (customerSelected != null) {
+              queryMap["customerUID"] = customerSelected!.CustomerUID;
+            }
+            AssetCount assetStatusResponse = await MyApi()
+                .getClient()!
+                .assetCount(
+                    Urls.assetCountSummary +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected!.CustomerUID,
+                    Urls.vfleetPrefix);
+            if (assetStatusResponse != null) {
+              bool updated = await updateAssetCount(assetStatusResponse, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetStatusResponse;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
           }
         }
       }

@@ -8,17 +8,21 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/graphql_schemas.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class UtilizationListViewModel extends InsiteViewModel {
   Logger? log;
-  AssetUtilizationService? _utilizationService = locator<AssetUtilizationService>();
-  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  AssetUtilizationService? _utilizationService =
+      locator<AssetUtilizationService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
   AssetStatusService? _assetService = locator<AssetStatusService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -75,8 +79,8 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getAssetCount() async {
     Logger().d("getAssetCount");
-    AssetCount? result =
-        await _assetService!.getAssetCount(null, FilterType.ASSET_STATUS);
+    AssetCount? result = await _assetService!.getAssetCount(
+        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetCount);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -165,8 +169,12 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getUtilizationCount() async {
     Logger().d("getUtilizationCount");
-    AssetCount? assetCount = await _assetService!.getAssetCountByFilter(startDate,
-        endDate, "-RuntimeHours", ScreenType.UTILIZATION, appliedFilters);
+    AssetCount? assetCount = await _assetService!.getAssetCountByFilter(
+        startDate,
+        endDate,
+        "-RuntimeHours",
+        ScreenType.UTILIZATION,
+        appliedFilters);
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

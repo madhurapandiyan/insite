@@ -31,6 +31,31 @@ class FaultListItemViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 20;
 
+  final String faultQueryString = """
+  query faultDataSummary{
+  faultdata(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
+    
+    faults{
+      details {
+        faultCode
+        faultReceivedUTC
+        dataLinkType
+        occurrences
+        url
+      }
+    }
+    page
+    limit
+    total
+    pageLinks {
+      rel
+      href
+      method
+    }
+  }
+}
+  """;
+
   FaultListItemViewModel(this._fault) {
     Logger().d("FaultListItemViewModel ${fault!.asset["uid"]}");
     setUp();
@@ -55,14 +80,15 @@ class FaultListItemViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    FaultSummaryResponse? result =
-        await _faultService!.getAssetViewDetailSummaryList(
+    FaultSummaryResponse? result = await _faultService!
+        .getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
-            fault!.asset["uid"]);
+            fault!.asset["uid"],
+            faultQueryString);
     if (result != null && result.faults != null) {
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);
