@@ -191,14 +191,13 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<CheckUserResponse> checkUser(String mail) async {
-    try {
-      Map<String, String> queryMap = Map();
-      if (accountSelected != null) {
-        queryMap["EmailID"] = mail;
-      }
-      if (customerSelected != null) {
-        queryMap["customerUid"] = customerSelected.CustomerUID;
-      }
+    Map<String, String> queryMap = Map();
+    if (accountSelected != null) {
+      queryMap["EmailID"] = mail;
+    }
+    if (customerSelected != null) {
+      queryMap["customerUid"] = customerSelected.CustomerUID;
+    }
       if (isVisionLink) {
         CheckUserResponse response = await MyApi().getClientSeven().checkUserVL(
             Urls.adminManagerUserSumaryVL +
@@ -215,9 +214,6 @@ class AssetAdminManagerUserService extends BaseService {
             accountSelected.CustomerUID);
         return response;
       }
-    } catch (e) {
-      return null;
-    }
   }
 
   Future<ApplicationData> getApplicationsData() async {
