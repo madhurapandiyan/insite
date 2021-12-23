@@ -10,7 +10,7 @@ import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/geofence_service.dart';
-import 'package:insite/core/services/graphql_schemas.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';

@@ -11,7 +11,7 @@ import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
-import 'package:insite/core/services/graphql_schemas.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -199,7 +199,6 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? result = await _assetService!.getAssetCount(
         null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetCount);
 
-    Logger().wtf('aaaaaaaaaaaaaaaaaaaaaaa$result');
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -211,8 +210,8 @@ class DashboardViewModel extends InsiteViewModel {
   getFuelLevelData() async {
     Logger().i("get fuel level data");
     int totalAssetCount = 0;
-    AssetCount? result =
-        await _assetService!.getFuellevel(FilterType.FUEL_LEVEL);
+    AssetCount? result = await _assetService!
+        .getFuellevel(FilterType.FUEL_LEVEL, _graphqlSchemaService!.assetCount);
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -238,10 +237,10 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
     if (isFilterApplied) {
       AssetCount? result = await _assetService!.getIdlingLevelFilterData(
-        getStartRange(),
-        currentFilterSelected!.title,
-        endDayRange,
-      );
+          getStartRange(),
+          currentFilterSelected!.title,
+          endDayRange,
+          _graphqlSchemaService!.assetCount);
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -268,7 +267,8 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        _graphqlSchemaService!.getFaultCountData);
     if (count != null) {
       _faultCountData = count;
     }
@@ -306,7 +306,8 @@ class DashboardViewModel extends InsiteViewModel {
   getUtilizationSummary() async {
     UtilizationSummary? result = await _assetUtilizationService!
         .getUtilizationSummary(
-            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
+            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
+            _graphqlSchemaService!.dashBoardUtilizationSummary);
     if (result != null) {
       _utilizationSummary = result;
       _utilizationTotalGreatestValue = Utils.greatestOfThree(
@@ -446,8 +447,11 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelFilterData(dropDownValue) async {
-    AssetCount? result = await _assetService!
-        .getIdlingLevelFilterData(getStartRange(), dropDownValue, endDate);
+    AssetCount? result = await _assetService!.getIdlingLevelFilterData(
+        getStartRange(),
+        dropDownValue,
+        endDate,
+        _graphqlSchemaService!.assetCount);
     if (result != null) {
       _idlingLevelData = result;
     }

@@ -4,7 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
-import 'package:insite/core/services/graphql_schemas.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';

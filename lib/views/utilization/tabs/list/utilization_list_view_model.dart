@@ -8,7 +8,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
-import 'package:insite/core/services/graphql_schemas.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
@@ -114,7 +114,8 @@ class UtilizationListViewModel extends InsiteViewModel {
         '-RuntimeHours',
         pageNumber,
         pageCount,
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.getFleetUtilization);
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);
@@ -153,7 +154,8 @@ class UtilizationListViewModel extends InsiteViewModel {
         '-RuntimeHours',
         pageNumber,
         pageCount,
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.getFleetUtilization);
     if (result != null) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults!);
@@ -174,13 +176,14 @@ class UtilizationListViewModel extends InsiteViewModel {
         endDate,
         "-RuntimeHours",
         ScreenType.UTILIZATION,
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.utilizationTotalCount);
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {
         _totalCount = assetCount.countData![0].count!.toInt();
       }
-      Logger().d("result ${assetCount.toJson()}");
+      Logger().wtf("result ${assetCount.toJson()}");
     }
     notifyListeners();
   }

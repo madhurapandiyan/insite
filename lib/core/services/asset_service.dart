@@ -6,6 +6,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -29,31 +30,73 @@ class AssetService extends BaseService {
   }
 
   Future<AssetSummaryResponse?> getAssetSummaryList(
-    startDate,
-    endDate,
-    pageSize,
-    pageNumber,
-    menuFilterType,
-    List<FilterData?>? appliedFilters,
-  ) async {
+      startDate,
+      endDate,
+      pageSize,
+      pageNumber,
+      menuFilterType,
+      List<FilterData?>? appliedFilters,
+      query) async {
     try {
-      if (isVisionLink) {
-        AssetResponse assetResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.assetSummaryURLVL(
-                    Urls.assetSummaryVL +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected!.CustomerUID,
-                            menuFilterType,
-                            appliedFilters!,
-                            ScreenType.ASSET_OPERATION),
-                    accountSelected!.CustomerUID)
-                : await MyApi().getClient()!.assetSummaryURLVL(
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(query);
+
+        AssetSummaryResponse assetOperationData = AssetSummaryResponse.fromJson(
+            data.data!["assetOperationsDailyTotals"]["assetOperations"]);
+
+        Logger().wtf(assetOperationData.toJson());
+
+        return assetOperationData;
+      } else {
+        if (isVisionLink) {
+          AssetResponse assetResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.assetSummaryURLVL(
                       Urls.assetSummaryVL +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              menuFilterType,
+                              appliedFilters!,
+                              ScreenType.ASSET_OPERATION),
+                      accountSelected!.CustomerUID)
+                  : await MyApi().getClient()!.assetSummaryURLVL(
+                        Urls.assetSummaryVL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNumber,
+                                pageSize,
+                                null,
+                                menuFilterType,
+                                appliedFilters!,
+                                ScreenType.ASSET_OPERATION),
+                        accountSelected!.CustomerUID,
+                      );
+          Logger().wtf(
+              'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${assetResponse.assetOperations!.toJson()}');
+          return assetResponse.assetOperations;
+        } else {
+          AssetResponse assetResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.assetSummaryURL(
+                      Urls.assetSummary +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              menuFilterType,
+                              appliedFilters!,
+                              ScreenType.ASSET_OPERATION),
+                      accountSelected!.CustomerUID,
+                      "in-vutilization-utz-webapi")
+                  : await MyApi().getClient()!.assetSummaryURL(
+                      Urls.assetSummary +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
@@ -64,38 +107,9 @@ class AssetService extends BaseService {
                               appliedFilters!,
                               ScreenType.ASSET_OPERATION),
                       accountSelected!.CustomerUID,
-                    );
-        return assetResponse.assetOperations;
-      } else {
-        AssetResponse assetResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.assetSummaryURL(
-                    Urls.assetSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected!.CustomerUID,
-                            menuFilterType,
-                            appliedFilters!,
-                            ScreenType.ASSET_OPERATION),
-                    accountSelected!.CustomerUID,
-                    "in-vutilization-utz-webapi")
-                : await MyApi().getClient()!.assetSummaryURL(
-                    Urls.assetSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            null,
-                            menuFilterType,
-                            appliedFilters!,
-                            ScreenType.ASSET_OPERATION),
-                    accountSelected!.CustomerUID,
-                    "in-vutilization-utz-webapi");
-        return assetResponse.assetOperations;
+                      "in-vutilization-utz-webapi");
+          return assetResponse.assetOperations;
+        }
       }
     } catch (e) {
       Logger().e("getAssetSummaryList $e");

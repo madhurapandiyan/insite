@@ -14,6 +14,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -29,6 +30,7 @@ class LocationViewModel extends InsiteViewModel {
   Logger? log;
   var _assetLocationService = locator<AssetLocationService>();
   var _navigationService = locator<service.NavigationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
   Set<Marker> markers = Set();
   List<LatLng> latlngs = [];
   List<InsiteMarker> clusterMarkers = [];
@@ -277,7 +279,8 @@ class LocationViewModel extends InsiteViewModel {
         pageNumber,
         pageSize,
         '-lastlocationupdateutc',
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.getFleetLocationData);
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
@@ -345,13 +348,13 @@ class LocationViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     Logger().d("getAssetLocation");
     AssetLocationData? result = await _assetLocationService.getAssetLocation(
-      startDate,
-      endDate,
-      pageNumber,
-      pageSize,
-      '-lastlocationupdateutc',
-      appliedFilters,
-    );
+        startDate,
+        endDate,
+        pageNumber,
+        pageSize,
+        '-lastlocationupdateutc',
+        appliedFilters,
+        _graphqlSchemaService!.getFleetLocationData);
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;

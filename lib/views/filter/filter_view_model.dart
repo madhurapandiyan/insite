@@ -3,11 +3,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   AssetStatusService? _assetService = locator<AssetStatusService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
   bool _loading = true;
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
@@ -73,8 +75,8 @@ query faultDataSummary{
         .getAssetCount("assetstatus", FilterType.ALL_ASSETS, assetCount);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    AssetCount? resultFuelLevel =
-        await _assetService!.getFuellevel(FilterType.FUEL_LEVEL);
+    AssetCount? resultFuelLevel = await _assetService!
+        .getFuellevel(FilterType.FUEL_LEVEL, _graphqlSchemaService!.assetCount);
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
@@ -85,7 +87,8 @@ query faultDataSummary{
 
     AssetCount? resultSeverity = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        _graphqlSchemaService!.getFaultCountData);
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     selectedFilterData = appliedFilters;

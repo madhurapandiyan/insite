@@ -3,12 +3,15 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
   Logger? log;
-  AssetUtilizationService? _utilizationService = locator<AssetUtilizationService>();
+  AssetUtilizationService? _utilizationService =
+      locator<AssetUtilizationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
@@ -71,7 +74,8 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         '-RuntimeHours',
         pageNumber,
         pageCount,
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.getFleetUtilization);
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);
@@ -113,7 +117,8 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         '-RuntimeHours',
         pageNumber,
         pageCount,
-        appliedFilters);
+        appliedFilters,
+        _graphqlSchemaService!.getFleetUtilization);
     if (result != null &&
         result.assetResults != null &&
         result.assetResults!.isNotEmpty) {

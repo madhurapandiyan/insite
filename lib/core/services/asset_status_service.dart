@@ -48,9 +48,6 @@ class AssetStatusService extends DataBaseService {
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
 
-          Logger().wtf(
-              'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$assetCountFromGraphql');
-
           return assetCountFromGraphql;
         } else {
           if (isVisionLink) {
@@ -67,6 +64,7 @@ class AssetStatusService extends DataBaseService {
                     Urls.assetCountSummaryVL +
                         FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID);
+
             if (assetStatusResponse != null) {
               bool updated = await updateAssetCount(assetStatusResponse, type);
               Logger().d("updated $updated");
@@ -114,18 +112,42 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getAssetCountByFilter(
-    startDate,
-    endDate,
-    sort,
-    screenType,
-    appliedFilters,
-  ) async {
+      startDate, endDate, sort, screenType, appliedFilters, query) async {
     Logger().d("getAssetCountByFilter");
     try {
-      if (isVisionLink) {
-        AssetCount assetStatusResponse =
-            await MyApi().getClient()!.assetCountVL(
-                  Urls.assetCountSubscriptionSummaryVL +
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(query);
+
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data!['utilizationTotal']);
+
+        return assetCountFromGraphql;
+      } else {
+        if (isVisionLink) {
+          AssetCount assetStatusResponse =
+              await MyApi().getClient()!.assetCountVL(
+                    Urls.assetCountSubscriptionSummaryVL +
+                        FilterUtils.getFilterURLForCount(
+                            startDate,
+                            endDate,
+                            accountSelected != null && customerSelected != null
+                                ? customerSelected!.CustomerUID
+                                : null,
+                            sort,
+                            appliedFilters,
+                            screenType),
+                    accountSelected!.CustomerUID,
+                  );
+          if (assetStatusResponse != null) {
+            return assetStatusResponse;
+          } else {
+            return null;
+          }
+        } else {
+          AssetCount assetStatusResponse = await MyApi()
+              .getClient()!
+              .assetCount(
+                  Urls.assetCountSubscriptionSummary +
                       FilterUtils.getFilterURLForCount(
                           startDate,
                           endDate,
@@ -136,30 +158,12 @@ class AssetStatusService extends DataBaseService {
                           appliedFilters,
                           screenType),
                   accountSelected!.CustomerUID,
-                );
-        if (assetStatusResponse != null) {
-          return assetStatusResponse;
-        } else {
-          return null;
-        }
-      } else {
-        AssetCount assetStatusResponse = await MyApi().getClient()!.assetCount(
-            Urls.assetCountSubscriptionSummary +
-                FilterUtils.getFilterURLForCount(
-                    startDate,
-                    endDate,
-                    accountSelected != null && customerSelected != null
-                        ? customerSelected!.CustomerUID
-                        : null,
-                    sort,
-                    appliedFilters,
-                    screenType),
-            accountSelected!.CustomerUID,
-            Urls.vfleetPrefix);
-        if (assetStatusResponse != null) {
-          return assetStatusResponse;
-        } else {
-          return null;
+                  Urls.vfleetPrefix);
+          if (assetStatusResponse != null) {
+            return assetStatusResponse;
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -253,7 +257,7 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getFuellevel(FilterType type) async {
+  Future<AssetCount?> getFuellevel(FilterType type, String query) async {
     Logger().d("getFuellevel");
     try {
       AssetCount? assetCountFromLocal =
@@ -263,59 +267,68 @@ class AssetStatusService extends DataBaseService {
         return assetCountFromLocal;
       } else {
         Logger().d("from api");
-        if (isVisionLink) {
-          Map<String, String?> queryMap = Map();
-          queryMap["grouping"] = "fuellevel";
-          queryMap["thresholds"] = "25-50-75-100";
-          if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected!.CustomerUID;
-          }
-          AssetCount fuelLevelDatarespone = customerSelected != null
-              ? await MyApi().getClient()!.assetCountVL(
-                    Urls.assetCountSummaryVL +
-                        FilterUtils.constructQueryFromMap(queryMap),
-                    accountSelected!.CustomerUID,
-                  )
-              : await MyApi().getClient()!.assetCountVL(
-                    Urls.assetCountSummaryVL +
-                        FilterUtils.constructQueryFromMap(queryMap),
-                    accountSelected!.CustomerUID,
-                  );
-          print('data:${fuelLevelDatarespone.toJson()}');
-          if (fuelLevelDatarespone != null) {
-            bool updated = await updateAssetCount(fuelLevelDatarespone, type);
-            if (updated) {
-              return fuelLevelDatarespone;
-            } else {
-              return null;
-            }
-          } else {
-            return null;
-          }
+        if (enableGraphQl) {
+          var data = await Network().getGraphqlData(query);
+
+          AssetCount assetCountFromGraphql =
+              AssetCount.fromJson(data.data!['getDashboardAsset']);
+
+          return assetCountFromGraphql;
         } else {
-          Map<String, String?> queryMap = Map();
-          queryMap["grouping"] = "fuellevel";
-          queryMap["thresholds"] = "25-50-75-100";
-          if (customerSelected != null) {
-            queryMap["customerUID"] = customerSelected!.CustomerUID;
-          }
-          AssetCount fuelLevelDatarespone = await MyApi()
-              .getClient()!
-              .fuelLevel(
-                  Urls.assetCountSummary +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID,
-                  Urls.vfleetPrefix);
-          print('data:${fuelLevelDatarespone.toJson()}');
-          if (fuelLevelDatarespone != null) {
-            bool updated = await updateAssetCount(fuelLevelDatarespone, type);
-            if (updated) {
-              return fuelLevelDatarespone;
+          if (isVisionLink) {
+            Map<String, String?> queryMap = Map();
+            queryMap["grouping"] = "fuellevel";
+            queryMap["thresholds"] = "25-50-75-100";
+            if (customerSelected != null) {
+              queryMap["customerUID"] = customerSelected!.CustomerUID;
+            }
+            AssetCount fuelLevelDatarespone = customerSelected != null
+                ? await MyApi().getClient()!.assetCountVL(
+                      Urls.assetCountSummaryVL +
+                          FilterUtils.constructQueryFromMap(queryMap),
+                      accountSelected!.CustomerUID,
+                    )
+                : await MyApi().getClient()!.assetCountVL(
+                      Urls.assetCountSummaryVL +
+                          FilterUtils.constructQueryFromMap(queryMap),
+                      accountSelected!.CustomerUID,
+                    );
+            print('data:${fuelLevelDatarespone.toJson()}');
+            if (fuelLevelDatarespone != null) {
+              bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+              if (updated) {
+                return fuelLevelDatarespone;
+              } else {
+                return null;
+              }
             } else {
               return null;
             }
           } else {
-            return null;
+            Map<String, String?> queryMap = Map();
+            queryMap["grouping"] = "fuellevel";
+            queryMap["thresholds"] = "25-50-75-100";
+            if (customerSelected != null) {
+              queryMap["customerUID"] = customerSelected!.CustomerUID;
+            }
+            AssetCount fuelLevelDatarespone = await MyApi()
+                .getClient()!
+                .fuelLevel(
+                    Urls.assetCountSummary +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected!.CustomerUID,
+                    Urls.vfleetPrefix);
+            print('data:${fuelLevelDatarespone.toJson()}');
+            if (fuelLevelDatarespone != null) {
+              bool updated = await updateAssetCount(fuelLevelDatarespone, type);
+              if (updated) {
+                return fuelLevelDatarespone;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
           }
         }
       }
@@ -397,41 +410,54 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getFaultCount(startDate, endDate) async {
+  Future<AssetCount?> getFaultCount(startDate, endDate, query) async {
+    //dashboardcountdata returns null
+    //faultcountdata  returns null
+
     try {
-      if (isVisionLink) {
-        Map<String, String?> queryMap = Map();
-        queryMap["startDateTime"] = startDate;
-        queryMap["endDateTime"] = endDate;
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
-        AssetCount faultCountResponse = await MyApi().getClient()!.faultCountVL(
-              Urls.faultCountSummaryVL +
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(query);
+
+        AssetCount faultCountResponse =
+            AssetCount.fromJson(data.data!['faultCountData']);
+
+        return faultCountResponse;
+      } else {
+        if (isVisionLink) {
+          Map<String, String?> queryMap = Map();
+          queryMap["startDateTime"] = startDate;
+          queryMap["endDateTime"] = endDate;
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          AssetCount faultCountResponse =
+              await MyApi().getClient()!.faultCountVL(
+                    Urls.faultCountSummaryVL +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected!.CustomerUID,
+                  );
+          if (faultCountResponse != null) {
+            return faultCountResponse;
+          } else {
+            return null;
+          }
+        } else {
+          Map<String, String?> queryMap = Map();
+          queryMap["startDateTime"] = startDate;
+          queryMap["endDateTime"] = endDate;
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          AssetCount faultCountResponse = await MyApi().getClient()!.faultCount(
+              Urls.faultCountSummary +
                   FilterUtils.constructQueryFromMap(queryMap),
               accountSelected!.CustomerUID,
-            );
-        if (faultCountResponse != null) {
-          return faultCountResponse;
-        } else {
-          return null;
-        }
-      } else {
-        Map<String, String?> queryMap = Map();
-        queryMap["startDateTime"] = startDate;
-        queryMap["endDateTime"] = endDate;
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
-        AssetCount faultCountResponse = await MyApi().getClient()!.faultCount(
-            Urls.faultCountSummary +
-                FilterUtils.constructQueryFromMap(queryMap),
-            accountSelected!.CustomerUID,
-            Urls.faultPrefix);
-        if (faultCountResponse != null) {
-          return faultCountResponse;
-        } else {
-          return null;
+              Urls.faultPrefix);
+          if (faultCountResponse != null) {
+            return faultCountResponse;
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -573,35 +599,44 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getIdlingLevelFilterData(
-      startDate, String? productFamilyKey, endDate) async {
+      startDate, String? productFamilyKey, endDate, query) async {
     try {
-      Map<String, String?> queryMap = Map();
-      queryMap["startDate"] = startDate;
-      queryMap["endDate"] = endDate;
-      queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
-      if (productFamilyKey != null && productFamilyKey.isNotEmpty) {
-        queryMap["productfamily"] = productFamilyKey;
-      }
-      if (customerSelected != null) {
-        queryMap["customerUid"] = customerSelected!.CustomerUID;
-      }
-      if (isVisionLink) {
-        AssetCount idlinglevelDataResponse = await MyApi()
-            .getClient()!
-            .idlingLevelVL(
-                Urls.assetCountSummaryVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return idlinglevelDataResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(query);
+
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data!['getDashboardAsset']);
+
+        return assetCountFromGraphql;
       } else {
-        AssetCount idlinglevelDataResponse = await MyApi()
-            .getClient()!
-            .idlingLevel(
-                Urls.assetCountSummary +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID,
-                Urls.vfleetPrefix);
-        return idlinglevelDataResponse;
+        Map<String, String?> queryMap = Map();
+        queryMap["startDate"] = startDate;
+        queryMap["endDate"] = endDate;
+        queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
+        if (productFamilyKey != null && productFamilyKey.isNotEmpty) {
+          queryMap["productfamily"] = productFamilyKey;
+        }
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected!.CustomerUID;
+        }
+        if (isVisionLink) {
+          AssetCount idlinglevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevelVL(
+                  Urls.assetCountSummaryVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return idlinglevelDataResponse;
+        } else {
+          AssetCount idlinglevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevel(
+                  Urls.assetCountSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetPrefix);
+          return idlinglevelDataResponse;
+        }
       }
     } catch (e) {
       Logger().d(e);
@@ -609,31 +644,40 @@ class AssetStatusService extends DataBaseService {
     return null;
   }
 
-  Future<AssetCount?> getIdlingLevel(startDate, endDate) async {
+  Future<AssetCount?> getIdlingLevel(startDate, endDate, query) async {
     try {
-      Map<String, String> queryMap = Map();
-      queryMap["startDate"] = startDate;
-      queryMap["endDate"] = endDate;
-      queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
-      if (isVisionLink) {
-        AssetCount idlingLevelDataResponse = await MyApi()
-            .getClient()!
-            .idlingLevelVL(
-                Urls.assetCountSummaryVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        print('idlingdata:${idlingLevelDataResponse.countData![0].count}');
-        return idlingLevelDataResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(query);
+
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data!['getDashboardAsset']);
+
+        return assetCountFromGraphql;
       } else {
-        AssetCount idlingLevelDataResponse = await MyApi()
-            .getClient()!
-            .idlingLevel(
-                Urls.assetCountSummary +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID,
-                Urls.vfleetPrefix);
-        print('idlingdata:${idlingLevelDataResponse.countData![0].count}');
-        return idlingLevelDataResponse;
+        Map<String, String> queryMap = Map();
+        queryMap["startDate"] = startDate;
+        queryMap["endDate"] = endDate;
+        queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
+        if (isVisionLink) {
+          AssetCount idlingLevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevelVL(
+                  Urls.assetCountSummaryVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          print('idlingdata:${idlingLevelDataResponse.countData![0].count}');
+          return idlingLevelDataResponse;
+        } else {
+          AssetCount idlingLevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevel(
+                  Urls.assetCountSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetPrefix);
+          print('idlingdata:${idlingLevelDataResponse.countData![0].count}');
+          return idlingLevelDataResponse;
+        }
       }
     } catch (e) {
       Logger().e(e);

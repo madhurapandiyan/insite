@@ -146,4 +146,239 @@ query faultDataSummary{
 
 
   """;
+
+  final String dashBoardUtilizationSummary = """
+  query dashboardUtilizationSummary{
+  getDashboardUtilizationSummary{
+    totalDay {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    totalWeek {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    totalMonth {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageDay {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageWeek {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageMonth {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+  }
+    
+  
+} 
+  """;
+  final String utilizationTotalCount = """
+
+  query utilizationTotalCount{
+ utilizationTotal{
+  countData {
+    countOf
+    count
+  }
+}
+  
+}
+  """;
+
+  final String assetOperationData = """
+ query asetOperations{
+  assetOperationsDailyTotals(sort: "-assetid", startDate: "12/20/2021", endDate: "12/20/2021", pageSize: 50, pageNumber: 1){
+    assetOperations{
+      links {
+        rel
+        href
+      }
+      pagination {
+        totalAssets
+        assetsWithoutActiveCoreSubscription
+        pageNumber
+        pageSize
+      }
+      assets {
+        assetUid
+        assetId
+        makeCode
+        model
+        serialNumber
+        productFamily
+        customStateDescription
+        distanceTravelledKilometers
+        dateRangeRuntimeDuration
+        lastKnownOperator
+        esn
+        assetLastReceivedEvent {
+          lastReceivedEvent
+          lastReceivedEventTimeLocal
+          lastReceivedEventUTC
+          timezoneAbbrev
+          segmentType
+        }
+        assetLocalDates {
+          assetLocalDate
+          totalRuntimeDurationSeconds
+        }
+      }
+    }
+  }
+}
+""";
+  final String getFaultCountData = """
+  query getFaultCountData{
+faultCountData(startDateTime: "2021-12-21T14:02:21.995Z", endDateTime: "2021-12-21T14:02:23.023Z"){
+  countData {
+    countOf
+    assetCount
+    faultCount
+  }
+}
+}
+  """;
+
+  final String getFleetUtilization = """
+  query getFleetUtilization{
+	getfleetUtilization(pageSize:1,pageNumber:100, startDate: "2021-12-21T15:04:50.709Z", endDate: "2021-12-21T15:04:52.097Z"){
+    assetResults {
+      assetIdentifierSQLUID
+      assetIcon
+      assetIdentifier
+      assetSerialNumber
+      date
+      assetId
+      distanceTravelledKilometers
+      idleEfficiency
+      idleFuelConsumedLiters
+      idleFuelConsumptionRate
+      idleHours
+      kmsPerRuntimeFuelConsumedLiter
+      lastIdleFuelConsumptionLitersMeter
+      lastIdleHourMeter
+      lastOdometerMeter
+      lastReportedTime
+      lastReportedTimeZoneAbbrev
+      lastRuntimeFuelConsumptionLitersMeter
+      lastRuntimeHourMeter
+      makeCode
+      message
+      model
+      manufacturer
+      currentHourMeter
+      runtimeFuelConsumedLiters
+      runtimeFuelConsumptionRate
+      runtimeHours
+      supportsIdle
+      targetIdle
+      targetIdlePerformance
+      targetRuntime
+      targetRuntimePerformance
+      workDefinitionType
+      workingEfficiency
+      workingFuelConsumedLiters
+      workingFuelConsumptionRate
+      workingHours
+      lastReportedLocationLatitude
+      lastReportedLocationLongitude
+      lastReportedLocation
+      esn
+    }
+      
+    
+    totals {
+      distanceTravelledKilometersSum
+      runtimeHoursSum
+      idleHoursSum
+      workingHoursSum
+      targetRuntime
+      targetIdle
+      runtimeFuelConsumedLitersSum
+      idleFuelConsumedLitersSum
+      workingFuelConsumedLitersSum
+      runtimePerformance
+      idlePerformance
+      idlePercent
+      workingPercent
+      runtimeBurnRate
+      idleBurnRate
+      workingBurnRate
+      kmsPerRuntimeFuelConsumedLiter
+      runtimeHoursAverage
+      runtimeFuelConsumedLitersAverage
+      idleHoursAverage
+      idleFuelConsumedLitersAverage
+      workingHoursAverage
+      workingFuelConsumedLitersAverage
+      distanceTravelledKilometersAverage
+    }
+    code
+    message
+  }
+
+}
+  """;
+
+  final String getFleetLocationData = """
+  query fleetLocationDetails{
+  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: "2021-11-29"){
+    pagination {
+      totalCount
+      pageNumber
+      pageSize
+    }
+    links {
+      self
+      next
+      prev
+    }
+    mapRecords {
+      assetIdentifier
+      assetSerialNumber
+      serialNumber
+      manufacturer
+      makeCode
+      model
+      assetIcon
+      status
+      assetStatus
+      hourMeter
+      hourmeter
+      latitude
+      longitude
+      lastReportedLocationLatitude
+      lastReportedLocationLongitude
+      lastReportedLocation
+      lastReportedUTC
+      fuelLevelLastReported
+      notifications
+      lastLocationUpdateUTC
+      assetEventHistoryID
+      locationEventUTC
+      locationEventLocalTime
+      locationEventLocalTimeZoneAbbrev
+      odometer
+    }
+    countData {
+      countOf
+      count
+    }
+  }
+  
+}
+  """;
 }
