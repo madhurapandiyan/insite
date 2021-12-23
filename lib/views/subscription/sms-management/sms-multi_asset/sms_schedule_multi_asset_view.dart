@@ -9,6 +9,7 @@ import 'package:insite/views/subscription/sms-management/sms-single_asset/single
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'sms_schedule_multi_asset_view_model.dart';
 
@@ -185,7 +186,8 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
                                   GPSDeviceID: viewModel
                                       .singleAssetModelResponce![i].GPSDeviceID,
                                   SerialNumber: viewModel
-                                      .singleAssetModelResponce![i].SerialNumber,
+                                      .singleAssetModelResponce![i]
+                                      .SerialNumber,
                                   StartDate: viewModel
                                       .singleAssetModelResponce![i].StartDate,
                                   langugae: viewModel.languageList[i],
@@ -215,31 +217,37 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
                                 ),
                                 InsiteButton(
                                   fontSize: 14,
-                                  onTap: () async {
-                                    viewModel
-                                        .onSavingSmsModel()
-                                        .then((_) => showDialog(
+                                  onTap: () {
+                                    viewModel.onSavingSmsModel().then((value) {
+                                      Logger().wtf(value);
+                                      if (value!) {
+                                        return showDialog(
                                             context: context,
-                                            builder: (ctx) => AlertDialog(
-                                                  backgroundColor: tuna,
-                                                  actions: [
-                                                    FlatButton.icon(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          viewModel
-                                                              .onBackPressed();
-                                                        },
-                                                        icon: Icon(Icons.done,color: white,),
-                                                        label: InsiteText(
-                                                          text: "Okay",
-                                                        ))
-                                                  ],
-                                                  content: InsiteText(
-                                                    text:
-                                                        "Moblie number Updated successfully!!!.",
-                                                  ),
-                                                )));
+                                            builder: (ctx) => alertBox(
+                                                  content:
+                                                      "Moblie number Updated successfully!!!.",
+                                                  isShowingButton: value,
+                                                  onBackPress: () {
+                                                    Navigator.of(context).pop();
+                                                    viewModel.onBackPressed();
+                                                  },
+                                                ));
+                                      } else {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (ctx) => alertBox(
+                                                content:
+                                                    "Serial number, Mobile number, Language and Recipient’s Name combination is already exists. Do you want to download?",
+                                                isShowingButton: value,
+                                                onNegativeButtonPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                onPositiveButtonPressed: () {
+                                                  viewModel
+                                                      .onDownloadingExcelSheet();
+                                                }));
+                                      }
+                                    });
                                   },
                                   bgColor: tango,
                                   title: "Next",
@@ -257,6 +265,60 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
         );
       },
       viewModelBuilder: () => SmsScheduleMultiAssetViewModel(),
+    );
+  }
+
+  Widget alertBox(
+      {Function? onBackPress,
+      String? content,
+      bool? isShowingButton,
+      Function? onNegativeButtonPressed,
+      Function? onPositiveButtonPressed}) {
+    return AlertDialog(
+      backgroundColor: tuna,
+      actions: [
+        isShowingButton!
+            ? FlatButton.icon(
+                onPressed: () {
+                  onBackPress!();
+                },
+                icon: Icon(
+                  Icons.done,
+                  color: white,
+                ),
+                label: InsiteText(
+                  text: "Okay",
+                ))
+            : Row(
+                children: [
+                  FlatButton.icon(
+                      onPressed: () {
+                        onPositiveButtonPressed!();
+                      },
+                      icon: Icon(
+                        Icons.done,
+                        color: white,
+                      ),
+                      label: InsiteText(
+                        text: "Yes",
+                      )),
+                  FlatButton.icon(
+                      onPressed: () {
+                        onNegativeButtonPressed!();
+                      },
+                      icon: Icon(
+                        Icons.done,
+                        color: white,
+                      ),
+                      label: InsiteText(
+                        text: "No",
+                      ))
+                ],
+              )
+      ],
+      content: InsiteText(text: content
+          //"Moblie number Updated successfully!!!.",
+          ),
     );
   }
 }

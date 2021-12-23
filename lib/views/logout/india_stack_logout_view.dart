@@ -90,7 +90,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
           .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
       Logger()
           .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
-      if (state.url != null &&
+      if (state.url.isNotEmpty &&
           state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
         Logger()
             .i("IndiaStackLogoutView STATE changed with auth code: $state.url");
@@ -133,7 +133,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLogoutView  URL changed: $url");
-        if (url != null &&
+       if (url.isNotEmpty &&
             url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           Logger().i("IndiaStackLogoutView URL changed with auth code : $url");
           try {
@@ -141,26 +141,26 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
               List<String> list = url.split("=");
               Logger().i("IndiaStackLogoutView url split list $list");
               if (list.isNotEmpty) {
-                // _onUrlChanged.cancel();
+                _onUrlChanged.cancel();
                 //for vision link (oauth style login)
-                // String accessTokenString = list[1];
-                // String expiresTokenString = list[3];
-                // List<String> accessTokenList = accessTokenString.split("&");
-                // List<String> expiryList = expiresTokenString.split("&");
-                // print("accessToken split list $list");
-                // String accessToken = accessTokenList[0];
-                // String expiryTime = expiryList[0];
-                // print("accessToken $accessToken");
-                // print("expiryTime $expiryTime");
-                // saveToken(accessToken, expiryTime);
+                String accessTokenString = list[1];
+                String expiresTokenString = list[3];
+                List<String> accessTokenList = accessTokenString.split("&");
+                List<String> expiryList = expiresTokenString.split("&");
+                print("accessToken split list $list");
+                String accessToken = accessTokenList[0];
+                String expiryTime = expiryList[0];
+                print("accessToken $accessToken");
+                print("expiryTime $expiryTime");
+                saveToken(accessToken, expiryTime);
 
-                // String codeString = list[1];
-                // List<String> codeStringList = codeString.split("&");
-                // if (codeStringList.isNotEmpty) {
-                //   getLoginDataV4(
-                //     codeStringList[0],
-                //   );
-                // }
+                String codeString = list[1];
+                List<String> codeStringList = codeString.split("&");
+                if (codeStringList.isNotEmpty) {
+                  getLoginDataV4(
+                    codeStringList[0],
+                  );
+                }
               }
             }
             flutterWebviewPlugin.close();
@@ -185,8 +185,8 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
         await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService!.saveTokenInfo(result);
-      await _loginService!.saveToken(
-          result.access_token, result.expires_in.toString(), true);
+      await _loginService!
+          .saveToken(result.access_token, result.expires_in.toString(), true);
     }
   }
 

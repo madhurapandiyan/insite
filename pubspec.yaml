@@ -61,6 +61,7 @@ dependencies:
   permission_handler: ^8.1.6
   path_provider: any
   flutter_downloader: ^1.5.1
+  open_file: ^3.2.1
   
   
   

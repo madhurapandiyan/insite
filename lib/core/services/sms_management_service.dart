@@ -31,15 +31,18 @@ class SmsManagementService extends BaseService {
     return data;
   }
 
-  Future<dynamic> savingSms(List<SavingSmsModel?> model) async {
+  Future<SavingSmsResponce?> savingSms(List<SavingSmsModel?> model) async {
     Logger().wtf(model.first!.toJson());
     if (isVisionLink) {
     } else {
-      var data = MyApi().getClientNine()!.savingSms(Urls.savingSms, model);
+      SavingSmsResponce? data =await MyApi().getClientNine()!.savingSms(Urls.savingSms, model);
+      return data;
     }
+    // return data;
   }
 
-  Future<SmsReportSummaryModel?> getsmsReportSummaryModel(int startCount) async {
+  Future<SmsReportSummaryModel?> getsmsReportSummaryModel(
+      int startCount) async {
     SmsReportSummaryModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";

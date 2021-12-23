@@ -22,8 +22,10 @@ class SplashViewModel extends InsiteViewModel {
 
   bool isProcessing = false;
   bool shouldLoadWebview = false;
+  late bool checkingFavour;
 
   SplashViewModel() {
+    checkingFavour = isVisionLink;
     this.log = getLogger(this.runtimeType.toString());
     _nativeService!.platform.setMethodCallHandler(nativeMethodCallHandler);
     Future.delayed(Duration(seconds: 2), () {
@@ -50,7 +52,7 @@ class SplashViewModel extends InsiteViewModel {
       bool? val = await _localService!.getIsloggedIn();
       Customer? account = await _localService!.getAccountInfo();
       Logger().d("checkLoggedIn " + val.toString());
-     // val = true;
+      //val = true;
       if (val == null || !val) {
         //use this user name and password
         // nitin_r@gmail.com
@@ -82,7 +84,7 @@ class SplashViewModel extends InsiteViewModel {
     try {
       if (isVisionLink) {
         await _localService!.saveAccountInfoData();
-        await _localService!.saveDummyToken();
+        //await _localService!.saveDummyToken();
         List<Permission>? list = await _loginService!.getPermissions();
         if (list!.isNotEmpty) {
           _localService!.setHasPermission(true);

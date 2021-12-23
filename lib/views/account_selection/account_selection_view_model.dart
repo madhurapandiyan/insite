@@ -94,7 +94,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
   getCustomerList() async {
     Logger().d("getCustomerList");
     List<Customer>? result = await _loginService!.getCustomers();
-    addCustomers(result!);
+    Logger().w(result!.length);
+    addCustomers(result);
     Logger().d("getCustomerList " + _customers.length.toString());
     _loading = false;
     notifyListeners();

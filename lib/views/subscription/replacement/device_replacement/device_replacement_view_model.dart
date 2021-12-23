@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -23,14 +24,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   String? userId;
-  bool initialAlign = false;
+  bool searchingOldDeviceId = false;
   bool finalAlign = false;
-  bool showingOldPreview = false;
-  bool showNewPreview = false;
-  bool isBackPressed = false;
+  bool checkingDeviceIdEnter = false;
+  bool checkingNewDeviceIdEnter = false;
+  bool showingNewDeviceIdPreview = false;
   bool showingDialog = false;
   bool isGettingOldDeviceId = false;
   bool isGettingNewDeviceId = false;
+  int? changingIndex = 0;
 
   List<DeviceContainsList> _searchList = [];
   List<DeviceContainsList> get searchList => _searchList;
@@ -66,24 +68,22 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onBackPressed() {
-    // showingOldPreview = true;
-    showNewPreview = !showNewPreview;
-    // _replaceDeviceModelData = null;
+    showingNewDeviceIdPreview = !showingNewDeviceIdPreview;
     notifyListeners();
   }
 
   showingOldDeviceIdPreview() {
     isGettingNewDeviceId = false;
-    showingOldPreview = !showingOldPreview;
+    //showingOldPreview = !showingOldPreview;
     notifyListeners();
     // showingOldPreview = false;
   }
 
   onBackPressedInNewDeviceIdPreview() async {
-    showNewPreview = false;
+    //showNewPreview = false;
     notifyListeners();
     Future.delayed(Duration(seconds: 1), () {
-      showNewPreview = true;
+      // showNewPreview = true;
     });
   }
 
@@ -104,50 +104,67 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         });
         Logger().w(_searchList.length);
         if (_searchList.isEmpty) {
-          snackbarService!.showSnackbar(message: "No Data Found");
+          Fluttertoast.showToast(msg: "No Data Found");
+          return;
         }
       }
+
+      // searchingOldDeviceId = true;
       notifyListeners();
     } catch (e) {
-      snackbarService!.showSnackbar(message: "No Data Found");
+      Fluttertoast.showToast(msg: "No Data Found");
       Logger().e(e.toString());
     }
     // Logger().wtf(searchedWord);
   }
 
   onSelectedDeviceId(int i) {
-    if (isGettingOldDeviceId) {
-      searchTextController.text = searchList[i].containsList!;
-    } else {
-      searchTextController.text = searchList[i].containsList!;
-    }
+    searchTextController.text = searchList[i].containsList!;
+    checkingDeviceIdEnter = true;
     searchList.clear();
     notifyListeners();
   }
 
   onSelectedNewDeviceId(int i) {
-    Logger().e("uiyoih");
     replaceDeviceIdController.text =
-        _replaceDeviceModelData!.result!.first[i].GPSDeviceID!;
+        _replaceDeviceModelData!.result!.last[i].GPSDeviceID!;
+    checkingNewDeviceIdEnter = false;
+    notifyListeners();
   }
 
-  onSearchingDeviceId() async {
-    try {
-      showLoadingDialog();
-      _searchList.clear();
-      _deviceSearchModelResponse = await replacementService!
-          .getDeviceSearchModelResponse(searchTextController.text);
-      isGettingOldDeviceId = true;
-      Logger().e(_deviceSearchModelResponse!.result!.toJson());
-      initialAlign = true;
+  onChangingPageView(int value) {
+    changingIndex = value;
+    notifyListeners();
+  }
 
-      notifyListeners();
-      hideLoadingDialog();
+  Future<bool?> onSearchingDeviceId() async {
+    try {
+      if (searchTextController.text.length < 4) {
+        Fluttertoast.showToast(msg: "Enter valid device id");
+        return false;
+      } else {
+        showLoadingDialog();
+        _searchList.clear();
+        _deviceSearchModelResponse = await replacementService!
+            .getDeviceSearchModelResponse(searchTextController.text);
+        isGettingOldDeviceId = true;
+        Logger().e(_deviceSearchModelResponse!.result!.toJson());
+        searchingOldDeviceId = true;
+        hideLoadingDialog();
+        notifyListeners();
+        return searchingOldDeviceId;
+      }
     } catch (e) {
+      Logger().e(e.toString());
+      //searchingOldDeviceId = false;
+      Fluttertoast.showToast(msg: "No device Id found");
       hideLoadingDialog();
       notifyListeners();
+      return false;
     }
   }
+
+  onItemChange() {}
 
   onGettingReplaceDeviceId(String searchWord) async {
     try {
@@ -160,10 +177,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         _replaceDeviceModelData =
             await replacementService!.getReplaceDeviceModel(searchWord);
         Logger().d(_replaceDeviceModelData!.result!.last.first.toJson());
-        isGettingNewDeviceId = true;
+        checkingNewDeviceIdEnter = true;
         notifyListeners();
       }
     } catch (e) {}
+  }
+
+  onPageChange(int value) {
+    changingIndex = value;
+    notifyListeners();
   }
 
   onRegister() async {
@@ -171,7 +193,6 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       showLoadingDialog();
       finalAlign = true;
       notifyListeners();
-     
       NewDeviceIdDetail NewdeviceData = NewDeviceIdDetail(
           Reason: initialvalue,
           VIN: deviceSearchModelResponse!.result!.VIN,
@@ -179,15 +200,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           OldDeviceId: deviceSearchModelResponse!.result!.GPSDeviceID);
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
-    
-      Logger().e(userId);
+
+      //  Logger().e(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
           UserID: int.parse(userId!),
           Version: 2.1,
           device: [NewdeviceData]);
 
-      Logger().d(replacementData.toJson());
+      Logger().d(replacementData.device!.first.toJson());
       var data = await replacementService!.savingReplacement(replacementData);
       searchList.clear();
       navigationService!.clearTillFirstAndShowView(
@@ -197,8 +218,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
+      Fluttertoast.showToast(msg: "Invalid Request.Try again Later");
       hideLoadingDialog();
     }
   }
-
 }

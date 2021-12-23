@@ -1,6 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -20,6 +21,9 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> filterSeverity = [];
+  List<FilterData> filterDataJobType = [];
+  List<FilterData> filterDataUserType = [];
+
   List<FilterData?>? selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -38,8 +42,8 @@ class FilterViewModel extends InsiteViewModel {
         await _assetService!.getAssetCount("model", FilterType.MODEL);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
-    AssetCount? resultDeviceType =
-        await _assetService!.getAssetCount("deviceType", FilterType.DEVICE_TYPE);
+    AssetCount? resultDeviceType = await _assetService!
+        .getAssetCount("deviceType", FilterType.DEVICE_TYPE);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -51,13 +55,13 @@ class FilterViewModel extends InsiteViewModel {
         await _assetService!.getAssetCount("manufacturer", FilterType.MAKE);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
-    AssetCount? resultProductfamily = await _assetService!.getAssetCount(
-        "productfamily", FilterType.PRODUCT_FAMILY);
+    AssetCount? resultProductfamily = await _assetService!
+        .getAssetCount("productfamily", FilterType.PRODUCT_FAMILY);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
-    AssetCount? resultAllAssets =
-        await _assetService!.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
+    AssetCount? resultAllAssets = await _assetService!
+        .getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     AssetCount? resultFuelLevel =
@@ -65,8 +69,8 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL, null);
+    AssetCount? resultIdlingLevel = await _assetService!
+        .getIdlingLevelData(startDate, endDate, FilterType.IDLING_LEVEL, null);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
@@ -74,6 +78,14 @@ class FilterViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
+
+    AssetCount? resultJobType =
+        await _assetService!.getAssetCount("JobType", FilterType.JOBTYPE);
+    addUserData(filterDataJobType, resultJobType!, FilterType.JOBTYPE);
+
+    AssetCount? resultUserType =
+        await _assetService!.getAssetCount("UserType", FilterType.USERTYPE);
+    addUserData(filterDataUserType, resultUserType!, FilterType.USERTYPE);
 
     selectedFilterData = appliedFilters;
     _loading = false;
@@ -116,6 +128,22 @@ class FilterViewModel extends InsiteViewModel {
               type: type);
           filterData.add(data);
         }
+      }
+    }
+  }
+
+  addUserData(filterData, AssetCount resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData!.isNotEmpty) {
+      for (Count countData in resultModel.countData!) {
+        FilterData data = FilterData(
+            count: countData.count.toString(),
+            title: countData.name,
+            isSelected: isAlreadSelected(countData.countOf, type),
+            extras: [countData.id.toString()],
+            type: type);
+        filterData.add(data);
       }
     }
   }

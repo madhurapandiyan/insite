@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
@@ -7,6 +9,8 @@ class Urls {
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String idTokenBaseUrl = "https://id.trimble.com";
   static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
+  static String insiteBaseUrl =
+      "https://insite-in-frame.frame-oesolutions.com/";
 
   static String idTokenKey =
       "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
@@ -41,9 +45,28 @@ class Urls {
           "h3siCLfKlDG1Tzf0OTGBCgeldj0a" +
           "&state=https://administrator.myvisionlink.com/&nonce=1";
 
-          
+  static String administratorloginUrlVl =
+      "https://id.trimble.com/oauth/authorize?" +
+          "scope=openid%20Prod-VisionLinkAdministrator" +
+          "&response_type=code" +
+          "&redirect_uri=https%3A%2F%2Fadministrator.myvisionlink.com" +
+          "&client_id=af2b03d0-7b27-41eb-8a3a-95b89d20f78d" +
+          "&state=https%3A%2F%2Fadministrator.myvisionlink.com%2F" +
+          "&code_challenge=filkDAKM7ulLU4kUw9OqF492fdl2rGn3CCPPcI6HO5I&nonce=1" +
+          "&code_challenge_method=S256";
 
   //sample
+  static getV4LoginUrlVL(state, codeChallenge) {
+    String url = "https://id.trimble.com/oauth/authorize?" +
+        "scope=openid $visionLinkApplicationName" +
+        "&response_type=code" +
+        "&redirect_uri=$administratorBaseUrl"
+            "&client_id=$visionLinkClientId&state=$state" +
+        "&code_challenge=$codeChallenge&nonce=1" +
+        "&code_challenge_method=S256";
+    return url;
+  }
+
   static String unifiedFleetV4LoginUrl =
       "https://id.trimble.com/oauth/authorize?response_type=code" +
           "&client_id=$indiaStackClientId&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
@@ -76,20 +99,17 @@ class Urls {
   // static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
-  // static String tataHitachiRedirectUri =
-  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
-  // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
-
   static String tataHitachiRedirectUri =
       "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
   static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
   static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   // static String tataHitachiRedirectUri =
-  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
+  //     "https://dj8lqow8wzdep.cloudfront.net/auth";
   // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
-  // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
+  // static String tataHitachiApplicationName = "Frame-Administrator-IND";
+  static String visionLinkClientId = "af2b03d0-7b27-41eb-8a3a-95b89d20f78d";
+  static String visionLinkApplicationName = "Prod-VisionLinkAdministrator";
 
   //   static String tataHitachiRedirectUri =
   //     "https://d20xyexn0ovnlx.cloudfront.net/auth";
@@ -104,7 +124,13 @@ class Urls {
 
   static getV4LogoutUrl(String? token, redirecturi) {
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl";
+    return url;
+  }
+
+  static logoutUrlVl(String? token, redirecturi) {
+    String url = Urls.idTokenBaseUrl +
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl&state=$administratorBaseUrl/";
     return url;
   }
 
@@ -198,6 +224,9 @@ class Urls {
       "/t/trimble.com/vss-assetsettings/1.0/assetfuelburnratesettings";
   static String getAssetMileageListDataVL =
       "/t/trimble.com/vss-assetsettings/1.0/assetmileagesettings";
+  static String deviceTypeVL =
+      "t/trimble.com/vss-assetsettings/1.0/devicetypes";
+  static String userCount = "$identity/2.0/Users/Count";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -267,13 +296,19 @@ class Urls {
   static String getReportOfReplacement =
       "$subscriptionPrefix/subscriptionSave/replacementHistory";
   static String downloadReplacementData = "$getReportOfReplacement/download";
-  static String estimatedTargetSettingsData="/osg-in/$accountSelection/1.0/v1/assettargetsettings";
-   static String estimatedfuelBurnRateData="/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
-    static String estimatedMileageData="/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
-    static String assetIconData="/osg-in/$accountSelection/1.0/v1/Asset/";
-    static String assetCreationResetdata="$subscriptionPrefix/assetDetail/asset/activate/";
-    static String downloadResetData="$subscriptionPrefix/assetDetail/asset/activate/";
-
+  static String estimatedTargetSettingsData =
+      "/osg-in/$accountSelection/1.0/v1/assettargetsettings";
+  static String estimatedfuelBurnRateData =
+      "/osg-in/$accountSelection/1.0/v1/assetfuelburnratesettings";
+  static String estimatedMileageData =
+      "/osg-in/$accountSelection/1.0/v1/assetmileagesettings";
+  static String assetIconData = "/osg-in/$accountSelection/1.0/v1/Asset/";
+  static String deviceTypes = "/osg-in/$accountSelection/1.0/v1/devicetypes";
+  static String userCountVL = "/t/trimble.com/vss-identityapi/2.0/Users/Count";
+  static String assetCreationResetdata =
+      "$subscriptionPrefix/assetDetail/asset/activate/";
+  static String downloadResetData =
+      "$subscriptionPrefix/assetDetail/asset/activate/";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -310,6 +345,8 @@ class Urls {
   static String faultPrefix = "in-fault-us-fault-api";
   static String fleetMapPrefix = "in-vassethistory-ah-webapi";
   static String assetprefix = "in-vassetmetadata-am-webapi";
+  static String assetSettingsPrefix = "in-vlmasterdata-api-vlmd-assetsettings";
+  static String userCountPrefix = "in-identitymanager-identitywebapi";
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";

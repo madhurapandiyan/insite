@@ -14,7 +14,8 @@ import 'package:insite/core/logger.dart';
 class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   Logger? log;
 
-  final SmsManagementService? _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService =
+      locator<SmsManagementService>();
 
   SmsScheduleSingleAssetViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -61,7 +62,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   // List<String> model = [];
   // List<String> date = [];
 
-   onSavingForm(String? serialNumber, String? recipientName,
+  onSavingForm(String? serialNumber, String? recipientName,
       String? recipientMobNo, String? lang) async {
     try {
       showLoadingDialog();
@@ -124,9 +125,16 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     });
   }
 
+  onClosingDialog() {
+    singleAssetModelResponce!.clear();
+    _serialNoController!.clear();
+    _mobileNoController!.clear();
+    _nameController!.clear();
+    notifyListeners();
+  }
+
   Future onSavingSmsModel() async {
     try {
-      
       for (var i = 0; i < singleAssetModelResponce!.length; i++) {
         _savingSmsModel = SavingSmsModel(
             AssetSerial: singleAssetModelResponce![i].SerialNumber,
@@ -138,7 +146,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
             StartDate: singleAssetModelResponce![i].StartDate);
         listOSavingSmsModel.add(_savingSmsModel);
       }
-var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
+      var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
 // if (data["status"]=="success") {
 //  // popUpMessage="Mo"
 // }

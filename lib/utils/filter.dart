@@ -3,6 +3,35 @@ import 'package:logger/logger.dart';
 import 'enums.dart';
 
 class FilterUtils {
+  static String getUserFilterURL(
+    List<FilterData?>? appliedFilters,
+  ) {
+    StringBuffer value = StringBuffer();
+
+    // job type filters
+    List<FilterData?>? userTypeFilters = appliedFilters!
+        .where((element) => element!.type == FilterType.JOBTYPE)
+        .toList();
+    Logger().i("filter job type fitlers " + userTypeFilters.length.toString());
+    if (userTypeFilters.isNotEmpty) {
+      for (FilterData? data in userTypeFilters) {
+        value.write(constructQuery("jobType", data!.title, false));
+      }
+    }
+
+    // user type filters
+    List<FilterData?>? jobTypeFilters = appliedFilters
+        .where((element) => element!.type == FilterType.USERTYPE)
+        .toList();
+    Logger().i("filter job type fitlers " + jobTypeFilters.length.toString());
+    if (jobTypeFilters.isNotEmpty) {
+      for (FilterData? data in jobTypeFilters) {
+        value.write(constructQuery("userType", data!.title, false));
+      }
+    }
+    return value.toString();
+  }
+
   static String getFilterURL(
       startDate,
       endDate,

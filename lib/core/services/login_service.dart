@@ -22,7 +22,7 @@ class LoginService extends BaseService {
   Future<UserInfo?> getLoggedInUserInfo() async {
     try {
       String? token = await _localService.getToken();
-      Logger().e(token);
+
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
       //     env: "dev",
@@ -34,8 +34,8 @@ class LoginService extends BaseService {
       //     redirect_uri: "insite://mobile");
       if (isVisionLink) {
         UserInfo userInfo = await MyApi()
-            .getClientOne()!
-            .getUserInfo("application/json", "Bearer" + " " + token);
+            .getClientFive()!
+            .getUserInfoVl("application/json", "Bearer" + " " + token);
         return userInfo;
       } else {
         UserInfo userInfo = await MyApi().getClientFive()!.getUserInfoV4(
@@ -73,8 +73,9 @@ class LoginService extends BaseService {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
+      //await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
-      await getAuthenticateUserId();
+
       Future.delayed(Duration(seconds: 1), () {
         if (userInfo != null) {
           _localService.saveUserInfo(userInfo);
@@ -93,11 +94,16 @@ class LoginService extends BaseService {
     } catch (e) {
       Logger().e(e);
       Logger().i("exception launching home from login service");
-      if (shouldRemovePreviousRoutes) {
-        Logger().i("true");
-        _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
-            predicate: (Route<dynamic> route) => false);
-      } else {
+      if (userInfo != null) {
+        _localService.saveUserInfo(userInfo);
+        if (shouldRemovePreviousRoutes) {
+          Logger().i("true");
+          _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
+              predicate: (Route<dynamic> route) => false);
+        } else {
+          _nagivationService.replaceWith(customerSelectionViewRoute);
+        }
+      }else{
         _nagivationService.replaceWith(customerSelectionViewRoute);
       }
     }
@@ -215,17 +221,31 @@ class LoginService extends BaseService {
   Future<LoginResponse?> getLoginDataV4(
       code, code_challenge, code_verifier) async {
     try {
-      LoginResponse loginResponse = await MyApi().getClientFive()!.getTokenV4(
-          GetTokenData(
-              code: code,
-              code_challenge: code_challenge,
-              code_verifier: code_verifier,
-              tenantDomain: "Trimble.com",
-              redirect_uri: Urls.tataHitachiRedirectUri,
-              grant_type: "authorization_code",
-              client_id: Urls.indiaStackClientId),
-          "application/x-www-form-urlencoded");
-      return loginResponse;
+      if (isVisionLink) {
+        LoginResponse loginResponse = await MyApi().getClientFive()!.getTokenV4(
+            GetTokenData(
+                code: code,
+                code_challenge: code_challenge,
+                code_verifier: code_verifier,
+                tenantDomain: "Trimble.com",
+                redirect_uri: Urls.administratorBaseUrl,
+                grant_type: "authorization_code",
+                client_id: Urls.visionLinkClientId),
+            "application/x-www-form-urlencoded");
+        return loginResponse;
+      } else {
+        LoginResponse loginResponse = await MyApi().getClientFive()!.getTokenV4(
+            GetTokenData(
+                code: code,
+                code_challenge: code_challenge,
+                code_verifier: code_verifier,
+                tenantDomain: "Trimble.com",
+                redirect_uri: Urls.tataHitachiRedirectUri,
+                grant_type: "authorization_code",
+                client_id: Urls.indiaStackClientId),
+            "application/x-www-form-urlencoded");
+        return loginResponse;
+      }
     } catch (e) {
       Logger().e(e);
     }

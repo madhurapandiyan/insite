@@ -1,16 +1,13 @@
 import 'dart:async';
-
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:geocore/base.dart' as geo;
 import 'package:geocore/geocore.dart' as Geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
-
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
@@ -484,8 +481,31 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onSavingData() async {
-    showLoadingDialog();
     try {
+      if (isPolygonsCreated) {
+        snackbarService!.showSnackbar(message: "Geofence not drawn in map");
+        return;
+      }
+      // if (titleController.text.isEmpty && descriptionController.text.isEmpty) {
+      //   snackbarService.showSnackbar(
+      //       message: "Please enter title and description to proceed");
+      //   return;
+      // }
+      if (titleController.text.isEmpty) {
+        snackbarService!.showSnackbar(message: "Please enter title to proceed");
+        return;
+      }
+      // if (descriptionController.text.isEmpty) {
+      //   snackbarService.showSnackbar(
+      //       message: "Please enter description to proceed");
+      //   return;
+      // }
+      if (endingDate == null && !isNoendDate) {
+        snackbarService!.showSnackbar(
+            message: "Please select an end date or select the check box");
+        return;
+      }
+      showLoadingDialog();
       if (fetchedGeofenceUid == null) {
         await convertingPolyOBJtoWKT();
       }
@@ -530,7 +550,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
     } on DioError catch (e) {
       hideLoadingDialog();
       final val = DioException.fromDioError(e);
-
       snackbarService!.showSnackbar(message: val.message!);
       Logger().e(e.message);
     }

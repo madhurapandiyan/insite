@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:isolate';
 
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class ReportSummaryViewModel extends InsiteViewModel {
   Logger? log;
@@ -19,6 +19,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+
     Future.delayed(Duration.zero, () {
       getReportSummaryData();
     });
@@ -43,6 +44,11 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   bool isLoading = true;
   bool isLoadMore = false;
+
+  Isolate? newIsolate;
+
+  int startLimit = 0;
+  int? endLimit;
 
   int startCount = 0;
   final controller = new ScrollController();
@@ -132,55 +138,70 @@ class ReportSummaryViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  List<ReportSummaryModel> getListRange(List<ReportSummaryModel> listData) {
+    Iterable<ReportSummaryModel> data = listData.getRange(0, 1000);
+    return data as List<ReportSummaryModel>;
+  }
+
   onDownload() async {
     try {
       showLoadingDialog();
       data = await _smsScheduleService!.getScheduleReportData();
-      Directory? path = await getExternalStorageDirectory();
-      if (data != null) {
-        final Excel excelSheet = Excel.createExcel();
-        var sheetObj = excelSheet.sheets.values.first;
-        for (var i = 0; i < data!.result!.first.length; i++) {
-          final excelDataInsert = data!.result!.first;
-          if (i == 0) {
-            sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
-            sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
-            sheetObj.updateCell(
-                CellIndex.indexByString("C0"), "Recipient’s Name");
-            sheetObj.updateCell(CellIndex.indexByString("D0"), "Mobile Number");
-            sheetObj.updateCell(CellIndex.indexByString("E0"), "Language");
-            sheetObj.updateCell(
-                CellIndex.indexByString("F0"), "Scheduled SMS Start Date");
-          }
-          int index = i + 1;
-          sheetObj.updateCell(CellIndex.indexByString("A$index"),
-              excelDataInsert[i].GPSDeviceID);
-          sheetObj.updateCell(CellIndex.indexByString("B$index"),
-              excelDataInsert[i].SerialNumber);
-          sheetObj.updateCell(
-              CellIndex.indexByString("C$index"), excelDataInsert[i].Name);
-          sheetObj.updateCell(
-              CellIndex.indexByString("D$index"), excelDataInsert[i].Number);
-          sheetObj.updateCell(
-              CellIndex.indexByString("E$index"), excelDataInsert[i].Language);
-          sheetObj.updateCell(
-              CellIndex.indexByString("F$index"), excelDataInsert[i].StartDate);
-        }
+      newIsolate = await Isolate.spawn(onExcelSheetUpdate, data!.result!.first);
+      hideLoadingDialog();
 
-        // excelSheet.encode().then((onValue) {
-        //   File("${path.path}/SMS_schedule.xlsx")
-        //     ..createSync(recursive: true)
-        //     ..writeAsBytesSync(onValue)
-        //     ..open(mode: FileMode.read);
-        // });
-        snackbarService!.showSnackbar(message: "File saved in ${path!.path}");
-        // Logger().e(excelSheet.sheets.values.last.rows);
-        hideLoadingDialog();
-      } else {
-        hideLoadingDialog();
-      }
+// if (data != null) {
+      //   snackbarService.showSnackbar(message: "File saved in ${path.path}");
+      //   // Logger().e(excelSheet.sheets.values.last.rows);
+      //   hideLoadingDialog();
+      // } else {
+      //   hideLoadingDialog();
+      // }
     } catch (e) {
-      // hideLoadingDialog();
+      hideLoadingDialog();
+      Logger().e(e.toString());
+    }
+  }
+
+  static onExcelSheetUpdate(List<ReportSummaryModel> data) {
+    try {
+      Logger().e("function running");
+      final Excel excelSheet = Excel.createExcel();
+
+      //Directory path = await getExternalStorageDirectory();
+      var sheetObj = excelSheet.sheets.values.first;
+      for (var i = 0; i < data.length; i++) {
+        if (i == 0) {
+          sheetObj.updateCell(CellIndex.indexByString("A0"), "Device ID");
+          sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
+          sheetObj.updateCell(
+              CellIndex.indexByString("C0"), "Recipient’s Name");
+          sheetObj.updateCell(CellIndex.indexByString("D0"), "Mobile Number");
+          sheetObj.updateCell(CellIndex.indexByString("E0"), "Language");
+          sheetObj.updateCell(
+              CellIndex.indexByString("F0"), "Scheduled SMS Start Date");
+        }
+        int index = i + 1;
+        sheetObj.updateCell(
+            CellIndex.indexByString("A$index"), data[i].GPSDeviceID);
+        sheetObj.updateCell(
+            CellIndex.indexByString("B$index"), data[i].SerialNumber);
+        sheetObj.updateCell(CellIndex.indexByString("C$index"), data[i].Name);
+        sheetObj.updateCell(CellIndex.indexByString("D$index"), data[i].Number);
+        sheetObj.updateCell(
+            CellIndex.indexByString("E$index"), data[i].Language);
+        sheetObj.updateCell(
+            CellIndex.indexByString("F$index"), data[i].StartDate);
+      }
+      Logger().e("excel sheet update");
+      
+      // excelSheet.encode().then((onValue) {
+      //   File("${path.path}/SMS_schedule.xlsx")
+      //     ..createSync(recursive: true)
+      //     ..writeAsBytesSync(onValue)
+      //     ..open(mode: FileMode.read);
+      // });
+    } catch (e) {
       Logger().e(e.toString());
     }
   }

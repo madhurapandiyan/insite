@@ -38,8 +38,8 @@ class SubRegistrationView extends StatelessWidget {
                         buttonTitle: [
                           AdminAssetsButtonType.values[14],
                           AdminAssetsButtonType.values[15],
-                          AdminAssetsButtonType.values[16],
-                          AdminAssetsButtonType.values[17],
+                           AdminAssetsButtonType.values[16],
+                           AdminAssetsButtonType.values[17],
                         ],
                         onCallbackSelected: (value) {
                           viewModel.onRespectiveButtonClicked(value);

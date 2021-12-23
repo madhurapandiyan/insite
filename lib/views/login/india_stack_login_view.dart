@@ -145,7 +145,38 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLoginView URL changed: $url");
-        if (url
+        Logger().w(url.startsWith(Urls.insiteBaseUrl + "auth?code="));
+        if (url.startsWith(Urls.insiteBaseUrl + "auth?code=")) {
+          try {
+            List<String> list = url.split("=");
+            Logger().i("IndiaStackLoginView url split list $list");
+            if (list.isNotEmpty) {
+              _onUrlChanged!.cancel();
+              //for vision link (oauth style login)
+              String accessTokenString = list[1];
+              String expiresTokenString = list[2];
+              List<String> accessTokenList = accessTokenString.split("&");
+              List<String> expiryList = expiresTokenString.split("&");
+              print("accessToken split list $list");
+              String accessToken = accessTokenList[0];
+              String expiryTime = expiryList[0];
+              print("accessToken $accessToken");
+              print("expiryTime $expiryTime");
+              saveToken(accessToken, expiryTime);
+
+              String codeString = list[1];
+              List<String> codeStringList = codeString.split("&");
+              if (codeStringList.isNotEmpty) {
+                getLoginDataV4(
+                  codeStringList[0],
+                );
+              }
+            }
+            flutterWebviewPlugin.close();
+          } catch (e) {
+            Logger().e(e.toString());
+          }
+        } else if (url
             .startsWith(Urls.idTokenBaseUrl + "/oauth/logout?id_token_hint")) {
           Logger()
               .i("IndiaStackLoginView URL changed with logout redirect: $url");
@@ -167,26 +198,26 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             List<String> list = url.split("=");
             Logger().i("IndiaStackLoginView url split list $list");
             if (list.isNotEmpty) {
-              // _onUrlChanged.cancel();
+              _onUrlChanged!.cancel();
               //for vision link (oauth style login)
-              // String accessTokenString = list[1];
-              // String expiresTokenString = list[3];
-              // List<String> accessTokenList = accessTokenString.split("&");
-              // List<String> expiryList = expiresTokenString.split("&");
-              // print("accessToken split list $list");
-              // String accessToken = accessTokenList[0];
-              // String expiryTime = expiryList[0];
-              // print("accessToken $accessToken");
-              // print("expiryTime $expiryTime");
-              // saveToken(accessToken, expiryTime);
+              String accessTokenString = list[1];
+              String expiresTokenString = list[3];
+              List<String> accessTokenList = accessTokenString.split("&");
+              List<String> expiryList = expiresTokenString.split("&");
+              print("accessToken split list $list");
+              String accessToken = accessTokenList[0];
+              String expiryTime = expiryList[0];
+              print("accessToken $accessToken");
+              print("expiryTime $expiryTime");
+              saveToken(accessToken, expiryTime);
 
-              // String codeString = list[1];
-              // List<String> codeStringList = codeString.split("&");
-              // if (codeStringList.isNotEmpty) {
-              //   getLoginDataV4(
-              //     codeStringList[0],
-              //   );
-              // }
+              String codeString = list[1];
+              List<String> codeStringList = codeString.split("&");
+              if (codeStringList.isNotEmpty) {
+                getLoginDataV4(
+                  codeStringList[0],
+                );
+              }
             }
             flutterWebviewPlugin.close();
           } catch (e) {
@@ -212,7 +243,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     if (AppConfig.instance!.apiFlavor == "indiastack") {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     } else {
-      _navigationService!.replaceWith(splashViewRoute);
+       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }
   }
 
@@ -245,7 +276,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url: Urls.getV4LogoutUrl(
+                  url: Urls.logoutUrlVl(
                       loginResponse!.id_token, Urls.tataHitachiRedirectUri),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()

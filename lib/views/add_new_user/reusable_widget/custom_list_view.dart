@@ -5,9 +5,7 @@ import 'package:logger/logger.dart';
 
 class CustomListView extends StatefulWidget {
   final ApplicationAccessData? applicationAccessData;
-
   final String? text;
-
   final VoidCallback? voidCallback;
 
   const CustomListView(
@@ -19,6 +17,13 @@ class CustomListView extends StatefulWidget {
 
 class _CustomListViewState extends State<CustomListView> {
   @override
+  void initState() {
+    super.initState();
+    Logger().i(
+        "custom list view app avatar ${widget.applicationAccessData!.application!.iconUrl}");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -28,12 +33,12 @@ class _CustomListViewState extends State<CustomListView> {
             width: 36,
             height: 36,
             image: NetworkImage(
-                widget.applicationAccessData!.application!.iconUrl! + "active.png",
+                widget.applicationAccessData!.application!.iconUrl! + "app.png",
                 headers: {
                   "Authorization": "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
                 }),
             placeholder: AssetImage(
-              widget.applicationAccessData!.application!.iconUrl! + "active.png",
+              "assets/images/add_user_icon_one.png",
             ),
             imageErrorBuilder: (context, error, stackTrace) {
               Logger().e(error);

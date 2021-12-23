@@ -59,17 +59,29 @@ class CountDataAdapter extends TypeAdapter<CountData> {
     return CountData(
       countOf: fields[1] as String?,
       count: fields[2] as int?,
+      assetCount: fields[3] as int?,
+      faultCount: fields[4] as int?,
+      id: fields[5] as int?,
+      name: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CountData obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.countOf)
       ..writeByte(2)
-      ..write(obj.count);
+      ..write(obj.count)
+      ..writeByte(3)
+      ..write(obj.assetCount)
+      ..writeByte(4)
+      ..write(obj.faultCount)
+      ..writeByte(5)
+      ..write(obj.id)
+      ..writeByte(6)
+      ..write(obj.name);
   }
 
   @override

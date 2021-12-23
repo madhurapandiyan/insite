@@ -24,7 +24,7 @@ class CustomDropDownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
-        //onChanged: onChanged,
+//onChanged: onChanged,
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
@@ -33,7 +33,6 @@ class CustomDropDownWidget extends StatelessWidget {
         value: value,
         onChanged: istappable == null || istappable == true ? onChanged : null,
         hint: enableHint
-        
             ? InsiteText(
                 text: "  Select",
                 size: 14,

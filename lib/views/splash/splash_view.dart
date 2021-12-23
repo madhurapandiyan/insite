@@ -99,6 +99,8 @@ class _SplashViewState extends State<SplashView> {
       _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
         if (mounted) {
           Logger().wtf("URL changed: $url");
+          Logger().w(url.isEmpty &&
+              url.startsWith(Urls.administratorBaseUrl + "/#access_token="));
           if (url.isEmpty &&
               url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
             print("URL changed with access token: $url");

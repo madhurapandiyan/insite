@@ -82,11 +82,11 @@ class SubScriptionService extends BaseService {
         } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
           queryMap["type"] = fitler;
         } else {
-          queryMap["status"] = fitler;
+          queryMap["status"] = "inactive";
         }
       }
       if (name != null) {
-        queryMap["Name"] = name.toString();
+        queryMap["GPSDeviceID"] = name.toString();
       }
       if (code != null) {
         queryMap["Code"] = code.toString();
@@ -195,8 +195,7 @@ class SubScriptionService extends BaseService {
 
       return serialNumberResults;
     } catch (e) {
-      Logger().e(e.toString());
-      return null;
+      throw e;
     }
   }
 

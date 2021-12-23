@@ -385,7 +385,7 @@ class _LocationViewState extends State<LocationView> {
                                                     color: Colors.transparent,
                                                     width: 0.0)))),
                                   ),
-                                ),
+                                 ),
                                 viewModel.refreshing
                                     ? InsiteProgressBar()
                                     : SizedBox()
