@@ -7,7 +7,7 @@ import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart'
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/app_avatar.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_list_view.dart';
+
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -17,6 +17,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart'as service;
 import 'add_new_user_view_model.dart';
+import 'reusable_widget/custom_list_view.dart';
 
 class AddNewUserView extends StatefulWidget {
   final Users? user;
@@ -484,68 +485,56 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     try {
                                       if (widget.user != null) {
                                         Logger().i("editing user");
-                                        if (viewModel.emailController != null &&
-                                            viewModel.firstNameController !=
-                                                null &&
-                                            viewModel.lastNameController !=
-                                                null &&
-                                            viewModel.phoneNumberController !=
-                                                null &&
-                                            viewModel.addressController !=
-                                                null &&
-                                            viewModel.stateController != null &&
-                                            viewModel.countryController !=
-                                                null &&
-                                            viewModel.pinCodeController !=
-                                                null) {
+                                        if (viewModel.emailController.text.isNotEmpty &&
+                                            viewModel.firstNameController.text.isNotEmpty &&
+                                            viewModel.lastNameController.text.isNotEmpty &&
+                                            viewModel.phoneNumberController.text.isNotEmpty &&
+                                            viewModel.addressController .text.isNotEmpty &&
+                                            viewModel.stateController.text.isNotEmpty &&
+                                            viewModel.countryController.text.isNotEmpty&&
+                                            viewModel.pinCodeController.text.isNotEmpty) {
                                           await viewModel.getEditUserData(
                                               viewModel
-                                                  .firstNameController!.text,
-                                              viewModel.lastNameController!.text,
-                                              viewModel.emailController!.text,
+                                                  .firstNameController.text,
+                                              viewModel.lastNameController.text,
+                                              viewModel.emailController.text,
                                               viewModel.jobTitleValue,
                                               viewModel
-                                                  .phoneNumberController!.text,
+                                                  .phoneNumberController.text,
                                               viewModel.jobTypeValue,
                                               "SSO",
-                                              viewModel.addressController!.text,
-                                              viewModel.stateController!.text,
-                                              viewModel.countryController!.text,
-                                              viewModel.pinCodeController!.text);
+                                              viewModel.addressController.text,
+                                              viewModel.stateController.text,
+                                              viewModel.countryController.text,
+                                              viewModel.pinCodeController.text);
                                         } else {
                                           print(
                                               "Not a valid user while editing");
                                         }
                                       } else {
                                         Logger().i("adding user");
-                                        if (viewModel.emailController != null &&
-                                            viewModel.firstNameController !=
-                                                null &&
-                                            viewModel.lastNameController !=
-                                                null &&
-                                            viewModel.phoneNumberController !=
-                                                null &&
-                                            viewModel.addressController !=
-                                                null &&
-                                            viewModel.stateController != null &&
-                                            viewModel.countryController !=
-                                                null &&
-                                            viewModel.pinCodeController !=
-                                                null) {
+                                        if (viewModel.emailController.text.isNotEmpty &&
+                                            viewModel.firstNameController.text.isNotEmpty &&
+                                            viewModel.lastNameController.text.isNotEmpty &&
+                                            viewModel.phoneNumberController.text.isNotEmpty &&
+                                            viewModel.addressController .text.isNotEmpty &&
+                                            viewModel.stateController.text.isNotEmpty &&
+                                            viewModel.countryController.text.isNotEmpty&&
+                                            viewModel.pinCodeController.text.isNotEmpty) {
                                           await viewModel.getAddUserData(
-                                            viewModel.firstNameController!.text,
-                                            viewModel.lastNameController!.text,
-                                            viewModel.emailController!.text,
+                                            viewModel.firstNameController.text,
+                                            viewModel.lastNameController.text,
+                                            viewModel.emailController.text,
                                             viewModel
-                                                .phoneNumberController!.text,
+                                                .phoneNumberController.text,
                                             viewModel.jobTitleValue,
                                             viewModel.jobTypeValue,
-                                            viewModel.addressController!.text,
-                                            viewModel.stateController!.text,
-                                            viewModel.countryController!.text,
-                                            viewModel.pinCodeController!.text,
+                                            viewModel.addressController.text,
+                                            viewModel.stateController.text,
+                                            viewModel.countryController.text,
+                                            viewModel.pinCodeController.text,
                                             "SSO",
-                                            viewModel.emailController!.text,
+                                            viewModel.emailController.text,
                                           );
                                         } else {
                                           print(
@@ -570,7 +559,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
               ),
             ));
       },
-      viewModelBuilder: () => AddNewUserViewModel(widget.user, widget.isEdit!),
+      viewModelBuilder: () => AddNewUserViewModel(widget.user!, widget.isEdit!),
     );
   }
 }

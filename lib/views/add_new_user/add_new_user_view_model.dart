@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -9,24 +10,24 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
+import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
   Logger? log;
-  AssetAdminManagerUserService? _manageUserService =
-      locator<AssetAdminManagerUserService>();
+  var _manageUserService = locator<AssetAdminManagerUserService>();
 
   List<ApplicationAccess>? selectedList;
-  TextEditingController? emailController = new TextEditingController();
-  TextEditingController? firstNameController = new TextEditingController();
-  TextEditingController? lastNameController = new TextEditingController();
-  TextEditingController? phoneNumberController = new TextEditingController();
-  TextEditingController? addressController = new TextEditingController();
-  TextEditingController? pinCodeController = new TextEditingController();
-  TextEditingController? stateController = new TextEditingController();
-  TextEditingController? countryController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController firstNameController = new TextEditingController();
+  TextEditingController lastNameController = new TextEditingController();
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController addressController = new TextEditingController();
+  TextEditingController pinCodeController = new TextEditingController();
+  TextEditingController stateController = new TextEditingController();
+  TextEditingController countryController = new TextEditingController();
 
   List<ApplicationAccessData> _assetsData = [];
   List<ApplicationAccessData> get assetsData => _assetsData;
@@ -91,38 +92,34 @@ class AddNewUserViewModel extends InsiteViewModel {
   int? lastApplicationAccessSelectedIndex;
   String? dropDownValue;
 
-  AddNewUserViewModel(Users? user, bool isEdit) {
-    try {
-      this.user = user;
-      this._enableAdd = isEdit;
-      if (user != null) {
-        emailController!.text = user.loginId!;
-        firstNameController!.text = user.first_name!;
-        lastNameController!.text = user.last_name!;
-        phoneNumberController!.text = user.phone!;
-        addressController!.text = user.address!.country!;
-        pinCodeController!.text = user.address!.zipcode!;
-        selectedList = [];
-      } else {
-        emailController!.text = "";
-        firstNameController!.text = "";
-        lastNameController!.text = "";
-        phoneNumberController!.text = "";
-        addressController!.text = "";
-        pinCodeController!.text = "";
-        countryController!.text = "";
-        stateController!.text = "";
-        selectedList = [];
-      }
-      _manageUserService!.setUp();
-      this.log = getLogger(this.runtimeType.toString());
-      showLoadingDialog();
-      Future.delayed(Duration(seconds: 1), () {
-        getData();
-      });
-    } catch (e) {
-      Logger().e(e.toString());
+  AddNewUserViewModel(Users user, bool isEdit) {
+    this.user = user;
+    this._enableAdd = isEdit;
+    if (user != null) {
+      emailController.text = user.loginId!;
+      firstNameController.text = user.first_name!;
+      lastNameController.text = user.last_name!;
+      phoneNumberController.text = user.phone!;
+      addressController.text = user.address!.country!;
+      pinCodeController.text = user.address!.zipcode!;
+      selectedList = [];
+    } else {
+      emailController.text = "";
+      firstNameController.text = "";
+      lastNameController.text = "";
+      phoneNumberController.text = "";
+      addressController.text = "";
+      pinCodeController.text = "";
+      countryController.text = "";
+      stateController.text = "";
+      selectedList = [];
     }
+    _manageUserService.setUp();
+    this.log = getLogger(this.runtimeType.toString());
+    showLoadingDialog();
+    Future.delayed(Duration(seconds: 1), () {
+      getData();
+    });
   }
 
   getData() async {
@@ -162,26 +159,35 @@ class AddNewUserViewModel extends InsiteViewModel {
   }
 
   onMaildIdCheckClicked() async {
-    if (emailController!.text.isEmpty) {
-      snackbarService!.showSnackbar(message: "Email is empty");
-      return;
-    }
-    showLoadingDialog();
-    CheckUserResponse? response =
-        await _manageUserService!.checkUser(emailController!.text);
-    if (response != null) {
-      if (response.users != null && response.users!.isNotEmpty) {
-        snackbarService!.showSnackbar(message: "User is already available");
-        _enableAdd = false;
+    try {
+      if (emailController.text.isEmpty) {
+        snackbarService!.showSnackbar(message: "Email is empty");
+        return;
+      }
+      showLoadingDialog();
+      CheckUserResponse response =
+          await _manageUserService.checkUser(emailController.text);
+      if (response != null) {
+        if (response.users != null && response.users!.isNotEmpty) {
+          snackbarService!.showSnackbar(message: "User is already available");
+          _enableAdd = false;
+        } else {
+          _enableAdd = true;
+        }
+        hideLoadingDialog();
       } else {
+        _enableAdd = false;
+        snackbarService!.showSnackbar(message: "Checking user details failed");
+        hideLoadingDialog();
+      }
+    } on DioError catch (e) {
+      Logger().e(e.type);
+      hideLoadingDialog();
+      if (e.type == DioErrorType.other) {
         _enableAdd = true;
       }
-      hideLoadingDialog();
-    } else {
-      _enableAdd = false;
-      snackbarService!.showSnackbar(message: "Checking user details failed");
-      hideLoadingDialog();
     }
+    notifyListeners();
   }
 
   onPermissionRemoved(ApplicationSelectedDropDown value, int index) {
@@ -202,34 +208,29 @@ class AddNewUserViewModel extends InsiteViewModel {
   }
 
   getApplicationAccessData() async {
-    try {
-      Logger().i("getApplicationAccessData");
-      ApplicationData? applicationData =
-          await _manageUserService!.getApplicationsData();
-      if (applicationData != null && applicationData.applications!.isNotEmpty) {
-        Logger()
-            .i("applications length ${applicationData.applications!.length}");
-        for (var application in applicationData.applications!.take(4)) {
-          if (application.enabled!) {
-            _assetsData.add(ApplicationAccessData(
-                application: application, isSelected: false));
-          }
+    Logger().i("getApplicationAccessData");
+    ApplicationData? applicationData =
+        await _manageUserService.getApplicationsData();
+    if (applicationData != null && applicationData.applications!.isNotEmpty) {
+      Logger().i("applications length ${applicationData.applications!.length}");
+      for (var application in applicationData.applications!.take(4)) {
+        if (application.enabled!) {
+          _assetsData.add(ApplicationAccessData(
+              application: application, isSelected: false));
         }
       }
-      notifyListeners();
-    } catch (e) {
-      Logger().e(e.toString());
     }
+    notifyListeners();
   }
 
   getUser() async {
     Logger().i("getUser ");
-    ManageUser? result = await _manageUserService!.getUser(user!.userUid);
+    ManageUser? result = await _manageUserService.getUser(user!.userUid);
     try {
       if (result != null) {
-        this.user = result.user;
-        jobTypeValue = result.user!.job_type;
-        jobTitleValue = result.user!.job_title;
+        this.user = result.user!;
+        jobTypeValue = result.user!.job_type!;
+        jobTitleValue = result.user!.job_title!;
         Logger().i("getUser ${result.user!.application_access!.length}");
         for (var applicationAccess in result.user!.application_access!) {
           for (int i = 0; i < assetsData.length; i++) {
@@ -276,7 +277,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse? roleDataResponse =
-            await (_manageUserService!.getRoles(data.applicationName));
+            await _manageUserService.getRoles(data.applicationName);
         for (int j = 0; j < roleDataResponse!.role_list!.length; j++) {
           RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
@@ -290,21 +291,20 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      UpdateResponse? updateResponse = await _manageUserService!
-          .getSaveUserData(
-              firstName,
-              lastName,
-              email,
-              phoneNumber,
-              jobTitle,
-              jobType,
-              address,
-              state,
-              country,
-              zipcode,
-              userType,
-              roles,
-              user!.userUid);
+      UpdateResponse? updateResponse = await _manageUserService.getSaveUserData(
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          jobTitle,
+          jobType,
+          address,
+          state,
+          country,
+          zipcode,
+          userType,
+          roles,
+          user!.userUid);
       hideLoadingDialog();
       if (updateResponse != null) {
         snackbarService!.showSnackbar(message: "Updated successfully");
@@ -359,7 +359,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse? roleDataResponse =
-            await (_manageUserService!.getRoles(data.applicationName));
+            await _manageUserService.getRoles(data.applicationName);
         for (int j = 0; j < roleDataResponse!.role_list!.length; j++) {
           RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
@@ -373,7 +373,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      AddUser? result = await _manageUserService!.getAddUserData(
+      AddUser? result = await _manageUserService.getAddUserData(
           firstName,
           lastName,
           email,
@@ -399,42 +399,42 @@ class AddNewUserViewModel extends InsiteViewModel {
   }
 
   bool validate() {
-    if (emailController!.text.isEmpty) {
+    if (emailController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Email is empty");
       return false;
     }
 
-    if (firstNameController!.text.isEmpty) {
+    if (firstNameController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "First name is empty");
       return false;
     }
 
-    if (lastNameController!.text.isEmpty) {
+    if (lastNameController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Last name is empty");
       return false;
     }
 
-    if (phoneNumberController!.text.isEmpty) {
+    if (phoneNumberController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Phone number is empty");
       return false;
     }
 
-    if (addressController!.text.isEmpty) {
+    if (addressController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Address is empty");
       return false;
     }
 
-    if (countryController!.text.isEmpty) {
+    if (countryController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Country is empty");
       return false;
     }
 
-    if (stateController!.text.isEmpty) {
+    if (stateController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "State is empty");
       return false;
     }
 
-    if (pinCodeController!.text.isEmpty) {
+    if (pinCodeController.text.isEmpty) {
       snackbarService!.showSnackbar(message: "Pincode is empty");
       return false;
     }

@@ -372,7 +372,7 @@ class _LocationViewState extends State<LocationView> {
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
-                                    onChanged: (String? value) {
+                                    onChanged: ( String? value) {
                                       setState(() {
                                         _currentSelectedItem = value!;
                                       });

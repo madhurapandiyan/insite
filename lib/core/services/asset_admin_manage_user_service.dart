@@ -154,6 +154,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
+
   Future<ManageUser?> getUser(String? userId) async {
     Logger().i("getUser $isVisionLink");
     try {
@@ -190,15 +191,14 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<CheckUserResponse?> checkUser(String mail) async {
-    try {
-      Map<String, String> queryMap = Map();
-      if (accountSelected != null) {
-        queryMap["EmailID"] = mail;
-      }
-      if (customerSelected != null) {
-        queryMap["customerUid"] = customerSelected!.CustomerUID!;
-      }
+  Future<CheckUserResponse> checkUser(String mail) async {
+    Map<String, String> queryMap = Map();
+    if (accountSelected != null) {
+      queryMap["EmailID"] = mail;
+    }
+    if (customerSelected != null) {
+      queryMap["customerUid"] = customerSelected!.CustomerUID!;
+    }
       if (isVisionLink) {
         CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
             Urls.adminManagerUserSumaryVL +
@@ -215,9 +215,6 @@ class AssetAdminManagerUserService extends BaseService {
             accountSelected!.CustomerUID);
         return response;
       }
-    } catch (e) {
-      return null;
-    }
   }
 
   Future<ApplicationData?> getApplicationsData() async {
@@ -511,6 +508,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
+
   Future<ListDeviceTypeResponse?> getDeviceTypes() async {
     try {
       DeviceTypeRequest request =
@@ -535,6 +533,7 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
+
 
   Future<ManageAssetConfiguration?> getAssetSettingData(pageSize, pageNumber,
       String searchKeyword, String deviceTypeSelected) async {
@@ -575,6 +574,7 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
+
 
   Future<AddSettings?> getFuelBurnRateSettingsData(
       idleValue, workingValue, assetUid) async {
