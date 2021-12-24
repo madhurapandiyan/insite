@@ -44,6 +44,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
         widget.onNavigation!();
       },
       child: Card(
+        //margin: EdgeInsets.symmetric(horizontal: 4),
         child: Column(
           children: [
             Container(

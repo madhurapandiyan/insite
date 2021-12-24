@@ -328,13 +328,15 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         if (result != null) {
           if (result.result![1].isNotEmpty) {
             _detailResult.addAll(result.result![1]);
-
             _loading = false;
             _loadingMore = false;
-
-            _detailResult.forEach((element) {
+            result.result![1].forEach((element) {
               gpsDeviceId.add(element.GPSDeviceID);
             });
+            notifyListeners();
+            // _detailResult.forEach((element) {
+            //   gpsDeviceId.add(element.GPSDeviceID);
+            // });
           } else {
             Fluttertoast.showToast(msg: "No Data Found");
             _devices.clear();
@@ -561,10 +563,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         });
       } else {
         _customerId.clear();
+        _customerCode.clear();
         _devices.clear();
         Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -572,8 +575,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as Future<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
@@ -605,8 +608,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       } else {
         _devices.clear();
         _dealerId.clear();
+        _dealerCode.clear();
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -614,8 +618,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as Future<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
@@ -647,9 +651,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       } else {
         _devices.clear();
         _dealerCode.clear();
+        _dealerId.clear();
 
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -657,8 +662,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as Future<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);

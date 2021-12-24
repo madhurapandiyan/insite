@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 
 class ReusableAutocompleteSearchView extends StatefulWidget {
   final TextEditingController? reuseController;
-  final List<String>? data;
+  final List<String?>? data;
   final String Function(String?)? validator;
   final Function(String)? onSelected;
   final Function(String)? onChanged;
@@ -46,7 +46,7 @@ class _ReusableAutocompleteSearchViewState
           return Iterable<String>.empty();
         } else {
           widget.data!.map((e) {
-            dataValues.add(e);
+            dataValues.add(e!);
           }).toList();
           dataValues.forEach((element) {
             if (element

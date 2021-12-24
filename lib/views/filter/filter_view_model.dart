@@ -1,6 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
@@ -22,22 +23,12 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> filterSeverity = [];
+  List<FilterData> filterDataJobType = [];
+  List<FilterData> filterDataUserType = [];
+
   List<FilterData?>? selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
-
-  final String assetCount = """
-query faultDataSummary{
- getDashboardAsset{
-  countData{
-    count
-    countOf
-  }
-}
-  
-}
-
-  """;
 
   FilterViewModel() {
     setUp();
@@ -49,12 +40,14 @@ query faultDataSummary{
   }
 
   getFilterData() async {
-    AssetCount? resultModel = await _assetService!
-        .getAssetCount("model", FilterType.MODEL, assetCount);
+    AssetCount? resultModel = await _assetService!.getAssetCount(
+        "model", FilterType.MODEL, _graphqlSchemaService!.assetCount);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
-    AssetCount? resultDeviceType = await _assetService!
-        .getAssetCount("deviceType", FilterType.DEVICE_TYPE, assetCount);
+    AssetCount? resultDeviceType = await _assetService!.getAssetCount(
+        "deviceType",
+        FilterType.DEVICE_TYPE,
+        _graphqlSchemaService!.assetCount);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -62,17 +55,21 @@ query faultDataSummary{
     // addData(filterDataSubscription, resultSubscriptiontype,
     //     FilterType.SUBSCRIPTION_DATE);
 
-    AssetCount? resultManufacturer = await _assetService!
-        .getAssetCount("manufacturer", FilterType.MAKE, assetCount);
+    AssetCount? resultManufacturer = await _assetService!.getAssetCount(
+        "manufacturer", FilterType.MAKE, _graphqlSchemaService!.assetCount);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
-    AssetCount? resultProductfamily = await _assetService!
-        .getAssetCount("productfamily", FilterType.PRODUCT_FAMILY, assetCount);
+    AssetCount? resultProductfamily = await _assetService!.getAssetCount(
+        "productfamily",
+        FilterType.PRODUCT_FAMILY,
+        _graphqlSchemaService!.assetCount);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
-    AssetCount? resultAllAssets = await _assetService!
-        .getAssetCount("assetstatus", FilterType.ALL_ASSETS, assetCount);
+    AssetCount? resultAllAssets = await _assetService!.getAssetCount(
+        "assetstatus",
+        FilterType.ALL_ASSETS,
+        _graphqlSchemaService!.assetCount);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     AssetCount? resultFuelLevel = await _assetService!
@@ -90,6 +87,14 @@ query faultDataSummary{
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         _graphqlSchemaService!.getFaultCountData);
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
+
+    AssetCount? resultJobType = await _assetService!.getAssetCount(
+        "JobType", FilterType.JOBTYPE, _graphqlSchemaService!.assetCount);
+    addUserData(filterDataJobType, resultJobType!, FilterType.JOBTYPE);
+
+    AssetCount? resultUserType = await _assetService!.getAssetCount(
+        "UserType", FilterType.USERTYPE, _graphqlSchemaService!.assetCount);
+    addUserData(filterDataUserType, resultUserType!, FilterType.USERTYPE);
 
     selectedFilterData = appliedFilters;
     _loading = false;
@@ -132,6 +137,22 @@ query faultDataSummary{
               type: type);
           filterData.add(data);
         }
+      }
+    }
+  }
+
+  addUserData(filterData, AssetCount resultModel, type) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData!.isNotEmpty) {
+      for (Count countData in resultModel.countData!) {
+        FilterData data = FilterData(
+            count: countData.count.toString(),
+            title: countData.name,
+            isSelected: isAlreadSelected(countData.countOf, type),
+            extras: [countData.id.toString()],
+            type: type);
+        filterData.add(data);
       }
     }
   }

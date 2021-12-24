@@ -76,12 +76,23 @@ class LocalService extends BaseService {
   }
 
   Future saveAccountInfoData() async {
-    Customer value = Customer(
-        CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-        Children: [],
-        CustomerType: "Dealer",
-        DisplayName: "(8050) Tata Hitachi Corporate Office",
-        Name: "Tata Hitachi Corporate Office");
+    Customer value;
+    if (isVisionLink) {
+      value = Customer(
+          CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    } else {
+      value = Customer(
+          CustomerUID: "1857723c-ada1-11eb-8529-0242ac130003",
+          Children: [],
+          CustomerType: "Dealer",
+          DisplayName: "(8050) Tata Hitachi Corporate Office",
+          Name: "Tata Hitachi Corporate Office");
+    }
+
     return await preferences!.setString(ACCOUNT_INFO, jsonEncode(value));
   }
 

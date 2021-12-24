@@ -95,9 +95,13 @@ abstract class InsiteViewModel extends BaseViewModel {
   }
 
   getSelectedFilterData() async {
-    appliedFilters = await _filterService!.getSelectedFilters();
-    Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
-    notifyListeners();
+    try {
+      appliedFilters = await _filterService!.getSelectedFilters();
+      Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   removeFilter(value) async {

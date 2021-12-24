@@ -9,6 +9,7 @@ import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view15;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
+import 'package:insite/views/login/login_view.dart' as VL4;
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
 import 'package:insite/views/plant/plant_view.dart' as view24;
@@ -25,6 +26,7 @@ import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
+import 'package:insite/views/splash/splash_view.dart'as view37;
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
     as view18;
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view.dart'
@@ -61,9 +63,15 @@ import 'package:insite/views/subscription/fleetstatus/fleet_status_view.dart'
 import 'package:insite/views/subscription/transferhistory/transfer_history_view.dart'
     as view36;
 
+import 'router_constants.dart' as visonLink;
+
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case visonLink.loginViewRoute:
+        return MaterialPageRoute(builder: (_) => VL4.LoginView());
+      case visonLink.splashViewRoute:
+        return MaterialPageRoute(builder: (_) =>view37.SplashView());
       case indiaStackSplashViewRoute:
         return MaterialPageRoute(builder: (_) => view0.IndiaStackSplashView());
       case customerSelectionViewRoute:

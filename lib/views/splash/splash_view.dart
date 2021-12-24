@@ -16,14 +16,12 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
- late StreamSubscription _onDestroy;
- late StreamSubscription<String> _onUrlChanged;
- late StreamSubscription<WebViewStateChanged> _onStateChanged;
+  late StreamSubscription _onDestroy;
+  late StreamSubscription<String> _onUrlChanged;
+  late StreamSubscription<WebViewStateChanged> _onStateChanged;
   String? token;
 
- final LoginService? _loginService = locator<LoginService>();
-
-
+  final LoginService? _loginService = locator<LoginService>();
 
   @override
   void dispose() {
@@ -100,7 +98,9 @@ class _SplashViewState extends State<SplashView> {
       // Add a listener to on url changed
       _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
         if (mounted) {
-          print("URL changed: $url");
+          Logger().wtf("URL changed: $url");
+          Logger().w(url.isEmpty &&
+              url.startsWith(Urls.administratorBaseUrl + "/#access_token="));
           if (url.isEmpty &&
               url.startsWith(Urls.administratorBaseUrl + "/#access_token=")) {
             print("URL changed with access token: $url");
@@ -122,7 +122,7 @@ class _SplashViewState extends State<SplashView> {
                   saveToken(accessToken, expiryTime);
                 }
               }
-             flutterWebviewPlugin.close();
+              flutterWebviewPlugin.close();
             } catch (e) {
               Logger().i("login exceptoion");
               Logger().e(e);
@@ -155,7 +155,7 @@ class _SplashViewState extends State<SplashView> {
                     ? WebviewScaffold(
                         url: Urls.administratorloginUrl,
                       )
-                    : SizedBox(),
+                    :
                 Center(
                   child: CircularProgressIndicator(
                     color: Colors.white,

@@ -1,5 +1,7 @@
+import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
@@ -98,9 +100,7 @@ class _SingleAssetRegistrationViewState
                                                       textBoxTitle:
                                                           "Device ID:",
                                                       validator:
-                                                          defaultCustomFieldValidator
-                                                              as String Function(
-                                                                  String)?,
+                                                          defaultCustomFieldValidator,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
@@ -122,10 +122,6 @@ class _SingleAssetRegistrationViewState
                                                             .getModelNamebySerialNumber(
                                                                 value);
                                                       },
-                                                      validator:
-                                                          defaultCustomFieldValidator
-                                                              as String Function(
-                                                                  String)?,
                                                       items:
                                                           viewModel.gpsDeviceId,
                                                       onSelect:
@@ -214,8 +210,9 @@ class _SingleAssetRegistrationViewState
                                                             0.01,
                                                   ),
                                                   Container(
-                                                    height: 35,
+                                                    //height: 35,
                                                     width: 130,
+                                                    padding: EdgeInsets.all(3),
                                                     decoration: BoxDecoration(
                                                         border: Border.all(
                                                           color:
@@ -276,16 +273,13 @@ class _SingleAssetRegistrationViewState
                                                       height: 35,
                                                       width: 130,
                                                       child: CustomTextBox(
-                                                          controller: viewModel
-                                                              .hourMeterController,
-                                                          textInputFormat: [
-                                                            FilteringTextInputFormatter
-                                                                .digitsOnly
-                                                          ],
-                                                          validator:
-                                                              defaultCustomFieldValidator
-                                                                  as dynamic Function(
-                                                                      String)?)),
+                                                        controller: viewModel
+                                                            .hourMeterController,
+                                                        textInputFormat: [
+                                                          FilteringTextInputFormatter
+                                                              .digitsOnly
+                                                        ],
+                                                      )),
                                                 ],
                                               ),
                                             ],
@@ -327,7 +321,7 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomDropDownWidget(
                                                   value: viewModel.plantDetail,
                                                   items: viewModel.plantDetails,
-                                                  //  enableHint: false,
+                                                  enableHint: false,
                                                   onChanged: (value) {
                                                     viewModel.updateplantDEtail(
                                                         value!);
@@ -450,10 +444,6 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomTextBox(
                                                   controller: viewModel
                                                       .deviceEmailController,
-                                                  validator:
-                                                      defaultCustomFieldValidator
-                                                          as dynamic Function(
-                                                              String)?,
                                                 ),
                                               ),
                                               SizedBox(
@@ -578,10 +568,6 @@ class _SingleAssetRegistrationViewState
                                                 child: CustomTextBox(
                                                   controller: viewModel
                                                       .customerEmailController,
-                                                  validator:
-                                                      defaultCustomFieldValidator
-                                                          as dynamic Function(
-                                                              String)?,
                                                 ),
                                               ),
                                             ],
@@ -591,7 +577,25 @@ class _SingleAssetRegistrationViewState
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        if (_formKey.currentState!.validate()) {
+                                        if (viewModel
+                                            .deviceIdController.text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel.assetModel ==
+                                            "Select Asset Model") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel.plantDetail ==
+                                            " ") {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else {
                                           viewModel.getTotalDataDetails();
 
                                           Logger().wtf(

@@ -49,6 +49,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(
           shouldShowAccount:
@@ -57,7 +58,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION
+                  widget.screenType == ScreenType.LOCATION ||
+                  widget.screenType == ScreenType.USER_MANAGEMENT
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -65,8 +67,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               ? true
               : false,
           shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
-                  widget.screenType == ScreenType.ASSET_SETTINGS||
-                  widget.screenType==ScreenType.ASSET_SETTINGS_FILTER
+                  widget.screenType == ScreenType.ASSET_SETTINGS ||
+                  widget.screenType == ScreenType.ASSET_SETTINGS_FILTER
               ? false
               : true,
           screenType: widget.screenType,
@@ -77,7 +79,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.ADMINISTRATION ||
+                  widget.screenType == ScreenType.USER_MANAGEMENT
               ? 80
               : 56,
           shouldShowTitle: widget.screenType == ScreenType.FLEET ||
@@ -87,14 +90,16 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.ADMINISTRATION
+                  widget.screenType == ScreenType.ADMINISTRATION ||
+                  widget.screenType == ScreenType.USER_MANAGEMENT
               ? true
               : false,
           shouldShowRefine: widget.screenType == ScreenType.FLEET ||
                   widget.screenType == ScreenType.ASSET_OPERATION ||
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
-                  widget.screenType == ScreenType.LOCATION
+                  widget.screenType == ScreenType.LOCATION ||
+                  widget.screenType == ScreenType.USER_MANAGEMENT
               ? true
               : false,
           isRefineSelected: _isRefineSelected,

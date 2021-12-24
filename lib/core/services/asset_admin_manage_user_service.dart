@@ -10,8 +10,10 @@ import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/core/models/user.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -20,6 +22,7 @@ import 'package:insite/utils/urls.dart';
 import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
+import 'package:insite/core/models/device_type.dart';
 
 class AssetAdminManagerUserService extends BaseService {
   LocalService? _localService = locator<LocalService>();
@@ -110,44 +113,39 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AdminManageUser?> getAdminManageUserListData(
-      pageNumber, String searchKey) async {
-    Logger().i("getAdminManageUserListData $isVisionLink");
+      pageNumber, String searchKey, List<FilterData?>? appliedFilters) async {
+    Logger().i(
+        "getAdminManageUserListData $isVisionLink filters count ${appliedFilters!.length}");
     try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      if (searchKey.isNotEmpty) {
+        queryMap["searchKey"] = searchKey;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUid"] = customerSelected!.CustomerUID!;
+      }
       if (isVisionLink) {
-        Map<String, String?> queryMap = Map();
-        queryMap["pageNumber"] = pageNumber.toString();
-        if (searchKey.isNotEmpty) {
-          queryMap["searchKey"] = searchKey;
-        }
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
         queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClientSeven()!
             .getAdminManagerUserListDataVL(
                 Urls.adminManagerUserSumaryVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.constructQueryFromMap(queryMap) +
+                    FilterUtils.getUserFilterURL(appliedFilters),
                 accountSelected!.CustomerUID);
         return adminManageUserResponse;
       } else {
-        Map<String, String?> queryMap = Map();
-        queryMap["pageNumber"] = pageNumber.toString();
-        if (searchKey.isNotEmpty) {
-          queryMap["searchKey"] = searchKey;
-        }
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
         queryMap["sort"] = "Email";
         AdminManageUser adminManageUserResponse = await MyApi()
             .getClient()!
             .getAdminManagerUserListData(
                 Urls.adminManagerUserSumary +
                     "/List" +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.constructQueryFromMap(queryMap) +
+                    FilterUtils.getUserFilterURL(appliedFilters),
                 accountSelected!.CustomerUID,
-                "in-identitymanager-identitywebapi");
+                Urls.userCountPrefix);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -155,6 +153,7 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
+
 
   Future<ManageUser?> getUser(String? userId) async {
     Logger().i("getUser $isVisionLink");
@@ -188,8 +187,34 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
+  }
+
+  Future<CheckUserResponse> checkUser(String mail) async {
+    Map<String, String> queryMap = Map();
+    if (accountSelected != null) {
+      queryMap["EmailID"] = mail;
+    }
+    if (customerSelected != null) {
+      queryMap["customerUid"] = customerSelected!.CustomerUID!;
+    }
+      if (isVisionLink) {
+        CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
+            Urls.adminManagerUserSumaryVL +
+                "/List" +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected!.CustomerUID);
+        return response;
+      } else {
+        CheckUserResponse response = await MyApi().getClient()!.checkUser(
+            Urls.adminManagerUserSumary +
+                "/List" +
+                FilterUtils.constructQueryFromMap(queryMap),
+            Urls.userCountPrefix,
+            accountSelected!.CustomerUID);
+        return response;
+      }
   }
 
   Future<ApplicationData?> getApplicationsData() async {
@@ -483,15 +508,52 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageAssetConfiguration?> getAssetSettingData(
-      pageSize, pageNumber) async {
+
+  Future<ListDeviceTypeResponse?> getDeviceTypes() async {
+    try {
+      DeviceTypeRequest request =
+          DeviceTypeRequest(allAssets: true, assetUID: []);
+      if (isVisionLink) {
+        ListDeviceTypeResponse response = await MyApi()
+            .getClientSeven()!
+            .getDeviceTypeVL(
+                Urls.deviceTypeVL, request, accountSelected!.CustomerUID);
+        return response;
+      } else {
+        ListDeviceTypeResponse response =
+            await MyApi().getClientSix()!.getDeviceType(
+                  Urls.deviceTypes,
+                  request,
+                  Urls.assetSettingsPrefix,
+                  accountSelected!.CustomerUID,
+                );
+        return response;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+
+  Future<ManageAssetConfiguration?> getAssetSettingData(pageSize, pageNumber,
+      String searchKeyword, String deviceTypeSelected) async {
     Logger().i("getAssetSettingData");
     try {
       Map<String, String> queryMap = Map();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["sortColumn"] = "assetId";
+      if (searchKeyword.isNotEmpty) {
+        queryMap["filterName"] = "all";
+        queryMap["filterValue"] = searchKeyword;
+      }
+      if (deviceTypeSelected.isNotEmpty && deviceTypeSelected != "ALL") {
+        queryMap["deviceType"] = deviceTypeSelected;
+      }
+      if (customerSelected != null) {
+        queryMap["subAccountCustomerUid"] = customerSelected!.CustomerUID!;
+      }
       if (isVisionLink) {
-        queryMap["pageSize"] = pageSize.toString();
-        queryMap["pageNumber"] = pageNumber.toString();
-        queryMap["sortColumn"] = "assetId";
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSeven()!.getAssetSettingsListDataVL(
                 Urls.assetSettingsVL +
@@ -499,9 +561,6 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected!.CustomerUID);
         return manageAssetConfigurationResponse;
       } else {
-        queryMap["pageSize"] = pageSize.toString();
-        queryMap["pageNumber"] = pageNumber.toString();
-        queryMap["sortColumn"] = "assetId";
         ManageAssetConfiguration manageAssetConfigurationResponse =
             await MyApi().getClientSix()!.getAssetSettingsListData(
                 Urls.assetSettings +
@@ -515,6 +574,7 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
+
 
   Future<AddSettings?> getFuelBurnRateSettingsData(
       idleValue, workingValue, assetUid) async {

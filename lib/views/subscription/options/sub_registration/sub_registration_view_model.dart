@@ -20,7 +20,7 @@ class SubRegistrationViewModel extends InsiteViewModel {
     if (value == AdminAssetsButtonType.SINGLEASSETREG) {
       _navigationService!.navigateWithTransition(
           SingleAssetRegistrationView(
-            filterKey: "total",
+            filterKey: "inactive",
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
           ),
           transition: "fade");

@@ -24,6 +24,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   bool isLoading = true;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   List<Set<Polyline>> _fetchedPolygons = [];
   List<Set<Polyline>> get fetchedPolygons => _fetchedPolygons;
 
@@ -57,11 +60,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
         //Logger().d(points);
         listOfPointSeries.add(points);
       }
-      getEncodedPolylines(listOfPointSeries);
     } catch (e) {
       Logger().e(e.toString());
     }
-
     notifyListeners();
   }
 

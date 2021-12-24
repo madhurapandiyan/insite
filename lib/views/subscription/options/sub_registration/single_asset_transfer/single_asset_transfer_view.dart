@@ -126,7 +126,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
                                                       validator:
-                                                          defaultCustomFieldValidator as String Function(String)?,
+                                                          defaultCustomFieldValidator ,
                                                       controller: viewModel
                                                           .deviceIdController,
                                                       onSelect: (value) {
@@ -147,7 +147,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
                                                       validator:
-                                                          defaultCustomFieldValidator as String Function(String)?,
+                                                          defaultCustomFieldValidator ,
                                                       isAlign: false,
                                                      controller: viewModel
                                                           .machineSerialNumberController,
@@ -201,7 +201,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             .machineModelController,
                                                     //  isenabled: false,
                                                         validator:
-                                                            defaultCustomFieldValidator as dynamic Function(String)?,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -388,7 +388,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .dealerEmailController,
                                                         validator:
-                                                            defaultCustomFieldValidator as dynamic Function(String)?,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -415,7 +415,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .dealerMobileNoController,
                                                         validator:
-                                                            defaultCustomFieldValidator as dynamic Function(String)?,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -594,7 +594,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         isenabled: viewModel
                                                             .enableCustomerDetails,
                                                         validator:
-                                                            defaultCustomFieldValidator as dynamic Function(String)?,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -624,7 +624,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         isenabled: viewModel
                                                             .enableCustomerDetails,
                                                         validator:
-                                                            defaultCustomFieldValidator as dynamic Function(String)?,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),

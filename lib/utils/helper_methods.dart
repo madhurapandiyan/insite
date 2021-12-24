@@ -523,6 +523,12 @@ class Utils {
       case FilterType.SEVERITY:
         title = "SEVERITY";
         break;
+      case FilterType.USERTYPE:
+        title = "USER TYPE";
+        break;
+      case FilterType.JOBTYPE:
+        title = "JOB TYPE";
+        break;
       default:
     }
     return title;

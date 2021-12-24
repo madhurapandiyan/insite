@@ -145,7 +145,8 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                           viewModel.subAccountSelected !=
                                               null &&
                                           viewModel.subCustomers.isNotEmpty
-                                  ? Container(
+                                  ? 
+                                  Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
                                       child: AccountSearchView(

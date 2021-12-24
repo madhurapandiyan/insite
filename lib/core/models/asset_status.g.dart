@@ -22,6 +22,8 @@ Count _$CountFromJson(Map<String, dynamic> json) => Count(
       count: json['count'] as int?,
       assetCount: json['assetCount'] as int?,
       faultCount: json['faultCount'] as int?,
+      id: json['id'] as int?,
+      name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$CountToJson(Count instance) => <String, dynamic>{
@@ -29,4 +31,6 @@ Map<String, dynamic> _$CountToJson(Count instance) => <String, dynamic>{
       'count': instance.count,
       'assetCount': instance.assetCount,
       'faultCount': instance.faultCount,
+      'id': instance.id,
+      'name': instance.name,
     };

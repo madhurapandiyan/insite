@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_asset_configuration_card.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -18,6 +20,10 @@ class AssetSettingsView extends StatefulWidget {
 }
 
 class _AssetSettingsViewState extends State<AssetSettingsView> {
+  void unfocus() {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsViewModel>.reactive(
@@ -39,12 +45,16 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: InsiteText(
-                            text: "manage asset configuration".toUpperCase(),
+                            text: "manage asset configuration".toUpperCase() +
+                                " (" +
+                                viewModel.asset.length.toString() +
+                                " of " +
+                                viewModel.totalCount.toString() +
+                                " )",
                             fontWeight: FontWeight.w700,
                             size: 14,
                           ),
                         ),
-
                         // viewModel.showEdit
                         //     ? ClipRRect(
                         //         borderRadius: BorderRadius.only(
@@ -64,8 +74,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         //             )),
                         //       )
                         //     : SizedBox(),
-
-                        viewModel.showEdit
+                        viewModel.showMenu
                             ? ClipRRect(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10),
@@ -83,7 +92,6 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                   ),
                                 ))
                             : SizedBox(),
-
                         // viewModel.showDeSelect
                         //     ? ClipRRect(
                         //         borderRadius: BorderRadius.only(
@@ -106,10 +114,57 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                       ],
                     ),
                     SizedBox(
-                      height: 36,
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: InsiteText(
+                          text: "Device Type :",
+                          size: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        margin: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(width: 1, color: black),
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: CustomDropDownWidget(
+                            items: viewModel.deviceTypeList,
+                            onChanged: (String? value) {
+                              unfocus();
+                              viewModel.onDeviceTypeSelected(value);
+                            },
+                            value: viewModel.deviceTypeSelected)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: CustomTextBox(
+                        controller: viewModel.textEditingController,
+                        title: "Search assets",
+                        onChanged: (searchText) {
+                          if (searchText.isNotEmpty) {
+                            viewModel.searchAssets(searchText);
+                          } else {
+                            viewModel.updateSearchDataToEmpty();
+                          }
+                        },
+                      ),
                     ),
                     viewModel.loading
-                        ? Center(
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 60.0),
                             child: InsiteProgressBar(),
                           )
                         : viewModel.asset.isNotEmpty
@@ -149,46 +204,49 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
   }
 
   Widget onContextMenuSelected(AssetSettingsViewModel viewModel) {
-    return SizedBox();
-    // return PopupMenuButton<String>(
-    //   offset: Offset(30, 50),
-    //   itemBuilder: (context) => [
-    //     PopupMenuItem(
-    //         value: "Deselect All",
-    //         child: InsiteText(
-    //           text: "Deselect All",
-    //           fontWeight: FontWeight.w700,
-    //           size: 14,
-    //         )),
-    //     viewModel.showMenu
-    //         ? PopupMenuItem(
-    //             value: "Show/Edit Target",
-    //             child: InsiteText(
-    //               text: "Show/Edit Target",
-    //               fontWeight: FontWeight.w700,
-    //               size: 14,
-    //             )):null
-    //        ,
-    //     viewModel.showMenu
-    //         ? PopupMenuItem(
-    //             value: "Configure",
-    //             child: InsiteText(
-    //               text: "Configure",
-    //               fontWeight: FontWeight.w700,
-    //               size: 14,
-    //             ),
-    //           )
-    //         : null
-    //   ],
-    //   onSelected: (value) {
-    //     Logger().i("value:$value");
-    //     viewModel.onSelectedItemClicK(value);
-    //   },
-    //   icon: Icon(
-    //     Icons.more_vert,
-    //     color: appbarcolor,
-    //     size: 25,
-    //   ),
-    // );
+    return PopupMenuButton<String>(
+      offset: Offset(30, 50),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+            value: "Deselect All",
+            child: InsiteText(
+              text: "Deselect All",
+              fontWeight: FontWeight.w700,
+              size: 14,
+            )),
+        viewModel.showEdit
+            ? PopupMenuItem(
+                value: "Show/Edit Target",
+                child: InsiteText(
+                  text: "Show/Edit Target",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ))
+            : PopupMenuItem(
+                child: SizedBox(),
+              ),
+        viewModel.showEdit
+            ? PopupMenuItem(
+                value: "Configure",
+                child: InsiteText(
+                  text: "Configure",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ),
+              )
+            : PopupMenuItem(
+                child: SizedBox(),
+              )
+      ],
+      onSelected: (value) {
+        Logger().i("value:$value");
+        viewModel.onSelectedItemClicK(value);
+      },
+      icon: Icon(
+        Icons.more_vert,
+        color: appbarcolor,
+        size: 25,
+      ),
+    );
   }
 }

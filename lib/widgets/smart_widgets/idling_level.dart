@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -190,15 +191,17 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                new InsiteText(
-                                  text: widget.data![0].count.toString() +
-                                      "\n" +
-                                      "assets" +
-                                      "\n" +
-                                      "excluded",
-                                  size: 9.0,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                widget.data!.isNotEmpty
+                                    ? new InsiteText(
+                                        text: widget.data![0].count.toString() +
+                                            "\n" +
+                                            "assets" +
+                                            "\n" +
+                                            "excluded",
+                                        size: 9.0,
+                                        fontWeight: FontWeight.w700,
+                                      )
+                                    : SizedBox(),
                               ],
                             )
                           ],
