@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -10,12 +12,14 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class ReportSummaryViewModel extends InsiteViewModel {
   Logger? log;
 
-  final SmsManagementService? _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService =
+      locator<SmsManagementService>();
 
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -44,8 +48,6 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   bool isLoading = true;
   bool isLoadMore = false;
-
-  Isolate? newIsolate;
 
   int startLimit = 0;
   int? endLimit;
@@ -146,24 +148,23 @@ class ReportSummaryViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
+      Directory? path = await (pathProvider.getExternalStorageDirectory());
       data = await _smsScheduleService!.getScheduleReportData();
-      newIsolate = await Isolate.spawn(onExcelSheetUpdate, data!.result!.first);
+      var isolateData = await compute(onExcelSheetUpdate, data!.result!.first);
+      var saveFile = isolateData!.save();
+      File("${path!.path}/report_summary.xlsx")
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(saveFile!);
       hideLoadingDialog();
-
-// if (data != null) {
-      //   snackbarService.showSnackbar(message: "File saved in ${path.path}");
-      //   // Logger().e(excelSheet.sheets.values.last.rows);
-      //   hideLoadingDialog();
-      // } else {
-      //   hideLoadingDialog();
-      // }
+      OpenFile.open("${path.path}/report_summary.xlsx");
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
 
-  static onExcelSheetUpdate(List<ReportSummaryModel> data) {
+  static Future<Excel?> onExcelSheetUpdate(
+      List<ReportSummaryModel> data) async {
     try {
       Logger().e("function running");
       final Excel excelSheet = Excel.createExcel();
@@ -194,13 +195,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
             CellIndex.indexByString("F$index"), data[i].StartDate);
       }
       Logger().e("excel sheet update");
-      
-      // excelSheet.encode().then((onValue) {
-      //   File("${path.path}/SMS_schedule.xlsx")
-      //     ..createSync(recursive: true)
-      //     ..writeAsBytesSync(onValue)
-      //     ..open(mode: FileMode.read);
-      // });
+      return excelSheet;
     } catch (e) {
       Logger().e(e.toString());
     }

@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:insite/core/base/insite_view_model.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/router_constants.dart';
@@ -27,19 +28,19 @@ class SplashViewModel extends InsiteViewModel {
   SplashViewModel() {
     checkingFavour = isVisionLink;
     this.log = getLogger(this.runtimeType.toString());
-    _nativeService!.platform.setMethodCallHandler(nativeMethodCallHandler);
+    _nativeService!.nativeToFlutterplatform
+        .setMethodCallHandler(nativeMethodCallHandler);
     Future.delayed(Duration(seconds: 2), () {
       checkLoggedIn();
     });
   }
 
   Future<dynamic> nativeMethodCallHandler(MethodCall methodCall) async {
-    print('Native call!');
+    Logger().d("method name ${methodCall.method}");
     switch (methodCall.method) {
-      case "OauthCode":
+      case "code_received":
         _localService!.setIsloggedIn(true);
-        debugPrint(methodCall.arguments);
-        getLoggedInUserDetails();
+        getLoggedInUserDetails(methodCall.arguments);
         return "This data from flutter.....";
 
       default:
@@ -60,15 +61,18 @@ class SplashViewModel extends InsiteViewModel {
         // or below one
         //nithyamahalakshmi_p@trimble.com
         //OsgTe@m20!9
-        // String result = await _nativeService.openLogin();
+        if (AppConfig.instance!.enalbeNativeLogin) {
+          await _nativeService!.login();
+        } else {
+          Logger().i("show webview");
+          //below three lines decides to show web view or not for login
+          shouldLoadWebview = true;
+          Future.delayed(Duration(seconds: 2), () {
+            notifyListeners();
+          });
+          // _nagivationService.replaceWith(loginPageRoute);
+        }
         // Logger().i("login result %s" + result);
-        Logger().i("show webview");
-        //below three lines decides to show web view or not for login
-        shouldLoadWebview = true;
-        Future.delayed(Duration(seconds: 2), () {
-          notifyListeners();
-        });
-        // _nagivationService!.replaceWith(loginPageRoute);
       } else {
         if (!isProcessing) {
           Logger().i("checking for permission");
@@ -97,10 +101,14 @@ class SplashViewModel extends InsiteViewModel {
           //below three lines decides to show web view or not for login
           _localService!.setHasPermission(false);
           _localService!.clearAll();
-          shouldLoadWebview = true;
-          Future.delayed(Duration(seconds: 1), () {
-            notifyListeners();
-          });
+          if (AppConfig.instance!.enalbeNativeLogin) {
+            // await _nativeService.login();
+          } else {
+            shouldLoadWebview = true;
+            Future.delayed(Duration(seconds: 1), () {
+              notifyListeners();
+            });
+          }
           // _nagivationService.replaceWith(loginPageRoute);
           // // below lines for redirecting inside app
           // if (account != null) {
@@ -115,10 +123,14 @@ class SplashViewModel extends InsiteViewModel {
         if (userInfo == null) {
           _localService!.setHasPermission(false);
           _localService!.clearAll();
-          shouldLoadWebview = true;
-          Future.delayed(Duration(seconds: 1), () {
-            notifyListeners();
-          });
+          if (AppConfig.instance!.enalbeNativeLogin) {
+             await _nativeService!.login();
+          } else {
+            shouldLoadWebview = true;
+            Future.delayed(Duration(seconds: 1), () {
+              notifyListeners();
+            });
+          }
         } else {
           _localService!.setHasPermission(true);
           if (account != null) {
@@ -133,16 +145,19 @@ class SplashViewModel extends InsiteViewModel {
     }
   }
 
-  void getLoggedInUserDetails() async {
+  void getLoggedInUserDetails(String receivedData) async {
+    Logger().d("getLoggedInUserDetails $receivedData");
     try {
-      UserInfo? userInfo = await _loginService!.getLoggedInUserInfo();
-      _localService!.saveUserInfo(userInfo);
-      Logger().i("launching home get logged in user detail");
-      _nagivationService!.replaceWith(homeViewRoute);
-      isProcessing = false;
+      List<String> data = receivedData.split(",");
+      LoginResponse? result =
+          await _loginService!.getLoginDataV4(data[0], data[1], data[2]);
+      if (result != null) {
+        await _localService!.saveTokenInfo(result);
+        await _loginService!.saveToken(
+            result.access_token, result.expires_in.toString(), false);
+      }
     } catch (e) {
-      Logger().i("getLoggedInUserDetails");
-      Logger().e(e);
+      Logger().e("getLoggedInUserDetails", e);
     }
   }
 }

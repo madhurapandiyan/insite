@@ -199,22 +199,22 @@ class AssetAdminManagerUserService extends BaseService {
     if (customerSelected != null) {
       queryMap["customerUid"] = customerSelected!.CustomerUID!;
     }
-      if (isVisionLink) {
-        CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
-            Urls.adminManagerUserSumaryVL +
-                "/List" +
-                FilterUtils.constructQueryFromMap(queryMap),
-            accountSelected!.CustomerUID);
-        return response;
-      } else {
-        CheckUserResponse response = await MyApi().getClient()!.checkUser(
-            Urls.adminManagerUserSumary +
-                "/List" +
-                FilterUtils.constructQueryFromMap(queryMap),
-            Urls.userCountPrefix,
-            accountSelected!.CustomerUID);
-        return response;
-      }
+    if (isVisionLink) {
+      CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
+          Urls.adminManagerUserSumaryVL +
+              "/List" +
+              FilterUtils.constructQueryFromMap(queryMap),
+          accountSelected!.CustomerUID);
+      return response;
+    } else {
+      CheckUserResponse response = await MyApi().getClient()!.checkUser(
+          Urls.adminManagerUserSumary +
+              "/List" +
+              FilterUtils.constructQueryFromMap(queryMap),
+          Urls.userCountPrefix,
+          accountSelected!.CustomerUID);
+      return response;
+    }
   }
 
   Future<ApplicationData?> getApplicationsData() async {
@@ -444,7 +444,9 @@ class AssetAdminManagerUserService extends BaseService {
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
                 fname: firstName,
-                customerUid: accountSelected!.CustomerUID,
+                customerUid: customerSelected != null
+                    ? customerSelected!.CustomerUID
+                    : accountSelected!.CustomerUID,
                 lname: lastName,
                 email: email,
                 phone: phoneNumber,

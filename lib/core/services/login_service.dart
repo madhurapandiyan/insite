@@ -65,7 +65,6 @@ class LoginService extends BaseService {
       await _localService
           .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
     }
-
     return userAuthenticateStatus;
   }
 
@@ -73,7 +72,7 @@ class LoginService extends BaseService {
     _localService.setIsloggedIn(true);
     _localService.saveToken(token);
     try {
-      //await getAuthenticateUserId();
+      await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
 
       Future.delayed(Duration(seconds: 1), () {
@@ -103,8 +102,6 @@ class LoginService extends BaseService {
         } else {
           _nagivationService.replaceWith(customerSelectionViewRoute);
         }
-      }else{
-        _nagivationService.replaceWith(customerSelectionViewRoute);
       }
     }
   }

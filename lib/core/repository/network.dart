@@ -108,7 +108,7 @@ class HttpWrapper {
 
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
-      baseUrl: AppConfig.instance!.baseUrl!,
+      baseUrl: AppConfig.instance!.baseUrl,
       connectTimeout: 30000,
       receiveTimeout: 30000,
     );
@@ -312,7 +312,7 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
-    client = RestClient(dio, baseUrl: AppConfig.instance!.baseUrl!);
+    client = RestClient(dio, baseUrl: AppConfig.instance!.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
     clientThree = RestClient(dioThree, baseUrl: _baseUrlService);

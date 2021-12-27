@@ -64,17 +64,17 @@ class ReportSummaryView extends StatelessWidget {
                                         color: appbarcolor,
                                       ))
                                   : SizedBox(),
-                              InsiteButton(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  title: "",
-                                  onTap: () {
-                                    viewModel.onDownload();
-                                  },
-                                  icon: Icon(
-                                    Icons.download,
-                                    color: appbarcolor,
-                                  ))
+                              // InsiteButton(
+                              //     height:
+                              //         MediaQuery.of(context).size.height * 0.05,
+                              //     title: "",
+                              //     onTap: () {
+                              //       viewModel.onDownload();
+                              //     },
+                              //     icon: Icon(
+                              //       Icons.download,
+                              //       color: appbarcolor,
+                              //     ))
                             ],
                           ),
                         ),

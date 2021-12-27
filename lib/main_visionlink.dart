@@ -28,6 +28,7 @@ void main() async {
       apiFlavor: "visionlink",
       productFlavor: "unifiedFleet",
       enableLogin: true,
+      enalbeNativeLogin: false,
       isProd: false,
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();

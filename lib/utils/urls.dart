@@ -57,6 +57,7 @@ class Urls {
 
   //sample
   static getV4LoginUrlVL(state, codeChallenge) {
+    Logger().i("visionLink");
     String url = "https://id.trimble.com/oauth/authorize?" +
         "scope=openid $visionLinkApplicationName" +
         "&response_type=code" +
@@ -75,6 +76,7 @@ class Urls {
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
+     Logger().i("indiaStack");
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=$indiaStackClientId&state=$state" +
         "&redirect_uri=$tataHitachiRedirectUri&scope=openid $tataHitachiApplicationName" +
@@ -99,10 +101,14 @@ class Urls {
   // static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
-  static String tataHitachiRedirectUri =
-      "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
-  static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
+  static String tataHitachiRedirectUri = "insite://mobile";
+  static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
+  static String tataHitachiApplicationName = "Frame-Administrator-IND";
+
+//   static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+//   static String tataHitachiApplicationName = "Frame-Administrator-IND";
+// static String tataHitachiRedirectUri =
+//       "https://insite-in-frame.frame-oesolutions.com/auth";
 
   // static String tataHitachiRedirectUri =
   //     "https://dj8lqow8wzdep.cloudfront.net/auth";
