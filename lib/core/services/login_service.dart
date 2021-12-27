@@ -61,7 +61,6 @@ class LoginService extends BaseService {
       await _localService
           .saveUserId(Utils.getUserId(userAuthenticateStatus.result));
     }
-
     return userAuthenticateStatus;
   }
 
@@ -89,12 +88,15 @@ class LoginService extends BaseService {
     } catch (e) {
       Logger().e(e);
       Logger().i("exception launching home from login service");
-      if (shouldRemovePreviousRoutes) {
-        Logger().i("true");
-        _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
-            predicate: (Route<dynamic> route) => false);
-      } else {
-        _nagivationService.replaceWith(customerSelectionViewRoute);
+      if (userInfo != null) {
+        _localService.saveUserInfo(userInfo);
+        if (shouldRemovePreviousRoutes) {
+          Logger().i("true");
+          _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
+              predicate: (Route<dynamic> route) => false);
+        } else {
+          _nagivationService.replaceWith(customerSelectionViewRoute);
+        }
       }
     }
   }

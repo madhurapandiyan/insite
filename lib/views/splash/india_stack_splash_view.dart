@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -77,7 +78,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     super.didUpdateWidget(oldWidget);
   }
 
-  setupListeners(){
+  setupListeners() {
     Logger().i("IndiaStackSplashView init state splash view");
     // flutterWebviewPlugin.close();
 
@@ -200,7 +201,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
           body: SafeArea(
             child: Stack(
               children: [
-                viewModel.shouldLoadWebview
+                viewModel.shouldLoadWebview &&
+                        !AppConfig.instance.enalbeNativeLogin
                     ? WebviewScaffold(
                         url: Urls.getV4LoginUrl(state, codeChallenge))
                     : SizedBox(),
