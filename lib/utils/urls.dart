@@ -80,7 +80,7 @@ class Urls {
   // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
 
   static String tataHitachiRedirectUri =
-  "https://dj8lqow8wzdep.cloudfront.net/auth";
+  "insite://mobile";
   static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "Frame-Administrator-IND";
 

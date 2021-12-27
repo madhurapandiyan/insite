@@ -10,7 +10,6 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
-import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -67,7 +66,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     "Others"
   ];
 
-  List<String> languageTypeValueList = ["Tamil", "English"];
+  List<String> languageTypeValueList = ["English"];
 
   String jobTypeValue;
 
@@ -87,7 +86,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   }
 
   String jobTitleValue;
-  String languageTypeValue;
+  String languageTypeValue = "English";
 
   int lastApplicationAccessSelectedIndex;
   String dropDownValue;
@@ -414,45 +413,45 @@ class AddNewUserViewModel extends InsiteViewModel {
       return false;
     }
 
-    if (phoneNumberController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Phone number is empty");
-      return false;
-    }
+    // if (phoneNumberController.text.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Phone number is empty");
+    //   return false;
+    // }
 
-    if (addressController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Address is empty");
-      return false;
-    }
+    // if (addressController.text.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Address is empty");
+    //   return false;
+    // }
 
-    if (countryController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Country is empty");
-      return false;
-    }
+    // if (countryController.text.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Country is empty");
+    //   return false;
+    // }
 
-    if (stateController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "State is empty");
-      return false;
-    }
+    // if (stateController.text.isEmpty) {
+    //   snackbarService.showSnackbar(message: "State is empty");
+    //   return false;
+    // }
 
-    if (pinCodeController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Pincode is empty");
-      return false;
-    }
+    // if (pinCodeController.text.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Pincode is empty");
+    //   return false;
+    // }
 
-    if (applicationSelectedDropDownList.isEmpty) {
-      snackbarService.showSnackbar(message: "Roles not selected");
-      return false;
-    }
+    // if (applicationSelectedDropDownList.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Roles not selected");
+    //   return false;
+    // }
 
-    if (jobTypeValue == null || jobTypeValue.isEmpty) {
-      snackbarService.showSnackbar(message: "Job type not selected");
-      return false;
-    }
+    // if (jobTypeValue == null || jobTypeValue.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Job type not selected");
+    //   return false;
+    // }
 
-    if (jobTitleValue == null || jobTitleValue.isEmpty) {
-      snackbarService.showSnackbar(message: "Job title not selected");
-      return false;
-    }
+    // if (jobTitleValue == null || jobTitleValue.isEmpty) {
+    //   snackbarService.showSnackbar(message: "Job title not selected");
+    //   return false;
+    // }
 
     if (languageTypeValue == null || languageTypeValue.isEmpty) {
       snackbarService.showSnackbar(message: "language not selected");

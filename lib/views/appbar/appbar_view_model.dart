@@ -1,4 +1,5 @@
 import 'package:insite/core/base/insite_view_model.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
@@ -6,6 +7,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/router_constants_india_stack.dart' as indiaStack;
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/core/services/native_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:logger/logger.dart';
@@ -15,6 +17,7 @@ class AppbarViewModel extends InsiteViewModel {
   var _navigationService = locator<NavigationService>();
   var _localService = locator<LocalService>();
   var _localStorageService = locator<LocalStorageService>();
+  var _nativeService = locator<NativeService>();
 
   Customer _accountSelected;
   Customer get accountSelected => _accountSelected;
@@ -59,11 +62,11 @@ class AppbarViewModel extends InsiteViewModel {
   }
 
   Future<void> logout() async {
-   // _localService.removeTokenInfo();
+    // _localService.removeTokenInfo();
     _localService.clearAll();
     _localStorageService.clearAll();
     LoginResponse response = await _localService.getTokenInfo();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 2), () async {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
       //   Logger().i("packageInfo ${packageInfo.packageName}");
@@ -85,11 +88,15 @@ class AppbarViewModel extends InsiteViewModel {
       //     _navigationService.replaceWith(loginViewRoute);
       //   }
       // });
-      if (isVisionLink) {
-        _navigationService.replaceWith(loginViewRoute);
+      if (AppConfig.instance.enalbeNativeLogin) {
+        await _nativeService.logout(response.id_token);
       } else {
-        _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
-            arguments: LoginArguments(response: response));
+        if (isVisionLink) {
+          _navigationService.replaceWith(loginViewRoute);
+        } else {
+          _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+              arguments: LoginArguments(response: response));
+        }
       }
     });
   }

@@ -15,7 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-   await FlutterDownloader.initialize(debug: true);
+  await FlutterDownloader.initialize(debug: true);
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
@@ -26,6 +26,7 @@ void main() async {
       apiFlavor: "visionlink",
       productFlavor: "unifiedFleet",
       enableLogin: true,
+      enalbeNativeLogin: false,
       isProd: false,
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();
