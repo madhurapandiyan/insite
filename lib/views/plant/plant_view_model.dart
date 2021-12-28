@@ -9,8 +9,8 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PlantViewModel extends InsiteViewModel {
-  Logger log;
-  var _navigationService = locator<NavigationService>();
+  Logger? log;
+  NavigationService? _navigationService = locator<NavigationService>();
 
   PlantViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -19,16 +19,16 @@ class PlantViewModel extends InsiteViewModel {
   void onRespectiveButtonClicked(AdminAssetsButtonType value) {
     Logger().i("onRespectiveButtonClicked $value");
     if (value == AdminAssetsButtonType.VIEWDASHBOARD) {
-      _navigationService.navigateWithTransition(PlantDashboardView(),
+      _navigationService!.navigateWithTransition(PlantDashboardView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.VIEWHIERACHY) {
-      navigationService.navigateWithTransition(PlantHierachyView(),
+      navigationService!.navigateWithTransition(PlantHierachyView(),
           transition: "fade");
     }
   }
 
   void goToPlantAssetCreationPage() {
-    _navigationService.navigateWithTransition(PlantAssetCreationView(),
+    _navigationService!.navigateWithTransition(PlantAssetCreationView(),
         transition: "fade");
   }
 }

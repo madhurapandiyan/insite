@@ -23,15 +23,15 @@ import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DashboardViewModel extends InsiteViewModel {
-  var _localService = locator<LocalService>();
-  var _navigationService = locator<NavigationService>();
-  var _assetService = locator<AssetStatusService>();
-  var _assetLocationService = locator<AssetLocationService>();
-  var _localStorageService = locator<LocalStorageService>();
-  var _assetUtilizationService = locator<AssetUtilizationService>();
-  var _dateRangeService = locator<DateRangeService>();
+  LocalService? _localService = locator<LocalService>();
+  NavigationService? _navigationService = locator<NavigationService>();
+  AssetStatusService? _assetService = locator<AssetStatusService>();
+  AssetLocationService? _assetLocationService = locator<AssetLocationService>();
+  LocalStorageService? _localStorageService = locator<LocalStorageService>();
+  AssetUtilizationService? _assetUtilizationService = locator<AssetUtilizationService>();
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
 
-  Logger log;
+  Logger? log;
 
   bool _assetStatusloading = true;
   bool get assetStatusloading => _assetStatusloading;
@@ -60,24 +60,24 @@ class DashboardViewModel extends InsiteViewModel {
   bool _assetUtilizationLoading = true;
   bool get assetUtilizationLoading => _assetUtilizationLoading;
 
-  double _utilizationTotalGreatestValue;
-  double get utilizationTotalGreatestValue => _utilizationTotalGreatestValue;
+  double? _utilizationTotalGreatestValue;
+  double? get utilizationTotalGreatestValue => _utilizationTotalGreatestValue;
 
-  double _utilizationAverageGreatestValue;
-  double get utilizationAverageGreatestValue =>
+  double? _utilizationAverageGreatestValue;
+  double? get utilizationAverageGreatestValue =>
       _utilizationAverageGreatestValue;
 
-  AssetCount _assetStatusData;
-  AssetCount get assetStatusData => _assetStatusData;
+  AssetCount? _assetStatusData;
+  AssetCount? get assetStatusData => _assetStatusData;
 
-  AssetLocationData _assetLocation;
-  AssetLocationData get assetLocation => _assetLocation;
+  AssetLocationData? _assetLocation;
+  AssetLocationData? get assetLocation => _assetLocation;
 
-  AssetCount _idlingLevelData;
-  AssetCount get idlingLevelData => _idlingLevelData;
+  AssetCount? _idlingLevelData;
+  AssetCount? get idlingLevelData => _idlingLevelData;
 
-  AssetCount _faultCountData;
-  AssetCount get faultCountData => _faultCountData;
+  AssetCount? _faultCountData;
+  AssetCount? get faultCountData => _faultCountData;
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -94,24 +94,24 @@ class DashboardViewModel extends InsiteViewModel {
   bool _isFilterApplied = false;
   bool get isFilterApplied => _isFilterApplied;
 
-  FilterData _currentFilterSelected;
-  FilterData get currentFilterSelected => _currentFilterSelected;
+  FilterData? _currentFilterSelected;
+  FilterData? get currentFilterSelected => _currentFilterSelected;
 
   List<FilterData> filterDataProductFamily = [];
 
-  UtilizationSummary _utilizationSummary;
-  UtilizationSummary get utilizationSummary => _utilizationSummary;
+  UtilizationSummary? _utilizationSummary;
+  UtilizationSummary? get utilizationSummary => _utilizationSummary;
 
   List<ChartSampleData> statusChartData = [];
   List<ChartSampleData> fuelChartData = [];
 
   DashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _assetService.setUp();
-    _assetLocationService.setUp();
-    _localStorageService.setUp();
-    _assetUtilizationService.setUp();
-    _dateRangeService.setUp();
+    _assetService!.setUp();
+    _assetLocationService!.setUp();
+    _localStorageService!.setUp();
+    _assetUtilizationService!.setUp();
+    _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () {
       getAssetCount();
@@ -128,31 +128,31 @@ class DashboardViewModel extends InsiteViewModel {
   int pageSize = 2500;
 
   void logout() {
-    _localService.clearAll();
-    _localStorageService.clearAll();
+    _localService!.clearAll();
+    _localStorageService!.clearAll();
     Future.delayed(Duration(seconds: 2), () {
-      _navigationService.replaceWith(loginViewRoute);
+      _navigationService!.replaceWith(loginViewRoute);
     });
   }
 
   updateDateRangeFilter(FilterData data) async {
     await clearFilterDb();
     if (currentFilterSelected != null) {
-      await addFilter(currentFilterSelected);
+      await addFilter(currentFilterSelected!);
     }
-    await _dateRangeService.updateDateFilter(data);
+    await _dateRangeService!.updateDateFilter(data);
   }
 
   getAssetStatusData() async {
-    AssetCount result =
-        await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
+    AssetCount? result =
+        await _assetService!.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
-      for (var stausData in _assetStatusData.countData) {
+      for (var stausData in _assetStatusData!.countData!) {
         statusChartData.add(ChartSampleData(
           x: stausData.countOf,
-          y: stausData.count.round(),
+          y: stausData.count!.round(),
         ));
       }
     }
@@ -173,7 +173,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   onRefereshClicked() {
     if (currentFilterSelected != null) {
-      getFilterDataApplied(currentFilterSelected);
+      getFilterDataApplied(currentFilterSelected!);
     } else {
       refresh();
     }
@@ -193,11 +193,11 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getAssetCount() async {
-    AssetCount result =
-        await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
+    AssetCount? result =
+        await _assetService!.getAssetCount(null, FilterType.ASSET_STATUS);
     if (result != null) {
-      if (result.countData.isNotEmpty && result.countData[0].count != null) {
-        _totalCount = result.countData[0].count.toInt();
+      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+        _totalCount = result.countData![0].count!.toInt();
       }
     }
     notifyListeners();
@@ -206,17 +206,17 @@ class DashboardViewModel extends InsiteViewModel {
   getFuelLevelData() async {
     Logger().i("get fuel level data");
     int totalAssetCount = 0;
-    AssetCount result = await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
+    AssetCount? result = await _assetService!.getFuellevel(FilterType.FUEL_LEVEL);
     if (result != null) {
       fuelChartData.clear();
-      for (int index = 0; index < result.countData.length; index++) {
-        if (result.countData[index].countOf != "Not Reporting") {
-          Logger().d("countOf ${result.countData[index].count}");
-          totalAssetCount = totalAssetCount + result.countData[index].count;
+      for (int index = 0; index < result.countData!.length; index++) {
+        if (result.countData![index].countOf != "Not Reporting") {
+          Logger().d("countOf ${result.countData![index].count}");
+          totalAssetCount = totalAssetCount + result.countData![index].count!;
           fuelChartData.add(ChartSampleData(
-            x: result.countData[index].countOf,
-            y: result.countData[index].count,
-            z: result.countData[index].count.toString(),
+            x: result.countData![index].countOf,
+            y: result.countData![index].count,
+            z: result.countData![index].count.toString(),
             // z: totalAssetCount.toString() //un comment when cumaltive count needs to be shown
           ));
         }
@@ -231,9 +231,9 @@ class DashboardViewModel extends InsiteViewModel {
     _isSwitching = switching;
     notifyListeners();
     if (isFilterApplied) {
-      AssetCount result = await _assetService.getIdlingLevelFilterData(
+      AssetCount? result = await _assetService!.getIdlingLevelFilterData(
         getStartRange(),
-        currentFilterSelected.title,
+        currentFilterSelected!.title,
         endDayRange,
       );
       if (result != null) {
@@ -241,7 +241,7 @@ class DashboardViewModel extends InsiteViewModel {
         _isSwitching = false;
       }
     } else {
-      AssetCount result = await _assetService.getIdlingLevelData(
+      AssetCount? result = await _assetService!.getIdlingLevelData(
           getStartRange(),
           endDayRange,
           FilterType.IDLING_LEVEL,
@@ -259,7 +259,7 @@ class DashboardViewModel extends InsiteViewModel {
     Logger().i("get fault count data");
     _faultCountloading = true;
     notifyListeners();
-    AssetCount count = await _assetService.getFaultCount(
+    AssetCount? count = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     if (count != null) {
@@ -273,49 +273,49 @@ class DashboardViewModel extends InsiteViewModel {
     Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
     if (currentFilterSelected != null) {
-      await addFilter(currentFilterSelected);
+      await addFilter(currentFilterSelected!);
     }
     await addFilter(data);
   }
 
   gotoFaultPage() {
     Logger().i("go to fault page");
-    _navigationService.navigateWithTransition(HealthView(),
+    _navigationService!.navigateWithTransition(HealthView(),
         transition: "rightToLeft");
   }
 
   gotoFleetPage() {
     Logger().i("go to fleet page");
-    _navigationService.navigateWithTransition(FleetView(),
+    _navigationService!.navigateWithTransition(FleetView(),
         transition: "rightToLeft");
   }
 
   gotoUtilizationPage() {
     Logger().i("go to utilization page");
-    _navigationService.navigateWithTransition(UtilLizationView(),
+    _navigationService!.navigateWithTransition(UtilLizationView(),
         transition: "rightToLeft");
   }
 
   getUtilizationSummary() async {
-    UtilizationSummary result =
-        await _assetUtilizationService.getUtilizationSummary(
+    UtilizationSummary? result =
+        await _assetUtilizationService!.getUtilizationSummary(
             '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     if (result != null) {
       _utilizationSummary = result;
       _utilizationTotalGreatestValue = Utils.greatestOfThree(
-          _utilizationSummary.totalDay.runtimeHours,
-          _utilizationSummary.totalWeek.runtimeHours,
-          _utilizationSummary.totalMonth.runtimeHours);
+          _utilizationSummary!.totalDay!.runtimeHours!,
+          _utilizationSummary!.totalWeek!.runtimeHours!,
+          _utilizationSummary!.totalMonth!.runtimeHours);
       _utilizationAverageGreatestValue = Utils.greatestOfThree(
-          _utilizationSummary.averageDay.runtimeHours,
-          _utilizationSummary.averageWeek.runtimeHours,
-          _utilizationSummary.averageMonth.runtimeHours);
+          _utilizationSummary!.averageDay!.runtimeHours!,
+          _utilizationSummary!.averageWeek!.runtimeHours!,
+          _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
     notifyListeners();
   }
 
-  FilterSubType getFilterRange() {
+  FilterSubType? getFilterRange() {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return FilterSubType.DAY;
@@ -331,7 +331,7 @@ class DashboardViewModel extends InsiteViewModel {
     }
   }
 
-  String getStartRange() {
+  String? getStartRange() {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -350,17 +350,17 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFilterData() async {
-    AssetCount resultProductfamily = await _assetService.getAssetCount(
+    AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily", FilterType.PRODUCT_FAMILY);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
   }
 
-  addData(filterData, AssetCount resultModel, type) {
+  addData(filterData, AssetCount? resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
-        resultModel.countData.isNotEmpty) {
-      for (Count countData in resultModel.countData) {
+        resultModel.countData!.isNotEmpty) {
+      for (Count countData in resultModel.countData!) {
         // if (countData.countOf != "Not Reporting" && //enabling not reporting
         if (countData.countOf != "Excluded") {
           FilterData data = FilterData(
@@ -398,15 +398,15 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getAssetStatusFilterApplied(filterData) async {
-    AssetCount result =
-        await _assetService.getAssetStatusFilter(filterData, "assetstatus");
+    AssetCount? result =
+        await _assetService!.getAssetStatusFilter(filterData, "assetstatus");
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
-      for (var stausData in _assetStatusData.countData) {
+      for (var stausData in _assetStatusData!.countData!) {
         statusChartData.add(ChartSampleData(
           x: stausData.countOf,
-          y: stausData.count.round(),
+          y: stausData.count!.round(),
         ));
       }
     }
@@ -416,18 +416,18 @@ class DashboardViewModel extends InsiteViewModel {
 
   getFuelLevelFilterApplied(dropDownValue) async {
     int totalAssetCount = 0;
-    AssetCount result =
-        await _assetService.getFuellevelFilterData(dropDownValue, "fuellevel");
+    AssetCount? result =
+        await _assetService!.getFuellevelFilterData(dropDownValue, "fuellevel");
     if (result != null) {
       fuelChartData.clear();
-      for (int index = 0; index < result.countData.length; index++) {
-        if (result.countData[index].countOf != "Not Reporting") {
-          Logger().d("countOf ${result.countData[index].count}");
-          totalAssetCount = totalAssetCount + result.countData[index].count;
+      for (int index = 0; index < result.countData!.length; index++) {
+        if (result.countData![index].countOf != "Not Reporting") {
+          Logger().d("countOf ${result.countData![index].count}");
+          totalAssetCount = totalAssetCount + result.countData![index].count!;
           fuelChartData.add(ChartSampleData(
-            x: result.countData[index].countOf,
-            y: result.countData[index].count,
-            z: result.countData[index].count.toString(),
+            x: result.countData![index].countOf,
+            y: result.countData![index].count,
+            z: result.countData![index].count.toString(),
           ));
         }
       }
@@ -437,7 +437,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getIdlingLevelFilterData(dropDownValue) async {
-    AssetCount result = await _assetService.getIdlingLevelFilterData(
+    AssetCount? result = await _assetService!.getIdlingLevelFilterData(
         getStartRange(), dropDownValue, endDate);
     if (result != null) {
       _idlingLevelData = result;
@@ -449,7 +449,7 @@ class DashboardViewModel extends InsiteViewModel {
   getFaultCountDataFilterData(dropDownValue) async {
     _faultCountloading = true;
     notifyListeners();
-    AssetCount count = await _assetService.getFaultCountFilterApplied(
+    AssetCount? count = await _assetService!.getFaultCountFilterApplied(
         dropDownValue,
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
@@ -461,18 +461,18 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getUtilizationSummaryFilterData(dropDownValue) async {
-    UtilizationSummary result = await _assetUtilizationService
+    UtilizationSummary? result = await _assetUtilizationService!
         .getUtilizationFilterData(endDate, dropDownValue);
     if (result != null) {
       _utilizationSummary = result;
       _utilizationTotalGreatestValue = Utils.greatestOfThree(
-          _utilizationSummary.totalDay.runtimeHours,
-          _utilizationSummary.totalWeek.runtimeHours,
-          _utilizationSummary.totalMonth.runtimeHours);
+          _utilizationSummary!.totalDay!.runtimeHours!,
+          _utilizationSummary!.totalWeek!.runtimeHours!,
+          _utilizationSummary!.totalMonth!.runtimeHours);
       _utilizationAverageGreatestValue = Utils.greatestOfThree(
-          _utilizationSummary.averageDay.runtimeHours,
-          _utilizationSummary.averageWeek.runtimeHours,
-          _utilizationSummary.averageMonth.runtimeHours);
+          _utilizationSummary!.averageDay!.runtimeHours!,
+          _utilizationSummary!.averageWeek!.runtimeHours!,
+          _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
     notifyListeners();

@@ -11,7 +11,7 @@ class ReplacementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ReplacementViewModel>.reactive(
       builder:
-          (BuildContext context, ReplacementViewModel viewModel, Widget _) {
+          (BuildContext context, ReplacementViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
           //count: viewModel.appliedFilters.length,
           child: InsiteScaffold(

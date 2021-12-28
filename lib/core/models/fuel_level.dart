@@ -3,7 +3,7 @@ part 'fuel_level.g.dart';
 
 @JsonSerializable()
 class FuelLevelData {
-  List<CountDatum> countData;
+  List<CountDatum>? countData;
 
   FuelLevelData({
     this.countData,
@@ -17,8 +17,8 @@ class FuelLevelData {
 
 @JsonSerializable()
 class CountDatum {
-  String countOf;
-  int count;
+  String? countOf;
+  int? count;
   CountDatum({
     this.countOf,
     this.count,

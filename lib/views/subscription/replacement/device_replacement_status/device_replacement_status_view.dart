@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -13,7 +11,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DeviceReplacementStatusViewModel>.reactive(
       builder: (BuildContext context,
-          DeviceReplacementStatusViewModel viewModel, Widget _) {
+          DeviceReplacementStatusViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: viewModel.isLoading
@@ -47,20 +45,20 @@ class DeviceReplacementStatusView extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   size: 20,
                                   text:
-                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel.result.first.first.count} ",
+                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel!.result!.first.first.count} ",
                                 ),
-                                InsiteButton(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    // bgColor: tuna,
-                                    title: "",
-                                    onTap: () {
-                                      viewModel.onDownload();
-                                    },
-                                    icon: Icon(
-                                      Icons.download,
-                                      color: appbarcolor,
-                                    )),
+                                // InsiteButton(
+                                //     height: MediaQuery.of(context).size.height *
+                                //         0.05,
+                                //     // bgColor: tuna,
+                                //     title: "",
+                                //     onTap: () {
+                                //       viewModel.onDownload();
+                                //     },
+                                //     icon: Icon(
+                                //       Icons.download,
+                                //       color: appbarcolor,
+                                //     )),
                               ],
                             ),
                           ),

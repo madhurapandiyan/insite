@@ -3,9 +3,9 @@ part 'sms_reportSummary_responce_model.g.dart';
 
 @JsonSerializable()
 class SmsReportSummaryModel {
-  final String code;
-  final String status;
-  final List<List<ReportSummaryModel>> result;
+  final String? code;
+  final String? status;
+  final List<List<ReportSummaryModel>>? result;
 
   SmsReportSummaryModel({this.code, this.status, this.result});
   factory SmsReportSummaryModel.fromJson(Map<String, dynamic> json) =>
@@ -16,15 +16,15 @@ class SmsReportSummaryModel {
 
 @JsonSerializable()
 class ReportSummaryModel {
-  final int count;
-  final int ID;
-  final String GPSDeviceID;
-  final String SerialNumber;
-  final String Name;
-  final String Number;
-  final String StartDate;
-  final String Language;
-  bool isSelected;
+  final int? count;
+  final int? ID;
+  final String? GPSDeviceID;
+  final String? SerialNumber;
+  final String? Name;
+  final String? Number;
+  final String? StartDate;
+  final String? Language;
+  bool? isSelected;
 
   ReportSummaryModel(
       {this.count,

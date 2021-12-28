@@ -3,9 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Dropdown extends StatefulWidget {
-  List<String> maptype;
-  String initialvalue;
-  Function(String) changingvalue;
+  List<String>? maptype;
+  String? initialvalue;
+  Function(String?)? changingvalue;
 
   Dropdown({this.maptype, this.initialvalue, this.changingvalue});
 
@@ -41,10 +41,10 @@ class _DropdownState extends State<Dropdown> {
         ),
         isExpanded: true,
         hint: Text(
-          widget.initialvalue,
-          style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+          widget.initialvalue!,
+          style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
         ),
-        items: widget.maptype
+        items: widget.maptype!
             .map((map) => DropdownMenuItem(
                   value: map,
                   child: InsiteText(
@@ -55,10 +55,10 @@ class _DropdownState extends State<Dropdown> {
                 ))
             .toList(),
         value: widget.initialvalue,
-        onChanged: (value) {
+        onChanged: (dynamic value) {
           setState(() {
             widget.initialvalue = value;
-            widget.changingvalue(value);
+            widget.changingvalue!(value);
           });
         },
         underline: Container(

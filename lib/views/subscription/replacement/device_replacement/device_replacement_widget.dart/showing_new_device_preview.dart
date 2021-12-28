@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ShowingNewDeviceDetail extends StatelessWidget {
-  final String oldDeviceId;
-  final String newDeviceId;
-  final String machineSerialNo;
-  final String modelName;
-  final String startDate;
+  final String? oldDeviceId;
+  final String? newDeviceId;
+  final String? machineSerialNo;
+  final String? modelName;
+  final String? startDate;
+  final Function? onBackPressed;
+  final Function? onReplacing;
   ShowingNewDeviceDetail(
       {this.oldDeviceId,
       this.machineSerialNo,
       this.newDeviceId,
       this.modelName,
+      this.onBackPressed,
+      this.onReplacing,
       this.startDate});
   @override
   Widget build(BuildContext context) {
@@ -83,6 +89,31 @@ class ShowingNewDeviceDetail extends StatelessWidget {
           size: 18,
         ),
         SizedBox(height: 25),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InsiteButton(
+              textColor: Theme.of(context).textTheme.bodyText2!.color,
+              onTap: () {
+                onBackPressed!();
+              },
+              bgColor: white,
+              title: "Back",
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.width * 0.3,
+            ),
+            InsiteButton(
+              textColor: Theme.of(context).textTheme.bodyText1!.color,
+              onTap: () {
+              onReplacing!();
+              },
+              // bgColor: white,
+              title: "Next",
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.width * 0.3,
+            ),
+          ],
+        )
       ],
     );
   }

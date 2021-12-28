@@ -6,12 +6,12 @@ import 'package:logger/logger.dart';
 import '../logger.dart';
 
 class BaseService {
-  Logger log;
+  Logger? log;
   bool isVisionLink = false;
-  BaseService({String title}) {
+  BaseService({String? title}) {
     log = getLogger(title ?? this.runtimeType.toString());
     try {
-      if (AppConfig.instance.apiFlavor == "visionlink") {
+      if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
@@ -23,7 +23,7 @@ class BaseService {
   }
 
   String convertFilterToCommaSeparatedString(List<FilterData> appliedFilters) {
-    List<String> stringList = [];
+    List<String?> stringList = [];
     for (FilterData data in appliedFilters) {
       stringList.add(data.title);
     }

@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 class Urls {
   static String unifiedFleetBaseUrl =
       "https://cloud.api.trimble.com/CTSPulseIndiastg";
@@ -7,6 +9,8 @@ class Urls {
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String idTokenBaseUrl = "https://id.trimble.com";
   static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
+  static String insiteBaseUrl =
+      "https://insite-in-frame.frame-oesolutions.com/";
 
   static String idTokenKey =
       "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
@@ -41,7 +45,29 @@ class Urls {
           "h3siCLfKlDG1Tzf0OTGBCgeldj0a" +
           "&state=https://administrator.myvisionlink.com/&nonce=1";
 
+  static String administratorloginUrlVl =
+      "https://id.trimble.com/oauth/authorize?" +
+          "scope=openid%20Prod-VisionLinkAdministrator" +
+          "&response_type=code" +
+          "&redirect_uri=https%3A%2F%2Fadministrator.myvisionlink.com" +
+          "&client_id=af2b03d0-7b27-41eb-8a3a-95b89d20f78d" +
+          "&state=https%3A%2F%2Fadministrator.myvisionlink.com%2F" +
+          "&code_challenge=filkDAKM7ulLU4kUw9OqF492fdl2rGn3CCPPcI6HO5I&nonce=1" +
+          "&code_challenge_method=S256";
+
   //sample
+  static getV4LoginUrlVL(state, codeChallenge) {
+    Logger().i("visionLink");
+    String url = "https://id.trimble.com/oauth/authorize?" +
+        "scope=openid $visionLinkApplicationName" +
+        "&response_type=code" +
+        "&redirect_uri=$administratorBaseUrl"
+            "&client_id=$visionLinkClientId&state=$state" +
+        "&code_challenge=$codeChallenge&nonce=1" +
+        "&code_challenge_method=S256";
+    return url;
+  }
+
   static String unifiedFleetV4LoginUrl =
       "https://id.trimble.com/oauth/authorize?response_type=code" +
           "&client_id=$indiaStackClientId&state=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y" +
@@ -50,6 +76,7 @@ class Urls {
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
+     Logger().i("indiaStack");
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=$indiaStackClientId&state=$state" +
         "&redirect_uri=$tataHitachiRedirectUri&scope=openid $tataHitachiApplicationName" +
@@ -74,15 +101,21 @@ class Urls {
   // static String indiaStackClientId = "fe148324-cca6-4342-9a28-d5de23a95005";
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
-  // static String tataHitachiRedirectUri =
-  //     "https://d1z5qa8yc2uhnc.cloudfront.net/auth";
-  // static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
-  // static String tataHitachiApplicationName = "OSG-IN-PULSE-APP-PROD";
-
-  static String tataHitachiRedirectUri =
-  "insite://mobile";
+  static String tataHitachiRedirectUri = "insite://mobile";
   static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "Frame-Administrator-IND";
+
+//   static String indiaStackClientId = "8945245d-5970-4015-86d3-404976b9af5f";
+//   static String tataHitachiApplicationName = "Frame-Administrator-IND";
+// static String tataHitachiRedirectUri =
+//       "https://insite-in-frame.frame-oesolutions.com/auth";
+
+  // static String tataHitachiRedirectUri =
+  //     "https://dj8lqow8wzdep.cloudfront.net/auth";
+  // static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
+  // static String tataHitachiApplicationName = "Frame-Administrator-IND";
+  static String visionLinkClientId = "af2b03d0-7b27-41eb-8a3a-95b89d20f78d";
+  static String visionLinkApplicationName = "Prod-VisionLinkAdministrator";
 
   //   static String tataHitachiRedirectUri =
   //     "https://d20xyexn0ovnlx.cloudfront.net/auth";
@@ -95,9 +128,15 @@ class Urls {
 
   static String tenantDomain = "Trimble.com";
 
-  static getV4LogoutUrl(String token, redirecturi) {
+  static getV4LogoutUrl(String? token, redirecturi) {
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl";
+    return url;
+  }
+
+  static logoutUrlVl(String? token, redirecturi) {
+    String url = Urls.idTokenBaseUrl +
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl&state=$administratorBaseUrl/";
     return url;
   }
 

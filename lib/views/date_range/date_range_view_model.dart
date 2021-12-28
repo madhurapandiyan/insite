@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/date_range_service.dart';
@@ -7,22 +8,22 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class DateRangeViewModel extends BaseViewModel {
-  var _dateRangeService = locator<DateRangeService>();
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
 
-  String _startDate = DateFormat('yyyy-MM-dd')
+  String? _startDate = DateFormat('yyyy-MM-dd')
       .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
-  set startDate(String startDate) {
+  set startDate(String? startDate) {
     this._startDate = startDate;
   }
 
-  String get startDate => _startDate;
+  String? get startDate => _startDate;
 
-  String _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set endDate(String endDate) {
+  String? _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  set endDate(String? endDate) {
     this._endDate = endDate;
   }
 
-  String get endDate => _endDate;
+  String? get endDate => _endDate;
 
   DateRangeType get selectedDateRange => _selectedDateRange;
 
@@ -39,7 +40,7 @@ class DateRangeViewModel extends BaseViewModel {
   DateRangeType get dateType => _dateType;
 
   DateRangeViewModel() {
-    _dateRangeService.setUp();
+    _dateRangeService!.setUp();
     getDateRangeFilterData();
   }
 
@@ -52,12 +53,12 @@ class DateRangeViewModel extends BaseViewModel {
         extras: [startDate, endDate, type],
         isSelected: true,
         type: FilterType.DATE_RANGE);
-    await _dateRangeService.updateDateFilter(data);
+    await _dateRangeService!.updateDateFilter(data);
   }
 
   getDateRangeFilterData() async {
     Logger().d("getDateRangeFilterData");
-    List<String> appliedFilters = await _dateRangeService.getDateRangeFilters();
+    List<String?> appliedFilters = await (_dateRangeService!.getDateRangeFilters() as FutureOr<List<String?>>);
     Logger().d(appliedFilters.length.toString());
     if (appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];

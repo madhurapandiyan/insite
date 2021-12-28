@@ -12,9 +12,9 @@ class AssetLocationHistory {
     this.assetLocation,
   });
 
-  Pagination pagination;
-  Links links;
-  List<AssetLocation> assetLocation;
+  Pagination? pagination;
+  Links? links;
+  List<AssetLocation>? assetLocation;
 
   factory AssetLocationHistory.fromJson(Map<String, dynamic> json) =>
       _$AssetLocationHistoryFromJson(json);
@@ -41,20 +41,20 @@ class AssetLocation {
     this.assetStatus,
   });
 
-  int assetEventHistoryId;
-  String assetIdentifier;
-  String serialNumber;
-  String makeCode;
-  String model;
-  DateTime locationEventUtc;
-  DateTime locationEventLocalTime;
-  String locationEventLocalTimeZoneAbbrev;
-  double latitude;
-  double longitude;
-  Address address;
-  double odometer;
-  double hourmeter;
-  String assetStatus;
+  int? assetEventHistoryId;
+  String? assetIdentifier;
+  String? serialNumber;
+  String? makeCode;
+  String? model;
+  DateTime? locationEventUtc;
+  DateTime? locationEventLocalTime;
+  String? locationEventLocalTimeZoneAbbrev;
+  double? latitude;
+  double? longitude;
+  Address? address;
+  double? odometer;
+  double? hourmeter;
+  String? assetStatus;
 
   factory AssetLocation.fromJson(Map<String, dynamic> json) =>
       _$AssetLocationFromJson(json);
@@ -73,12 +73,12 @@ class Address {
     this.zip,
   });
 
-  String streetAddress;
-  String city;
-  String state;
-  String county;
-  String country;
-  String zip;
+  String? streetAddress;
+  String? city;
+  String? state;
+  String? county;
+  String? country;
+  String? zip;
 
   factory Address.fromJson(Map<String, dynamic> json) =>
       _$AddressFromJson(json);
@@ -94,9 +94,9 @@ class Pagination {
     this.pageSize,
   });
 
-  int totalCount;
-  int pageNumber;
-  int pageSize;
+  int? totalCount;
+  int? pageNumber;
+  int? pageSize;
 
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);

@@ -1,13 +1,14 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
-  var _assetService = locator<AssetStatusService>();
+  AssetStatusService? _assetService = locator<AssetStatusService>();
   bool _loading = true;
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
@@ -23,13 +24,13 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataJobType = [];
   List<FilterData> filterDataUserType = [];
 
-  List<FilterData> selectedFilterData = [];
+  List<FilterData?>? selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
   FilterViewModel() {
     setUp();
-    _assetService.setUp();
+    _assetService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getSelectedFilterData();
       getFilterData();
@@ -37,12 +38,12 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   getFilterData() async {
-    AssetCount resultModel =
-        await _assetService.getAssetCount("model", FilterType.MODEL);
+    AssetCount? resultModel =
+        await _assetService!.getAssetCount("model", FilterType.MODEL);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
-    AssetCount resultDeviceType =
-        await _assetService.getAssetCount("deviceType", FilterType.DEVICE_TYPE);
+    AssetCount? resultDeviceType = await _assetService!
+        .getAssetCount("deviceType", FilterType.DEVICE_TYPE);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -50,52 +51,52 @@ class FilterViewModel extends InsiteViewModel {
     // addData(filterDataSubscription, resultSubscriptiontype,
     //     FilterType.SUBSCRIPTION_DATE);
 
-    AssetCount resultManufacturer =
-        await _assetService.getAssetCount("manufacturer", FilterType.MAKE);
+    AssetCount? resultManufacturer =
+        await _assetService!.getAssetCount("manufacturer", FilterType.MAKE);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
-    AssetCount resultProductfamily = await _assetService.getAssetCount(
-        "productfamily", FilterType.PRODUCT_FAMILY);
+    AssetCount? resultProductfamily = await _assetService!
+        .getAssetCount("productfamily", FilterType.PRODUCT_FAMILY);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
-    AssetCount resultAllAssets =
-        await _assetService.getAssetCount("assetstatus", FilterType.ALL_ASSETS);
+    AssetCount? resultAllAssets = await _assetService!
+        .getAssetCount("assetstatus", FilterType.ALL_ASSETS);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    AssetCount resultFuelLevel =
-        await _assetService.getFuellevel(FilterType.FUEL_LEVEL);
+    AssetCount? resultFuelLevel =
+        await _assetService!.getFuellevel(FilterType.FUEL_LEVEL);
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount resultIdlingLevel = await _assetService.getIdlingLevelData(
-        startDate, endDate, FilterType.IDLING_LEVEL, null);
+    AssetCount? resultIdlingLevel = await _assetService!
+        .getIdlingLevelData(startDate, endDate, FilterType.IDLING_LEVEL, null);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
-    AssetCount resultSeverity = await _assetService.getFaultCount(
+    AssetCount? resultSeverity = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
-    AssetCount resultJobType =
-        await _assetService.getAssetCount("JobType", FilterType.JOBTYPE);
-    addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
+    AssetCount? resultJobType =
+        await _assetService!.getAssetCount("JobType", FilterType.JOBTYPE);
+    addUserData(filterDataJobType, resultJobType!, FilterType.JOBTYPE);
 
-    AssetCount resultUserType =
-        await _assetService.getAssetCount("UserType", FilterType.USERTYPE);
-    addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
+    AssetCount? resultUserType =
+        await _assetService!.getAssetCount("UserType", FilterType.USERTYPE);
+    addUserData(filterDataUserType, resultUserType!, FilterType.USERTYPE);
 
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
   }
 
-  addData(filterData, AssetCount resultModel, type) {
+  addData(filterData, AssetCount? resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
-        resultModel.countData.isNotEmpty) {
-      for (Count countData in resultModel.countData) {
+        resultModel.countData!.isNotEmpty) {
+      for (Count countData in resultModel.countData!) {
         // if (countData.countOf != "Not Reporting" && //enabling not reporting
         if (countData.countOf != "Excluded") {
           FilterData data = FilterData(
@@ -134,8 +135,8 @@ class FilterViewModel extends InsiteViewModel {
   addUserData(filterData, AssetCount resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
-        resultModel.countData.isNotEmpty) {
-      for (Count countData in resultModel.countData) {
+        resultModel.countData!.isNotEmpty) {
+      for (Count countData in resultModel.countData!) {
         FilterData data = FilterData(
             count: countData.count.toString(),
             title: countData.name,
@@ -150,7 +151,7 @@ class FilterViewModel extends InsiteViewModel {
   void onFilterApplied() {
     _isRefreshing = true;
     notifyListeners();
-    updateFilterInDb(selectedFilterData);
+    updateFilterInDb(selectedFilterData!);
     getSelectedFilterData();
     _isRefreshing = false;
     notifyListeners();
@@ -163,12 +164,12 @@ class FilterViewModel extends InsiteViewModel {
       for (Count countData in resultModel.countData) {
         if (countData.countOf != "Not Reporting" &&
             countData.countOf != "Excluded") {
-          var x = countData.countOf
+          var x = countData.countOf!
               .split(",")
               .first
               .replaceAll("[", "")
               .replaceAll("]", "");
-          var y = countData.countOf
+          var y = countData.countOf!
               .split(",")
               .last
               .replaceAll("[", "")
@@ -188,21 +189,21 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   removeAllSelectedFilter() async {
-    selectedFilterData.clear();
+    selectedFilterData!.clear();
     notifyListeners();
   }
 
   removeSelectedFilter(value) async {
     Logger().d("removeFilter title " + value.title.toString());
     try {
-      int size = selectedFilterData.length;
+      int size = selectedFilterData!.length;
       if (size > 0) {
         for (var i = 0; i < size; i++) {
-          FilterData data = selectedFilterData[i];
+          FilterData data = selectedFilterData![i]!;
           Logger().d("current filter data on loop ", data);
           if (data.title == value.title && data.type == value.type) {
             print("delete filter " + data.title.toString());
-            selectedFilterData.removeAt(i);
+            selectedFilterData!.removeAt(i);
             break;
           }
         }
@@ -232,13 +233,13 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   updateFilter(FilterData value) async {
-    int size = selectedFilterData.length;
+    int size = selectedFilterData!.length;
     if (size == 0) {
-      selectedFilterData.add(value);
+      selectedFilterData!.add(value);
     } else {
       bool shouldAdd = true;
       for (var i = 0; i < size; i++) {
-        FilterData data = selectedFilterData[i];
+        FilterData data = selectedFilterData![i]!;
         if (data.title == value.title) {
           shouldAdd = false;
           break;
@@ -246,7 +247,7 @@ class FilterViewModel extends InsiteViewModel {
       }
       if (shouldAdd) {
         print("add filter " + value.title.toString());
-        selectedFilterData.add(value);
+        selectedFilterData!.add(value);
       }
     }
   }
@@ -254,11 +255,11 @@ class FilterViewModel extends InsiteViewModel {
   //removes filters of particular type
   clearFilterOfType(FilterType type) async {
     try {
-      int size = selectedFilterData.length;
+      int size = selectedFilterData!.length;
       print("filter size before clear");
-      print(selectedFilterData.length);
+      print(selectedFilterData!.length);
       print("FilterType " + type.toString());
-      selectedFilterData.removeWhere((element) => element.type == type);
+      selectedFilterData!.removeWhere((element) => element!.type == type);
       //commenting tradional way of removing elements in list
       // for (var i = 0; i < size; i++) {
       //   FilterData data = selectedFilterData[i];
@@ -268,7 +269,7 @@ class FilterViewModel extends InsiteViewModel {
       //   }
       // }
       print("filter size after clear");
-      print(selectedFilterData.length);
+      print(selectedFilterData!.length);
     } catch (e) {
       Logger().e(e);
     }

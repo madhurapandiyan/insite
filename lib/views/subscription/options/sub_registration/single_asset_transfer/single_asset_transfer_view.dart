@@ -6,7 +6,6 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/insite_full_page_popup.dart';
-import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart';
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/custom_auto_complete_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -26,9 +25,9 @@ class SingleAssetTransferView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetTransferViewModel>.reactive(
       builder: (BuildContext context, SingleAssetTransferViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -127,13 +126,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
                                                       validator:
-                                                          defaultCustomFieldValidator,
+                                                          defaultCustomFieldValidator ,
                                                       controller: viewModel
                                                           .deviceIdController,
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedDeviceId(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items: viewModel
                                                           .gpsDeviceIdList,
@@ -148,13 +147,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
                                                       validator:
-                                                          defaultCustomFieldValidator,
+                                                          defaultCustomFieldValidator ,
                                                       isAlign: false,
                                                      controller: viewModel
                                                           .machineSerialNumberController,
                                                       onSelect: (value) {
                                                         viewModel
-                                                            .onSelectedSerialNo(value);
+                                                            .onSelectedSerialNo(value!);
                                                       },
                                                       items: viewModel
                                                           .serialNoList,
@@ -202,7 +201,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             .machineModelController,
                                                     //  isenabled: false,
                                                         validator:
-                                                            defaultCustomFieldValidator,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -231,8 +230,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             color: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText1
-                                                                .color,
+                                                                .bodyText1!
+                                                                .color!,
                                                           ),
                                                           borderRadius:
                                                               BorderRadius
@@ -249,7 +248,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                                   null
                                                               ? DateTime.now()
                                                               : viewModel
-                                                                  .pickedDate,
+                                                                  .pickedDate!,
                                                           firstDate: DateTime
                                                                   .now()
                                                               .subtract(Duration(
@@ -317,7 +316,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedDealerNameTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items: viewModel.dealerId,
                                                       textBoxTitle:
@@ -340,7 +339,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedDealerCodeTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items:
                                                           viewModel.dealerCode,
@@ -389,7 +388,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .dealerEmailController,
                                                         validator:
-                                                            defaultCustomFieldValidator,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -416,7 +415,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .dealerMobileNoController,
                                                         validator:
-                                                            defaultCustomFieldValidator,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -450,8 +449,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color,
+                                                          .bodyText1!
+                                                          .color!,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -462,7 +461,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   items: viewModel.languages,
                                                   onChanged: (value) {
                                                     viewModel
-                                                        .updateLanguage(value);
+                                                        .updateLanguage(value!);
                                                   },
                                                 ),
                                               ),
@@ -518,7 +517,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedNameTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       items:
                                                           viewModel.customerId,
@@ -541,7 +540,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       onSelect: (value) {
                                                         viewModel
                                                             .onSelectedCodeTile(
-                                                                value);
+                                                                value!);
                                                       },
                                                       controller: viewModel
                                                           .customerCodeController,
@@ -595,7 +594,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         isenabled: viewModel
                                                             .enableCustomerDetails,
                                                         validator:
-                                                            defaultCustomFieldValidator,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -625,7 +624,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         isenabled: viewModel
                                                             .enableCustomerDetails,
                                                         validator:
-                                                            defaultCustomFieldValidator,
+                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -659,8 +658,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color,
+                                                          .bodyText1!
+                                                          .color!,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -674,7 +673,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   onChanged: (value) {
                                                     viewModel
                                                         .updateCustomerLanguage(
-                                                            value);
+                                                            value!);
                                                   },
                                                 ),
                                               ),
@@ -728,8 +727,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 border: Border.all(
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
-                                                      .color,
+                                                      .bodyText1!
+                                                      .color!,
                                                 ),
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
@@ -738,7 +737,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   .initialIndustryDetail,
                                               items: viewModel.industryDetails,
                                               onChanged: (value) {
-                                                viewModel.updateIndustry(value);
+                                                viewModel.updateIndustry(value!);
                                               },
                                             ),
                                           ),
@@ -756,8 +755,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       border: Border.all(
                                                         color: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText1
-                                                            .color,
+                                                            .bodyText1!
+                                                            .color!,
                                                       ),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -778,7 +777,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState!.validate()) {
                                           viewModel.getTotalDataDetails();
 
                                           await showGeneralDialog(
@@ -820,7 +819,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                       },
                                       child: GestureDetector(
                                         onTap:  () async {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState!.validate()) {
                                           viewModel.getTotalDataDetails();
 
                                           Logger().wtf(

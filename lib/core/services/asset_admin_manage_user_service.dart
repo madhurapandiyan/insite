@@ -25,10 +25,10 @@ import 'package:insite/core/models/asset_mileage_settings.dart';
 import 'package:insite/core/models/device_type.dart';
 
 class AssetAdminManagerUserService extends BaseService {
-  var _localService = locator<LocalService>();
+  LocalService? _localService = locator<LocalService>();
 
-  Customer accountSelected;
-  Customer customerSelected;
+  Customer? accountSelected;
+  Customer? customerSelected;
 
   List<RoleData> roleData = [];
 
@@ -105,17 +105,17 @@ class AssetAdminManagerUserService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<AdminManageUser> getAdminManageUserListData(
-      pageNumber, String searchKey, List<FilterData> appliedFilters) async {
+  Future<AdminManageUser?> getAdminManageUserListData(
+      pageNumber, String searchKey, List<FilterData?>? appliedFilters) async {
     Logger().i(
-        "getAdminManageUserListData $isVisionLink filters count ${appliedFilters.length}");
+        "getAdminManageUserListData $isVisionLink filters count ${appliedFilters!.length}");
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -123,28 +123,28 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["searchKey"] = searchKey;
       }
       if (customerSelected != null) {
-        queryMap["customerUid"] = customerSelected.CustomerUID;
+        queryMap["customerUid"] = customerSelected!.CustomerUID!;
       }
       if (isVisionLink) {
         queryMap["sort"] = "";
         AdminManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getAdminManagerUserListDataVL(
                 Urls.adminManagerUserSumaryVL +
                     FilterUtils.constructQueryFromMap(queryMap) +
                     FilterUtils.getUserFilterURL(appliedFilters),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return adminManageUserResponse;
       } else {
         queryMap["sort"] = "Email";
         AdminManageUser adminManageUserResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .getAdminManagerUserListData(
                 Urls.adminManagerUserSumary +
                     "/List" +
                     FilterUtils.constructQueryFromMap(queryMap) +
                     FilterUtils.getUserFilterURL(appliedFilters),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 Urls.userCountPrefix);
         return adminManageUserResponse;
       }
@@ -154,34 +154,35 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageUser> getUser(String userId) async {
+
+  Future<ManageUser?> getUser(String? userId) async {
     Logger().i("getUser $isVisionLink");
     try {
       if (isVisionLink) {
-        Map<String, String> queryMap = Map();
+        Map<String, String?> queryMap = Map();
         if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected.CustomerUID;
+          queryMap["customerUid"] = customerSelected!.CustomerUID;
         }
         ManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getUser(
                 Urls.adminManagerUserSumaryVL +
                     "/" +
-                    userId +
+                    userId! +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return adminManageUserResponse;
       } else {
-        Map<String, String> queryMap = Map();
+        Map<String, String?> queryMap = Map();
         if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected.CustomerUID;
+          queryMap["customerUid"] = customerSelected!.CustomerUID;
         }
-        ManageUser adminManageUserResponse = await MyApi().getClient().getUser(
+        ManageUser adminManageUserResponse = await MyApi().getClient()!.getUser(
             Urls.adminManagerUserSumary +
                 "/" +
-                userId +
+                userId! +
                 FilterUtils.constructQueryFromMap(queryMap),
-            accountSelected.CustomerUID);
+            accountSelected!.CustomerUID);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -196,40 +197,40 @@ class AssetAdminManagerUserService extends BaseService {
       queryMap["EmailID"] = mail;
     }
     if (customerSelected != null) {
-      queryMap["customerUid"] = customerSelected.CustomerUID;
+      queryMap["customerUid"] = customerSelected!.CustomerUID!;
     }
     if (isVisionLink) {
-      CheckUserResponse response = await MyApi().getClientSeven().checkUserVL(
+      CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
           Urls.adminManagerUserSumaryVL +
               "/List" +
               FilterUtils.constructQueryFromMap(queryMap),
-          accountSelected.CustomerUID);
+          accountSelected!.CustomerUID);
       return response;
     } else {
-      CheckUserResponse response = await MyApi().getClient().checkUser(
+      CheckUserResponse response = await MyApi().getClient()!.checkUser(
           Urls.adminManagerUserSumary +
               "/List" +
               FilterUtils.constructQueryFromMap(queryMap),
           Urls.userCountPrefix,
-          accountSelected.CustomerUID);
+          accountSelected!.CustomerUID);
       return response;
     }
   }
 
-  Future<ApplicationData> getApplicationsData() async {
+  Future<ApplicationData?> getApplicationsData() async {
     Logger().i("getApplicationsData");
     try {
       if (isVisionLink) {
-        Map<String, String> queryMap = Map();
+        Map<String, String?> queryMap = Map();
         if (accountSelected != null) {
-          queryMap["CustomerUID"] = accountSelected.CustomerUID;
+          queryMap["CustomerUID"] = accountSelected!.CustomerUID;
         }
         ApplicationData adminManageUserResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getApplicationsData(
                 Urls.applicationsUrlVL +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return adminManageUserResponse;
       } else {
         var application1 = Application(
@@ -258,16 +259,16 @@ class AssetAdminManagerUserService extends BaseService {
         applications.add(application2);
         applications.add(application3);
         return ApplicationData(applications: applications);
-        Map<String, String> queryMap = Map();
+        Map<String, String?> queryMap = Map();
         if (accountSelected != null) {
-          queryMap["CustomerUID"] = accountSelected.CustomerUID;
+          queryMap["CustomerUID"] = accountSelected!.CustomerUID;
         }
         ApplicationData adminManageUserResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getApplicationsData(
                 Urls.applicationsUrl +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return adminManageUserResponse;
       }
     } catch (e) {
@@ -276,7 +277,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<UpdateResponse> getSaveUserData(
+  Future<UpdateResponse?> getSaveUserData(
       firstName,
       lastName,
       email,
@@ -298,10 +299,10 @@ class AssetAdminManagerUserService extends BaseService {
           "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
       if (isVisionLink) {
         UpdateResponse updateResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .updateUserData(
                 Urls.adminManagerUserSumaryVL + "/" + userUid,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 UpdateUserData(
                     fname: firstName,
                     lname: lastName,
@@ -327,10 +328,10 @@ class AssetAdminManagerUserService extends BaseService {
         return updateResponse;
       } else {
         UpdateResponse updateResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .updateUserData(
                 Urls.adminManagerUserSumaryVL + "/" + userUid,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 UpdateUserData(
                     fname: firstName,
                     lname: lastName,
@@ -360,14 +361,14 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<RoleDataResponse> getRoles(String appName) async {
+  Future<RoleDataResponse?> getRoles(String? appName) async {
     Logger().i("getRoles $appName");
     Logger().i("getRoles ${roleData.length}");
     try {
       if (isVisionLink) {
-        var result = await MyApi().getClientSeven().roles(
-              Urls.adminRolesVL + "/" + appName + "/roles",
-              accountSelected.CustomerUID,
+        var result = await MyApi().getClientSeven()!.roles(
+              Urls.adminRolesVL + "/" + appName! + "/roles",
+              accountSelected!.CustomerUID,
             );
         return result;
       } else {
@@ -388,7 +389,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AddUser> getAddUserData(
+  Future<AddUser?> getAddUserData(
       firstName,
       lastName,
       email,
@@ -409,9 +410,9 @@ class AssetAdminManagerUserService extends BaseService {
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
             "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
-        AddUser addUserResponse = await MyApi().getClientSeven().addUserData(
+        AddUser addUserResponse = await MyApi().getClientSeven()!.addUserData(
             Urls.addUserSummaryVL,
-            accountSelected.CustomerUID,
+            accountSelected!.CustomerUID,
             AddUserData(
                 fname: firstName,
                 lname: lastName,
@@ -439,13 +440,13 @@ class AssetAdminManagerUserService extends BaseService {
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
             "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
-        AddUser addUserResponse = await MyApi().getClient().inviteUser(
+        AddUser addUserResponse = await MyApi().getClient()!.inviteUser(
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
                 fname: firstName,
                 customerUid: customerSelected != null
-                    ? customerSelected.CustomerUID
-                    : accountSelected.CustomerUID,
+                    ? customerSelected!.CustomerUID
+                    : accountSelected!.CustomerUID,
                 lname: lastName,
                 email: email,
                 phone: phoneNumber,
@@ -464,8 +465,10 @@ class AssetAdminManagerUserService extends BaseService {
                     job_title: jobTitle,
                     job_type: jobType,
                     user_type: "Standard")),
-            accountSelected.CustomerUID,
-            (await _localService.getLoggedInUser()).sub,
+            accountSelected!.CustomerUID,
+            (
+              await _localService!.getLoggedInUser()
+              )!.sub,
             "in-identitymanager-identitywebapi");
         return addUserResponse;
       }
@@ -479,25 +482,25 @@ class AssetAdminManagerUserService extends BaseService {
     Logger().i("deleteUsers");
     try {
       if (isVisionLink) {
-        var result = await MyApi().getClientSeven().deleteUsersData(
+        var result = await MyApi().getClientSeven()!.deleteUsersData(
             Urls.adminManagerUserSumaryVL,
-            accountSelected.CustomerUID,
+            accountSelected!.CustomerUID,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                        users: users, customerUid: customerSelected.CustomerUID)
+                        users: users, customerUid: customerSelected!.CustomerUID)
                     .toJson()
                 : DeleteUserData(users: users).toJson());
         return result;
       } else {
-        var result = await MyApi().getClient().deleteUsers(
+        var result = await MyApi().getClient()!.deleteUsers(
             Urls.adminManagerUserSumary,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                        users: users, customerUid: customerSelected.CustomerUID)
+                        users: users, customerUid: customerSelected!.CustomerUID)
                     .toJson()
                 : DeleteUserData(users: users).toJson(),
-            accountSelected.CustomerUID,
-            (await _localService.getLoggedInUser()).sub,
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub,
             "in-identitymanager-identitywebapi");
         return result;
       }
@@ -507,23 +510,24 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ListDeviceTypeResponse> getDeviceTypes() async {
+
+  Future<ListDeviceTypeResponse?> getDeviceTypes() async {
     try {
       DeviceTypeRequest request =
           DeviceTypeRequest(allAssets: true, assetUID: []);
       if (isVisionLink) {
         ListDeviceTypeResponse response = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getDeviceTypeVL(
-                Urls.deviceTypeVL, request, accountSelected.CustomerUID);
+                Urls.deviceTypeVL, request, accountSelected!.CustomerUID);
         return response;
       } else {
         ListDeviceTypeResponse response =
-            await MyApi().getClientSix().getDeviceType(
+            await MyApi().getClientSix()!.getDeviceType(
                   Urls.deviceTypes,
                   request,
                   Urls.assetSettingsPrefix,
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                 );
         return response;
       }
@@ -532,7 +536,8 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageAssetConfiguration> getAssetSettingData(pageSize, pageNumber,
+
+  Future<ManageAssetConfiguration?> getAssetSettingData(pageSize, pageNumber,
       String searchKeyword, String deviceTypeSelected) async {
     Logger().i("getAssetSettingData");
     try {
@@ -548,21 +553,21 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["deviceType"] = deviceTypeSelected;
       }
       if (customerSelected != null) {
-        queryMap["subAccountCustomerUid"] = customerSelected.CustomerUID;
+        queryMap["subAccountCustomerUid"] = customerSelected!.CustomerUID!;
       }
       if (isVisionLink) {
         ManageAssetConfiguration manageAssetConfigurationResponse =
-            await MyApi().getClientSeven().getAssetSettingsListDataVL(
+            await MyApi().getClientSeven()!.getAssetSettingsListDataVL(
                 Urls.assetSettingsVL +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return manageAssetConfigurationResponse;
       } else {
         ManageAssetConfiguration manageAssetConfigurationResponse =
-            await MyApi().getClientSix().getAssetSettingsListData(
+            await MyApi().getClientSix()!.getAssetSettingsListData(
                 Urls.assetSettings +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return manageAssetConfigurationResponse;
       }
@@ -572,7 +577,8 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AddSettings> getFuelBurnRateSettingsData(
+
+  Future<AddSettings?> getFuelBurnRateSettingsData(
       idleValue, workingValue, assetUid) async {
     Logger().i("getFuelBurnRateSettingsData");
     AssetFuelBurnRateSetting listBurnRateData = AssetFuelBurnRateSetting(
@@ -583,19 +589,19 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         Logger().i(listBurnRateData.toJson());
         AddSettings addSettings = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getassetSettingsFuelBurnRateDataVL(
                 Urls.assetSettingsFuelBurnrateVL,
                 listBurnRateData,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return addSettings;
       } else {
         AddSettings addSettings = await MyApi()
-            .getClientSix()
+            .getClientSix()!
             .getassetSettingsFuelBurnRateData(
                 Urls.assetSettingsFuelBurnrate,
                 listBurnRateData,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return addSettings;
       }
@@ -606,7 +612,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<dynamic> getAssetTargetSettingsData(
-      List<String> assetUid, startDate, endDate, idle, runTime) async {
+      List<String?> assetUid, startDate, endDate, idle, runTime) async {
     try {
       List<AssetTargetSettings> getAssetList = [];
       for (int i = 0; i < assetUid.length; i++) {
@@ -627,19 +633,19 @@ class AssetAdminManagerUserService extends BaseService {
 
       if (isVisionLink) {
         var result = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getAssetTargetSettingsDataVL(Urls.assetSettingsTarget,
-                listSettingTargetData, accountSelected.CustomerUID);
+                listSettingTargetData, accountSelected!.CustomerUID);
         Logger().i(result);
 
         return result;
       } else {
         EstimatedAssetSetting result = await MyApi()
-            .getClientSix()
+            .getClientSix()!
             .getAssetTargetSettingsData(
                 Urls.assetSettingsTargetListData,
                 listSettingTargetData,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return result;
       }
@@ -649,7 +655,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoad(
+  Future<EstimatedCycleVolumePayLoad?> getEstimatedCycleVolumePayLoad(
       List<String> assetUid,
       cycles,
       volumes,
@@ -673,19 +679,19 @@ class AssetAdminManagerUserService extends BaseService {
               assetProductivitySettings: getAssetPayLoadList);
       if (isVisionLink) {
         EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getEstimatedCycleVolumePayLoadDataVL(
                 Urls.estimatedCycleVolumePayLoad,
                 estimatedCycleVolumePayLoadListData,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return estimatedCycleVolumePayLoad;
       } else {
         EstimatedCycleVolumePayLoad estimatedCycleVolumePayLoad = await MyApi()
-            .getClient()
+            .getClient()!
             .getEstimatedCycleVolumePayLoadData(
                 Urls.assetProductivitySettings,
                 estimatedCycleVolumePayLoadListData,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return estimatedCycleVolumePayLoad;
       }
@@ -695,25 +701,25 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetMileageSettingData> getAssetMileageData(
-      List<String> assetUid, targetValue) async {
+  Future<AssetMileageSettingData?> getAssetMileageData(
+      List<String?>? assetUid, targetValue) async {
     var mileageData =
         AssetMileageSettingData(assetUIds: assetUid, targetValue: targetValue);
     Logger().i(assetUid);
     try {
       if (isVisionLink) {
         AssetMileageSettingData assetMileageSettingData = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getMileageDataVL(Urls.estimatedMileageVL, mileageData,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return assetMileageSettingData;
       } else {
         AssetMileageSettingData assetMileageSettingData = await MyApi()
-            .getClientSix()
+            .getClientSix()!
             .getMileageData(
                 Urls.estimatedMileage,
                 mileageData,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return assetMileageSettingData;
       }
@@ -723,30 +729,30 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<EstimatedAssetSetting> getEstimatedTargetSettingListData(
-      List<String> assetUids) async {
-    String startdate = Utils.getLastReportedDateFilterData(
+  Future<EstimatedAssetSetting?> getEstimatedTargetSettingListData(
+      List<String?>? assetUids) async {
+    String? startdate = Utils.getLastReportedDateFilterData(
         DateTime.utc(2021, DateTime.september, 12));
-    String endDate = Utils.getLastReportedDateFilterData(
+    String? endDate = Utils.getLastReportedDateFilterData(
         DateTime.utc(2022, DateTime.february, 05));
     try {
-      Map<String, String> queryMap = Map();
+      Map<String, String?> queryMap = Map();
       queryMap["endDate"] = endDate;
       queryMap["startDate"] = startdate;
 
       if (isVisionLink) {
         EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getEstimatedTagetListData(
                 Urls.getEstimatedAsetSettingTargetDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 assetUids,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
 
         return assetSettingsDataResponse;
       } else {
         EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClientSix()
+            .getClientSix()!
             .getEstimatedTagetListData(Urls.estimatedTargetSettingsData,
                 assetUids, "in-vlmasterdata-api-vlmd-assetsettings");
         return assetSettingsDataResponse;
@@ -757,31 +763,31 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadListData(
-      List<String> assetUids) async {
+  Future<EstimatedCycleVolumePayLoad?> getEstimatedCycleVolumePayLoadListData(
+      List<String>? assetUids) async {
     try {
-      Map<String, String> queryMap = Map();
+      Map<String, String?> queryMap = Map();
       queryMap["startDate"] = Utils.getLastReportedDateFilterData(
           DateTime.utc(2021, DateTime.september, 19));
       queryMap["endDate"] = Utils.getLastReportedDateFilterData(
           DateTime.utc(2022, DateTime.november, 15));
       if (isVisionLink) {
         EstimatedCycleVolumePayLoad assetSettingsData = await MyApi()
-            .getClientSeven()
+            .getClientSeven()!
             .getEstimatedCyclePayLoadVoumeListData(
                 Urls.getEstimatedCycleVoumePayLoadListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 assetUids,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return assetSettingsData;
       } else {
         EstimatedCycleVolumePayLoad assetSettingsData = await MyApi()
-            .getClient()
+            .getClient()!
             .getEstimatedCyclePayLoadVoumeListData(
                 Urls.getEstimatedCycleVoumePayLoadListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 assetUids,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return assetSettingsData;
       }
     } catch (e) {
@@ -790,11 +796,11 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  getAssetIconData(String actionUTC, String assetUID, int iconKey,
+  getAssetIconData(String actionUTC, String? assetUID, int iconKey,
       int legacyAssetID, modelYear) async {
     try {
       if (isVisionLink) {
-        var assetIconData = await MyApi().getClientSeven().getAssetIconDataVL(
+        var assetIconData = await MyApi().getClientSeven()!.getAssetIconDataVL(
             Urls.getAssetIconVL,
             AssetIconPayLoad(
                 actionUTC: actionUTC,
@@ -802,10 +808,10 @@ class AssetAdminManagerUserService extends BaseService {
                 iconKey: iconKey,
                 legacyAssetID: legacyAssetID,
                 modelYear: modelYear),
-            accountSelected.CustomerUID);
+            accountSelected!.CustomerUID);
         return assetIconData;
       } else {
-        var assetIconData = await MyApi().getClientSix().getAssetIconData(
+        var assetIconData = await MyApi().getClientSix()!.getAssetIconData(
             Urls.assetIconData,
             AssetIconPayLoad(
                 actionUTC: actionUTC,
@@ -813,7 +819,7 @@ class AssetAdminManagerUserService extends BaseService {
                 iconKey: iconKey,
                 legacyAssetID: legacyAssetID,
                 modelYear: modelYear),
-            accountSelected.CustomerUID,
+            accountSelected!.CustomerUID,
             "in-vlmasterdata-api-vlmd-asset");
 
         return assetIconData;
@@ -823,24 +829,24 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AssetFuelBurnRateSettingsListData> getAssetFuelBurnRateListData(
-      List<String> assetUId) async {
+  Future<AssetFuelBurnRateSettingsListData?> getAssetFuelBurnRateListData(
+      List<String?>? assetUId) async {
     try {
       if (isVisionLink) {
         AssetFuelBurnRateSettingsListData assetFuelBurnRateSettingsListData =
             await MyApi()
-                .getClientSeven()
+                .getClientSeven()!
                 .getAssetFuelBurnRateSettingsListDataVL(
                     Urls.getAssetFuelBurnRateListDataVL,
                     assetUId,
-                    accountSelected.CustomerUID);
+                    accountSelected!.CustomerUID);
         return assetFuelBurnRateSettingsListData;
       } else {
         AssetFuelBurnRateSettingsListData assetFuelBurnRateSettingsListData =
-            await MyApi().getClientSix().getAssetFuelBurnRateSettingsListData(
+            await MyApi().getClientSix()!.getAssetFuelBurnRateSettingsListData(
                 Urls.estimatedfuelBurnRateData,
                 assetUId,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return assetFuelBurnRateSettingsListData;
       }
@@ -850,22 +856,22 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
-      List<String> assetUid) async {
+  Future<AssetMileageSettingsListData?> getAssetMileageSettingsListData(
+      List<String?>? assetUid) async {
     try {
       if (isVisionLink) {
         AssetMileageSettingsListData assetMileageSettingsListData =
-            await MyApi().getClientSeven().getAssetMileageSettingsListDataVL(
+            await MyApi().getClientSeven()!.getAssetMileageSettingsListDataVL(
                 Urls.getAssetMileageListDataVL,
                 assetUid,
-                accountSelected.CustomerUID);
+                accountSelected!.CustomerUID);
         return assetMileageSettingsListData;
       } else {
         AssetMileageSettingsListData assetMileageSettingsListData =
-            await MyApi().getClientSix().getAssetMileageSettingsListData(
+            await MyApi().getClientSix()!.getAssetMileageSettingsListData(
                 Urls.estimatedMileageData,
                 assetUid,
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return assetMileageSettingsListData;
       }

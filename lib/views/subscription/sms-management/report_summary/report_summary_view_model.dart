@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:excel/excel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -10,12 +12,14 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class ReportSummaryViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  final _smsScheduleService = locator<SmsManagementService>();
+  final SmsManagementService? _smsScheduleService =
+      locator<SmsManagementService>();
 
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -33,22 +37,20 @@ class ReportSummaryViewModel extends InsiteViewModel {
     });
   }
 
-  SmsReportSummaryModel _smsReportSummaryModel;
-  SmsReportSummaryModel get smsReportSummaryModel => _smsReportSummaryModel;
+  SmsReportSummaryModel? _smsReportSummaryModel;
+  SmsReportSummaryModel? get smsReportSummaryModel => _smsReportSummaryModel;
 
   List<ReportSummaryModel> modelDataList = [];
-  List<int> selectedId = [];
+  List<int?> selectedId = [];
   List<DeleteSmsReport> deleteSmsReport = [];
 
-  SmsReportSummaryModel data;
+  SmsReportSummaryModel? data;
 
   bool isLoading = true;
   bool isLoadMore = false;
 
-  Isolate newIsolate;
-
   int startLimit = 0;
-  int endLimit;
+  int? endLimit;
 
   int startCount = 0;
   final controller = new ScrollController();
@@ -58,14 +60,14 @@ class ReportSummaryViewModel extends InsiteViewModel {
   getReportSummaryData() async {
     try {
       _smsReportSummaryModel =
-          await _smsScheduleService.getsmsReportSummaryModel(startCount);
-      for (var i = 0; i < _smsReportSummaryModel.result.length; i++) {
+          await _smsScheduleService!.getsmsReportSummaryModel(startCount);
+      for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
         if (i == 0) {
           Logger().wtf(null);
           isLoading = false;
           notifyListeners();
         } else {
-          _smsReportSummaryModel.result[1].forEach((element) {
+          _smsReportSummaryModel!.result![1].forEach((element) {
             modelDataList.add(element);
           });
           for (var i = 0; i < modelDataList.length; i++) {
@@ -87,8 +89,8 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onSelected(int i) {
     try {
-      modelDataList[i].isSelected = !modelDataList[i].isSelected;
-      if (modelDataList[i].isSelected) {
+      modelDataList[i].isSelected = !modelDataList[i].isSelected!;
+      if (modelDataList[i].isSelected!) {
         selectedId.add(modelDataList[i].ID);
       } else if (modelDataList[i].isSelected == false) {
         selectedId.remove(modelDataList[i].ID);
@@ -127,7 +129,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         notifyListeners();
       });
       var data =
-          await _smsScheduleService.deleteSmsScheduleReport(deleteSmsReport);
+          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();
@@ -146,22 +148,23 @@ class ReportSummaryViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
-      data = await _smsScheduleService.getScheduleReportData();
-      newIsolate = await Isolate.spawn(onExcelSheetUpdate, data.result.first);
-// if (data != null) {
-      //   snackbarService.showSnackbar(message: "File saved in ${path.path}");
-      //   // Logger().e(excelSheet.sheets.values.last.rows);
-      //   hideLoadingDialog();
-      // } else {
-      //   hideLoadingDialog();
-      // }
+      Directory? path = await (pathProvider.getExternalStorageDirectory());
+      data = await _smsScheduleService!.getScheduleReportData();
+      var isolateData = await compute(onExcelSheetUpdate, data!.result!.first);
+      var saveFile = isolateData!.save();
+      File("${path!.path}/report_summary.xlsx")
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(saveFile!);
+      hideLoadingDialog();
+      OpenFile.open("${path.path}/report_summary.xlsx");
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
 
-  static onExcelSheetUpdate(List<ReportSummaryModel> data) {
+  static Future<Excel?> onExcelSheetUpdate(
+      List<ReportSummaryModel> data) async {
     try {
       Logger().e("function running");
       final Excel excelSheet = Excel.createExcel();
@@ -192,14 +195,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
             CellIndex.indexByString("F$index"), data[i].StartDate);
       }
       Logger().e("excel sheet update");
-      hideLoadingDialog();
-
-      // excelSheet.encode().then((onValue) {
-      //   File("${path.path}/SMS_schedule.xlsx")
-      //     ..createSync(recursive: true)
-      //     ..writeAsBytesSync(onValue)
-      //     ..open(mode: FileMode.read);
-      // });
+      return excelSheet;
     } catch (e) {
       Logger().e(e.toString());
     }

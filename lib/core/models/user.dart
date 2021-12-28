@@ -5,9 +5,9 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class CheckUserResponse {
-  final bool isMultiUserAccount;
-  final bool isUserExists;
-  final List<Users> users;
+  final bool? isMultiUserAccount;
+  final bool? isUserExists;
+  final List<Users>? users;
   CheckUserResponse({this.isMultiUserAccount, this.isUserExists, this.users});
 
   factory CheckUserResponse.fromJson(Map<String, dynamic> json) =>

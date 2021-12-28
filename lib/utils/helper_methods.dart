@@ -26,19 +26,19 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static double getHrsValueeData(double percentageValue, double runTimeValue) {
+  static double getHrsValueeData(double? percentageValue, double? runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
-    double hrsData = ((percentageValue * runTimeValue) * 1 / 100);
+    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
-  static String getPercentageValueData(double runTimevalue, double idleValue) {
+  static String getPercentageValueData(double? runTimevalue, double? idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
       return "0";
     }
-    double perData = ((idleValue / runTimevalue) * 100);
+    double perData = ((idleValue! / runTimevalue!) * 100);
     int data = perData.toInt();
 
     return data.toString();
@@ -68,7 +68,7 @@ class Utils {
     }
   }
 
-  static String getLastReportedDateTwoFilter(DateTime date) {
+  static String? getLastReportedDateTwoFilter(DateTime date) {
     try {
       String dateTime = date.toIso8601String();
       int index = dateTime.indexOf(".");
@@ -80,7 +80,7 @@ class Utils {
     }
   }
 
-  static String getLastReportedDateFilterData(DateTime date) {
+  static String? getLastReportedDateFilterData(DateTime date) {
     try {
       String dateTime = date.toIso8601String();
       int index = dateTime.indexOf("T");
@@ -109,8 +109,8 @@ class Utils {
     if (s <= 0) {
       return "-";
     } else {
-      int mins = ((s / 60) % 60).toInt();
-      int hours = ((s / 60) / 60).toInt();
+      int? mins = ((s / 60) % 60).toInt();
+      int? hours = ((s / 60) / 60).toInt();
       Logger().i("hours $hours");
       Logger().i("mins $mins");
       return "$hours hr : $mins min";
@@ -304,8 +304,8 @@ class Utils {
     return title;
   }
 
-  static String getFuleLevelWidgetLabel(data, isForFilter) {
-    String title = data;
+  static String? getFuleLevelWidgetLabel(data, isForFilter) {
+    String? title = data;
     Logger().i("getFuleLevelWidgetLabel $title");
     // if (title == "100") {
     //   title = "<=" + title + "%";
@@ -330,7 +330,7 @@ class Utils {
     }
   }
 
-  static String getPageTitle(ScreenType type) {
+  static String getPageTitle(ScreenType? type) {
     Logger().d("getPageTitle $type");
     String title = "";
     switch (type) {
@@ -475,7 +475,7 @@ class Utils {
     return codeVerifier.toString();
   }
 
-  static String getTitle(FilterType type) {
+  static String getTitle(FilterType? type) {
     String title = "";
     switch (type) {
       case FilterType.PRODUCT_FAMILY:
@@ -540,67 +540,67 @@ class Utils {
     return (input.hour + rep);
   }
 
-  static String getFilterTitleForChipView(FilterData data) {
-    String title = data.title;
+  static String? getFilterTitleForChipView(FilterData data) {
+    String? title = data.title;
     if (data.type == FilterType.DATE_RANGE) {
       title = "Date " +
           "(" +
-          getDateInFormatddMMyyyy(data.extras[0]) +
+          getDateInFormatddMMyyyy(data.extras![0]) +
           " - " +
-          getDateInFormatddMMyyyy(data.extras[1]) +
+          getDateInFormatddMMyyyy(data.extras![1]) +
           ")";
     } else if (data.type == FilterType.IDLING_LEVEL) {
-      if (data.extras[1].isEmpty) {
-        title = "Idle %: " + ">" + data.extras[0] + "%";
+      if (data.extras![1]!.isEmpty) {
+        title = "Idle %: " + ">" + data.extras![0]! + "%";
       } else {
-        title = "Idle %: " + data.extras[0] + "-" + data.extras[1] + "%";
+        title = "Idle %: " + data.extras![0]! + "-" + data.extras![1]! + "%";
       }
     } else if (data.type == FilterType.FUEL_LEVEL) {
       if (title == "100") {
-        title = "Fuel Level : " + "<=" + title + "%";
+        title = "Fuel Level : " + "<=" + title! + "%";
       } else {
-        title = "Fuel Level : " + "<" + title + "%";
+        title = "Fuel Level : " + "<" + title! + "%";
       }
     } else if (data.type == FilterType.SEVERITY) {
-      title = Utils.getFaultLabel(data.title);
+      title = Utils.getFaultLabel(data.title!);
     }
     return title;
   }
 
-  static String getFilterTitleForList(FilterData data) {
-    String title = data.title;
+  static String? getFilterTitleForList(FilterData data) {
+    String? title = data.title;
     if (data.type == FilterType.DATE_RANGE) {
-      title = "Date " + data.extras[0] + " " + data.extras[1];
+      title = "Date " + data.extras![0]! + " " + data.extras![1]!;
     } else if (data.type == FilterType.IDLING_LEVEL) {
-      if (data.extras[1].isEmpty) {
-        title = ">" + data.extras[0] + "%";
+      if (data.extras![1]!.isEmpty) {
+        title = ">" + data.extras![0]! + "%";
       } else {
-        title = data.extras[0] + "-" + data.extras[1] + "%";
+        title = data.extras![0]! + "-" + data.extras![1]! + "%";
       }
     } else if (data.type == FilterType.FUEL_LEVEL) {
       title = getFuleLevelWidgetLabel(title, true);
     } else if (data.type == FilterType.SEVERITY) {
-      title = Utils.getFaultLabel(data.title);
+      title = Utils.getFaultLabel(data.title!);
     }
     return title;
   }
 
-  static DateTime getMinDate(List<DateTime> inputDates) {
-    DateTime minDate;
-    for (DateTime item in inputDates) {
+  static DateTime? getMinDate(List<DateTime?> inputDates) {
+    DateTime? minDate;
+    for (DateTime? item in inputDates) {
       if (minDate == null)
         minDate = item;
-      else if (item.isBefore(minDate)) minDate = item;
+      else if (item!.isBefore(minDate)) minDate = item;
     }
     return minDate;
   }
 
-  static DateTime getMaxDate(List<DateTime> inputDates) {
-    DateTime maxDate;
-    for (DateTime item in inputDates) {
+  static DateTime? getMaxDate(List<DateTime?> inputDates) {
+    DateTime? maxDate;
+    for (DateTime? item in inputDates) {
       if (maxDate == null)
         maxDate = item;
-      else if (item.isAfter(maxDate)) maxDate = item;
+      else if (item!.isAfter(maxDate)) maxDate = item;
     }
     return maxDate;
   }
@@ -640,12 +640,12 @@ class Utils {
     );
   }
 
-  static double checkNull(double value) {
+  static double checkNull(double? value) {
     return value == null ? 0.0 : value;
   }
 
-  static double greatestOfThree(double a, double b, double c) {
-    return (a > b) ? (a > c ? a : c) : (b > c ? b : c);
+  static double? greatestOfThree(double a, double b, double? c) {
+    return (a > b) ? (a > c! ? a : c) : (b > c! ? b : c);
   }
 
   static double findlargestNoFromList(List<double> list) {

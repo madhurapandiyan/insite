@@ -15,10 +15,10 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
 
-  List<ApplicationAccess> selectedList;
+  List<ApplicationAccess>? selectedList;
   TextEditingController emailController = new TextEditingController();
   TextEditingController firstNameController = new TextEditingController();
   TextEditingController lastNameController = new TextEditingController();
@@ -44,7 +44,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   bool _setDefaultPreferenceToUser = false;
   bool get setDefaultPreferenceToUser => _setDefaultPreferenceToUser;
 
-  Users user;
+  Users? user;
   List<String> dropDownlist = [
     "Administrator",
     "Contributor",
@@ -68,7 +68,7 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   List<String> languageTypeValueList = ["English"];
 
-  String jobTypeValue;
+  String? jobTypeValue;
 
   onJobTypeSelected(value) {
     jobTypeValue = value;
@@ -85,22 +85,22 @@ class AddNewUserViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  String jobTitleValue;
+  String? jobTitleValue;
   String languageTypeValue = "English";
 
-  int lastApplicationAccessSelectedIndex;
-  String dropDownValue;
+  int? lastApplicationAccessSelectedIndex;
+  String? dropDownValue;
 
-  AddNewUserViewModel(Users user, bool isEdit) {
+  AddNewUserViewModel(Users? user, bool? isEdit) {
     this.user = user;
-    this._enableAdd = isEdit;
+    this._enableAdd = isEdit!;
     if (user != null) {
-      emailController.text = user.loginId;
-      firstNameController.text = user.first_name;
-      lastNameController.text = user.last_name;
-      phoneNumberController.text = user.phone;
-      addressController.text = user.address.country;
-      pinCodeController.text = user.address.zipcode;
+      emailController.text = user.loginId!;
+      firstNameController.text = user.first_name!;
+      lastNameController.text = user.last_name!;
+      phoneNumberController.text = user.phone!;
+      addressController.text = user.address!.country!;
+      pinCodeController.text = user.address!.zipcode!;
       selectedList = [];
     } else {
       emailController.text = "";
@@ -132,7 +132,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   onApplicationAccessSelection(int index) {
     Logger().i("onApplicationAccessSelection $index");
     try {
-      _assetsData[index].isSelected = !_assetsData[index].isSelected;
+      _assetsData[index].isSelected = !_assetsData[index].isSelected!;
       lastApplicationAccessSelectedIndex = index;
       print("lastApplicationAccessSelectedIndex:$index");
       notifyListeners();
@@ -144,13 +144,13 @@ class AddNewUserViewModel extends InsiteViewModel {
     dropDownValue = value;
     for (var i = 0; i < assetsData.length; i++) {
       var data = assetsData[i];
-      if (data.isSelected && !data.isPermissionSelected) {
+      if (data.isSelected! && !data.isPermissionSelected!) {
         assetsData[i].isPermissionSelected = true;
         var applicationData = ApplicationSelectedDropDown(
             accessData: data,
             value: value,
-            key: data.application.appUID,
-            applicationName: data.application.tpaasAppName);
+            key: data.application!.appUID,
+            applicationName: data.application!.tpaasAppName);
         applicationSelectedDropDownList.add(applicationData);
       }
     }
@@ -160,15 +160,15 @@ class AddNewUserViewModel extends InsiteViewModel {
   onMaildIdCheckClicked() async {
     try {
       if (emailController.text.isEmpty) {
-        snackbarService.showSnackbar(message: "Email is empty");
+        snackbarService!.showSnackbar(message: "Email is empty");
         return;
       }
       showLoadingDialog();
       CheckUserResponse response =
           await _manageUserService.checkUser(emailController.text);
       if (response != null) {
-        if (response.users != null && response.users.isNotEmpty) {
-          snackbarService.showSnackbar(message: "User is already available");
+        if (response.users != null && response.users!.isNotEmpty) {
+          snackbarService!.showSnackbar(message: "User is already available");
           _enableAdd = false;
         } else {
           _enableAdd = true;
@@ -176,13 +176,13 @@ class AddNewUserViewModel extends InsiteViewModel {
         hideLoadingDialog();
       } else {
         _enableAdd = false;
-        snackbarService.showSnackbar(message: "Checking user details failed");
+        snackbarService!.showSnackbar(message: "Checking user details failed");
         hideLoadingDialog();
       }
     } on DioError catch (e) {
       Logger().e(e.type);
       hideLoadingDialog();
-      if (e.type == DioErrorType.DEFAULT) {
+      if (e.type == DioErrorType.other) {
         _enableAdd = true;
       }
     }
@@ -194,8 +194,8 @@ class AddNewUserViewModel extends InsiteViewModel {
       Logger().i("onPermissionSelected ${value.value}  $index");
       for (var i = 0; i < assetsData.length; i++) {
         var data = assetsData[i];
-        if (value.key == data.application.appUID) {
-          if (data.isPermissionSelected) {
+        if (value.key == data.application!.appUID) {
+          if (data.isPermissionSelected!) {
             assetsData[i].isSelected = false;
             assetsData[i].isPermissionSelected = false;
           }
@@ -208,12 +208,12 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getApplicationAccessData() async {
     Logger().i("getApplicationAccessData");
-    ApplicationData applicationData =
+    ApplicationData? applicationData =
         await _manageUserService.getApplicationsData();
-    if (applicationData != null && applicationData.applications.isNotEmpty) {
-      Logger().i("applications length ${applicationData.applications.length}");
-      for (var application in applicationData.applications.take(4)) {
-        if (application.enabled) {
+    if (applicationData != null && applicationData.applications!.isNotEmpty) {
+      Logger().i("applications length ${applicationData.applications!.length}");
+      for (var application in applicationData.applications!.take(4)) {
+        if (application.enabled!) {
           _assetsData.add(ApplicationAccessData(
               application: application, isSelected: false));
         }
@@ -224,26 +224,26 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getUser() async {
     Logger().i("getUser ");
-    ManageUser result = await _manageUserService.getUser(user.userUid);
+    ManageUser? result = await _manageUserService.getUser(user!.userUid);
     try {
       if (result != null) {
-        this.user = result.user;
-        jobTypeValue = result.user.job_type;
-        jobTitleValue = result.user.job_title;
-        Logger().i("getUser ${result.user.application_access.length}");
-        for (var applicationAccess in result.user.application_access) {
+        this.user = result.user!;
+        jobTypeValue = result.user!.job_type!;
+        jobTitleValue = result.user!.job_title!;
+        Logger().i("getUser ${result.user!.application_access!.length}");
+        for (var applicationAccess in result.user!.application_access!) {
           for (int i = 0; i < assetsData.length; i++) {
             var data = assetsData[i];
-            if (data.application.tpaasAppName ==
+            if (data.application!.tpaasAppName ==
                 applicationAccess.applicationName) {
               assetsData[i].isSelected = true;
               assetsData[i].isPermissionSelected = true;
               Logger().i("getUser ${applicationAccess.role_name}");
               var applicationData = ApplicationSelectedDropDown(
                   accessData: data,
-                  applicationName: data.application.tpaasAppName,
+                  applicationName: data.application!.tpaasAppName,
                   value: applicationAccess.role_name,
-                  key: data.application.appUID);
+                  key: data.application!.appUID);
               applicationSelectedDropDownList.add(applicationData);
             }
           }
@@ -275,10 +275,10 @@ class AddNewUserViewModel extends InsiteViewModel {
       List<Role> roles = [];
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
-        RoleDataResponse roleDataResponse =
+        RoleDataResponse? roleDataResponse =
             await _manageUserService.getRoles(data.applicationName);
-        for (int j = 0; j < roleDataResponse.role_list.length; j++) {
-          RoleData roleData = roleDataResponse.role_list[j];
+        for (int j = 0; j < roleDataResponse!.role_list!.length; j++) {
+          RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
@@ -290,7 +290,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      UpdateResponse updateResponse = await _manageUserService.getSaveUserData(
+      UpdateResponse? updateResponse = await _manageUserService.getSaveUserData(
           firstName,
           lastName,
           email,
@@ -303,12 +303,12 @@ class AddNewUserViewModel extends InsiteViewModel {
           zipcode,
           userType,
           roles,
-          user.userUid);
+          user!.userUid);
       hideLoadingDialog();
       if (updateResponse != null) {
-        snackbarService.showSnackbar(message: "Updated successfully");
+        snackbarService!.showSnackbar(message: "Updated successfully");
       } else {
-        snackbarService.showSnackbar(message: "Updating user failed");
+        snackbarService!.showSnackbar(message: "Updating user failed");
       }
     } catch (e) {
       hideLoadingDialog();
@@ -318,7 +318,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   onParticularItemSelected(String value) {
     for (int i = 0; i < assetsData.length; i++) {
       var data = assetsData[i];
-      if (!data.isPermissionSelected && data.isSelected) {
+      if (!data.isPermissionSelected! && data.isSelected!) {
         assetsData[i].isPermissionSelected = true;
       }
     }
@@ -357,10 +357,10 @@ class AddNewUserViewModel extends InsiteViewModel {
       List<Role> roles = [];
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
-        RoleDataResponse roleDataResponse =
+        RoleDataResponse? roleDataResponse =
             await _manageUserService.getRoles(data.applicationName);
-        for (int j = 0; j < roleDataResponse.role_list.length; j++) {
-          RoleData roleData = roleDataResponse.role_list[j];
+        for (int j = 0; j < roleDataResponse!.role_list!.length; j++) {
+          RoleData roleData = roleDataResponse.role_list![j];
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
@@ -372,7 +372,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      AddUser result = await _manageUserService.getAddUserData(
+      AddUser? result = await _manageUserService.getAddUserData(
           firstName,
           lastName,
           email,
@@ -387,9 +387,10 @@ class AddNewUserViewModel extends InsiteViewModel {
           sso_id,
           roles);
       if (result != null) {
-        snackbarService.showSnackbar(message: "Added successfully");
+        snackbarService!.showSnackbar(message: "Added successfully");
+        reset();
       } else {
-        snackbarService.showSnackbar(message: "Adding user failed");
+        snackbarService!.showSnackbar(message: "Adding user failed");
       }
       hideLoadingDialog();
     } catch (e) {
@@ -399,17 +400,17 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool validate() {
     if (emailController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Email is empty");
+      snackbarService!.showSnackbar(message: "Email is empty");
       return false;
     }
 
     if (firstNameController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "First name is empty");
+      snackbarService!.showSnackbar(message: "First name is empty");
       return false;
     }
 
     if (lastNameController.text.isEmpty) {
-      snackbarService.showSnackbar(message: "Last name is empty");
+      snackbarService!.showSnackbar(message: "Last name is empty");
       return false;
     }
 
@@ -453,10 +454,31 @@ class AddNewUserViewModel extends InsiteViewModel {
     //   return false;
     // }
 
-    if (languageTypeValue == null || languageTypeValue.isEmpty) {
-      snackbarService.showSnackbar(message: "language not selected");
+    if (languageTypeValue.isEmpty) {
+      snackbarService!.showSnackbar(message: "language not selected");
       return false;
     }
     return true;
+  }
+
+  reset() {
+    pinCodeController.text = "";
+    stateController.text = "";
+    countryController.text = "";
+    addressController.text = "";
+    emailController.text = "";
+    firstNameController.text = "";
+    lastNameController.text = "";
+    phoneNumberController.text = "";
+    _enableAdd = false;
+    jobTypeValue = null;
+    jobTitleValue = null;
+    lastApplicationAccessSelectedIndex = null;
+    applicationSelectedDropDownList.clear();
+    for (int i = 0; i < _assetsData.length; i++) {
+      _assetsData[i].isSelected = false;
+      _assetsData[i].isPermissionSelected = false;
+    }
+    notifyListeners();
   }
 }

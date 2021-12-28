@@ -9,6 +9,7 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:quiver/strings.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
@@ -21,10 +22,10 @@ class IndiaStackSplashView extends StatefulWidget {
 class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
-  String token;
+  StreamSubscription? _onDestroy;
+  StreamSubscription<String>? _onUrlChanged;
+  StreamSubscription<WebViewStateChanged>? _onStateChanged;
+  String? token;
 
   final _loginService = locator<LoginService>();
   final _localService = locator<LocalService>();
@@ -32,9 +33,9 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   @override
   void dispose() {
     Logger().i("IndiaStackSplashView dispose state");
-    _onDestroy.cancel();
-    _onUrlChanged.cancel();
-    _onStateChanged.cancel();
+    _onDestroy!.cancel();
+    _onUrlChanged!.cancel();
+    _onStateChanged!.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
@@ -44,7 +45,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   bool receivedToken = false;
   String codeVerifier = randomAlphaNumeric(43);
   String state = randomAlphaNumeric(43);
-  String codeChallenge;
+  String? codeChallenge;
 
   @override
   void initState() {
@@ -52,8 +53,14 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
-    Logger().d(
+    if (AppConfig.instance!.apiFlavor == "visionlink") {
+       Logger().d(
+        "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrlVL(state, codeChallenge)}");
+    }else{
+       Logger().d(
         "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+    }
+   
     super.initState();
     setupListeners();
   }
@@ -91,8 +98,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       print(
           "IndiaStackSplashView STATE onStateChanged: ${state.type} ${state.url}");
-      if (state.url != null &&
-          state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
+      if (state.url.isNotEmpty &&
+          state.url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
+              ? Urls.administratorBaseUrl
+              : Urls.tataHitachiRedirectUri + "?code=")) {
         print("IndiaStackSplashView STATE changed with auth code: $state.url");
         try {
           if (state.url.contains("=")) {
@@ -133,34 +142,37 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         print("IndiaStackSplashView URL changed: $url");
-        if (url != null &&
-            url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
+        Logger().wtf(url);
+        if (url.isNotEmpty &&
+            url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
+                ? Urls.administratorBaseUrl + "?code="
+                : Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
             if (url.contains("=")) {
               List<String> list = url.split("=");
               print("IndiaStackSplashView URL url split list $list");
               if (list.isNotEmpty) {
-                // _onUrlChanged.cancel();
-                //for vision link (oauth style login)
-                // String accessTokenString = list[1];
-                // String expiresTokenString = list[3];
-                // List<String> accessTokenList = accessTokenString.split("&");
-                // List<String> expiryList = expiresTokenString.split("&");
-                // print("accessToken split list $list");
-                // String accessToken = accessTokenList[0];
-                // String expiryTime = expiryList[0];
-                // print("accessToken $accessToken");
-                // print("expiryTime $expiryTime");
-                // saveToken(accessToken, expiryTime);
+                _onUrlChanged!.cancel();
+                // for vision link (oauth style login)
+                String accessTokenString = list[1];
+                String expiresTokenString = list[2];
+                List<String> accessTokenList = accessTokenString.split("&");
+                List<String> expiryList = expiresTokenString.split("&");
+                print("accessToken split list $list");
+                String accessToken = accessTokenList[0];
+                String expiryTime = expiryList[0];
+                print("accessToken $accessToken");
+                print("expiryTime $expiryTime");
+                saveToken(accessToken, expiryTime);
 
-                // String codeString = list[1];
-                // List<String> codeStringList = codeString.split("&");
-                // if (codeStringList.isNotEmpty) {
-                //   getLoginDataV4(
-                //     codeStringList[0],
-                //   );
-                // }
+                String codeString = list[1];
+                List<String> codeStringList = codeString.split("&");
+                if (codeStringList.isNotEmpty) {
+                  getLoginDataV4(
+                    codeStringList[0],
+                  );
+                }
               }
             }
             flutterWebviewPlugin.close();
@@ -176,7 +188,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    LoginResponse result =
+    LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService.saveTokenInfo(result);
@@ -193,8 +205,9 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d(AppConfig.instance!.apiFlavor);
     return ViewModelBuilder<SplashViewModel>.reactive(
-      builder: (BuildContext context, SplashViewModel viewModel, Widget _) {
+      builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return Scaffold(
           backgroundColor: Theme.of(context).buttonColor,
@@ -202,9 +215,11 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
             child: Stack(
               children: [
                 viewModel.shouldLoadWebview &&
-                        !AppConfig.instance.enalbeNativeLogin
+                        !AppConfig.instance!.enalbeNativeLogin
                     ? WebviewScaffold(
-                        url: Urls.getV4LoginUrl(state, codeChallenge))
+                        url: AppConfig.instance!.apiFlavor == "visionlink"
+                            ? Urls.getV4LoginUrlVL(state, codeChallenge)
+                            : Urls.getV4LoginUrl(state, codeChallenge))
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(

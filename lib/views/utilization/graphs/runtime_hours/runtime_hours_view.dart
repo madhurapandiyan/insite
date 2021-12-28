@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 import 'runtime_hours_view_model.dart';
 
 class RuntimeHoursView extends StatefulWidget {
-  final Function(int) updateCount;
+  final Function(int)? updateCount;
   const RuntimeHoursView({
-    Key key,
+    Key? key,
     this.updateCount,
   }) : super(key: key);
 
@@ -19,7 +19,7 @@ class RuntimeHoursView extends StatefulWidget {
 }
 
 class RuntimeHoursViewState extends State<RuntimeHoursView> {
-  var viewModel;
+  late var viewModel;
   @override
   void initState() {
     viewModel = RuntimeHoursViewModel();
@@ -42,10 +42,10 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<RuntimeHoursViewModel>.reactive(
       builder:
-          (BuildContext context, RuntimeHoursViewModel viewModel, Widget _) {
+          (BuildContext context, RuntimeHoursViewModel viewModel, Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.updateCount(viewModel.utilLizationListData.length);
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });
         }
@@ -92,18 +92,18 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                       percentage: rangeChoice == 1
                                           ? (viewModel
                                                   .utilLizationListData[index]
-                                                  .runtimeHours /
+                                                  .runtimeHours! /
                                               100)
                                           : rangeChoice == 2
                                               ? (viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .workingHours /
+                                                      .workingHours! /
                                                   100)
                                               : (viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .idleHours /
+                                                      .idleHours! /
                                                   10),
                                       color: Theme.of(context).buttonColor);
                                 })

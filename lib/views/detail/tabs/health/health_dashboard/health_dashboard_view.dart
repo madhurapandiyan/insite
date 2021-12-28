@@ -12,8 +12,8 @@ import 'package:stacked/stacked.dart';
 import 'health_dashboard_view_model.dart';
 
 class HealthDashboardView extends StatefulWidget {
-  final AssetDetail detail;
-  final Function(int) switchTab;
+  final AssetDetail? detail;
+  final Function(int)? switchTab;
 
   const HealthDashboardView({this.detail, this.switchTab});
   @override
@@ -21,7 +21,7 @@ class HealthDashboardView extends StatefulWidget {
 }
 
 class _HealthDashboardViewState extends State<HealthDashboardView> {
-  TextEditingController notesController;
+  TextEditingController? notesController;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
 
   @override
   void dispose() {
-    notesController.dispose();
+    notesController!.dispose();
     super.dispose();
   }
 
@@ -39,14 +39,14 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthDashboardViewModel>.reactive(
       builder:
-          (BuildContext context, HealthDashboardViewModel viewModel, Widget _) {
+          (BuildContext context, HealthDashboardViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
           return Container(
             decoration: BoxDecoration(
               border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1.color),
+                  color: Theme.of(context).textTheme.bodyText1!.color!),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16), topRight: Radius.circular(16)),
               color: Theme.of(context).backgroundColor,
@@ -94,33 +94,33 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                           ),
                           child: GoogleMapDetailWidget(
                               isLoading: false,
-                              latitude: viewModel.assetDetail
+                              latitude: viewModel.assetDetail!
                                           .lastReportedLocationLatitude !=
                                       null
                                   ? viewModel
-                                      .assetDetail.lastReportedLocationLatitude
+                                      .assetDetail!.lastReportedLocationLatitude
                                   : null,
                               screenType: ScreenType.ASSET_DETAIL,
-                              status: widget.detail.lastLocationUpdateUTC !=
+                              status: widget.detail!.lastLocationUpdateUTC !=
                                       null
                                   ? "Last Reported Time: ".toUpperCase() +
                                       Utils.getLastReportedDateOneUTC(
-                                          widget.detail.lastLocationUpdateUTC)
+                                          widget.detail!.lastLocationUpdateUTC)
                                   : "No Data Receiveed",
                               onMarkerTap: () {
-                                widget.switchTab(3);
+                                widget.switchTab!(3);
                               },
                               initLocation: null,
                               location: viewModel
-                                          .assetDetail.lastReportedLocation !=
+                                          .assetDetail!.lastReportedLocation !=
                                       null
-                                  ? viewModel.assetDetail.lastReportedLocation
+                                  ? viewModel.assetDetail!.lastReportedLocation
                                   : "",
-                              longitude: viewModel.assetDetail
+                              longitude: viewModel.assetDetail!
                                           .lastReportedLocationLongitude !=
                                       null
                                   ? viewModel
-                                      .assetDetail.lastReportedLocationLongitude
+                                      .assetDetail!.lastReportedLocationLongitude
                                   : null),
                         )
                       : SizedBox(),
@@ -135,9 +135,9 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                       controller: notesController,
                       notes: viewModel.assetNotes,
                       onTap: () {
-                        if (notesController.text.isNotEmpty) {
-                          viewModel.postNotes(notesController.text);
-                          notesController.text = "";
+                        if (notesController!.text.isNotEmpty) {
+                          viewModel.postNotes(notesController!.text);
+                          notesController!.text = "";
                         }
                       },
                       isLoading: viewModel.postingNote,

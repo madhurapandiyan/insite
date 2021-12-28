@@ -3,7 +3,7 @@ part 'location_search.g.dart';
 
 @JsonSerializable()
 class LocationSearchResponse {
-  final List<LocationSearchData> Locations;
+  final List<LocationSearchData>? Locations;
   LocationSearchResponse({this.Locations});
 
   factory LocationSearchResponse.fromJson(Map<String, dynamic> json) =>
@@ -14,8 +14,8 @@ class LocationSearchResponse {
 
 @JsonSerializable()
 class LocationSearchData {
-  final LocationSearchAddress Address;
-  final LocationSearchCoords Coords;
+  final LocationSearchAddress? Address;
+  final LocationSearchCoords? Coords;
   LocationSearchData({this.Address, this.Coords});
 
   factory LocationSearchData.fromJson(Map<String, dynamic> json) =>
@@ -26,12 +26,12 @@ class LocationSearchData {
 
 @JsonSerializable()
 class LocationSearchAddress {
-  final String StreetAddress;
-  final String City;
-  final String State;
-  final String StateName;
-  final String Zip;
-  final String Country;
+  final String? StreetAddress;
+  final String? City;
+  final String? State;
+  final String? StateName;
+  final String? Zip;
+  final String? Country;
   LocationSearchAddress(
       {this.StreetAddress,
       this.Zip,
@@ -48,8 +48,8 @@ class LocationSearchAddress {
 
 @JsonSerializable()
 class LocationSearchCoords {
-  final String Lat;
-  final String Lon;
+  final String? Lat;
+  final String? Lon;
   LocationSearchCoords({this.Lat, this.Lon});
 
   factory LocationSearchCoords.fromJson(Map<String, dynamic> json) =>

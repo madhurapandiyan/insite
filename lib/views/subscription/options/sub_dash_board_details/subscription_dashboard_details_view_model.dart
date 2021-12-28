@@ -8,15 +8,15 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class SubDashBoardDetailsViewModel extends InsiteViewModel {
-  Logger log;
-  var _subscriptionService = locator<SubScriptionService>();
-  ScrollController scrollController;
+  late Logger log;
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
+  ScrollController? scrollController;
 
-  String _filter;
-  String get filter => _filter;
+  String? _filter;
+  String? get filter => _filter;
 
-  PLANTSUBSCRIPTIONFILTERTYPE _filterType;
-  PLANTSUBSCRIPTIONFILTERTYPE get filterType => _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? _filterType;
+  PLANTSUBSCRIPTIONFILTERTYPE? get filterType => _filterType;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -37,14 +37,14 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   List<DetailResult> get devices => _devices;
 
   SubDashBoardDetailsViewModel(
-      String filterKey, PLANTSUBSCRIPTIONFILTERTYPE type) {
+      String? filterKey, PLANTSUBSCRIPTIONFILTERTYPE? type) {
     this._filter = filterKey;
     this._filterType = type;
     this.log = getLogger(this.runtimeType.toString());
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -54,8 +54,8 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    SubscriptionDashboardDetailResult result =
-        await _subscriptionService.getSubscriptionDeviceListData(
+    SubscriptionDashboardDetailResult? result =
+        await _subscriptionService!.getSubscriptionDeviceListData(
       fitler: filter,
       start: start == 0 ? start : start + 1,
       limit: limit,
@@ -63,9 +63,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
     );
 
     if (result != null) {
-      if (result.result.isNotEmpty) {
+      if (result.result!.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result[1]);
+        devices.addAll(result.result![1]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();

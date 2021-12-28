@@ -21,7 +21,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilizationGraphView extends StatefulWidget {
-  const UtilizationGraphView({Key key}) : super(key: key);
+  const UtilizationGraphView({Key? key}) : super(key: key);
 
   @override
   UtilizationGraphViewState createState() => UtilizationGraphViewState();
@@ -29,7 +29,7 @@ class UtilizationGraphView extends StatefulWidget {
 
 class UtilizationGraphViewState extends State<UtilizationGraphView> {
   UtilizationGraphType graphType = UtilizationGraphType.IDLEORWORKING;
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
   String startDate = DateFormat('MM/dd/yyyy')
       .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
   String endDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
@@ -47,7 +47,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
   final GlobalKey<FuelBurnRateTrendViewState> fuelBurnTrendKey =
       new GlobalKey();
 
-  var viewModel;
+  late var viewModel;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<UtilizationGraphViewModel>.reactive(
       builder: (BuildContext context, UtilizationGraphViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         var startDate2 = startDate;
         return Column(
           children: [
@@ -89,7 +89,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                     title: "Date Range",
                     width: 90,
                     bgColor: Theme.of(context).backgroundColor,
-                    textColor: Theme.of(context).textTheme.bodyText1.color,
+                    textColor: Theme.of(context).textTheme.bodyText1!.color,
                     onTap: () async {
                       dateRange = [];
                       dateRange = await showDialog(
@@ -98,7 +98,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                             backgroundColor: transparent,
                             child: DateRangeView()),
                       );
-                      if (dateRange != null && dateRange.isNotEmpty) {
+                      if (dateRange != null && dateRange!.isNotEmpty) {
                         onFilterApplied();
                       }
                     },
@@ -139,7 +139,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
                     border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1.color,
+                        color: Theme.of(context).textTheme.bodyText1!.color!,
                         width: 0.0),
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
@@ -184,26 +184,27 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
 
   onDateChange() {
     if (graphType == UtilizationGraphType.IDLEORWORKING) {
-      idlePercentKey.currentState.refresh();
+      idlePercentKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.RUNTIMEHOURS) {
-      runTimeHoursKey.currentState.refresh();
+      runTimeHoursKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.DISTANCETRAVELLED) {
-      distanceTravelledKey.currentState.refresh();
+      distanceTravelledKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.CUMULATIVE) {
-      cumulativeKey.currentState.refresh();
+      cumulativeKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.TOTALHOURS) {
-      totalHoursKey.currentState.refresh();
+      totalHoursKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.TOTALFUELBURNED) {
-      totalFuelBurnedKey.currentState.refresh();
+      totalFuelBurnedKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.IDLETREND) {
-      idleTrendKey.currentState.refresh();
+      idleTrendKey.currentState!.refresh();
     } else if (graphType == UtilizationGraphType.FUELBURNRATETREND) {
-      fuelBurnTrendKey.currentState.refresh();
+      fuelBurnTrendKey.currentState!.refresh();
     }
   }
 
   Widget getGraphView(UtilizationGraphType utilizationGraphType, startDate,
       endDate, update(int)) {
+    Logger().e(utilizationGraphType);
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(
@@ -213,7 +214,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.RUNTIMEHOURS:
         return RuntimeHoursView(
           key: runTimeHoursKey,
@@ -222,7 +223,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.DISTANCETRAVELLED:
         return DistanceTravelledView(
           key: distanceTravelledKey,
@@ -231,35 +232,34 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
             update(value);
           },
         );
-        break;
+
       case UtilizationGraphType.CUMULATIVE:
         return CumulativeView(
           key: cumulativeKey,
         );
-        break;
+
       case UtilizationGraphType.TOTALHOURS:
         return TotalHoursView(
           key: totalHoursKey,
         );
-        break;
+
       case UtilizationGraphType.TOTALFUELBURNED:
         return TotalFuelBurnedView(
           key: totalFuelBurnedKey,
         );
-        break;
+
       case UtilizationGraphType.IDLETREND:
         return IdlePercentTrendView(
           key: idleTrendKey,
         );
-        break;
+
       case UtilizationGraphType.FUELBURNRATETREND:
         return FuelBurnRateTrendView(
           key: fuelBurnTrendKey,
         );
-        break;
+
       default:
         return Container();
-        break;
     }
   }
 }

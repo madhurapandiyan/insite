@@ -3,7 +3,7 @@ part 'asset_status.g.dart';
 
 @JsonSerializable()
 class AssetCount {
-  List<Count> countData;
+  List<Count>? countData;
   AssetCount({
     this.countData,
   });
@@ -16,12 +16,12 @@ class AssetCount {
 
 @JsonSerializable()
 class Count {
-  String countOf;
-  int count;
-  int assetCount;
-  int faultCount;
-  int id;
-  String name;
+  String? countOf;
+  int? count;
+  int? assetCount;
+  int? faultCount;
+  int? id;
+  String? name;
   Count(
       {this.countOf,
       this.count,

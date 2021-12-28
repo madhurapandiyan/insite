@@ -13,10 +13,10 @@ import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  List<String> _assetUId;
-  List<String> get assetUid => _assetUId;
+  List<String>? _assetUId;
+  List<String>? get assetUid => _assetUId;
 
   bool _isChangeCycleState = false;
   bool get isChangeCycleState => _isChangeCycleState;
@@ -37,13 +37,13 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
 
   TextEditingController endDateInput = new TextEditingController();
 
-  var _manageUserService = locator<AssetAdminManagerUserService>();
-  var _snackBarService = locator<SnackbarService>();
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  SnackbarService? _snackBarService = locator<SnackbarService>();
 
-  EstimatedCycleVolumePayLoad result;
-  Cycles dateFilterTargetValue;
-  Volumes dateFilterVolumeValue;
-  PayLoad dateFilterPayLoadValue;
+  EstimatedCycleVolumePayLoad? result;
+  Cycles? dateFilterTargetValue;
+  Volumes? dateFilterVolumeValue;
+  PayLoad? dateFilterPayLoadValue;
   List<IncrementDecrementPayload> countValue = [
     IncrementDecrementPayload(
         runTimeDays: "Sun",
@@ -82,7 +82,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
         targetPayloadCount: 0),
   ];
 
-  TargetCycleVolumePayloadViewModel(List<String> assetUIdList) {
+  TargetCycleVolumePayloadViewModel(List<String>? assetUIdList) {
     _assetUId = assetUIdList;
     this.log = getLogger(this.runtimeType.toString());
     getEstimatedCycleVoumePayLoadListData();
@@ -288,22 +288,22 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   }
 
   getEstimatedCycleVolumePayLoad(
-      DateTime startDate, DateTime endDate, BuildContext context) async {
+      DateTime? startDate, DateTime? endDate, BuildContext context) async {
     // if (!endDate.isAfter(startDate)) {
     //   _snackBarService.showSnackbar(
     //       message: "EndDate should be greter than StartDate");
     //   return;
     // }
     if (startDate == null) {
-      _snackBarService.showSnackbar(message: "StartDate must not be  null");
+      _snackBarService!.showSnackbar(message: "StartDate must not be  null");
       return;
     } else if (endDate == null) {
-      _snackBarService.showSnackbar(message: "EndDate must not be  null");
+      _snackBarService!.showSnackbar(message: "EndDate must not be  null");
       return;
     }
-    EstimatedCycleVolumePayLoad result =
-        await _manageUserService.getEstimatedCycleVolumePayLoad(
-            assetUid,
+    EstimatedCycleVolumePayLoad? result =
+        await _manageUserService!.getEstimatedCycleVolumePayLoad(
+            assetUid!,
             Cycles(
               sunday: double.parse(countValue[0].targetCyclesCount.toString()),
               monday: double.parse(countValue[1].targetCyclesCount.toString()),
@@ -356,7 +356,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
   }
 
   getEstimatedCycleVoumePayLoadListData() async {
-    result = await _manageUserService
+    result = await _manageUserService!
         .getEstimatedCycleVolumePayLoadListData(assetUid);
     print("result:$result");
     notifyListeners();
@@ -393,7 +393,7 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
     try {
       var startDateString = Utils.getLastReportedDateTwoFilter(startDate);
       var endDateString = Utils.getLastReportedDateTwoFilter(endDate);
-      result.assetProductivitySettings.forEach((element) {
+      result!.assetProductivitySettings!.forEach((element) {
         if (element.startDate == startDateString &&
             element.endDate == endDateString) {
           dateFilterTargetValue = element.cycles;
@@ -403,39 +403,39 @@ class TargetCycleVolumePayloadViewModel extends InsiteViewModel {
       });
 
       var sunT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.sunday,
-          targetVolumesCount: dateFilterVolumeValue.sunday,
-          targetPayloadCount: dateFilterPayLoadValue.sunday,
+          targetCyclesCount: dateFilterTargetValue!.sunday,
+          targetVolumesCount: dateFilterVolumeValue!.sunday,
+          targetPayloadCount: dateFilterPayLoadValue!.sunday,
           runTimeDays: "Sun");
       var monT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.monday,
-          targetVolumesCount: dateFilterVolumeValue.monday,
-          targetPayloadCount: dateFilterPayLoadValue.monday,
+          targetCyclesCount: dateFilterTargetValue!.monday,
+          targetVolumesCount: dateFilterVolumeValue!.monday,
+          targetPayloadCount: dateFilterPayLoadValue!.monday,
           runTimeDays: "Mon");
       var tueT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.tuesday,
-          targetVolumesCount: dateFilterVolumeValue.tuesday,
-          targetPayloadCount: dateFilterPayLoadValue.tuesday,
+          targetCyclesCount: dateFilterTargetValue!.tuesday,
+          targetVolumesCount: dateFilterVolumeValue!.tuesday,
+          targetPayloadCount: dateFilterPayLoadValue!.tuesday,
           runTimeDays: "Tue");
       var wedT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.wednesday,
-          targetVolumesCount: dateFilterVolumeValue.wednesday,
-          targetPayloadCount: dateFilterPayLoadValue.wednesday,
+          targetCyclesCount: dateFilterTargetValue!.wednesday,
+          targetVolumesCount: dateFilterVolumeValue!.wednesday,
+          targetPayloadCount: dateFilterPayLoadValue!.wednesday,
           runTimeDays: "Wed");
       var thuT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.thursday,
-          targetVolumesCount: dateFilterVolumeValue.thursday,
-          targetPayloadCount: dateFilterPayLoadValue.thursday,
+          targetCyclesCount: dateFilterTargetValue!.thursday,
+          targetVolumesCount: dateFilterVolumeValue!.thursday,
+          targetPayloadCount: dateFilterPayLoadValue!.thursday,
           runTimeDays: "Thu");
       var friT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.friday,
-          targetVolumesCount: dateFilterVolumeValue.friday,
-          targetPayloadCount: dateFilterPayLoadValue.friday,
+          targetCyclesCount: dateFilterTargetValue!.friday,
+          targetVolumesCount: dateFilterVolumeValue!.friday,
+          targetPayloadCount: dateFilterPayLoadValue!.friday,
           runTimeDays: "Fri");
       var satT = IncrementDecrementPayload(
-          targetCyclesCount: dateFilterTargetValue.sunday,
-          targetVolumesCount: dateFilterVolumeValue.sunday,
-          targetPayloadCount: dateFilterPayLoadValue.sunday,
+          targetCyclesCount: dateFilterTargetValue!.sunday,
+          targetVolumesCount: dateFilterVolumeValue!.sunday,
+          targetPayloadCount: dateFilterPayLoadValue!.sunday,
           runTimeDays: "Sun");
       dateFilterUpdateListValue
           .addAll([sunT, monT, tueT, wedT, thuT, friT, satT]);

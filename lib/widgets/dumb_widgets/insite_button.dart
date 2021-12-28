@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 
 class InsiteButton extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-  final Color bgColor;
-  final double fontSize;
-  final Color textColor;
-  final double width;
-  final double height;
-  final Icon icon;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
+  final String? title;
+  final VoidCallback? onTap;
+  final Color? bgColor;
+  final double? fontSize;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  final Icon? icon;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final bool isSelectable;
   const InsiteButton(
       {this.title,
@@ -36,7 +36,7 @@ class InsiteButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
           color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
         ),
         alignment: Alignment.center,
@@ -49,16 +49,16 @@ class InsiteButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              title,
+              title!,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: fontSize != null ? fontSize : 12.0,
                   color: textColor != null
                       ? textColor
-                      : Theme.of(context).textTheme.bodyText1.color,
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   fontWeight: FontWeight.w700),
             ),
-            icon != null ? icon : SizedBox()
+            icon != null ? icon! : SizedBox()
           ],
         ),
       ),
@@ -68,14 +68,14 @@ class InsiteButton extends StatelessWidget {
 
 class InsitePopMenuItemButton extends StatelessWidget {
   
-  final Color bgColor;
-  final double fontSize;
-  final Color textColor;
-  final double width;
-  final double height;
-  final Widget widget;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
+  final Color? bgColor;
+  final double? fontSize;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  final Widget? widget;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final bool isSelectable;
   const InsitePopMenuItemButton(
       {this.width,
@@ -96,7 +96,7 @@ class InsitePopMenuItemButton extends StatelessWidget {
       margin: margin != null ? margin : EdgeInsets.all(0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
         color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
       ),
       alignment: Alignment.center,
@@ -108,16 +108,16 @@ class InsitePopMenuItemButton extends StatelessWidget {
 }
 
 class InsiteButtonWithSelectable extends StatefulWidget {
-  final String title;
-  final Function(bool) onTap;
-  final Color bgColor;
-  final double fontSize;
-  final Color textColor;
-  final double width;
-  final double height;
-  final Icon icon;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
+  final String? title;
+  final Function(bool)? onTap;
+  final Color? bgColor;
+  final double? fontSize;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  final Icon? icon;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final bool isSelectable;
   const InsiteButtonWithSelectable(
       {this.title,
@@ -147,7 +147,7 @@ class _InsiteButtonWithSelectableState
         setState(() {
           isSelected = !isSelected;
         });
-        widget.onTap(isSelected);
+        widget.onTap!(isSelected);
       },
       child: Container(
         padding: widget.padding != null ? widget.padding : EdgeInsets.all(8),
@@ -155,7 +155,7 @@ class _InsiteButtonWithSelectableState
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
           color: widget.bgColor != null
               ? isSelected
                   ? Theme.of(context).buttonColor
@@ -172,18 +172,18 @@ class _InsiteButtonWithSelectableState
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.title,
+              widget.title!,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: widget.fontSize != null ? widget.fontSize : 12.0,
                   color: widget.textColor != null
                       ? isSelected
                           ? widget.textColor
-                          : Theme.of(context).textTheme.bodyText1.color
-                      : Theme.of(context).textTheme.bodyText1.color,
+                          : Theme.of(context).textTheme.bodyText1!.color
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   fontWeight: FontWeight.w700),
             ),
-            widget.icon != null ? widget.icon : SizedBox()
+            widget.icon != null ? widget.icon! : SizedBox()
           ],
         ),
       ),
@@ -192,14 +192,14 @@ class _InsiteButtonWithSelectableState
 }
 
 class InsiteButtonWithLoader extends StatelessWidget {
-  final String title;
-  final VoidCallback onTap;
-  final Color bgColor;
-  final Color textColor;
-  final double width;
-  final double height;
-  final Icon icon;
-  final bool showLoad;
+  final String? title;
+  final VoidCallback? onTap;
+  final Color? bgColor;
+  final Color? textColor;
+  final double? width;
+  final double? height;
+  final Icon? icon;
+  final bool? showLoad;
   const InsiteButtonWithLoader(
       {this.title,
       this.width,
@@ -218,7 +218,7 @@ class InsiteButtonWithLoader extends StatelessWidget {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
           borderRadius: BorderRadius.circular(4),
           color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
         ),
@@ -230,15 +230,15 @@ class InsiteButtonWithLoader extends StatelessWidget {
               ? MainAxisAlignment.spaceBetween
               : MainAxisAlignment.center,
           children: [
-            showLoad
+            showLoad!
                 ? InsiteProgressBar()
                 : Text(
-                    title,
+                    title!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: textColor, fontWeight: FontWeight.w700),
                   ),
-            icon != null ? icon : SizedBox()
+            icon != null ? icon! : SizedBox()
           ],
         ),
       ),

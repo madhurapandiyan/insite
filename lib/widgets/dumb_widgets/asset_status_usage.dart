@@ -3,9 +3,9 @@ import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/theme/colors.dart';
 
 class AssetStatusUsageWidget extends StatefulWidget {
-  final ChartSampleData assetStatusData;
-  final Color chartColor;
-  final String chartHrsData;
+  final ChartSampleData? assetStatusData;
+  final Color? chartColor;
+  final String? chartHrsData;
 
   AssetStatusUsageWidget(
       {this.assetStatusData, this.chartColor, this.chartHrsData});
@@ -28,9 +28,9 @@ class _AssetStatusWidgetState extends State<AssetStatusUsageWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
                 boxShadow: [
-                  new BoxShadow(blurRadius: 1.0, color: widget.chartColor)
+                  new BoxShadow(blurRadius: 1.0, color: widget.chartColor!)
                 ],
-                border: Border.all(width: 2.5, color: widget.chartColor),
+                border: Border.all(width: 2.5, color: widget.chartColor!),
                 shape: BoxShape.rectangle,
               )),
           SizedBox(
@@ -38,7 +38,7 @@ class _AssetStatusWidgetState extends State<AssetStatusUsageWidget> {
           ),
           Expanded(
             child: new Text(
-              widget.chartHrsData.toUpperCase(),
+              widget.chartHrsData!.toUpperCase(),
               textAlign: TextAlign.start,
               style: new TextStyle(
                   fontWeight: FontWeight.w700,

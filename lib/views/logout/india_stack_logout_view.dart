@@ -21,12 +21,12 @@ class IndiaStackLogoutView extends StatefulWidget {
 
 class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
+  late StreamSubscription _onDestroy;
+  late StreamSubscription<String> _onUrlChanged;
+  late StreamSubscription<WebViewStateChanged> _onStateChanged;
 
-  final _loginService = locator<LoginService>();
-  final _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
+  final LocalService? _localService = locator<LocalService>();
 
   @override
   void dispose() {
@@ -41,7 +41,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   bool receivedToken = false;
   String codeVerifier = randomAlphaNumeric(43);
   String state = randomAlphaNumeric(43);
-  String codeChallenge;
+  String? codeChallenge;
 
   @override
   void initState() {
@@ -90,7 +90,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
           .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
       Logger()
           .i("IndiaStackLogoutView onStateChanged: ${state.type} ${state.url}");
-      if (state.url != null &&
+      if (state.url.isNotEmpty &&
           state.url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
         Logger()
             .i("IndiaStackLogoutView STATE changed with auth code: $state.url");
@@ -133,7 +133,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLogoutView  URL changed: $url");
-        if (url != null &&
+       if (url.isNotEmpty &&
             url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           Logger().i("IndiaStackLogoutView URL changed with auth code : $url");
           try {
@@ -141,26 +141,26 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
               List<String> list = url.split("=");
               Logger().i("IndiaStackLogoutView url split list $list");
               if (list.isNotEmpty) {
-                // _onUrlChanged.cancel();
+                _onUrlChanged.cancel();
                 //for vision link (oauth style login)
-                // String accessTokenString = list[1];
-                // String expiresTokenString = list[3];
-                // List<String> accessTokenList = accessTokenString.split("&");
-                // List<String> expiryList = expiresTokenString.split("&");
-                // print("accessToken split list $list");
-                // String accessToken = accessTokenList[0];
-                // String expiryTime = expiryList[0];
-                // print("accessToken $accessToken");
-                // print("expiryTime $expiryTime");
-                // saveToken(accessToken, expiryTime);
+                String accessTokenString = list[1];
+                String expiresTokenString = list[3];
+                List<String> accessTokenList = accessTokenString.split("&");
+                List<String> expiryList = expiresTokenString.split("&");
+                print("accessToken split list $list");
+                String accessToken = accessTokenList[0];
+                String expiryTime = expiryList[0];
+                print("accessToken $accessToken");
+                print("expiryTime $expiryTime");
+                saveToken(accessToken, expiryTime);
 
-                // String codeString = list[1];
-                // List<String> codeStringList = codeString.split("&");
-                // if (codeStringList.isNotEmpty) {
-                //   getLoginDataV4(
-                //     codeStringList[0],
-                //   );
-                // }
+                String codeString = list[1];
+                List<String> codeStringList = codeString.split("&");
+                if (codeStringList.isNotEmpty) {
+                  getLoginDataV4(
+                    codeStringList[0],
+                  );
+                }
               }
             }
             flutterWebviewPlugin.close();
@@ -174,26 +174,26 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("IndiaStackLogoutView saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    _loginService!.getUser(token, true);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackLogoutView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-    LoginResponse result =
-        await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
+    LoginResponse? result =
+        await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
-      await _localService.saveTokenInfo(result);
-      await _loginService.saveToken(
-          result.access_token, result.expires_in.toString(), true);
+      await _localService!.saveTokenInfo(result);
+      await _loginService!
+          .saveToken(result.access_token, result.expires_in.toString(), true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LogoutViewModel>.reactive(
-      builder: (BuildContext context, LogoutViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LogoutViewModel viewModel, Widget? _) {
         return WillPopScope(
           onWillPop: () {
             return onBackPressed();

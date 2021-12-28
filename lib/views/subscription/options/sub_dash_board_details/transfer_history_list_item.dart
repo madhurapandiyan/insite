@@ -6,9 +6,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class TransferHistoryListItem extends StatelessWidget {
-  final DetailResult detailResult;
-  final VoidCallback onCallback;
-  const TransferHistoryListItem({Key key, this.detailResult, this.onCallback})
+  final DetailResult? detailResult;
+  final VoidCallback? onCallback;
+  const TransferHistoryListItem({Key? key, this.detailResult, this.onCallback})
       : super(key: key);
 
   @override
@@ -50,13 +50,13 @@ class TransferHistoryListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: detailResult.GPSDeviceID != null
-                            ? "Device ID : " + "\n" + detailResult.GPSDeviceID
+                        title: detailResult!.GPSDeviceID != null
+                            ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
                             : "Device ID : " + "\n",
-                        path: detailResult == null || detailResult.Model == null
+                        path: detailResult == null || detailResult!.Model == null
                             ? "assets/images/EX210.png"
-                            : detailResult.Model != null
-                                ? Utils().imageData(detailResult.Model)
+                            : detailResult!.Model != null
+                                ? Utils().imageData(detailResult!.Model!)
                                 : "",
                       ),
                       // Table(
@@ -69,8 +69,8 @@ class TransferHistoryListItem extends StatelessWidget {
                       // ),
                       InsiteTableRowItem(
                         title: "Source Name 1 :",
-                        content: detailResult.SourceName1 != null
-                            ? detailResult.SourceName1
+                        content: detailResult!.SourceName1 != null
+                            ? detailResult!.SourceName1
                             : "",
                       ),
                       // ],
@@ -84,15 +84,15 @@ class TransferHistoryListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult.vin != null ? detailResult.vin : "",
+                            detailResult!.vin != null ? detailResult!.vin : "",
                         onTap: () {
-                          onCallback();
+                          onCallback!();
                         },
                       ),
                       InsiteTableRowItem(
                         title: "Source Name 2 :",
-                        content: detailResult.SourceName2 != null
-                            ? detailResult.SourceName2
+                        content: detailResult!.SourceName2 != null
+                            ? detailResult!.SourceName2
                             : "",
                       ),
                     ],
@@ -107,14 +107,14 @@ class TransferHistoryListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Destination Name 1 :",
-                          content: detailResult.DestinationName1 != null
-                              ? detailResult.DestinationName1
+                          content: detailResult!.DestinationName1 != null
+                              ? detailResult!.DestinationName1
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Destination Name 2 : ",
-                          content: detailResult.DestinationName2 != null
-                              ? detailResult.DestinationName2
+                          content: detailResult!.DestinationName2 != null
+                              ? detailResult!.DestinationName2
                               : "",
                         ),
                       ],
@@ -123,14 +123,14 @@ class TransferHistoryListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Source Type :",
-                          content: detailResult.SourceCustomerType != null
-                              ? detailResult.SourceCustomerType
+                          content: detailResult!.SourceCustomerType != null
+                              ? detailResult!.SourceCustomerType
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Destination Type :",
-                          content: detailResult.DestinationCustomerType != null
-                              ? detailResult.DestinationCustomerType
+                          content: detailResult!.DestinationCustomerType != null
+                              ? detailResult!.DestinationCustomerType
                               : "",
                         ),
                       ],
@@ -139,17 +139,17 @@ class TransferHistoryListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Transfer Status :",
-                          content: detailResult.Status != null
-                              ? detailResult.Status
-                              : detailResult.Status != null
-                                  ? detailResult.Status
+                          content: detailResult!.Status != null
+                              ? detailResult!.Status
+                              : detailResult!.Status != null
+                                  ? detailResult!.Status
                                   : "",
                         ),
                         InsiteTableRowItem(
                           title: "Transferered Time :",
-                          content: detailResult.InsertUTC != null
+                          content: detailResult!.InsertUTC != null
                               ? Utils.getLastReportedDate(
-                                  detailResult.InsertUTC)
+                                  detailResult!.InsertUTC)
                               : "",
                         ),
                       ],

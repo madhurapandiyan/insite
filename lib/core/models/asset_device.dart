@@ -4,8 +4,8 @@ part 'asset_device.g.dart';
 
 @JsonSerializable()
 class AssetDeviceResponse {
-  final String AssetUID;
-  final List<AssetDevice> Devices;
+  final String? AssetUID;
+  final List<AssetDevice>? Devices;
   AssetDeviceResponse({this.AssetUID, this.Devices});
   factory AssetDeviceResponse.fromJson(Map<String, dynamic> json) =>
       _$AssetDeviceResponseFromJson(json);
@@ -15,14 +15,14 @@ class AssetDeviceResponse {
 
 @JsonSerializable()
 class AssetDevice {
-  final String DeviceUID;
-  final String DeviceSerialNumber;
-  final String DeviceType;
-  final String DeviceState;
-  final String DeregisteredUTC;
-  final String ModuleType;
-  final String DataLinkType;
-  final List<Personality> Personalities;
+  final String? DeviceUID;
+  final String? DeviceSerialNumber;
+  final String? DeviceType;
+  final String? DeviceState;
+  final String? DeregisteredUTC;
+  final String? ModuleType;
+  final String? DataLinkType;
+  final List<Personality>? Personalities;
   AssetDevice(
       {this.DeviceSerialNumber,
       this.DeviceState,

@@ -10,12 +10,13 @@ import 'package:insite/views/subscription/replacement/model/device_replacement_s
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:open_file/open_file.dart';
 
 class DeviceReplacementStatusViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  final replacementService = locator<ReplacementService>();
+  final ReplacementService? replacementService = locator<ReplacementService>();
 
   DeviceReplacementStatusViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -37,17 +38,17 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
 
   List<DeviceReplacementStatusModel> deviceReplacementStatusModelList = [];
 
-  TotalDeviceReplacementStatusModel totalDeviceReplacementStatusModel;
+  TotalDeviceReplacementStatusModel? totalDeviceReplacementStatusModel;
   int startCount = 0;
   final controller = new ScrollController();
 
   getTotalDeviceReplacementStatusModel() async {
     try {
-      totalDeviceReplacementStatusModel = await replacementService
+      totalDeviceReplacementStatusModel = await replacementService!
           .getTotalDeviceReplacementStatusModel(startCount);
       Logger().wtf(totalDeviceReplacementStatusModel);
       Logger().d(deviceReplacementStatusModelList);
-      totalDeviceReplacementStatusModel.result[1].forEach((element) {
+      totalDeviceReplacementStatusModel!.result![1].forEach((element) {
         deviceReplacementStatusModelList.add(element);
       });
       isLoading = false;
@@ -61,13 +62,13 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
   onDownload() async {
     try {
       showLoadingDialog();
-      Directory path = await getExternalStorageDirectory();
-      var data = await replacementService.getReplacementDeviceIdDownload();
-      Logger().d(data.toJson());
+      Directory? path = await (pathProvider.getExternalStorageDirectory());
+      var data = await replacementService!.getReplacementDeviceIdDownload();
+      Logger().d(data!.toJson());
       final Excel excelSheet = Excel.createExcel();
-      var sheetObj = excelSheet["sheet"];
-      for (var i = 0; i < data.result.length; i++) {
-        final excelDataInsert = data.result;
+      var sheetObj = excelSheet.sheets.values.first;
+      for (var i = 0; i < data.result!.length; i++) {
+        final excelDataInsert = data.result!;
         if (i == 0) {
           sheetObj.updateCell(CellIndex.indexByString("A0"), "Old Device ID");
           sheetObj.updateCell(CellIndex.indexByString("B0"), "Serial Number");
@@ -103,18 +104,22 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
         sheetObj.updateCell(
             CellIndex.indexByString("J$index"),
             Utils.getLastReportedDateFilterData(
-                DateTime.parse(excelDataInsert[i].InsertUTC)));
+                DateTime.parse(excelDataInsert[i].InsertUTC!)));
       }
-      Logger().e(path.path);
-      excelSheet.encode().then((onValue) {
-        File("${path.path}/Device_Replacement_Report.xlsx")
-          ..createSync(recursive: false)
-          ..writeAsBytesSync(onValue)
-          ..open(mode: FileMode.read);
-      });
+      var savefile = excelSheet.save();
+      File("${path!.path}/Device_Replacement_Report.xlsx")
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(savefile!);
+      OpenFile.open("${path.path}/Device_Replacement_Report.xlsx");
+      // excelSheet.encode()!.then((onValue) {
+      //   File("${path.path}/Device_Replacement_Report.xlsx")
+      //     ..createSync(recursive: false)
+      //     ..writeAsBytesSync(onValue)
+      //     ..open(mode: FileMode.read);
+      // });
       hideLoadingDialog();
-      snackbarService.showSnackbar(message: "File saved in ${path.path}");
-     // Logger().e(excelSheet.sheets.values.last.rows);
+      //snackbarService!.showSnackbar(message: "File saved in ${path.path}");
+      // Logger().e(excelSheet.sheets.values.last.rows);
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());

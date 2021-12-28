@@ -4,9 +4,9 @@ part 'replacement_deviceId_download.g.dart';
 
 @JsonSerializable()
 class ReplacementDeviceIdDownload {
-  final String code;
-  final String status;
-  final List<DeviceReplacementStatusModel> result;
+  final String? code;
+  final String? status;
+  final List<DeviceReplacementStatusModel>? result;
 
   ReplacementDeviceIdDownload({this.code, this.status, this.result});
 

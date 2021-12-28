@@ -6,19 +6,16 @@ part of 'utilization.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Utilization _$UtilizationFromJson(Map<String, dynamic> json) {
-  return Utilization(
-    assetResults: (json['assetResults'] as List)
-        ?.map((e) =>
-            e == null ? null : AssetResult.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    totals: (json['totals'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, (e as num)?.toDouble()),
-    ),
-    code: json['code'] as String,
-    message: json['message'] as String,
-  );
-}
+Utilization _$UtilizationFromJson(Map<String, dynamic> json) => Utilization(
+      assetResults: (json['assetResults'] as List<dynamic>?)
+          ?.map((e) => AssetResult.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      totals: (json['totals'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, (e as num).toDouble()),
+      ),
+      code: json['code'] as String?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$UtilizationToJson(Utilization instance) =>
     <String, dynamic>{
@@ -28,121 +25,125 @@ Map<String, dynamic> _$UtilizationToJson(Utilization instance) =>
       'message': instance.message,
     };
 
-AssetResult _$AssetResultFromJson(Map<String, dynamic> json) {
-  return AssetResult(
-    assetIdentifierSqluid: json['assetIdentifierSqluid'] as String,
-    assetIcon: (json['assetIcon'] as num)?.toDouble(),
-    assetIdentifier: json['assetIdentifier'] as String,
-    assetSerialNumber: json['assetSerialNumber'] as String,
-    date: json['date'] as String,
-    distanceTravelledKilometers:
-        (json['distanceTravelledKilometers'] as num)?.toDouble(),
-    idleEfficiency: (json['idleEfficiency'] as num)?.toDouble(),
-    idleFuelConsumedLiters: json['idleFuelConsumedLiters'],
-    idleFuelConsumedLitersCalloutTypes:
-        (json['idleFuelConsumedLitersCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    idleFuelConsumptionRate: json['idleFuelConsumptionRate'],
-    idleHours: (json['idleHours'] as num)?.toDouble(),
-    idleHoursCalloutTypes: (json['idleHoursCalloutTypes'] as List)
-        ?.map((e) => e as String)
-        ?.toList(),
-    kmsPerRuntimeFuelConsumedLiter: json['kmsPerRuntimeFuelConsumedLiter'],
-    lastIdleFuelConsumptionLitersMeter:
-        json['lastIdleFuelConsumptionLitersMeter'],
-    lastIdleHourMeter: (json['lastIdleHourMeter'] as num)?.toDouble(),
-    lastOdometerMeter: (json['lastOdometerMeter'] as num)?.toDouble(),
-    lastReportedTime: json['lastReportedTime'] as String,
-    lastReportedTimeZoneAbbrev: json['lastReportedTimeZoneAbbrev'] as String,
-    lastRuntimeFuelConsumptionLitersMeter:
-        json['lastRuntimeFuelConsumptionLitersMeter'],
-    lastRuntimeHourMeter: (json['lastRuntimeHourMeter'] as num)?.toDouble(),
-    makeCode: json['makeCode'] as String,
-    message: json['message'],
-    model: json['model'] as String,
-    manufacturer: json['manufacturer'] as String,
-    currentHourMeter: (json['currentHourMeter'] as num)?.toDouble(),
-    runtimeFuelConsumedLiters:
-        (json['runtimeFuelConsumedLiters'] as num)?.toDouble(),
-    runtimeFuelConsumedLitersCalloutTypes:
-        (json['runtimeFuelConsumedLitersCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    runtimeFuelConsumptionRate:
-        (json['runtimeFuelConsumptionRate'] as num)?.toDouble(),
-    runtimeHours: (json['runtimeHours'] as num)?.toDouble(),
-    runtimeHoursCalloutTypes: (json['runtimeHoursCalloutTypes'] as List)
-        ?.map((e) => e as String)
-        ?.toList(),
-    supportsIdle: json['supportsIdle'] as bool,
-    targetIdle: (json['targetIdle'] as num)?.toDouble(),
-    targetIdlePerformance: (json['targetIdlePerformance'] as num)?.toDouble(),
-    targetRuntime: (json['targetRuntime'] as num)?.toDouble(),
-    targetRuntimePerformance:
-        (json['targetRuntimePerformance'] as num)?.toDouble(),
-    workDefinitionType: json['workDefinitionType'] as String,
-    workingEfficiency: (json['workingEfficiency'] as num)?.toDouble(),
-    workingFuelConsumedLiters: json['workingFuelConsumedLiters'],
-    workingFuelConsumedLitersCalloutTypes:
-        (json['workingFuelConsumedLitersCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    workingFuelConsumptionRate: json['workingFuelConsumptionRate'],
-    workingHours: (json['workingHours'] as num)?.toDouble(),
-    workingHoursCalloutTypes: (json['workingHoursCalloutTypes'] as List)
-        ?.map((e) => e as String)
-        ?.toList(),
-    idleFuelConsumptionRateCalloutTypes:
-        (json['idleFuelConsumptionRateCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    workingFuelConsumptionRateCalloutTypes:
-        (json['workingFuelConsumptionRateCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    idleEfficiencyCalloutTypes: (json['idleEfficiencyCalloutTypes'] as List)
-        ?.map((e) => e as String)
-        ?.toList(),
-    workingEfficiencyCalloutTypes:
-        (json['workingEfficiencyCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    targetIdlePerformanceCalloutTypes:
-        (json['targetIdlePerformanceCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    idleHoursMeterCalloutTypes: (json['idleHoursMeterCalloutTypes'] as List)
-        ?.map((e) => e as String)
-        ?.toList(),
-    runtimeHoursMeterCalloutTypes:
-        (json['runtimeHoursMeterCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    idleFuelConsumptionLitersMeterCalloutTypes:
-        (json['idleFuelConsumptionLitersMeterCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    runtimeFuelConsumptionLitersMeterCalloutTypes:
-        (json['runtimeFuelConsumptionLitersMeterCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-    lastReportedLocationLatitude:
-        (json['lastReportedLocationLatitude'] as num)?.toDouble(),
-    lastReportedLocationLongitude:
-        (json['lastReportedLocationLongitude'] as num)?.toDouble(),
-    lastReportedLocation: json['lastReportedLocation'] as String,
-    dieselExhaustFluidLiters: json['dieselExhaustFluidLiters'],
-    lastDieselExhaustFluidLitersMeter:
-        json['lastDieselExhaustFluidLitersMeter'],
-    dieselExhaustFluidLitersBurnedRate:
-        json['dieselExhaustFluidLitersBurnedRate'],
-    dieselExhaustFluidLitersCalloutTypes:
-        (json['dieselExhaustFluidLitersCalloutTypes'] as List)
-            ?.map((e) => e as String)
-            ?.toList(),
-  );
-}
+AssetResult _$AssetResultFromJson(Map<String, dynamic> json) => AssetResult(
+      assetIdentifierSqluid: json['assetIdentifierSqluid'] as String?,
+      assetIcon: (json['assetIcon'] as num?)?.toDouble(),
+      assetIdentifier: json['assetIdentifier'] as String?,
+      assetSerialNumber: json['assetSerialNumber'] as String?,
+      date: json['date'] as String?,
+      distanceTravelledKilometers:
+          (json['distanceTravelledKilometers'] as num?)?.toDouble(),
+      idleEfficiency: (json['idleEfficiency'] as num?)?.toDouble(),
+      idleFuelConsumedLiters: json['idleFuelConsumedLiters'],
+      idleFuelConsumedLitersCalloutTypes:
+          (json['idleFuelConsumedLitersCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      idleFuelConsumptionRate: json['idleFuelConsumptionRate'],
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      idleHoursCalloutTypes: (json['idleHoursCalloutTypes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      kmsPerRuntimeFuelConsumedLiter: json['kmsPerRuntimeFuelConsumedLiter'],
+      lastIdleFuelConsumptionLitersMeter:
+          json['lastIdleFuelConsumptionLitersMeter'],
+      lastIdleHourMeter: (json['lastIdleHourMeter'] as num?)?.toDouble(),
+      lastOdometerMeter: (json['lastOdometerMeter'] as num?)?.toDouble(),
+      lastReportedTime: json['lastReportedTime'] as String?,
+      lastReportedTimeZoneAbbrev: json['lastReportedTimeZoneAbbrev'] as String?,
+      lastRuntimeFuelConsumptionLitersMeter:
+          json['lastRuntimeFuelConsumptionLitersMeter'],
+      lastRuntimeHourMeter: (json['lastRuntimeHourMeter'] as num?)?.toDouble(),
+      makeCode: json['makeCode'] as String?,
+      message: json['message'],
+      model: json['model'] as String?,
+      manufacturer: json['manufacturer'] as String?,
+      currentHourMeter: (json['currentHourMeter'] as num?)?.toDouble(),
+      runtimeFuelConsumedLiters:
+          (json['runtimeFuelConsumedLiters'] as num?)?.toDouble(),
+      runtimeFuelConsumedLitersCalloutTypes:
+          (json['runtimeFuelConsumedLitersCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      runtimeFuelConsumptionRate:
+          (json['runtimeFuelConsumptionRate'] as num?)?.toDouble(),
+      runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
+      runtimeHoursCalloutTypes:
+          (json['runtimeHoursCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      supportsIdle: json['supportsIdle'] as bool?,
+      targetIdle: (json['targetIdle'] as num?)?.toDouble(),
+      targetIdlePerformance:
+          (json['targetIdlePerformance'] as num?)?.toDouble(),
+      targetRuntime: (json['targetRuntime'] as num?)?.toDouble(),
+      targetRuntimePerformance:
+          (json['targetRuntimePerformance'] as num?)?.toDouble(),
+      workDefinitionType: json['workDefinitionType'] as String?,
+      workingEfficiency: (json['workingEfficiency'] as num?)?.toDouble(),
+      workingFuelConsumedLiters: json['workingFuelConsumedLiters'],
+      workingFuelConsumedLitersCalloutTypes:
+          (json['workingFuelConsumedLitersCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      workingFuelConsumptionRate: json['workingFuelConsumptionRate'],
+      workingHours: (json['workingHours'] as num?)?.toDouble(),
+      workingHoursCalloutTypes:
+          (json['workingHoursCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      idleFuelConsumptionRateCalloutTypes:
+          (json['idleFuelConsumptionRateCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      workingFuelConsumptionRateCalloutTypes:
+          (json['workingFuelConsumptionRateCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      idleEfficiencyCalloutTypes:
+          (json['idleEfficiencyCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      workingEfficiencyCalloutTypes:
+          (json['workingEfficiencyCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      targetIdlePerformanceCalloutTypes:
+          (json['targetIdlePerformanceCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      idleHoursMeterCalloutTypes:
+          (json['idleHoursMeterCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      runtimeHoursMeterCalloutTypes:
+          (json['runtimeHoursMeterCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      idleFuelConsumptionLitersMeterCalloutTypes:
+          (json['idleFuelConsumptionLitersMeterCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      runtimeFuelConsumptionLitersMeterCalloutTypes:
+          (json['runtimeFuelConsumptionLitersMeterCalloutTypes']
+                  as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      lastReportedLocationLatitude:
+          (json['lastReportedLocationLatitude'] as num?)?.toDouble(),
+      lastReportedLocationLongitude:
+          (json['lastReportedLocationLongitude'] as num?)?.toDouble(),
+      lastReportedLocation: json['lastReportedLocation'] as String?,
+      dieselExhaustFluidLiters: json['dieselExhaustFluidLiters'],
+      lastDieselExhaustFluidLitersMeter:
+          json['lastDieselExhaustFluidLitersMeter'],
+      dieselExhaustFluidLitersBurnedRate:
+          json['dieselExhaustFluidLitersBurnedRate'],
+      dieselExhaustFluidLitersCalloutTypes:
+          (json['dieselExhaustFluidLitersCalloutTypes'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+    );
 
 Map<String, dynamic> _$AssetResultToJson(AssetResult instance) =>
     <String, dynamic>{

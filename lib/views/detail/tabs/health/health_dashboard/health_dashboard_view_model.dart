@@ -12,18 +12,18 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class HealthDashboardViewModel extends InsiteViewModel {
-  Logger log;
-  var _faultService = locator<FaultService>();
-  var _assetSingleHistoryService = locator<AssetService>();
+  Logger? log;
+  FaultService? _faultService = locator<FaultService>();
+  AssetService? _assetSingleHistoryService = locator<AssetService>();
 
   bool _loading = true;
   bool get loading => _loading;
 
-  List<Count> _faultData = [];
-  List<Count> get faultData => _faultData;
+  List<Count>? _faultData = [];
+  List<Count>? get faultData => _faultData;
 
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
@@ -31,11 +31,11 @@ class HealthDashboardViewModel extends InsiteViewModel {
   bool _postingNote = false;
   bool get postingNote => _postingNote;
 
-  HealthDashboardViewModel(AssetDetail assetDetail) {
+  HealthDashboardViewModel(AssetDetail? assetDetail) {
     this._assetDetail = assetDetail;
     this.log = getLogger(this.runtimeType.toString());
-    _faultService.setUp();
-    _assetSingleHistoryService.setUp();
+    _faultService!.setUp();
+    _assetSingleHistoryService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getDashboardListData();
       getAssetDetail();
@@ -44,29 +44,29 @@ class HealthDashboardViewModel extends InsiteViewModel {
   }
 
   getDashboardListData() async {
-    SingleAssetFaultResponse result = await _faultService.getDashboardListData(
-        _assetDetail.assetUid,
+    SingleAssetFaultResponse? result = await _faultService!.getDashboardListData(
+        _assetDetail!.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate));
 
     if (result != null) {
-      _faultData = result.summaryData[0].countData;
+      _faultData = result.summaryData![0].countData;
     }
     _loading = false;
     notifyListeners();
   }
 
   getAssetDetail() async {
-    AssetDetail result =
-        await _assetSingleHistoryService.getAssetDetail(assetDetail.assetUid);
+    AssetDetail? result =
+        await _assetSingleHistoryService!.getAssetDetail(assetDetail!.assetUid);
     _assetDetail = result;
     _loading = false;
     notifyListeners();
   }
 
   getNotes() async {
-    List<Note> result =
-        await _assetSingleHistoryService.getAssetNotes(assetDetail.assetUid);
+    List<Note>? result =
+        await _assetSingleHistoryService!.getAssetNotes(assetDetail!.assetUid);
     if (result != null) {
       _assetNotes = result;
     }
@@ -77,7 +77,7 @@ class HealthDashboardViewModel extends InsiteViewModel {
   postNotes(note) async {
     _postingNote = true;
     notifyListeners();
-    await _assetSingleHistoryService.postNotes(assetDetail.assetUid, note);
+    await _assetSingleHistoryService!.postNotes(assetDetail!.assetUid, note);
     _postingNote = false;
     notifyListeners();
   }

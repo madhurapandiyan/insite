@@ -6,10 +6,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class DeviceListItem extends StatelessWidget {
-  final DetailResult detailResult;
-  final VoidCallback onCallback;
+  final DetailResult? detailResult;
+  final VoidCallback? onCallback;
   const DeviceListItem(
-      {Key key, this.detailResult, this.onCallback})
+      {Key? key, this.detailResult, this.onCallback})
       : super(key: key);
 
   @override
@@ -51,13 +51,13 @@ class DeviceListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: detailResult.GPSDeviceID != null
-                            ? "Device ID : " + "\n" + detailResult.GPSDeviceID
+                        title: detailResult!.GPSDeviceID != null
+                            ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
                             : "Device ID : " + "\n",
-                        path: detailResult == null || detailResult.Model == null
+                        path: detailResult == null || detailResult!.Model == null
                             ? "assets/images/EX210.png"
-                            : detailResult.Model != null
-                                ? Utils().imageData(detailResult.Model)
+                            : detailResult!.Model != null
+                                ? Utils().imageData(detailResult!.Model!)
                                 : "",
                       ),
                       // Table(
@@ -70,8 +70,8 @@ class DeviceListItem extends StatelessWidget {
                       // ),
                       InsiteTableRowItem(
                         title: "Model :",
-                        content: detailResult.Model != null
-                            ? detailResult.Model
+                        content: detailResult!.Model != null
+                            ? detailResult!.Model
                             : "",
                       ),
                       // ],
@@ -85,15 +85,15 @@ class DeviceListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult.VIN != null ? detailResult.VIN : "",
+                            detailResult!.VIN != null ? detailResult!.VIN : "",
                         onTap: () {
-                          onCallback();
+                          onCallback!();
                         },
                       ),
                       InsiteTableRowItem(
                         title: "Product Family :",
-                        content: detailResult.ProductFamily != null
-                            ? detailResult.ProductFamily
+                        content: detailResult!.ProductFamily != null
+                            ? detailResult!.ProductFamily
                             : "",
                       ),
                     ],
@@ -108,14 +108,14 @@ class DeviceListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Network Provider : ",
-                          content: detailResult.NetworkProvider != null
-                              ? detailResult.NetworkProvider
+                          content: detailResult!.NetworkProvider != null
+                              ? detailResult!.NetworkProvider
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Dealer Name : ",
-                          content: detailResult.DealerName != null
-                              ? detailResult.DealerName
+                          content: detailResult!.DealerName != null
+                              ? detailResult!.DealerName
                               : "",
                         ),
                       ],
@@ -124,16 +124,16 @@ class DeviceListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Dealer Code :",
-                          content: detailResult.DealerCode != null
-                              ? detailResult.DealerCode
+                          content: detailResult!.DealerCode != null
+                              ? detailResult!.DealerCode
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name :",
-                          content: detailResult.CustomerName != null
-                              ? detailResult.CustomerName
-                              : detailResult.CustomerName != null
-                                  ? detailResult.CustomerName
+                          content: detailResult!.CustomerName != null
+                              ? detailResult!.CustomerName
+                              : detailResult!.CustomerName != null
+                                  ? detailResult!.CustomerName
                                   : "",
                         ),
                       ],
@@ -142,17 +142,17 @@ class DeviceListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Customer Code :",
-                          content: detailResult.CustomerCode != null
-                              ? detailResult.CustomerCode
-                              : detailResult.CustomerCode != null
-                                  ? detailResult.CustomerCode
+                          content: detailResult!.CustomerCode != null
+                              ? detailResult!.CustomerCode
+                              : detailResult!.CustomerCode != null
+                                  ? detailResult!.CustomerCode
                                   : "",
                         ),
                         InsiteTableRowItem(
                           title: "Subscription Start Date :",
-                          content: detailResult.SubscriptionStartDate != null
+                          content: detailResult!.SubscriptionStartDate != null
                               ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.SubscriptionStartDate)
+                                  detailResult!.SubscriptionStartDate)
                               : "",
                         ),
                       ],
@@ -161,16 +161,16 @@ class DeviceListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Actual Start Date :",
-                          content: detailResult.SubscriptionStartDate != null
+                          content: detailResult!.SubscriptionStartDate != null
                               ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.ActualStartDate)
+                                  detailResult!.ActualStartDate)
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Subscription End Date :",
-                          content: detailResult.SubscriptionStartDate != null
+                          content: detailResult!.SubscriptionStartDate != null
                               ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult.SubscriptionEndDate)
+                                  detailResult!.SubscriptionEndDate)
                               : "",
                         ),
                       ],

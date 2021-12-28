@@ -4,18 +4,18 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PercentageWidget extends StatelessWidget {
-  final String label;
-  final double percentage;
+  final String? label;
+  final double? percentage;
   final Color color;
-  final bool isPercentage;
-  final String value;
+  final bool? isPercentage;
+  final String? value;
   final bool isTwoLineLabel;
 
   const PercentageWidget({
-    Key key,
-    @required this.label,
-    @required this.percentage,
-    @required this.color,
+    Key? key,
+    required this.label,
+    required this.percentage,
+    required this.color,
     this.isPercentage,
     this.isTwoLineLabel = false,
     this.value,
@@ -32,8 +32,8 @@ class PercentageWidget extends StatelessWidget {
         lineHeight: 20.0,
         leading: InsiteText(
           text: !isTwoLineLabel
-              ? label.length > 10
-                  ? label.substring(0, 9) + '...'
+              ? label!.length > 10
+                  ? label!.substring(0, 9) + '...'
                   : label
               : label,
           size: 10,
@@ -50,22 +50,22 @@ class PercentageWidget extends StatelessWidget {
                 : isPercentage == null
                     ? InsiteText(
                         text:
-                            '${double.parse((percentage).toStringAsFixed(1))}%',
+                            '${double.parse(percentage!.toStringAsFixed(1))}%',
                         color: white,
                         size: 12,
                         fontWeight: FontWeight.bold,
                       )
-                    : isPercentage
+                    : isPercentage!
                         ? InsiteText(
                             text:
-                                '${double.parse((percentage).toStringAsFixed(1))}%',
+                                '${double.parse(percentage!.toStringAsFixed(1))}%',
                             color: white,
                             size: 12,
                             fontWeight: FontWeight.bold,
                           )
                         : InsiteText(
                             text:
-                                '${double.parse((percentage).toStringAsFixed(1))}',
+                                '${double.parse(percentage!.toStringAsFixed(1))}',
                             color: white,
                             size: 12,
                             fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class PercentageWidget extends StatelessWidget {
                 size: 12,
                 fontWeight: FontWeight.bold,
               ),
-        percent: percentage == null ? 0 : percentage / 100,
+        percent: percentage == null ? 0 : percentage! / 100,
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,
         backgroundColor: concrete,

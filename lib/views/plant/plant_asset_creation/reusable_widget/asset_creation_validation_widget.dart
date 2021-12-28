@@ -5,8 +5,8 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class AssetCreationValidationWidget extends StatefulWidget {
-  final AssetCreationModel data;
-  final VoidCallback voidCallback;
+  final AssetCreationModel? data;
+  final VoidCallback? voidCallback;
 
   const AssetCreationValidationWidget({this.data, this.voidCallback});
 
@@ -21,7 +21,7 @@ class _AssetCreationValidationWidgetState
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.voidCallback();
+        widget.voidCallback!();
       },
       child: Card(
         child: Row(
@@ -83,8 +83,8 @@ class _AssetCreationValidationWidgetState
                                     width: 1,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .color),
+                                        .bodyText1!
+                                        .color!),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
                               ),
@@ -93,7 +93,7 @@ class _AssetCreationValidationWidgetState
                                 child: InsiteText(
                                     size: 14,
                                     fontWeight: FontWeight.w700,
-                                    text: widget.data.assetSerialNo),
+                                    text: widget.data!.assetSerialNo),
                               ),
                             ),
                             SizedBox(
@@ -126,8 +126,8 @@ class _AssetCreationValidationWidgetState
                                       width: 1,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .bodyText1
-                                          .color),
+                                          .bodyText1!
+                                          .color!),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
@@ -136,7 +136,7 @@ class _AssetCreationValidationWidgetState
                                   child: InsiteText(
                                     size: 14,
                                     fontWeight: FontWeight.w700,
-                                    text: widget.data.deviceId,
+                                    text: widget.data!.deviceId,
                                   ),
                                 )),
                             SizedBox(
@@ -173,8 +173,8 @@ class _AssetCreationValidationWidgetState
                                       width: 1,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .bodyText1
-                                          .color),
+                                          .bodyText1!
+                                          .color!),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
@@ -183,7 +183,7 @@ class _AssetCreationValidationWidgetState
                                   child: InsiteText(
                                     size: 14,
                                     fontWeight: FontWeight.w700,
-                                    text: widget.data.model,
+                                    text: widget.data!.model,
                                   ),
                                 )),
                             SizedBox(
@@ -216,8 +216,8 @@ class _AssetCreationValidationWidgetState
                                       width: 1,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .bodyText1
-                                          .color),
+                                          .bodyText1!
+                                          .color!),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
@@ -226,7 +226,7 @@ class _AssetCreationValidationWidgetState
                                   child: InsiteText(
                                     size: 14,
                                     fontWeight: FontWeight.w700,
-                                    text: widget.data.hourMeter,
+                                    text: widget.data!.hourMeter,
                                   ),
                                 )),
                             SizedBox(
@@ -261,8 +261,8 @@ class _AssetCreationValidationWidgetState
                                     width: 1,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .color),
+                                        .bodyText1!
+                                        .color!),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
                               ),
@@ -271,7 +271,7 @@ class _AssetCreationValidationWidgetState
                                 child: InsiteText(
                                   size: 14,
                                   fontWeight: FontWeight.w700,
-                                  text: widget.data.status,
+                                  text: widget.data!.status,
                                 ),
                               )),
                           SizedBox(
@@ -303,8 +303,8 @@ class _AssetCreationValidationWidgetState
                                   width: 1,
                                   color: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
-                                      .color),
+                                      .bodyText1!
+                                      .color!),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                             ),
@@ -313,7 +313,7 @@ class _AssetCreationValidationWidgetState
                               child: InsiteText(
                                 size: 14,
                                 fontWeight: FontWeight.w700,
-                                text: widget.data.message,
+                                text: widget.data!.message,
                               ),
                             ),
                           ),

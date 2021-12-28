@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class BarWidget extends StatelessWidget {
-  final double value;
-  final Color color;
-  final double totalGreatestNumber;
-  final double averageGreatestNumber;
-  final bool isAverageButtonSelected;
-  final VoidCallback onColumnSelected;
+  final double? value;
+  final Color? color;
+  final double? totalGreatestNumber;
+  final double? averageGreatestNumber;
+  final bool? isAverageButtonSelected;
+  final VoidCallback? onColumnSelected;
 
   const BarWidget(
       {this.averageGreatestNumber,
@@ -22,16 +22,16 @@ class BarWidget extends StatelessWidget {
     double totalBarHeight = MediaQuery.of(context).size.height * 0.15;
     return GestureDetector(
       onTap: () {
-        onColumnSelected();
+        onColumnSelected!();
       },
       child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             InsiteText(
-                text: value < 1000
-                    ? '${value.toStringAsFixed(1)}'
-                    : '${(value / 1000).toStringAsFixed(1)}K',
+                text: value! < 1000
+                    ? '${value!.toStringAsFixed(1)}'
+                    : '${(value! / 1000).toStringAsFixed(1)}K',
                 size: 8,
                 fontWeight: FontWeight.bold),
             SizedBox(
@@ -51,11 +51,11 @@ class BarWidget extends StatelessWidget {
                   //     ((value /
                   //             widget.assetUtilization.totalMonth.runtimeHours) *
                   //         100)),
-                  : isAverageButtonSelected
-                      ? ((((value / averageGreatestNumber) * 100) /
+                  : isAverageButtonSelected!
+                      ? ((((value! / averageGreatestNumber!) * 100) /
                               totalBarHeight) *
                           100)
-                      : ((((value / totalGreatestNumber) * 100) /
+                      : ((((value! / totalGreatestNumber!) * 100) /
                               totalBarHeight) *
                           100),
               decoration: BoxDecoration(

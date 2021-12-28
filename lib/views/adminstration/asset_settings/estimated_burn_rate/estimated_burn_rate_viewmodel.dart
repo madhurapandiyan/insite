@@ -8,22 +8,22 @@ import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:logger/logger.dart';
 
 class EstimatedBurnRateViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
   TextEditingController workingcontroller = TextEditingController();
   TextEditingController idleController = TextEditingController();
-  var _manageUserService = locator<AssetAdminManagerUserService>();
-  List<String> _assetUId;
-  List<String> get assetUID => _assetUId;
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  List<String?>? _assetUId;
+  List<String?>? get assetUID => _assetUId;
 
-  double _workingValue;
-  double get workingValue => _workingValue;
+  double? _workingValue;
+  double? get workingValue => _workingValue;
 
   double galConversionValue = 3.784;
 
-  double _idleValue;
-  double get idleValue => _idleValue;
+  double? _idleValue;
+  double? get idleValue => _idleValue;
 
-  EstimatedBurnRateViewModel(List<String> assetUid) {
+  EstimatedBurnRateViewModel(List<String?>? assetUid) {
     this._assetUId = assetUid;
     this.log = getLogger(this.runtimeType.toString());
 
@@ -62,9 +62,9 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
     _workingValue = double.parse(workingcontroller.text);
     _idleValue = double.parse(idleController.text);
 
-    AddSettings result = await _manageUserService.getFuelBurnRateSettingsData(
-        idleValue * galConversionValue,
-        workingValue * galConversionValue,
+    AddSettings? result = await _manageUserService!.getFuelBurnRateSettingsData(
+        idleValue! * galConversionValue,
+        workingValue! * galConversionValue,
         assetUID);
     if (result != null) {
       Navigator.of(context).pop(true);
@@ -76,12 +76,12 @@ class EstimatedBurnRateViewModel extends InsiteViewModel {
   }
 
   getAssetFuelBurnRateSettingsListData() async {
-    AssetFuelBurnRateSettingsListData result =
-        await _manageUserService.getAssetFuelBurnRateListData(assetUID);
+    AssetFuelBurnRateSettingsListData? result =
+        await _manageUserService!.getAssetFuelBurnRateListData(assetUID);
     if (result != null) {
-      result.assetFuelBurnRateSettings.forEach((element) {
-        double workingValue = element.workTargetValue / galConversionValue;
-        double idleValue = element.idleTargetValue / galConversionValue;
+      result.assetFuelBurnRateSettings!.forEach((element) {
+        double workingValue = element.workTargetValue! / galConversionValue;
+        double idleValue = element.idleTargetValue! / galConversionValue;
         workingcontroller.text = workingValue.toInt().toString();
         idleController.text = idleValue.toInt().toString();
         notifyListeners();

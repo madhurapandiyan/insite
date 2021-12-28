@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -17,14 +18,14 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class MultipleAssetRegistrationViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
   MultipleAssetRegistrationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
   }
 
   ReceivePort port = ReceivePort();
-  var _subscriptionService = locator<SubScriptionService>();
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   List<AssetValues> _assetValueData = [];
   List<AssetValues> get assetValueData => _assetValueData;
@@ -40,7 +41,8 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
       final status = await permission.Permission.storage.request();
 
       if (status.isGranted) {
-        Directory baseStorage = await getExternalStorageDirectory();
+        Directory baseStorage =
+            await (getExternalStorageDirectory() as FutureOr<Directory>);
         int initialIndex = baseStorage.path.indexOf("data/");
         String path = baseStorage.path
             .replaceRange(initialIndex, baseStorage.path.length, "excel");
@@ -65,14 +67,15 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
       assetValueData.clear();
       final status = await permission.Permission.storage.request();
       if (status.isGranted) {
-        File data = await file_picker.FilePicker.getFile(fileExtension: "xlsx");
-        Logger().d(data.path);
-        var bytes = File(data.path).readAsBytesSync();
-        var excel = Excel.decodeBytes(bytes);
+        file_picker.FilePickerResult? data =
+            await file_picker.FilePicker.platform.pickFiles(
+                type: file_picker.FileType.custom, allowedExtensions: ["xlsx"]);
 
+        var bytes = File(data!.paths.first!).readAsBytesSync();
+        var excel = Excel.decodeBytes(bytes);
         for (var table in excel.tables.keys) {
-          for (var i = 0; i < excel.tables[table].rows.length; i++) {
-            final excelData = excel.tables[table].rows[i];
+          for (var i = 0; i < excel.tables[table]!.rows.length; i++) {
+            final excelData = excel.tables[table]!.rows[i];
 
             if (i == 0) {
               Logger().d("null");
@@ -81,7 +84,7 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
                   deviceId: excelData[0].toString(),
                   machineModel: excelData[1].toString(),
                   machineSlNo: excelData[2].toString(),
-                  hMR: excelData[3].toInt(),
+                  hMR: int.parse(excelData[3].toString()),
                   hMRDate: excelData[4].toString(),
                   plantName: excelData[5].toString(),
                   plantCode: excelData[6].toString(),
@@ -103,11 +106,12 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
         hideLoadingDialog();
         // onGettingMultiSmsData();
       } else {
-        snackbarService.showSnackbar(message: "Permission Denied");
+        snackbarService!.showSnackbar(message: "Permission Denied");
         hideLoadingDialog();
       }
     } catch (e) {
-      snackbarService.showSnackbar(
+      Logger().e(e.toString());
+      snackbarService!.showSnackbar(
           message: "Permission Denied Only Read Files From External Storage");
       //hideLoadingDialog();
     }
@@ -136,8 +140,8 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
     );
     _assetData.add(deviceAssetValues);
 
-    var result = await _subscriptionService.postSingleAssetRegistration(
-        data: _assetData);
+    var result = await (_subscriptionService!.postSingleAssetRegistration(
+        data: _assetData) as Future<AddAssetRegistrationData>);
 
     notifyListeners();
     return result.status;

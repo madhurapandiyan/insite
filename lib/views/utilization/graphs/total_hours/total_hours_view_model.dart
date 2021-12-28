@@ -6,9 +6,9 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class TotalHoursViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _utilizationGraphService = locator<UtilizationGraphsService>();
+  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
 
   String _range = 'daily';
   set range(String range) {
@@ -21,8 +21,8 @@ class TotalHoursViewModel extends InsiteViewModel {
   bool _isSwitching = false;
   bool get isSwitching => _isSwitching;
 
-  TotalHours _totalHours;
-  TotalHours get totalHours => _totalHours;
+  TotalHours? _totalHours;
+  TotalHours? get totalHours => _totalHours;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -34,7 +34,7 @@ class TotalHoursViewModel extends InsiteViewModel {
 
   getTotalHours() async {
     _isSwitching = true;
-    TotalHours result = await _utilizationGraphService.getTotalHours(
+    TotalHours? result = await _utilizationGraphService!.getTotalHours(
         _range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _totalHours = null;
@@ -48,7 +48,7 @@ class TotalHoursViewModel extends InsiteViewModel {
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
-    TotalHours result = await _utilizationGraphService.getTotalHours(
+    TotalHours? result = await _utilizationGraphService!.getTotalHours(
         _range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _totalHours = null;

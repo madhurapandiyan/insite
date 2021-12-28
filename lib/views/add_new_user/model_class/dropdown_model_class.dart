@@ -4,10 +4,10 @@ part 'dropdown_model_class.g.dart';
 
 @JsonSerializable()
 class ApplicationSelectedDropDown {
-  ApplicationAccessData accessData;
-  String value;
-  String key;
-  String applicationName;
+  ApplicationAccessData? accessData;
+  String? value;
+  String? key;
+  String? applicationName;
   ApplicationSelectedDropDown(
       {this.accessData, this.value, this.key, this.applicationName});
 

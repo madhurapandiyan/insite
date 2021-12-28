@@ -3,10 +3,10 @@ part 'role_data.g.dart';
 
 @JsonSerializable()
 class RoleData {
-  final String role_name;
-  final int role_id;
-  final String provider_id;
-  final String description;
+  final String? role_name;
+  final int? role_id;
+  final String? provider_id;
+  final String? description;
   RoleData({this.description, this.provider_id, this.role_id, this.role_name});
 
   factory RoleData.fromJson(Map<String, dynamic> json) =>
@@ -17,7 +17,7 @@ class RoleData {
 
 @JsonSerializable()
 class RoleDataResponse {
-  final List<RoleData> role_list;
+  final List<RoleData>? role_list;
   RoleDataResponse({this.role_list});
   factory RoleDataResponse.fromJson(Map<String, dynamic> json) =>
       _$RoleDataResponseFromJson(json);

@@ -8,9 +8,9 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class AssetLocationHistoryService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
+  LocalService? _localService = locator<LocalService>();
 
   AssetLocationHistoryService() {
     setUp();
@@ -18,38 +18,38 @@ class AssetLocationHistoryService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<AssetLocationHistory> getAssetLocationHistory(
-    String startTimeLocal,
-    String endTimeLocal,
-    String assetUid,
+  Future<AssetLocationHistory?> getAssetLocationHistory(
+    String? startTimeLocal,
+    String? endTimeLocal,
+    String? assetUid,
   ) async {
     try {
       if (isVisionLink) {
         AssetLocationHistory locationHistoryResponse =
-            await MyApi().getClient().assetLocationHistoryVL(
+            await MyApi().getClient()!.assetLocationHistoryVL(
                   Urls.locationHistoryVL +
-                      assetUid +
+                      assetUid! +
                       "/v2" +
                       getLocationHistoryUrl(startTimeLocal, endTimeLocal),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                 );
         return locationHistoryResponse != null ? locationHistoryResponse : null;
       } else {
         AssetLocationHistory locationHistoryResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .assetLocationHistory(
                 Urls.locationHistory +
-                    assetUid +
+                    assetUid! +
                     "/v2" +
                     getLocationHistoryUrl(startTimeLocal, endTimeLocal),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 Urls.fleetMapPrefix);
         return locationHistoryResponse != null ? locationHistoryResponse : null;
       }

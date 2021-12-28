@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultDropDown extends StatefulWidget {
-  final String value;
-  final List<String> items;
-  final ValueChanged<String> onChanged;
+  final String? value;
+  final List<String>? items;
+  final ValueChanged<String?>? onChanged;
   FaultDropDown({this.items, this.value, this.onChanged});
 
   @override
@@ -21,7 +21,7 @@ class _FaultDropDownState extends State<FaultDropDown> {
           height: MediaQuery.of(context).size.height * .06,
           decoration: BoxDecoration(
             border:
-                Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+                Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: Row(
@@ -49,7 +49,7 @@ class _FaultDropDownState extends State<FaultDropDown> {
                     color: Theme.of(context).iconTheme.color,
                   ),
                   onChanged: widget.onChanged,
-                  items: widget.items
+                  items: widget.items!
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

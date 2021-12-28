@@ -5,9 +5,9 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ToBeActivatedListItem extends StatelessWidget {
-  final DetailResult detailResult;
-  final VoidCallback onCallback;
-  const ToBeActivatedListItem({Key key, this.detailResult, this.onCallback})
+  final DetailResult? detailResult;
+  final VoidCallback? onCallback;
+  const ToBeActivatedListItem({Key? key, this.detailResult, this.onCallback})
       : super(key: key);
 
   @override
@@ -49,19 +49,19 @@ class ToBeActivatedListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: detailResult.GPSDeviceID != null
-                            ? "Device ID : " + "\n" + detailResult.GPSDeviceID
+                        title: detailResult!.GPSDeviceID != null
+                            ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
                             : "Device ID : " + "\n",
-                        path: detailResult == null || detailResult.Model == null
+                        path: detailResult == null || detailResult!.Model == null
                             ? "assets/images/EX210.png"
-                            : detailResult.Model != null
-                                ? Utils().imageData(detailResult.Model)
+                            : detailResult!.Model != null
+                                ? Utils().imageData(detailResult!.Model!)
                                 : "",
                       ),
                       InsiteTableRowItem(
                         title: "Network Provider : ",
-                        content: detailResult.NetworkProvider != null
-                            ? detailResult.NetworkProvider
+                        content: detailResult!.NetworkProvider != null
+                            ? detailResult!.NetworkProvider
                             : "",
                       ),
                     ],

@@ -3,7 +3,7 @@ part 'geofencemodel.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Geofence {
-  final List<Geofencemodeldata> Geofences;
+  final List<Geofencemodeldata>? Geofences;
   Geofence({this.Geofences});
   factory Geofence.fromJson(Map<String, dynamic> json) =>
       _$GeofenceFromJson(json);
@@ -12,18 +12,18 @@ class Geofence {
 
 @JsonSerializable()
 class Geofencemodeldata {
-  final String GeofenceUID;
-  final String GeofenceName;
-  final String GeofenceType;
-  final String Description;
-   bool IsFavorite;
-  final String CustomerUID;
-  final bool IsTransparent;
-  final double AreaSqMeters;
-  final int FillColor;
-  final String StartDate;
-  final String GeometryWKT;
-  final String EndDate;
+  final String? GeofenceUID;
+  final String? GeofenceName;
+  final String? GeofenceType;
+  final String? Description;
+   bool? IsFavorite;
+  final String? CustomerUID;
+  final bool? IsTransparent;
+  final double? AreaSqMeters;
+  final int? FillColor;
+  final String? StartDate;
+  final String? GeometryWKT;
+  final String? EndDate;
 
   Geofencemodeldata(
       {this.GeofenceUID,

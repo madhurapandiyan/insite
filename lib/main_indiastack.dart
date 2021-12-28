@@ -18,15 +18,16 @@ void main() async {
   await FlutterDownloader.initialize(debug: true);
   await Hive.initFlutter();
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
-  Hive.registerAdapter<FilterType>(FilterTypeAdapter());
+  Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
   Hive.registerAdapter<CountData>(CountDataAdapter());
-  Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
+  Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
       iconPath: "assets/images/hitachi.png",
       productFlavor: "tatahitachi",
       enableLogin: false,
+      enalbeNativeLogin: true,
       isProd: false,
       apiFlavor: "indiastack");
 

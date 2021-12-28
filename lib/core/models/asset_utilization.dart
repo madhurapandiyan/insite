@@ -14,14 +14,14 @@ class AssetUtilization {
     this.message,
   });
 
-  Hours totalDay;
-  Hours totalWeek;
-  Hours totalMonth;
-  Hours targetDay;
-  Hours targetWeek;
-  Hours targetMonth;
-  int code;
-  String message;
+  Hours? totalDay;
+  Hours? totalWeek;
+  Hours? totalMonth;
+  Hours? targetDay;
+  Hours? targetWeek;
+  Hours? targetMonth;
+  int? code;
+  String? message;
 
   factory AssetUtilization.fromJson(Map<String, dynamic> json) =>
       _$AssetUtilizationFromJson(json);
@@ -40,12 +40,12 @@ class Hours {
     this.workingFuel,
   });
 
-  double idleHours;
-  double runtimeHours;
-  double workingHours;
-  double idleFuel;
-  double runtimeFuel;
-  double workingFuel;
+  double? idleHours;
+  double? runtimeHours;
+  double? workingHours;
+  double? idleFuel;
+  double? runtimeFuel;
+  double? workingFuel;
 
   factory Hours.fromJson(Map<String, dynamic> json) => _$HoursFromJson(json);
 

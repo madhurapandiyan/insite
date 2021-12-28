@@ -3,9 +3,9 @@ part 'asset_creation_reset_data.g.dart';
 
 @JsonSerializable()
 class AssetCreationResetData {
-  String code;
-  String status;
-  List<Result> result;
+  String? code;
+  String? status;
+  List<Result>? result;
 
   AssetCreationResetData({this.code, this.status, this.result});
 
@@ -17,15 +17,15 @@ class AssetCreationResetData {
 
 @JsonSerializable()
 class Result {
-  int code;
-  String status;
-  String GPSDeviceID;
-  String VIN;
-  String vin;
-  String message;
-  String Model;
-  double HMRValue;
-  String AssetCreationDate;
+  int? code;
+  String? status;
+  String? GPSDeviceID;
+  String? VIN;
+  String? vin;
+  String? message;
+  String? Model;
+  double? HMRValue;
+  String? AssetCreationDate;
 
   Result(
       {this.code,

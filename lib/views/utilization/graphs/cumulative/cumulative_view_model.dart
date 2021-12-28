@@ -6,14 +6,14 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class CumulativeViewModel extends InsiteViewModel {
-  Logger log;
-  var _utilizationGraphService = locator<UtilizationGraphsService>();
+  Logger? log;
+  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
 
-  RunTimeCumulative _runTimeCumulative;
-  RunTimeCumulative get runTimeCumulative => _runTimeCumulative;
+  RunTimeCumulative? _runTimeCumulative;
+  RunTimeCumulative? get runTimeCumulative => _runTimeCumulative;
 
-  FuelBurnedCumulative _fuelBurnedCumulative;
-  FuelBurnedCumulative get fuelBurnedCumulative => _fuelBurnedCumulative;
+  FuelBurnedCumulative? _fuelBurnedCumulative;
+  FuelBurnedCumulative? get fuelBurnedCumulative => _fuelBurnedCumulative;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -23,7 +23,7 @@ class CumulativeViewModel extends InsiteViewModel {
 
   CumulativeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _utilizationGraphService.setUp();
+    _utilizationGraphService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getRunTimeCumulative();
       getFuelBurnedCumulative();
@@ -31,9 +31,9 @@ class CumulativeViewModel extends InsiteViewModel {
   }
 
   getRunTimeCumulative() async {
-    RunTimeCumulative result =
-        await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
-    if (result.cumulatives == null)
+    RunTimeCumulative? result =
+        await (_utilizationGraphService!.getRunTimeCumulative(startDate, endDate));
+    if (result!.cumulatives == null)
       _runTimeCumulative = null;
     else
       _runTimeCumulative = result;
@@ -42,9 +42,9 @@ class CumulativeViewModel extends InsiteViewModel {
   }
 
   getFuelBurnedCumulative() async {
-    FuelBurnedCumulative result = await _utilizationGraphService
-        .getFuelBurnedCumulative(startDate, endDate);
-    if (result.cumulatives == null)
+    FuelBurnedCumulative? result = await (_utilizationGraphService!
+        .getFuelBurnedCumulative(startDate, endDate) );
+    if (result!.cumulatives == null)
       _fuelBurnedCumulative = null;
     else
       _fuelBurnedCumulative = result;
@@ -56,13 +56,13 @@ class CumulativeViewModel extends InsiteViewModel {
     _isRefreshing = true;
     notifyListeners();
     RunTimeCumulative resultRuntime =
-        await _utilizationGraphService.getRunTimeCumulative(startDate, endDate);
+        await (_utilizationGraphService!.getRunTimeCumulative(startDate, endDate) as Future<RunTimeCumulative>);
     if (resultRuntime.cumulatives == null)
       _runTimeCumulative = null;
     else
       _runTimeCumulative = resultRuntime;
-    FuelBurnedCumulative resultFuel = await _utilizationGraphService
-        .getFuelBurnedCumulative(startDate, endDate);
+    FuelBurnedCumulative resultFuel = await (_utilizationGraphService!
+        .getFuelBurnedCumulative(startDate, endDate) as Future<FuelBurnedCumulative>);
     if (resultFuel.cumulatives == null)
       _fuelBurnedCumulative = null;
     else

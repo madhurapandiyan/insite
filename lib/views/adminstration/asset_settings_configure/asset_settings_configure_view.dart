@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import 'asset_settings_configure_view_model.dart';
 
 class AssetSettingsConfigureView extends StatefulWidget {
-  final String assetUids;
+  final String? assetUids;
 
   AssetSettingsConfigureView({this.assetUids});
   @override
@@ -28,7 +28,7 @@ class _AssetSettingsConfigureViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsConfigureViewModel>.reactive(
         builder: (BuildContext context,
-            AssetSettingsConfigureViewModel viewModel, Widget _) {
+            AssetSettingsConfigureViewModel viewModel, Widget? _) {
           return InsiteScaffold(
               viewModel: viewModel,
               body: Stack(
@@ -66,15 +66,15 @@ class _AssetSettingsConfigureViewState
                                 border: Border.all(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .color)),
+                                        .bodyText1!
+                                        .color!)),
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: CustomDropDownWidget(
                                   items: viewModel.items,
                                   value: dropDownValue,
-                                  onChanged: (String value) {
-                                    dropDownValue = value;
+                                  onChanged: (String? value) {
+                                    dropDownValue = value!;
                                     viewModel.displayList =
                                         viewModel.staticTranspotData;
                                     setState(() {});

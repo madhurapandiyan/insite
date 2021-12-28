@@ -9,7 +9,7 @@ import 'fuel_burn_rate_trend_view_model.dart';
 
 class FuelBurnRateTrendView extends StatefulWidget {
   const FuelBurnRateTrendView({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class FuelBurnRateTrendView extends StatefulWidget {
 class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
-  var viewModel;
+  late var viewModel;
   List<bool> shouldShowLabel = [true, true, true];
 
   @override
@@ -42,7 +42,7 @@ class FuelBurnRateTrendViewState extends State<FuelBurnRateTrendView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<FuelBurnRateTrendViewModel>.reactive(
       builder: (BuildContext context, FuelBurnRateTrendViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

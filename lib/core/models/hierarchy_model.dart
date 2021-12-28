@@ -3,9 +3,9 @@ part 'hierarchy_model.g.dart';
 
 @JsonSerializable()
 class SingleAssetRegistrationSearchModel {
-  final String code;
-  final String status;
-  final List<List<HierarchyModel>> result;
+  final String? code;
+  final String? status;
+  final List<List<HierarchyModel>>? result;
 
   SingleAssetRegistrationSearchModel({this.code, this.status, this.result});
 
@@ -19,11 +19,11 @@ class SingleAssetRegistrationSearchModel {
 
 @JsonSerializable()
 class HierarchyModel {
-  final int ID;
-  final String Name;
-  final String UserName;
-  final String Email;
-  final String Code;
+  final int? ID;
+  final String? Name;
+  final String? UserName;
+  final String? Email;
+  final String? Code;
 
   HierarchyModel({this.ID, this.Name, this.UserName, this.Email, this.Code});
 

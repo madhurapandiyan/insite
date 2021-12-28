@@ -6,12 +6,12 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FuelBurnRateGraph extends StatelessWidget {
   final int rangeSelection;
-  final FuelBurnRateTrend fuelBurnRateTrend;
-  final List<bool> shouldShowLabel;
+  final FuelBurnRateTrend? fuelBurnRateTrend;
+  final List<bool>? shouldShowLabel;
   const FuelBurnRateGraph(
-      {Key key,
-      @required this.rangeSelection,
-      @required this.fuelBurnRateTrend,
+      {Key? key,
+      required this.rangeSelection,
+      required this.fuelBurnRateTrend,
       this.shouldShowLabel})
       : super(key: key);
 
@@ -21,15 +21,15 @@ class FuelBurnRateGraph extends StatelessWidget {
       child: SfCartesianChart(
         title: ChartTitle(
             textStyle:
-                TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+                TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
             text: ''),
         primaryXAxis: CategoryAxis(
           title: AxisTitle(
               text: '',
               textStyle: TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color)),
+                  color: Theme.of(context).textTheme.bodyText1!.color)),
           labelStyle:
-              TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+              TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
           majorGridLines: MajorGridLines(width: 0),
           labelRotation: 270,
         ),
@@ -38,11 +38,11 @@ class FuelBurnRateGraph extends StatelessWidget {
           title: AxisTitle(
               text: 'Fuel Burned Rate (Liters per hour)',
               textStyle: TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color)),
+                  color: Theme.of(context).textTheme.bodyText1!.color)),
           numberFormat: NumberFormat.compact(),
           axisLine: AxisLine(width: 1),
           labelStyle:
-              TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+              TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
           majorGridLines: MajorGridLines(width: 0),
         ),
         tooltipBehavior: TooltipBehavior(),
@@ -57,16 +57,16 @@ class FuelBurnRateGraph extends StatelessWidget {
     if (fuelBurnRateTrend == null)
       return <SplineSeries<CumulativeChartData, String>>[];
 
-    for (var item in fuelBurnRateTrend.intervals) {
+    for (var item in fuelBurnRateTrend!.intervals!) {
       chartData.add(CumulativeChartData(
-          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime),
-          item.burnrates.idleFuelBurnRate,
-          item.burnrates.workingFuelBurnRate,
-          item.burnrates.runtimeFuelBurnRate));
+          DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime!),
+          item.burnrates!.idleFuelBurnRate,
+          item.burnrates!.workingFuelBurnRate,
+          item.burnrates!.runtimeFuelBurnRate));
     }
 
     return <SplineSeries<CumulativeChartData, String>>[
-      shouldShowLabel[1]
+      shouldShowLabel![1]
           ? SplineSeries<CumulativeChartData, String>(
               dataSource: chartData,
               splineType: SplineType.natural,
@@ -81,7 +81,7 @@ class FuelBurnRateGraph extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[0]
+      shouldShowLabel![0]
           ? SplineSeries<CumulativeChartData, String>(
               dataSource: chartData,
               splineType: SplineType.natural,
@@ -96,7 +96,7 @@ class FuelBurnRateGraph extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[2]
+      shouldShowLabel![2]
           ? SplineSeries<CumulativeChartData, String>(
               dataSource: chartData,
               splineType: SplineType.natural,
@@ -117,9 +117,9 @@ class FuelBurnRateGraph extends StatelessWidget {
 
 class CumulativeChartData {
   final String x;
-  final double idleBurnRate;
-  final double workingBurnRate;
-  final double runtimeBurnRate;
+  final double? idleBurnRate;
+  final double? workingBurnRate;
+  final double? runtimeBurnRate;
 
   CumulativeChartData(
     this.x,

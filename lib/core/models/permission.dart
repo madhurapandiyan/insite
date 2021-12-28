@@ -3,10 +3,10 @@ part 'permission.g.dart';
 
 @JsonSerializable()
 class Permission {
-  final double permission_id;
-  final String action;
-  final String resource;
-  final String provider_id;
+  final double? permission_id;
+  final String? action;
+  final String? resource;
+  final String? provider_id;
   Permission(
       {this.permission_id, this.action, this.resource, this.provider_id});
   factory Permission.fromJson(Map<String, dynamic> json) =>
@@ -17,7 +17,7 @@ class Permission {
 
 @JsonSerializable()
 class PermissionResponse {
-  final List<Permission> permission_list;
+  final List<Permission>? permission_list;
   PermissionResponse({this.permission_list});
   factory PermissionResponse.fromJson(Map<String, dynamic> json) =>
       _$PermissionResponseFromJson(json);

@@ -16,14 +16,14 @@ class DateRangeView extends StatefulWidget {
   _DateRangeViewState createState() => _DateRangeViewState();
 
   const DateRangeView({
-    Key key,
+    Key? key,
   }) : super(key: key);
 }
 
 class _DateRangeViewState extends State<DateRangeView> {
-  DateTime fromDate, toDate;
-  DateTime customFromDate, customToDate;
-  DateTime _selectedDay;
+  DateTime? fromDate, toDate;
+  DateTime? customFromDate, customToDate;
+  DateTime? _selectedDay;
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
   bool isCalenderVisible = false;
   bool customCalenderIndex = false;
@@ -32,14 +32,14 @@ class _DateRangeViewState extends State<DateRangeView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DateRangeViewModel>.reactive(
-      builder: (BuildContext context, DateRangeViewModel viewModel, Widget _) {
+      builder: (BuildContext context, DateRangeViewModel viewModel, Widget? _) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.95,
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border.all(
-                color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
+                color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Padding(
@@ -58,7 +58,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                     InsiteText(
                         text: (fromDate == null || toDate == null)
                             ? ''
-                            : '${Utils.parseDate(fromDate)} - ${Utils.parseDate(toDate)}',
+                            : '${Utils.parseDate(fromDate!)} - ${Utils.parseDate(toDate!)}',
                         fontWeight: FontWeight.bold,
                         size: 14),
                   ],
@@ -231,7 +231,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                               },
                               title: customFromDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
-                                  : Utils.parseDate(customFromDate)
+                                  : Utils.parseDate(customFromDate!)
                                       .toUpperCase(),
                             ),
                           ],
@@ -274,7 +274,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
-                                  : Utils.parseDate(customToDate).toUpperCase(),
+                                  : Utils.parseDate(customToDate!).toUpperCase(),
                             ),
                           ],
                         ),
@@ -313,7 +313,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                       CustomDatePick.customToDate) {
                                     customToDate = _selectedDay;
                                     toDate = _selectedDay;
-                                    if (toDate.isBefore(fromDate)) {
+                                    if (toDate!.isBefore(fromDate!)) {
                                       Utils.showToast(
                                           "End date cannot be less than start date.");
                                     }
@@ -336,31 +336,31 @@ class _DateRangeViewState extends State<DateRangeView> {
                           if (viewModel.selectedDateRange ==
                               DateRangeType.today) {
                             await viewModel.updateDateRange(
-                                '${fromDate.year}-${fromDate.month}-${fromDate.day}',
-                                '${toDate.year}-${toDate.month}-${toDate.day}',
+                                '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
+                                '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                 describeEnum(viewModel.selectedDateRange));
                             Future.delayed(Duration(milliseconds: 500), () {
                               Navigator.pop(context, [fromDate, toDate]);
                             });
                           } else {
-                            if (DateUtil.isBothDateSame(fromDate, toDate)) {
+                            if (DateUtil.isBothDateSame(fromDate!, toDate!)) {
                               Logger().i("if date equal");
                               await viewModel.updateDateRange(
-                                  '${fromDate.year}-${fromDate.month}-${fromDate.day}',
-                                  '${toDate.year}-${toDate.month}-${toDate.day}',
+                                  '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
+                                  '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                   describeEnum(viewModel.selectedDateRange));
                               Future.delayed(Duration(milliseconds: 500), () {
                                 Navigator.pop(context, [fromDate, toDate]);
                               });
                             } else {
                               Logger().i("if date not equal");
-                              if (toDate.isBefore(fromDate)) {
+                              if (toDate!.isBefore(fromDate!)) {
                                 Utils.showToast(
                                     "End date cannot be less than start date.");
                               } else {
                                 await viewModel.updateDateRange(
-                                    '${fromDate.year}-${fromDate.month}-${fromDate.day}',
-                                    '${toDate.year}-${toDate.month}-${toDate.day}',
+                                    '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
+                                    '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                     describeEnum(viewModel.selectedDateRange));
                                 Future.delayed(Duration(milliseconds: 500), () {
                                   Navigator.pop(context, [fromDate, toDate]);
@@ -407,7 +407,7 @@ class _DateRangeViewState extends State<DateRangeView> {
     if (viewModel.selectedDateRange == DateRangeType.previousWeek) {
       fromDate =
           DateTime.now().subtract(Duration(days: DateTime.now().weekday + 6));
-      toDate = fromDate.add(Duration(days: 6));
+      toDate = fromDate!.add(Duration(days: 6));
     } else if (viewModel.selectedDateRange == DateRangeType.previousMonth) {
       fromDate = DateTime.utc(DateTime.now().year, DateTime.now().month - 1, 1);
       toDate = DateTime.utc(DateTime.now().year, DateTime.now().month, 0);
@@ -423,11 +423,11 @@ class _DateRangeViewState extends State<DateRangeView> {
 }
 
 class RangeLabel extends StatelessWidget {
-  final DateRangeType defaultDateRange;
-  final DateRangeType selectedDateRange;
-  final double width;
-  final String label;
-  final VoidCallback onTapCallback;
+  final DateRangeType? defaultDateRange;
+  final DateRangeType? selectedDateRange;
+  final double? width;
+  final String? label;
+  final VoidCallback? onTapCallback;
   const RangeLabel(
       {this.defaultDateRange,
       this.selectedDateRange,
@@ -439,17 +439,17 @@ class RangeLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onTapCallback();
+        onTapCallback!();
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * width,
+        width: MediaQuery.of(context).size.width * width!,
         height: 40,
         decoration: BoxDecoration(
           color: (defaultDateRange == selectedDateRange)
               ? Theme.of(context).buttonColor
               : Theme.of(context).backgroundColor,
           border: Border.all(
-              color: Theme.of(context).textTheme.bodyText1.color, width: 0.0),
+              color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
           borderRadius: BorderRadius.all(
             Radius.circular(8),
           ),
@@ -460,7 +460,7 @@ class RangeLabel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InsiteText(
-                text: label.toUpperCase(),
+                text: label!.toUpperCase(),
                 size: 12,
                 color: defaultDateRange == selectedDateRange ? white : null,
                 fontWeight: FontWeight.bold,

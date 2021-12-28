@@ -8,13 +8,13 @@ import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class AssetCreationWidget extends StatefulWidget {
-  final Function(String) onAssetSerialValueChange;
+  final Function(String)? onAssetSerialValueChange;
 
-  final Function(String) onDeviceIdValueChange;
-  final Function(String) onHourMeterValueChange;
+  final Function(String)? onDeviceIdValueChange;
+  final Function(String)? onHourMeterValueChange;
 
-  final AssetCreationModel data;
-  final VoidCallback voidCallback;
+  final AssetCreationModel? data;
+  final VoidCallback? voidCallback;
   const AssetCreationWidget(
       {this.onAssetSerialValueChange,
       this.onDeviceIdValueChange,
@@ -33,7 +33,7 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
   @override
   void didUpdateWidget(covariant AssetCreationWidget oldWidget) {
     modelController.text =
-        oldWidget.data.model == null ? "" : oldWidget.data.model;
+        oldWidget.data!.model == null ? "" : oldWidget.data!.model!;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -41,7 +41,7 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.voidCallback();
+        widget.voidCallback!();
       },
       child: Card(
         child: Row(
@@ -100,8 +100,8 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
                               height: MediaQuery.of(context).size.height * 0.05,
                               child: CustomTextBox(
                                 onChanged: (String value) {
-                                  widget.data.assetSerialNo = value;
-                                  widget.onAssetSerialValueChange(value);
+                                  widget.data!.assetSerialNo = value;
+                                  widget.onAssetSerialValueChange!(value);
                                 },
                               ),
                             ),
@@ -131,8 +131,8 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
                               height: MediaQuery.of(context).size.height * 0.05,
                               child: CustomTextBox(
                                 onChanged: (String value) {
-                                  widget.data.deviceId = value;
-                                  widget.onDeviceIdValueChange(value);
+                                  widget.data!.deviceId = value;
+                                  widget.onDeviceIdValueChange!(value);
                                 },
                               ),
                             ),
@@ -202,8 +202,8 @@ class _AssetCreationWidgetState extends State<AssetCreationWidget> {
                               height: MediaQuery.of(context).size.height * 0.05,
                               child: CustomTextBox(
                                 onChanged: (String value) {
-                                  widget.data.hourMeter = value;
-                                  widget.onHourMeterValueChange(value);
+                                  widget.data!.hourMeter = value;
+                                  widget.onHourMeterValueChange!(value);
                                 },
                               ),
                             ),

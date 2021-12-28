@@ -8,14 +8,14 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashboardPieChartWidget extends StatefulWidget {
-  final List<ChartSampleData> data;
-  final String title;
-  final String title2;
-  final bool isLoading;
-  final bool isRefreshing;
-  final Function(String) onFilterSelected;
+  final List<ChartSampleData>? data;
+  final String? title;
+  final String? title2;
+  final bool? isLoading;
+  final bool? isRefreshing;
+  final Function(String?)? onFilterSelected;
   const DashboardPieChartWidget(
-      {Key key,
+      {Key? key,
       this.data,
       this.title,
       this.isLoading,
@@ -76,7 +76,7 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
             thickness: 1.0,
             color: Theme.of(context).dividerColor,
           ),
-          widget.isLoading
+          widget.isLoading!
               ? Expanded(child: InsiteProgressBar())
               : Padding(
                   padding: const EdgeInsets.only(top: 8.0),
@@ -94,7 +94,7 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
                               labelStyle: TextStyle(
                                   color: Theme.of(context)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyText1!
                                       .color,
                                   fontSize: 10.0,
                                   fontWeight: FontWeight.w700,
@@ -124,8 +124,8 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
                                     pointTapArgs.seriesIndex.toString() +
                                     " " +
                                     pointTapArgs.viewportPointIndex.toString());
-                                widget.onFilterSelected(
-                                    widget.data[pointTapArgs.pointIndex].z);
+                                widget.onFilterSelected!(
+                                    widget.data![pointTapArgs.pointIndex!].z);
                               } catch (e) {}
                             },
                             primaryYAxis: NumericAxis(
@@ -135,7 +135,7 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
                                 labelStyle: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
+                                        .bodyText1!
                                         .color,
                                     fontSize: 10.0,
                                     fontWeight: FontWeight.w700,
@@ -156,12 +156,12 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
   List<BarSeries<ChartSampleData, String>> _getDefaultBarSeries() {
     return <BarSeries<ChartSampleData, String>>[
       BarSeries<ChartSampleData, String>(
-          dataSource: widget.data,
+          dataSource: widget.data!,
           isVisibleInLegend: true,
           dataLabelSettings: DataLabelSettings(
               isVisible: true,
               textStyle: new TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',
@@ -174,7 +174,7 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
     ];
   }
 
-  Color getColorData(String data) {
+  Color? getColorData(String? data) {
     switch (data) {
       case "Today":
         return burntSienna;

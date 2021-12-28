@@ -7,13 +7,13 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CumulativeChart extends StatelessWidget {
-  final RunTimeCumulative runTimeCumulative;
-  final FuelBurnedCumulative fuelBurnedCumulative;
-  final CumulativeChartType cumulativeChartType;
-  final List<bool> shouldShowLabel;
+  final RunTimeCumulative? runTimeCumulative;
+  final FuelBurnedCumulative? fuelBurnedCumulative;
+  final CumulativeChartType? cumulativeChartType;
+  final List<bool>? shouldShowLabel;
 
   const CumulativeChart(
-      {Key key,
+      {Key? key,
       this.runTimeCumulative,
       this.fuelBurnedCumulative,
       this.cumulativeChartType,
@@ -27,7 +27,7 @@ class CumulativeChart extends StatelessWidget {
           ? SfCartesianChart(
               title: ChartTitle(
                   textStyle: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color),
                   text: cumulativeChartType == CumulativeChartType.FUELBURNED
                       ? 'Daily average: NA'
                       : 'Daily average: NA'),
@@ -37,7 +37,7 @@ class CumulativeChart extends StatelessWidget {
                         ? 'Total Fuel Burned: NA'
                         : 'Total Hours: NA',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: cumulativeChartType == CumulativeChartType.FUELBURNED
@@ -49,10 +49,10 @@ class CumulativeChart extends StatelessWidget {
                         ? 'Cumulative Fuel Burned (Liters)'
                         : 'Cumulative Runtime (Hours)',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 axisLine: AxisLine(width: 1),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 numberFormat: NumberFormat.compact(),
                 majorGridLines: MajorGridLines(width: 0),
               ),
@@ -62,17 +62,17 @@ class CumulativeChart extends StatelessWidget {
           : SfCartesianChart(
               title: ChartTitle(
                   textStyle: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText1.color),
+                      color: Theme.of(context).textTheme.bodyText1!.color),
                   text: cumulativeChartType == CumulativeChartType.FUELBURNED
-                      ? 'Daily average: ${fuelBurnedCumulative.cumulatives.averageFuelBurned.toStringAsFixed(2)} Liters'
-                      : 'Daily average: ${runTimeCumulative.cumulatives.averageHours.toStringAsFixed(2)} Hours'),
+                      ? 'Daily average: ${fuelBurnedCumulative!.cumulatives!.averageFuelBurned!.toStringAsFixed(2)} Liters'
+                      : 'Daily average: ${runTimeCumulative!.cumulatives!.averageHours!.toStringAsFixed(2)} Hours'),
               primaryXAxis: CategoryAxis(
                 title: AxisTitle(
                     text: cumulativeChartType == CumulativeChartType.FUELBURNED
-                        ? 'Total Fuel Burned: ${fuelBurnedCumulative.cumulatives.totalFuelBurned.toStringAsFixed(2)}'
-                        : 'Total Hours: ${runTimeCumulative.cumulatives.cumulativeHours.toStringAsFixed(2)}',
+                        ? 'Total Fuel Burned: ${fuelBurnedCumulative!.cumulatives!.totalFuelBurned!.toStringAsFixed(2)}'
+                        : 'Total Hours: ${runTimeCumulative!.cumulatives!.cumulativeHours!.toStringAsFixed(2)}',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 majorGridLines: MajorGridLines(width: 0),
               ),
               series: cumulativeChartType == CumulativeChartType.FUELBURNED
@@ -84,10 +84,10 @@ class CumulativeChart extends StatelessWidget {
                         ? 'Cumulative Fuel Burned (Liters)'
                         : 'Cumulative Runtime (Hours)',
                     textStyle: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color)),
                 axisLine: AxisLine(width: 1),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
                 numberFormat: NumberFormat.compact(),
                 majorGridLines: MajorGridLines(width: 0),
               ),
@@ -118,7 +118,7 @@ class CumulativeChart extends StatelessWidget {
     }
 
     return <StackedColumnSeries<CumulativeChartData, String>>[
-      shouldShowLabel[0]
+      shouldShowLabel![0]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: emerald,
@@ -132,7 +132,7 @@ class CumulativeChart extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[1]
+      shouldShowLabel![1]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: burntSienna,
@@ -146,7 +146,7 @@ class CumulativeChart extends StatelessWidget {
               xValueMapper: (CumulativeChartData chartDate, _) => '',
               yValueMapper: (CumulativeChartData chartDate, _) => 0,
             ),
-      shouldShowLabel[2]
+      shouldShowLabel![2]
           ? StackedColumnSeries<CumulativeChartData, String>(
               dataSource: chartData,
               color: creamCan,
@@ -166,9 +166,9 @@ class CumulativeChart extends StatelessWidget {
 
 class CumulativeChartData {
   final String x;
-  final double runtime;
-  final double working;
-  final double idle;
+  final double? runtime;
+  final double? working;
+  final double? idle;
 
   CumulativeChartData(this.x, this.runtime, this.working, this.idle);
 }

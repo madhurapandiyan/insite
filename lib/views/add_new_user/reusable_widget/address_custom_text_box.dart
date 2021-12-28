@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 
 class AddressCustomTextBox extends StatelessWidget {
-  final String title;
-  final TextEditingController controller;
-  final FocusNode focusNode;
+  final String? title;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   AddressCustomTextBox({this.controller, this.title, this.focusNode});
 
@@ -19,7 +19,7 @@ class AddressCustomTextBox extends StatelessWidget {
         fontWeight: FontWeight.w700,
         fontSize: 14,
         fontStyle: FontStyle.normal,
-        color: Theme.of(context).textTheme.bodyText1.color,
+        color: Theme.of(context).textTheme.bodyText1!.color,
       ),
       cursorColor: black,
       decoration: InputDecoration(
@@ -42,7 +42,7 @@ class AddressCustomTextBox extends StatelessWidget {
             fontWeight: FontWeight.w700,
             fontSize: 14,
             fontStyle: FontStyle.normal,
-            color: Theme.of(context).textTheme.bodyText1.color,
+            color: Theme.of(context).textTheme.bodyText1!.color,
           )),
     );
   }

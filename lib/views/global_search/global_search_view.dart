@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'global_search_view_model.dart';
 
 class GlobalSearchView extends StatefulWidget {
-  final Function(TopMatch) onSelected;
+  final Function(TopMatch)? onSelected;
   GlobalSearchView({this.onSelected});
   @override
   _GlobalSearchViewState createState() => _GlobalSearchViewState();
@@ -15,13 +15,13 @@ class GlobalSearchView extends StatefulWidget {
 
 class _GlobalSearchViewState extends State<GlobalSearchView> {
   final searchController = TextEditingController();
-  String dropdownValue = 'All';
+  String? dropdownValue = 'All';
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GlobalSearchViewModel>.reactive(
       builder:
-          (BuildContext context, GlobalSearchViewModel viewModel, Widget _) {
+          (BuildContext context, GlobalSearchViewModel viewModel, Widget? _) {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
@@ -31,7 +31,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                 bottomRight: Radius.circular(8),
               ),
               border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1.color)),
+                  color: Theme.of(context).textTheme.bodyText1!.color!)),
           height: MediaQuery.of(context).size.height * 0.4,
           child: viewModel.loading
               ? Container(
@@ -68,7 +68,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                   BorderRadius.all(Radius.circular(16.0)),
                               borderSide: BorderSide(
                                 color:
-                                    Theme.of(context).textTheme.bodyText1.color,
+                                    Theme.of(context).textTheme.bodyText1!.color!,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
@@ -76,7 +76,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                   BorderRadius.all(Radius.circular(16.0)),
                               borderSide: BorderSide(
                                 color:
-                                    Theme.of(context).textTheme.bodyText1.color,
+                                    Theme.of(context).textTheme.bodyText1!.color!,
                               ),
                             ),
                             // hiding drop down menu for global search
@@ -115,11 +115,11 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     TopMatch match =
-                                        viewModel.searchData.topMatches[index];
+                                        viewModel.searchData!.topMatches![index];
                                     return GestureDetector(
                                       onTap: () {
                                         // viewModel.onDetailPageSelected(match);
-                                        widget.onSelected(match);
+                                        widget.onSelected!(match);
                                       },
                                       child: Column(
                                         children: [
@@ -148,7 +148,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                     );
                                   },
                                   itemCount:
-                                      viewModel.searchData.topMatches.length),
+                                      viewModel.searchData!.topMatches!.length),
                             ),
                       viewModel.searchData == null
                           ? Container()
@@ -157,7 +157,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               children: [
                                 InsiteText(
                                     text:
-                                        'Showing ${viewModel.searchData.topMatches.length} out of ${viewModel.searchData.totalCount} Assets',
+                                        'Showing ${viewModel.searchData!.topMatches!.length} out of ${viewModel.searchData!.totalCount} Assets',
                                     color: white,
                                     size: 12),
                                 // TextButton(
@@ -195,7 +195,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
       underline: Container(
         height: 0,
       ),
-      onChanged: (String newValue) {
+      onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue;
         });

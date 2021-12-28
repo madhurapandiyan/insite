@@ -5,8 +5,8 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ManageUserWidget extends StatelessWidget {
-  final UserRow user;
-  final VoidCallback callback;
+  final UserRow? user;
+  final VoidCallback? callback;
 
   const ManageUserWidget({this.user, this.callback});
 
@@ -14,7 +14,7 @@ class ManageUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        callback();
+        callback!();
       },
       child: Card(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -33,13 +33,13 @@ class ManageUserWidget extends StatelessWidget {
                   // ),
                   Container(
                       decoration: BoxDecoration(
-                          color: user.isSelected
+                          color: user!.isSelected
                               ? Theme.of(context).buttonColor
                               : Theme.of(context).backgroundColor,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: Icon(
                         Icons.crop_square,
-                        color: user.isSelected
+                        color: user!.isSelected
                             ? Theme.of(context).buttonColor
                             : Colors.black,
                       )),
@@ -59,21 +59,21 @@ class ManageUserWidget extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Name :',
-                      content: user.user.first_name + " " + user.user.last_name,
+                      content: user!.user!.first_name! + " " + user!.user!.last_name!,
                     ),
                     InsiteTableRowItem(
                       title: 'User Type:',
-                      content: user.user.user_type.toString(),
+                      content: user!.user!.user_type.toString(),
                     ),
                     InsiteTableRowItem(
                       title: 'Job Type :',
-                      content: user.user.job_type.toString(),
+                      content: user!.user!.job_type.toString(),
                     ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Email ID :',
-                      content: user.user.loginId,
+                      content: user!.user!.loginId,
                     ),
                     InsiteTableRowItem(
                       title: 'Job Title:',

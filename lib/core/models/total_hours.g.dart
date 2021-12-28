@@ -6,22 +6,19 @@ part of 'total_hours.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TotalHours _$TotalHoursFromJson(Map<String, dynamic> json) {
-  return TotalHours(
-    cumulatives: json['cumulatives'] == null
-        ? null
-        : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
-    intervals: (json['intervals'] as List)
-        ?.map((e) =>
-            e == null ? null : Interval.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pagination: json['pagination'] == null
-        ? null
-        : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
-    code: json['code'] as int,
-    message: json['message'] as String,
-  );
-}
+TotalHours _$TotalHoursFromJson(Map<String, dynamic> json) => TotalHours(
+      cumulatives: json['cumulatives'] == null
+          ? null
+          : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
+      intervals: (json['intervals'] as List<dynamic>?)
+          ?.map((e) => Interval.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pagination: json['pagination'] == null
+          ? null
+          : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
+      code: json['code'] as int?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$TotalHoursToJson(TotalHours instance) =>
     <String, dynamic>{
@@ -32,22 +29,20 @@ Map<String, dynamic> _$TotalHoursToJson(TotalHours instance) =>
       'message': instance.message,
     };
 
-Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) {
-  return Cumulatives(
-    cumulativeHours: (json['cumulativeHours'] as num)?.toDouble(),
-    averageHours: (json['averageHours'] as num)?.toDouble(),
-    description: json['description'] as String,
-    startDateLocalTime: json['startDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['startDateLocalTime'] as String),
-    endDateLocalTime: json['endDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['endDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    totalDayCount: json['totalDayCount'] as int,
-    intervalType: json['intervalType'] as String,
-  );
-}
+Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) => Cumulatives(
+      cumulativeHours: (json['cumulativeHours'] as num?)?.toDouble(),
+      averageHours: (json['averageHours'] as num?)?.toDouble(),
+      description: json['description'] as String?,
+      startDateLocalTime: json['startDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['startDateLocalTime'] as String),
+      endDateLocalTime: json['endDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['endDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      totalDayCount: json['totalDayCount'] as int?,
+      intervalType: json['intervalType'] as String?,
+    );
 
 Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
     <String, dynamic>{
@@ -61,24 +56,22 @@ Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
       'intervalType': instance.intervalType,
     };
 
-Interval _$IntervalFromJson(Map<String, dynamic> json) {
-  return Interval(
-    totalHours: (json['totalHours'] as num)?.toDouble(),
-    averageHours: (json['averageHours'] as num)?.toDouble(),
-    totals: json['totals'] == null
-        ? null
-        : Totals.fromJson(json['totals'] as Map<String, dynamic>),
-    description: json['description'] as String,
-    intervalStartDateLocalTime: json['intervalStartDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['intervalStartDateLocalTime'] as String),
-    intervalEndDateLocalTime: json['intervalEndDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['intervalEndDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    dayCount: json['dayCount'] as int,
-  );
-}
+Interval _$IntervalFromJson(Map<String, dynamic> json) => Interval(
+      totalHours: (json['totalHours'] as num?)?.toDouble(),
+      averageHours: (json['averageHours'] as num?)?.toDouble(),
+      totals: json['totals'] == null
+          ? null
+          : Totals.fromJson(json['totals'] as Map<String, dynamic>),
+      description: json['description'] as String?,
+      intervalStartDateLocalTime: json['intervalStartDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['intervalStartDateLocalTime'] as String),
+      intervalEndDateLocalTime: json['intervalEndDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['intervalEndDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      dayCount: json['dayCount'] as int?,
+    );
 
 Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
       'totalHours': instance.totalHours,
@@ -93,13 +86,11 @@ Map<String, dynamic> _$IntervalToJson(Interval instance) => <String, dynamic>{
       'dayCount': instance.dayCount,
     };
 
-Totals _$TotalsFromJson(Map<String, dynamic> json) {
-  return Totals(
-    idleHours: (json['idleHours'] as num)?.toDouble(),
-    workingHours: (json['workingHours'] as num)?.toDouble(),
-    runtimeHours: (json['runtimeHours'] as num)?.toDouble(),
-  );
-}
+Totals _$TotalsFromJson(Map<String, dynamic> json) => Totals(
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      workingHours: (json['workingHours'] as num?)?.toDouble(),
+      runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$TotalsToJson(Totals instance) => <String, dynamic>{
       'idleHours': instance.idleHours,
@@ -107,11 +98,9 @@ Map<String, dynamic> _$TotalsToJson(Totals instance) => <String, dynamic>{
       'runtimeHours': instance.runtimeHours,
     };
 
-Pagination _$PaginationFromJson(Map<String, dynamic> json) {
-  return Pagination(
-    totalCount: json['totalCount'] as int,
-  );
-}
+Pagination _$PaginationFromJson(Map<String, dynamic> json) => Pagination(
+      totalCount: json['totalCount'] as int?,
+    );
 
 Map<String, dynamic> _$PaginationToJson(Pagination instance) =>
     <String, dynamic>{

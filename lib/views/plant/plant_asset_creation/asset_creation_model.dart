@@ -1,10 +1,10 @@
 class AssetCreationModel {
-  String assetSerialNo;
-  String deviceId;
-  String model;
-  String hourMeter;
-  String status;
-  String message;
+  String? assetSerialNo;
+  String? deviceId;
+  String? model;
+  String? hourMeter;
+  String? status;
+  String? message;
   bool isSelected;
 
   AssetCreationModel({

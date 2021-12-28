@@ -15,18 +15,20 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SplashViewModel extends InsiteViewModel {
-  Logger log;
-  final _nagivationService = locator<NavigationService>();
-  final _localService = locator<LocalService>();
-  final _nativeService = locator<NativeService>();
-  final _loginService = locator<LoginService>();
+  Logger? log;
+  final NavigationService? _nagivationService = locator<NavigationService>();
+  final LocalService? _localService = locator<LocalService>();
+  final NativeService? _nativeService = locator<NativeService>();
+  final LoginService? _loginService = locator<LoginService>();
 
   bool isProcessing = false;
   bool shouldLoadWebview = false;
+  late bool checkingFavour;
 
   SplashViewModel() {
+    checkingFavour = isVisionLink;
     this.log = getLogger(this.runtimeType.toString());
-    _nativeService.nativeToFlutterplatform
+    _nativeService!.nativeToFlutterplatform
         .setMethodCallHandler(nativeMethodCallHandler);
     Future.delayed(Duration(seconds: 2), () {
       checkLoggedIn();
@@ -37,21 +39,24 @@ class SplashViewModel extends InsiteViewModel {
     Logger().d("method name ${methodCall.method}");
     switch (methodCall.method) {
       case "code_received":
-        _localService.setIsloggedIn(true);
+        _localService!.setIsloggedIn(true);
+        if (AppConfig.instance!.enalbeNativeLogin) {
+          isProcessing = true;
+        }
         getLoggedInUserDetails(methodCall.arguments);
         return "This data from flutter.....";
-        break;
+
       default:
         return "Nothing";
-        break;
     }
   }
 
   void checkLoggedIn() async {
     try {
-      bool val = await _localService.getIsloggedIn();
-      Customer account = await _localService.getAccountInfo();
+      bool? val = await _localService!.getIsloggedIn();
+      Customer? account = await _localService!.getAccountInfo();
       Logger().d("checkLoggedIn " + val.toString());
+      //val = true;
       if (val == null || !val) {
         //use this user name and password
         // nitin_r@gmail.com
@@ -59,8 +64,8 @@ class SplashViewModel extends InsiteViewModel {
         // or below one
         //nithyamahalakshmi_p@trimble.com
         //OsgTe@m20!9
-        if (AppConfig.instance.enalbeNativeLogin) {
-          await _nativeService.login();
+        if (AppConfig.instance!.enalbeNativeLogin) {
+          await _nativeService!.login();
         } else {
           Logger().i("show webview");
           //below three lines decides to show web view or not for login
@@ -82,23 +87,24 @@ class SplashViewModel extends InsiteViewModel {
     }
   }
 
-  checkPermission(Customer account) async {
-    Logger().d("checkPermission");
+  checkPermission(Customer? account) async {
     try {
       if (isVisionLink) {
-        List<Permission> list = await _loginService.getPermissions();
-        if (list.isNotEmpty) {
-          _localService.setHasPermission(true);
+        //  await _localService!.saveAccountInfoData();
+        //await _localService!.saveDummyToken();
+        List<Permission>? list = await _loginService!.getPermissions();
+        if (list!.isNotEmpty) {
+          _localService!.setHasPermission(true);
           if (account != null) {
-            _nagivationService.replaceWith(homeViewRoute);
+            _nagivationService!.replaceWith(homeViewRoute);
           } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
+            _nagivationService!.replaceWith(customerSelectionViewRoute);
           }
         } else {
           //below three lines decides to show web view or not for login
-          _localService.setHasPermission(false);
-          _localService.clearAll();
-          if (AppConfig.instance.enalbeNativeLogin) {
+          _localService!.setHasPermission(false);
+          _localService!.clearAll();
+          if (AppConfig.instance!.enalbeNativeLogin) {
             // await _nativeService.login();
           } else {
             shouldLoadWebview = true;
@@ -115,12 +121,13 @@ class SplashViewModel extends InsiteViewModel {
           // }
         }
       } else {
-        UserInfo userInfo = await _loginService.getLoggedInUserInfo();
+        //await _localService!.saveDummyToken();
+        UserInfo? userInfo = await _loginService!.getLoggedInUserInfo();
         if (userInfo == null) {
-          _localService.setHasPermission(false);
-          _localService.clearAll();
-          if (AppConfig.instance.enalbeNativeLogin) {
-            // await _nativeService.login();
+          _localService!.setHasPermission(false);
+          _localService!.clearAll();
+          if (AppConfig.instance!.enalbeNativeLogin) {
+            await _nativeService!.login();
           } else {
             shouldLoadWebview = true;
             Future.delayed(Duration(seconds: 1), () {
@@ -128,11 +135,11 @@ class SplashViewModel extends InsiteViewModel {
             });
           }
         } else {
-          _localService.setHasPermission(true);
+          _localService!.setHasPermission(true);
           if (account != null) {
-            _nagivationService.replaceWith(homeViewRoute);
+            _nagivationService!.replaceWith(homeViewRoute);
           } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
+            _nagivationService!.replaceWith(customerSelectionViewRoute);
           }
         }
       }
@@ -145,11 +152,11 @@ class SplashViewModel extends InsiteViewModel {
     Logger().d("getLoggedInUserDetails $receivedData");
     try {
       List<String> data = receivedData.split(",");
-      LoginResponse result =
-          await _loginService.getLoginDataV4(data[0], data[1], data[2]);
+      LoginResponse? result =
+          await _loginService!.getLoginDataV4(data[0], data[1], data[2]);
       if (result != null) {
-        await _localService.saveTokenInfo(result);
-        await _loginService.saveToken(
+        await _localService!.saveTokenInfo(result);
+        await _loginService!.saveToken(
             result.access_token, result.expires_in.toString(), false);
       }
     } catch (e) {

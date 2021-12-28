@@ -4,9 +4,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class CustomListView extends StatefulWidget {
-  final ApplicationAccessData applicationAccessData;
-  final String text;
-  final VoidCallback voidCallback;
+  final ApplicationAccessData? applicationAccessData;
+  final String? text;
+  final VoidCallback? voidCallback;
 
   const CustomListView(
       {this.text, this.voidCallback, this.applicationAccessData});
@@ -20,7 +20,7 @@ class _CustomListViewState extends State<CustomListView> {
   void initState() {
     super.initState();
     Logger().i(
-        "custom list view app avatar ${widget.applicationAccessData.application.iconUrl}");
+        "custom list view app avatar ${widget.applicationAccessData!.application!.iconUrl}");
   }
 
   @override
@@ -33,7 +33,7 @@ class _CustomListViewState extends State<CustomListView> {
             width: 36,
             height: 36,
             image: NetworkImage(
-                widget.applicationAccessData.application.iconUrl + "app.png",
+                widget.applicationAccessData!.application!.iconUrl! + "app.png",
                 headers: {
                   "Authorization": "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
                 }),
@@ -66,7 +66,7 @@ class _CustomListViewState extends State<CustomListView> {
                 color: Theme.of(context).iconTheme.color,
               ),
               onPressed: () {
-                widget.voidCallback();
+                widget.voidCallback!();
               }),
         ),
       ],

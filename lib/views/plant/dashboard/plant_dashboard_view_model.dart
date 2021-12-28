@@ -10,14 +10,14 @@ import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PlantDashboardViewModel extends InsiteViewModel {
-  Logger log;
-  var _subscriptionService = locator<SubScriptionService>();
-  var _navigationService = locator<NavigationService>();
+  Logger? log;
+  SubScriptionService? _subscriptionService = locator<SubScriptionService>();
+  NavigationService? _navigationService = locator<NavigationService>();
 
   PlantDashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _subscriptionService.setUp();
+    _subscriptionService!.setUp();
     Future.delayed(Duration(seconds: 2), () {
       getSubscriptionDashboardData();
     });
@@ -26,13 +26,13 @@ class PlantDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  List<double> _results = [];
-  List<double> get results => _results;
+  List<double?> _results = [];
+  List<double?> get results => _results;
 
-  List<String> _modelNames = [];
-  List<String> get modelNames => _modelNames;
-  List<double> _modelCount = [];
-  List<double> get modelCount => _modelCount;
+  List<String?> _modelNames = [];
+  List<String?> get modelNames => _modelNames;
+  List<double?> _modelCount = [];
+  List<double?> get modelCount => _modelCount;
 
   List<String> _names = [
     "Total Devices supplied",
@@ -51,16 +51,16 @@ class PlantDashboardViewModel extends InsiteViewModel {
   getSubscriptionDashboardData() async {
     Logger().i("getApplicationAccessData");
     try {
-      SubscriptionDashboardResult result =
-          await _subscriptionService.getResultsFromSubscriptionApi();
+      SubscriptionDashboardResult? result =
+          await _subscriptionService!.getResultsFromSubscriptionApi();
       if (result != null) {
-        final totalDeviceSupplied = result.result[3][0].totalDevice;
-        final plantAssetCount = result.result[4][0].plantAssetCount;
-        final activeSubScription = result.result[0][0].activeList;
-        final yetToBeActivated = result.result[1][0].inActiveList;
-        final subScriptionEnded = result.result[5][0].subscriptionAndAsset;
+        final totalDeviceSupplied = result.result![3][0].totalDevice;
+        final plantAssetCount = result.result![4][0].plantAssetCount;
+        final activeSubScription = result.result![0][0].activeList;
+        final yetToBeActivated = result.result![1][0].inActiveList;
+        final subScriptionEnded = result.result![5][0].subscriptionAndAsset;
         final subScriptionEndingThisMOnth =
-            result.result[9][0].subscriptionEndingAsset;
+            result.result![9][0].subscriptionEndingAsset;
 
         _results.addAll([
           totalDeviceSupplied,
@@ -72,22 +72,22 @@ class PlantDashboardViewModel extends InsiteViewModel {
         ]);
 
         //model names
-        final ex70SuperPlus = result.result[2][9].modelName;
-        final ex130SuperPlus = result.result[2][3].modelName;
-        final shinRaiBx80 = result.result[2][11].modelName;
+        final ex70SuperPlus = result.result![2][9].modelName;
+        final ex130SuperPlus = result.result![2][3].modelName;
+        final shinRaiBx80 = result.result![2][11].modelName;
         final notMapped = "Not Mapped";
-        final twl5 = result.result[2][1].modelName;
-        final ex110 = result.result[2][2].modelName;
-        final ex200lc = result.result[2][4].modelName;
-        final ex210lc = result.result[2][6].modelName;
-        final ex215 = result.result[2][7].modelName;
-        final ex300 = result.result[2][8].modelName;
-        final ptl340h = result.result[2][10].modelName;
-        final shinraibx80Bviv = result.result[2][12].modelName;
-        final shinraipro = result.result[2][13].modelName;
-        final th76 = result.result[2][14].modelName;
-        final tl340h = result.result[2][15].modelName;
-        final th340hPrime = result.result[2][16].modelName;
+        final twl5 = result.result![2][1].modelName;
+        final ex110 = result.result![2][2].modelName;
+        final ex200lc = result.result![2][4].modelName;
+        final ex210lc = result.result![2][6].modelName;
+        final ex215 = result.result![2][7].modelName;
+        final ex300 = result.result![2][8].modelName;
+        final ptl340h = result.result![2][10].modelName;
+        final shinraibx80Bviv = result.result![2][12].modelName;
+        final shinraipro = result.result![2][13].modelName;
+        final th76 = result.result![2][14].modelName;
+        final tl340h = result.result![2][15].modelName;
+        final th340hPrime = result.result![2][16].modelName;
 
         _modelNames.addAll([
           ex70SuperPlus,
@@ -109,22 +109,22 @@ class PlantDashboardViewModel extends InsiteViewModel {
         ]);
 
         //model count
-        final ex70SuperPlusCount = result.result[2][9].modelCount;
-        final ex130SuperPlusCount = result.result[2][3].modelCount;
-        final shinRaiBx80Count = result.result[2][11].modelCount;
-        final notMappedCount = result.result[2][0].modelCount;
-        final twl5Count = result.result[2][1].modelCount;
-        final ex110Count = result.result[2][2].modelCount;
-        final ex200lcCount = result.result[2][4].modelCount;
-        final ex210lcCount = result.result[2][6].modelCount;
-        final ex215Count = result.result[2][7].modelCount;
-        final ex300Count = result.result[2][8].modelCount;
-        final ptl340hCount = result.result[2][10].modelCount;
-        final shinraibx80BvivCount = result.result[2][12].modelCount;
-        final shinraiproCount = result.result[2][13].modelCount;
-        final th76Count = result.result[2][14].modelCount;
-        final tl340hCount = result.result[2][15].modelCount;
-        final th340hPrimeCount = result.result[2][16].modelCount;
+        final ex70SuperPlusCount = result.result![2][9].modelCount;
+        final ex130SuperPlusCount = result.result![2][3].modelCount;
+        final shinRaiBx80Count = result.result![2][11].modelCount;
+        final notMappedCount = result.result![2][0].modelCount;
+        final twl5Count = result.result![2][1].modelCount;
+        final ex110Count = result.result![2][2].modelCount;
+        final ex200lcCount = result.result![2][4].modelCount;
+        final ex210lcCount = result.result![2][6].modelCount;
+        final ex215Count = result.result![2][7].modelCount;
+        final ex300Count = result.result![2][8].modelCount;
+        final ptl340hCount = result.result![2][10].modelCount;
+        final shinraibx80BvivCount = result.result![2][12].modelCount;
+        final shinraiproCount = result.result![2][13].modelCount;
+        final th76Count = result.result![2][14].modelCount;
+        final tl340hCount = result.result![2][15].modelCount;
+        final th340hPrimeCount = result.result![2][16].modelCount;
 
         _modelCount.addAll([
           ex70SuperPlusCount,
@@ -147,19 +147,19 @@ class PlantDashboardViewModel extends InsiteViewModel {
         notifyListeners();
 
         statusChartData.add(
-            ChartSampleData(x: names[1], y: (results[1].toInt()), z: "active"));
+            ChartSampleData(x: names[1], y: (results[1]!.toInt()), z: "active"));
         statusChartData.add(ChartSampleData(
-            x: names[2], y: (results[2].toInt()), z: "inactive"));
+            x: names[2], y: (results[2]!.toInt()), z: "inactive"));
         statusChartData.add(ChartSampleData(
-            x: names[3], y: (results[3].toInt()), z: "subscriptionendasset"));
+            x: names[3], y: (results[3]!.toInt()), z: "subscriptionendasset"));
 
         activatedChartData.add(ChartSampleData(
-            x: "Today", y: (result.result[6][0].dayCount.toInt()), z: "day"));
+            x: "Today", y: (result.result![6][0].dayCount!.toInt()), z: "day"));
         activatedChartData.add(ChartSampleData(
-            x: "Week", y: (result.result[7][0].weekCount.toInt()), z: "week"));
+            x: "Week", y: (result.result![7][0].weekCount!.toInt()), z: "week"));
         activatedChartData.add(ChartSampleData(
             x: "Month",
-            y: (result.result[8][0].monthCount.toInt()),
+            y: (result.result![8][0].monthCount!.toInt()),
             z: "month"));
         Logger().i("activatedChartData $activatedChartData}");
       }
@@ -178,7 +178,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
     if (filter == "inactive") {
       detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
     }
-    _navigationService.navigateToView(SubDashBoardDetailsView(
+    _navigationService!.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.STATUS,
@@ -191,7 +191,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
     if (filter == "inactive") {
       detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
     }
-    _navigationService.navigateToView(SubDashBoardDetailsView(
+    _navigationService!.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.MODEL,
@@ -204,7 +204,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
     if (filter == "inactive") {
       detailsType = PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED;
     }
-    _navigationService.navigateToView(SubDashBoardDetailsView(
+    _navigationService!.navigateToView(SubDashBoardDetailsView(
       filterKey: filter,
       detailType: detailsType,
       filterType: PLANTSUBSCRIPTIONFILTERTYPE.DATE,

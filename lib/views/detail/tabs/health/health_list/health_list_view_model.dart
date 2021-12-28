@@ -9,11 +9,11 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class HealthListViewModel extends InsiteViewModel {
-  Logger log;
-  var _faultService = locator<FaultService>();
+  Logger? log;
+  FaultService? _faultService = locator<FaultService>();
 
-  AssetDetail _assetDetail;
-  AssetDetail get assetDetail => _assetDetail;
+  AssetDetail? _assetDetail;
+  AssetDetail? get assetDetail => _assetDetail;
 
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
@@ -32,16 +32,16 @@ class HealthListViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  ScrollController scrollController;
-  HealthListViewModel(AssetDetail assetDetail) {
+  ScrollController? scrollController;
+  HealthListViewModel(AssetDetail? assetDetail) {
     this._assetDetail = assetDetail;
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _faultService.setUp();
+    _faultService!.setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -52,20 +52,20 @@ class HealthListViewModel extends InsiteViewModel {
 
   getHealthListData() async {
     await getDateRangeFilterData();
-    HealthListResponse result = await _faultService.getHealthListData(
-        _assetDetail.assetUid,
+    HealthListResponse? result = await _faultService!.getHealthListData(
+        _assetDetail!.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
     if (result != null && result.assetData != null) {
-      if (result.assetData.faults.isNotEmpty) {
-        _faults.addAll(result.assetData.faults);
+      if (result.assetData!.faults!.isNotEmpty) {
+        _faults.addAll(result.assetData!.faults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.assetData.faults);
+        _faults.addAll(result.assetData!.faults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -84,15 +84,15 @@ class HealthListViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();
-    HealthListResponse result = await _faultService.getHealthListData(
-        _assetDetail.assetUid,
+    HealthListResponse? result = await _faultService!.getHealthListData(
+        _assetDetail!.assetUid,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
     if (result != null) {
       _faults.clear();
-      _faults.addAll(result.assetData.faults);
+      _faults.addAll(result.assetData!.faults!);
       _refreshing = false;
       _loading = false;
       notifyListeners();

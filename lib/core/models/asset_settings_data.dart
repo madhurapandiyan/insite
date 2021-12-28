@@ -4,7 +4,7 @@ part 'asset_settings_data.g.dart';
 @JsonSerializable()
 class AssetSettingsData{
 
-final List<dynamic> assetUids;
+final List<dynamic>? assetUids;
 
 AssetSettingsData({this.assetUids});
  factory AssetSettingsData.fromJson(Map<String, dynamic> json) =>

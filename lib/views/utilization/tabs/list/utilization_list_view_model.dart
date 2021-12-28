@@ -12,20 +12,20 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 
 class UtilizationListViewModel extends InsiteViewModel {
-  Logger log;
-  var _utilizationService = locator<AssetUtilizationService>();
-  var _navigationService = locator<NavigationService>();
-  var _assetService = locator<AssetStatusService>();
+  Logger? log;
+  AssetUtilizationService? _utilizationService = locator<AssetUtilizationService>();
+  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  AssetStatusService? _assetService = locator<AssetStatusService>();
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
 
   int pageNumber = 1;
   int pageCount = 50;
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
@@ -45,12 +45,12 @@ class UtilizationListViewModel extends InsiteViewModel {
   UtilizationListViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
-    _assetService.setUp();
-    _utilizationService.setUp();
+    _assetService!.setUp();
+    _utilizationService!.setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -75,11 +75,11 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getAssetCount() async {
     Logger().d("getAssetCount");
-    AssetCount result =
-        await _assetService.getAssetCount(null, FilterType.ASSET_STATUS);
+    AssetCount? result =
+        await _assetService!.getAssetCount(null, FilterType.ASSET_STATUS);
     if (result != null) {
-      if (result.countData.isNotEmpty && result.countData[0].count != null) {
-        _totalCount = result.countData[0].count.toInt();
+      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+        _totalCount = result.countData![0].count!.toInt();
       }
       Logger().d("result ${result.toJson()}");
     }
@@ -87,7 +87,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(AssetResult fleet) {
-    _navigationService.navigateTo(
+    _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
@@ -104,7 +104,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     await getUtilizationCount();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -112,13 +112,13 @@ class UtilizationListViewModel extends InsiteViewModel {
         pageCount,
         appliedFilters);
     if (result != null) {
-      if (result.assetResults.isNotEmpty) {
-        _utilLizationListData.addAll(result.assetResults);
+      if (result.assetResults!.isNotEmpty) {
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _utilLizationListData.addAll(result.assetResults);
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -140,10 +140,10 @@ class UtilizationListViewModel extends InsiteViewModel {
     _refreshing = true;
     _shouldLoadmore = true;
     notifyListeners();
-    Logger().d("start date " + startDate);
-    Logger().d("end date " + endDate);
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
     await getUtilizationCount();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -152,7 +152,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         appliedFilters);
     if (result != null) {
       _utilLizationListData.clear();
-      _utilLizationListData.addAll(result.assetResults);
+      _utilLizationListData.addAll(result.assetResults!);
       _refreshing = false;
       notifyListeners();
     } else {
@@ -165,12 +165,12 @@ class UtilizationListViewModel extends InsiteViewModel {
 
   getUtilizationCount() async {
     Logger().d("getUtilizationCount");
-    AssetCount assetCount = await _assetService.getAssetCountByFilter(startDate,
+    AssetCount? assetCount = await _assetService!.getAssetCountByFilter(startDate,
         endDate, "-RuntimeHours", ScreenType.UTILIZATION, appliedFilters);
     if (assetCount != null) {
-      if (assetCount.countData.isNotEmpty &&
-          assetCount.countData[0].count != null) {
-        _totalCount = assetCount.countData[0].count.toInt();
+      if (assetCount.countData!.isNotEmpty &&
+          assetCount.countData![0].count != null) {
+        _totalCount = assetCount.countData![0].count!.toInt();
       }
       Logger().d("result ${assetCount.toJson()}");
     }

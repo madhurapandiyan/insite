@@ -17,9 +17,9 @@ class _PlantDashboardViewState extends State<PlantDashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlantDashboardViewModel>.reactive(
       builder:
-          (BuildContext context, PlantDashboardViewModel viewModel, Widget _) {
+          (BuildContext context, PlantDashboardViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             //screenType: ScreenType,
@@ -53,10 +53,10 @@ class _PlantDashboardViewState extends State<PlantDashboardView> {
                         isRefreshing: false,
                         title: "",
                         title2: viewModel.results.isNotEmpty
-                            ? viewModel.results[0].toStringAsFixed(0)
+                            ? viewModel.results[0]!.toStringAsFixed(0)
                             : "",
                         onFilterSelected: (value) {
-                          viewModel.gotoDetailsPage(value);
+                          viewModel.gotoDetailsPage(value!);
                         },
                       ),
                     ),
@@ -74,7 +74,7 @@ class _PlantDashboardViewState extends State<PlantDashboardView> {
                             ? viewModel.results[0].toString()
                             : "",
                         onFilterSelected: (value) {
-                          viewModel.gotoCalendarDetailsPage(value);
+                          viewModel.gotoCalendarDetailsPage(value!);
                         },
                       ),
                     )

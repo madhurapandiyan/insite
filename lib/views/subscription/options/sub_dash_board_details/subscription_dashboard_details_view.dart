@@ -14,16 +14,16 @@ import 'package:stacked/stacked.dart';
 import 'subscription_dashboard_details_view_model.dart';
 
 class SubDashBoardDetailsView extends StatelessWidget {
-  final String filterKey;
-  final PLANTSUBSCRIPTIONFILTERTYPE filterType;
-  final PLANTSUBSCRIPTIONDETAILTYPE detailType;
+  final String? filterKey;
+  final PLANTSUBSCRIPTIONFILTERTYPE? filterType;
+  final PLANTSUBSCRIPTIONDETAILTYPE? detailType;
   SubDashBoardDetailsView({this.filterKey, this.filterType, this.detailType});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubDashBoardDetailsViewModel>.reactive(
       builder: (BuildContext context, SubDashBoardDetailsViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           //screenType: ScreenType,

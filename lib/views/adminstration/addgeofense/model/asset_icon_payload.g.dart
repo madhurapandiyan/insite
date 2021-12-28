@@ -6,15 +6,14 @@ part of 'asset_icon_payload.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetIconPayLoad _$AssetIconPayLoadFromJson(Map<String, dynamic> json) {
-  return AssetIconPayLoad(
-    assetUID: json['assetUID'] as String,
-    legacyAssetID: json['legacyAssetID'] as int,
-    iconKey: json['iconKey'] as int,
-    modelYear: json['modelYear'] as int,
-    actionUTC: json['actionUTC'] as String,
-  );
-}
+AssetIconPayLoad _$AssetIconPayLoadFromJson(Map<String, dynamic> json) =>
+    AssetIconPayLoad(
+      assetUID: json['assetUID'] as String?,
+      legacyAssetID: json['legacyAssetID'] as int?,
+      iconKey: json['iconKey'] as int?,
+      modelYear: json['modelYear'] as int?,
+      actionUTC: json['actionUTC'] as String?,
+    );
 
 Map<String, dynamic> _$AssetIconPayLoadToJson(AssetIconPayLoad instance) =>
     <String, dynamic>{

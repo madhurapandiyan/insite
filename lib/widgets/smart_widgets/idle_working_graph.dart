@@ -9,10 +9,10 @@ class IdleWorkingGraphWidget extends StatelessWidget {
   final idleLength;
   final workingLength;
   const IdleWorkingGraphWidget({
-    Key key,
-    @required this.label,
-    @required this.idleLength,
-    @required this.workingLength,
+    Key? key,
+    required this.label,
+    required this.idleLength,
+    required this.workingLength,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class IdleWorkingGraphWidget extends StatelessWidget {
           Container(
             width: 2,
             height: 60,
-            color: Theme.of(context).textTheme.bodyText1.color,
+            color: Theme.of(context).textTheme.bodyText1!.color,
           ),
           SizedBox(
             width: 8,

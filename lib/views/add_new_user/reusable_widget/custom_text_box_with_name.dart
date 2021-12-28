@@ -3,9 +3,9 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomTextBoxWithName extends StatelessWidget {
-  final String title;
-  final String text;
-  final TextEditingController controller;
+  final String? title;
+  final String? text;
+  final TextEditingController? controller;
   final TextInputType textInputType;
   CustomTextBoxWithName(
       {this.title,
@@ -18,12 +18,12 @@ class CustomTextBoxWithName extends StatelessWidget {
     return Stack(children: [
       TextField(
         controller: controller,
-        cursorColor: Theme.of(context).textTheme.bodyText1.color,
+        cursorColor: Theme.of(context).textTheme.bodyText1!.color,
         style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: 14,
           fontStyle: FontStyle.normal,
-          color: Theme.of(context).textTheme.bodyText1.color,
+          color: Theme.of(context).textTheme.bodyText1!.color,
         ),
         keyboardType: textInputType,
         decoration: InputDecoration(
@@ -33,27 +33,27 @@ class CustomTextBoxWithName extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1!.color!)),
             hintStyle: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 14,
               fontStyle: FontStyle.normal,
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             )),
       ),
       Positioned(

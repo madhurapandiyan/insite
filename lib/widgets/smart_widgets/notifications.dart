@@ -4,7 +4,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Notifications extends StatelessWidget {
   const Notifications({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

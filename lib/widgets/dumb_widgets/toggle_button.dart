@@ -8,10 +8,10 @@ class ToggleButton extends StatefulWidget {
   final String label2;
   final Function optionSelected;
   const ToggleButton(
-      {Key key,
-      @required this.label1,
-      @required this.label2,
-      @required this.optionSelected})
+      {Key? key,
+      required this.label1,
+      required this.label2,
+      required this.optionSelected})
       : super(key: key);
 
   @override
@@ -42,7 +42,7 @@ class _ToggleButtonState extends State<ToggleButton> {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color!),
                 color: isOptionOneSelected
                     ? Theme.of(context).buttonColor
                     : Theme.of(context).backgroundColor,
@@ -75,7 +75,7 @@ class _ToggleButtonState extends State<ToggleButton> {
                     ? Theme.of(context).backgroundColor
                     : Theme.of(context).buttonColor,
                 border: Border.all(
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color!),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(4),
                   topRight: Radius.circular(4),

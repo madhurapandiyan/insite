@@ -7,13 +7,13 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
-  Logger log;
-  var _utilizationService = locator<AssetUtilizationService>();
+  Logger? log;
+  AssetUtilizationService? _utilizationService = locator<AssetUtilizationService>();
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   int pageNumber = 1;
   int pageCount = 50;
@@ -38,9 +38,9 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -65,7 +65,7 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
     Logger().d("getUtilization");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -73,13 +73,13 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         pageCount,
         appliedFilters);
     if (result != null) {
-      if (result.assetResults.isNotEmpty) {
-        _utilLizationListData.addAll(result.assetResults);
+      if (result.assetResults!.isNotEmpty) {
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _utilLizationListData.addAll(result.assetResults);
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -107,7 +107,7 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
     pageCount = 50;
     _isRefreshing = true;
     notifyListeners();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -116,9 +116,9 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         appliedFilters);
     if (result != null &&
         result.assetResults != null &&
-        result.assetResults.isNotEmpty) {
+        result.assetResults!.isNotEmpty) {
       _utilLizationListData.clear();
-      _utilLizationListData.addAll(result.assetResults);
+      _utilLizationListData.addAll(result.assetResults!);
       _update = true;
       _isRefreshing = false;
       notifyListeners();

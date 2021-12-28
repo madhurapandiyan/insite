@@ -7,7 +7,7 @@ class SingleAssetOperation {
     this.assetOperations,
   });
 
-  AssetOperations assetOperations;
+  AssetOperations? assetOperations;
 
   factory SingleAssetOperation.fromJson(Map<String, dynamic> json) =>
       _$SingleAssetOperationFromJson(json);
@@ -24,8 +24,8 @@ class AssetOperations {
   });
 
   dynamic pagination;
-  List<Link> links;
-  List<Asset> assets;
+  List<Link>? links;
+  List<Asset>? assets;
 
   factory AssetOperations.fromJson(Map<String, dynamic> json) =>
       _$AssetOperationsFromJson(json);
@@ -54,20 +54,20 @@ class Asset {
     this.lastEngineStopEvent,
   });
 
-  String assetUid;
+  String? assetUid;
   dynamic assetId;
-  String makeCode;
-  String model;
-  String serialNumber;
-  AssetIcon assetIcon;
-  String productFamily;
-  String customStateDescription;
-  double distanceTravelledKilometers;
-  double dateRangeRuntimeDuration;
+  String? makeCode;
+  String? model;
+  String? serialNumber;
+  AssetIcon? assetIcon;
+  String? productFamily;
+  String? customStateDescription;
+  double? distanceTravelledKilometers;
+  double? dateRangeRuntimeDuration;
   dynamic lastKnownOperator;
-  Capabilities capabilities;
-  List<AssetLocalDate> assetLocalDates;
-  AssetLastReceivedEvent assetLastReceivedEvent;
+  Capabilities? capabilities;
+  List<AssetLocalDate>? assetLocalDates;
+  AssetLastReceivedEvent? assetLastReceivedEvent;
   dynamic firstEngineStartEvent;
   dynamic lastEngineStopEvent;
 
@@ -101,12 +101,12 @@ class AssetLastReceivedEvent {
     this.segmentType,
   });
 
-  String lastReceivedEvent;
-  String lastReceivedEventTimeLocal;
-  String lastReceivedEventUtc;
-  String timezoneAbbrev;
-  bool isPairedEvent;
-  String segmentType;
+  String? lastReceivedEvent;
+  String? lastReceivedEventTimeLocal;
+  String? lastReceivedEventUtc;
+  String? timezoneAbbrev;
+  bool? isPairedEvent;
+  String? segmentType;
 
   factory AssetLastReceivedEvent.fromJson(Map<String, dynamic> json) =>
       _$AssetLastReceivedEventFromJson(json);
@@ -123,10 +123,10 @@ class AssetLocalDate {
     this.segments,
   });
 
-  DateTime assetLocalDate;
+  DateTime? assetLocalDate;
   var totalRuntimeDurationSeconds;
   var totalRuntimeKeyDateDurationSeconds;
-  List<Segment> segments;
+  List<Segment>? segments;
 
   factory AssetLocalDate.fromJson(Map<String, dynamic> json) =>
       _$AssetLocalDateFromJson(json);
@@ -160,26 +160,26 @@ class Segment {
     this.durationKeyDateSeconds,
   });
 
-  DateTime startTimeUtc;
-  DateTime endTimeUtc;
-  DateTime startTimeLocal;
-  DateTime endTimeLocal;
+  DateTime? startTimeUtc;
+  DateTime? endTimeUtc;
+  DateTime? startTimeLocal;
+  DateTime? endTimeLocal;
   var startLocationLatitude;
   var startLocationLongitude;
-  String startStateTimezoneAbbrev;
+  String? startStateTimezoneAbbrev;
   var endLocationLatitude;
   var endLocationLongitude;
-  String endStateTimezoneAbbrev;
+  String? endStateTimezoneAbbrev;
   var durationSeconds;
-  String workDefinitionType;
-  String segmentType;
-  bool isProjectedEnd;
+  String? workDefinitionType;
+  String? segmentType;
+  bool? isProjectedEnd;
   dynamic segmentOperator;
-  DateTime updateUtc;
-  DateTime startTimeKeyDateUtc;
-  DateTime endTimeKeyDateUtc;
-  DateTime startTimeKeyDateLocal;
-  DateTime endTimeKeyDateLocal;
+  DateTime? updateUtc;
+  DateTime? startTimeKeyDateUtc;
+  DateTime? endTimeKeyDateUtc;
+  DateTime? startTimeKeyDateLocal;
+  DateTime? endTimeKeyDateLocal;
   var durationKeyDateSeconds;
 
   factory Segment.fromJson(Map<String, dynamic> json) =>
@@ -194,7 +194,7 @@ class Capabilities {
     this.hasActiveCoreSubscription,
   });
 
-  String hasActiveCoreSubscription;
+  String? hasActiveCoreSubscription;
 
   factory Capabilities.fromJson(Map<String, dynamic> json) =>
       _$CapabilitiesFromJson(json);
@@ -209,8 +209,8 @@ class Link {
     this.href,
   });
 
-  String rel;
-  String href;
+  String? rel;
+  String? href;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 

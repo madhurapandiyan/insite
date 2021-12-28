@@ -3,9 +3,9 @@ part 'device_search_model_response.g.dart';
 
 @JsonSerializable()
 class DeviceSearchModelResponse {
-  final String code;
-  final String status;
-  final DeviceSearchResponce result;
+  final String? code;
+  final String? status;
+  final DeviceSearchResponce? result;
 
   DeviceSearchModelResponse({this.code, this.status, this.result});
 
@@ -17,13 +17,13 @@ class DeviceSearchModelResponse {
 
 @JsonSerializable()
 class DeviceSearchResponce {
-  final int AssetID;
-  final String GPSDeviceID;
-  final String VIN;
-  final String Model;
-  final int TankCapacity;
-  final String S_StartDate;
-  final String S_EndDate;
+  final int? AssetID;
+  final String? GPSDeviceID;
+  final String? VIN;
+  final String? Model;
+  final int? TankCapacity;
+  final String? S_StartDate;
+  final String? S_EndDate;
 
   DeviceSearchResponce(
       {this.AssetID,

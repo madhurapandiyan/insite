@@ -3,8 +3,8 @@ part 'service_plan.g.dart';
 
 @JsonSerializable()
 class ServicePlan {
-  final String serviceUID;
-  final String type;
+  final String? serviceUID;
+  final String? type;
   ServicePlan(this.serviceUID, this.type);
 
   factory ServicePlan.fromJson(Map<String, dynamic> json) =>

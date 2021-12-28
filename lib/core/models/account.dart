@@ -7,10 +7,10 @@ part 'account.g.dart';
 @HiveType(typeId: 6)
 class AccountData {
   @HiveField(0)
-  final AccountType selectionType;
+  final AccountType? selectionType;
   @HiveField(1)
-  final Customer value;
+  final Customer? value;
   @HiveField(2)
-  bool isSelected;
+  bool? isSelected;
   AccountData({this.selectionType, this.value, this.isSelected});
 }

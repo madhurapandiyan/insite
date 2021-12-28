@@ -15,14 +15,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int selectedIndex;
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
-      builder: (BuildContext context, HomeViewModel viewModel, Widget _) {
+      builder: (BuildContext context, HomeViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             screenType: ScreenType.HOME,
             onFilterApplied: () {},

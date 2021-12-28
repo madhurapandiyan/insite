@@ -11,9 +11,9 @@ class SmsManagementView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubscriptionDashboardViewModel>.reactive(
       builder: (BuildContext context, SubscriptionDashboardViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -37,7 +37,7 @@ class SmsManagementView extends StatelessWidget {
                         height: 30,
                         buttonTitle: [
                           AdminAssetsButtonType.values[19],
-                           AdminAssetsButtonType.values[20],
+                          // AdminAssetsButtonType.values[20],
                           AdminAssetsButtonType.values[21],
                         ],
                         onCallbackSelected: (value) {

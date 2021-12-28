@@ -11,22 +11,22 @@ import 'package:insite/core/models/asset_mileage_settings.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class EstimatedVoumePayloadMileage extends InsiteViewModel {
-  Logger log;
-  var _manageUserService = locator<AssetAdminManagerUserService>();
+  Logger? log;
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
 
-  List<String> _assetUId;
-  List<String> get assetUId => _assetUId;
+  List<String?>? _assetUId;
+  List<String?>? get assetUId => _assetUId;
 
   TextEditingController kiloController = TextEditingController();
 
-  EstimatedVoumePayloadMileage(List<String> assetUid) {
+  EstimatedVoumePayloadMileage(List<String?>? assetUid) {
     _assetUId = assetUid;
     this.log = getLogger(this.runtimeType.toString());
     getAssetMileageSettingsListData();
   }
   getAssetMileageData(value, BuildContext context) async {
-    AssetMileageSettingData result =
-        await _manageUserService.getAssetMileageData(assetUId, value);
+    AssetMileageSettingData? result =
+        await _manageUserService!.getAssetMileageData(assetUId, value);
 
     if (result != null) {
       Navigator.of(context).pop(true);
@@ -37,12 +37,12 @@ class EstimatedVoumePayloadMileage extends InsiteViewModel {
   }
 
   getAssetMileageSettingsListData() async {
-    AssetMileageSettingsListData result =
-        await _manageUserService.getAssetMileageSettingsListData(assetUId);
+    AssetMileageSettingsListData? result =
+        await _manageUserService!.getAssetMileageSettingsListData(assetUId);
     Logger().w(result);
     if (result != null) {
-      result.assetMileageSettings.forEach((element) {
-        kiloController.text = (element.targetValue * 0.62).toStringAsFixed(1);
+      result.assetMileageSettings!.forEach((element) {
+        kiloController.text = (element.targetValue! * 0.62).toStringAsFixed(1);
         notifyListeners();
       });
     } else {

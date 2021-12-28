@@ -12,7 +12,7 @@ import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 
 class TransferHistoryView extends StatefulWidget {
-  TransferHistoryView({Key key}) : super(key: key);
+  TransferHistoryView({Key? key}) : super(key: key);
 
   @override
   _TransferHistoryViewState createState() => _TransferHistoryViewState();
@@ -23,7 +23,7 @@ class _TransferHistoryViewState extends State<TransferHistoryView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<TransferHistoryViewModel>.reactive(
       builder:
-          (BuildContext context, TransferHistoryViewModel viewModel, Widget _) {
+          (BuildContext context, TransferHistoryViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: Stack(

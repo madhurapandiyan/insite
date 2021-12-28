@@ -17,9 +17,9 @@ class AccountDataAdapter extends TypeAdapter<AccountData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AccountData(
-      selectionType: fields[0] as AccountType,
-      value: fields[1] as Customer,
-      isSelected: fields[2] as bool,
+      selectionType: fields[0] as AccountType?,
+      value: fields[1] as Customer?,
+      isSelected: fields[2] as bool?,
     );
   }
 

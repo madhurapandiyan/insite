@@ -4,8 +4,8 @@ part 'preview_data.g.dart';
 
 @JsonSerializable()
 class PreviewData {
-  final String title;
-  final String value;
+  final String? title;
+  final String? value;
 
   PreviewData({this.title, this.value});
 

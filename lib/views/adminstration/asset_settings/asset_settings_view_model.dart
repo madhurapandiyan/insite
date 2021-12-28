@@ -12,7 +12,7 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AssetSettingsViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
   var _navigationservice = locator<NavigationService>();
   TextEditingController textEditingController = TextEditingController();
@@ -45,7 +45,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   List<AssetSettingsRow> _assets = [];
   List<AssetSettingsRow> get asset => _assets;
@@ -62,9 +62,9 @@ class AssetSettingsViewModel extends InsiteViewModel {
   AssetSettingsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = new ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -75,27 +75,27 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   getDeviceTypeData() async {
-    ListDeviceTypeResponse result = await _manageUserService.getDeviceTypes();
+    ListDeviceTypeResponse? result = await _manageUserService.getDeviceTypes();
     if (result != null) {
-      for (DeviceType deviceType in result.deviceTypes) {
-        deviceTypeList.add(deviceType.name);
+      for (DeviceType deviceType in result.deviceTypes!) {
+        deviceTypeList.add(deviceType.name!);
       }
     }
     notifyListeners();
   }
 
   getAssetSettingListData() async {
-    ManageAssetConfiguration result =
+    ManageAssetConfiguration? result =
         await _manageUserService.getAssetSettingData(
             pageSize, pageNumber, _searchKeyword, deviceTypeSelected);
-    if (result != null && result.assetSettings.isNotEmpty) {
+    if (result != null && result.assetSettings!.isNotEmpty) {
       if (result.pageInfo != null) {
-        _totalCount = result.pageInfo.totalRecords;
+        _totalCount = result.pageInfo!.totalRecords!;
       }
       if (!loadingMore) {
         _assets.clear();
       }
-      for (var assetSetting in result.assetSettings) {
+      for (var assetSetting in result.assetSettings!) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
@@ -104,7 +104,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
       _isRefreshing = false;
       notifyListeners();
     } else {
-      for (var assetSetting in result.assetSettings) {
+      for (var assetSetting in result!.assetSettings!) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
@@ -115,7 +115,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
     }
   }
 
-  Timer debounce;
+  Timer? debounce;
 
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
@@ -124,7 +124,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   searchAssets(String searchValue) {
     pageNumber = 1;
-    if (debounce != null) debounce.cancel();
+    if (debounce != null) debounce!.cancel();
     debounce = Timer(Duration(seconds: 2), () {
       _searchKeyword = searchValue;
       getAssetSettingListData();
@@ -137,12 +137,12 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   _loadMore() {
-    log.i("shouldLoadmore and is already loadingMore " +
+    log!.i("shouldLoadmore and is already loadingMore " +
         _shouldLoadmore.toString() +
         "  " +
         _loadingMore.toString());
     if (_shouldLoadmore && !_loadingMore && !isRefreshing) {
-      log.i("load more called");
+      log!.i("load more called");
       pageNumber++;
       _loadingMore = true;
       notifyListeners();
@@ -195,10 +195,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onClickEditselected() {
-    List<String> assetUids = [];
+    List<String?> assetUids = [];
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
-        assetUids.add(_assets[i].assetSettings.assetUid);
+        assetUids.add(_assets[i].assetSettings!.assetUid);
       }
     }
 
@@ -215,7 +215,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
     }
   }
 
-  onCardButtonSelected(List<String> assetUid) async {
+  onCardButtonSelected(List<String?> assetUid) async {
     var result = await _navigationservice.navigateWithTransition(
         AssetSettingsFilterView(
           assetUids: assetUid,
@@ -235,16 +235,16 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onItemSelectConfigure() {
-    String configureAssetUId;
+    String? configureAssetUId;
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
-        configureAssetUId = _assets[i].assetSettings.assetUid;
+        configureAssetUId = _assets[i].assetSettings!.assetUid;
       }
     }
     onClickRespectiveConfigurePage(configureAssetUId);
   }
 
-  onClickRespectiveConfigurePage(String assetUid) {
+  onClickRespectiveConfigurePage(String? assetUid) {
     _navigationservice.navigateWithTransition(
         AssetSettingsConfigureView(
           assetUids: assetUid,

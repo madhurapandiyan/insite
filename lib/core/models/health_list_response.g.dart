@@ -6,28 +6,25 @@ part of 'health_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-HealthListResponse _$HealthListResponseFromJson(Map<String, dynamic> json) {
-  return HealthListResponse(
-    assetData: json['assetData'] == null
-        ? null
-        : FaultAssetData.fromJson(json['assetData'] as Map<String, dynamic>),
-  );
-}
+HealthListResponse _$HealthListResponseFromJson(Map<String, dynamic> json) =>
+    HealthListResponse(
+      assetData: json['assetData'] == null
+          ? null
+          : FaultAssetData.fromJson(json['assetData'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$HealthListResponseToJson(HealthListResponse instance) =>
     <String, dynamic>{
       'assetData': instance.assetData,
     };
 
-FaultAssetData _$FaultAssetDataFromJson(Map<String, dynamic> json) {
-  return FaultAssetData(
-    faults: (json['faults'] as List)
-        ?.map(
-            (e) => e == null ? null : Fault.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    assetUid: json['assetUid'] as String,
-  );
-}
+FaultAssetData _$FaultAssetDataFromJson(Map<String, dynamic> json) =>
+    FaultAssetData(
+      faults: (json['faults'] as List<dynamic>?)
+          ?.map((e) => Fault.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      assetUid: json['assetUid'] as String?,
+    );
 
 Map<String, dynamic> _$FaultAssetDataToJson(FaultAssetData instance) =>
     <String, dynamic>{
@@ -35,21 +32,19 @@ Map<String, dynamic> _$FaultAssetDataToJson(FaultAssetData instance) =>
       'faults': instance.faults,
     };
 
-Fault _$FaultFromJson(Map<String, dynamic> json) {
-  return Fault(
-    description: json['description'] as String,
-    lastReportedLocation: json['lastReportedLocation'] as String,
-    lastReportedTimeUTC: json['lastReportedTimeUTC'] as String,
-    hours: (json['hours'] as num)?.toDouble(),
-    faultCode: json['faultCode'] as String,
-    severityLabel: json['severityLabel'] as String,
-    lastReportedLocationLatitude:
-        (json['lastReportedLocationLatitude'] as num)?.toDouble(),
-    lastReportedLocationLongitude:
-        (json['lastReportedLocationLongitude'] as num)?.toDouble(),
-    source: json['source'] as String,
-  );
-}
+Fault _$FaultFromJson(Map<String, dynamic> json) => Fault(
+      description: json['description'] as String?,
+      lastReportedLocation: json['lastReportedLocation'] as String?,
+      lastReportedTimeUTC: json['lastReportedTimeUTC'] as String?,
+      hours: (json['hours'] as num?)?.toDouble(),
+      faultCode: json['faultCode'] as String?,
+      severityLabel: json['severityLabel'] as String?,
+      lastReportedLocationLatitude:
+          (json['lastReportedLocationLatitude'] as num?)?.toDouble(),
+      lastReportedLocationLongitude:
+          (json['lastReportedLocationLongitude'] as num?)?.toDouble(),
+      source: json['source'] as String?,
+    );
 
 Map<String, dynamic> _$FaultToJson(Fault instance) => <String, dynamic>{
       'description': instance.description,

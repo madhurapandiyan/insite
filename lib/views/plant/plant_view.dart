@@ -11,9 +11,9 @@ class PlantView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PlantViewModel>.reactive(
-      builder: (BuildContext context, PlantViewModel viewModel, Widget _) {
+      builder: (BuildContext context, PlantViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.PLANT,

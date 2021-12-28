@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'insite_text.dart';
 
 class AssetStatusWidget extends StatefulWidget {
-  final Color chartColor;
-  final String label;
-  final VoidCallback callBack;
+  final Color? chartColor;
+  final String? label;
+  final VoidCallback? callBack;
   AssetStatusWidget({this.label, this.chartColor, this.callBack});
   @override
   _AssetStatusWidgetState createState() => _AssetStatusWidgetState();
@@ -15,7 +15,7 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.callBack();
+        widget.callBack!();
       },
       child: Container(
         width: 130,
@@ -29,9 +29,9 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
                   boxShadow: [
-                    new BoxShadow(blurRadius: 1.0, color: widget.chartColor)
+                    new BoxShadow(blurRadius: 1.0, color: widget.chartColor!)
                   ],
-                  border: Border.all(width: 2.5, color: widget.chartColor),
+                  border: Border.all(width: 2.5, color: widget.chartColor!),
                   shape: BoxShape.rectangle,
                 )),
             SizedBox(
@@ -39,7 +39,7 @@ class _AssetStatusWidgetState extends State<AssetStatusWidget> {
             ),
             Expanded(
               child: new InsiteTextAlign(
-                  text: widget.label.toUpperCase(),
+                  text: widget.label!.toUpperCase(),
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.w700,
                   size: 11.0),

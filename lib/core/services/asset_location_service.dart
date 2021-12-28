@@ -11,9 +11,9 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
 class AssetLocationService extends BaseService {
-  Customer accountSelected;
-  Customer customerSelected;
-  var _localService = locator<LocalService>();
+  Customer? accountSelected;
+  Customer? customerSelected;
+  LocalService? _localService = locator<LocalService>();
 
   AssetLocationService() {
     setUp();
@@ -21,14 +21,14 @@ class AssetLocationService extends BaseService {
 
   setUp() async {
     try {
-      accountSelected = await _localService.getAccountInfo();
-      customerSelected = await _localService.getCustomerInfo();
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  Future<AssetLocationData> getAssetLocationWithCluster(
+  Future<AssetLocationData?> getAssetLocationWithCluster(
     int pageNumber,
     int pageSize,
     String sort,
@@ -60,15 +60,15 @@ class AssetLocationService extends BaseService {
       if (isVisionLink) {
         if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result = await MyApi()
-              .getClient()
+              .getClient()!
               .assetLocationWithClusterVL(latitude, longitude, pageNumber,
-                  pageSize, radiusKm, sort, accountSelected.CustomerUID);
+                  pageSize, radiusKm, sort, accountSelected!.CustomerUID);
           return result;
         }
       } else {
         if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result = await MyApi()
-              .getClient()
+              .getClient()!
               .assetLocationWithCluster(
                   Urls.locationSummary,
                   latitude,
@@ -77,7 +77,7 @@ class AssetLocationService extends BaseService {
                   pageSize,
                   radiusKm,
                   sort,
-                  accountSelected.CustomerUID);
+                  accountSelected!.CustomerUID);
           return result;
         }
       }
@@ -88,7 +88,7 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<AssetLocationData> getAssetLocation(startDate, endDate, int pageNumber,
+  Future<AssetLocationData?> getAssetLocation(startDate, endDate, int pageNumber,
       int pageSize, String sort, appliedFilters) async {
     Logger().i("getAssetLocation");
     try {
@@ -98,18 +98,18 @@ class AssetLocationService extends BaseService {
             sort != null &&
             customerSelected != null) {
           AssetLocationData result =
-              await MyApi().getClient().assetLocationSummaryVL(
+              await MyApi().getClient()!.assetLocationSummaryVL(
                     Urls.locationSummaryVL +
                         FilterUtils.getFilterURL(
                             startDate,
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected.CustomerUID,
+                            customerSelected!.CustomerUID,
                             sort,
                             appliedFilters,
                             ScreenType.LOCATION),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (result != null) {
             return result;
@@ -118,7 +118,7 @@ class AssetLocationService extends BaseService {
           }
         } else if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result =
-              await MyApi().getClient().assetLocationSummaryVL(
+              await MyApi().getClient()!.assetLocationSummaryVL(
                     Urls.locationSummaryVL +
                         FilterUtils.getFilterURL(
                             startDate,
@@ -129,7 +129,7 @@ class AssetLocationService extends BaseService {
                             sort,
                             appliedFilters,
                             ScreenType.LOCATION),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (result != null) {
             return result;
@@ -143,7 +143,7 @@ class AssetLocationService extends BaseService {
             sort != null &&
             customerSelected != null) {
           AssetLocationData result = await MyApi()
-              .getClient()
+              .getClient()!
               .assetLocationSummary(
                   Urls.locationSummary +
                       FilterUtils.getFilterURL(
@@ -151,11 +151,11 @@ class AssetLocationService extends BaseService {
                           endDate,
                           pageNumber,
                           pageSize,
-                          customerSelected.CustomerUID,
+                          customerSelected!.CustomerUID,
                           sort,
                           appliedFilters,
                           ScreenType.LOCATION),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetMapPrefix);
           if (result != null) {
             return result;
@@ -164,7 +164,7 @@ class AssetLocationService extends BaseService {
           }
         } else if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result = await MyApi()
-              .getClient()
+              .getClient()!
               .assetLocationSummary(
                   Urls.locationSummary +
                       FilterUtils.getFilterURL(
@@ -176,7 +176,7 @@ class AssetLocationService extends BaseService {
                           sort,
                           appliedFilters,
                           ScreenType.LOCATION),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetMapPrefix);
           if (result != null) {
             return result;
@@ -192,10 +192,10 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<AssetLocationData> getAssetLocationWithoutFilter(
+  Future<AssetLocationData?> getAssetLocationWithoutFilter(
       int pageNumber, int pageSize, String sort) async {
     Logger().i("getAssetLocationWithoutFilter");
-    Map<String, String> queryMap = Map();
+    Map<String, String?> queryMap = Map();
     if (pageNumber != null) {
       queryMap["pageNumber"] = pageNumber.toString();
     }
@@ -203,7 +203,7 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
     }
     if (sort != null) {
       queryMap["sort"] = "-lastlocationupdateutc";
@@ -212,10 +212,10 @@ class AssetLocationService extends BaseService {
       if (pageNumber != null && pageSize != null && sort != null) {
         if (isVisionLink) {
           AssetLocationData result =
-              await MyApi().getClient().assetLocationSummaryVL(
+              await MyApi().getClient()!.assetLocationSummaryVL(
                     Urls.locationSummaryVL +
                         FilterUtils.constructQueryFromMap(queryMap),
-                    accountSelected.CustomerUID,
+                    accountSelected!.CustomerUID,
                   );
           if (result != null) {
             return result;
@@ -224,11 +224,11 @@ class AssetLocationService extends BaseService {
           }
         } else {
           AssetLocationData result = await MyApi()
-              .getClient()
+              .getClient()!
               .assetLocationSummary(
                   Urls.locationSummary +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                   Urls.vfleetMapPrefix);
           if (result != null) {
             return result;
@@ -244,15 +244,15 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<List<LocationSearchData>> searchLocation(
+  Future<List<LocationSearchData>?> searchLocation(
       int maxResults, String query) async {
     Logger().i("searchLocation");
     var authToken = "366658D213F9F1429033919FCAE365FC";
     try {
       LocationSearchResponse result = await MyApi()
-          .getClientTwo()
+          .getClientTwo()!
           .getLocations(query, maxResults, authToken);
-      List<LocationSearchData> list = result.Locations;
+      List<LocationSearchData>? list = result.Locations;
       return list;
     } catch (e) {
       Logger().e(e);
@@ -260,10 +260,10 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<AssetLocationData> getLocationFilterData(
+  Future<AssetLocationData?> getLocationFilterData(
       productFamilyKey, int pageNumber, int pageSize) async {
     Logger().i("getLocationFilterData");
-    Map<String, String> queryMap = Map();
+    Map<String, String?> queryMap = Map();
     if (productFamilyKey != null) {
       queryMap["productfamily"] = productFamilyKey;
     }
@@ -274,25 +274,25 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
       if (isVisionLink) {
         AssetLocationData assetLocationDataResponse =
-            await MyApi().getClient().locationFilterDataVL(
+            await MyApi().getClient()!.locationFilterDataVL(
                   Urls.locationSummaryVL +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected.CustomerUID,
+                  accountSelected!.CustomerUID,
                 );
         return assetLocationDataResponse;
       } else {
         AssetLocationData assetLocationDataResponse = await MyApi()
-            .getClient()
+            .getClient()!
             .locationFilterData(
                 Urls.locationSummary +
                     FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected.CustomerUID,
+                accountSelected!.CustomerUID,
                 Urls.vfleetMapPrefix);
         return assetLocationDataResponse;
       }

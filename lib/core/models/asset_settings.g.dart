@@ -7,17 +7,15 @@ part of 'asset_settings.dart';
 // **************************************************************************
 
 ManageAssetConfiguration _$ManageAssetConfigurationFromJson(
-    Map<String, dynamic> json) {
-  return ManageAssetConfiguration(
-    assetSettings: (json['assetSettings'] as List)
-        ?.map((e) =>
-            e == null ? null : AssetSetting.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    pageInfo: json['pageInfo'] == null
-        ? null
-        : PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
-  );
-}
+        Map<String, dynamic> json) =>
+    ManageAssetConfiguration(
+      assetSettings: (json['assetSettings'] as List<dynamic>?)
+          ?.map((e) => AssetSetting.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pageInfo: json['pageInfo'] == null
+          ? null
+          : PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$ManageAssetConfigurationToJson(
         ManageAssetConfiguration instance) =>
@@ -26,28 +24,27 @@ Map<String, dynamic> _$ManageAssetConfigurationToJson(
       'pageInfo': instance.pageInfo,
     };
 
-AssetSetting _$AssetSettingFromJson(Map<String, dynamic> json) {
-  return AssetSetting(
-    assetUid: json['assetUid'] as String,
-    assetId: json['assetId'],
-    assetSerialNumber: json['assetSerialNumber'] as String,
-    assetModel: json['assetModel'] as String,
-    assetMakeCode: json['assetMakeCode'] as String,
-    assetIconKey: json['assetIconKey'] as int,
-    deviceSerialNumber: json['deviceSerialNumber'] as String,
-    devicetype: json['devicetype'] as String,
-    targetStatus: json['targetStatus'] as bool,
-    hoursMeter: (json['hoursMeter'] as num)?.toDouble(),
-    movingOrStoppedThreshold:
-        (json['movingOrStoppedThreshold'] as num)?.toDouble(),
-    movingThresholdsDuration: json['movingThresholdsDuration'] as int,
-    movingThresholdsRadius: (json['movingThresholdsRadius'] as num)?.toDouble(),
-    odometer: (json['odometer'] as num)?.toDouble(),
-    workDefinition: json['workDefinition'] as int,
-    configuredSwitches: json['configuredSwitches'] as int,
-    totalSwitches: json['totalSwitches'] as int,
-  );
-}
+AssetSetting _$AssetSettingFromJson(Map<String, dynamic> json) => AssetSetting(
+      assetUid: json['assetUid'] as String?,
+      assetId: json['assetId'],
+      assetSerialNumber: json['assetSerialNumber'] as String?,
+      assetModel: json['assetModel'] as String?,
+      assetMakeCode: json['assetMakeCode'] as String?,
+      assetIconKey: json['assetIconKey'] as int?,
+      deviceSerialNumber: json['deviceSerialNumber'] as String?,
+      devicetype: json['devicetype'] as String?,
+      targetStatus: json['targetStatus'] as bool?,
+      hoursMeter: (json['hoursMeter'] as num?)?.toDouble(),
+      movingOrStoppedThreshold:
+          (json['movingOrStoppedThreshold'] as num?)?.toDouble(),
+      movingThresholdsDuration: json['movingThresholdsDuration'] as int?,
+      movingThresholdsRadius:
+          (json['movingThresholdsRadius'] as num?)?.toDouble(),
+      odometer: (json['odometer'] as num?)?.toDouble(),
+      workDefinition: json['workDefinition'] as int?,
+      configuredSwitches: json['configuredSwitches'] as int?,
+      totalSwitches: json['totalSwitches'] as int?,
+    );
 
 Map<String, dynamic> _$AssetSettingToJson(AssetSetting instance) =>
     <String, dynamic>{
@@ -70,14 +67,12 @@ Map<String, dynamic> _$AssetSettingToJson(AssetSetting instance) =>
       'totalSwitches': instance.totalSwitches,
     };
 
-PageInfo _$PageInfoFromJson(Map<String, dynamic> json) {
-  return PageInfo(
-    totalRecords: json['totalRecords'] as int,
-    totalPages: json['totalPages'] as int,
-    currentPageNumber: json['currentPageNumber'] as int,
-    currentPageSize: json['currentPageSize'] as int,
-  );
-}
+PageInfo _$PageInfoFromJson(Map<String, dynamic> json) => PageInfo(
+      totalRecords: json['totalRecords'] as int?,
+      totalPages: json['totalPages'] as int?,
+      currentPageNumber: json['currentPageNumber'] as int?,
+      currentPageSize: json['currentPageSize'] as int?,
+    );
 
 Map<String, dynamic> _$PageInfoToJson(PageInfo instance) => <String, dynamic>{
       'totalRecords': instance.totalRecords,

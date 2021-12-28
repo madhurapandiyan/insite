@@ -6,15 +6,15 @@ part 'customer.g.dart';
 @HiveType(typeId: 5)
 class Customer {
   @HiveField(0)
-  final String CustomerUID;
+  final String? CustomerUID;
   @HiveField(1)
-  final String Name;
+  final String? Name;
   @HiveField(2)
-  final String CustomerType;
+  final String? CustomerType;
   @HiveField(3)
-  final String DisplayName;
+  final String? DisplayName;
   @HiveField(4)
-  final List<Customer> Children;
+  final List<Customer>? Children;
   Customer(
       {this.CustomerUID,
       this.Name,
@@ -69,8 +69,8 @@ List<Customer> customerList = [
 
 @JsonSerializable()
 class CustomersResponse {
-  final String UserUID;
-  final List<Customer> Customers;
+  final String? UserUID;
+  final List<Customer>? Customers;
   CustomersResponse({this.UserUID, this.Customers});
   factory CustomersResponse.fromJson(Map<String, dynamic> json) =>
       _$CustomersResponseFromJson(json);

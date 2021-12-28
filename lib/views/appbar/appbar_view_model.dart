@@ -11,22 +11,22 @@ import 'package:insite/core/services/native_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class AppbarViewModel extends InsiteViewModel {
-  var _navigationService = locator<NavigationService>();
+  var _navigationService = locator<service.NavigationService>();
   var _localService = locator<LocalService>();
   var _localStorageService = locator<LocalStorageService>();
   var _nativeService = locator<NativeService>();
 
-  Customer _accountSelected;
-  Customer get accountSelected => _accountSelected;
+  Customer? _accountSelected;
+  Customer? get accountSelected => _accountSelected;
 
-  Customer _customerSelected;
-  Customer get customerSelected => _customerSelected;
+  Customer? _customerSelected;
+  Customer? get customerSelected => _customerSelected;
 
-  ScreenType _screenType;
-  ScreenType get screenType => _screenType;
+  ScreenType? _screenType;
+  ScreenType? get screenType => _screenType;
 
   AppbarViewModel(this._screenType) {
     Future.delayed(Duration(seconds: 3), () {
@@ -48,7 +48,7 @@ class AppbarViewModel extends InsiteViewModel {
   onHomePressed() {
     if (accountSelected == null) {
       Logger().i("account not selected");
-      snackbarService.showSnackbar(
+      snackbarService!.showSnackbar(
           message: "Account not selected", duration: Duration(seconds: 2));
     } else {
       if (screenType != ScreenType.HOME) {
@@ -63,9 +63,9 @@ class AppbarViewModel extends InsiteViewModel {
 
   Future<void> logout() async {
     // _localService.removeTokenInfo();
+    LoginResponse? response = await _localService.getTokenInfo();
     _localService.clearAll();
     _localStorageService.clearAll();
-    LoginResponse response = await _localService.getTokenInfo();
     Future.delayed(Duration(seconds: 2), () async {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -88,8 +88,8 @@ class AppbarViewModel extends InsiteViewModel {
       //     _navigationService.replaceWith(loginViewRoute);
       //   }
       // });
-      if (AppConfig.instance.enalbeNativeLogin) {
-        await _nativeService.logout(response.id_token);
+      if (AppConfig.instance!.enalbeNativeLogin) {
+        await _nativeService.logout(response?.id_token);
       } else {
         if (isVisionLink) {
           _navigationService.replaceWith(loginViewRoute);

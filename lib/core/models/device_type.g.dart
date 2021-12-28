@@ -6,13 +6,11 @@ part of 'device_type.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DeviceType _$DeviceTypeFromJson(Map<String, dynamic> json) {
-  return DeviceType(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    assetCount: (json['assetCount'] as num)?.toDouble(),
-  );
-}
+DeviceType _$DeviceTypeFromJson(Map<String, dynamic> json) => DeviceType(
+      id: json['id'] as String?,
+      name: json['name'] as String?,
+      assetCount: (json['assetCount'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$DeviceTypeToJson(DeviceType instance) =>
     <String, dynamic>{
@@ -22,14 +20,12 @@ Map<String, dynamic> _$DeviceTypeToJson(DeviceType instance) =>
     };
 
 ListDeviceTypeResponse _$ListDeviceTypeResponseFromJson(
-    Map<String, dynamic> json) {
-  return ListDeviceTypeResponse(
-    deviceTypes: (json['deviceTypes'] as List)
-        ?.map((e) =>
-            e == null ? null : DeviceType.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    ListDeviceTypeResponse(
+      deviceTypes: (json['deviceTypes'] as List<dynamic>?)
+          ?.map((e) => DeviceType.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ListDeviceTypeResponseToJson(
         ListDeviceTypeResponse instance) =>
@@ -37,12 +33,13 @@ Map<String, dynamic> _$ListDeviceTypeResponseToJson(
       'deviceTypes': instance.deviceTypes,
     };
 
-DeviceTypeRequest _$DeviceTypeRequestFromJson(Map<String, dynamic> json) {
-  return DeviceTypeRequest(
-    allAssets: json['allAssets'] as bool,
-    assetUID: (json['assetUID'] as List)?.map((e) => e as String)?.toList(),
-  );
-}
+DeviceTypeRequest _$DeviceTypeRequestFromJson(Map<String, dynamic> json) =>
+    DeviceTypeRequest(
+      allAssets: json['allAssets'] as bool?,
+      assetUID: (json['assetUID'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$DeviceTypeRequestToJson(DeviceTypeRequest instance) =>
     <String, dynamic>{

@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SingleAssetUtilizationView extends StatefulWidget {
-  final AssetDetail detail;
+  final AssetDetail? detail;
   SingleAssetUtilizationView({this.detail});
 
   @override
@@ -23,10 +23,10 @@ class _SingleAssetUtilizationViewState
   ProductFamilyType productFamilyType = ProductFamilyType.ALL;
   @override
   void initState() {
-    Logger().d("selected asset product familiy ${widget.detail.productFamily}");
-    if (widget.detail.productFamily == "BACKHOE LOADER") {
+    Logger().d("selected asset product familiy ${widget.detail!.productFamily}");
+    if (widget.detail!.productFamily == "BACKHOE LOADER") {
       productFamilyType = ProductFamilyType.BACKHOE_LOADER;
-    } else if (widget.detail.productFamily == "EXCAVATOR") {
+    } else if (widget.detail!.productFamily == "EXCAVATOR") {
       productFamilyType = ProductFamilyType.EXCAVATOR;
     }
     super.initState();
@@ -36,12 +36,12 @@ class _SingleAssetUtilizationViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetUtilizationViewModel>.reactive(
         builder: (BuildContext context,
-            SingleAssetUtilizationViewModel viewModel, Widget _) {
+            SingleAssetUtilizationViewModel viewModel, Widget? _) {
           return Container(
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color!,
                   width: 0.0),
               borderRadius: BorderRadius.all(Radius.circular(16)),
             ),

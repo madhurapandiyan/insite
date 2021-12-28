@@ -6,13 +6,11 @@ part of 'personalities.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Personality _$PersonalityFromJson(Map<String, dynamic> json) {
-  return Personality(
-    json['Name'] as String,
-    json['Description'] as String,
-    json['Value'] as String,
-  );
-}
+Personality _$PersonalityFromJson(Map<String, dynamic> json) => Personality(
+      json['Name'] as String?,
+      json['Description'] as String?,
+      json['Value'] as String?,
+    );
 
 Map<String, dynamic> _$PersonalityToJson(Personality instance) =>
     <String, dynamic>{

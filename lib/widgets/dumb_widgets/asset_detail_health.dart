@@ -7,7 +7,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class AssetDetailHealth extends StatelessWidget {
-  final AssetDetail detail;
+  final AssetDetail? detail;
   const AssetDetailHealth({this.detail});
 
   @override
@@ -48,11 +48,11 @@ class AssetDetailHealth extends StatelessWidget {
                   // ),
                   InsiteTableRowItem(
                     title: "Asset Status",
-                    content: detail.status,
+                    content: detail!.status,
                   ),
                   InsiteTableRowItem(
                     title: "Serial No.",
-                    content: detail.assetSerialNumber,
+                    content: detail!.assetSerialNumber,
                   ),
                   InsiteTableRowItem(
                     title: "Geofences",
@@ -66,15 +66,15 @@ class AssetDetailHealth extends StatelessWidget {
                   // ),
                   InsiteTableRowItem(
                     title: "Manufacturer",
-                    content: detail.manufacturer,
+                    content: detail!.manufacturer,
                   ),
                   InsiteTableRowItem(
                     title: "Product Family",
-                    content: detail.productFamily,
+                    content: detail!.productFamily,
                   ),
                   InsiteTableRowItem(
                     title: "Model ",
-                    content: detail.model != null ? detail.model : "-",
+                    content: detail!.model != null ? detail!.model : "-",
                   )
                 ]),
                 TableRow(children: [
@@ -84,19 +84,19 @@ class AssetDetailHealth extends StatelessWidget {
                   // ),
                   InsiteTableRowItem(
                     title: "Year",
-                    content: detail.year != null ? detail.year.toString() : "-",
+                    content: detail!.year != null ? detail!.year.toString() : "-",
                   ),
                   InsiteTableRowItem(
                     title: "Hour Meter",
-                    content: detail.hourMeter != null
-                        ? detail.hourMeter.round().toString() + "hrs"
+                    content: detail!.hourMeter != null
+                        ? detail!.hourMeter!.round().toString() + "hrs"
                         : "-",
                   ),
                   InsiteTableRowItem(
                     title: "Last Reported time",
-                    content: detail.lastReportedTimeUTC != null
+                    content: detail!.lastReportedTimeUTC != null
                         ? Utils.getLastReportedDateOneUTC(
-                            detail.lastReportedTimeUTC)
+                            detail!.lastReportedTimeUTC)
                         : "-",
                   )
                 ]),
@@ -124,8 +124,8 @@ class AssetDetailHealth extends StatelessWidget {
                     //         "/" +
                     //         detail.lastReportedLocationLongitude.toString()
                     //     : "-",
-                    content: detail.lastReportedLocation != null
-                        ? detail.lastReportedLocation
+                    content: detail!.lastReportedLocation != null
+                        ? detail!.lastReportedLocation
                         : "-",
                   ),
                   // Column(
@@ -193,13 +193,13 @@ class AssetDetailHealth extends StatelessWidget {
   }
 
   String getServiceNames() {
-    Logger().d(detail.devices[0].activeServicePlans);
+    Logger().d(detail!.devices![0].activeServicePlans);
     StringBuffer value = StringBuffer();
-    if (detail.devices.isNotEmpty &&
-        detail.devices[0].activeServicePlans != null &&
-        detail.devices[0].activeServicePlans.isNotEmpty) {
-      for (ServicePlan plan in detail.devices[0].activeServicePlans) {
-        value.write(plan.type + "\n");
+    if (detail!.devices!.isNotEmpty &&
+        detail!.devices![0].activeServicePlans != null &&
+        detail!.devices![0].activeServicePlans!.isNotEmpty) {
+      for (ServicePlan plan in detail!.devices![0].activeServicePlans!) {
+        value.write(plan.type! + "\n");
       }
       return value.toString();
     } else {

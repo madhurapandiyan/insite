@@ -6,15 +6,14 @@ part of 'cumulative.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-RunTimeCumulative _$RunTimeCumulativeFromJson(Map<String, dynamic> json) {
-  return RunTimeCumulative(
-    cumulatives: json['cumulatives'] == null
-        ? null
-        : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
-    code: json['code'] as int,
-    message: json['message'] as String,
-  );
-}
+RunTimeCumulative _$RunTimeCumulativeFromJson(Map<String, dynamic> json) =>
+    RunTimeCumulative(
+      cumulatives: json['cumulatives'] == null
+          ? null
+          : Cumulatives.fromJson(json['cumulatives'] as Map<String, dynamic>),
+      code: json['code'] as int?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$RunTimeCumulativeToJson(RunTimeCumulative instance) =>
     <String, dynamic>{
@@ -23,25 +22,23 @@ Map<String, dynamic> _$RunTimeCumulativeToJson(RunTimeCumulative instance) =>
       'message': instance.message,
     };
 
-Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) {
-  return Cumulatives(
-    cumulativeHours: (json['cumulativeHours'] as num)?.toDouble(),
-    averageHours: (json['averageHours'] as num)?.toDouble(),
-    totals: json['totals'] == null
-        ? null
-        : Totals.fromJson(json['totals'] as Map<String, dynamic>),
-    description: json['description'] as String,
-    startDateLocalTime: json['startDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['startDateLocalTime'] as String),
-    endDateLocalTime: json['endDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['endDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    totalDayCount: json['totalDayCount'] as int,
-    intervalType: json['intervalType'] as String,
-  );
-}
+Cumulatives _$CumulativesFromJson(Map<String, dynamic> json) => Cumulatives(
+      cumulativeHours: (json['cumulativeHours'] as num?)?.toDouble(),
+      averageHours: (json['averageHours'] as num?)?.toDouble(),
+      totals: json['totals'] == null
+          ? null
+          : Totals.fromJson(json['totals'] as Map<String, dynamic>),
+      description: json['description'] as String?,
+      startDateLocalTime: json['startDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['startDateLocalTime'] as String),
+      endDateLocalTime: json['endDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['endDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      totalDayCount: json['totalDayCount'] as int?,
+      intervalType: json['intervalType'] as String?,
+    );
 
 Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
     <String, dynamic>{
@@ -56,13 +53,11 @@ Map<String, dynamic> _$CumulativesToJson(Cumulatives instance) =>
       'intervalType': instance.intervalType,
     };
 
-Totals _$TotalsFromJson(Map<String, dynamic> json) {
-  return Totals(
-    idleHours: (json['idleHours'] as num)?.toDouble(),
-    workingHours: (json['workingHours'] as num)?.toDouble(),
-    runtimeHours: (json['runtimeHours'] as num)?.toDouble(),
-  );
-}
+Totals _$TotalsFromJson(Map<String, dynamic> json) => Totals(
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      workingHours: (json['workingHours'] as num?)?.toDouble(),
+      runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$TotalsToJson(Totals instance) => <String, dynamic>{
       'idleHours': instance.idleHours,
@@ -70,16 +65,16 @@ Map<String, dynamic> _$TotalsToJson(Totals instance) => <String, dynamic>{
       'runtimeHours': instance.runtimeHours,
     };
 
-FuelBurnedCumulative _$FuelBurnedCumulativeFromJson(Map<String, dynamic> json) {
-  return FuelBurnedCumulative(
-    cumulatives: json['cumulatives'] == null
-        ? null
-        : FuelBurnedCumulatives.fromJson(
-            json['cumulatives'] as Map<String, dynamic>),
-    code: json['code'] as int,
-    message: json['message'] as String,
-  );
-}
+FuelBurnedCumulative _$FuelBurnedCumulativeFromJson(
+        Map<String, dynamic> json) =>
+    FuelBurnedCumulative(
+      cumulatives: json['cumulatives'] == null
+          ? null
+          : FuelBurnedCumulatives.fromJson(
+              json['cumulatives'] as Map<String, dynamic>),
+      code: json['code'] as int?,
+      message: json['message'] as String?,
+    );
 
 Map<String, dynamic> _$FuelBurnedCumulativeToJson(
         FuelBurnedCumulative instance) =>
@@ -90,25 +85,24 @@ Map<String, dynamic> _$FuelBurnedCumulativeToJson(
     };
 
 FuelBurnedCumulatives _$FuelBurnedCumulativesFromJson(
-    Map<String, dynamic> json) {
-  return FuelBurnedCumulatives(
-    totalFuelBurned: (json['totalFuelBurned'] as num)?.toDouble(),
-    averageFuelBurned: (json['averageFuelBurned'] as num)?.toDouble(),
-    totals: json['totals'] == null
-        ? null
-        : FuelBurnedTotals.fromJson(json['totals'] as Map<String, dynamic>),
-    description: json['description'] as String,
-    startDateLocalTime: json['startDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['startDateLocalTime'] as String),
-    endDateLocalTime: json['endDateLocalTime'] == null
-        ? null
-        : DateTime.parse(json['endDateLocalTime'] as String),
-    totalAssetCount: json['totalAssetCount'] as int,
-    totalDayCount: json['totalDayCount'] as int,
-    intervalType: json['intervalType'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    FuelBurnedCumulatives(
+      totalFuelBurned: (json['totalFuelBurned'] as num?)?.toDouble(),
+      averageFuelBurned: (json['averageFuelBurned'] as num?)?.toDouble(),
+      totals: json['totals'] == null
+          ? null
+          : FuelBurnedTotals.fromJson(json['totals'] as Map<String, dynamic>),
+      description: json['description'] as String?,
+      startDateLocalTime: json['startDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['startDateLocalTime'] as String),
+      endDateLocalTime: json['endDateLocalTime'] == null
+          ? null
+          : DateTime.parse(json['endDateLocalTime'] as String),
+      totalAssetCount: json['totalAssetCount'] as int?,
+      totalDayCount: json['totalDayCount'] as int?,
+      intervalType: json['intervalType'] as String?,
+    );
 
 Map<String, dynamic> _$FuelBurnedCumulativesToJson(
         FuelBurnedCumulatives instance) =>
@@ -124,13 +118,12 @@ Map<String, dynamic> _$FuelBurnedCumulativesToJson(
       'intervalType': instance.intervalType,
     };
 
-FuelBurnedTotals _$FuelBurnedTotalsFromJson(Map<String, dynamic> json) {
-  return FuelBurnedTotals(
-    idleFuelBurned: (json['idleFuelBurned'] as num)?.toDouble(),
-    workingFuelBurned: (json['workingFuelBurned'] as num)?.toDouble(),
-    runtimeFuelBurned: (json['runtimeFuelBurned'] as num)?.toDouble(),
-  );
-}
+FuelBurnedTotals _$FuelBurnedTotalsFromJson(Map<String, dynamic> json) =>
+    FuelBurnedTotals(
+      idleFuelBurned: (json['idleFuelBurned'] as num?)?.toDouble(),
+      workingFuelBurned: (json['workingFuelBurned'] as num?)?.toDouble(),
+      runtimeFuelBurned: (json['runtimeFuelBurned'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$FuelBurnedTotalsToJson(FuelBurnedTotals instance) =>
     <String, dynamic>{

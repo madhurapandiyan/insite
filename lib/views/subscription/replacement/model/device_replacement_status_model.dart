@@ -5,9 +5,9 @@ part 'device_replacement_status_model.g.dart';
 
 @JsonSerializable()
 class TotalDeviceReplacementStatusModel {
-  final String code;
-  final String status;
-  final List<List<DeviceReplacementStatusModel>> result;
+  final String? code;
+  final String? status;
+  final List<List<DeviceReplacementStatusModel>>? result;
   TotalDeviceReplacementStatusModel({this.code, this.result, this.status});
 
 
@@ -19,17 +19,17 @@ class TotalDeviceReplacementStatusModel {
 
 @JsonSerializable()
 class DeviceReplacementStatusModel {
-  final int count;
-  final String OldDeviceId;
-  final String NewDeviceId;
-  final String Reason;
-  final String VIN;
-  final String InsertUTC;
-  final String EmailID;
-  final String FirstName;
-  final String LastName;
-  final String State;
-  final String Description;
+  final int? count;
+  final String? OldDeviceId;
+  final String? NewDeviceId;
+  final String? Reason;
+  final String? VIN;
+  final String? InsertUTC;
+  final String? EmailID;
+  final String? FirstName;
+  final String? LastName;
+  final String? State;
+  final String? Description;
   DeviceReplacementStatusModel(
       {this.count,
       this.OldDeviceId,

@@ -5,14 +5,14 @@ import 'package:insite/views/subscription/replacement/device_replacement/device_
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class CustomAutoCompleteWidget extends StatelessWidget {
-  final List<String> items;
-  final String textBoxTitle;
-  final Function(String) onChange;
-  final TextEditingController controller;
-  final Function(String) onSelect;
-  final bool isAlign;
-  final TextInputType keyboardType;
- final String Function(String) validator;
+  final List<String?>? items;
+  final String? textBoxTitle;
+  final Function(String)? onChange;
+  final TextEditingController? controller;
+  final Function(String?)? onSelect;
+  final bool? isAlign;
+  final TextInputType? keyboardType;
+ final dynamic Function(String)? validator;
   CustomAutoCompleteWidget(
       {this.items,
       this.isAlign,
@@ -25,10 +25,10 @@ class CustomAutoCompleteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: items.isEmpty ? 129 : 200,
-      height: items.isEmpty ? 70 : 300,
+      width: items!.isEmpty ? 129 : 200,
+      height: items!.isEmpty ? 70 : 300,
       child: Column(
-        crossAxisAlignment: isAlign == null || isAlign
+        crossAxisAlignment: isAlign == null || isAlign!
             ? CrossAxisAlignment.start
             : CrossAxisAlignment.end,
         children: [
@@ -50,25 +50,25 @@ class CustomAutoCompleteWidget extends StatelessWidget {
               onChanged: onChange,
             ),
           ),
-          items.isEmpty
+          items!.isEmpty
               ? SizedBox()
               : Expanded(
                   child: Container(
                     //  width: 150,
                     height: 300,
-                    color: Theme.of(context).textTheme.bodyText1.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
                         ListView.builder(
-                            itemCount: items.length,
+                            itemCount: items!.length,
                             itemBuilder: (ctx, i) {
                               return DeviceIdListWidget(
                                   //padding: EdgeInsets.only(right: 4, left: 4),
                                   //  size: 10,
-                                  deviceId: items[i],
+                                  deviceId: items![i],
                                   onSelected: () {
-                                    onSelect(items[i]);
+                                    onSelect!(items![i]);
                                   });
                             }),
                       ],

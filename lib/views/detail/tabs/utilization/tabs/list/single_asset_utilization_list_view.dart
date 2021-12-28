@@ -17,9 +17,9 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SingleAssetUtilizationListView extends StatefulWidget {
-  final AssetDetail detail;
+  final AssetDetail? detail;
   const SingleAssetUtilizationListView({
-    Key key,
+    Key? key,
     this.detail,
   }) : super(key: key);
 
@@ -30,16 +30,16 @@ class SingleAssetUtilizationListView extends StatefulWidget {
 
 class _SingleAssetUtilizationListViewState
     extends State<SingleAssetUtilizationListView> {
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
   ProductFamilyType productFamilyType = ProductFamilyType.ALL;
   bool isProductFamilySelected = false;
 
   @override
   void initState() {
-    Logger().d("selected asset product familiy ${widget.detail.productFamily}");
-    if (widget.detail.productFamily == "BACKHOE LOADER") {
+    Logger().d("selected asset product familiy ${widget.detail!.productFamily}");
+    if (widget.detail!.productFamily == "BACKHOE LOADER") {
       productFamilyType = ProductFamilyType.BACKHOE_LOADER;
-    } else if (widget.detail.productFamily == "EXCAVATOR") {
+    } else if (widget.detail!.productFamily == "EXCAVATOR") {
       productFamilyType = ProductFamilyType.EXCAVATOR;
     }
     super.initState();
@@ -49,7 +49,7 @@ class _SingleAssetUtilizationListViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetUtilizationListViewModel>.reactive(
       builder: (BuildContext context,
-          SingleAssetUtilizationListViewModel viewModel, Widget _) {
+          SingleAssetUtilizationListViewModel viewModel, Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [
@@ -144,7 +144,7 @@ class _SingleAssetUtilizationListViewState
                               width: 90,
                               bgColor: Theme.of(context).backgroundColor,
                               textColor:
-                                  Theme.of(context).textTheme.bodyText1.color,
+                                  Theme.of(context).textTheme.bodyText1!.color,
                               onTap: () async {
                                 dateRange = [];
                                 dateRange = await showDialog(
@@ -153,7 +153,7 @@ class _SingleAssetUtilizationListViewState
                                       backgroundColor: transparent,
                                       child: DateRangeView()),
                                 );
-                                if (dateRange != null && dateRange.isNotEmpty) {
+                                if (dateRange != null && dateRange!.isNotEmpty) {
                                   viewModel.refresh();
                                 }
                               },
@@ -174,17 +174,17 @@ class _SingleAssetUtilizationListViewState
                       ? Container(
                           child: InsiteProgressBar(),
                         )
-                      : viewModel.utilLizationList.isNotEmpty
+                      : viewModel.utilLizationList!.isNotEmpty
                           ? ListView.separated(
                               separatorBuilder: (context, index) {
                                 return Divider();
                               },
                               scrollDirection: Axis.vertical,
-                              itemCount: viewModel.utilLizationList.length,
+                              itemCount: viewModel.utilLizationList!.length,
                               padding: EdgeInsets.only(left: 8.0, right: 8.0),
                               itemBuilder: (context, index) {
                                 AssetResult utilizationData =
-                                    viewModel.utilLizationList[index];
+                                    viewModel.utilLizationList![index];
                                 return isProductFamilySelected
                                     ? productFamilyType ==
                                             ProductFamilyType.EXCAVATOR

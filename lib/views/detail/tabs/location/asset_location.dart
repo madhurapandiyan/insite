@@ -16,8 +16,8 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class AssetLocationView extends StatefulWidget {
-  final AssetDetail detail;
-  final ScreenType screenType;
+  final AssetDetail? detail;
+  final ScreenType? screenType;
   AssetLocationView({this.detail, this.screenType = ScreenType.FLEET});
 
   @override
@@ -29,9 +29,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
-  List<DateTime> dateRange;
-  GoogleMapController mapController;
-  BitmapDescriptor mapMarker;
+  List<DateTime>? dateRange;
+  late GoogleMapController mapController;
+  BitmapDescriptor? mapMarker;
 
   @override
   void dispose() {
@@ -42,7 +42,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetLocationViewModel>.reactive(
       builder:
-          (BuildContext context, AssetLocationViewModel viewModel, Widget _) {
+          (BuildContext context, AssetLocationViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
@@ -52,7 +52,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               border: Border.all(
-                  width: 1, color: Theme.of(context).textTheme.bodyText1.color),
+                  width: 1, color: Theme.of(context).textTheme.bodyText1!.color!),
               shape: BoxShape.rectangle,
             ),
             child: Column(
@@ -67,9 +67,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         width: 90,
                         height: 30,
                         bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1.color,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
-                          viewModel.customInfoWindowController.hideInfoWindow();
+                          viewModel.customInfoWindowController.hideInfoWindow!();
                           if (widget.screenType == ScreenType.HEALTH) {
                             viewModel.refreshForAssetView();
                           } else {
@@ -91,7 +91,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         title: "Date Range",
                         width: 90,
                         bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1.color,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
                           dateRange = await showDialog(
                             context: context,
@@ -99,12 +99,12 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 backgroundColor: transparent,
                                 child: DateRangeView()),
                           );
-                          if (dateRange != null && dateRange.isNotEmpty) {
+                          if (dateRange != null && dateRange!.isNotEmpty) {
                             setState(() {
                               dateRange = dateRange;
                             });
                             viewModel.customInfoWindowController
-                                .hideInfoWindow();
+                                .hideInfoWindow!();
                             viewModel.refresh();
                           }
                         },
@@ -117,10 +117,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                     children: [
                       GoogleMap(
                         onTap: (position) {
-                          viewModel.customInfoWindowController.hideInfoWindow();
+                          viewModel.customInfoWindowController.hideInfoWindow!();
                         },
                         onCameraMove: (position) {
-                          viewModel.customInfoWindowController.onCameraMove();
+                          viewModel.customInfoWindowController.onCameraMove!();
                         },
                         onMapCreated: (GoogleMapController controller) {
                           mapController = controller;
@@ -139,14 +139,14 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         markers: viewModel.markers,
                         initialCameraPosition:
                             viewModel.assetLocationHistory != null &&
-                                    viewModel.assetLocationHistory.assetLocation
+                                    viewModel.assetLocationHistory!.assetLocation!
                                         .isNotEmpty
                                 ? CameraPosition(
                                     target: LatLng(
-                                        viewModel.assetLocationHistory
-                                            .assetLocation[0].latitude,
-                                        viewModel.assetLocationHistory
-                                            .assetLocation[0].longitude),
+                                        viewModel.assetLocationHistory!
+                                            .assetLocation![0].latitude!,
+                                        viewModel.assetLocationHistory!
+                                            .assetLocation![0].longitude!),
                                     zoom: 18)
                                 : CameraPosition(
                                     target: LatLng(30.666, 76.8127), zoom: 4),
@@ -172,10 +172,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   _plus(
                                     zoomVal,
                                     LatLng(
-                                        viewModel.assetLocationHistory
-                                            .assetLocation[0].latitude,
-                                        viewModel.assetLocationHistory
-                                            .assetLocation[0].longitude),
+                                        viewModel.assetLocationHistory!
+                                            .assetLocation![0].latitude!,
+                                        viewModel.assetLocationHistory!
+                                            .assetLocation![0].longitude!),
                                   );
                                 }
                               },
@@ -191,16 +191,16 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                       blurRadius: 1.0,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .bodyText1
-                                          .color,
+                                          .bodyText1!
+                                          .color!,
                                     ),
                                   ],
                                   border: Border.all(
                                     width: 1.0,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .color,
+                                        .bodyText1!
+                                        .color!,
                                   ),
                                   shape: BoxShape.rectangle,
                                 ),
@@ -220,10 +220,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                     _minus(
                                       zoomVal,
                                       LatLng(
-                                          viewModel.assetLocationHistory
-                                              .assetLocation[0].latitude,
-                                          viewModel.assetLocationHistory
-                                              .assetLocation[0].longitude),
+                                          viewModel.assetLocationHistory!
+                                              .assetLocation![0].latitude!,
+                                          viewModel.assetLocationHistory!
+                                              .assetLocation![0].longitude!),
                                     );
                                   }
                                 },
@@ -239,16 +239,16 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                         blurRadius: 1.0,
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
-                                            .color,
+                                            .bodyText1!
+                                            .color!,
                                       ),
                                     ],
                                     border: Border.all(
                                       width: 1.0,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .bodyText1
-                                          .color,
+                                          .bodyText1!
+                                          .color!,
                                     ),
                                     shape: BoxShape.rectangle,
                                   ),
@@ -281,7 +281,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
+                                    .bodyText1!
                                     .color),
                           ),
                           items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
@@ -295,9 +295,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   ))
                               .toList(),
                           value: _currentSelectedItem,
-                          onChanged: (value) {
+                          onChanged: (String? value) {
                             setState(() {
-                              _currentSelectedItem = value;
+                              _currentSelectedItem = value!;
                             });
                           },
                           underline: Container(

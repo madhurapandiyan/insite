@@ -10,17 +10,17 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class GoogleMapDetailWidget extends StatefulWidget {
-  final double latitude;
-  final double longitude;
-  final LatLng initLocation;
-  final String status;
+  final double? latitude;
+  final double? longitude;
+  final LatLng? initLocation;
+  final String? status;
   final isLoading;
-  final ScreenType screenType;
-  final VoidCallback onMarkerTap;
-  final String location;
+  final ScreenType? screenType;
+  final VoidCallback? onMarkerTap;
+  final String? location;
   GoogleMapDetailWidget(
-      {@required this.latitude,
-      @required this.longitude,
+      {required this.latitude,
+      required this.longitude,
       this.status,
       this.onMarkerTap,
       this.screenType,
@@ -33,10 +33,10 @@ class GoogleMapDetailWidget extends StatefulWidget {
 }
 
 class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
-  String _currentSelectedItem = "MAP";
+  String? _currentSelectedItem = "MAP";
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
-  LatLng _lastMapPosition;
+  LatLng? _lastMapPosition;
   Set<Marker> _markers = {};
   MapType currentType = MapType.normal;
 
@@ -45,7 +45,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
     super.initState();
     _lastMapPosition = (widget.latitude == null && widget.longitude == null)
         ? widget.initLocation
-        : LatLng(widget.latitude, widget.longitude);
+        : LatLng(widget.latitude!, widget.longitude!);
   }
 
   @override
@@ -121,7 +121,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                                         text: _currentSelectedItem,
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color),
                                     items: [
                                       'MAP',
@@ -137,12 +137,12 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                                                   fontWeight: FontWeight.bold,
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
+                                                      .bodyText1!
                                                       .color),
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
-                                    onChanged: (value) {
+                                    onChanged: (dynamic value) {
                                       setState(() {
                                         _currentSelectedItem = value;
                                       });
@@ -239,7 +239,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             initialCameraPosition: CameraPosition(
                 target: (widget.latitude == null && widget.longitude == null)
                     ? LatLng(30.666, 76.8127)
-                    : LatLng(widget.latitude, widget.longitude),
+                    : LatLng(widget.latitude!, widget.longitude!),
                 zoom: (widget.latitude == null && widget.longitude == null)
                     ? 3
                     : 12),
@@ -270,12 +270,12 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                       boxShadow: [
                         BoxShadow(
                             blurRadius: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1.color),
+                            color: Theme.of(context).textTheme.bodyText1!.color!),
                       ],
                       color: Theme.of(context).backgroundColor,
                       border: Border.all(
                           width: 1.0,
-                          color: Theme.of(context).textTheme.bodyText1.color),
+                          color: Theme.of(context).textTheme.bodyText1!.color!),
                       shape: BoxShape.rectangle,
                     ),
                     child: SvgPicture.asset(
@@ -302,12 +302,12 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1.color,
+                            color: Theme.of(context).textTheme.bodyText1!.color!,
                           ),
                         ],
                         border: Border.all(
                             width: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1.color),
+                            color: Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: SvgPicture.asset(
@@ -331,8 +331,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: (widget.latitude == null && widget.longitude == null)
-            ? widget.initLocation
-            : LatLng(widget.latitude, widget.longitude),
+            ? widget.initLocation!
+            : LatLng(widget.latitude!, widget.longitude!),
         zoom: zoomVal)));
   }
 
@@ -340,8 +340,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: (widget.latitude == null && widget.longitude == null)
-            ? widget.initLocation
-            : LatLng(widget.latitude, widget.longitude),
+            ? widget.initLocation!
+            : LatLng(widget.latitude!, widget.longitude!),
         zoom: zoomVal)));
   }
 
@@ -354,10 +354,10 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             infoWindow: InfoWindow(
               title: widget.location != null ? widget.location : "",
               onTap: () {
-                widget.onMarkerTap();
+                widget.onMarkerTap!();
               },
             ),
-            position: LatLng(widget.latitude, widget.longitude)));
+            position: LatLng(widget.latitude!, widget.longitude!)));
     });
   }
 

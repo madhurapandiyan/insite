@@ -5,9 +5,9 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class CustomerListItem extends StatelessWidget {
-  final DetailResult detailResult;
-  final VoidCallback onCallback;
-  const CustomerListItem({Key key, this.detailResult, this.onCallback})
+  final DetailResult? detailResult;
+  final VoidCallback? onCallback;
+  const CustomerListItem({Key? key, this.detailResult, this.onCallback})
       : super(key: key);
 
   @override
@@ -51,12 +51,12 @@ class CustomerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Customer Name : ",
                         content:
-                            detailResult.Name != null ? detailResult.Name : "",
+                            detailResult!.Name != null ? detailResult!.Name : "",
                       ),
                       InsiteTableRowItem(
                         title: "User Name : ",
-                        content: detailResult.UserName != null
-                            ? detailResult.UserName
+                        content: detailResult!.UserName != null
+                            ? detailResult!.UserName
                             : "",
                       ),
                     ],
@@ -66,12 +66,12 @@ class CustomerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Customer Code : ",
                         content:
-                            detailResult.Code != null ? detailResult.Code : "",
+                            detailResult!.Code != null ? detailResult!.Code : "",
                       ),
                       InsiteTableRowItem(
                         title: "Customer Email Id : ",
-                        content: detailResult.Email != null
-                            ? detailResult.Email
+                        content: detailResult!.Email != null
+                            ? detailResult!.Email
                             : "",
                       ),
                     ],

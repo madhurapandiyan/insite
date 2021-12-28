@@ -6,19 +6,16 @@ part of 'replace_deviceId_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReplaceDeviceModel _$ReplaceDeviceModelFromJson(Map<String, dynamic> json) {
-  return ReplaceDeviceModel(
-    code: json['code'] as String,
-    result: (json['result'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) => e == null
-                ? null
-                : DeviceModel.fromJson(e as Map<String, dynamic>))
-            ?.toList())
-        ?.toList(),
-    status: json['status'] as String,
-  );
-}
+ReplaceDeviceModel _$ReplaceDeviceModelFromJson(Map<String, dynamic> json) =>
+    ReplaceDeviceModel(
+      code: json['code'] as String?,
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => (e as List<dynamic>)
+              .map((e) => DeviceModel.fromJson(e as Map<String, dynamic>))
+              .toList())
+          .toList(),
+      status: json['status'] as String?,
+    );
 
 Map<String, dynamic> _$ReplaceDeviceModelToJson(ReplaceDeviceModel instance) =>
     <String, dynamic>{
@@ -27,17 +24,15 @@ Map<String, dynamic> _$ReplaceDeviceModelToJson(ReplaceDeviceModel instance) =>
       'result': instance.result,
     };
 
-DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) {
-  return DeviceModel(
-    GPSDeviceID: json['GPSDeviceID'] as String,
-    VIN: json['VIN'] as String,
-    Model: json['Model'] as String,
-    SubscriptionStartDate: json['SubscriptionStartDate'] as String,
-    SubscriptionEndDate: json['SubscriptionEndDate'] as String,
-    count: json['count'] as int,
-    NetworkProvider: json['NetworkProvider'] as String,
-  );
-}
+DeviceModel _$DeviceModelFromJson(Map<String, dynamic> json) => DeviceModel(
+      GPSDeviceID: json['GPSDeviceID'] as String?,
+      VIN: json['VIN'] as String?,
+      Model: json['Model'] as String?,
+      SubscriptionStartDate: json['SubscriptionStartDate'] as String?,
+      SubscriptionEndDate: json['SubscriptionEndDate'] as String?,
+      count: json['count'] as int?,
+      NetworkProvider: json['NetworkProvider'] as String?,
+    );
 
 Map<String, dynamic> _$DeviceModelToJson(DeviceModel instance) =>
     <String, dynamic>{

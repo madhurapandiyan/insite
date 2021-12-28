@@ -6,20 +6,19 @@ part of 'geofencepayload.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Geofencepayload _$GeofencepayloadFromJson(Map<String, dynamic> json) {
-  return Geofencepayload(
-    ActionUTC: json['ActionUTC'] as String,
-    GeofenceUID: json['GeofenceUID'] as String,
-    EndDate: json['EndDate'] as String,
-    FillColor: json['FillColor'] as int,
-    Description: json['Description'] as String,
-    GeofenceName: json['GeofenceName'] as String,
-    GeofenceType: json['GeofenceType'] as String,
-    GeometryWKT: json['GeometryWKT'] as String,
-    IsTransparent: json['IsTransparent'] as bool,
-    IsFavorite: json['IsFavorite'] as bool,
-  );
-}
+Geofencepayload _$GeofencepayloadFromJson(Map<String, dynamic> json) =>
+    Geofencepayload(
+      ActionUTC: json['ActionUTC'] as String?,
+      GeofenceUID: json['GeofenceUID'] as String?,
+      EndDate: json['EndDate'] as String?,
+      FillColor: json['FillColor'] as int?,
+      Description: json['Description'] as String?,
+      GeofenceName: json['GeofenceName'] as String?,
+      GeofenceType: json['GeofenceType'] as String?,
+      GeometryWKT: json['GeometryWKT'] as String?,
+      IsTransparent: json['IsTransparent'] as bool?,
+      IsFavorite: json['IsFavorite'] as bool?,
+    );
 
 Map<String, dynamic> _$GeofencepayloadToJson(Geofencepayload instance) =>
     <String, dynamic>{

@@ -6,13 +6,13 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
 
 class CustomCardSmsAssetWidget extends StatelessWidget {
-  final String serialNo;
-  final String date;
-  final String deviceId;
-  final String name;
-  final String language;
-  final String mobileNo;
-  final String model;
+  final String? serialNo;
+  final String? date;
+  final String? deviceId;
+  final String? name;
+  final String? language;
+  final String? mobileNo;
+  final String? model;
 
   CustomCardSmsAssetWidget(
       {this.deviceId,
@@ -51,20 +51,33 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InsiteTableRowItem(
-                      title: "Make",
-                      content: "Title",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InsiteText(
+                          text: "Make",
+                        ),
+                        Container(
+                          width: 60,
+                          child: InsiteTextOverFlow(
+                            overflow: TextOverflow.ellipsis,
+                            text: model,
+                          ),
+                        ),
+                      ],
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InsiteText(
                           text: "Model",
                         ),
-                        InsiteTextOverFlow(
-                          overflow: TextOverflow.ellipsis,
-                          text: model,
+                        Container(
+                          width: 100,
+                          child: InsiteTextOverFlow(
+                            overflow: TextOverflow.ellipsis,
+                            text: model,
+                          ),
                         ),
                       ],
                     )
@@ -159,7 +172,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                   InsiteTextOverFlow(
                     overflow: TextOverflow.ellipsis,
                     text: Utils.getLastReportedDateFilterData(
-                        DateFormat("yyyy-MM-dd").parse(date)),
+                        DateFormat("yyyy-MM-dd").parse(date!)),
                   )
                 ],
               ),

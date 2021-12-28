@@ -4,7 +4,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_card_asset_registration.dart';
 
 class MultipleAssetRegistrationCard extends StatelessWidget {
-  final AssetValues assetValue;
+  final AssetValues? assetValue;
 
   MultipleAssetRegistrationCard({this.assetValue});
 

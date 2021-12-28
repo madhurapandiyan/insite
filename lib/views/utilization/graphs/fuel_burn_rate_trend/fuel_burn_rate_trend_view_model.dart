@@ -6,9 +6,9 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class FuelBurnRateTrendViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _utilizationGraphService = locator<UtilizationGraphsService>();
+  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
 
   String _range = 'daily';
   set range(String range) {
@@ -21,8 +21,8 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
   bool _isSwitching = false;
   bool get isSwitching => _isSwitching;
 
-  FuelBurnRateTrend _fuelBurnRateTrend;
-  FuelBurnRateTrend get fuelBurnRateTrend => _fuelBurnRateTrend;
+  FuelBurnRateTrend? _fuelBurnRateTrend;
+  FuelBurnRateTrend? get fuelBurnRateTrend => _fuelBurnRateTrend;
 
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
@@ -34,7 +34,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
 
   getFuelBurnRateTrend() async {
     _isSwitching = true;
-    FuelBurnRateTrend result = await _utilizationGraphService
+    FuelBurnRateTrend? result = await _utilizationGraphService!
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _fuelBurnRateTrend = null;
@@ -48,7 +48,7 @@ class FuelBurnRateTrendViewModel extends InsiteViewModel {
   refresh() async {
     _isRefreshing = true;
     notifyListeners();
-    FuelBurnRateTrend result = await _utilizationGraphService
+    FuelBurnRateTrend? result = await _utilizationGraphService!
         .getFuelBurnRateTrend(_range, startDate, endDate, 1, 25, true);
     if (result == null || result.cumulatives == null)
       _fuelBurnRateTrend = null;

@@ -7,15 +7,12 @@ part of 'asset_mileage_settings_list_data.dart';
 // **************************************************************************
 
 AssetMileageSettingsListData _$AssetMileageSettingsListDataFromJson(
-    Map<String, dynamic> json) {
-  return AssetMileageSettingsListData(
-    assetMileageSettings: (json['assetMileageSettings'] as List)
-        ?.map((e) => e == null
-            ? null
-            : AssetMileageSettings.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    AssetMileageSettingsListData(
+      assetMileageSettings: (json['assetMileageSettings'] as List<dynamic>?)
+          ?.map((e) => AssetMileageSettings.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AssetMileageSettingsListDataToJson(
         AssetMileageSettingsListData instance) =>
@@ -23,13 +20,13 @@ Map<String, dynamic> _$AssetMileageSettingsListDataToJson(
       'assetMileageSettings': instance.assetMileageSettings,
     };
 
-AssetMileageSettings _$AssetMileageSettingsFromJson(Map<String, dynamic> json) {
-  return AssetMileageSettings(
-    targetValue: (json['targetValue'] as num)?.toDouble(),
-    startDate: json['startDate'] as String,
-    assetUid: json['assetUid'] as String,
-  );
-}
+AssetMileageSettings _$AssetMileageSettingsFromJson(
+        Map<String, dynamic> json) =>
+    AssetMileageSettings(
+      targetValue: (json['targetValue'] as num?)?.toDouble(),
+      startDate: json['startDate'] as String?,
+      assetUid: json['assetUid'] as String?,
+    );
 
 Map<String, dynamic> _$AssetMileageSettingsToJson(
         AssetMileageSettings instance) =>

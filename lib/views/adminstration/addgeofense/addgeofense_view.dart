@@ -24,7 +24,7 @@ class AddgeofenseView extends StatefulWidget {
 
 class _AddgeofenseViewState extends State<AddgeofenseView> {
   Color pickerColor = tango;
-  Color currentColor;
+  Color? currentColor;
   void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
             context: context,
@@ -53,17 +53,17 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
     });
   }
 
-  String uid;
+  String? uid;
 
   @override
   Widget build(BuildContext context) {
-    uid = ModalRoute.of(context).settings.arguments as String;
+    uid = ModalRoute.of(context)!.settings.arguments as String?;
     //Logger().wtf(isInit);
     var mediaquerry = MediaQuery.of(context);
     var theme = Theme.of(context);
     return ViewModelBuilder<AddgeofenseViewModel>.reactive(
       builder:
-          (BuildContext context, AddgeofenseViewModel viewModel, Widget _) {
+          (BuildContext context, AddgeofenseViewModel viewModel, Widget? _) {
         if (viewModel.isLoading) {
           viewModel.getGeofenceData(uid);
         }
@@ -107,7 +107,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                         ),
                         child: viewModel.isSearching
                             ? LocationSearchView(getLatLong: (lat, long) {
-                                viewModel.onLocationSelected(lat, long);
+                                viewModel.onLocationSelected(lat!, long!);
                               }, onApply: (_) {
                                 viewModel.onLocationSearchApply();
                               })
@@ -165,7 +165,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                               changingvalue: (value) {
                                                 viewModel
                                                     .onDropDownMapTypeChange(
-                                                        value);
+                                                        value!);
                                               },
                                               initialvalue:
                                                   viewModel.initialMapType,
@@ -192,7 +192,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                         ? tango
                                                         : tuna,
                                                     title: "",
-                                                    onTap: viewModel.polygon
+                                                    onTap: viewModel.polygon!
                                                                 .isNotEmpty &&
                                                             uid != null
                                                         ? null
@@ -240,7 +240,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                           bgColor: tuna,
                                                           title: "",
                                                           onTap: viewModel
-                                                                      .polygon
+                                                                      .polygon!
                                                                       .isNotEmpty &&
                                                                   uid == null
                                                               ? () =>
@@ -442,8 +442,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             width: 1,
                                             color: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
-                                                .color),
+                                                .bodyText1!
+                                                .color!),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Theme(
@@ -452,7 +452,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         child: ExpansionTile(
                                           iconColor: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
+                                              .bodyText1!
                                               .color,
                                           onExpansionChanged: (bool) {},
                                           childrenPadding: EdgeInsets.all(10),
@@ -476,8 +476,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             color: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText1
-                                                                .color),
+                                                                .bodyText1!
+                                                                .color!),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15)),
@@ -527,7 +527,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             color: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText1
+                                                                .bodyText1!
                                                                 .color,
                                                             text: data[i].name,
                                                           ),
@@ -535,7 +535,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                             color: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText1
+                                                                .bodyText1!
                                                                 .color,
                                                             text: data[i]
                                                                 .density
@@ -569,8 +569,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                 width: 1,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .bodyText1
-                                                    .color),
+                                                    .bodyText1!
+                                                    .color!),
                                             borderRadius:
                                                 BorderRadius.circular(20)),
                                         child: TextFormField(
@@ -640,8 +640,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   width: 1,
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1
-                                                      .color)),
+                                                      .bodyText1!
+                                                      .color!)),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 20),
@@ -652,7 +652,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                               children: [
                                                 InsiteText(
                                                   text:
-                                                      "${viewModel.backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat.yMMMd().format(viewModel.backFillDate)}",
+                                                      "${viewModel.backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat.yMMMd().format(viewModel.backFillDate!)}",
                                                 ),
                                                 Icon(Icons
                                                     .calendar_today_outlined)
@@ -689,8 +689,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             width: 1,
                                             color: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
-                                                .color)),
+                                                .bodyText1!
+                                                .color!)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
@@ -700,7 +700,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         children: [
                                           InsiteText(
                                             text:
-                                                "${viewModel.endingDate == null ? "choose date" : DateFormat.yMMMd().format(viewModel.endingDate)}",
+                                                "${viewModel.endingDate == null ? "choose date" : DateFormat.yMMMd().format(viewModel.endingDate!)}",
                                           ),
                                           Icon(Icons.calendar_today_outlined)
                                         ],

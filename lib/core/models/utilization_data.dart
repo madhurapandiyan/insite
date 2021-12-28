@@ -4,9 +4,9 @@ part 'utilization_data.g.dart';
 
 @JsonSerializable()
 class UtilizationData {
-  final String lastReportedTime;
-  final String date;
-  final double targetRuntimePerformance;
+  final String? lastReportedTime;
+  final String? date;
+  final double? targetRuntimePerformance;
   UtilizationData(
       {this.date, this.lastReportedTime, this.targetRuntimePerformance});
   factory UtilizationData.fromJson(Map<String, dynamic> json) =>
@@ -17,7 +17,7 @@ class UtilizationData {
 
 @JsonSerializable()
 class UtilizationSummaryResponse {
-  final List<AssetResult> utilization;
+  final List<AssetResult>? utilization;
   UtilizationSummaryResponse({this.utilization});
   factory UtilizationSummaryResponse.fromJson(Map<String, dynamic> json) =>
       _$UtilizationSummaryResponseFromJson(json);

@@ -14,7 +14,7 @@ class NativeService {
     return await flutterToNativeplatform.invokeMethod('open_login');
   }
 
-  Future<String> logout(String id_token) async {
+  Future<String> logout(String? id_token) async {
     return await flutterToNativeplatform.invokeMethod('open_logout',id_token);
   }
 }

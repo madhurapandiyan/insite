@@ -11,8 +11,8 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 
 class LocationSearchView extends StatefulWidget {
-  final Function(List<FilterData>) onApply;
-  final Function(String, String) getLatLong;
+  final Function(List<FilterData>)? onApply;
+  final Function(String?, String?)? getLatLong;
   LocationSearchView({this.onApply, this.getLatLong});
   @override
   _LocationSearchViewState createState() => _LocationSearchViewState();
@@ -28,7 +28,7 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 color: Theme.of(context).backgroundColor,
                 border: Border.all(
-                    color: Theme.of(context).textTheme.bodyText1.color)),
+                    color: Theme.of(context).textTheme.bodyText1!.color!)),
             child: Column(
               children: [
                 Padding(
@@ -40,7 +40,7 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                   ),
                 ),
                 viewModel.filterLocations
-                            .where((element) => element.isSelected)
+                            .where((element) => element.isSelected!)
                             .length >
                         0
                     ? Padding(
@@ -60,8 +60,8 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                             ),
                             InsiteButton(
                               onTap: () {
-                                widget.onApply(viewModel.filterLocations
-                                    .where((element) => element.isSelected)
+                                widget.onApply!(viewModel.filterLocations
+                                    .where((element) => element.isSelected!)
                                     .toList());
                               },
                               textColor: Colors.white,
@@ -92,13 +92,13 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                                       return GestureDetector(
                                         onTap: () {
                                           viewModel.filterLocations[index]
-                                              .isSelected = !data.isSelected;
-                                          widget.getLatLong(
-                                              data.extras[0], data.extras[1]);
+                                              .isSelected = !data.isSelected!;
+                                          widget.getLatLong!(
+                                              data.extras![0], data.extras![1]);
                                           setState(() {});
                                         },
                                         child: Container(
-                                          color: data.isSelected
+                                          color: data.isSelected!
                                               ? Theme.of(context).buttonColor
                                               : Theme.of(context)
                                                   .backgroundColor,
@@ -109,10 +109,10 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               InsiteText(
-                                                  text: data.count.isNotEmpty
+                                                  text: data.count!.isNotEmpty
                                                       ? "(${data.count}) "
                                                       : "",
-                                                  color: data.isSelected
+                                                  color: data.isSelected!
                                                       ? white
                                                       : null,
                                                   fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ class _LocationSearchViewState extends State<LocationSearchView> {
                                               Expanded(
                                                 child: InsiteText(
                                                     text: data.title,
-                                                    color: data.isSelected
+                                                    color: data.isSelected!
                                                         ? white
                                                         : null,
                                                     fontWeight: FontWeight.bold,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -10,12 +11,12 @@ import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdlingLevel extends StatefulWidget {
-  final List<Count> data;
-  final bool isLoading;
-  final bool isSwitching;
-  final bool isRefreshing;
-  final Function(FilterData) onFilterSelected;
-  final Function onRangeSelected;
+  final List<Count>? data;
+  final bool? isLoading;
+  final bool? isSwitching;
+  final bool? isRefreshing;
+  final Function(FilterData)? onFilterSelected;
+  final Function? onRangeSelected;
 
   IdlingLevel(
       {this.data,
@@ -82,7 +83,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   thickness: 1.0,
                   color: Theme.of(context).dividerColor,
                 ),
-                (widget.isLoading || widget.isRefreshing)
+                (widget.isLoading! || widget.isRefreshing!)
                     ? Expanded(child: InsiteProgressBar())
                     : Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -99,7 +100,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                     textStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color),
                                     alignment: ChartAlignment.center,
                                     overflowMode: LegendItemOverflowMode.wrap,
@@ -114,7 +115,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                     labelStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1
+                                            .bodyText1!
                                             .color,
                                         fontSize: 10.0,
                                         fontWeight: FontWeight.w700,
@@ -146,13 +147,13 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         pointTapArgs.viewportPointIndex
                                             .toString());
                                     Count countDatum = getCountDataFiltered()[
-                                        pointTapArgs.pointIndex];
-                                    var x = countDatum.countOf
+                                        pointTapArgs.pointIndex!];
+                                    var x = countDatum.countOf!
                                         .split(",")
                                         .first
                                         .replaceAll("[", "")
                                         .replaceAll("]", "");
-                                    var y = countDatum.countOf
+                                    var y = countDatum.countOf!
                                         .split(",")
                                         .last
                                         .replaceAll("[", "")
@@ -163,7 +164,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         title: countDatum.countOf,
                                         extras: [x, y],
                                         type: FilterType.IDLING_LEVEL);
-                                    widget.onFilterSelected(data);
+                                    widget.onFilterSelected!(data);
                                   },
                                   primaryYAxis: NumericAxis(
                                       majorGridLines: MajorGridLines(
@@ -173,7 +174,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                       labelStyle: TextStyle(
                                           color: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
+                                              .bodyText1!
                                               .color,
                                           fontSize: 10.0,
                                           fontWeight: FontWeight.w700,
@@ -190,9 +191,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                widget.data.isNotEmpty
+                                widget.data!.isNotEmpty
                                     ? new InsiteText(
-                                        text: widget.data[0].count.toString() +
+                                        text: widget.data![0].count.toString() +
                                             "\n" +
                                             "assets" +
                                             "\n" +
@@ -208,7 +209,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                       ),
               ],
             ),
-            widget.isSwitching ? InsiteProgressBar() : SizedBox()
+            widget.isSwitching! ? InsiteProgressBar() : SizedBox()
           ],
         ),
       ),
@@ -220,7 +221,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
       width: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+        border: Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
         boxShadow: [
           new BoxShadow(
               blurRadius: 1.0, color: Theme.of(context).backgroundColor)
@@ -233,7 +234,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
             onTap: () {
               setState(() {
                 idlingLevelRange = IdlingLevelRange.DAY;
-                widget.onRangeSelected(idlingLevelRange);
+                widget.onRangeSelected!(idlingLevelRange);
               });
             },
             child: Container(
@@ -252,7 +253,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   textAlign: TextAlign.center,
                   color: idlingLevelRange == IdlingLevelRange.DAY
                       ? Colors.white
-                      : Theme.of(context).textTheme.bodyText1.color,
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   size: 11.0,
                   fontWeight: FontWeight.w700,
                 )),
@@ -263,7 +264,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
             onTap: () {
               setState(() {
                 idlingLevelRange = IdlingLevelRange.WEEK;
-                widget.onRangeSelected(idlingLevelRange);
+                widget.onRangeSelected!(idlingLevelRange);
               });
             },
             child: Container(
@@ -283,7 +284,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   size: 11.0,
                   color: idlingLevelRange == IdlingLevelRange.WEEK
                       ? Colors.white
-                      : Theme.of(context).textTheme.bodyText1.color,
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   fontWeight: FontWeight.w700,
                 )),
           ),
@@ -293,7 +294,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
             onTap: () {
               setState(() {
                 idlingLevelRange = IdlingLevelRange.MONTH;
-                widget.onRangeSelected(idlingLevelRange);
+                widget.onRangeSelected!(idlingLevelRange);
               });
             },
             child: Container(
@@ -312,7 +313,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   textAlign: TextAlign.center,
                   color: idlingLevelRange == IdlingLevelRange.MONTH
                       ? Colors.white
-                      : Theme.of(context).textTheme.bodyText1.color,
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   size: 10.0,
                   fontWeight: FontWeight.w700,
                 )),
@@ -324,7 +325,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   List<Count> getCountDataFiltered() {
     List<Count> chartData = [];
-    for (Count count in widget.data) {
+    for (Count count in widget.data!) {
       if (count.countOf != "Excluded") {
         chartData.add(count);
       }
@@ -334,9 +335,9 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   List<BarSeries<IdlingLevelSampleData, String>> _getDefaultBarSeries() {
     List<IdlingLevelSampleData> chartData = [];
-    for (Count count in widget.data) {
+    for (Count count in widget.data!) {
       if (count.countOf != "Excluded") {
-        print('idlingData:${widget.data[3].count}');
+        print('idlingData:${widget.data![3].count}');
         chartData.add(
           IdlingLevelSampleData(
             x: Utils.getIdlingWidgetLabel(count.countOf),
@@ -355,7 +356,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
           dataLabelSettings: DataLabelSettings(
               isVisible: true,
               textStyle: new TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',
@@ -368,7 +369,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
     ];
   }
 
-  Color getColorData(String data) {
+  Color? getColorData(String? data) {
     switch (data) {
       case "0-10%":
         return burntSienna;
@@ -385,8 +386,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
 }
 
 class IdlingLevelSampleData {
-  final String x;
-  final int y;
+  final String? x;
+  final int? y;
 
   IdlingLevelSampleData({this.x, this.y});
 }

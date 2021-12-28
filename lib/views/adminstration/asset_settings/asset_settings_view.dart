@@ -28,7 +28,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetSettingsViewModel>.reactive(
       builder:
-          (BuildContext context, AssetSettingsViewModel viewModel, Widget _) {
+          (BuildContext context, AssetSettingsViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.ASSET_SETTINGS,
@@ -140,7 +140,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         ),
                         child: CustomDropDownWidget(
                             items: viewModel.deviceTypeList,
-                            onChanged: (String value) {
+                            onChanged: (String? value) {
                               unfocus();
                               viewModel.onDeviceTypeSelected(value);
                             },
@@ -222,7 +222,9 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ))
-            : null,
+            : PopupMenuItem(
+                child: SizedBox(),
+              ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Configure",
@@ -232,7 +234,9 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                   size: 14,
                 ),
               )
-            : null
+            : PopupMenuItem(
+                child: SizedBox(),
+              )
       ],
       onSelected: (value) {
         Logger().i("value:$value");

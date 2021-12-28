@@ -23,7 +23,7 @@ class _SmsScheduleSingleAssetViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<SmsScheduleSingleAssetViewModel>.reactive(
       builder: (BuildContext context, SmsScheduleSingleAssetViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteScaffold(
           body: SingleChildScrollView(
             child: Padding(
@@ -69,8 +69,10 @@ class _SmsScheduleSingleAssetViewState
                           color: Theme.of(context).backgroundColor,
                           border: Border.all(
                               width: 1,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1.color),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -87,140 +89,125 @@ class _SmsScheduleSingleAssetViewState
                   SizedBox(
                     height: 20,
                   ),
-                  viewModel.singleAssetModelResponce.isEmpty
-                      ? SingleAssetFormWidget(
-                          mobileNoController: viewModel.mobileNoController,
-                          nameController: viewModel.nameController,
-                          onSaving: viewModel.onSavingForm,
-                          serialNoController: viewModel.serialNoController)
-                      : Column(
-                          children: [
-                            Column(
-                              children: List.generate(
-                                  viewModel.singleAssetModelResponce.length,
-                                  (i) {
-                                final model =
-                                    viewModel.singleAssetModelResponce;
-                                return model.isEmpty
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          SizedBox(
-                                            height: 90,
-                                          ),
-                                          Center(
-                                              child: EmptyView(
-                                            title: "No Result Found",
-                                          )),
-                                        ],
-                                      )
-                                    : SingleAssetValidateWidget(
-                                        GPSDeviceID: model[0].GPSDeviceID,
-                                        SerialNumber: model[0].SerialNumber,
-                                        StartDate: model[0].StartDate,
-                                        model: model[0].Model,
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.58,
+//: MediaQuery.of(context).size.height * 0.55,
+                      child: PageView(
+                        controller: viewModel.controller,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          SingleAssetFormWidget(
+                              mobileNoController: viewModel.mobileNoController,
+                              nameController: viewModel.nameController,
+                              onSaving: viewModel.onSavingForm,
+                              serialNoController: viewModel.serialNoController),
+                          viewModel.singleAssetModelResponce!.isEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Center(
+                                        child: EmptyView(
+                                      title: "No Result Found",
+                                    )),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    SingleAssetValidateWidget(
+                                        GPSDeviceID: viewModel
+                                            .singleAssetModelResponce![0]
+                                            .GPSDeviceID,
+                                        SerialNumber: viewModel
+                                            .singleAssetModelResponce![0]
+                                            .SerialNumber,
+                                        StartDate: viewModel
+                                            .singleAssetModelResponce![0]
+                                            .StartDate,
+                                        model: viewModel
+                                            .singleAssetModelResponce![0].Model,
                                         langugae: viewModel.language,
                                         modileNo: viewModel.mobileNo,
-                                        name: viewModel.name);
-                              }),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            viewModel.singleAssetModelResponce.isEmpty
-                                ? SizedBox()
-                                : Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      InsiteButton(
-                                        textColor: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2
-                                            .color,
-                                        onTap: () {
-                                          viewModel.onBackPressed();
-                                        },
-                                        bgColor: white,
-                                        title: "Back",
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                      ),
-                                      InsiteButton(
-                                        onTap: () async {
-                                          showLoadingDialog();
-                                          List status = await viewModel
-                                              .onSavingSmsModel();
-                                          if (status.isEmpty) {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) => AlertDialog(
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .backgroundColor,
-                                                      content: InsiteText(
-                                                          text:
-                                                              "Moblie number Updated successfully!!!."
-                                                          //"Moblie number Updated successfully!!!.",
-                                                          ),
-                                                    )
-                                                // dialogWidget(
-                                                //     dialogCtx: ctx,
-                                                //     content:
-                                                //         ,
-                                                //     ctx: context,
-                                                //     onPress: viewModel
-                                                //         .onClosingDialog())
-                                                );
-                                          } else {
-                                            showDialog(
-                                                context: context,
-                                                builder: (ctx) => AlertDialog(
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .backgroundColor,
-                                                      content: InsiteText(
-                                                          text:
-                                                              "Serial number, Mobile number, Language and Recipient’s Name combination is already exists. Do you want to download?"
-                                                          //"Moblie number Updated successfully!!!.",
-                                                          ),
-                                                    )
-
-                                                // dialogWidget(
-                                                //       dialogCtx: ctx,
-                                                //       ctx: context,
-                                                //       onPress: viewModel
-                                                //           .onClosingDialog(),
-                                                //       content:
-                                                //           ,
-                                                //     ));
-                                                );
-                                          }
-                                        },
-                                        textColor: white,
-                                        title: viewModel
-                                                .singleAssetModelResponce
-                                                .isEmpty
-                                            ? "Next"
-                                            : "Register",
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.3,
-                                      ),
-                                    ],
-                                  )
-                          ],
-                        )
+                                        name: viewModel.name),
+                                    viewModel.singleAssetModelResponce!.isEmpty
+                                        ? SizedBox()
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              InsiteButton(
+                                                textColor: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2!
+                                                    .color,
+                                                onTap: () {
+                                                  viewModel.onBackPressed();
+                                                },
+                                                bgColor: white,
+                                                title: "Back",
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
+                                              ),
+                                              InsiteButton(
+                                                onTap: () async {
+                                                  showLoadingDialog();
+                                                  await viewModel
+                                                      .onSavingSmsModel()
+                                                      .then((_) => showDialog(
+                                                          context: context,
+                                                          builder:
+                                                              (ctx) =>
+                                                                  AlertDialog(
+                                                                    backgroundColor:
+                                                                        Theme.of(context)
+                                                                            .backgroundColor,
+                                                                    actions: [
+                                                                      FlatButton.icon(
+                                                                          onPressed: () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          icon: Icon(
+                                                                            Icons.done,
+                                                                            color:
+                                                                                Theme.of(context).textTheme.bodyText1!.color,
+                                                                          ),
+                                                                          label: InsiteText(
+                                                                            text:
+                                                                                "Okay",
+                                                                          ))
+                                                                    ],
+                                                                    content:
+                                                                        InsiteText(
+                                                                      text:
+                                                                          "Moblie number Updated successfully!!!.",
+                                                                    ),
+                                                                  )));
+                                                },
+                                                textColor: white,
+                                                title: "Register",
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.3,
+                                              ),
+                                            ],
+                                          )
+                                  ],
+                                ),
+                        ],
+                      )),
                 ],
               ),
             ),
@@ -231,17 +218,4 @@ class _SmsScheduleSingleAssetViewState
       viewModelBuilder: () => SmsScheduleSingleAssetViewModel(),
     );
   }
-}
-
-Widget dialogWidget(
-    {String content,
-    BuildContext ctx,
-    Function onPress,
-    BuildContext dialogCtx}) {
-  return AlertDialog(
-    backgroundColor: Theme.of(ctx).backgroundColor,
-    content: InsiteText(text: content
-        //"Moblie number Updated successfully!!!.",
-        ),
-  );
 }

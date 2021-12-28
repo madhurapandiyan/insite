@@ -10,27 +10,27 @@ import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AssetSettingsConfigureViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
   TextEditingController textEditingController = TextEditingController();
 
   bool _isSort = false;
   bool get isSort => _isSort;
 
-  var _navigationservice = locator<NavigationService>();
+  NavigationService? _navigationservice = locator<NavigationService>();
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  String _assetConfigureAssetUId;
-  String get assetConfigureAssetUid => _assetConfigureAssetUId;
+  String? _assetConfigureAssetUId;
+  String? get assetConfigureAssetUid => _assetConfigureAssetUId;
 
-  int selectedIndex;
+  int? selectedIndex;
 
-  var _manageUserService = locator<AssetAdminManagerUserService>();
+  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
 
   List<ConfigureGridViewModel> displayList = [];
 
-  AssetSettingsConfigureViewModel(String assetUid) {
+  AssetSettingsConfigureViewModel(String? assetUid) {
     _assetConfigureAssetUId = assetUid;
     this.log = getLogger(this.runtimeType.toString());
     textEditingController.addListener(() {
@@ -108,7 +108,7 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
       List<ConfigureGridViewModel> tempList = [];
 
       staticTranspotData.forEach((item) {
-        if (item.modelName.toLowerCase().contains(text.toLowerCase()))
+        if (item.modelName!.toLowerCase().contains(text.toLowerCase()))
           tempList.add(item);
       });
       displayList = tempList;
@@ -130,7 +130,7 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
   getAssetIconData() async {
     _isLoading = true;
     notifyListeners();
-    var result = await _manageUserService.getAssetIconData(
+    var result = await _manageUserService!.getAssetIconData(
         DateTime.now().toIso8601String(),
         assetConfigureAssetUid,
         10003,
@@ -143,6 +143,6 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
   }
 
   gotoAssetingSettingsPage() {
-    _navigationservice.clearTillFirstAndShowView(AssetSettingsView());
+    _navigationservice!.clearTillFirstAndShowView(AssetSettingsView());
   }
 }

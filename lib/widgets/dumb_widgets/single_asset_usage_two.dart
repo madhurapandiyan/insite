@@ -7,7 +7,7 @@ import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetUsageTwo extends StatefulWidget {
-  final AssetResult utilizationData;
+  final AssetResult? utilizationData;
   const SingleAssetUsageTwo({this.utilizationData});
 
   @override
@@ -88,9 +88,9 @@ class _SingleAssetUsageState extends State<SingleAssetUsageTwo> {
                     children: [
                       InsiteTableRowItem(
                         title: "Date : ",
-                        content: widget.utilizationData.lastReportedTime != null
+                        content: widget.utilizationData!.lastReportedTime != null
                             ? Utils.getLastReportedDateTwo(
-                                widget.utilizationData.lastReportedTime)
+                                widget.utilizationData!.lastReportedTime)
                             : "",
                       ),
                       InsiteTableRowItem(

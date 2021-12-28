@@ -9,11 +9,11 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class FaultHealthDashboard extends StatefulWidget {
-  final ScreenType screenType;
-  final List<Count> countData;
-  final bool isRefreshing;
-  final bool loading;
-  final Function(FilterData) onFilterSelected;
+  final ScreenType? screenType;
+  final List<Count>? countData;
+  final bool? isRefreshing;
+  final bool? loading;
+  final Function(FilterData)? onFilterSelected;
   FaultHealthDashboard(
       {this.countData,
       this.loading,
@@ -31,7 +31,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        height: widget.countData.length >= 3
+        height: widget.countData!.length >= 3
             ? MediaQuery.of(context).size.height * 0.35
             : MediaQuery.of(context).size.height * 0.28,
         child: Column(
@@ -87,24 +87,24 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
             SizedBox(
               height: 10,
             ),
-            (widget.loading || widget.isRefreshing)
+            (widget.loading! || widget.isRefreshing!)
                 ? Expanded(child: InsiteProgressBar())
                 : Expanded(
                     child: ListView.builder(
-                        itemCount: widget.countData.length,
+                        itemCount: widget.countData!.length,
                         shrinkWrap: true,
                         padding: EdgeInsets.symmetric(horizontal: 4),
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          Count countResponse = widget.countData[index];
+                          Count countResponse = widget.countData![index];
                           return FaultWidget(
                             data: countResponse,
                             showAssetCount: false,
                             screenType: widget.screenType,
                             onSelected: () {
-                              if (countResponse.faultCount > 0) {
-                                widget.onFilterSelected(FilterData(
+                              if (countResponse.faultCount! > 0) {
+                                widget.onFilterSelected!(FilterData(
                                     isSelected: true,
                                     count: countResponse.assetCount.toString(),
                                     title: countResponse.countOf,
@@ -112,7 +112,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                               }
                             },
                             buttonColor: buttonColor[index],
-                            level: Utils.getFaultLabel(countResponse.countOf),
+                            level: Utils.getFaultLabel(countResponse.countOf!),
                           );
                         }),
                   ),

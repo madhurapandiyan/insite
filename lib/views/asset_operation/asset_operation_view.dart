@@ -24,15 +24,15 @@ class AssetOperationView extends StatefulWidget {
 class _AssetOperationViewState extends State<AssetOperationView> {
   List<String> menuFilters = ['Asset ID', 'Serial Number'];
   String menuItem = "Asset ID";
-  List<DateTime> dateRange = [];
+  List<DateTime>? dateRange = [];
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
       builder:
-          (BuildContext context, AssetOperationViewModel viewModel, Widget _) {
+          (BuildContext context, AssetOperationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               screenType: ScreenType.ASSET_OPERATION,
@@ -119,7 +119,7 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                       backgroundColor: transparent,
                                       child: DateRangeView()),
                                 );
-                                if (dateRange != null && dateRange.isNotEmpty) {
+                                if (dateRange != null && dateRange!.isNotEmpty) {
                                   setState(() {
                                     dateRange = dateRange;
                                   });
@@ -127,7 +127,7 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                 }
                               },
                               textColor:
-                                  Theme.of(context).textTheme.bodyText1.color,
+                                  Theme.of(context).textTheme.bodyText1!.color,
                               width: 100,
                               bgColor: Theme.of(context).backgroundColor,
                             ),
@@ -142,7 +142,7 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                         child: InsiteText(
                             text:
                                 "Data displayed here is only an indicative figure. For viewing actual Asset usage per day, visit Asset Utilization - Single Asset View ",
-                            color: Theme.of(context).textTheme.bodyText1.color,
+                            color: Theme.of(context).textTheme.bodyText1!.color,
                             size: 12),
                       ),
                       Expanded(

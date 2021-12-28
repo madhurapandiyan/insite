@@ -6,14 +6,14 @@ part of 'single_asset_operation.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SingleAssetOperation _$SingleAssetOperationFromJson(Map<String, dynamic> json) {
-  return SingleAssetOperation(
-    assetOperations: json['assetOperations'] == null
-        ? null
-        : AssetOperations.fromJson(
-            json['assetOperations'] as Map<String, dynamic>),
-  );
-}
+SingleAssetOperation _$SingleAssetOperationFromJson(
+        Map<String, dynamic> json) =>
+    SingleAssetOperation(
+      assetOperations: json['assetOperations'] == null
+          ? null
+          : AssetOperations.fromJson(
+              json['assetOperations'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$SingleAssetOperationToJson(
         SingleAssetOperation instance) =>
@@ -21,19 +21,16 @@ Map<String, dynamic> _$SingleAssetOperationToJson(
       'assetOperations': instance.assetOperations,
     };
 
-AssetOperations _$AssetOperationsFromJson(Map<String, dynamic> json) {
-  return AssetOperations(
-    pagination: json['pagination'],
-    links: (json['links'] as List)
-        ?.map(
-            (e) => e == null ? null : Link.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    assets: (json['assets'] as List)
-        ?.map(
-            (e) => e == null ? null : Asset.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+AssetOperations _$AssetOperationsFromJson(Map<String, dynamic> json) =>
+    AssetOperations(
+      pagination: json['pagination'],
+      links: (json['links'] as List<dynamic>?)
+          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      assets: (json['assets'] as List<dynamic>?)
+          ?.map((e) => Asset.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AssetOperationsToJson(AssetOperations instance) =>
     <String, dynamic>{
@@ -42,39 +39,35 @@ Map<String, dynamic> _$AssetOperationsToJson(AssetOperations instance) =>
       'assets': instance.assets,
     };
 
-Asset _$AssetFromJson(Map<String, dynamic> json) {
-  return Asset(
-    assetUid: json['assetUid'] as String,
-    assetId: json['assetId'],
-    makeCode: json['makeCode'] as String,
-    model: json['model'] as String,
-    serialNumber: json['serialNumber'] as String,
-    assetIcon: json['assetIcon'] == null
-        ? null
-        : AssetIcon.fromJson(json['assetIcon'] as Map<String, dynamic>),
-    productFamily: json['productFamily'] as String,
-    customStateDescription: json['customStateDescription'] as String,
-    distanceTravelledKilometers:
-        (json['distanceTravelledKilometers'] as num)?.toDouble(),
-    dateRangeRuntimeDuration:
-        (json['dateRangeRuntimeDuration'] as num)?.toDouble(),
-    lastKnownOperator: json['lastKnownOperator'],
-    capabilities: json['capabilities'] == null
-        ? null
-        : Capabilities.fromJson(json['capabilities'] as Map<String, dynamic>),
-    assetLocalDates: (json['assetLocalDates'] as List)
-        ?.map((e) => e == null
-            ? null
-            : AssetLocalDate.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    assetLastReceivedEvent: json['assetLastReceivedEvent'] == null
-        ? null
-        : AssetLastReceivedEvent.fromJson(
-            json['assetLastReceivedEvent'] as Map<String, dynamic>),
-    firstEngineStartEvent: json['firstEngineStartEvent'],
-    lastEngineStopEvent: json['lastEngineStopEvent'],
-  );
-}
+Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
+      assetUid: json['assetUid'] as String?,
+      assetId: json['assetId'],
+      makeCode: json['makeCode'] as String?,
+      model: json['model'] as String?,
+      serialNumber: json['serialNumber'] as String?,
+      assetIcon: json['assetIcon'] == null
+          ? null
+          : AssetIcon.fromJson(json['assetIcon'] as Map<String, dynamic>),
+      productFamily: json['productFamily'] as String?,
+      customStateDescription: json['customStateDescription'] as String?,
+      distanceTravelledKilometers:
+          (json['distanceTravelledKilometers'] as num?)?.toDouble(),
+      dateRangeRuntimeDuration:
+          (json['dateRangeRuntimeDuration'] as num?)?.toDouble(),
+      lastKnownOperator: json['lastKnownOperator'],
+      capabilities: json['capabilities'] == null
+          ? null
+          : Capabilities.fromJson(json['capabilities'] as Map<String, dynamic>),
+      assetLocalDates: (json['assetLocalDates'] as List<dynamic>?)
+          ?.map((e) => AssetLocalDate.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      assetLastReceivedEvent: json['assetLastReceivedEvent'] == null
+          ? null
+          : AssetLastReceivedEvent.fromJson(
+              json['assetLastReceivedEvent'] as Map<String, dynamic>),
+      firstEngineStartEvent: json['firstEngineStartEvent'],
+      lastEngineStopEvent: json['lastEngineStopEvent'],
+    );
 
 Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'assetUid': instance.assetUid,
@@ -95,27 +88,24 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'lastEngineStopEvent': instance.lastEngineStopEvent,
     };
 
-AssetIcon _$AssetIconFromJson(Map<String, dynamic> json) {
-  return AssetIcon(
-    key: json['key'],
-  );
-}
+AssetIcon _$AssetIconFromJson(Map<String, dynamic> json) => AssetIcon(
+      key: json['key'],
+    );
 
 Map<String, dynamic> _$AssetIconToJson(AssetIcon instance) => <String, dynamic>{
       'key': instance.key,
     };
 
 AssetLastReceivedEvent _$AssetLastReceivedEventFromJson(
-    Map<String, dynamic> json) {
-  return AssetLastReceivedEvent(
-    lastReceivedEvent: json['lastReceivedEvent'] as String,
-    lastReceivedEventTimeLocal: json['lastReceivedEventTimeLocal'] as String,
-    lastReceivedEventUtc: json['lastReceivedEventUtc'] as String,
-    timezoneAbbrev: json['timezoneAbbrev'] as String,
-    isPairedEvent: json['isPairedEvent'] as bool,
-    segmentType: json['segmentType'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    AssetLastReceivedEvent(
+      lastReceivedEvent: json['lastReceivedEvent'] as String?,
+      lastReceivedEventTimeLocal: json['lastReceivedEventTimeLocal'] as String?,
+      lastReceivedEventUtc: json['lastReceivedEventUtc'] as String?,
+      timezoneAbbrev: json['timezoneAbbrev'] as String?,
+      isPairedEvent: json['isPairedEvent'] as bool?,
+      segmentType: json['segmentType'] as String?,
+    );
 
 Map<String, dynamic> _$AssetLastReceivedEventToJson(
         AssetLastReceivedEvent instance) =>
@@ -128,20 +118,18 @@ Map<String, dynamic> _$AssetLastReceivedEventToJson(
       'segmentType': instance.segmentType,
     };
 
-AssetLocalDate _$AssetLocalDateFromJson(Map<String, dynamic> json) {
-  return AssetLocalDate(
-    assetLocalDate: json['assetLocalDate'] == null
-        ? null
-        : DateTime.parse(json['assetLocalDate'] as String),
-    totalRuntimeDurationSeconds: json['totalRuntimeDurationSeconds'],
-    totalRuntimeKeyDateDurationSeconds:
-        json['totalRuntimeKeyDateDurationSeconds'],
-    segments: (json['segments'] as List)
-        ?.map((e) =>
-            e == null ? null : Segment.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-  );
-}
+AssetLocalDate _$AssetLocalDateFromJson(Map<String, dynamic> json) =>
+    AssetLocalDate(
+      assetLocalDate: json['assetLocalDate'] == null
+          ? null
+          : DateTime.parse(json['assetLocalDate'] as String),
+      totalRuntimeDurationSeconds: json['totalRuntimeDurationSeconds'],
+      totalRuntimeKeyDateDurationSeconds:
+          json['totalRuntimeKeyDateDurationSeconds'],
+      segments: (json['segments'] as List<dynamic>?)
+          ?.map((e) => Segment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AssetLocalDateToJson(AssetLocalDate instance) =>
     <String, dynamic>{
@@ -152,49 +140,47 @@ Map<String, dynamic> _$AssetLocalDateToJson(AssetLocalDate instance) =>
       'segments': instance.segments,
     };
 
-Segment _$SegmentFromJson(Map<String, dynamic> json) {
-  return Segment(
-    startTimeUtc: json['startTimeUtc'] == null
-        ? null
-        : DateTime.parse(json['startTimeUtc'] as String),
-    endTimeUtc: json['endTimeUtc'] == null
-        ? null
-        : DateTime.parse(json['endTimeUtc'] as String),
-    startTimeLocal: json['startTimeLocal'] == null
-        ? null
-        : DateTime.parse(json['startTimeLocal'] as String),
-    endTimeLocal: json['endTimeLocal'] == null
-        ? null
-        : DateTime.parse(json['endTimeLocal'] as String),
-    startLocationLatitude: json['startLocationLatitude'],
-    startLocationLongitude: json['startLocationLongitude'],
-    startStateTimezoneAbbrev: json['startStateTimezoneAbbrev'] as String,
-    endLocationLatitude: json['endLocationLatitude'],
-    endLocationLongitude: json['endLocationLongitude'],
-    endStateTimezoneAbbrev: json['endStateTimezoneAbbrev'] as String,
-    durationSeconds: json['durationSeconds'],
-    workDefinitionType: json['workDefinitionType'] as String,
-    segmentType: json['segmentType'] as String,
-    isProjectedEnd: json['isProjectedEnd'] as bool,
-    segmentOperator: json['segmentOperator'],
-    updateUtc: json['updateUtc'] == null
-        ? null
-        : DateTime.parse(json['updateUtc'] as String),
-    startTimeKeyDateUtc: json['startTimeKeyDateUtc'] == null
-        ? null
-        : DateTime.parse(json['startTimeKeyDateUtc'] as String),
-    endTimeKeyDateUtc: json['endTimeKeyDateUtc'] == null
-        ? null
-        : DateTime.parse(json['endTimeKeyDateUtc'] as String),
-    startTimeKeyDateLocal: json['startTimeKeyDateLocal'] == null
-        ? null
-        : DateTime.parse(json['startTimeKeyDateLocal'] as String),
-    endTimeKeyDateLocal: json['endTimeKeyDateLocal'] == null
-        ? null
-        : DateTime.parse(json['endTimeKeyDateLocal'] as String),
-    durationKeyDateSeconds: json['durationKeyDateSeconds'],
-  );
-}
+Segment _$SegmentFromJson(Map<String, dynamic> json) => Segment(
+      startTimeUtc: json['startTimeUtc'] == null
+          ? null
+          : DateTime.parse(json['startTimeUtc'] as String),
+      endTimeUtc: json['endTimeUtc'] == null
+          ? null
+          : DateTime.parse(json['endTimeUtc'] as String),
+      startTimeLocal: json['startTimeLocal'] == null
+          ? null
+          : DateTime.parse(json['startTimeLocal'] as String),
+      endTimeLocal: json['endTimeLocal'] == null
+          ? null
+          : DateTime.parse(json['endTimeLocal'] as String),
+      startLocationLatitude: json['startLocationLatitude'],
+      startLocationLongitude: json['startLocationLongitude'],
+      startStateTimezoneAbbrev: json['startStateTimezoneAbbrev'] as String?,
+      endLocationLatitude: json['endLocationLatitude'],
+      endLocationLongitude: json['endLocationLongitude'],
+      endStateTimezoneAbbrev: json['endStateTimezoneAbbrev'] as String?,
+      durationSeconds: json['durationSeconds'],
+      workDefinitionType: json['workDefinitionType'] as String?,
+      segmentType: json['segmentType'] as String?,
+      isProjectedEnd: json['isProjectedEnd'] as bool?,
+      segmentOperator: json['segmentOperator'],
+      updateUtc: json['updateUtc'] == null
+          ? null
+          : DateTime.parse(json['updateUtc'] as String),
+      startTimeKeyDateUtc: json['startTimeKeyDateUtc'] == null
+          ? null
+          : DateTime.parse(json['startTimeKeyDateUtc'] as String),
+      endTimeKeyDateUtc: json['endTimeKeyDateUtc'] == null
+          ? null
+          : DateTime.parse(json['endTimeKeyDateUtc'] as String),
+      startTimeKeyDateLocal: json['startTimeKeyDateLocal'] == null
+          ? null
+          : DateTime.parse(json['startTimeKeyDateLocal'] as String),
+      endTimeKeyDateLocal: json['endTimeKeyDateLocal'] == null
+          ? null
+          : DateTime.parse(json['endTimeKeyDateLocal'] as String),
+      durationKeyDateSeconds: json['durationKeyDateSeconds'],
+    );
 
 Map<String, dynamic> _$SegmentToJson(Segment instance) => <String, dynamic>{
       'startTimeUtc': instance.startTimeUtc?.toIso8601String(),
@@ -221,23 +207,19 @@ Map<String, dynamic> _$SegmentToJson(Segment instance) => <String, dynamic>{
       'durationKeyDateSeconds': instance.durationKeyDateSeconds,
     };
 
-Capabilities _$CapabilitiesFromJson(Map<String, dynamic> json) {
-  return Capabilities(
-    hasActiveCoreSubscription: json['hasActiveCoreSubscription'] as String,
-  );
-}
+Capabilities _$CapabilitiesFromJson(Map<String, dynamic> json) => Capabilities(
+      hasActiveCoreSubscription: json['hasActiveCoreSubscription'] as String?,
+    );
 
 Map<String, dynamic> _$CapabilitiesToJson(Capabilities instance) =>
     <String, dynamic>{
       'hasActiveCoreSubscription': instance.hasActiveCoreSubscription,
     };
 
-Link _$LinkFromJson(Map<String, dynamic> json) {
-  return Link(
-    rel: json['rel'] as String,
-    href: json['href'] as String,
-  );
-}
+Link _$LinkFromJson(Map<String, dynamic> json) => Link(
+      rel: json['rel'] as String?,
+      href: json['href'] as String?,
+    );
 
 Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
       'rel': instance.rel,

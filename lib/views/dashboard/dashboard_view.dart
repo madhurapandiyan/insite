@@ -33,7 +33,7 @@ class _DashboardViewState extends State<DashboardView> {
     super.initState();
   }
 
-  Fleet selectedFleet;
+  Fleet? selectedFleet;
   String assetDropDown = "All Assets";
   bool switchDropDownState = false;
   final GlobalKey<GoogleMapHomeWidgetState> filterLocationKey = new GlobalKey();
@@ -41,9 +41,9 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-      builder: (BuildContext context, DashboardViewModel viewModel, Widget _) {
+      builder: (BuildContext context, DashboardViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.DASHBOARD,
@@ -90,22 +90,22 @@ class _DashboardViewState extends State<DashboardView> {
                         FaultDropDown(
                           value: assetDropDown,
                           items: ["All Assets", "Product Family"],
-                          onChanged: (String value) {
+                          onChanged: (String? value) {
                             Logger().i("all assets dropdown change $value");
-                            assetDropDown = value;
+                            assetDropDown = value!;
                             switchDropDownState = !switchDropDownState;
                             if (value != "All Assets") {
-                              // "BACKHOE LOADER"
+                             // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
                               viewModel.getFilterDataApplied(filterData);
-                              filterLocationKey.currentState
-                                  .getAssetLocationHomeFilterData(
-                                      filterData.title);
+                              filterLocationKey.currentState!
+                                   .getAssetLocationHomeFilterData(
+                                       filterData.title);
                             } else {
                               viewModel.getData();
-                              filterLocationKey.currentState
-                                  .getAssetLocationHomeData();
+                               filterLocationKey.currentState!
+                                   .getAssetLocationHomeData();
                             }
                           },
                         ),
@@ -120,8 +120,8 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel.getFilterDataApplied(value);
-                                          filterLocationKey.currentState
+                                          viewModel.getFilterDataApplied(value!);
+                                           filterLocationKey.currentState!
                                               .getAssetLocationHomeFilterData(
                                                   value.title);
                                         },
@@ -138,8 +138,8 @@ class _DashboardViewState extends State<DashboardView> {
                                       border: Border.all(
                                           color: Theme.of(context)
                                               .textTheme
-                                              .bodyText1
-                                              .color),
+                                              .bodyText1!
+                                              .color!),
                                       color: Theme.of(context).backgroundColor,
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(8)),
@@ -217,7 +217,7 @@ class _DashboardViewState extends State<DashboardView> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: IdlingLevel(
                         data: viewModel.idlingLevelData != null
-                            ? viewModel.idlingLevelData.countData
+                            ? viewModel.idlingLevelData!.countData
                             : [],
                         isLoading: viewModel.idlingLevelDataloading,
                         onFilterSelected: (value) async {
@@ -240,7 +240,7 @@ class _DashboardViewState extends State<DashboardView> {
                       child: FaultHealthDashboard(
                         screenType: ScreenType.DASHBOARD,
                         countData: viewModel.faultCountData != null
-                            ? viewModel.faultCountData.countData
+                            ? viewModel.faultCountData!.countData
                             : [],
                         onFilterSelected: (value) async {
                           await viewModel.onFilterSelected(value);
@@ -255,7 +255,8 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GoogleMapHomeWidget(
+                      child: 
+                      GoogleMapHomeWidget(
                         isRefreshing: viewModel.refreshing,
                         key: filterLocationKey,
                       ),
@@ -292,7 +293,7 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   void showLogoutPrompt(DashboardViewModel viewModel) async {
-    bool value = await showDialog(
+    bool? value = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(

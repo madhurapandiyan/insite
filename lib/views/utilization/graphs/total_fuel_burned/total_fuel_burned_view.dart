@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 import 'total_fuel_burned_view_model.dart';
 
 class TotalFuelBurnedView extends StatefulWidget {
-  final int rangeChoice;
+  final int? rangeChoice;
   const TotalFuelBurnedView({
-    Key key,
+    Key? key,
     this.rangeChoice,
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class TotalFuelBurnedView extends StatefulWidget {
 class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
   int rangeChoice = 1;
   List<String> rangeTexts = ['daily', 'weekly', 'monthly'];
-  var viewModel;
+  late var viewModel;
   List<bool> shouldShowLabel = [true, true, true];
   @override
   void initState() {
@@ -43,7 +43,7 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalFuelBurnedViewModel>.reactive(
       builder:
-          (BuildContext context, TotalFuelBurnedViewModel viewModel, Widget _) {
+          (BuildContext context, TotalFuelBurnedViewModel viewModel, Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

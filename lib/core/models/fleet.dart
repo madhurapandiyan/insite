@@ -5,39 +5,39 @@ part 'fleet.g.dart';
 
 @JsonSerializable()
 class Fleet {
-  final String assetIdentifier;
-  final String assetId;
-  final String assetSerialNumber;
-  final String manufacturer;
-  final String makeCode;
-  final String model;
-  final int assetIcon;
-  final String productFamily;
-  final String status;
-  final double hourMeter;
-  final String lastHourMeterUTC;
-  final String lastOdometerUTC;
-  final double odometer;
-  final String dealerCustomerName;
-  final String dealerCode;
-  final String dealerName;
-  final String universalCustomerIdentifier;
-  final String universalCustomerName;
-  final String dealerCustomerNumber;
-  final String lastLocationUpdateUTC;
-  final String customStateDescription;
-  final double fuelLevelLastReported;
-  final double lastReportedLocationLatitude;
-  final double lastReportedLocationLongitude;
-  final String lastReportedLocation;
-  final String lastReportedUTC;
-  final String lastPercentFuelRemainingUTC;
-  final double lifetimeFuelLiters;
-  final String lastLifetimeFuelLitersUTC;
-  final double notifications;
-  final String lastOperatorName;
-  final String lastOperatorID;
-  final double modelYear;
+  final String? assetIdentifier;
+  final String? assetId;
+  final String? assetSerialNumber;
+  final String? manufacturer;
+  final String? makeCode;
+  final String? model;
+  final int? assetIcon;
+  final String? productFamily;
+  final String? status;
+  final double? hourMeter;
+  final String? lastHourMeterUTC;
+  final String? lastOdometerUTC;
+  final double? odometer;
+  final String? dealerCustomerName;
+  final String? dealerCode;
+  final String? dealerName;
+  final String? universalCustomerIdentifier;
+  final String? universalCustomerName;
+  final String? dealerCustomerNumber;
+  final String? lastLocationUpdateUTC;
+  final String? customStateDescription;
+  final double? fuelLevelLastReported;
+  final double? lastReportedLocationLatitude;
+  final double? lastReportedLocationLongitude;
+  final String? lastReportedLocation;
+  final String? lastReportedUTC;
+  final String? lastPercentFuelRemainingUTC;
+  final double? lifetimeFuelLiters;
+  final String? lastLifetimeFuelLitersUTC;
+  final double? notifications;
+  final String? lastOperatorName;
+  final String? lastOperatorID;
+  final double? modelYear;
 
   Fleet(
       {this.assetIdentifier,
@@ -80,9 +80,9 @@ class Fleet {
 
 @JsonSerializable()
 class FleetSummaryResponse {
-  final Links links;
-  final Pagination pagination;
-  final List<Fleet> fleetRecords;
+  final Links? links;
+  final Pagination? pagination;
+  final List<Fleet>? fleetRecords;
   FleetSummaryResponse({this.fleetRecords, this.links, this.pagination});
 
   factory FleetSummaryResponse.fromJson(Map<String, dynamic> json) {

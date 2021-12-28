@@ -3,9 +3,9 @@ part 'replace_deviceId_model.g.dart';
 
 @JsonSerializable()
 class ReplaceDeviceModel {
-  final String code;
-  final String status;
-  final List<List<DeviceModel>> result;
+  final String? code;
+  final String? status;
+  final List<List<DeviceModel>>? result;
   ReplaceDeviceModel({this.code, this.result, this.status});
   factory ReplaceDeviceModel.fromJson(Map<String, dynamic> json) =>
       _$ReplaceDeviceModelFromJson(json);
@@ -15,13 +15,13 @@ class ReplaceDeviceModel {
 
 @JsonSerializable()
 class DeviceModel {
-  final int count;
-  final String GPSDeviceID;
-  final String VIN;
-  final String Model;
-  final String SubscriptionStartDate;
-  final String SubscriptionEndDate;
-  final String NetworkProvider;
+  final int? count;
+  final String? GPSDeviceID;
+  final String? VIN;
+  final String? Model;
+  final String? SubscriptionStartDate;
+  final String? SubscriptionEndDate;
+  final String? NetworkProvider;
   DeviceModel(
       {this.GPSDeviceID,
       this.VIN,

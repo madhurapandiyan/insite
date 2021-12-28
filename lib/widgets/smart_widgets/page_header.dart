@@ -3,12 +3,12 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class PageHeader extends StatelessWidget {
-  final int count;
-  final int total;
-  final bool isDashboard;
-  final ScreenType screenType;
-  final EdgeInsets margin;
-  final EdgeInsets padding;
+  final int? count;
+  final int? total;
+  final bool? isDashboard;
+  final ScreenType? screenType;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
   const PageHeader(
       {this.count,
       this.total,
@@ -23,7 +23,7 @@ class PageHeader extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).backgroundColor,
           border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1.color),
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
           borderRadius: BorderRadius.all(Radius.circular(4))),
       margin: margin != null
           ? margin
@@ -33,10 +33,10 @@ class PageHeader extends StatelessWidget {
         children: [
           InsiteText(
             text: screenType == ScreenType.HEALTH
-                ? isDashboard
+                ? isDashboard!
                     ? "$total faults"
                     : "$count of $total faults"
-                : isDashboard
+                : isDashboard!
                     ? "$total assets"
                     : "$count of $total assets",
             fontWeight: FontWeight.bold,

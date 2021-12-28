@@ -19,7 +19,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AdminstrationViewModel>.reactive(
       builder:
-          (BuildContext context, AdminstrationViewModel viewModel, Widget _) {
+          (BuildContext context, AdminstrationViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           screenType: ScreenType.ADMINISTRATION,
@@ -75,15 +75,15 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 SizedBox(
                   height: 20,
                 ),
-                AssetSettingWidget(
-                  headerText: "asset settings",
-                  showExapansionMenu: false,
-                  icon: "assets/images/assessment.svg",
-                  buttonText: "Manage Asset configurations",
-                  onButtonClicked: () {
-                    viewModel.onAssetSettingStateButtonClicked();
-                  },
-                ),
+                // AssetSettingWidget(
+                //   headerText: "asset settings",
+                //   showExapansionMenu: false,
+                //   icon: "assets/images/assessment.svg",
+                //   buttonText: "Manage Asset configurations",
+                //   onButtonClicked: () {
+                //     viewModel.onAssetSettingStateButtonClicked();
+                //   },
+                // ),
                 SizedBox(
                   height: 21,
                 ),

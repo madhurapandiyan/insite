@@ -7,9 +7,9 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
 class RuntimeHoursViewModel extends InsiteViewModel {
-  Logger log;
+  Logger? log;
 
-  var _utilizationService = locator<AssetUtilizationService>();
+  AssetUtilizationService? _utilizationService = locator<AssetUtilizationService>();
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
@@ -17,7 +17,7 @@ class RuntimeHoursViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageCount = 50;
 
-  ScrollController scrollController;
+  ScrollController? scrollController;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -37,9 +37,9 @@ class RuntimeHoursViewModel extends InsiteViewModel {
   RuntimeHoursViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollController!.addListener(() {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
         _loadMore();
       }
     });
@@ -64,7 +64,7 @@ class RuntimeHoursViewModel extends InsiteViewModel {
     Logger().d("getUtilization");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -72,13 +72,13 @@ class RuntimeHoursViewModel extends InsiteViewModel {
         pageCount,
         appliedFilters);
     if (result != null) {
-      if (result.assetResults.isNotEmpty) {
-        _utilLizationListData.addAll(result.assetResults);
+      if (result.assetResults!.isNotEmpty) {
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _utilLizationListData.addAll(result.assetResults);
+        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -101,7 +101,7 @@ class RuntimeHoursViewModel extends InsiteViewModel {
     pageCount = 50;
     _isRefreshing = true;
     notifyListeners();
-    Utilization result = await _utilizationService.getUtilizationResult(
+    Utilization? result = await _utilizationService!.getUtilizationResult(
         startDate,
         endDate,
         '-RuntimeHours',
@@ -110,9 +110,9 @@ class RuntimeHoursViewModel extends InsiteViewModel {
         appliedFilters);
     if (result != null &&
         result.assetResults != null &&
-        result.assetResults.isNotEmpty) {
+        result.assetResults!.isNotEmpty) {
       _utilLizationListData.clear();
-      _utilLizationListData.addAll(result.assetResults);
+      _utilLizationListData.addAll(result.assetResults!);
       _isRefreshing = false;
       notifyListeners();
     } else {

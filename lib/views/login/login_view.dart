@@ -4,9 +4,11 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
+import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'login_view_model.dart';
@@ -17,20 +19,23 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  StreamSubscription _onDestroy;
-  StreamSubscription<String> _onUrlChanged;
-  StreamSubscription<WebViewStateChanged> _onStateChanged;
+  StreamSubscription? _onDestroy;
+  StreamSubscription<String>? _onUrlChanged;
+  StreamSubscription<WebViewStateChanged>? _onStateChanged;
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
   bool isLoading = false;
-  var _navigationService = locator<NavigationService>();
-  final _localService = locator<LocalService>();
-  final _loginService = locator<LoginService>();
+  NavigationService? _navigationService = locator<NavigationService>();
+  final LocalService? _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
+  String codeVerifier = randomAlphaNumeric(43);
+  String state = randomAlphaNumeric(43);
+  String? codeChallenge;
 
   @override
   void dispose() {
-    _onDestroy.cancel();
-    _onUrlChanged.cancel();
-    _onStateChanged.cancel();
+    _onDestroy!.cancel();
+    _onUrlChanged!.cancel();
+    _onStateChanged!.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
@@ -38,12 +43,13 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier);
     flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.
-    _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
-      print("destroy");
-    });
+    // _onDestroy = flutterWebviewPlugin.onDestroy.listen((_) {
+    //   print("destroy");
+    // } as void Function(Null)?);
 
     _onStateChanged =
         flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) {
@@ -136,14 +142,14 @@ class _LoginViewState extends State<LoginView> {
 
   saveToken(token, String expiryTime) {
     Logger().i("saveToken from webview");
-    _loginService.getUser(token, true);
-    _loginService.saveExpiryTime(expiryTime);
+    _loginService!.getUser(token, true);
+    _loginService!.saveExpiryTime(expiryTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
-      builder: (BuildContext context, LoginViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
         return Scaffold(
           body: SafeArea(
             child: Stack(
@@ -151,9 +157,7 @@ class _LoginViewState extends State<LoginView> {
                 WebviewScaffold(
                   url: Urls.logoutUrlUnifiedService,
                 ),
-                isLoading
-                    ? InsiteProgressBar()
-                    : SizedBox()
+                isLoading ? InsiteProgressBar() : SizedBox()
               ],
             ),
           ),

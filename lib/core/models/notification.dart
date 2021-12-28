@@ -3,9 +3,9 @@ part 'notification.g.dart';
 
 @JsonSerializable()
 class Notification {
-  final String notificationType;
-  final String notificationSubType;
-  final double count;
+  final String? notificationType;
+  final String? notificationSubType;
+  final double? count;
 
   Notification({this.notificationType, this.notificationSubType, this.count});
 
@@ -17,8 +17,8 @@ class Notification {
 
 @JsonSerializable()
 class NotificationData {
-  final List<Notification> notifications;
-  final String status;
+  final List<Notification>? notifications;
+  final String? status;
 
   NotificationData({
     this.notifications,

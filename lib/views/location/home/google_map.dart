@@ -18,10 +18,10 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class GoogleMapHomeWidget extends StatefulWidget {
-  final bool isRefreshing;
+  final bool? isRefreshing;
   GoogleMapHomeWidget({
     this.isRefreshing,
-    Key key,
+    Key? key,
   }) : super(key: key);
   @override
   GoogleMapHomeWidgetState createState() => GoogleMapHomeWidgetState();
@@ -48,7 +48,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LocationViewModel>.reactive(
-      builder: (BuildContext context, LocationViewModel viewModel, Widget _) {
+      builder: (BuildContext context, LocationViewModel viewModel, Widget? _) {
         return Card(
           margin: EdgeInsets.symmetric(horizontal: 8),
           child: Container(
@@ -63,7 +63,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                       children: [
                         Row(
                           children: [
-                            // SvgPicture.asset("assets/images/arrowdown.svg"),
+                            SvgPicture.asset("assets/images/arrowdown.svg"),
                             SizedBox(
                               width: 10,
                             ),
@@ -86,8 +86,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                     width: 1.0,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1
-                                        .color),
+                                        .bodyText1!
+                                        .color!),
                                 shape: BoxShape.rectangle,
                               ),
                               child: Row(
@@ -119,8 +119,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                         style: TextStyle(
                                             color: Theme.of(context)
                                                 .textTheme
-                                                .bodyText1
-                                                .color),
+                                                .bodyText1!
+                                                .color!),
                                       ),
                                       items: [
                                         'MAP',
@@ -138,9 +138,9 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                               ))
                                           .toList(),
                                       value: _currentSelectedItem,
-                                      onChanged: (value) {
+                                      onChanged: (String? value) {
                                         setState(() {
-                                          _currentSelectedItem = value;
+                                          _currentSelectedItem = value!;
                                         });
                                       },
                                       underline: Container(
@@ -235,10 +235,9 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                         onLongPress: (argument) {},
                                         onCameraMoveStarted: () {},
                                         onCameraMove: (position) {
-                                          viewModel.customInfoWindowController
-                                              .onCameraMove();
+                                          viewModel.customInfoWindowController.onCameraMove!();
                                           viewModel.manager != null
-                                              ? viewModel.manager
+                                              ? viewModel.manager!
                                                   .onCameraMove(position)
                                               : SizedBox();
                                         },
@@ -257,18 +256,17 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           viewModel.controller
                                               .complete(controller);
                                           viewModel.manager != null
-                                              ? viewModel.manager
-                                                  .setMapController(controller)
+                                              ? viewModel.manager!
+                                                  .setMapId(controller.mapId)
                                               : SizedBox();
                                           viewModel.zoomToMarkers();
                                         },
                                         onTap: (argument) {
-                                          viewModel.customInfoWindowController
-                                              .hideInfoWindow();
+                                          viewModel.customInfoWindowController.hideInfoWindow!();
                                         },
                                         onCameraIdle: () {
                                           if (viewModel.manager != null) {
-                                            viewModel.manager.updateMap();
+                                            viewModel.manager!.updateMap();
                                           }
                                         },
                                         mapType: _changemap(),
@@ -278,20 +276,20 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                         initialCameraPosition: viewModel
                                                         .assetLocation !=
                                                     null &&
-                                                viewModel.assetLocation
-                                                    .mapRecords.isNotEmpty
+                                                viewModel.assetLocation!
+                                                    .mapRecords!.isNotEmpty
                                             ? CameraPosition(
                                                 target: LatLng(
                                                     viewModel
-                                                        .assetLocation
-                                                        .mapRecords
-                                                        .first
-                                                        .lastReportedLocationLatitude,
+                                                        .assetLocation!
+                                                        .mapRecords!
+                                                        .first!
+                                                        .lastReportedLocationLatitude!,
                                                     viewModel
-                                                        .assetLocation
-                                                        .mapRecords
-                                                        .first
-                                                        .lastReportedLocationLongitude),
+                                                        .assetLocation!
+                                                        .mapRecords!
+                                                        .first!
+                                                        .lastReportedLocationLongitude!),
                                                 zoom: 5)
                                             : CameraPosition(
                                                 target: LatLng(30.666, 76.8127),
@@ -319,22 +317,21 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                             onTap: () {
                                               print("button is tapped");
                                               viewModel
-                                                  .customInfoWindowController
-                                                  .hideInfoWindow();
+                                                  .customInfoWindowController.hideInfoWindow!();
                                               zoomVal++;
                                               _plus(
                                                   zoomVal,
                                                   LatLng(
                                                       viewModel
-                                                          .assetLocation
-                                                          .mapRecords
-                                                          .first
-                                                          .lastReportedLocationLatitude,
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLatitude!,
                                                       viewModel
-                                                          .assetLocation
-                                                          .mapRecords
-                                                          .first
-                                                          .lastReportedLocationLongitude),
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLongitude!),
                                                   viewModel);
                                             },
                                             child: Container(
@@ -350,16 +347,16 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                     blurRadius: 1.0,
                                                     color: Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1
-                                                        .color,
+                                                        .bodyText1!
+                                                        .color!,
                                                   ),
                                                 ],
                                                 border: Border.all(
                                                     width: 1.0,
                                                     color: Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1
-                                                        .color),
+                                                        .bodyText1!
+                                                        .color!),
                                                 shape: BoxShape.rectangle,
                                               ),
                                               child: SvgPicture.asset(
@@ -377,22 +374,21 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                               onTap: () {
                                                 print("button is tapped");
                                                 viewModel
-                                                    .customInfoWindowController
-                                                    .hideInfoWindow();
+                                                    .customInfoWindowController.hideInfoWindow!();
                                                 zoomVal--;
                                                 _minus(
                                                     zoomVal,
                                                     LatLng(
                                                       viewModel
-                                                          .assetLocation
-                                                          .mapRecords
-                                                          .first
-                                                          .lastReportedLocationLatitude,
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLatitude!,
                                                       viewModel
-                                                          .assetLocation
-                                                          .mapRecords
-                                                          .first
-                                                          .lastReportedLocationLongitude,
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLongitude!,
                                                     ),
                                                     viewModel);
                                               },
@@ -408,8 +404,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                       blurRadius: 1.0,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color,
+                                                          .bodyText1!
+                                                          .color!,
                                                     ),
                                                   ],
                                                   color: Theme.of(context)
@@ -418,8 +414,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                       width: 1.0,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText1
-                                                          .color),
+                                                          .bodyText1!
+                                                          .color!),
                                                   shape: BoxShape.rectangle,
                                                 ),
                                                 child: SvgPicture.asset(
@@ -511,9 +507,13 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                               //             );
                               //           }),
                               //       builder: (context, markers) {
-                              //         // return FloatingActionButton(
-                              //         //   child:
-                              //         return Container(
+                              //         return FloatingActionButton(
+                              //           onPressed: () {
+                              //               _popupController.showPopupFor(markers[0]);
+                              //               print("on ClusterTap ${markers.length}");
+                              //             },
+                              //           child:
+                              //        Container(
                               //           width: 40,
                               //           decoration: ShapeDecoration(
                               //             color: Colors.black,
@@ -524,19 +524,16 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                               //           child: Text(
                               //             markers.length.toString(),
                               //             style: TextStyle(color: Colors.white),
-                              //             // onPressed: () {
-                              //             //   _popupController.showPopupFor(markers[0]);
-                              //             //   print("on ClusterTap ${markers.length}");
-                              //             // },
+
                               //           ),
-                              //         );
+                              //         ));
                               //       },
                               //     ),
-                              //     // MarkerLayerOptions(
-                              //     //     markers: allMarkers.sublist(
-                              //     //         0, min(allMarkers.length, _sliderVal))),
-                              //   ],
-                              // ),
+                              //     MarkerLayerOptions(
+                              //         markers: allMarkers.sublist(
+                              //             0, min(allMarkers.length, _sliderVal))),
+                              //  ],
+                              //  ),
                               ),
                         ),
                   // Padding(
@@ -586,15 +583,12 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-        break;
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
-        break;
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
-        break;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;

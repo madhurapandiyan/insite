@@ -14,7 +14,7 @@ class ReportSummaryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ReportSummaryViewModel>.reactive(
       builder:
-          (BuildContext context, ReportSummaryViewModel viewModel, Widget _) {
+          (BuildContext context, ReportSummaryViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           body: viewModel.modelDataList.isEmpty
@@ -46,7 +46,7 @@ class ReportSummaryView extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 size: 20,
                                 text:
-                                    "Total Entries -${viewModel.smsReportSummaryModel.result.first.first.count} ",
+                                    "Total Entries -${viewModel.smsReportSummaryModel!.result!.first.first.count} ",
                               ),
                               viewModel.showDeleteButton
                                   ? InsiteButton(
@@ -64,17 +64,17 @@ class ReportSummaryView extends StatelessWidget {
                                         color: appbarcolor,
                                       ))
                                   : SizedBox(),
-                              InsiteButton(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  title: "",
-                                  onTap: () {
-                                    viewModel.onDownload();
-                                  },
-                                  icon: Icon(
-                                    Icons.download,
-                                    color: appbarcolor,
-                                  ))
+                              // InsiteButton(
+                              //     height:
+                              //         MediaQuery.of(context).size.height * 0.05,
+                              //     title: "",
+                              //     onTap: () {
+                              //       viewModel.onDownload();
+                              //     },
+                              //     icon: Icon(
+                              //       Icons.download,
+                              //       color: appbarcolor,
+                              //     ))
                             ],
                           ),
                         ),

@@ -7,15 +7,15 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
-  final Function(dynamic, dynamic) ondeleting;
-  final bool isFav;
-  final String geofenceName;
-  final String geofenceDate;
-  final String geofenceUID;
-  final String encodedPolyline;
-  final VoidCallback callBack;
-  final Function onNavigation;
-  final Function(String) onFavourite;
+  final Function(dynamic, dynamic)? ondeleting;
+  final bool? isFav;
+  final String? geofenceName;
+  final String? geofenceDate;
+  final String? geofenceUID;
+  final String? encodedPolyline;
+  final VoidCallback? callBack;
+  final Function? onNavigation;
+  final Function(String?)? onFavourite;
   ManageGeofenceWidget(
       {this.geofenceName,
       this.geofenceDate,
@@ -41,9 +41,10 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
     var mediaQuery = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
-        widget.onNavigation();
+        widget.onNavigation!();
       },
       child: Card(
+        //margin: EdgeInsets.symmetric(horizontal: 4),
         child: Column(
           children: [
             Container(
@@ -77,18 +78,18 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                             height: MediaQuery.of(context).size.height * 0.05,
                             title: "",
                             onTap: () {
-                              widget.onFavourite(widget.geofenceUID);
+                              widget.onFavourite!(widget.geofenceUID);
                             },
                             icon: Icon(
                               Icons.favorite,
-                              color: widget.isFav ? tango : white,
+                              color: widget.isFav! ? tango : white,
                             )),
                         InsiteButton(
                             height: MediaQuery.of(context).size.height * 0.05,
                             bgColor: tuna,
                             title: "",
                             onTap: () {
-                              widget.ondeleting(widget.geofenceUID,
+                              widget.ondeleting!(widget.geofenceUID,
                                   DateTime.now().toUtc().toString());
                             },
                             icon: Icon(

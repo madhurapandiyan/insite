@@ -11,8 +11,8 @@ import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
 
 class FilterView extends StatefulWidget {
-  final Function(bool) onFilterApplied;
-  final ScreenType screenType;
+  final Function(bool)? onFilterApplied;
+  final ScreenType? screenType;
   FilterView({this.onFilterApplied, this.screenType});
 
   @override
@@ -38,40 +38,40 @@ class _FilterViewState extends State<FilterView> {
 
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
-      filterAssetStatusKey.currentState.deSelectFromOutSide(data);
+      filterAssetStatusKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.PRODUCT_FAMILY) {
-      filterProductFamilyKey.currentState.deSelectFromOutSide(data);
+      filterProductFamilyKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.MAKE) {
-      filterMakeKey.currentState.deSelectFromOutSide(data);
+      filterMakeKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.MODEL) {
-      filterModelKey.currentState.deSelectFromOutSide(data);
+      filterModelKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.MODEL_YEAR) {
-      filterModelYearKey.currentState.deSelectFromOutSide(data);
+      filterModelYearKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.APPLICATION) {
-      filterApplicationKey.currentState.deSelectFromOutSide(data);
+      filterApplicationKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.ASSET_COMMISION_DATE) {
-      filterAssetCommisionDateKey.currentState.deSelectFromOutSide(data);
+      filterAssetCommisionDateKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.SUBSCRIPTION_DATE) {
-      filterSubscriptionTypesKey.currentState.deSelectFromOutSide(data);
+      filterSubscriptionTypesKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.DEVICE_TYPE) {
-      filterDeviceTypeKey.currentState.deSelectFromOutSide(data);
+      filterDeviceTypeKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.FUEL_LEVEL) {
-      filterFuelLevelKey.currentState.deSelectFromOutSide(data);
+      filterFuelLevelKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.IDLING_LEVEL) {
-      filterIdlingLevelKey.currentState.deSelectFromOutSide(data);
+      filterIdlingLevelKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.SEVERITY) {
-      filterSeverityKey.currentState.deSelectFromOutSide(data);
+      filterSeverityKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.JOBTYPE) {
-      filterJobTypeKey.currentState.deSelectFromOutSide(data);
+      filterJobTypeKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.USERTYPE) {
-      filterUserTypeKey.currentState.deSelectFromOutSide(data);
+      filterUserTypeKey.currentState!.deSelectFromOutSide(data);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FilterViewModel>.reactive(
-      builder: (BuildContext context, FilterViewModel viewModel, Widget _) {
+      builder: (BuildContext context, FilterViewModel viewModel, Widget? _) {
         return viewModel.loading
             ? Container(
                 height: MediaQuery.of(context).size.height * 0.8,
@@ -82,7 +82,7 @@ class _FilterViewState extends State<FilterView> {
                       bottomRight: Radius.circular(8),
                     ),
                     border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1.color)),
+                        color: Theme.of(context).textTheme.bodyText1!.color!)),
                 child: InsiteProgressBar())
             : Stack(
                 children: [
@@ -96,7 +96,7 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? FilterChipView(
                                     filters: viewModel.selectedFilterData,
                                     onClosed: (value) {
@@ -108,7 +108,7 @@ class _FilterViewState extends State<FilterView> {
                                         top: 8.0, bottom: 8.0),
                                   )
                                 : SizedBox(),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? SizedBox(
                                     height: 8,
                                   )
@@ -121,7 +121,7 @@ class _FilterViewState extends State<FilterView> {
                                   onTap: () {
                                     viewModel.onFilterApplied();
                                     Future.delayed(Duration(seconds: 2), () {
-                                      widget.onFilterApplied(true);
+                                      widget.onFilterApplied!(true);
                                     });
                                   },
                                   width: 100,
@@ -135,7 +135,7 @@ class _FilterViewState extends State<FilterView> {
                                 InsiteButton(
                                   bgColor: Theme.of(context).backgroundColor,
                                   onTap: () {
-                                    widget.onFilterApplied(false);
+                                    widget.onFilterApplied!(false);
                                   },
                                   width: 100,
                                   height: 40,
@@ -143,7 +143,7 @@ class _FilterViewState extends State<FilterView> {
                                 ),
                               ],
                             ),
-                            viewModel.selectedFilterData.isNotEmpty
+                            viewModel.selectedFilterData!.isNotEmpty
                                 ? SizedBox(
                                     height: 8,
                                   )

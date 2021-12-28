@@ -7,7 +7,7 @@ import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart'
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/app_avatar.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_list_view.dart';
+
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box_with_name.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -15,12 +15,13 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart'as service;
 import 'add_new_user_view_model.dart';
+import 'reusable_widget/custom_list_view.dart';
 
 class AddNewUserView extends StatefulWidget {
-  final Users user;
-  final bool isEdit;
+  final Users? user;
+  final bool? isEdit;
   AddNewUserView({this.user, this.isEdit});
 
   @override
@@ -33,7 +34,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
     super.initState();
   }
 
-  var snackbarService = locator<SnackbarService>();
+  var snackbarService = locator<service.SnackbarService>();
 
   void unfocus() {
     FocusScope.of(context).unfocus();
@@ -47,7 +48,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddNewUserViewModel>.reactive(
-      builder: (BuildContext context, AddNewUserViewModel viewModel, Widget _) {
+      builder:
+          (BuildContext context, AddNewUserViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.USER_MANAGEMENT,
@@ -191,7 +193,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: CustomDropDownWidget(
                                       items: viewModel.dropDownlist,
-                                      onChanged: (String value) {
+                                      onChanged: (String? value) {
                                         unfocus();
                                         viewModel.onPermissionSelected(value);
                                       },
@@ -292,7 +294,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: CustomDropDownWidget(
                                       items: viewModel.jobTypeList,
-                                      onChanged: (String value) {
+                                      onChanged: (String? value) {
                                         unfocus();
                                         viewModel.onJobTypeSelected(value);
                                       },
@@ -325,7 +327,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: CustomDropDownWidget(
                                       items: viewModel.jobTitleList,
-                                      onChanged: (String value) {
+                                      onChanged: (String? value) {
                                         unfocus();
                                         viewModel.onJobTitleSelected(value);
                                       },
@@ -406,7 +408,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: CustomDropDownWidget(
                                       items: viewModel.languageTypeValueList,
-                                      onChanged: (String value) {
+                                      onChanged: (String? value) {
                                         unfocus();
                                         viewModel
                                             .onlanguageTypeValueSelected(value);
@@ -483,20 +485,14 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     try {
                                       if (widget.user != null) {
                                         Logger().i("editing user");
-                                        if (viewModel.emailController != null &&
-                                            viewModel.firstNameController !=
-                                                null &&
-                                            viewModel.lastNameController !=
-                                                null &&
-                                            viewModel.phoneNumberController !=
-                                                null &&
-                                            viewModel.addressController !=
-                                                null &&
-                                            viewModel.stateController != null &&
-                                            viewModel.countryController !=
-                                                null &&
-                                            viewModel.pinCodeController !=
-                                                null) {
+                                        if (viewModel.emailController.text.isNotEmpty &&
+                                            viewModel.firstNameController.text.isNotEmpty &&
+                                            viewModel.lastNameController.text.isNotEmpty &&
+                                            viewModel.phoneNumberController.text.isNotEmpty &&
+                                            viewModel.addressController .text.isNotEmpty &&
+                                            viewModel.stateController.text.isNotEmpty &&
+                                            viewModel.countryController.text.isNotEmpty&&
+                                            viewModel.pinCodeController.text.isNotEmpty) {
                                           await viewModel.getEditUserData(
                                               viewModel
                                                   .firstNameController.text,
@@ -517,20 +513,14 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         }
                                       } else {
                                         Logger().i("adding user");
-                                        if (viewModel.emailController != null &&
-                                            viewModel.firstNameController !=
-                                                null &&
-                                            viewModel.lastNameController !=
-                                                null &&
-                                            viewModel.phoneNumberController !=
-                                                null &&
-                                            viewModel.addressController !=
-                                                null &&
-                                            viewModel.stateController != null &&
-                                            viewModel.countryController !=
-                                                null &&
-                                            viewModel.pinCodeController !=
-                                                null) {
+                                        if (viewModel.emailController.text.isNotEmpty &&
+                                            viewModel.firstNameController.text.isNotEmpty &&
+                                            viewModel.lastNameController.text.isNotEmpty &&
+                                            viewModel.phoneNumberController.text.isNotEmpty &&
+                                            viewModel.addressController .text.isNotEmpty &&
+                                            viewModel.stateController.text.isNotEmpty &&
+                                            viewModel.countryController.text.isNotEmpty&&
+                                            viewModel.pinCodeController.text.isNotEmpty) {
                                           await viewModel.getAddUserData(
                                             viewModel.firstNameController.text,
                                             viewModel.lastNameController.text,

@@ -9,6 +9,7 @@ import 'package:insite/views/subscription/sms-management/sms-single_asset/single
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'sms_schedule_multi_asset_view_model.dart';
 
@@ -26,9 +27,9 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
     IsolateNameServer.registerPortWithName(
         SmsScheduleMultiAssetViewModel().port.sendPort, 'downloader_send_port');
     SmsScheduleMultiAssetViewModel().port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+      String? id = data[0];
+      DownloadTaskStatus? status = data[1];
+      int? progress = data[2];
       setState(() {});
     });
 
@@ -44,7 +45,7 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -52,9 +53,9 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SmsScheduleMultiAssetViewModel>.reactive(
       builder: (BuildContext context, SmsScheduleMultiAssetViewModel viewModel,
-          Widget _) {
+          Widget? _) {
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters.length,
+          count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
@@ -180,21 +181,22 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
 
                         // crossAxisAlignment: CrossAxisAlignment.center,
                         children: List.generate(
-                            viewModel.singleAssetModelResponce.length,
+                            viewModel.singleAssetModelResponce!.length,
                             (i) => SingleAssetValidateWidget(
                                   GPSDeviceID: viewModel
-                                      .singleAssetModelResponce[i].GPSDeviceID,
+                                      .singleAssetModelResponce![i].GPSDeviceID,
                                   SerialNumber: viewModel
-                                      .singleAssetModelResponce[i].SerialNumber,
+                                      .singleAssetModelResponce![i]
+                                      .SerialNumber,
                                   StartDate: viewModel
-                                      .singleAssetModelResponce[i].StartDate,
+                                      .singleAssetModelResponce![i].StartDate,
                                   langugae: viewModel.languageList[i],
                                   model: viewModel
-                                      .singleAssetModelResponce[i].Model,
+                                      .singleAssetModelResponce![i].Model,
                                   modileNo: viewModel.mobileNoList[i],
                                   name: viewModel.nameList[i],
                                 ))),
-                    viewModel.singleAssetModelResponce.isEmpty
+                    viewModel.singleAssetModelResponce!.isEmpty
                         ? SizedBox()
                         : Padding(
                             padding: const EdgeInsets.all(20),
@@ -215,31 +217,37 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
                                 ),
                                 InsiteButton(
                                   fontSize: 14,
-                                  onTap: () async {
-                                    viewModel
-                                        .onSavingSmsModel()
-                                        .then((_) => showDialog(
+                                  onTap: () {
+                                    viewModel.onSavingSmsModel().then((value) {
+                                      Logger().wtf(value);
+                                      if (value!) {
+                                        return showDialog(
                                             context: context,
-                                            builder: (ctx) => AlertDialog(
-                                                  backgroundColor: tuna,
-                                                  actions: [
-                                                    FlatButton.icon(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          viewModel
-                                                              .onBackPressed();
-                                                        },
-                                                        icon: Icon(Icons.done,color: white,),
-                                                        label: InsiteText(
-                                                          text: "Okay",
-                                                        ))
-                                                  ],
-                                                  content: InsiteText(
-                                                    text:
-                                                        "Moblie number Updated successfully!!!.",
-                                                  ),
-                                                )));
+                                            builder: (ctx) => alertBox(
+                                                  content:
+                                                      "Moblie number Updated successfully!!!.",
+                                                  isShowingButton: value,
+                                                  onBackPress: () {
+                                                    Navigator.of(context).pop();
+                                                    viewModel.onBackPressed();
+                                                  },
+                                                ));
+                                      } else {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (ctx) => alertBox(
+                                                content:
+                                                    "Serial number, Mobile number, Language and Recipient’s Name combination is already exists. Do you want to download?",
+                                                isShowingButton: value,
+                                                onNegativeButtonPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                onPositiveButtonPressed: () {
+                                                  viewModel
+                                                      .onDownloadingExcelSheet();
+                                                }));
+                                      }
+                                    });
                                   },
                                   bgColor: tango,
                                   title: "Next",
@@ -257,6 +265,60 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
         );
       },
       viewModelBuilder: () => SmsScheduleMultiAssetViewModel(),
+    );
+  }
+
+  Widget alertBox(
+      {Function? onBackPress,
+      String? content,
+      bool? isShowingButton,
+      Function? onNegativeButtonPressed,
+      Function? onPositiveButtonPressed}) {
+    return AlertDialog(
+      backgroundColor: tuna,
+      actions: [
+        isShowingButton!
+            ? FlatButton.icon(
+                onPressed: () {
+                  onBackPress!();
+                },
+                icon: Icon(
+                  Icons.done,
+                  color: white,
+                ),
+                label: InsiteText(
+                  text: "Okay",
+                ))
+            : Row(
+                children: [
+                  FlatButton.icon(
+                      onPressed: () {
+                        onPositiveButtonPressed!();
+                      },
+                      icon: Icon(
+                        Icons.done,
+                        color: white,
+                      ),
+                      label: InsiteText(
+                        text: "Yes",
+                      )),
+                  FlatButton.icon(
+                      onPressed: () {
+                        onNegativeButtonPressed!();
+                      },
+                      icon: Icon(
+                        Icons.done,
+                        color: white,
+                      ),
+                      label: InsiteText(
+                        text: "No",
+                      ))
+                ],
+              )
+      ],
+      content: InsiteText(text: content
+          //"Moblie number Updated successfully!!!.",
+          ),
     );
   }
 }
