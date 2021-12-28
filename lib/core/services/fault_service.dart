@@ -44,7 +44,11 @@ class FaultService extends BaseService {
     };
     try {
       if (enableGraphQl == false) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub
+        );
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -131,7 +135,11 @@ class FaultService extends BaseService {
     };
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          accountSelected!.CustomerUID,
+        );
 
         AssetFaultSummaryResponse assetFaultSummaryResponse =
             AssetFaultSummaryResponse.fromJson(data.data!['assetData']);
@@ -222,7 +230,11 @@ class FaultService extends BaseService {
       query) async {
     try {
       if (enableGraphQl == false) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          accountSelected!.CustomerUID,
+        );
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);

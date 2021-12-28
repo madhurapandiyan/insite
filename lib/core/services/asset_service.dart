@@ -39,7 +39,11 @@ class AssetService extends BaseService {
       query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub,
+        );
 
         AssetSummaryResponse assetOperationData = AssetSummaryResponse.fromJson(
             data.data!["assetOperationsDailyTotals"]["assetOperations"]);

@@ -113,7 +113,7 @@ abstract class RestClient {
   Future<UserInfo> getUserInfo(@Header("content-type") String? contentType,
       @Header("Authorization") String? authorization);
 
-        @GET("/oauth/userinfo")
+  @GET("/oauth/userinfo")
   Future<UserInfo> getUserInfoVl(@Header("content-type") String? contentType,
       @Header("Authorization") String? authorization);
 

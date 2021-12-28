@@ -1,6 +1,18 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:intl/intl.dart';
 
 class GraphqlSchemaService extends BaseService {
+  static String? _startDate = DateFormat('yyyy-MM-dd').format(
+      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
+
+  static String startDate =
+      Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(_startDate);
+
+  static String? _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  static String endDate = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(_endDate);
+
   final String assetCount = """
 query faultDataSummary{
  getDashboardAsset{
@@ -16,7 +28,7 @@ query faultDataSummary{
 
   final String faultQueryString = """
   query faultDataSummary{
-  faultdata(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
+  faultdata(page: 1, limit: 100, startDateTime: $startDate, endDateTime: $endDate){
     
     faults{
       details {
@@ -41,7 +53,7 @@ query faultDataSummary{
 
   final String assetFaultQuery = """
   query assetDataSummary{
-  assetData(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
+  assetData(page: 1, limit: 100, startDateTime:$startDate, endDateTime: $endDate){
     pageLinks {
       rel
       href
@@ -200,7 +212,7 @@ query faultDataSummary{
 
   final String assetOperationData = """
  query asetOperations{
-  assetOperationsDailyTotals(sort: "-assetid", startDate: "12/20/2021", endDate: "12/20/2021", pageSize: 50, pageNumber: 1){
+  assetOperationsDailyTotals(sort: "-assetid", startDate: $startDate, endDate: $endDate, pageSize: 50, pageNumber: 1){
     assetOperations{
       links {
         rel
@@ -242,7 +254,7 @@ query faultDataSummary{
 """;
   final String getFaultCountData = """
   query getFaultCountData{
-faultCountData(startDateTime: "2021-12-21T14:02:21.995Z", endDateTime: "2021-12-21T14:02:23.023Z"){
+faultCountData(startDateTime:$startDate, endDateTime: $endDate){
   countData {
     countOf
     assetCount
@@ -254,7 +266,7 @@ faultCountData(startDateTime: "2021-12-21T14:02:21.995Z", endDateTime: "2021-12-
 
   final String getFleetUtilization = """
   query getFleetUtilization{
-	getfleetUtilization(pageSize:1,pageNumber:100, startDate: "2021-12-21T15:04:50.709Z", endDate: "2021-12-21T15:04:52.097Z"){
+	getfleetUtilization(pageSize:1,pageNumber:100, startDate: $startDate, endDate: $endDate){
     assetResults {
       assetIdentifierSQLUID
       assetIcon
@@ -335,7 +347,7 @@ faultCountData(startDateTime: "2021-12-21T14:02:21.995Z", endDateTime: "2021-12-
 
   final String getFleetLocationData = """
   query fleetLocationDetails{
-  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: "2021-11-29"){
+  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: $startDate){
     pagination {
       totalCount
       pageNumber

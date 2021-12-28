@@ -126,7 +126,10 @@ class AssetUtilizationService extends BaseService {
       query) async {
     try {
       if (enableGraphQl == false) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         Utilization assetCountFromGraphql =
             Utilization.fromJson(data.data!['getfleetUtilization']);
@@ -261,7 +264,10 @@ class AssetUtilizationService extends BaseService {
     Logger().i("getUtilizationSummary");
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         UtilizationSummary utilizationSummary = UtilizationSummary.fromJson(
             data.data!["getDashboardUtilizationSummary"]);

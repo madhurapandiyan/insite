@@ -3,11 +3,13 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class FaultListItemViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   Fault? _fault;
   Fault? get fault => _fault;
@@ -30,31 +32,6 @@ class FaultListItemViewModel extends InsiteViewModel {
   ScrollController? scrollController;
   int pageNumber = 1;
   int pageSize = 20;
-
-  final String faultQueryString = """
-  query faultDataSummary{
-  faultdata(page: 1, limit: 100, startDateTime: "2021-12-13T00:00:00Z", endDateTime: "2021-12-15T23:59:59Z"){
-    
-    faults{
-      details {
-        faultCode
-        faultReceivedUTC
-        dataLinkType
-        occurrences
-        url
-      }
-    }
-    page
-    limit
-    total
-    pageLinks {
-      rel
-      href
-      method
-    }
-  }
-}
-  """;
 
   FaultListItemViewModel(this._fault) {
     Logger().d("FaultListItemViewModel ${fault!.asset["uid"]}");
@@ -88,7 +65,7 @@ class FaultListItemViewModel extends InsiteViewModel {
             pageNumber,
             appliedFilters,
             fault!.asset["uid"],
-            faultQueryString);
+            _graphqlSchemaService!.faultQueryString);
     if (result != null && result.faults != null) {
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);

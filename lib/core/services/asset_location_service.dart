@@ -94,7 +94,11 @@ class AssetLocationService extends BaseService {
     Logger().i("getAssetLocation");
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub,
+        );
 
         AssetLocationData assetOperationData =
             AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);

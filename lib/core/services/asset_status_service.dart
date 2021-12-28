@@ -46,7 +46,11 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (enableGraphQl) {
-          var data = await Network().getGraphqlData(query);
+          var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub
+          );
 
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
@@ -119,7 +123,11 @@ class AssetStatusService extends DataBaseService {
     Logger().d("getAssetCountByFilter");
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+          query,
+          customerSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub
+        );
 
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['utilizationTotal']);
@@ -291,7 +299,11 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (enableGraphQl) {
-          var data = await Network().getGraphqlData(query);
+          var data = await Network().getGraphqlData(
+              query,
+              customerSelected!.CustomerUID,
+              (await _localService!.getLoggedInUser())!.sub);
+          Logger().e('eeeeeeeeeeeeeeeeeeeeeeeeeee$data');
 
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
@@ -432,7 +444,10 @@ class AssetStatusService extends DataBaseService {
 
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         AssetCount faultCountResponse =
             AssetCount.fromJson(data.data!['faultCountData']);
@@ -591,7 +606,10 @@ class AssetStatusService extends DataBaseService {
       startDate, String? productFamilyKey, endDate, query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['getDashboardAsset']);
@@ -636,7 +654,10 @@ class AssetStatusService extends DataBaseService {
   Future<AssetCount?> getIdlingLevel(startDate, endDate, query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(query);
+        var data = await Network().getGraphqlData(
+            query,
+            customerSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['getDashboardAsset']);
