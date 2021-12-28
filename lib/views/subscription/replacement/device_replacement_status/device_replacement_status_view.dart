@@ -49,18 +49,18 @@ class DeviceReplacementStatusView extends StatelessWidget {
                                   text:
                                       "Total Entries -${viewModel.totalDeviceReplacementStatusModel!.result!.first.first.count} ",
                                 ),
-                                InsiteButton(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    // bgColor: tuna,
-                                    title: "",
-                                    onTap: () {
-                                      viewModel.onDownload();
-                                    },
-                                    icon: Icon(
-                                      Icons.download,
-                                      color: appbarcolor,
-                                    )),
+                                // InsiteButton(
+                                //     height: MediaQuery.of(context).size.height *
+                                //         0.05,
+                                //     // bgColor: tuna,
+                                //     title: "",
+                                //     onTap: () {
+                                //       viewModel.onDownload();
+                                //     },
+                                //     icon: Icon(
+                                //       Icons.download,
+                                //       color: appbarcolor,
+                                //     )),
                               ],
                             ),
                           ),
