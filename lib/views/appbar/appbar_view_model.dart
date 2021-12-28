@@ -63,9 +63,9 @@ class AppbarViewModel extends InsiteViewModel {
 
   Future<void> logout() async {
     // _localService.removeTokenInfo();
+    LoginResponse? response = await _localService.getTokenInfo();
     _localService.clearAll();
     _localStorageService.clearAll();
-    LoginResponse? response = await _localService.getTokenInfo();
     Future.delayed(Duration(seconds: 2), () async {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -89,7 +89,7 @@ class AppbarViewModel extends InsiteViewModel {
       //   }
       // });
       if (AppConfig.instance!.enalbeNativeLogin) {
-        await _nativeService.logout(response!.id_token!);
+        await _nativeService.logout(response?.id_token);
       } else {
         if (isVisionLink) {
           _navigationService.replaceWith(loginViewRoute);

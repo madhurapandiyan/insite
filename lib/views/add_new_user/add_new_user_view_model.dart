@@ -91,9 +91,9 @@ class AddNewUserViewModel extends InsiteViewModel {
   int? lastApplicationAccessSelectedIndex;
   String? dropDownValue;
 
-  AddNewUserViewModel(Users user, bool isEdit) {
+  AddNewUserViewModel(Users? user, bool? isEdit) {
     this.user = user;
-    this._enableAdd = isEdit;
+    this._enableAdd = isEdit!;
     if (user != null) {
       emailController.text = user.loginId!;
       firstNameController.text = user.first_name!;

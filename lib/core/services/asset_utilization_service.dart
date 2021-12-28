@@ -25,7 +25,7 @@ class AssetUtilizationService extends BaseService {
 
   setUp() async {
     try {
-      _localService!.saveAccountInfoData();
+    //  _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getAccountInfo();

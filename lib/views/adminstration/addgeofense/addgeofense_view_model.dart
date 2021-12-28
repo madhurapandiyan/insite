@@ -150,8 +150,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Future<void> plus(double zoomVal) async {
     final controller = await googleMapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(onZoomLatitude ?? 30.666,
-            onZoomLongitude ?? 76.8127),
+        target: LatLng(onZoomLatitude ?? 30.666, onZoomLongitude ?? 76.8127),
         zoom: zoomVal)));
     notifyListeners();
   }
@@ -484,6 +483,10 @@ class AddgeofenseViewModel extends InsiteViewModel {
     try {
       if (isPolygonsCreated) {
         snackbarService!.showSnackbar(message: "Geofence not drawn in map");
+        return;
+      }
+      if (_polygon!.length < 3) {
+        snackbarService!.showSnackbar(message: "Please Draw a valid polygons");
         return;
       }
       // if (titleController.text.isEmpty && descriptionController.text.isEmpty) {

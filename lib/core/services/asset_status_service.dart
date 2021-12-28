@@ -26,7 +26,7 @@ class AssetStatusService extends DataBaseService {
 
   init() async {
     try {
-      await _localService!.saveAccountInfoData();
+    //  await _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
       Logger().d("account selected " + accountSelected!.CustomerUID!);

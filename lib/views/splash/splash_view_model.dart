@@ -40,6 +40,9 @@ class SplashViewModel extends InsiteViewModel {
     switch (methodCall.method) {
       case "code_received":
         _localService!.setIsloggedIn(true);
+        if (AppConfig.instance!.enalbeNativeLogin) {
+          isProcessing = true;
+        }
         getLoggedInUserDetails(methodCall.arguments);
         return "This data from flutter.....";
 
@@ -87,7 +90,7 @@ class SplashViewModel extends InsiteViewModel {
   checkPermission(Customer? account) async {
     try {
       if (isVisionLink) {
-        await _localService!.saveAccountInfoData();
+        //  await _localService!.saveAccountInfoData();
         //await _localService!.saveDummyToken();
         List<Permission>? list = await _loginService!.getPermissions();
         if (list!.isNotEmpty) {
@@ -124,7 +127,7 @@ class SplashViewModel extends InsiteViewModel {
           _localService!.setHasPermission(false);
           _localService!.clearAll();
           if (AppConfig.instance!.enalbeNativeLogin) {
-             await _nativeService!.login();
+            await _nativeService!.login();
           } else {
             shouldLoadWebview = true;
             Future.delayed(Duration(seconds: 1), () {

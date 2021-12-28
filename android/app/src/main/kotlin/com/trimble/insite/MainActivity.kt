@@ -89,6 +89,23 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+         override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val uri = intent.data
+        Log.d("onNewIntent %s", uri.toString())
+        if (uri != null) {
+            Log.d("uri", uri.toString())
+            val code = getCodeFromURI(uri)
+            if (code != null&&code.isNotEmpty()) {
+                Log.d("invoking flutter method ", code)
+                val codeChallenge = Utils.getCodeChallenge(Utils.getCodeVerifier())
+                val previousCodeVerifier = Utils.getStoredCodeVerifier(context)
+                val codeData = "$code,$codeChallenge,$previousCodeVerifier"
+                nativeToFlutterMethodChannel.invokeMethod("code_received", codeData)
+            }
+        }
+    }
+
     private fun getCodeFromURI(uri: Uri): String? {
         if (uri.toString().startsWith("insite://mobile")) {
             if (uri.toString().contains("code")) {

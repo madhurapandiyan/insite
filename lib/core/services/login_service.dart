@@ -15,13 +15,13 @@ import '../locator.dart';
 import 'local_service.dart';
 
 class LoginService extends BaseService {
-  final _nagivationService = locator<NavigationService>();
-  final _localService = locator<LocalService>();
+  final NavigationService?  _nagivationService = locator<NavigationService>();
+  final LocalService? _localService = locator<LocalService>();
   UserInfo? userInfo;
 
   Future<UserInfo?> getLoggedInUserInfo() async {
     try {
-      String? token = await _localService.getToken();
+      String? token = await _localService!.getToken();
 
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
@@ -41,9 +41,9 @@ class LoginService extends BaseService {
         UserInfo userInfo = await MyApi().getClientFive()!.getUserInfoV4(
             "application/x-www-form-urlencoded",
             "Bearer" + " " + token,
-            AccessToken(access_token: await _localService.getToken()));
+            AccessToken(access_token: await _localService!.getToken()));
         Logger().d(userInfo.toJson());
-        await _localService.saveUserInfo(userInfo);
+        await _localService!.saveUserInfo(userInfo);
         return userInfo;
       }
     } catch (e) {
@@ -62,31 +62,31 @@ class LoginService extends BaseService {
       userAuthenticateStatus = await MyApi()
           .getClientNine()!
           .authenticateUser(Urls.authenticateUrl, data);
-      await _localService
+      await _localService!
           .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
     }
     return userAuthenticateStatus;
   }
 
   getUser(token, shouldRemovePreviousRoutes) async {
-    _localService.setIsloggedIn(true);
-    _localService.saveToken(token);
+    _localService!.setIsloggedIn(true);
+    _localService!.saveToken(token);
     try {
-      await getAuthenticateUserId();
+    //  await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
 
       Future.delayed(Duration(seconds: 1), () {
         if (userInfo != null) {
-          _localService.saveUserInfo(userInfo);
+          _localService!.saveUserInfo(userInfo);
           Logger().i("launching home from login service");
           if (shouldRemovePreviousRoutes) {
             Logger().i("true");
-            _nagivationService.pushNamedAndRemoveUntil(
+            _nagivationService!.pushNamedAndRemoveUntil(
                 customerSelectionViewRoute, predicate: (Route<dynamic> route) {
               return false;
             });
           } else {
-            _nagivationService.replaceWith(customerSelectionViewRoute);
+            _nagivationService!.replaceWith(customerSelectionViewRoute);
           }
         }
       });
@@ -94,20 +94,20 @@ class LoginService extends BaseService {
       Logger().e(e);
       Logger().i("exception launching home from login service");
       if (userInfo != null) {
-        _localService.saveUserInfo(userInfo);
+        _localService!.saveUserInfo(userInfo);
         if (shouldRemovePreviousRoutes) {
           Logger().i("true");
-          _nagivationService.pushNamedAndRemoveUntil(customerSelectionViewRoute,
+          _nagivationService!.pushNamedAndRemoveUntil(customerSelectionViewRoute,
               predicate: (Route<dynamic> route) => false);
         } else {
-          _nagivationService.replaceWith(customerSelectionViewRoute);
+          _nagivationService!.replaceWith(customerSelectionViewRoute);
         }
       }
     }
   }
 
   saveExpiryTime(String expiryTime) async {
-    _localService.saveExpiryTime(expiryTime);
+    _localService!.saveExpiryTime(expiryTime);
   }
 
   Future<List<Customer>?> getCustomers() async {
@@ -166,7 +166,7 @@ class LoginService extends BaseService {
   Future<List<Permission>?> getPermissions() async {
     try {
       if (isVisionLink) {
-        Customer? customer = await _localService.getAccountInfo();
+        Customer? customer = await _localService!.getAccountInfo();
         PermissionResponse response = await MyApi()
             .getClient()!
             .getPermissionVL(10000, "Prod-VLUnifiedFleet",
@@ -177,8 +177,8 @@ class LoginService extends BaseService {
         }
         return list;
       } else {
-        UserInfo? userInfo = await _localService.getLoggedInUser();
-        Customer? customer = await _localService.getAccountInfo();
+        UserInfo? userInfo = await _localService!.getLoggedInUser();
+        Customer? customer = await _localService!.getAccountInfo();
         PermissionResponse response = await MyApi()
             .getClientFour()!
             .getPermission(10000, "Frame-Fleet-in", customer!.CustomerUID,
@@ -267,8 +267,8 @@ class LoginService extends BaseService {
 
   void onTokenReceivedWithoutLogin(LoginResponse response) {
     Logger().i("onTokenReceivedWithoutLogin");
-    _localService.setIsloggedIn(true);
-    _localService.saveToken(response.access_token);
+    _localService!.setIsloggedIn(true);
+    _localService!.saveToken(response.access_token);
     saveExpiryTime(response.expires_in.toString());
   }
 
