@@ -38,20 +38,24 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LoadingProvider(
-        themeData: LoadingThemeData(
-          loadingBackgroundColor: Colors.white,
-          loadingPadding: EdgeInsets.all(24),
-          loadingSize: Size(80, 80),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          // ignore: deprecated_member_use
-          navigatorKey: locator<NavigationService>().navigatorKey,
-          onGenerateRoute: router1.Router.generateRoute,
-          initialRoute: indiaStackSplashViewRoute,
-          theme: indiaStackOrangeBlack,
-        ));
+    return MaterialApp(
+      builder: (context, child) {
+        return LoadingProvider(
+          themeData: LoadingThemeData(
+            loadingBackgroundColor: Colors.white,
+            loadingPadding: EdgeInsets.all(24),
+            loadingSize: Size(80, 80),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: child!,
+        );
+      },
+      debugShowCheckedModeBanner: false,
+      // ignore: deprecated_member_use
+      navigatorKey: locator<NavigationService>().navigatorKey,
+      onGenerateRoute: router1.Router.generateRoute,
+      initialRoute: indiaStackSplashViewRoute,
+      theme: indiaStackOrangeBlack,
+    );
   }
 }
