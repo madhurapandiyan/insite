@@ -53,7 +53,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             ? Expanded(
                                 child: Center(
                                   child: InsiteText(
-                                    text: "No geofence is added",
+                                    text: "No geofence found",
                                     size: 20,
                                   ),
                                 ),

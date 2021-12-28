@@ -201,7 +201,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
 
-      //  Logger().e(userId);
+   Logger().e(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
           UserID: int.parse(userId!),

@@ -86,8 +86,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   getLoggedInUserMail() async {
     UserInfo? userInfo = await _localService!.getLoggedInUser();
-    Logger().wtf(userInfo!.toJson());
-    _loggedInUserMail = userInfo.email;
+    _loggedInUserMail = userInfo!.email;
     notifyListeners();
   }
 

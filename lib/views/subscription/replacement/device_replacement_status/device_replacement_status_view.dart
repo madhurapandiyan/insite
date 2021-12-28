@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -49,18 +47,18 @@ class DeviceReplacementStatusView extends StatelessWidget {
                                   text:
                                       "Total Entries -${viewModel.totalDeviceReplacementStatusModel!.result!.first.first.count} ",
                                 ),
-                                InsiteButton(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    // bgColor: tuna,
-                                    title: "",
-                                    onTap: () {
-                                      viewModel.onDownload();
-                                    },
-                                    icon: Icon(
-                                      Icons.download,
-                                      color: appbarcolor,
-                                    )),
+                                // InsiteButton(
+                                //     height: MediaQuery.of(context).size.height *
+                                //         0.05,
+                                //     // bgColor: tuna,
+                                //     title: "",
+                                //     onTap: () {
+                                //       viewModel.onDownload();
+                                //     },
+                                //     icon: Icon(
+                                //       Icons.download,
+                                //       color: appbarcolor,
+                                //     )),
                               ],
                             ),
                           ),

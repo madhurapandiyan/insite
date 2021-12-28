@@ -37,7 +37,7 @@ class SmsManagementView extends StatelessWidget {
                         height: 30,
                         buttonTitle: [
                           AdminAssetsButtonType.values[19],
-                           AdminAssetsButtonType.values[20],
+                          // AdminAssetsButtonType.values[20],
                           AdminAssetsButtonType.values[21],
                         ],
                         onCallbackSelected: (value) {

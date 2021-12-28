@@ -101,7 +101,6 @@ class LocalService extends BaseService {
     if (data == null) {
       return null;
     }
-
     return Customer.fromJson(json.decode(data));
   }
 

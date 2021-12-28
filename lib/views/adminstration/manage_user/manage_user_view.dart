@@ -17,7 +17,8 @@ class ManageUserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ManageUserViewModel>.reactive(
-      builder: (BuildContext context, ManageUserViewModel viewModel, Widget? _) {
+      builder:
+          (BuildContext context, ManageUserViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
@@ -61,25 +62,25 @@ class ManageUserView extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Row(
                                   children: [
-                                    viewModel.showEdit
-                                        ? ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                            ),
-                                            child: InsiteButton(
-                                                title: "",
-                                                onTap: () {
-                                                  viewModel.onEditClicked();
-                                                },
-                                                icon: Icon(
-                                                  Icons.edit,
-                                                  color: appbarcolor,
-                                                )),
-                                          )
-                                        : SizedBox(),
+                                    // viewModel.showEdit
+                                    //     ? ClipRRect(
+                                    //         borderRadius: BorderRadius.only(
+                                    //           topLeft: Radius.circular(10),
+                                    //           topRight: Radius.circular(10),
+                                    //           bottomRight: Radius.circular(10),
+                                    //           bottomLeft: Radius.circular(10),
+                                    //         ),
+                                    //         child: InsiteButton(
+                                    //             title: "",
+                                    //             onTap: () {
+                                    //               viewModel.onEditClicked();
+                                    //             },
+                                    //             icon: Icon(
+                                    //               Icons.edit,
+                                    //               color: appbarcolor,
+                                    //             )),
+                                    //       )
+                                    //     : SizedBox(),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -151,6 +152,7 @@ class ManageUserView extends StatelessWidget {
                           child: CustomTextBox(
                             controller: viewModel.textEditingController,
                             title: "Search users",
+                            showLoading: viewModel.isSearching,
                             onChanged: (searchText) {
                               if (searchText.isNotEmpty) {
                                 viewModel.searchUsers(searchText);

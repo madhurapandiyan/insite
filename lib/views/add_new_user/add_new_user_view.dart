@@ -559,7 +559,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
               ),
             ));
       },
-      viewModelBuilder: () => AddNewUserViewModel(widget.user!, widget.isEdit!),
+      viewModelBuilder: () => AddNewUserViewModel(widget.user, widget.isEdit),
     );
   }
 }

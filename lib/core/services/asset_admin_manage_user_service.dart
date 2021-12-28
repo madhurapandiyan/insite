@@ -443,7 +443,9 @@ class AssetAdminManagerUserService extends BaseService {
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
                 fname: firstName,
-                customerUid: accountSelected!.CustomerUID,
+                customerUid: customerSelected != null
+                    ? customerSelected!.CustomerUID
+                    : accountSelected!.CustomerUID,
                 lname: lastName,
                 email: email,
                 phone: phoneNumber,

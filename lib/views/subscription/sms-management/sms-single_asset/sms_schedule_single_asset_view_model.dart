@@ -44,6 +44,8 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
 
   List<SingleAssetModelResponce>? singleAssetModelResponce = [];
 
+  PageController controller = PageController();
+
   bool isLoading = true;
 
   bool dummy = false;
@@ -103,6 +105,8 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       // }
       hideLoadingDialog();
       listOfSingleAssetSmsSchedule.clear();
+      controller.animateToPage(1,
+          duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
 
       notifyListeners();
     } on DioError catch (e) {
@@ -114,15 +118,13 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
   }
 
   onBackPressed() {
-    showLoadingDialog();
-    Future.delayed(Duration(seconds: 2), () {
-      _serialNoController!.text = serialNo!;
-      _mobileNoController!.text = mobileNo!;
-      _nameController!.text = name!;
-      singleAssetModelResponce!.clear();
-      hideLoadingDialog();
-      notifyListeners();
-    });
+    _serialNoController!.text = serialNo!;
+    _mobileNoController!.text = mobileNo!;
+    _nameController!.text = name!;
+     singleAssetModelResponce!.clear();
+    controller.animateToPage(0,
+        duration: Duration(seconds: 500), curve: Curves.easeInOut);
+   notifyListeners();
   }
 
   Future onSavingSmsModel() async {

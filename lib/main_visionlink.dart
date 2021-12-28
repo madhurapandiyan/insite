@@ -28,6 +28,7 @@ void main() async {
       apiFlavor: "visionlink",
       productFlavor: "unifiedFleet",
       enableLogin: true,
+      enalbeNativeLogin: false,
       isProd: false,
       enableGraphql: true,
       iconPath: "assets/images/hitachi.png");

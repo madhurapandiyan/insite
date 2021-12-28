@@ -27,6 +27,7 @@ void main() async {
       iconPath: "assets/images/hitachi.png",
       productFlavor: "tatahitachi",
       enableLogin: false,
+      enalbeNativeLogin: true,
       isProd: false,
       enableGraphql: true,
       apiFlavor: "indiastack");

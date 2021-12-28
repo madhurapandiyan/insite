@@ -29,6 +29,7 @@ void main() async {
       enableLogin: true,
       isProd: false,
       enableGraphql: true,
+      enalbeNativeLogin: true,
       apiFlavor: "indiastack");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());

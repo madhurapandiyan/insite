@@ -60,6 +60,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
         //Logger().d(points);
         listOfPointSeries.add(points);
       }
+       getEncodedPolylines(listOfPointSeries);
     } catch (e) {
       Logger().e(e.toString());
     }

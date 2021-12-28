@@ -53,8 +53,14 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     codeChallenge = Utils.generateCodeChallenge(codeVerifier);
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
-    Logger().d(
-        "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrlVL(state, codeChallenge)}");
+    if (AppConfig.instance!.apiFlavor == "visionlink") {
+      Logger().d(
+          "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrlVL(state, codeChallenge)}");
+    } else {
+      Logger().d(
+          "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+    }
+
     super.initState();
     setupListeners();
   }
@@ -139,7 +145,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         Logger().wtf(url);
         if (url.isNotEmpty &&
             url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
-                ? Urls.administratorBaseUrl
+                ? Urls.administratorBaseUrl + "?code="
                 : Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
@@ -199,6 +205,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d(AppConfig.instance!.apiFlavor);
     return ViewModelBuilder<SplashViewModel>.reactive(
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
@@ -207,9 +214,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
           body: SafeArea(
             child: Stack(
               children: [
-                viewModel.shouldLoadWebview
+                viewModel.shouldLoadWebview &&
+                        !AppConfig.instance!.enalbeNativeLogin
                     ? WebviewScaffold(
-                        url: viewModel.checkingFavour
+                        url: AppConfig.instance!.apiFlavor == "visionlink"
                             ? Urls.getV4LoginUrlVL(state, codeChallenge)
                             : Urls.getV4LoginUrl(state, codeChallenge))
                     : SizedBox(),
