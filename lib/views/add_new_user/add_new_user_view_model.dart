@@ -388,6 +388,7 @@ class AddNewUserViewModel extends InsiteViewModel {
           roles);
       if (result != null) {
         snackbarService!.showSnackbar(message: "Added successfully");
+        reset();
       } else {
         snackbarService!.showSnackbar(message: "Adding user failed");
       }
@@ -453,10 +454,31 @@ class AddNewUserViewModel extends InsiteViewModel {
     //   return false;
     // }
 
-    if (languageTypeValue == null || languageTypeValue.isEmpty) {
+    if (languageTypeValue.isEmpty) {
       snackbarService!.showSnackbar(message: "language not selected");
       return false;
     }
     return true;
+  }
+
+  reset() {
+    pinCodeController.text = "";
+    stateController.text = "";
+    countryController.text = "";
+    addressController.text = "";
+    emailController.text = "";
+    firstNameController.text = "";
+    lastNameController.text = "";
+    phoneNumberController.text = "";
+    _enableAdd = false;
+    jobTypeValue = null;
+    jobTitleValue = null;
+    lastApplicationAccessSelectedIndex = null;
+    applicationSelectedDropDownList.clear();
+    for (int i = 0; i < _assetsData.length; i++) {
+      _assetsData[i].isSelected = false;
+      _assetsData[i].isPermissionSelected = false;
+    }
+    notifyListeners();
   }
 }

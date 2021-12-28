@@ -25,8 +25,11 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   updateSearchDataToEmpty() {
+    Logger().d("updateSearchDataToEmpty");
     _assets = [];
-    // notifyListeners();
+    _isSearching = true;
+    notifyListeners();
+    getManagerUserAssetList();
   }
 
   int _totalCount = 0;
@@ -40,6 +43,9 @@ class ManageUserViewModel extends InsiteViewModel {
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
+
+  bool _isSearching = false;
+  bool get isSearching => _isSearching;
 
   bool _showEdit = false;
   bool get showEdit => _showEdit;
@@ -89,7 +95,10 @@ class ManageUserViewModel extends InsiteViewModel {
   Timer? debounce;
 
   searchUsers(String searchValue) {
+    Logger().d("search users $searchValue");
     pageNumber = 1;
+    _isSearching = true;
+    notifyListeners();
     if (debounce != null) debounce!.cancel();
     debounce = Timer(Duration(seconds: 2), () {
       _searchKeyword = searchValue;
@@ -99,44 +108,47 @@ class ManageUserViewModel extends InsiteViewModel {
 
   getManagerUserAssetList() async {
     try {
-          Logger().i("getManagerUserAssetList");
-    AdminManageUser? result = await _manageUserService!
-        .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters);
-    if (result != null) {
-      if (result.total != null) {
-        _totalCount = result.total!.items!;
-      }
-      if (result.users!.isNotEmpty) {
-        Logger().i("list of assets " + result.users!.length.toString());
-        if (!loadingMore) {
-          _assets.clear();
+      Logger().i("getManagerUserAssetList");
+      AdminManageUser? result = await _manageUserService!
+          .getAdminManageUserListData(
+              pageNumber, _searchKeyword, appliedFilters);
+      if (result != null) {
+        if (result.total != null) {
+          _totalCount = result.total!.items!;
         }
-        for (var user in result.users!) {
-          _assets.add(UserRow(user: user, isSelected: false));
+        if (result.users!.isNotEmpty) {
+          Logger().i("list of assets " + result.users!.length.toString());
+          if (!loadingMore) {
+            _assets.clear();
+          }
+          for (var user in result.users!) {
+            _assets.add(UserRow(user: user, isSelected: false));
+          }
+          _loading = false;
+          _loadingMore = false;
+          _isSearching = false;
+          notifyListeners();
+        } else {
+          for (var user in result.users!) {
+            _assets.add(UserRow(user: user, isSelected: false));
+          }
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          _isSearching = false;
+          notifyListeners();
         }
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
       } else {
-        for (var user in result.users!) {
-          _assets.add(UserRow(user: user, isSelected: false));
-        }
+        _assets = [];
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
+        _refreshing = false;
+        _isSearching = false;
         notifyListeners();
       }
-    } else {
-      _assets = [];
-      _loading = false;
-      _loadingMore = false;
-      _refreshing = false;
-      notifyListeners();
-    }
     } catch (e) {
       Logger().e(e.toString());
     }
-
   }
 
   onItemSelected(index) {

@@ -14,7 +14,7 @@ class CustomTextBox extends StatelessWidget {
   final Function(String?)? onSaved;
   final Function(String)? onFieldSubmmit;
   final TextInputType? keyPadType;
-
+  final bool showLoading;
   final List<TextInputFormatter>? textInputFormat;
   bool isenabled;
 
@@ -25,6 +25,7 @@ class CustomTextBox extends StatelessWidget {
     this.textInputFormat,
     this.focusNode,
     this.keyPadType,
+    this.showLoading = false,
     this.labelTitle,
     this.onFieldSubmmit,
     this.isenabled = true,
@@ -83,6 +84,16 @@ class CustomTextBox extends StatelessWidget {
                 borderSide: BorderSide(
                   color: Theme.of(context).textTheme.bodyText1!.color!,
                 )),
+            suffix: showLoading
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 12,
+                      height: 12,
+                    ),
+                  )
+                : null,
             hintStyle: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 14,
