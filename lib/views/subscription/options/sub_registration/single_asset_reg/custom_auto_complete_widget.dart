@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -12,7 +11,8 @@ class CustomAutoCompleteWidget extends StatelessWidget {
   final Function(String?)? onSelect;
   final bool? isAlign;
   final TextInputType? keyboardType;
- final dynamic Function(String)? validator;
+  final dynamic Function(String)? validator;
+  final bool? isEnable;
   CustomAutoCompleteWidget(
       {this.items,
       this.isAlign,
@@ -21,6 +21,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
       this.controller,
       this.keyboardType,
       this.validator,
+      this.isEnable,
       this.onSelect});
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
       width: items!.isEmpty ? 129 : 200,
       height: items!.isEmpty ? 70 : 300,
       child: Column(
-        crossAxisAlignment: isAlign == null || isAlign!
-            ? CrossAxisAlignment.start
-            : CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InsiteText(
             text: textBoxTitle,
@@ -44,6 +43,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
             width: 150,
             height: 40,
             child: CustomTextBox(
+              isenabled: isEnable,
               validator: validator,
               keyPadType: keyboardType,
               controller: controller,

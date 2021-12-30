@@ -17,6 +17,7 @@ import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -97,6 +98,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   String _initialIndustryDetail = "Select Industry Details";
   String get initialIndustryDetail => _initialIndustryDetail;
 
+  String _initialSubIndustryDetailValue = "Select Secondary Details";
+  String get initialSubIndustryDetailValue => _initialSubIndustryDetailValue;
+
   List<String> _industryDetails = [
     "Select Industry Details",
     "Agriculture",
@@ -109,7 +113,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     "Forestry",
     "Government",
     "Independent Rental",
-    "industrial & commercial Material Handling",
+    "Industrial & commercial Material Handling",
     "Infrastructure-Transportation",
     "Infrastructure - Utilities & Other civil Engineering",
     "LandScaping/Gardening",
@@ -121,6 +125,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     "Waste management"
   ];
   List<String> get industryDetails => _industryDetails;
+
+  List<String> _industrySubDetails = ["Select Secondary Details"];
+  List<String> get industrySubDetails => _industrySubDetails;
 
   List<String> _popUpCardTitles = [
     "Entity Details",
@@ -200,10 +207,216 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onSelectingSubIndustry(String value) {
+    _initialSubIndustryDetailValue = value;
+    notifyListeners();
+  }
+
   updateIndustry(String value) {
     _initialIndustryDetail = value;
-    _showSubIndustry = true;
+    if (value == _industryDetails[1]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll(
+          ["Select Secondary Details", "Agriculture", "Palm Oil", "Rubber"]);
+    } else if (value == _industryDetails[2]) {
+      _industrySubDetails.clear();
+      _industrySubDetails
+          .addAll(["Select Secondary Details", "Independent_Rental"]);
+    } else if (value == _industryDetails[3]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "General Construction",
+        "Consultant Office / Architectural Firm",
+        "Construction Work"
+      ]);
+    } else if (value == _industryDetails[4]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Civil Engineering",
+        "Independent_Rental",
+      ]);
+    } else if (value == _industryDetails[5]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Aggrigates loading And cleaning",
+        "Breaking and loading",
+      ]);
+    } else if (value == _industryDetails[6]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "HCM Group Rental Company",
+        "Hire",
+      ]);
+    } else if (value == _industryDetails[7]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Demolition",
+        "Blasting",
+        "Crushing",
+        "Recycling of Construction Materials"
+      ]);
+    } else if (value == _industryDetails[8]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Mill",
+        "Logging",
+        "Replanting",
+        "Opening",
+        "Others"
+      ]);
+    } else if (value == _industryDetails[9]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "State / Federal Government",
+        "Local Government",
+        "Parastatal Agency",
+        "Military / Defense",
+        "Waste Management",
+        "Other government body"
+      ]);
+    } else if (value == _industryDetails[10]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Independent Rental Company",
+        "Hire",
+        "Repairing",
+        "Part supplier",
+      ]);
+    } else if (value == _industryDetails[11]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Fishery / Aquaculture",
+        "Finance / Insurance / Real Estate",
+        "Food processing",
+        "Utilities",
+        "Plant",
+        "Textile / Pulp",
+        "Chemical / Glass",
+        "Machinery",
+        "Motor vehicles",
+        "Shipbuilding",
+        "Other manufacturing",
+        "Other manufacturing",
+        "Non-manufacturing",
+        "Retail",
+        "Wholesale",
+        "Service",
+        "Medical / Education",
+        "Metal",
+        "Logistics"
+      ]);
+    } else if (value == _industryDetails[12]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Tunnel",
+        "Road construction",
+        "Railroad",
+        "Drilling",
+      ]);
+    } else if (value == _industryDetails[13]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Civil Engineering",
+        "Drainage",
+        "Dam",
+        "Piping / Electrical",
+      ]);
+    } else if (value == _industryDetails[14]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Marine / Harbor / Dredge / River",
+        "Horticulture",
+      ]);
+    } else if (value == _industryDetails[15]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Concrete / Cement",
+        "Sandpit",
+        "Oil",
+        "Gas",
+        "Thermal Core",
+        "Iron Ore",
+        "Copper",
+        "Gold",
+        "Diamond",
+        "Jade",
+        "Ruby",
+        "Salt",
+        "Other mining",
+        "Building Materials",
+        "Limestone",
+        "Other quarry",
+        "Apatite",
+        "Asbest",
+        "Baryte",
+        "Bauxite",
+        "Chrome",
+        "Cobalt",
+        "Lithium",
+        "Magnesite",
+        "Magnetite",
+        "Manganese",
+        "Mineral Sands",
+        "Nickel",
+        "Oil Sands",
+        "Oil Shale",
+        "Phosphate",
+        "Platinum",
+        "Polymetal",
+        "Quarry",
+        "Silver",
+        "Slate",
+        "Sodium Bicarbonate",
+        "Taconite",
+        "Zink"
+      ]);
+    } else if (value == _industryDetails[16]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Hire",
+        "Independent Rental",
+      ]);
+    } else if (value == _industryDetails[17]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Hire",
+      ]);
+    } else if (value == _industryDetails[18]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll(["Select Secondary Details", "Agriculture"]);
+    } else if (value == _industryDetails[19]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Trading company",
+        "Used equipment dealer",
+        "Others / Miscellaneous"
+      ]);
+    } else if (value == _industryDetails[20]) {
+      _industrySubDetails.clear();
+      _industrySubDetails.addAll([
+        "Select Secondary Details",
+        "Industrial Waste / Landfill",
+        "Recycle"
+      ]);
+    }
 
+    _showSubIndustry = true;
     notifyListeners();
   }
 
@@ -241,8 +454,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         customerEmailID: generalCustomerDetails[2].value);
     _totalTransferValues.add(deviceTransferValues);
 
-    var result = await _subscriptionService!.postSingleTransferRegistration(
-        transferData: _totalTransferValues);
+    var result = await _subscriptionService!
+        .postSingleTransferRegistration(transferData: _totalTransferValues);
 
     notifyListeners();
     return result;
@@ -316,8 +529,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     PreviewData primary =
         PreviewData(title: 'Primary Industry', value: _initialIndustryDetail);
     _generalIndustryDetails.add(primary);
-    PreviewData secondary =
-        PreviewData(title: 'Secondary Industry', value: _initialIndustryDetail);
+    PreviewData secondary = PreviewData(
+        title: 'Secondary Industry', value: _initialSubIndustryDetailValue);
     _generalIndustryDetails.add(secondary);
 
     _totalList.add(_generalIndustryDetails);
@@ -342,7 +555,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         customerEmailController.text = element.Email!;
         customerCodeController.text = element.Code!;
       }
-     // return false;
+      // return false;
     });
     notifyListeners();
   }
@@ -367,8 +580,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   getCustomerDetailValues(String deviceID) async {
-    CustomerDetails result =
-        await (_subscriptionService!.getCustomerDetails(deviceID) as Future<CustomerDetails>);
+    CustomerDetails result = await (_subscriptionService!
+        .getCustomerDetails(deviceID) as Future<CustomerDetails>);
 
     customerCodeController.text = result.customerResult!.customerData!.code!;
     customerEmailController.text = result.customerResult!.customerData!.email!;
@@ -459,15 +672,24 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     });
   }
 
-  onSelectedDeviceId(String value) {
-    _deviceList.forEach((element) {
-      if (element.gPSDeviceID == value) {
-        deviceIdController.text = element.gPSDeviceID!;
-        machineSerialNumberController.text = element.vIN!;
-        _gpsDeviceIdList.clear();
-        notifyListeners();
-      }
-    });
+  onSelectedDeviceId(String value) async {
+    try {
+      showLoadingDialog();
+      var data = await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
+      machineModelController.text = data!.result!.first.model!;
+      _deviceList.forEach((element) {
+        if (element.gPSDeviceID == value) {
+          deviceIdController.text = element.gPSDeviceID!;
+          machineSerialNumberController.text = element.vIN!;
+          _gpsDeviceIdList.clear();
+          notifyListeners();
+        }
+      });
+      hideLoadingDialog();
+    } catch (e) {
+      Logger().e(e.toString());
+      hideLoadingDialog();
+    }
   }
 
   onSelectedSerialNo(String value) {
@@ -495,7 +717,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _devices.clear();
         Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -503,8 +725,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as Future<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          customerCode.clear();
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
@@ -537,7 +760,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _customerCode.clear();
         _devices.clear();
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -545,8 +768,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as FutureOr<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          customerId.clear();
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _customerCode.add(element.Code);
@@ -581,7 +805,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _dealerId.clear();
         Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -589,8 +813,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as FutureOr<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          dealerCode.clear();
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
@@ -624,7 +849,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _dealerCode.clear();
 
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel result =
+          SingleAssetRegistrationSearchModel? result =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -632,8 +857,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             code: code,
             fitler: type,
             limit: pageSize,
-          ) as FutureOr<SingleAssetRegistrationSearchModel>);
-          if (result.result![1].isNotEmpty) {
+          ));
+          dealerCode.clear();
+          if (result!.result![1].isNotEmpty) {
             result.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
@@ -717,24 +943,28 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   getSerialNumbers(String text) async {
     try {
       if (text.length > 3) {
-        SingleTransferDeviceId serialNoResults =
-            await (_subscriptionService!.getSingleTransferDeviceId(
+        SingleTransferDeviceId? serialNoResults = await (_subscriptionService!
+            .getSingleTransferDeviceId(
                 filter: "asset",
                 filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
                 controllerValue: text,
                 start: start == 0 ? start : start + 1,
                 limit: limit,
-                searchBy: "VIN") as FutureOr<SingleTransferDeviceId>);
+                searchBy: "VIN"));
+        gpsDeviceIdList.clear();
+        _serialNoList.clear();
 
         if (serialNoResults != null) {
           if (serialNoResults.result!.isNotEmpty) {
             deviceList.addAll(serialNoResults.result!);
-
             _loading = false;
             _loadingMore = false;
-
+            _serialNoList.clear();
             deviceList.forEach((element) {
-              _serialNoList.add(element.vIN);
+              if (_serialNoList.any((serialno) => serialno == element.vIN)) {
+              } else {
+                _serialNoList.add(element.vIN);
+              }
             });
           } else {
             _loading = false;
@@ -743,7 +973,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           _loading = false;
           _loadingMore = false;
         }
-        Logger().wtf(serialNoResults.result!.first.vIN);
+        Logger().wtf(serialNoList.length);
         notifyListeners();
       }
     } on DioError catch (e) {
@@ -755,22 +985,20 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   getDeviceIds(String text) async {
     try {
       if (text.length >= 3) {
-        SingleTransferDeviceId deviceIdResults =
-            await (_subscriptionService!.getSingleTransferDeviceId(
+        SingleTransferDeviceId? deviceIdResults = await _subscriptionService!
+            .getSingleTransferDeviceId(
                 filter: "asset",
                 filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
                 controllerValue: text,
                 start: start == 0 ? start : start + 1,
                 limit: limit,
-                searchBy: "GPSDeviceID") as FutureOr<SingleTransferDeviceId>);
-
+                searchBy: "GPSDeviceID");
+        serialNoList.clear();
         if (deviceIdResults != null) {
           if (deviceIdResults.result!.isNotEmpty) {
             deviceList.addAll(deviceIdResults.result!);
-
             _loading = false;
             _loadingMore = false;
-
             deviceList.forEach((element) {
               _gpsDeviceIdList.add(element.gPSDeviceID);
             });
@@ -781,7 +1009,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           _loading = false;
           _loadingMore = false;
         }
-        Logger().wtf(deviceIdResults.result!.first.gPSDeviceID);
+        Logger().wtf(deviceIdResults!.result!.first.gPSDeviceID);
         notifyListeners();
       }
     } on DioError catch (e) {
@@ -791,33 +1019,62 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   subscriptionAssetRegistration() async {
+    Logger().e(customerMobileNoController.text.isEmpty
+        ? null
+        : customerMobileNoController.text);
     try {
       AssetValues deviceAssetValues;
       deviceAssetValues = AssetValues(
-        CustomerLanguage: initialCustLanguge,
-        CustomerMobile: customerMobileNoController.text,
-        DealerMobile: dealerMobileNoController.text,
-        DealerLanguage: initialLanguge,
+        CustomerLanguage:
+            initialCustLanguge == languages[0] ? null : initialCustLanguge,
+        CustomerMobile: customerMobileNoController.text.isEmpty
+            ? null
+            : customerMobileNoController.text,
+        DealerMobile: dealerMobileNoController.text.isEmpty
+            ? null
+            : dealerMobileNoController.text,
+        DealerLanguage: initialLanguge == languages[0] ? null : initialLanguge,
         deviceId: deviceIdController.text,
         machineSlNo: machineSerialNumberController.text,
-        machineModel: machineModelController.text,
-        customerName: customerNameController.text,
-        customerCode: customerCodeController.text,
-        customerEmailID: customerEmailController.text,
-        dealerName: dealerNameController.text,
-        dealerCode: dealerCodeController.text,
-        dealerEmailID: dealerEmailController.text,
+        machineModel: machineModelController.text.isEmpty
+            ? null
+            : machineModelController.text,
+        customerName: customerNameController.text.isEmpty
+            ? null
+            : customerNameController.text,
+        customerCode: customerCodeController.text.isEmpty
+            ? null
+            : customerCodeController.text,
+        customerEmailID: customerEmailController.text.isEmpty
+            ? null
+            : customerEmailController.text,
+        dealerName: dealerNameController.text.isEmpty
+            ? null
+            : dealerNameController.text,
+        dealerCode: dealerCodeController.text.isEmpty
+            ? null
+            : dealerCodeController.text,
+        dealerEmailID: dealerEmailController.text.isEmpty
+            ? null
+            : dealerEmailController.text,
         commissioningDate: null,
-        primaryIndustry: initialIndustryDetail,
-        secondaryIndustry: null,
+        primaryIndustry: _initialIndustryDetail == _industryDetails[0]
+            ? null
+            : _initialIndustryDetail,
+        secondaryIndustry:
+            _initialSubIndustryDetailValue == industrySubDetails[0]
+                ? null
+                : _initialSubIndustryDetailValue,
       );
+      _totalAssetValues.clear();
       _totalAssetValues.add(deviceAssetValues);
       AddAssetRegistrationData data = AddAssetRegistrationData(
           source: "THC",
           version: "2.1",
           userID: 58839,
-          asset: _totalAssetValues);
-
+          transfer: _totalAssetValues);
+      Logger().i(data.transfer!.length);
+      Logger().i(data.transfer!.first.toJson());
       var result =
           await _subscriptionService!.postSingleAssetTransferRegistration(data);
       Logger().e(result);
@@ -826,5 +1083,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       final error = DioException.fromDioError(e);
       Fluttertoast.showToast(msg: error.message!);
     }
+  }
+
+  onPop() {
+    totalList[0].clear();
+    totalList[1].clear();
+    totalList[2].clear();
+    totalList[3].clear();
+    totalList.clear();
+    notifyListeners();
   }
 }

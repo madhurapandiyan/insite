@@ -64,7 +64,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   getUserId() async {
     userId = await _localService!.getUserId();
-    Logger().d(userId);
+    Logger().w(userId);
   }
 
   onBackPressed() {

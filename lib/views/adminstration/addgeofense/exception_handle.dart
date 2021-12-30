@@ -35,7 +35,7 @@ class DioException implements Exception {
     Logger().e(statusCode);
     switch (statusCode) {
       case 400:
-        return 'Bad request:${dioError.response!.data}';
+        return 'Bad request:${dioError.response!.data["message"]}';
       case 401:
         return "Unauthorized:${dioError.response!.data}";
       case 404:

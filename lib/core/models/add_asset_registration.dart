@@ -13,12 +13,15 @@ class AddAssetRegistrationData {
   List<AssetValues>? asset;
   @JsonKey(name: "status")
   String? status;
+List<AssetValues>? transfer;
 
   AddAssetRegistrationData({
     this.source,
     this.version,
     this.userID,
     this.asset,
+    this.transfer,
+    this.status
   });
 
   factory AddAssetRegistrationData.fromJson(Map<String, dynamic> json) =>

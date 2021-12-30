@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
@@ -18,9 +19,6 @@ import 'single_asset_transfer_view_model.dart';
 class SingleAssetTransferView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  var defaultCustomFieldValidator = MultiValidator([
-    RequiredValidator(errorText: "This Field is Required"),
-  ]);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SingleAssetTransferViewModel>.reactive(
@@ -125,8 +123,6 @@ class SingleAssetTransferView extends StatelessWidget {
                                               viewModel.serialNoList.isNotEmpty
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
-                                                      validator:
-                                                          defaultCustomFieldValidator ,
                                                       controller: viewModel
                                                           .deviceIdController,
                                                       onSelect: (value) {
@@ -143,17 +139,17 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             value);
                                                       },
                                                     ),
-                                              viewModel.gpsDeviceIdList.isNotEmpty
+                                              viewModel.gpsDeviceIdList
+                                                      .isNotEmpty
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
-                                                      validator:
-                                                          defaultCustomFieldValidator ,
                                                       isAlign: false,
-                                                     controller: viewModel
+                                                      controller: viewModel
                                                           .machineSerialNumberController,
                                                       onSelect: (value) {
                                                         viewModel
-                                                            .onSelectedSerialNo(value!);
+                                                            .onSelectedSerialNo(
+                                                                value!);
                                                       },
                                                       items: viewModel
                                                           .serialNoList,
@@ -199,9 +195,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .machineModelController,
-                                                    //  isenabled: false,
-                                                        validator:
-                                                            defaultCustomFieldValidator ,
+                                                        isenabled: false,
                                                       )),
                                                 ],
                                               ),
@@ -223,7 +217,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
+                                                      // height: 35,
                                                       width: 130,
                                                       decoration: BoxDecoration(
                                                           border: Border.all(
@@ -320,7 +314,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       },
                                                       items: viewModel.dealerId,
                                                       textBoxTitle:
-                                                          'Device Name:',
+                                                          'Dealer Name:',
                                                       onChange: (value) {
                                                         viewModel
                                                             .onDealerNameChanges(
@@ -387,8 +381,6 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .dealerEmailController,
-                                                        validator:
-                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -414,8 +406,6 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .dealerMobileNoController,
-                                                        validator:
-                                                            defaultCustomFieldValidator ,
                                                       )),
                                                 ],
                                               ),
@@ -512,6 +502,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                               viewModel.customerCode.isNotEmpty
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
+                                                      isEnable: viewModel
+                                                              .allowTransferAsset
+                                                          ? false
+                                                          : true,
                                                       controller: viewModel
                                                           .customerNameController,
                                                       onSelect: (value) {
@@ -534,6 +528,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                               viewModel.customerId.isNotEmpty
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(
+                                                      isEnable: viewModel
+                                                              .allowTransferAsset
+                                                          ? false
+                                                          : true,
                                                       keyboardType:
                                                           TextInputType.number,
                                                       isAlign: false,
@@ -592,9 +590,9 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .customerEmailController,
                                                         isenabled: viewModel
-                                                            .enableCustomerDetails,
-                                                        validator:
-                                                            defaultCustomFieldValidator ,
+                                                                .allowTransferAsset
+                                                            ? false
+                                                            : true,
                                                       )),
                                                 ],
                                               ),
@@ -622,9 +620,9 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         controller: viewModel
                                                             .customerMobileNoController,
                                                         isenabled: viewModel
-                                                            .enableCustomerDetails,
-                                                        validator:
-                                                            defaultCustomFieldValidator ,
+                                                                .allowTransferAsset
+                                                            ? false
+                                                            : true,
                                                       )),
                                                 ],
                                               ),
@@ -668,8 +666,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   value: viewModel
                                                       .initialCustLanguge,
                                                   items: viewModel.languages,
-                                                  isEnabled: viewModel
-                                                      .enableCustomerDetails,
+                                                  istappable: viewModel
+                                                          .allowTransferAsset
+                                                      ? false
+                                                      : true,
                                                   onChanged: (value) {
                                                     viewModel
                                                         .updateCustomerLanguage(
@@ -722,7 +722,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                           ),
                                           Container(
                                             width: double.infinity,
-                                            height: 35,
+                                            //height: 35,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                   color: Theme.of(context)
@@ -733,11 +733,16 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: CustomDropDownWidget(
+                                              istappable:
+                                                  viewModel.allowTransferAsset
+                                                      ? false
+                                                      : true,
                                               value: viewModel
                                                   .initialIndustryDetail,
                                               items: viewModel.industryDetails,
                                               onChanged: (value) {
-                                                viewModel.updateIndustry(value!);
+                                                viewModel
+                                                    .updateIndustry(value!);
                                               },
                                             ),
                                           ),
@@ -762,13 +767,19 @@ class SingleAssetTransferView extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10)),
                                                   child: CustomDropDownWidget(
-                                                    enableHint: false,
-                                                    value:
-                                                        'Select Secondary Details',
-                                                    items: [
-                                                      "Select Secondary Details"
-                                                    ],
-                                                    onChanged: (value) {},
+                                                    istappable: viewModel
+                                                            .allowTransferAsset
+                                                        ? false
+                                                        : true,
+                                                    value: viewModel
+                                                        .initialSubIndustryDetailValue,
+                                                    items: viewModel
+                                                        .industrySubDetails,
+                                                    onChanged: (value) {
+                                                      viewModel
+                                                          .onSelectingSubIndustry(
+                                                              value!);
+                                                    },
                                                   ),
                                                 )
                                               : SizedBox(),
@@ -777,54 +788,93 @@ class SingleAssetTransferView extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          viewModel.getTotalDataDetails();
-
-                                          await showGeneralDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            transitionDuration:
-                                                Duration(milliseconds: 500),
-                                            transitionBuilder: (context,
-                                                animation,
-                                                secondaryAnimation,
-                                                child) {
-                                              return FadeTransition(
-                                                opacity: animation,
-                                                child: ScaleTransition(
-                                                  scale: animation,
-                                                  child: child,
-                                                ),
-                                              );
-                                            },
-                                            pageBuilder: (context, animation,
-                                                secondaryAnimation) {
-                                              return InsitePopUp(
-                                                pageTitle: "Preview",
-                                                titles:
-                                                    viewModel.popUpCardTitles,
-                                                data: viewModel.totalList,
-                                                onButtonTapped: () async {
-                                                  final result = await viewModel
-                                                      .subscriptionAssetRegistration();
-                                                  if (result != null) {
-                                                    Utils.showToast(Utils
-                                                        .suceessRegistration);
-                                                  }
-                                                },
-                                              );
-                                            },
-                                          );
+                                        if (viewModel.machineModelController
+                                            .text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Machine model must not be null");
+                                          return;
                                         }
-                                      },
-                                      child: GestureDetector(
-                                        onTap:  () async {
-                                        if (_formKey.currentState!.validate()) {
+                                        if (viewModel.dealerMobileNoController
+                                            .text.isNotEmpty) {
+                                          if (viewModel.dealerMobileNoController
+                                                      .text.length >
+                                                  10 ||
+                                              viewModel.dealerMobileNoController
+                                                      .text.length <
+                                                  10) {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Please check the Mobile number!!!");
+                                            return;
+                                          }
+                                        }
+                                        if (viewModel.customerMobileNoController
+                                            .text.isNotEmpty) {
+                                          if (viewModel
+                                                      .customerMobileNoController
+                                                      .text
+                                                      .length >
+                                                  10 ||
+                                              viewModel
+                                                      .customerMobileNoController
+                                                      .text
+                                                      .length <
+                                                  10) {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Please check the Mobile number!!!");
+                                            return;
+                                          }
+                                        }
+                                        if (viewModel
+                                            .deviceIdController.text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel
+                                            .machineSerialNumberController
+                                            .text
+                                            .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel
+                                                .customerNameController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.dealerNameController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel
+                                                .customerCodeController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.dealerCodeController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel
+                                                .customerEmailController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.dealerEmailController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else {
                                           viewModel.getTotalDataDetails();
-
                                           Logger().wtf(
                                               ' datalength: ${viewModel.totalList}');
-
                                           await showGeneralDialog(
                                             context: context,
                                             barrierDismissible: false,
@@ -842,9 +892,12 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 ),
                                               );
                                             },
-                                            pageBuilder: (context, animation,
+                                            pageBuilder: (context1, animation,
                                                 secondaryAnimation) {
                                               return InsitePopUp(
+                                                onPop: () {
+                                                  viewModel.onPop();
+                                                },
                                                 pageTitle: "Preview",
                                                 titles:
                                                     viewModel.popUpCardTitles,
@@ -862,11 +915,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                           );
                                         }
                                       },
-                                        child: InsiteButton(
-                                          title: 'PREVIEW',
-                                          textColor: white,
-                                          margin: EdgeInsets.all(20),
-                                        ),
+                                      child: InsiteButton(
+                                        title: 'PREVIEW',
+                                        textColor: white,
+                                        margin: EdgeInsets.all(20),
                                       ),
                                     ),
                                     SizedBox(

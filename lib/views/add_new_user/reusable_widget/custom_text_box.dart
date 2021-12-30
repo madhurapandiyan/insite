@@ -16,7 +16,7 @@ class CustomTextBox extends StatelessWidget {
   final TextInputType? keyPadType;
   final bool showLoading;
   final List<TextInputFormatter>? textInputFormat;
-  bool isenabled;
+  bool? isenabled;
 
   CustomTextBox({
     this.title,

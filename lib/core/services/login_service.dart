@@ -23,6 +23,7 @@ class LoginService extends BaseService {
   Future<UserInfo?> getLoggedInUserInfo() async {
     try {
       String? token = await _localService!.getToken();
+      Logger().w(token);
 
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
@@ -55,7 +56,8 @@ class LoginService extends BaseService {
   }
 
   Future<AuthenticatedUser?> getAuthenticateUserId() async {
-    AuthenticatedUser? userAuthenticateStatus;
+    try {
+          AuthenticatedUser? userAuthenticateStatus;
     AuthenticatePayload data =
         AuthenticatePayload(uuid: userInfo!.sub, email: userInfo!.email);
     Logger().d(data.toJson());
@@ -68,13 +70,17 @@ class LoginService extends BaseService {
           .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
     }
     return userAuthenticateStatus;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
   }
 
   getUser(token, shouldRemovePreviousRoutes) async {
     _localService!.setIsloggedIn(true);
     _localService!.saveToken(token);
     try {
-      //  await getAuthenticateUserId();
+       // await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
 
       Future.delayed(Duration(seconds: 1), () {
