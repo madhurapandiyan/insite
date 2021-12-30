@@ -41,13 +41,11 @@ class FilterViewModel extends InsiteViewModel {
 
   getFilterData() async {
     AssetCount? resultModel = await _assetService!.getAssetCount(
-        "model", FilterType.MODEL, _graphqlSchemaService!.assetCount);
+        "model", FilterType.MODEL, _graphqlSchemaService!.allAssets);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
     AssetCount? resultDeviceType = await _assetService!.getAssetCount(
-        "deviceType",
-        FilterType.DEVICE_TYPE,
-        _graphqlSchemaService!.assetCount);
+        "deviceType", FilterType.DEVICE_TYPE, _graphqlSchemaService!.allAssets);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -56,24 +54,24 @@ class FilterViewModel extends InsiteViewModel {
     //     FilterType.SUBSCRIPTION_DATE);
 
     AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-        "manufacturer", FilterType.MAKE, _graphqlSchemaService!.assetCount);
+        "manufacturer", FilterType.MAKE, _graphqlSchemaService!.allAssets);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
         FilterType.PRODUCT_FAMILY,
-        _graphqlSchemaService!.assetCount);
+        _graphqlSchemaService!.allAssets);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
     AssetCount? resultAllAssets = await _assetService!.getAssetCount(
         "assetstatus",
         FilterType.ALL_ASSETS,
-        _graphqlSchemaService!.assetCount);
+        _graphqlSchemaService!.assetStatusCount);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    AssetCount? resultFuelLevel = await _assetService!
-        .getFuellevel(FilterType.FUEL_LEVEL, _graphqlSchemaService!.assetCount);
+    AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
+        FilterType.FUEL_LEVEL, _graphqlSchemaService!.fuelLevelCount);
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
@@ -89,11 +87,11 @@ class FilterViewModel extends InsiteViewModel {
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     AssetCount? resultJobType = await _assetService!.getAssetCount(
-        "JobType", FilterType.JOBTYPE, _graphqlSchemaService!.assetCount);
+        "JobType", FilterType.JOBTYPE, _graphqlSchemaService!.allAssets);
     addUserData(filterDataJobType, resultJobType!, FilterType.JOBTYPE);
 
     AssetCount? resultUserType = await _assetService!.getAssetCount(
-        "UserType", FilterType.USERTYPE, _graphqlSchemaService!.assetCount);
+        "UserType", FilterType.USERTYPE, _graphqlSchemaService!.allAssets);
     addUserData(filterDataUserType, resultUserType!, FilterType.USERTYPE);
 
     selectedFilterData = appliedFilters;

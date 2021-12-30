@@ -36,92 +36,83 @@ class FleetService extends BaseService {
     query,
     List<FilterData?>? appliedFilters,
   ) async {
-    var data = await Network().getGraphqlData(
-        query,
-        customerSelected!.CustomerUID,
-        (await _localService!.getLoggedInUser())!.sub);
-    Logger().wtf('dddddddddddddddddddddddd${data.toJson}');
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query,
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
-    FleetSummaryResponse fleetSummaryResponse =
-        FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
-    return fleetSummaryResponse;
-    // try {
-    //   if (enableGraphQl) {
-    //     var data = await Network().getGraphqlData(
-    //         query,
-    //         customerSelected!.CustomerUID,
-    //         (await _localService!.getLoggedInUser())!.sub);
-    //     Logger().wtf('dddddddddddddddddddddddd${data.data!.toJson}');
-
-    //     FleetSummaryResponse fleetSummaryResponse =
-    //         FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
-    //     return fleetSummaryResponse;
-    //   } else {
-    //     if (isVisionLink) {
-    //       FleetSummaryResponse fleetSummaryResponse =
-    //           accountSelected != null && customerSelected != null
-    //               ? await MyApi().getClient()!.fleetSummaryURLVL(
-    //                   Urls.fleetSummaryVL +
-    //                       FilterUtils.getFilterURL(
-    //                           startDate,
-    //                           endDate,
-    //                           pageNumber,
-    //                           pageSize,
-    //                           customerSelected!.CustomerUID,
-    //                           "assetid",
-    //                           appliedFilters!,
-    //                           ScreenType.FLEET),
-    //                   accountSelected!.CustomerUID)
-    //               : await MyApi().getClient()!.fleetSummaryURLVL(
-    //                     Urls.fleetSummaryVL +
-    //                         FilterUtils.getFilterURL(
-    //                             startDate,
-    //                             endDate,
-    //                             pageNumber,
-    //                             pageSize,
-    //                             null,
-    //                             "assetid",
-    //                             appliedFilters!,
-    //                             ScreenType.FLEET),
-    //                     accountSelected!.CustomerUID,
-    //                   );
-    //       return fleetSummaryResponse;
-    //     } else {
-    //       FleetSummaryResponse fleetSummaryResponse =
-    //           accountSelected != null && customerSelected != null
-    //               ? await MyApi().getClient()!.fleetSummaryURL(
-    //                   Urls.fleetSummary +
-    //                       FilterUtils.getFilterURL(
-    //                           startDate,
-    //                           endDate,
-    //                           pageNumber,
-    //                           pageSize,
-    //                           customerSelected!.CustomerUID,
-    //                           "assetid",
-    //                           appliedFilters!,
-    //                           ScreenType.FLEET),
-    //                   accountSelected!.CustomerUID,
-    //                   "in-vfleet-uf-webapi")
-    //               : await MyApi().getClient()!.fleetSummaryURL(
-    //                   Urls.fleetSummary +
-    //                       FilterUtils.getFilterURL(
-    //                           startDate,
-    //                           endDate,
-    //                           pageNumber,
-    //                           pageSize,
-    //                           null,
-    //                           "assetid",
-    //                           appliedFilters!,
-    //                           ScreenType.FLEET),
-    //                   accountSelected!.CustomerUID,
-    //                   "in-vfleet-uf-webapi");
-    //       return fleetSummaryResponse;
-    //     }
-    //   }
-    // } catch (e) {
-    //   Logger().e(e);
-    //   return null;
-    // }
+        FleetSummaryResponse fleetSummaryResponse =
+            FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
+        return fleetSummaryResponse;
+      } else {
+        if (isVisionLink) {
+          FleetSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.fleetSummaryURLVL(
+                      Urls.fleetSummaryVL +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              "assetid",
+                              appliedFilters!,
+                              ScreenType.FLEET),
+                      accountSelected!.CustomerUID)
+                  : await MyApi().getClient()!.fleetSummaryURLVL(
+                        Urls.fleetSummaryVL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNumber,
+                                pageSize,
+                                null,
+                                "assetid",
+                                appliedFilters!,
+                                ScreenType.FLEET),
+                        accountSelected!.CustomerUID,
+                      );
+          return fleetSummaryResponse;
+        } else {
+          FleetSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.fleetSummaryURL(
+                      Urls.fleetSummary +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              "assetid",
+                              appliedFilters!,
+                              ScreenType.FLEET),
+                      accountSelected!.CustomerUID,
+                      "in-vfleet-uf-webapi")
+                  : await MyApi().getClient()!.fleetSummaryURL(
+                      Urls.fleetSummary +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              null,
+                              "assetid",
+                              appliedFilters!,
+                              ScreenType.FLEET),
+                      accountSelected!.CustomerUID,
+                      "in-vfleet-uf-webapi");
+          Logger().wtf(fleetSummaryResponse);
+          return fleetSummaryResponse;
+        }
+      }
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
   }
 
   //sample url

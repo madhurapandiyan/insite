@@ -46,7 +46,7 @@ class FaultService extends BaseService {
       if (enableGraphQl == false) {
         var data = await Network().getGraphqlData(
           query,
-          customerSelected!.CustomerUID,
+         accountSelected?.CustomerUID,
           (await _localService!.getLoggedInUser())!.sub
         );
 
@@ -137,8 +137,8 @@ class FaultService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query,
-          customerSelected!.CustomerUID,
-          accountSelected!.CustomerUID,
+          accountSelected?.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub
         );
 
         AssetFaultSummaryResponse assetFaultSummaryResponse =
@@ -232,8 +232,9 @@ class FaultService extends BaseService {
       if (enableGraphQl == false) {
         var data = await Network().getGraphqlData(
           query,
-          customerSelected!.CustomerUID,
+         
           accountSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub
         );
 
         FaultSummaryResponse faultSummaryResponse =

@@ -12,7 +12,11 @@ class Network {
       "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
   final LocalService? _localService = locator<LocalService>();
 
-  getGraphqlData(String? query, String? customerId, String? userId) async {
+  getGraphqlData(
+    String? query,
+    String? customerId,
+    String? userId,
+  ) async {
     final client = dio.Dio();
 
     final Link link = DioLink(graphqlEndpoint, client: client, defaultHeaders: {

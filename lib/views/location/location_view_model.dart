@@ -17,6 +17,7 @@ import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/widgets/dumb_widgets/location_info_window_widget.dart';
 import 'package:logger/logger.dart';
@@ -280,7 +281,9 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        _graphqlSchemaService!.getFleetLocationData);
+        _graphqlSchemaService!.getFleetLocationData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
@@ -354,7 +357,9 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        _graphqlSchemaService!.getFleetLocationData);
+        _graphqlSchemaService!.getFleetLocationData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -112,7 +113,9 @@ class AssetOperationViewModel extends InsiteViewModel {
             pageNumber,
             _menuItem,
             appliedFilters,
-            _graphqlSchemaService!.assetOperationData)
+            _graphqlSchemaService!.getAssetOperationData(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)))
         as FutureOr<AssetSummaryResponse>);
     if (result != null) {
       _assets.clear();
@@ -140,7 +143,9 @@ class AssetOperationViewModel extends InsiteViewModel {
         pageNumber,
         _menuItem,
         appliedFilters,
-        _graphqlSchemaService!.assetOperationData);
+        _graphqlSchemaService!.getAssetOperationData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       if (result.pagination!.totalAssets != null) {
         _totalCount = result.pagination!.totalAssets!.toInt();

@@ -68,7 +68,9 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        _graphqlSchemaService!.faultQueryString);
+        _graphqlSchemaService!.getfaultQueryString(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
 
     if (result != null) {
       _totalCount = result.total;
@@ -112,7 +114,9 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        _graphqlSchemaService!.faultQueryString);
+        _graphqlSchemaService!.getfaultQueryString(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

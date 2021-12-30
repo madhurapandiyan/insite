@@ -26,7 +26,7 @@ class AssetUtilizationService extends BaseService {
 
   setUp() async {
     try {
-    //  _localService!.saveAccountInfoData();
+      //  _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getAccountInfo();
@@ -128,7 +128,7 @@ class AssetUtilizationService extends BaseService {
       if (enableGraphQl == false) {
         var data = await Network().getGraphqlData(
             query,
-            customerSelected!.CustomerUID,
+            accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
 
         Utilization assetCountFromGraphql =
@@ -266,7 +266,7 @@ class AssetUtilizationService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query,
-            customerSelected!.CustomerUID,
+            accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
 
         UtilizationSummary utilizationSummary = UtilizationSummary.fromJson(

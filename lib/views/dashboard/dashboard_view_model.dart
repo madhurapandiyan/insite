@@ -148,7 +148,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   getAssetStatusData() async {
     AssetCount? result = await _assetService!.getAssetCount("assetstatus",
-        FilterType.ALL_ASSETS, _graphqlSchemaService!.assetCount);
+        FilterType.ALL_ASSETS, _graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
@@ -197,7 +197,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   getAssetCount() async {
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetCount);
+        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.allAssets);
 
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
@@ -210,8 +210,8 @@ class DashboardViewModel extends InsiteViewModel {
   getFuelLevelData() async {
     Logger().i("get fuel level data");
     int totalAssetCount = 0;
-    AssetCount? result = await _assetService!
-        .getFuellevel(FilterType.FUEL_LEVEL, _graphqlSchemaService!.assetCount);
+    AssetCount? result = await _assetService!.getFuellevel(
+        FilterType.FUEL_LEVEL, _graphqlSchemaService!.fuelLevelCount);
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -240,7 +240,7 @@ class DashboardViewModel extends InsiteViewModel {
           getStartRange(),
           currentFilterSelected!.title,
           endDayRange,
-          _graphqlSchemaService!.assetCount);
+          _graphqlSchemaService!.assetStatusCount);
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -267,7 +267,9 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? count = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        _graphqlSchemaService!.getFaultCountData);
+        _graphqlSchemaService!.getFaultCountData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (count != null) {
       _faultCountData = count;
     }
@@ -360,7 +362,7 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
         FilterType.PRODUCT_FAMILY,
-        _graphqlSchemaService!.assetCount);
+        _graphqlSchemaService!.assetStatusCount);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
   }
@@ -450,7 +452,7 @@ class DashboardViewModel extends InsiteViewModel {
         getStartRange(),
         dropDownValue,
         endDate,
-        _graphqlSchemaService!.assetCount);
+        _graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       _idlingLevelData = result;
     }

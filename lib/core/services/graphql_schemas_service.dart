@@ -3,17 +3,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:intl/intl.dart';
 
 class GraphqlSchemaService extends BaseService {
-  static String? _startDate = DateFormat('yyyy-MM-dd').format(
-      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
-
-  static String startDate =
-      Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(_startDate);
-
-  static String? _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-  static String endDate = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(_endDate);
-
-  final String assetCount = """
+  final String allAssets = """
 query faultDataSummary{
  getDashboardAsset{
   countData{  
@@ -26,7 +16,33 @@ query faultDataSummary{
 
   """;
 
-  final String faultQueryString = """
+  final String assetStatusCount = """
+query faultDataSummary{
+ getDashboardAsset(grouping: "assetstatus"){
+  countData{  
+    count
+    countOf
+  }
+}
+  
+}
+
+  """;
+
+  final String fuelLevelCount = """
+query faultDataSummary{
+ getDashboardAsset(grouping: "fuellevel", thresholds: "25-50-75-100"){
+  countData{  
+    count
+    countOf
+  }
+}
+  
+}
+
+  """;
+  String getfaultQueryString(String startDate, String endDate) {
+    final String faultQueryString = """
   query faultDataSummary{
   faultdata(page: 1, limit: 100, startDateTime: $startDate, endDateTime: $endDate){
     
@@ -50,8 +66,11 @@ query faultDataSummary{
   }
 }
   """;
+    return faultQueryString;
+  }
 
-  final String assetFaultQuery = """
+  String getAssetFaultQuery(String startDate, String endDate) {
+    final String assetFaultQuery = """
   query assetDataSummary{
   assetData(page: 1, limit: 100, startDateTime:$startDate, endDateTime: $endDate){
     pageLinks {
@@ -99,6 +118,8 @@ query faultDataSummary{
 }
 
   """;
+    return assetFaultQuery;
+  }
 
   final String fleetSummary = """query fleetSummary{
   fleetSummary{
@@ -210,7 +231,8 @@ query faultDataSummary{
 }
   """;
 
-  final String assetOperationData = """
+  String getAssetOperationData(String startDate, String endDate) {
+    final String assetOperationData = """
  query asetOperations{
   assetOperationsDailyTotals(sort: "-assetid", startDate: $startDate, endDate: $endDate, pageSize: 50, pageNumber: 1){
     assetOperations{
@@ -252,7 +274,11 @@ query faultDataSummary{
   }
 }
 """;
-  final String getFaultCountData = """
+    return assetOperationData;
+  }
+
+  String getFaultCountData(String startDate, String endDate) {
+    final String faultCountData = """
   query getFaultCountData{
 faultCountData(startDateTime:$startDate, endDateTime: $endDate){
   countData {
@@ -263,8 +289,11 @@ faultCountData(startDateTime:$startDate, endDateTime: $endDate){
 }
 }
   """;
+    return faultCountData;
+  }
 
-  final String getFleetUtilization = """
+  String getFleetUtilization(String startDate, String endDate) {
+    final String fleetUtilization = """
   query getFleetUtilization{
 	getfleetUtilization(pageSize:1,pageNumber:100, startDate: $startDate, endDate: $endDate){
     assetResults {
@@ -345,7 +374,11 @@ faultCountData(startDateTime:$startDate, endDateTime: $endDate){
 }
   """;
 
-  final String getFleetLocationData = """
+    return fleetUtilization;
+  }
+
+  String getFleetLocationData(String startDate, String endDate) {
+    final String fleetLocationData = """
   query fleetLocationDetails{
   fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: $startDate){
     pagination {
@@ -393,4 +426,6 @@ faultCountData(startDateTime:$startDate, endDateTime: $endDate){
   
 }
   """;
+    return fleetLocationData;
+  }
 }

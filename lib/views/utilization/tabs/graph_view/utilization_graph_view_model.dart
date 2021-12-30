@@ -31,7 +31,7 @@ class UtilizationGraphViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("getAssetCount");
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetCount);
+        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();

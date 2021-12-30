@@ -66,7 +66,9 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            _graphqlSchemaService!.assetFaultQuery);
+            _graphqlSchemaService!.getAssetFaultQuery(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
@@ -110,7 +112,9 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            _graphqlSchemaService!.assetFaultQuery);
+            _graphqlSchemaService!.getAssetFaultQuery(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

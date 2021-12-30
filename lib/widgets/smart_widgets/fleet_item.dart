@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
@@ -146,7 +147,7 @@ class FleetListItem extends StatelessWidget {
                         InsiteTableRowItem(
                           title: "Hr Meter",
                           content: fleet!.hourMeter != null
-                              ? fleet!.hourMeter! + " hrs"
+                              ? fleet!.hourMeter!.toString() + " hrs"
                               : "-",
                         ),
                         InsiteTableRowItem(

@@ -10,6 +10,7 @@ import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -80,7 +81,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   getAssetCount() async {
     Logger().d("getAssetCount");
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetCount);
+        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -115,7 +116,9 @@ class UtilizationListViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization);
+        _graphqlSchemaService!.getFleetUtilization(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);
@@ -155,7 +158,9 @@ class UtilizationListViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization);
+        _graphqlSchemaService!.getFleetUtilization(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _utilLizationListData.clear();
       _utilLizationListData.addAll(result.assetResults!);
