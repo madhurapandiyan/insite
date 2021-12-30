@@ -23,7 +23,6 @@ class UtilizationListViewModel extends InsiteViewModel {
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
   AssetStatusService? _assetService = locator<AssetStatusService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -81,7 +80,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   getAssetCount() async {
     Logger().d("getAssetCount");
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetStatusCount);
+        null, FilterType.ASSET_STATUS, graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -116,7 +115,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization(
+        graphqlSchemaService!.getFleetUtilization(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
@@ -158,7 +157,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization(
+        graphqlSchemaService!.getFleetUtilization(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
@@ -182,7 +181,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.UTILIZATION,
         appliedFilters,
-        _graphqlSchemaService!.utilizationTotalCount);
+        graphqlSchemaService!.utilizationTotalCount);
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

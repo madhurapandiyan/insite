@@ -16,7 +16,6 @@ class FaultViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -68,7 +67,7 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        _graphqlSchemaService!.getfaultQueryString(
+        graphqlSchemaService!.getfaultQueryString(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
 
@@ -114,7 +113,7 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        _graphqlSchemaService!.getfaultQueryString(
+        graphqlSchemaService!.getfaultQueryString(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {

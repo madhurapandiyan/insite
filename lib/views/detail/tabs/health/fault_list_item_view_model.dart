@@ -9,7 +9,6 @@ import 'package:logger/logger.dart';
 
 class FaultListItemViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   Fault? _fault;
   Fault? get fault => _fault;
@@ -65,7 +64,7 @@ class FaultListItemViewModel extends InsiteViewModel {
             pageNumber,
             appliedFilters,
             fault!.asset["uid"],
-            _graphqlSchemaService!.getfaultQueryString(
+            graphqlSchemaService!.getfaultQueryString(
                 Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.faults != null) {

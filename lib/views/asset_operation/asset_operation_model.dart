@@ -24,7 +24,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
   AssetStatusService? _assetStatusService = locator<AssetStatusService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
+
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
 
@@ -113,7 +113,7 @@ class AssetOperationViewModel extends InsiteViewModel {
             pageNumber,
             _menuItem,
             appliedFilters,
-            _graphqlSchemaService!.getAssetOperationData(
+            graphqlSchemaService!.getAssetOperationData(
                 Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)))
         as FutureOr<AssetSummaryResponse>);
@@ -143,7 +143,7 @@ class AssetOperationViewModel extends InsiteViewModel {
         pageNumber,
         _menuItem,
         appliedFilters,
-        _graphqlSchemaService!.getAssetOperationData(
+        graphqlSchemaService!.getAssetOperationData(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
@@ -202,7 +202,7 @@ class AssetOperationViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.ASSET_OPERATION,
         appliedFilters,
-        _graphqlSchemaService!.utilizationTotalCount);
+        graphqlSchemaService!.utilizationTotalCount);
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

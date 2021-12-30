@@ -12,7 +12,6 @@ import 'package:stacked_services/stacked_services.dart';
 class FleetViewModel extends InsiteViewModel {
   FleetService? _fleetService = locator<FleetService>();
   NavigationService? _navigationService = locator<NavigationService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 50;
@@ -60,7 +59,7 @@ class FleetViewModel extends InsiteViewModel {
         endDate,
         pageSize,
         pageNumber,
-        _graphqlSchemaService!.fleetSummary,
+        graphqlSchemaService!.fleetSummary,
         appliedFilters);
     if (result != null) {
       if (result.pagination!.totalCount != null) {
@@ -124,7 +123,7 @@ class FleetViewModel extends InsiteViewModel {
         endDate,
         pageSize,
         pageNumber,
-        _graphqlSchemaService!.fleetSummary,
+        graphqlSchemaService!.fleetSummary,
         appliedFilters);
     if (result != null &&
         result.fleetRecords != null &&

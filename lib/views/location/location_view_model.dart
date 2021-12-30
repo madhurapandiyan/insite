@@ -31,7 +31,7 @@ class LocationViewModel extends InsiteViewModel {
   Logger? log;
   var _assetLocationService = locator<AssetLocationService>();
   var _navigationService = locator<service.NavigationService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
+
   Set<Marker> markers = Set();
   List<LatLng> latlngs = [];
   List<InsiteMarker> clusterMarkers = [];
@@ -281,7 +281,7 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        _graphqlSchemaService!.getFleetLocationData(
+        graphqlSchemaService!.getFleetLocationData(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
@@ -357,7 +357,7 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        _graphqlSchemaService!.getFleetLocationData(
+        graphqlSchemaService!.getFleetLocationData(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {

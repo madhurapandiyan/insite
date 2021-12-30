@@ -6,6 +6,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -40,6 +41,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   FilterService? _filterService = locator<FilterService>();
   DateRangeService? _dateRangeService = locator<DateRangeService>();
   SnackbarService? snackbarService = locator<SnackbarService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;

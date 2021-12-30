@@ -11,7 +11,6 @@ class DistanceTravelledViewModel extends InsiteViewModel {
   Logger? log;
   AssetUtilizationService? _utilizationService =
       locator<AssetUtilizationService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   List<AssetResult> _utilLizationListData = [];
   List<AssetResult> get utilLizationListData => _utilLizationListData;
@@ -74,7 +73,7 @@ class DistanceTravelledViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization);
+        graphqlSchemaService!.getFleetUtilization);
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);
@@ -112,7 +111,7 @@ class DistanceTravelledViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        _graphqlSchemaService!.getFleetUtilization);
+        graphqlSchemaService!.getFleetUtilization);
     if (result != null &&
         result.assetResults != null &&
         result.assetResults!.isNotEmpty) {

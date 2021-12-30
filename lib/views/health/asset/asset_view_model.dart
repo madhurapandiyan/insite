@@ -16,7 +16,6 @@ class AssetViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -66,7 +65,7 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            _graphqlSchemaService!.getAssetFaultQuery(
+            graphqlSchemaService!.getAssetFaultQuery(
                 Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.assetFaults != null) {
@@ -112,7 +111,7 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            _graphqlSchemaService!.getAssetFaultQuery(
+            graphqlSchemaService!.getAssetFaultQuery(
                 Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {

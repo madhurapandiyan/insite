@@ -19,7 +19,6 @@ class UtilizationGraphViewModel extends InsiteViewModel {
     });
   }
   AssetStatusService? _assetService = locator<AssetStatusService>();
-  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int _totalCount = 0;
   int get totalCount => _totalCount;
@@ -31,7 +30,7 @@ class UtilizationGraphViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("getAssetCount");
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, _graphqlSchemaService!.assetStatusCount);
+        null, FilterType.ASSET_STATUS, graphqlSchemaService!.assetStatusCount);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
