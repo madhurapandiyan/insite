@@ -30,7 +30,7 @@ void main() async {
       enableLogin: true,
       enalbeNativeLogin: false,
       isProd: false,
-      enableGraphql: true,
+      enableGraphql: false,
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();
   runApp(MyApp());
