@@ -141,6 +141,7 @@ class LocalService extends BaseService {
   }
 
   void clearAll() async {
+    await preferences!.remove("codeVerifierInfo");
     await preferences!.remove(CUSTOMER_INFO);
     await preferences!.remove(TOKEN_INFO);
     await preferences!.remove(ACCOUNT_INFO);

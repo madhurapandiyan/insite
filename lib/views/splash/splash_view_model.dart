@@ -45,7 +45,9 @@ class SplashViewModel extends InsiteViewModel {
         }
         getLoggedInUserDetails(methodCall.arguments);
         return "This data from flutter.....";
-
+      case "logout_completed": //when login/logout happens on chrome app only.
+        await _nativeService?.login();
+        return "This data from flutter  after logout";
       default:
         return "Nothing";
     }
@@ -105,7 +107,7 @@ class SplashViewModel extends InsiteViewModel {
           _localService!.setHasPermission(false);
           _localService!.clearAll();
           if (AppConfig.instance!.enalbeNativeLogin) {
-            // await _nativeService.login();
+            await _nativeService?.login();
           } else {
             shouldLoadWebview = true;
             Future.delayed(Duration(seconds: 1), () {

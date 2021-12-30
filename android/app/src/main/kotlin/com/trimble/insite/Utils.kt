@@ -35,7 +35,7 @@ object Utils {
     }
 
     fun getIDToken(context: Context): String? {
-        Log.d("getIDToken","")
+        Log.d("getIDToken", "")
         try {
             val sharedPref: SharedPreferences =
                 context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)

@@ -74,34 +74,38 @@ class MainActivity : FlutterActivity() {
     //things needs to be changed accordingly here if you want to take build with or with out login
     override fun onResume() {
         super.onResume()
-            val uri = intent.data
-            Log.d("onResume %s", uri.toString())
-            if (uri != null) {
-                Log.d("uri", uri.toString())
-                val code = getCodeFromURI(uri)
-                if (code != null&&code.isNotEmpty()) {
-                    Log.d("invoking flutter method ", code)
-                    val codeChallenge = Utils.getCodeChallenge(Utils.getCodeVerifier())
-                    val previousCodeVerifier = Utils.getStoredCodeVerifier(context)
-                    val codeData = "$code,$codeChallenge,$previousCodeVerifier"
-                    nativeToFlutterMethodChannel.invokeMethod("code_received", codeData)
-            }
-        }
-    }
-
-         override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
         val uri = intent.data
-        Log.d("onNewIntent %s", uri.toString())
+        Log.d("onResume %s", uri.toString())
         if (uri != null) {
             Log.d("uri", uri.toString())
             val code = getCodeFromURI(uri)
-            if (code != null&&code.isNotEmpty()) {
+            if (code != null && code.isNotEmpty()) {
                 Log.d("invoking flutter method ", code)
                 val codeChallenge = Utils.getCodeChallenge(Utils.getCodeVerifier())
                 val previousCodeVerifier = Utils.getStoredCodeVerifier(context)
                 val codeData = "$code,$codeChallenge,$previousCodeVerifier"
                 nativeToFlutterMethodChannel.invokeMethod("code_received", codeData)
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val uri = intent.data
+        Log.d("onNewIntent %s", uri.toString())
+        if (uri != null) {
+            Log.d("uri", uri.toString())
+            if (uri.toString() == "insite://mobile") {
+                nativeToFlutterMethodChannel.invokeMethod("logout_completed", "")
+            } else {
+                val code = getCodeFromURI(uri)
+                if (code != null && code.isNotEmpty()) {
+                    Log.d("invoking flutter method ", code)
+                    val codeChallenge = Utils.getCodeChallenge(Utils.getCodeVerifier())
+                    val previousCodeVerifier = Utils.getStoredCodeVerifier(context)
+                    val codeData = "$code,$codeChallenge,$previousCodeVerifier"
+                    nativeToFlutterMethodChannel.invokeMethod("code_received", codeData)
+                }
             }
         }
     }
