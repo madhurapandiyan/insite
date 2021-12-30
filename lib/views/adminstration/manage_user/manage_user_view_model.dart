@@ -139,7 +139,9 @@ class ManageUserViewModel extends InsiteViewModel {
           notifyListeners();
         }
       } else {
-        _assets = [];
+        if (_isSearching) {
+          _assets = [];
+        }
         _loading = false;
         _loadingMore = false;
         _refreshing = false;

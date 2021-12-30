@@ -15,7 +15,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 import 'add_new_user_view_model.dart';
 import 'reusable_widget/custom_list_view.dart';
 
@@ -485,14 +485,12 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     try {
                                       if (widget.user != null) {
                                         Logger().i("editing user");
-                                        if (viewModel.emailController.text.isNotEmpty &&
-                                            viewModel.firstNameController.text.isNotEmpty &&
-                                            viewModel.lastNameController.text.isNotEmpty &&
-                                            viewModel.phoneNumberController.text.isNotEmpty &&
-                                            viewModel.addressController .text.isNotEmpty &&
-                                            viewModel.stateController.text.isNotEmpty &&
-                                            viewModel.countryController.text.isNotEmpty&&
-                                            viewModel.pinCodeController.text.isNotEmpty) {
+                                        if (viewModel.emailController.text
+                                                .isNotEmpty &&
+                                            viewModel.firstNameController.text
+                                                .isNotEmpty &&
+                                            viewModel.lastNameController.text
+                                                .isNotEmpty) {
                                           await viewModel.getEditUserData(
                                               viewModel
                                                   .firstNameController.text,
@@ -513,14 +511,12 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         }
                                       } else {
                                         Logger().i("adding user");
-                                        if (viewModel.emailController.text.isNotEmpty &&
-                                            viewModel.firstNameController.text.isNotEmpty &&
-                                            viewModel.lastNameController.text.isNotEmpty &&
-                                            viewModel.phoneNumberController.text.isNotEmpty &&
-                                            viewModel.addressController .text.isNotEmpty &&
-                                            viewModel.stateController.text.isNotEmpty &&
-                                            viewModel.countryController.text.isNotEmpty&&
-                                            viewModel.pinCodeController.text.isNotEmpty) {
+                                        if (viewModel.emailController.text
+                                                .isNotEmpty &&
+                                            viewModel.firstNameController.text
+                                                .isNotEmpty &&
+                                            viewModel.lastNameController.text
+                                                .isNotEmpty) {
                                           await viewModel.getAddUserData(
                                             viewModel.firstNameController.text,
                                             viewModel.lastNameController.text,

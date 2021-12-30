@@ -400,24 +400,30 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool validate() {
     if (emailController.text.isEmpty) {
-      snackbarService!.showSnackbar(message: "Email is empty");
+      snackbarService?.showSnackbar(message: "Email is empty");
       return false;
     }
 
     if (firstNameController.text.isEmpty) {
-      snackbarService!.showSnackbar(message: "First name is empty");
+      snackbarService?.showSnackbar(message: "First name is empty");
       return false;
     }
 
     if (lastNameController.text.isEmpty) {
-      snackbarService!.showSnackbar(message: "Last name is empty");
+      snackbarService?.showSnackbar(message: "Last name is empty");
       return false;
     }
 
-    // if (phoneNumberController.text.isEmpty) {
-    //   snackbarService.showSnackbar(message: "Phone number is empty");
-    //   return false;
-    // }
+    if (phoneNumberController.text.isNotEmpty) {
+      if (validateMobile(phoneNumberController.text)) {
+        return true;
+      } else {
+        snackbarService?.showSnackbar(
+          message: "Please enter valid phone number",
+        );
+      }
+      return false;
+    }
 
     // if (addressController.text.isEmpty) {
     //   snackbarService.showSnackbar(message: "Address is empty");
@@ -455,10 +461,18 @@ class AddNewUserViewModel extends InsiteViewModel {
     // }
 
     if (languageTypeValue.isEmpty) {
-      snackbarService!.showSnackbar(message: "language not selected");
+      snackbarService?.showSnackbar(message: "language not selected");
       return false;
     }
     return true;
+  }
+
+  bool validateMobile(String value) {
+// Indian Mobile number are of 10 digit only
+    if (value.length == 10)
+      return true;
+    else
+      return false;
   }
 
   reset() {
