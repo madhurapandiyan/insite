@@ -15,7 +15,11 @@ AddAssetRegistrationData _$AddAssetRegistrationDataFromJson(
       asset: (json['asset'] as List<dynamic>?)
           ?.map((e) => AssetValues.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..status = json['status'] as String?;
+      transfer: (json['transfer'] as List<dynamic>?)
+          ?.map((e) => AssetValues.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      status: json['status'] as String?,
+    );
 
 Map<String, dynamic> _$AddAssetRegistrationDataToJson(
         AddAssetRegistrationData instance) =>
@@ -25,6 +29,7 @@ Map<String, dynamic> _$AddAssetRegistrationDataToJson(
       'UserID': instance.userID,
       'asset': instance.asset,
       'status': instance.status,
+      'transfer': instance.transfer,
     };
 
 AssetValues _$AssetValuesFromJson(Map<String, dynamic> json) => AssetValues(

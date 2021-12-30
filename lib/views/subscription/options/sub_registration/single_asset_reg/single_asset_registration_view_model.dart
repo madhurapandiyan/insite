@@ -36,14 +36,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   String? _assetModel = "Select Asset Model";
   String? get assetModel => _assetModel;
 
-  String _plantDetail = " ";
-  String get plantDetail => _plantDetail;
+  String? _plantDetail = "";
+  String? get plantDetail => _plantDetail;
 
-  String _plantCode = " ";
-  String get plantCode => _plantCode;
+  String? _plantCode;
+  String? get plantCode => _plantCode;
 
-  String _plantEmail = "sivaranjani_k@trimble.com";
-  String get plantEmail => _plantEmail;
+  String? _plantEmail;
+  String? get plantEmail => _plantEmail;
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
@@ -130,15 +130,15 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   List<HierarchyModel> detailResultList = [];
 
-  List<String> _plantDetails = [
+  List<String?> _plantDetails = [
     "Dharward",
     "Plant",
-    "TATA HITACHI KHARAGPUR FACTORY"
+    "TATA HITACHI KHARAGPUR FACTORY",
   ];
-  List<String> get plantDetails => _plantDetails;
+  List<String?> get plantDetails => _plantDetails;
 
-  List<String> _plantCodes = ["1005", "1006", "3065"];
-  List<String> get plantCodes => _plantCodes;
+  List<String?> _plantCodes = ["1005", "1006", "3065"];
+  List<String?> get plantCodes => _plantCodes;
 
   SingleAssetRegistrationViewModel(
       String? filterKey, PLANTSUBSCRIPTIONFILTERTYPE? type) {
@@ -158,7 +158,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  updateplantDEtail(String newValue) {
+  updateplantDEtail(String? newValue) {
     _plantDetail = newValue;
     if (_plantDetail == plantDetails[0]) {
       _plantCode = plantCodes[0];
@@ -268,12 +268,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       machineModel,
     );
     PreviewData hourMeterDate =
-        PreviewData(title: 'HRM', value: hourMeterDateController.text);
+        PreviewData(title: 'HMR', value: hourMeterController.text);
     _previewDeviceDetails.add(
       hourMeterDate,
     );
     PreviewData hourMeter =
-        PreviewData(title: 'HRM Data', value: hourMeterController.text);
+        PreviewData(title: 'HMR Date', value: hourMeterDateController.text);
     _previewDeviceDetails.add(
       hourMeter,
     );
@@ -282,19 +282,30 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   subscriptionAssetRegistration() async {
+    Logger().e(previewDeviceDetails[4].value!);
     AssetValues deviceAssetValues;
     deviceAssetValues = AssetValues(
       deviceId: previewDeviceDetails[0].value,
       machineSlNo: previewDeviceDetails[1].value,
       machineModel: previewDeviceDetails[2].value,
       hMRDate: previewDeviceDetails[3].value,
-      hMR: int.parse(previewDeviceDetails[4].value!),
-      plantName: generalPlantDetails[0].value,
+      hMR: previewDeviceDetails[4].value == ""
+          ? 0
+          : double.parse(previewDeviceDetails[4].value!).toInt(),
+      plantName: generalPlantDetails[0].value == ""
+          ? null
+          : generalPlantDetails[0].value,
       plantCode: generalPlantDetails[1].value,
       plantEmailID: generalPlantDetails[2].value,
-      customerName: generalCustomerDetails[0].value,
-      customerCode: generalCustomerDetails[1].value,
-      customerEmailID: generalCustomerDetails[2].value,
+      customerName: generalCustomerDetails[0].value!.isEmpty
+          ? null
+          : generalCustomerDetails[0].value,
+      customerCode: generalCustomerDetails[1].value!.isEmpty
+          ? null
+          : generalCustomerDetails[1].value,
+      customerEmailID: generalCustomerDetails[2].value!.isEmpty
+          ? null
+          : generalCustomerDetails[2].value,
       dealerName: generalDealerDetails[0].value,
       dealerCode: generalDealerDetails[1].value,
       dealerEmailID: generalDealerDetails[2].value,
@@ -303,9 +314,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       secondaryIndustry: null,
     );
     _totalAssetValues.add(deviceAssetValues);
+    Logger().i(_totalAssetValues.last.toJson);
 
-    var result = await _subscriptionService!
-        .postSingleAssetRegistration(data: _totalAssetValues);
+     var result = await _subscriptionService!
+         .postSingleAssetRegistration(data: _totalAssetValues);
 
     notifyListeners();
     return result;
@@ -330,8 +342,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             _detailResult.addAll(result.result![1]);
             _loading = false;
             _loadingMore = false;
+            gpsDeviceId.clear();
             result.result![1].forEach((element) {
-              gpsDeviceId.add(element.GPSDeviceID);
+              if (gpsDeviceId.any((id) => id == element.GPSDeviceID)) {
+              } else {
+                gpsDeviceId.add(element.GPSDeviceID);
+              }
             });
             notifyListeners();
             // _detailResult.forEach((element) {
@@ -375,7 +391,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       _assetModel = results.result!.modelName;
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message!);
+      //Fluttertoast.showToast(msg: error.message!);
     }
   }
 
@@ -854,6 +870,15 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     customerNameController.clear();
     customerEmailController.clear();
     customerCodeController.clear();
+    notifyListeners();
+  }
+
+  onPop() {
+    totalList[0].clear();
+    totalList[1].clear();
+    totalList[2].clear();
+    totalList[3].clear();
+    totalList.clear();
     notifyListeners();
   }
 }

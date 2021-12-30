@@ -1,4 +1,3 @@
-import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -324,7 +323,7 @@ class _SingleAssetRegistrationViewState
                                                   enableHint: false,
                                                   onChanged: (value) {
                                                     viewModel.updateplantDEtail(
-                                                        value!);
+                                                        value);
                                                   },
                                                 ),
                                               ),
@@ -357,7 +356,7 @@ class _SingleAssetRegistrationViewState
                                                 0.01,
                                           ),
                                           InsiteText(
-                                              text: 'Device Details:',
+                                              text: 'Dealer Details:',
                                               size: 13,
                                               fontWeight: FontWeight.w700),
                                           SizedBox(
@@ -382,7 +381,7 @@ class _SingleAssetRegistrationViewState
                                                       },
                                                       items: viewModel.dealerId,
                                                       textBoxTitle:
-                                                          'Device Name:',
+                                                          'Dealer Name:',
                                                       onChange: (value) {
                                                         viewModel
                                                             .onDealerNameChanges(
@@ -589,8 +588,38 @@ class _SingleAssetRegistrationViewState
                                               msg:
                                                   "Please fill the * required fields and Entity details.");
                                           return;
-                                        } else if (viewModel.plantDetail ==
-                                            " ") {
+                                        } else if (viewModel
+                                                .customerNameController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.deviceNameController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                          return;
+                                        } else if (viewModel
+                                                .customerEmailController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.deviceEmailController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                        } else if (viewModel
+                                                .customerCodeController
+                                                .text
+                                                .isNotEmpty &&
+                                            viewModel.deviceCodeController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please fill the * required fields and Entity details.");
+                                        } else if (viewModel
+                                            .serialNumberController
+                                            .text
+                                            .isEmpty) {
                                           Fluttertoast.showToast(
                                               msg:
                                                   "Please fill the * required fields and Entity details.");
@@ -621,6 +650,10 @@ class _SingleAssetRegistrationViewState
                                             pageBuilder: (context, animation,
                                                 secondaryAnimation) {
                                               return InsitePopUp(
+                                                onPop: () {
+                                                  Logger().e("running");
+                                                  viewModel.onPop();
+                                                },
                                                 pageTitle: "Preview",
                                                 titles:
                                                     viewModel.popUpCardTitles,

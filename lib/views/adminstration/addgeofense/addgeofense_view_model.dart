@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocore/base.dart' as geo;
 import 'package:geocore/geocore.dart' as Geo;
@@ -87,6 +88,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   double? onZoomLatitude;
   double? onZoomLongitude;
+  double? lastLattitude = 0.0;
 
   List<m.Material> materialModelList = [];
   DateTime? backFillDate;
@@ -277,12 +279,25 @@ class AddgeofenseViewModel extends InsiteViewModel {
     double latitude1 = userLatlong.longitude;
     double longitude1 = userLatlong.latitude;
     Logger().wtf(longitude1);
-    Logger().wtf(latitude1);
+    Logger().wtf("$latitude1 last lattitude");
     LatLng correctedLatLong = LatLng(longitude1, latitude1);
     lastLatLong = correctedLatLong;
     correctedListofLatlang.add(correctedLatLong);
-    Logger().d(correctedListofLatlang);
+    Logger().e(correctedListofLatlang.length);
+    // if (correctedListofLatlang.length > 3) {
+    //   int data = correctedListofLatlang.indexOf(correctedLatLong);
+    //   LatLng? latLngIntersection = correctedListofLatlang.elementAt(data - 1);
+    //   Logger().i(latLngIntersection!.toJson());
 
+    //   if ((longitude1 > latLngIntersection.latitude &&
+    //           latitude1 > latLngIntersection.longitude) ||
+    //       (longitude1 < latLngIntersection.latitude ||
+    //           latitude1 < latLngIntersection.longitude)) {
+    //     correctedListofLatlang.removeLast();
+    //     Fluttertoast.showToast(msg: "polygons can't be intersect");
+    //     return;
+    //   }
+    // }
     _listOfLatLong.add(userLatlong);
     onZoomLatitude = _listOfLatLong.first.latitude;
     onZoomLongitude = _listOfLatLong.first.longitude;
@@ -317,7 +332,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
     _polyline!.add(userPolyline);
     _circle!.add(userCircle);
     //colorValue = int.parse(color.toString());
-    Logger().e(_circle);
     isPolygonsCreated = false;
 
     notifyListeners();
