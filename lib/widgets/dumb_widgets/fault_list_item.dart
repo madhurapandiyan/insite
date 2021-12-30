@@ -52,13 +52,13 @@ class FaultListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: Utils.getMakeTitle(
-                                  fault!.asset['details']["makeCode"]) +
+                                  fault!.asset!['details']["makeCode"]) +
                               "\n" +
-                              fault!.asset["details"]["model"],
-                          path: fault!.asset["details"] != null &&
-                                  fault!.asset["details"]["model"] != null
+                              fault?.asset["details"]["model"],
+                          path: fault?.asset["details"] != null &&
+                                  fault?.asset["details"]["model"] != null
                               ? Utils()
-                                  .imageData(fault!.asset["details"]["model"])
+                                  .imageData(fault!.asset!["details"]["model"])
                               : "assets/images/EX210.png",
                         ),
                         InsiteTableRowItem(
@@ -113,10 +113,10 @@ class FaultListItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteRichText(
                           title: "Source : ",
-                          content:
-                              fault!.basic != null && fault!.basic!.source != null
-                                  ? fault!.basic!.source
-                                  : "",
+                          content: fault!.basic != null &&
+                                  fault!.basic!.source != null
+                              ? fault!.basic!.source
+                              : "",
                           style: TextStyle(
                               color:
                                   Theme.of(context).textTheme.bodyText1!.color),

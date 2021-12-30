@@ -14,7 +14,7 @@ class Fleet {
   final int? assetIcon;
   final String? productFamily;
   final String? status;
-  final double? hourMeter;
+  final hourMeter;
   final String? lastHourMeterUTC;
   final String? lastOdometerUTC;
   final double? odometer;

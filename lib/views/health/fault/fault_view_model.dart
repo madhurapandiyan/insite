@@ -5,15 +5,17 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class FaultViewModel extends InsiteViewModel {
   FaultService? _faultService = locator<FaultService>();
-  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -37,6 +39,7 @@ class FaultViewModel extends InsiteViewModel {
   List<Fault> get faults => _faults;
 
   late ScrollController scrollController;
+
   FaultViewModel() {
     setUp();
     _faultService!.setUp();
@@ -63,7 +66,11 @@ class FaultViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
-        appliedFilters);
+        appliedFilters,
+        graphqlSchemaService!.getfaultQueryString(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+
     if (result != null) {
       _totalCount = result.total;
       if (result.faults!.isNotEmpty) {
@@ -105,7 +112,10 @@ class FaultViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
-        appliedFilters);
+        appliedFilters,
+        graphqlSchemaService!.getfaultQueryString(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

@@ -154,7 +154,6 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-
   Future<ManageUser?> getUser(String? userId) async {
     Logger().i("getUser $isVisionLink");
     try {
@@ -466,9 +465,7 @@ class AssetAdminManagerUserService extends BaseService {
                     job_type: jobType,
                     user_type: "Standard")),
             accountSelected!.CustomerUID,
-            (
-              await _localService!.getLoggedInUser()
-              )!.sub,
+            (await _localService!.getLoggedInUser())!.sub,
             "in-identitymanager-identitywebapi");
         return addUserResponse;
       }
@@ -487,7 +484,8 @@ class AssetAdminManagerUserService extends BaseService {
             accountSelected!.CustomerUID,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                        users: users, customerUid: customerSelected!.CustomerUID)
+                        users: users,
+                        customerUid: customerSelected!.CustomerUID)
                     .toJson()
                 : DeleteUserData(users: users).toJson());
         return result;
@@ -496,7 +494,8 @@ class AssetAdminManagerUserService extends BaseService {
             Urls.adminManagerUserSumary,
             customerSelected != null
                 ? DeleteUserDataIndStack(
-                        users: users, customerUid: customerSelected!.CustomerUID)
+                        users: users,
+                        customerUid: customerSelected!.CustomerUID)
                     .toJson()
                 : DeleteUserData(users: users).toJson(),
             accountSelected!.CustomerUID,
@@ -509,7 +508,6 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
-
 
   Future<ListDeviceTypeResponse?> getDeviceTypes() async {
     try {
@@ -535,7 +533,6 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
-
 
   Future<ManageAssetConfiguration?> getAssetSettingData(pageSize, pageNumber,
       String searchKeyword, String deviceTypeSelected) async {
@@ -576,7 +573,6 @@ class AssetAdminManagerUserService extends BaseService {
       return null;
     }
   }
-
 
   Future<AddSettings?> getFuelBurnRateSettingsData(
       idleValue, workingValue, assetUid) async {

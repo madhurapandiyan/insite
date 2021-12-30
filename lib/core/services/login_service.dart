@@ -6,6 +6,7 @@ import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
@@ -15,7 +16,7 @@ import '../locator.dart';
 import 'local_service.dart';
 
 class LoginService extends BaseService {
-  final NavigationService?  _nagivationService = locator<NavigationService>();
+  final NavigationService? _nagivationService = locator<NavigationService>();
   final LocalService? _localService = locator<LocalService>();
   UserInfo? userInfo;
 
@@ -32,6 +33,7 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "insite://mobile");
+      Logger().wtf('token: $token');
       if (isVisionLink) {
         UserInfo userInfo = await MyApi()
             .getClientFive()!
@@ -72,7 +74,7 @@ class LoginService extends BaseService {
     _localService!.setIsloggedIn(true);
     _localService!.saveToken(token);
     try {
-    //  await getAuthenticateUserId();
+      //  await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
 
       Future.delayed(Duration(seconds: 1), () {
@@ -97,11 +99,14 @@ class LoginService extends BaseService {
         _localService!.saveUserInfo(userInfo);
         if (shouldRemovePreviousRoutes) {
           Logger().i("true");
-          _nagivationService!.pushNamedAndRemoveUntil(customerSelectionViewRoute,
+          _nagivationService!.pushNamedAndRemoveUntil(
+              customerSelectionViewRoute,
               predicate: (Route<dynamic> route) => false);
         } else {
           _nagivationService!.replaceWith(customerSelectionViewRoute);
         }
+      } else {
+        _nagivationService!.replaceWith(customerSelectionViewRoute);
       }
     }
   }

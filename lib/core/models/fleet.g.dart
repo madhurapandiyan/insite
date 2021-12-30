@@ -32,7 +32,7 @@ Fleet _$FleetFromJson(Map<String, dynamic> json) => Fleet(
       dealerCustomerName: json['dealerCustomerName'] as String?,
       customStateDescription: json['customStateDescription'] as String?,
       dealerName: json['dealerName'] as String?,
-      hourMeter: (json['hourMeter'] as num?)?.toDouble(),
+      hourMeter: json['hourMeter'],
       lastHourMeterUTC: json['lastHourMeterUTC'] as String?,
       lastLocationUpdateUTC: json['lastLocationUpdateUTC'] as String?,
       lastOdometerUTC: json['lastOdometerUTC'] as String?,

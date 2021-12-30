@@ -30,7 +30,7 @@ class Asset {
       this.dateRangeRuntimeDuration,
       this.distanceTravelledKilometers);
 
-  factory Asset.fromJson(dynamic json)=>_$AssetFromJson(json);
+  factory Asset.fromJson(dynamic json) => _$AssetFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetToJson(this);
 }
@@ -53,7 +53,8 @@ class AssetLastReceivedEvent {
     this.segmentType,
   );
 
-  factory AssetLastReceivedEvent.fromJson(Map<String, dynamic> json)=>_$AssetLastReceivedEventFromJson(json);
+  factory AssetLastReceivedEvent.fromJson(Map<String, dynamic> json) =>
+      _$AssetLastReceivedEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetLastReceivedEventToJson(this);
 }

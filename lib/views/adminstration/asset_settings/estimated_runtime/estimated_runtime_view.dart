@@ -155,8 +155,10 @@ class _EstimatedRunTimeWidgetViewState
                             bottomRight: Radius.circular(5),
                           ),
                           border: Border.all(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!)),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!)),
                       child: Container(
                         color:
                             viewModel.isSelectedFullWeekTarget ? tango : null,
@@ -188,8 +190,10 @@ class _EstimatedRunTimeWidgetViewState
                             bottomRight: Radius.circular(5),
                           ),
                           border: Border.all(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!)),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!)),
                       child: Container(
                         color: viewModel.isSelectedFullWeekIdle ? tango : null,
                       ),
@@ -287,7 +291,7 @@ class _EstimatedRunTimeWidgetViewState
                                   signed: true,
                                 ),
                                 inputFormatters: <TextInputFormatter>[
-                                  WhitelistingTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.digitsOnly
                                 ],
                               ),
                               Align(
@@ -356,7 +360,7 @@ class _EstimatedRunTimeWidgetViewState
                                   signed: true,
                                 ),
                                 inputFormatters: <TextInputFormatter>[
-                                  WhitelistingTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.digitsOnly
                                 ],
                               ),
                               Align(

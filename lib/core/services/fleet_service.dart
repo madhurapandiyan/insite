@@ -4,6 +4,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
@@ -32,26 +33,67 @@ class FleetService extends BaseService {
     endDate,
     pageSize,
     pageNumber,
+    query,
     List<FilterData?>? appliedFilters,
   ) async {
     try {
-      if (isVisionLink) {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query,
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+
         FleetSummaryResponse fleetSummaryResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.fleetSummaryURLVL(
-                    Urls.fleetSummaryVL +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected!.CustomerUID,
-                            "assetid",
-                            appliedFilters!,
-                            ScreenType.FLEET),
-                    accountSelected!.CustomerUID)
-                : await MyApi().getClient()!.fleetSummaryURLVL(
+            FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
+        return fleetSummaryResponse;
+      } else {
+        if (isVisionLink) {
+          FleetSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.fleetSummaryURLVL(
                       Urls.fleetSummaryVL +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              "assetid",
+                              appliedFilters!,
+                              ScreenType.FLEET),
+                      accountSelected!.CustomerUID)
+                  : await MyApi().getClient()!.fleetSummaryURLVL(
+                        Urls.fleetSummaryVL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNumber,
+                                pageSize,
+                                null,
+                                "assetid",
+                                appliedFilters!,
+                                ScreenType.FLEET),
+                        accountSelected!.CustomerUID,
+                      );
+          return fleetSummaryResponse;
+        } else {
+          FleetSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.fleetSummaryURL(
+                      Urls.fleetSummary +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected!.CustomerUID,
+                              "assetid",
+                              appliedFilters!,
+                              ScreenType.FLEET),
+                      accountSelected!.CustomerUID,
+                      "in-vfleet-uf-webapi")
+                  : await MyApi().getClient()!.fleetSummaryURL(
+                      Urls.fleetSummary +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
@@ -62,38 +104,10 @@ class FleetService extends BaseService {
                               appliedFilters!,
                               ScreenType.FLEET),
                       accountSelected!.CustomerUID,
-                    );
-        return fleetSummaryResponse;
-      } else {
-        FleetSummaryResponse fleetSummaryResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.fleetSummaryURL(
-                    Urls.fleetSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected!.CustomerUID,
-                            "assetid",
-                            appliedFilters!,
-                            ScreenType.FLEET),
-                    accountSelected!.CustomerUID,
-                    "in-vfleet-uf-webapi")
-                : await MyApi().getClient()!.fleetSummaryURL(
-                    Urls.fleetSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            null,
-                            "assetid",
-                            appliedFilters!,
-                            ScreenType.FLEET),
-                    accountSelected!.CustomerUID,
-                    "in-vfleet-uf-webapi");
-        return fleetSummaryResponse;
+                      "in-vfleet-uf-webapi");
+          Logger().wtf(fleetSummaryResponse);
+          return fleetSummaryResponse;
+        }
       }
     } catch (e) {
       Logger().e(e);

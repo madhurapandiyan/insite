@@ -104,7 +104,7 @@ part 'Retrofit.g.dart';
 )
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
- // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
+  // https://cloud.stage.api.trimblecloud.com/osg-frame/frame-api/2.0/oemdetails?OEM=VEhD
 
   @GET("/tasks")
   Future<List<Sample>> getTasks();
@@ -113,7 +113,7 @@ abstract class RestClient {
   Future<UserInfo> getUserInfo(@Header("content-type") String? contentType,
       @Header("Authorization") String? authorization);
 
-        @GET("/oauth/userinfo")
+  @GET("/oauth/userinfo")
   Future<UserInfo> getUserInfoVl(@Header("content-type") String? contentType,
       @Header("Authorization") String? authorization);
 

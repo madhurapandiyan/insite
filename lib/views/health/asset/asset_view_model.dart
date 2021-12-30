@@ -5,6 +5,7 @@ import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -63,7 +64,10 @@ class AssetViewModel extends InsiteViewModel {
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
-            appliedFilters);
+            appliedFilters,
+            graphqlSchemaService!.getAssetFaultQuery(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
@@ -106,7 +110,10 @@ class AssetViewModel extends InsiteViewModel {
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
-            appliedFilters);
+            appliedFilters,
+            graphqlSchemaService!.getAssetFaultQuery(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

@@ -86,8 +86,10 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                 title: "Date Range",
                                 width: 90,
                                 bgColor: Theme.of(context).backgroundColor,
-                                textColor:
-                                    Theme.of(context).textTheme.bodyText1!.color,
+                                textColor: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
                                 onTap: () async {
                                   dateRange = await showDialog(
                                     context: context,

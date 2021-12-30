@@ -58,7 +58,7 @@ class _IncrementDecrementwidgetState extends State<IncrementDecrementwidget> {
               signed: true,
             ),
             inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
           ),
         ),

@@ -127,14 +127,6 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
    notifyListeners();
   }
 
-  onClosingDialog() {
-    singleAssetModelResponce!.clear();
-    _serialNoController!.clear();
-    _mobileNoController!.clear();
-    _nameController!.clear();
-    notifyListeners();
-  }
-
   Future onSavingSmsModel() async {
     try {
       for (var i = 0; i < singleAssetModelResponce!.length; i++) {

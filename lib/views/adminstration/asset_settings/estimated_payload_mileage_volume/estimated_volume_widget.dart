@@ -72,8 +72,7 @@ class _EstimatedVolumeWidgetState extends State<EstimatedVolumeWidget> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              // ignore: deprecated_member_use
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

@@ -49,7 +49,6 @@ class AssetOperationListItem extends StatelessWidget {
             ),
             Expanded(
               child: InsiteExpansionTile(
-                
                 title: Table(
                   border: TableBorder.all(),
                   columnWidths: {
@@ -124,7 +123,8 @@ class AssetOperationListItem extends StatelessWidget {
           day: day,
           date: time.day.toString(),
           value: getMatchingDate(time) != null
-              ? (getMatchingDate(time)!.totalRuntimeDurationSeconds! / (60 * 60))
+              ? (getMatchingDate(time)!.totalRuntimeDurationSeconds! /
+                      (60 * 60))
                   .toStringAsFixed(1)
               : "");
       list.add(data);

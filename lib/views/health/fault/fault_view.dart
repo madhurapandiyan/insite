@@ -11,6 +11,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class FaultView extends StatefulWidget {
@@ -31,6 +32,7 @@ class FaultViewState extends State<FaultView> {
   @override
   void initState() {
     viewModel = FaultViewModel();
+
     super.initState();
   }
 
@@ -99,6 +101,7 @@ class FaultViewState extends State<FaultView> {
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 Fault? fault = viewModel.faults[index];
+
                                 return FaultListItem(
                                   fault: fault,
                                   onCallback: () {

@@ -96,7 +96,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(
@@ -180,7 +180,7 @@ class _EstimatedBurnRateWidgetState extends State<EstimatedBurnRateWidget> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

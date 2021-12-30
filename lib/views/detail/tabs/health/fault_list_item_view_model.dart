@@ -3,6 +3,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/services/fault_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
@@ -55,14 +56,17 @@ class FaultListItemViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    FaultSummaryResponse? result =
-        await _faultService!.getAssetViewDetailSummaryList(
+    FaultSummaryResponse? result = await _faultService!
+        .getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
-            fault!.asset["uid"]);
+            fault!.asset["uid"],
+            graphqlSchemaService!.getfaultQueryString(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.faults != null) {
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);

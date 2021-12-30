@@ -6,6 +6,7 @@ class AppConfig {
   final bool enableLogin;
   final bool isProd;
   final bool enalbeNativeLogin;
+  final bool? enableGraphql;
   static AppConfig? _instance;
   factory AppConfig({
     String? baseUrl,
@@ -15,14 +16,22 @@ class AppConfig {
     bool? enableLogin,
     bool? isProd,
     bool? enalbeNativeLogin,
+    bool? enableGraphql,
   }) {
     _instance ??= AppConfig._internal(baseUrl!, productFlavor!, apiFlavor!,
-        iconPath!, enableLogin!, isProd!, enalbeNativeLogin!);
+        iconPath!, enableLogin!, isProd!, enalbeNativeLogin!, enableGraphql!);
     return _instance!;
   }
 
-  AppConfig._internal(this.baseUrl, this.productFlavor, this.apiFlavor,
-      this.iconPath, this.enableLogin, this.isProd, this.enalbeNativeLogin);
+  AppConfig._internal(
+      this.baseUrl,
+      this.productFlavor,
+      this.apiFlavor,
+      this.iconPath,
+      this.enableLogin,
+      this.isProd,
+      this.enalbeNativeLogin,
+      this.enableGraphql);
   static AppConfig? get instance {
     return _instance;
   }

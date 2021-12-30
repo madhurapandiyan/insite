@@ -52,7 +52,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               border: Border.all(
-                  width: 1, color: Theme.of(context).textTheme.bodyText1!.color!),
+                  width: 1,
+                  color: Theme.of(context).textTheme.bodyText1!.color!),
               shape: BoxShape.rectangle,
             ),
             child: Column(
@@ -69,7 +70,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
-                          viewModel.customInfoWindowController.hideInfoWindow!();
+                          viewModel
+                              .customInfoWindowController.hideInfoWindow!();
                           if (widget.screenType == ScreenType.HEALTH) {
                             viewModel.refreshForAssetView();
                           } else {
@@ -103,8 +105,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             setState(() {
                               dateRange = dateRange;
                             });
-                            viewModel.customInfoWindowController
-                                .hideInfoWindow!();
+                            viewModel
+                                .customInfoWindowController.hideInfoWindow!();
                             viewModel.refresh();
                           }
                         },
@@ -117,7 +119,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                     children: [
                       GoogleMap(
                         onTap: (position) {
-                          viewModel.customInfoWindowController.hideInfoWindow!();
+                          viewModel
+                              .customInfoWindowController.hideInfoWindow!();
                         },
                         onCameraMove: (position) {
                           viewModel.customInfoWindowController.onCameraMove!();
@@ -139,8 +142,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                         markers: viewModel.markers,
                         initialCameraPosition:
                             viewModel.assetLocationHistory != null &&
-                                    viewModel.assetLocationHistory!.assetLocation!
-                                        .isNotEmpty
+                                    viewModel.assetLocationHistory!
+                                        .assetLocation!.isNotEmpty
                                 ? CameraPosition(
                                     target: LatLng(
                                         viewModel.assetLocationHistory!
@@ -260,55 +263,55 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: DropdownButton(
-                          dropdownColor: Theme.of(context).backgroundColor,
-                          icon: Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Container(
-                              child: SvgPicture.asset(
-                                "assets/images/arrowdown.svg",
-                                width: 10,
-                                color: Theme.of(context).iconTheme.color,
-                                height: 10,
-                              ),
-                            ),
-                          ),
-                          isExpanded: false,
-                          hint: Text(
-                            _currentSelectedItem,
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color),
-                          ),
-                          items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
-                              .map((map) => DropdownMenuItem(
-                                    value: map,
-                                    child: InsiteText(
-                                      text: map,
-                                      size: 11.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ))
-                              .toList(),
-                          value: _currentSelectedItem,
-                          onChanged: (String? value) {
-                            setState(() {
-                              _currentSelectedItem = value!;
-                            });
-                          },
-                          underline: Container(
-                              height: 1.0,
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 0.0)))),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 16.0),
+                      //   child: DropdownButton(
+                      //     dropdownColor: Theme.of(context).backgroundColor,
+                      //     icon: Padding(
+                      //       padding: EdgeInsets.only(right: 8.0),
+                      //       child: Container(
+                      //         child: SvgPicture.asset(
+                      //           "assets/images/arrowdown.svg",
+                      //           width: 10,
+                      //           color: Theme.of(context).iconTheme.color,
+                      //           height: 10,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     isExpanded: false,
+                      //     hint: Text(
+                      //       _currentSelectedItem,
+                      //       style: TextStyle(
+                      //           color: Theme.of(context)
+                      //               .textTheme
+                      //               .bodyText1
+                      //               .color),
+                      //     ),
+                      //     items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
+                      //         .map((map) => DropdownMenuItem(
+                      //               value: map,
+                      //               child: InsiteText(
+                      //                 text: map,
+                      //                 size: 11.0,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ))
+                      //         .toList(),
+                      //     value: _currentSelectedItem,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         _currentSelectedItem = value;
+                      //       });
+                      //     },
+                      //     underline: Container(
+                      //         height: 1.0,
+                      //         decoration: BoxDecoration(
+                      //             border: Border(
+                      //                 bottom: BorderSide(
+                      //                     color: Colors.transparent,
+                      //                     width: 0.0)))),
+                      //   ),
+                      // ),
                       viewModel.refreshing ? InsiteProgressBar() : SizedBox()
                     ],
                   ),

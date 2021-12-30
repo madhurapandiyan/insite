@@ -284,7 +284,7 @@ class _TargetCycleVolumePayloadWidgetState
                                     signed: true,
                                   ),
                                   inputFormatters: <TextInputFormatter>[
-                                    WhitelistingTextInputFormatter.digitsOnly
+                                    FilteringTextInputFormatter.digitsOnly
                                   ],
                                 ),
                               ),
@@ -357,8 +357,7 @@ class _TargetCycleVolumePayloadWidgetState
                                         signed: true,
                                       ),
                                       inputFormatters: <TextInputFormatter>[
-                                        WhitelistingTextInputFormatter
-                                            .digitsOnly
+                                        FilteringTextInputFormatter.digitsOnly
                                       ],
                                     ),
                                   ),
@@ -408,8 +407,10 @@ class _TargetCycleVolumePayloadWidgetState
                             bottomRight: Radius.circular(10),
                           ),
                           border: Border.all(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!)),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!)),
                       child: viewModel.isChangePayLoadSate
                           ? Row(
                               children: [
@@ -431,7 +432,7 @@ class _TargetCycleVolumePayloadWidgetState
                                       signed: true,
                                     ),
                                     inputFormatters: <TextInputFormatter>[
-                                      WhitelistingTextInputFormatter.digitsOnly
+                                      FilteringTextInputFormatter.digitsOnly
                                     ],
                                   ),
                                 ),

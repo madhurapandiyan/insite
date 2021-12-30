@@ -115,7 +115,8 @@ class FaultBasic {
 @JsonSerializable()
 class FaultDetails {
   final String? faultReceivedUTC;
-  FaultDetails({this.faultReceivedUTC});
+  final String? faultCode;
+  FaultDetails({this.faultReceivedUTC, this.faultCode});
 
   factory FaultDetails.fromJson(Map<String, dynamic> json) {
     return _$FaultDetailsFromJson(json);

@@ -10,17 +10,21 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 
 class AssetOperationViewModel extends InsiteViewModel {
   late Logger log;
   AssetService? _assetService = locator<AssetService>();
-  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
   AssetStatusService? _assetStatusService = locator<AssetStatusService>();
+
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
 
@@ -103,7 +107,16 @@ class AssetOperationViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
     AssetSummaryResponse result = await (_assetService!.getAssetSummaryList(
-        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters) as FutureOr<AssetSummaryResponse>);
+            startDate,
+            endDate,
+            pageSize,
+            pageNumber,
+            _menuItem,
+            appliedFilters,
+            graphqlSchemaService!.getAssetOperationData(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)))
+        as FutureOr<AssetSummaryResponse>);
     if (result != null) {
       _assets.clear();
       _assets.addAll(result.assets!);
@@ -124,7 +137,15 @@ class AssetOperationViewModel extends InsiteViewModel {
     await getAssetOperationCount();
     updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
-        startDate, endDate, pageSize, pageNumber, _menuItem, appliedFilters);
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        _menuItem,
+        appliedFilters,
+        graphqlSchemaService!.getAssetOperationData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       if (result.pagination!.totalAssets != null) {
         _totalCount = result.pagination!.totalAssets!.toInt();
@@ -180,7 +201,8 @@ class AssetOperationViewModel extends InsiteViewModel {
         endDate,
         "-RuntimeHours",
         ScreenType.ASSET_OPERATION,
-        appliedFilters);
+        appliedFilters,
+        graphqlSchemaService!.utilizationTotalCount);
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

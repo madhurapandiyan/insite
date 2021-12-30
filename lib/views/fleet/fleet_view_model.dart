@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -54,7 +55,12 @@ class FleetViewModel extends InsiteViewModel {
 
   getFleetSummaryList() async {
     FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, appliedFilters);
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        graphqlSchemaService!.fleetSummary,
+        appliedFilters);
     if (result != null) {
       if (result.pagination!.totalCount != null) {
         _totalCount = result.pagination!.totalCount!.toInt();
@@ -113,7 +119,12 @@ class FleetViewModel extends InsiteViewModel {
     _shouldLoadmore = true;
     notifyListeners();
     FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate, endDate, pageSize, pageNumber, appliedFilters);
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        graphqlSchemaService!.fleetSummary,
+        appliedFilters);
     if (result != null &&
         result.fleetRecords != null &&
         result.fleetRecords!.isNotEmpty) {

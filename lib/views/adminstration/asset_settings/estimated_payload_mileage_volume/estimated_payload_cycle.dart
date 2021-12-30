@@ -79,7 +79,7 @@ class _EstimatedPayLoadPerCycleState extends State<EstimatedPayLoadPerCycle> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

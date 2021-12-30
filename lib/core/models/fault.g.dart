@@ -115,11 +115,13 @@ Map<String, dynamic> _$FaultBasicToJson(FaultBasic instance) =>
 
 FaultDetails _$FaultDetailsFromJson(Map<String, dynamic> json) => FaultDetails(
       faultReceivedUTC: json['faultReceivedUTC'] as String?,
+      faultCode: json['faultCode'] as String?,
     );
 
 Map<String, dynamic> _$FaultDetailsToJson(FaultDetails instance) =>
     <String, dynamic>{
       'faultReceivedUTC': instance.faultReceivedUTC,
+      'faultCode': instance.faultCode,
     };
 
 AssetFaultSummaryResponse _$AssetFaultSummaryResponseFromJson(

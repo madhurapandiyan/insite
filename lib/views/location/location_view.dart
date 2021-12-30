@@ -372,7 +372,7 @@ class _LocationViewState extends State<LocationView> {
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
-                                    onChanged: ( String? value) {
+                                    onChanged: (String? value) {
                                       setState(() {
                                         _currentSelectedItem = value!;
                                       });
@@ -385,7 +385,7 @@ class _LocationViewState extends State<LocationView> {
                                                     color: Colors.transparent,
                                                     width: 0.0)))),
                                   ),
-                                 ),
+                                ),
                                 viewModel.refreshing
                                     ? InsiteProgressBar()
                                     : SizedBox()

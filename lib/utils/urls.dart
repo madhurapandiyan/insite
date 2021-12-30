@@ -76,7 +76,7 @@ class Urls {
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
-     Logger().i("indiaStack");
+    Logger().i("indiaStack");
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=$indiaStackClientId&state=$state" +
         "&redirect_uri=$tataHitachiRedirectUri&scope=openid $tataHitachiApplicationName" +

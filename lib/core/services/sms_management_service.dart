@@ -31,14 +31,12 @@ class SmsManagementService extends BaseService {
     return data;
   }
 
-  Future<SavingSmsResponce?> savingSms(List<SavingSmsModel?> model) async {
+  Future<dynamic> savingSms(List<SavingSmsModel?> model) async {
     Logger().wtf(model.first!.toJson());
     if (isVisionLink) {
     } else {
-      SavingSmsResponce? data =await MyApi().getClientNine()!.savingSms(Urls.savingSms, model);
-      return data;
+      var data = MyApi().getClientNine()!.savingSms(Urls.savingSms, model);
     }
-    // return data;
   }
 
   Future<SmsReportSummaryModel?> getsmsReportSummaryModel(

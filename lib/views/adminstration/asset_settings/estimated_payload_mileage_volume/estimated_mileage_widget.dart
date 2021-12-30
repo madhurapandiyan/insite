@@ -80,7 +80,7 @@ class _EstimatedMileageState extends State<EstimatedMileage> {
                               signed: true,
                             ),
                             inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                           ),
                           Align(

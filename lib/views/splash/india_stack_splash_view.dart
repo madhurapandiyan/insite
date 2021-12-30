@@ -54,13 +54,13 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
     if (AppConfig.instance!.apiFlavor == "visionlink") {
-       Logger().d(
-        "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrlVL(state, codeChallenge)}");
-    }else{
-       Logger().d(
-        "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
+      Logger().d(
+          "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrlVL(state, codeChallenge)}");
+    } else {
+      Logger().d(
+          "IndiaStackSplashView pkce login url ${Urls.getV4LoginUrl(state, codeChallenge)}");
     }
-   
+
     super.initState();
     setupListeners();
   }
