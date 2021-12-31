@@ -51,6 +51,10 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
       totalDeviceReplacementStatusModel!.result![1].forEach((element) {
         deviceReplacementStatusModelList.add(element);
       });
+      for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
+        deviceReplacementStatusModelList
+            .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
+      }
       isLoading = false;
       isLoadMore = false;
       notifyListeners();

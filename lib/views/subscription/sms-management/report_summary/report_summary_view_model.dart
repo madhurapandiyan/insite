@@ -71,6 +71,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
             modelDataList.add(element);
           });
           for (var i = 0; i < modelDataList.length; i++) {
+            modelDataList.sort((a, b) => b.StartDate!.compareTo(a.StartDate!));
             modelDataList[i].isSelected = false;
           }
           isLoading = false;
