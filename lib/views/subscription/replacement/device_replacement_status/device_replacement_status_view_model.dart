@@ -47,7 +47,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
       totalDeviceReplacementStatusModel = await replacementService!
           .getTotalDeviceReplacementStatusModel(startCount);
       Logger().wtf(totalDeviceReplacementStatusModel);
-      Logger().d(deviceReplacementStatusModelList);
+      Logger().d(deviceReplacementStatusModelList); 
       totalDeviceReplacementStatusModel!.result![1].forEach((element) {
         deviceReplacementStatusModelList.add(element);
       });

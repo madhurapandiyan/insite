@@ -950,7 +950,7 @@ abstract class RestClient {
 
   @POST("{url}")
   Future<dynamic> postSingleAssetTransferRegistration(
-      @Path() String url, @Body() AddAssetRegistrationData data);
+      @Path() String url, @Body() AssetTransfer data);
 
   @POST("{url}")
   Future<AssetTransferData> getSingleAssetTransferData(

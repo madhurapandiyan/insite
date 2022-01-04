@@ -14,7 +14,7 @@ class PopupCard extends StatelessWidget {
         height: height,
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

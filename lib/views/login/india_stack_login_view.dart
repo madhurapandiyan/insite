@@ -56,9 +56,9 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
 
   @override
   void dispose() {
-    _onDestroy!.cancel();
-    _onUrlChanged!.cancel();
-    _onStateChanged!.cancel();
+    _onDestroy?.cancel();
+    _onUrlChanged?.cancel();
+    _onStateChanged?.cancel();
     flutterWebviewPlugin.dispose();
     super.dispose();
   }
@@ -152,25 +152,26 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             Logger().i("IndiaStackLoginView url split list $list");
             if (list.isNotEmpty) {
               _onUrlChanged!.cancel();
+              gotoSplashview();
               //for vision link (oauth style login)
-              String accessTokenString = list[1];
-              String expiresTokenString = list[2];
-              List<String> accessTokenList = accessTokenString.split("&");
-              List<String> expiryList = expiresTokenString.split("&");
-              print("accessToken split list $list");
-              String accessToken = accessTokenList[0];
-              String expiryTime = expiryList[0];
-              print("accessToken $accessToken");
-              print("expiryTime $expiryTime");
-              saveToken(accessToken, expiryTime);
+              // String accessTokenString = list[1];
+              // String expiresTokenString = list[2];
+              // List<String> accessTokenList = accessTokenString.split("&");
+              // List<String> expiryList = expiresTokenString.split("&");
+              // print("accessToken split list $list");
+              // String accessToken = accessTokenList[0];
+              // String expiryTime = expiryList[0];
+              // print("accessToken $accessToken");
+              // print("expiryTime $expiryTime");
+              // saveToken(accessToken, expiryTime);
 
-              String codeString = list[1];
-              List<String> codeStringList = codeString.split("&");
-              if (codeStringList.isNotEmpty) {
-                getLoginDataV4(
-                  codeStringList[0],
-                );
-              }
+              // String codeString = list[1];
+              // List<String> codeStringList = codeString.split("&");
+              // if (codeStringList.isNotEmpty) {
+              //   getLoginDataV4(
+              //     codeStringList[0],
+              //   );
+              // }
             }
             flutterWebviewPlugin.close();
           } catch (e) {
@@ -200,16 +201,16 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             if (list.isNotEmpty) {
               _onUrlChanged!.cancel();
               //for vision link (oauth style login)
-              String accessTokenString = list[1];
-              String expiresTokenString = list[3];
-              List<String> accessTokenList = accessTokenString.split("&");
-              List<String> expiryList = expiresTokenString.split("&");
-              print("accessToken split list $list");
-              String accessToken = accessTokenList[0];
-              String expiryTime = expiryList[0];
-              print("accessToken $accessToken");
-              print("expiryTime $expiryTime");
-              saveToken(accessToken, expiryTime);
+              // String accessTokenString = list[1];
+              // String expiresTokenString = list[3];
+              // List<String> accessTokenList = accessTokenString.split("&");
+              // List<String> expiryList = expiresTokenString.split("&");
+              // print("accessToken split list $list");
+              // String accessToken = accessTokenList[0];
+              // String expiryTime = expiryList[0];
+              // print("accessToken $accessToken");
+              // print("expiryTime $expiryTime");
+              // saveToken(accessToken, expiryTime);
 
               String codeString = list[1];
               List<String> codeStringList = codeString.split("&");
@@ -243,7 +244,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     if (AppConfig.instance!.apiFlavor == "indiastack") {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     } else {
-       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
+      _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }
   }
 
@@ -276,7 +277,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url: Urls.logoutUrlVl(
+                  url: Urls.getV4LogoutUrl(
                       loginResponse!.id_token, Urls.tataHitachiRedirectUri),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()

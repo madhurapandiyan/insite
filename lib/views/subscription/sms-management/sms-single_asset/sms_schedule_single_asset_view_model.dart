@@ -121,10 +121,10 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     _serialNoController!.text = serialNo!;
     _mobileNoController!.text = mobileNo!;
     _nameController!.text = name!;
-     singleAssetModelResponce!.clear();
+    singleAssetModelResponce!.clear();
     controller.animateToPage(0,
         duration: Duration(seconds: 500), curve: Curves.easeInOut);
-   notifyListeners();
+    notifyListeners();
   }
 
   Future onSavingSmsModel() async {
@@ -147,12 +147,12 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       _serialNoController!.clear();
       _mobileNoController!.clear();
       _nameController!.clear();
-      Logger().e(data);
       hideLoadingDialog();
       dummy = false;
       listOSavingSmsModel.clear();
       singleAssetModelResponce!.clear();
       notifyListeners();
+      return data!.status;
     } on DioError catch (e) {
       listOSavingSmsModel.clear();
       hideLoadingDialog();

@@ -185,7 +185,7 @@ class ManageUserView extends StatelessWidget {
                                         }),
                                   )
                                 : EmptyView(
-                                    title: "No assets found",
+                                    title: "No User found",
                                   ),
                         viewModel.loadingMore
                             ? Padding(

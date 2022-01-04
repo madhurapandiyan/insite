@@ -42,10 +42,12 @@ class CustomDropDownWidget extends StatelessWidget {
         items: items!.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: InsiteText(
-              text: "  " + value!,
-              size: 14,
-              fontWeight: FontWeight.w700,
+            child: FittedBox(
+              child: InsiteText(
+                text: "  " + value!,
+                size: 14,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           );
         }).toList(),

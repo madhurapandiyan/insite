@@ -23,8 +23,6 @@ class LoginService extends BaseService {
   Future<UserInfo?> getLoggedInUserInfo() async {
     try {
       String? token = await _localService!.getToken();
-      Logger().w(token);
-
       //commented code will be used when we use intentify.trimble.com to get access token
       // var payLoad = UserPayLoad(
       //     env: "dev",
@@ -34,7 +32,7 @@ class LoginService extends BaseService {
       //     tenantDomain: "trimble.com",
       //     client_secret: "4Xk8oEFLfxvnyiO821JpQMzHhf8a",
       //     redirect_uri: "insite://mobile");
-      Logger().wtf('token: $token');
+
       if (isVisionLink) {
         UserInfo userInfo = await MyApi()
             .getClientFive()!
@@ -57,32 +55,30 @@ class LoginService extends BaseService {
 
   Future<AuthenticatedUser?> getAuthenticateUserId() async {
     try {
-          AuthenticatedUser? userAuthenticateStatus;
-    AuthenticatePayload data =
-        AuthenticatePayload(uuid: userInfo!.sub, email: userInfo!.email);
-    Logger().d(data.toJson());
-    if (isVisionLink) {
-    } else {
-      userAuthenticateStatus = await MyApi()
-          .getClientNine()!
-          .authenticateUser(Urls.authenticateUrl, data);
-      await _localService!
-          .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
-    }
-    return userAuthenticateStatus;
+      AuthenticatedUser? userAuthenticateStatus;
+      AuthenticatePayload data =
+          AuthenticatePayload(uuid: userInfo!.sub, email: userInfo!.email);
+      Logger().d(data.toJson());
+      if (isVisionLink) {
+      } else {
+        userAuthenticateStatus = await MyApi()
+            .getClientNine()!
+            .authenticateUser(Urls.authenticateUrl, data);
+        await _localService!
+            .saveUserId(Utils.getUserId(userAuthenticateStatus.result!));
+      }
+      return userAuthenticateStatus;
     } catch (e) {
       Logger().e(e.toString());
     }
-
   }
 
   getUser(token, shouldRemovePreviousRoutes) async {
     _localService!.setIsloggedIn(true);
     _localService!.saveToken(token);
     try {
-       // await getAuthenticateUserId();
       userInfo = await getLoggedInUserInfo();
-
+      await getAuthenticateUserId();
       Future.delayed(Duration(seconds: 1), () {
         if (userInfo != null) {
           _localService!.saveUserInfo(userInfo);

@@ -9,27 +9,21 @@ part of 'add_asset_registration.dart';
 AddAssetRegistrationData _$AddAssetRegistrationDataFromJson(
         Map<String, dynamic> json) =>
     AddAssetRegistrationData(
-      source: json['Source'] as String?,
-      version: json['Version'] as String?,
-      userID: json['UserID'] as int?,
+      Source: json['Source'] as String?,
+      Version: json['Version'] as String?,
+      UserID: json['UserID'] as int?,
       asset: (json['asset'] as List<dynamic>?)
           ?.map((e) => AssetValues.fromJson(e as Map<String, dynamic>))
           .toList(),
-      transfer: (json['transfer'] as List<dynamic>?)
-          ?.map((e) => AssetValues.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$AddAssetRegistrationDataToJson(
         AddAssetRegistrationData instance) =>
     <String, dynamic>{
-      'Source': instance.source,
-      'Version': instance.version,
-      'UserID': instance.userID,
+      'Source': instance.Source,
+      'Version': instance.Version,
+      'UserID': instance.UserID,
       'asset': instance.asset,
-      'status': instance.status,
-      'transfer': instance.transfer,
     };
 
 AssetValues _$AssetValuesFromJson(Map<String, dynamic> json) => AssetValues(
@@ -79,4 +73,22 @@ Map<String, dynamic> _$AssetValuesToJson(AssetValues instance) =>
       'CustomerName': instance.customerName,
       'CustomerCode': instance.customerCode,
       'CustomerEmailID': instance.customerEmailID,
+    };
+
+AssetTransfer _$AssetTransferFromJson(Map<String, dynamic> json) =>
+    AssetTransfer(
+      Source: json['Source'] as String?,
+      UserID: json['UserID'] as int?,
+      Version: json['Version'] as String?,
+      transfer: (json['transfer'] as List<dynamic>?)
+          ?.map((e) => AssetValues.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AssetTransferToJson(AssetTransfer instance) =>
+    <String, dynamic>{
+      'Source': instance.Source,
+      'Version': instance.Version,
+      'UserID': instance.UserID,
+      'transfer': instance.transfer,
     };

@@ -201,7 +201,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
 
-   Logger().e(userId);
+      Logger().e(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
           UserID: int.parse(userId!),
@@ -211,9 +211,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       Logger().d(replacementData.device!.first.toJson());
       var data = await replacementService!.savingReplacement(replacementData);
       searchList.clear();
-      navigationService!.clearTillFirstAndShowView(
-        DeviceReplacementStatusView(),
-      );
+      Fluttertoast.showToast(msg: "Replacement successfull");
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {

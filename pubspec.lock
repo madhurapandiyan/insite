@@ -443,6 +443,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.2"
+  geodesy:
+    dependency: "direct main"
+    description:
+      name: geodesy
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0-nullsafety.0"
   get:
     dependency: transitive
     description:
@@ -695,6 +702,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  maps_toolkit:
+    dependency: "direct main"
+    description:
+      name: maps_toolkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   matcher:
     dependency: transitive
     description:
@@ -877,6 +891,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  point_in_polygon:
+    dependency: "direct main"
+    description:
+      name: point_in_polygon
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   pool:
     dependency: transitive
     description:

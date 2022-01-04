@@ -282,16 +282,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   subscriptionAssetRegistration() async {
-    Logger().e(previewDeviceDetails[4].value!);
+    Logger().e(previewDeviceDetails[3].value!);
     AssetValues deviceAssetValues;
     deviceAssetValues = AssetValues(
       deviceId: previewDeviceDetails[0].value,
       machineSlNo: previewDeviceDetails[1].value,
       machineModel: previewDeviceDetails[2].value,
-      hMRDate: previewDeviceDetails[3].value,
+      hMRDate: previewDeviceDetails[4].value,
       hMR: previewDeviceDetails[4].value == ""
           ? 0
-          : double.parse(previewDeviceDetails[4].value!).toInt(),
+          : double.parse(previewDeviceDetails[3].value!).toInt(),
       plantName: generalPlantDetails[0].value == ""
           ? null
           : generalPlantDetails[0].value,

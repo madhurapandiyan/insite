@@ -153,18 +153,18 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
               List<String> list = url.split("=");
               print("IndiaStackSplashView URL url split list $list");
               if (list.isNotEmpty) {
-                _onUrlChanged!.cancel();
-                // for vision link (oauth style login)
-                String accessTokenString = list[1];
-                String expiresTokenString = list[2];
-                List<String> accessTokenList = accessTokenString.split("&");
-                List<String> expiryList = expiresTokenString.split("&");
-                print("accessToken split list $list");
-                String accessToken = accessTokenList[0];
-                String expiryTime = expiryList[0];
-                print("accessToken $accessToken");
-                print("expiryTime $expiryTime");
-                saveToken(accessToken, expiryTime);
+                // _onUrlChanged!.cancel();
+                // // for vision link (oauth style login)
+                // String accessTokenString = list[1];
+                // String expiresTokenString = list[2];
+                // List<String> accessTokenList = accessTokenString.split("&");
+                // List<String> expiryList = expiresTokenString.split("&");
+                // print("accessToken split list $list");
+                // String accessToken = accessTokenList[0];
+                // String expiryTime = expiryList[0];
+                // print("accessToken $accessToken");
+                // print("expiryTime $expiryTime");
+                // saveToken(accessToken, expiryTime);
 
                 String codeString = list[1];
                 List<String> codeStringList = codeString.split("&");

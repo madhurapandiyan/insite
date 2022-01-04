@@ -5,7 +5,6 @@ import "package:gql_exec/gql_exec.dart";
 import "package:gql_link/gql_link.dart";
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
-import 'package:logger/logger.dart';
 
 class Network {
   static final graphqlEndpoint =
