@@ -3,26 +3,19 @@ part 'add_asset_registration.g.dart';
 
 @JsonSerializable()
 class AddAssetRegistrationData {
-  @JsonKey(name: "Source")
-  String? source;
-  @JsonKey(name: "Version")
-  String? version;
-  @JsonKey(name: "UserID")
-  int? userID;
-  @JsonKey(name: "asset")
-  List<AssetValues>? asset;
-  @JsonKey(name: "status")
-  String? status;
-List<AssetValues>? transfer;
+  String? Source;
 
-  AddAssetRegistrationData({
-    this.source,
-    this.version,
-    this.userID,
-    this.asset,
-    this.transfer,
-    this.status
-  });
+  String? Version;
+
+  int? UserID;
+
+  List<AssetValues>? asset;
+AddAssetRegistrationData(
+      {this.Source,
+      this.Version,
+      this.UserID,
+      this.asset,
+});
 
   factory AddAssetRegistrationData.fromJson(Map<String, dynamic> json) =>
       _$AddAssetRegistrationDataFromJson(json);
@@ -101,4 +94,18 @@ class AssetValues {
       _$AssetValuesFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetValuesToJson(this);
+}
+
+@JsonSerializable()
+class AssetTransfer {
+  final String? Source;
+  final String? Version;
+  final int? UserID;
+  final List<AssetValues>? transfer;
+  AssetTransfer({this.Source,this.UserID,this.Version,this.transfer});
+
+    factory AssetTransfer.fromJson(Map<String, dynamic> json) =>
+      _$AssetTransferFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetTransferToJson(this);
 }

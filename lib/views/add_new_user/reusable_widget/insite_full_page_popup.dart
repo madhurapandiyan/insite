@@ -53,31 +53,34 @@ class _InsitePopUpState extends State<InsitePopUp> {
           child: Center(
             child: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InsiteText(
-                          text: widget.pageTitle,
-                          size: 20,
-                          color: Theme.of(context).buttonColor,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            widget.data = [];
-                            widget.onPop!();
-                            Navigator.of(context).pop();
-                          },
-                          icon: Icon(
-                            Icons.close,
-                            size: 15,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InsiteText(
+                            text: widget.pageTitle,
+                            size: 20,
                             color: Theme.of(context).buttonColor,
                           ),
-                        ),
-                      ],
+                          IconButton(
+                            onPressed: () {
+                              widget.data = [];
+                              widget.onPop!();
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              size: 40,
+                              color: Theme.of(context).buttonColor,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -88,6 +91,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.45,
                           child: ListView.builder(
+                            shrinkWrap: true,
                               itemCount: widget.data![0].length,
                               itemBuilder: (context, int index) {
                                 return Column(
@@ -106,6 +110,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     PopupCard(
                       cardTitle: widget.titles![1],
                       height: MediaQuery.of(context).size.height * 0.35,
@@ -131,6 +136,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     PopupCard(
                       cardTitle: widget.titles![2],
                       height: MediaQuery.of(context).size.height * 0.35,
@@ -156,6 +162,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     PopupCard(
                       cardTitle: widget.titles![3],
                       height: MediaQuery.of(context).size.height * 0.35,
@@ -181,6 +188,7 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
                     GestureDetector(
                       onTap: widget.onButtonTapped as void Function()?,
                       child: Center(

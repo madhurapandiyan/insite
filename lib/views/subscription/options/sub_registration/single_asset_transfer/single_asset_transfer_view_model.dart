@@ -13,6 +13,7 @@ import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/preview_data.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
@@ -31,6 +32,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   bool get enableCustomerDetails => _enableCustomerDetails;
 
   SubScriptionService? _subscriptionService = locator<SubScriptionService>();
+  LocalService? _localService = locator<LocalService>();
 
   int start = 0;
   int limit = 100;
@@ -213,6 +215,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   updateIndustry(String value) {
+    _initialSubIndustryDetailValue = "Select Secondary Details";
     _initialIndustryDetail = value;
     if (value == _industryDetails[1]) {
       _industrySubDetails.clear();
@@ -698,9 +701,16 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         deviceIdController.text = element.gPSDeviceID!;
         machineSerialNumberController.text = element.vIN!;
         _serialNoList.clear();
-        notifyListeners();
       }
     });
+    onSelectingSerialNo(value);
+    notifyListeners();
+  }
+
+  onSelectingSerialNo(String value) async {
+    var data =
+        await _subscriptionService!.getDeviceAssetDetailsBySerialNo(value);
+    machineModelController.text = data!.result!.first.model!;
   }
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
@@ -1019,6 +1029,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   subscriptionAssetRegistration() async {
+    var userId = await _localService!.getUserId();
     Logger().e(customerMobileNoController.text.isEmpty
         ? null
         : customerMobileNoController.text);
@@ -1068,10 +1079,10 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       );
       _totalAssetValues.clear();
       _totalAssetValues.add(deviceAssetValues);
-      AddAssetRegistrationData data = AddAssetRegistrationData(
-          source: "THC",
-          version: "2.1",
-          userID: 58839,
+      AssetTransfer data = AssetTransfer(
+          Source: "THC",
+          Version: "2.1",
+          UserID: int.parse(userId!),
           transfer: _totalAssetValues);
       Logger().i(data.transfer!.length);
       Logger().i(data.transfer!.first.toJson());

@@ -144,6 +144,6 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
         data: _assetData) as Future<AddAssetRegistrationData>);
 
     notifyListeners();
-    return result.status;
+    //return result.status;
   }
 }

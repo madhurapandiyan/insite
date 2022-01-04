@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/locator.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -6,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:load/load.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 import 'single_asset_form_widget/single_asset_form_widget.dart';
 import 'single_asset_validate_widget/single_asset_validate_widget.dart';
@@ -161,11 +164,24 @@ class _SmsScheduleSingleAssetViewState
                                                   showLoadingDialog();
                                                   await viewModel
                                                       .onSavingSmsModel()
-                                                      .then((_) => showDialog(
-                                                          context: context,
-                                                          builder:
-                                                              (ctx) =>
-                                                                  AlertDialog(
+                                                      .then(
+                                                          (value) => showDialog(
+                                                              context: context,
+                                                              builder: (ctx) {
+                                                                if (value ==
+                                                                    "failed") {
+                                                                  return AlertDialog(
+                                                                    backgroundColor:
+                                                                        Theme.of(context)
+                                                                            .backgroundColor,
+                                                                    content:
+                                                                        InsiteText(
+                                                                      text:
+                                                                          "Serial number, Mobile number, Language and Recipient’s Name combination is already exists.",
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  return AlertDialog(
                                                                     backgroundColor:
                                                                         Theme.of(context)
                                                                             .backgroundColor,
@@ -189,7 +205,9 @@ class _SmsScheduleSingleAssetViewState
                                                                       text:
                                                                           "Moblie number Updated successfully!!!.",
                                                                     ),
-                                                                  )));
+                                                                  );
+                                                                }
+                                                              }));
                                                 },
                                                 textColor: white,
                                                 title: "Register",

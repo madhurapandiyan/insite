@@ -111,6 +111,7 @@ class _SingleAssetRegistrationViewState
                                                       controller: viewModel
                                                           .deviceIdController,
                                                     ),
+                                                    //SizedBox(width: 10,),
                                               viewModel.gpsDeviceId.isNotEmpty
                                                   ? SizedBox()
                                                   : CustomAutoCompleteWidget(

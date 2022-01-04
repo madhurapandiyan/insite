@@ -433,8 +433,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0.01,
                                               ),
                                               Container(
-                                                width: 130,
-                                                height: 35,
+                                            
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: Theme.of(context)
@@ -650,9 +649,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0.01,
                                               ),
                                               Container(
-                                                width: 130,
-                                                height: 29,
-                                                decoration: BoxDecoration(
+                                            decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme

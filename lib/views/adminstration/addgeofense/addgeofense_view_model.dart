@@ -3,6 +3,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocore/base.dart' as geo;
 import 'package:geocore/geocore.dart' as Geo;
@@ -22,7 +23,9 @@ import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as polyUtils;
 import 'package:stacked_services/stacked_services.dart';
+import "package:point_in_polygon/point_in_polygon.dart" as point;
 
 class AddgeofenseViewModel extends InsiteViewModel {
   final Geofenceservice? _geofenceService = locator<Geofenceservice>();
@@ -61,7 +64,15 @@ class AddgeofenseViewModel extends InsiteViewModel {
   List<LatLng> _listOfLatLong = [];
   List<LatLng> get listOfLatLong => _listOfLatLong;
 
+  List<geodesy.LatLng> _listOfLatLongGeodesic = [];
+
   List<LatLng?> correctedListofLatlang = [];
+  List<geodesy.LatLng> correctedListofLatlangGeodesy = [];
+
+  List<polyUtils.LatLng> correctedListofLatlangPoly = [];
+  List<polyUtils.LatLng> correctedListofLatlangGeodesyPoly = [];
+
+  List<point.Point> points = [];
 
   bool? isVisionlinkCheck;
 
@@ -272,37 +283,89 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onGettingLatLang(LatLng userLatlong) {
+    geodesy.Geodesy geodesic = geodesy.Geodesy();
     Logger().wtf(userLatlong);
     Polyline userPolyline;
     Polygon userPolygon;
     Circle userCircle;
     double latitude1 = userLatlong.longitude;
     double longitude1 = userLatlong.latitude;
-    Logger().wtf(longitude1);
-    Logger().wtf("$latitude1 last lattitude");
+    Logger().wtf("$longitude1 last longitude1");
+    Logger().wtf("$latitude1 last latitude1");
     LatLng correctedLatLong = LatLng(longitude1, latitude1);
+    Logger().v(correctedLatLong.toJson());
+    // geodesy.LatLng correctedLatLongGeodesy =
+    //     geodesy.LatLng(longitude1, latitude1);
+    // polyUtils.LatLng correctedLatLongpolyUtils =
+    //     polyUtils.LatLng(latitude1, longitude1);
+    // point.Point polypoints =
+    //     point.Point(x: userLatlong.longitude, y: userLatlong.latitude);
     lastLatLong = correctedLatLong;
+    _listOfLatLong.add(userLatlong);
     correctedListofLatlang.add(correctedLatLong);
-    Logger().e(correctedListofLatlang.length);
-    // if (correctedListofLatlang.length > 3) {
-    //   int data = correctedListofLatlang.indexOf(correctedLatLong);
-    //   LatLng? latLngIntersection = correctedListofLatlang.elementAt(data - 1);
-    //   Logger().i(latLngIntersection!.toJson());
-
-    //   if ((longitude1 > latLngIntersection.latitude &&
-    //           latitude1 > latLngIntersection.longitude) ||
-    //       (longitude1 < latLngIntersection.latitude ||
-    //           latitude1 < latLngIntersection.longitude)) {
-    //     correctedListofLatlang.removeLast();
-    //     Fluttertoast.showToast(msg: "polygons can't be intersect");
+    // if (correctedListofLatlangGeodesy.length >= 3) {
+    //   var containsLocation = polyUtils.PolygonUtil.isLocationOnEdge(point, polygon, geodesic);
+    //   Logger().e(containsLocation);
+    //  // Logger().w(polypoints.y);
+    //  // var isPolygon = point.Poly.isPointInPolygon(polypoints, points);
+    //   if (containsLocation) {
+    //     lastLatLong = correctedLatLong;
+    //     _listOfLatLong.add(userLatlong);
+    //     correctedListofLatlang.add(correctedLatLong);
+    //     correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    //     points.add(polypoints);
+    //   } else {
+    //     Fluttertoast.showToast(msg: "no");
     //     return;
     //   }
+    // } else {
+
+    //   correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    //   correctedListofLatlangGeodesyPoly.add(correctedLatLongpolyUtils);
+    //   points.add(polypoints);
     // }
-    _listOfLatLong.add(userLatlong);
+
+    // if (correctedListofLatlangGeodesy.length >= 3) {
+    //   correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    //   var isGeoPointInPolygon = geodesic.isGeoPointInPolygon(
+    //       correctedLatLongGeodesy, correctedListofLatlangGeodesy);
+    //   if (isGeoPointInPolygon) {
+    //     Fluttertoast.showToast(msg: "no");
+    //     Logger().e("point is not in polygon");
+    //     return;
+    //   } else {
+    //     Logger().v("point is in polygon");
+    //     _listOfLatLong.add(userLatlong);
+    //     correctedListofLatlang.add(correctedLatLong);
+    //     correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    //   }
+    // } else {
+    //   _listOfLatLong.add(userLatlong);
+    //   correctedListofLatlang.add(correctedLatLong);
+    //   correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    // }
+
+    // if (latitude1 < latLngIntersection.longitude &&
+    //     longitude1 < latLngIntersection.latitude) {
+    //   Fluttertoast.showToast(msg: "polygons can't be intersect");
+    //   correctedListofLatlang.removeAt(correctedListofLatlang.length-1);
+    //   return;
+    // }
+
+// if (isGeoPointInPolygon) {
+    //   Logger().e(correctedLatLongGeodesy.toJson());
+    //   correctedListofLatlangGeodesy.removeLast();
+    //   _listOfLatLong.removeLast();
+    //   Logger().i(correctedListofLatlangGeodesy);
+    //   Fluttertoast.showToast(msg: "please draw the valid polygon");
+    //   return;
+    // } else {}
+
     onZoomLatitude = _listOfLatLong.first.latitude;
     onZoomLongitude = _listOfLatLong.first.longitude;
 
     userPolyline = Polyline(
+      geodesic: true,
       jointType: JointType.round,
       endCap: Cap.roundCap,
       startCap: Cap.buttCap,
@@ -315,6 +378,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     );
     userPolygon = Polygon(
         strokeColor: color,
+        geodesic: true,
         strokeWidth: 3,
         polygonId: PolygonId(DateTime.now().toString()),
         fillColor: color,
@@ -600,6 +664,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     polyline!.clear();
     circle!.clear();
     listOfLatLong.clear();
+    correctedListofLatlangGeodesy.clear();
     notifyListeners();
   }
 
