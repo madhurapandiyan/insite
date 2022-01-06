@@ -46,9 +46,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
 
   PageController controller = PageController();
 
-  bool isLoading = true;
-
-  bool dummy = false;
+  bool isShowingValidateWidget = false;
 
   String? name;
   String? mobileNo;
@@ -97,16 +95,23 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       _singleAssetResponce = await _smsScheduleService!
           .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
       singleAssetModelResponce = _singleAssetResponce!.result;
+      if (singleAssetModelResponce!.isEmpty) {
+        isShowingValidateWidget = false;
+      } else {
+        isShowingValidateWidget = true;
+      }
+
       // for (var item in singleAssetModelResponce) {
       //   deviceId.add(item.GPSDeviceID);
       //   model.add(item.Model);
       //   serialNo.add(item.SerialNumber);
       //   date.add(item.StartDate);
       // }
-      hideLoadingDialog();
+
       listOfSingleAssetSmsSchedule.clear();
       controller.animateToPage(1,
           duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+      hideLoadingDialog();
 
       notifyListeners();
     } on DioError catch (e) {
@@ -121,13 +126,13 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     _serialNoController!.text = serialNo!;
     _mobileNoController!.text = mobileNo!;
     _nameController!.text = name!;
-    singleAssetModelResponce!.clear();
+
     controller.animateToPage(0,
-        duration: Duration(seconds: 500), curve: Curves.easeInOut);
+        duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
     notifyListeners();
   }
 
-  Future onSavingSmsModel() async {
+  Future<SavingSmsResponce?> onSavingSmsModel() async {
     try {
       for (var i = 0; i < singleAssetModelResponce!.length; i++) {
         _savingSmsModel = SavingSmsModel(
@@ -141,22 +146,18 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
         listOSavingSmsModel.add(_savingSmsModel);
       }
       var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
-// if (data["status"]=="success") {
-//  // popUpMessage="Mo"
-// }
       _serialNoController!.clear();
       _mobileNoController!.clear();
       _nameController!.clear();
       hideLoadingDialog();
-      dummy = false;
       listOSavingSmsModel.clear();
-      singleAssetModelResponce!.clear();
       notifyListeners();
-      return data!.status;
+      controller.animateToPage(0,
+          duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+      return data;
     } on DioError catch (e) {
       listOSavingSmsModel.clear();
       hideLoadingDialog();
-      dummy = false;
       final error = DioException.fromDioError(e);
       snackbarService!.showSnackbar(message: error.message!);
       notifyListeners();

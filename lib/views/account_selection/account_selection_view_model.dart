@@ -194,21 +194,21 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   setAccountSelected(value) async {
     Logger().d("setAccountSelected $value");
-    if (isVisionLink) {
-      value = Customer(
-          CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-          Children: [],
-          CustomerType: "Dealer",
-          DisplayName: "(8050) Tata Hitachi Corporate Office",
-          Name: "Tata Hitachi Corporate Office");
-    } else {
-      value = Customer(
-          CustomerUID: "1857723c-ada1-11eb-8529-0242ac130003",
-          Children: [],
-          CustomerType: "Dealer",
-          DisplayName: "(8050) Tata Hitachi Corporate Office",
-          Name: "Tata Hitachi Corporate Office");
-    }
+    // if (isVisionLink) {
+    //   // value = Customer(
+    //   //     CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+    //   //     Children: [],
+    //   //     CustomerType: "Dealer",
+    //   //     DisplayName: "(8050) Tata Hitachi Corporate Office",
+    //   //     Name: "Tata Hitachi Corporate Office");
+    // } else {
+    //   // value = Customer(
+    //   //     CustomerUID: "1857723c-ada1-11eb-8529-0242ac130003",
+    //   //     Children: [],
+    //   //     CustomerType: "Dealer",
+    //   //     DisplayName: "(8050) Tata Hitachi Corporate Office",
+    //   //     Name: "Tata Hitachi Corporate Office");
+    // }
 
     _accountSelected = value;
     _subAccountSelected = null;
@@ -230,12 +230,12 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   setSubAccountSelected(Customer value) {
     Logger().d("setSubAccountSelected " + value.CustomerUID!);
-    value = Customer(
-        CustomerUID: "",
-        Children: [],
-        CustomerType: "ALL",
-        DisplayName: "ALL ACCOUNTS",
-        Name: "ALL ACCOUNTS");
+    // value = Customer(
+    //     CustomerUID: "",
+    //     Children: [],
+    //     CustomerType: "ALL",
+    //     DisplayName: "ALL ACCOUNTS",
+    //     Name: "ALL ACCOUNTS");
     _subAccountSelected = value;
     _localService!.saveAccountInfo(accountSelected!);
     if (value.CustomerType != "ALL") {

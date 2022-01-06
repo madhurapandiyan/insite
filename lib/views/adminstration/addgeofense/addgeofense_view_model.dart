@@ -597,7 +597,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
             initialValue == dropDownlist[7]) {
           var data =
               await _geofenceService!.postGeofenceData(geofenceRequestPayload!);
-          _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
+          _navigationService!.navigateToView(ManageGeofenceView());
           hideLoadingDialog();
         } else {
           var data =
@@ -634,7 +634,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
       snackbarService!.showSnackbar(message: val.message!);
       Logger().e(e.message);
     }
-    notifyListeners();
   }
 
   onCancelButtonClicked() {

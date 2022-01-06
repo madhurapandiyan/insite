@@ -425,6 +425,12 @@ class AddNewUserViewModel extends InsiteViewModel {
       return false;
     }
 
+    if (applicationSelectedDropDownList.isEmpty) {
+      snackbarService?.showSnackbar(
+          message: "Application Permission Not Selected");
+      return false;
+    }
+
     // if (addressController.text.isEmpty) {
     //   snackbarService.showSnackbar(message: "Address is empty");
     //   return false;

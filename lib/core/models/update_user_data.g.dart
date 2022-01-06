@@ -30,8 +30,7 @@ Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) =>
 DeleteUserDataIndStack _$DeleteUserDataIndStackFromJson(
         Map<String, dynamic> json) =>
     DeleteUserDataIndStack(
-      users:
-          (json['users'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      users: (json['users'] as List<dynamic>).map((e) => e as String).toList(),
       customerUid: json['customerUid'] as String?,
     );
 

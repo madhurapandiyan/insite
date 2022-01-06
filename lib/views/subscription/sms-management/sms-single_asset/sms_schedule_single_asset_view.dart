@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:insite/core/locator.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -8,7 +6,6 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:load/load.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 import 'single_asset_form_widget/single_asset_form_widget.dart';
 import 'single_asset_validate_widget/single_asset_validate_widget.dart';
@@ -79,13 +76,16 @@ class _SmsScheduleSingleAssetViewState
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.4,
+                      AnimatedContainer(
+                        duration: Duration(seconds: 1),
                         height: MediaQuery.of(context).size.height * 0.02,
                         decoration: BoxDecoration(
                           color: Theme.of(context).buttonColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
+                        width: viewModel.singleAssetModelResponce!.isEmpty
+                            ? MediaQuery.of(context).size.width * 0.4
+                            : MediaQuery.of(context).size.width * 1,
                       ),
                     ],
                   ),
@@ -105,7 +105,7 @@ class _SmsScheduleSingleAssetViewState
                               nameController: viewModel.nameController,
                               onSaving: viewModel.onSavingForm,
                               serialNoController: viewModel.serialNoController),
-                          viewModel.singleAssetModelResponce!.isEmpty
+                          !viewModel.isShowingValidateWidget
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
@@ -168,12 +168,28 @@ class _SmsScheduleSingleAssetViewState
                                                           (value) => showDialog(
                                                               context: context,
                                                               builder: (ctx) {
-                                                                if (value ==
-                                                                    "failed") {
+                                                                if (value!
+                                                                    .AssetSerialNo!
+                                                                    .isNotEmpty) {
                                                                   return AlertDialog(
                                                                     backgroundColor:
                                                                         Theme.of(context)
                                                                             .backgroundColor,
+                                                                    actions: [
+                                                                      FlatButton.icon(
+                                                                          onPressed: () {
+                                                                            Navigator.of(context).pop();
+                                                                          },
+                                                                          icon: Icon(
+                                                                            Icons.done,
+                                                                            color:
+                                                                                Theme.of(context).textTheme.bodyText1!.color,
+                                                                          ),
+                                                                          label: InsiteText(
+                                                                            text:
+                                                                                "Okay",
+                                                                          ))
+                                                                    ],
                                                                     content:
                                                                         InsiteText(
                                                                       text:

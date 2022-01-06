@@ -201,8 +201,9 @@ class SubScriptionService extends BaseService {
 
   Future<AssetTransferData?> postSingleTransferRegistration(
       {List<Transfer>? transferData}) async {
+    var userId =await _localService!.getUserId();
     var body = AssetTransferData(
-        source: "THC", version: "2.1", userID: 58839, transfer: transferData);
+        source: "THC", version: "2.1", userID: int.parse(userId!), transfer: transferData);
 
     try {
       AssetTransferData addAssetRegistrationData = await MyApi()
@@ -227,7 +228,7 @@ class SubScriptionService extends BaseService {
 
   Future<AddAssetRegistrationData?> postSingleAssetRegistration(
       {List<AssetValues>? data}) async {
-    var userId =await _localService!.getUserId();
+    var userId = await _localService!.getUserId();
     var body = AddAssetRegistrationData(
       Source: "THC",
       Version: "2.1",

@@ -32,57 +32,31 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
         children: [
           Table(
             border: TableBorder.all(width: 2, color: borderLineColor),
-            columnWidths: {0: FlexColumnWidth(3.5), 1: FlexColumnWidth(5)},
+            columnWidths: {0: FlexColumnWidth(6), 1: FlexColumnWidth(5)},
             children: [
               TableRow(children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InsiteTableRowItemWithImage(
                       path: "assets/images/EX210.png",
                       title: "Device ID ",
                     ),
-                    InsiteRichText(
-                      title: deviceId,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: InsiteText(
+                        text: deviceId,
+                        ),
                     )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InsiteText(
-                          text: "Make",
-                        ),
-                        Container(
-                          width: 60,
-                          child: InsiteTextOverFlow(
-                            overflow: TextOverflow.ellipsis,
-                            text: model,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InsiteText(
-                          text: "Model",
-                        ),
-                        Container(
-                          width: 100,
-                          child: InsiteTextOverFlow(
-                            overflow: TextOverflow.ellipsis,
-                            text: model,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                Center(
+                  child: InsiteTableRowItem(
+                    title: "Model",
+                    content: model,
+                  ),
+                )
               ]),
               TableRow(children: [
                 Container(
@@ -154,7 +128,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
               margin: EdgeInsets.all(3),
               padding: EdgeInsets.only(left: 5),
               //height: MediaQuery.of(context).size.height * 0.07,
-              width: MediaQuery.of(context).size.width * 0.80,
+              width: MediaQuery.of(context).size.width * 1,
               decoration: BoxDecoration(
                   border: Border.all(width: 2, color: borderLineColor),
                   borderRadius:

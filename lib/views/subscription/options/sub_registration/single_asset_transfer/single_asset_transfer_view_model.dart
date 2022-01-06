@@ -542,7 +542,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   getSelectedDate(DateTime? value) {
     _pickedDate = value;
-    commisioningDateController.text = DateFormat.yMMMd().format(_pickedDate!);
+    commisioningDateController.text =
+        DateFormat("dd/MM/yyyy").format(_pickedDate!);
     notifyListeners();
   }
 
@@ -651,7 +652,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   onSelectedDealerNameTile(String value) {
-    Logger().e(_devices.length);
     _devices.forEach((element) {
       if (element.Name == value) {
         dealerNameController.text = element.Name!;
@@ -793,6 +793,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             detailResultList.clear();
             notifyListeners();
           }
+        }else{
+          _customerCode.clear();
+          notifyListeners();
         }
       }
     } on DioError catch (e) {
@@ -963,6 +966,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
                 searchBy: "VIN"));
         gpsDeviceIdList.clear();
         _serialNoList.clear();
+        deviceList.clear();
 
         if (serialNoResults != null) {
           if (serialNoResults.result!.isNotEmpty) {
@@ -1004,13 +1008,19 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
                 limit: limit,
                 searchBy: "GPSDeviceID");
         serialNoList.clear();
+        _gpsDeviceIdList.clear();
+        deviceList.clear();
         if (deviceIdResults != null) {
           if (deviceIdResults.result!.isNotEmpty) {
             deviceList.addAll(deviceIdResults.result!);
             _loading = false;
             _loadingMore = false;
             deviceList.forEach((element) {
-              _gpsDeviceIdList.add(element.gPSDeviceID);
+              if (_gpsDeviceIdList
+                  .any((device) => device == element.gPSDeviceID)) {
+              } else {
+                _gpsDeviceIdList.add(element.gPSDeviceID);
+              }
             });
           } else {
             _loading = false;
@@ -1030,9 +1040,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   subscriptionAssetRegistration() async {
     var userId = await _localService!.getUserId();
-    Logger().e(customerMobileNoController.text.isEmpty
-        ? null
-        : customerMobileNoController.text);
+    Logger().e(userId);
     try {
       AssetValues deviceAssetValues;
       deviceAssetValues = AssetValues(

@@ -25,7 +25,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
             body: viewModel.isLoading
                 ? Center(child: InsiteProgressBar())
                 : SingleChildScrollView(
-                  child: Column(
+                    child: Column(
                       children: [
                         Container(
                           padding: EdgeInsets.all(20),
@@ -50,12 +50,16 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                           ),
                         ),
                         viewModel.geofence!.Geofences!.isEmpty
-                            ? Expanded(
-                                child: Center(
-                                  child: InsiteText(
-                                    text: "No geofence found",
-                                    size: 20,
-                                  ),
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 300,),
+                                    InsiteText(
+                                      text: "No Geofence found",
+                                      size: 20,
+                                    ),
+                                  ],
                                 ),
                               )
                             : Column(
@@ -65,28 +69,33 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                 return Column(
                                   children: [
                                     ManageGeofenceWidget(
-                                      encodedPolyline: viewModel.listOfEncoded[i],
+                                      encodedPolyline:
+                                          viewModel.listOfEncoded[i],
                                       isFav: model[i].IsFavorite,
                                       onFavourite: (uid) {
                                         viewModel.markFavouriteStatus(uid!, i);
                                       },
                                       onNavigation: () {
-                                        viewModel.onNavigation(model[i].GeofenceUID);
+                                        viewModel
+                                            .onNavigation(model[i].GeofenceUID);
                                       },
                                       ondeleting: (uid, actionutc) {
-                                        viewModel.deleteGeofence(uid, actionutc, i);
+                                        viewModel.deleteGeofence(
+                                            uid, actionutc, i);
                                       },
                                       geofenceName: model[i].GeofenceName,
                                       geofenceDate: model[i].EndDate,
                                       geofenceUID: model[i].GeofenceUID,
                                     ),
-                                    SizedBox(height: 10,)
+                                    SizedBox(
+                                      height: 10,
+                                    )
                                   ],
                                 );
                               }))
                       ],
                     ),
-                ));
+                  ));
       },
       viewModelBuilder: () => ManageGeofenceViewModel(),
     );

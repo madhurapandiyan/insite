@@ -207,22 +207,23 @@ class ManageUserViewModel extends InsiteViewModel {
   deleteSelectedUsers() async {
     Logger().i("deleteSelectedUsers");
     if (showDelete) {
-      List<String?> userIds = [];
+      List<String> userIds = [];
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(data.user!.userUid);
+          userIds.add(data.user!.userUid!);
         }
       }
       if (userIds.isNotEmpty) {
         showLoadingDialog();
         var result = await _manageUserService!.deleteUsers(userIds);
         if (result != null) {
+          await deleteUsersFromList(userIds);
           snackbarService!.showSnackbar(message: "Deleted successfully");
         } else {
           snackbarService!.showSnackbar(message: "Deleting failed");
         }
-        await deleteUsersFromList(userIds);
+
         hideLoadingDialog();
         // getManagerUserAssetList();
       }
@@ -239,6 +240,7 @@ class ManageUserViewModel extends InsiteViewModel {
         }
       }
     }
+    _totalCount = _totalCount - ids.length;
     notifyListeners();
     checkEditAndDeleteVisibility();
   }

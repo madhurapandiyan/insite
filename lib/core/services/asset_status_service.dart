@@ -93,7 +93,8 @@ class AssetStatusService extends DataBaseService {
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
                 .assetCount(
-                    Urls.assetCountSummary +
+                  type==FilterType.USERTYPE || type==FilterType.JOBTYPE?
+                    Urls.userCount+FilterUtils.constructQueryFromMap(queryMap):Urls.assetCountSummary +
                         FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID,
                     Urls.vfleetPrefix);
