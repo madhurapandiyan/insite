@@ -26,9 +26,9 @@ class DeleteUserData {
 
 @JsonSerializable()
 class DeleteUserDataIndStack {
-  List<String>? users;
+  List<String> users;
   String? customerUid;
-  DeleteUserDataIndStack({this.users, this.customerUid});
+  DeleteUserDataIndStack({required this.users, this.customerUid});
   factory DeleteUserDataIndStack.fromJson(Map<String, dynamic> json) =>
       _$DeleteUserDataIndStackFromJson(json);
 

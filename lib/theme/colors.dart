@@ -120,6 +120,7 @@ var indiaStackBlueWhite = ThemeData(
     accentColor: Colors.white);
 
 var indiaStackOrangeBlack = ThemeData(
+    tooltipTheme: TooltipThemeData(decoration: BoxDecoration(color: white)),
     cardColor: cardBackgroundColor2,
     backgroundColor: backgroundColor3,
     fontFamily: 'Roboto',

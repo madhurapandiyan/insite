@@ -475,7 +475,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<dynamic> deleteUsers(users) async {
+  Future<dynamic> deleteUsers(List<String> users) async {
     Logger().i("deleteUsers");
     try {
       if (isVisionLink) {

@@ -146,45 +146,45 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                               ),
                       )
                     : SizedBox(),
-                shouldShowFilter!
-                    ? Container(
-                        color: isFilterSelected!
-                            ? Theme.of(context).buttonColor
-                            : appbarcolor,
-                        child: count != null && count > 0
-                            ? Badge(
-                                badgeContent: Text(count.toString(),
-                                    style: TextStyle(
-                                      color: Theme.of(context).buttonColor,
-                                    )),
-                                badgeColor: white,
-                                position:
-                                    BadgePosition.topStart(start: 25, top: 1),
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/images/filter.svg",
-                                    color: isFilterSelected!
-                                        ? white
-                                        : Theme.of(context).buttonColor,
-                                  ),
-                                  onPressed: () {
-                                    onFilterTap!();
-                                  },
-                                ),
-                              )
-                            : IconButton(
-                                icon: SvgPicture.asset(
-                                  "assets/images/filter.svg",
-                                  color: isFilterSelected!
-                                      ? white
-                                      : Theme.of(context).buttonColor,
-                                ),
-                                onPressed: () {
-                                  onFilterTap!();
-                                },
-                              ),
-                      )
-                    : SizedBox(),
+                // shouldShowFilter!
+                //     ? Container(
+                //         color: isFilterSelected!
+                //             ? Theme.of(context).buttonColor
+                //             : appbarcolor,
+                //         child: count != null && count > 0
+                //             ? Badge(
+                //                 badgeContent: Text(count.toString(),
+                //                     style: TextStyle(
+                //                       color: Theme.of(context).buttonColor,
+                //                     )),
+                //                 badgeColor: white,
+                //                 position:
+                //                     BadgePosition.topStart(start: 25, top: 1),
+                //                 child: IconButton(
+                //                   icon: SvgPicture.asset(
+                //                     "assets/images/filter.svg",
+                //                     color: isFilterSelected!
+                //                         ? white
+                //                         : Theme.of(context).buttonColor,
+                //                   ),
+                //                   onPressed: () {
+                //                     onFilterTap!();
+                //                   },
+                //                 ),
+                //               )
+                //             : IconButton(
+                //                 icon: SvgPicture.asset(
+                //                   "assets/images/filter.svg",
+                //                   color: isFilterSelected!
+                //                       ? white
+                //                       : Theme.of(context).buttonColor,
+                //                 ),
+                //                 onPressed: () {
+                //                   onFilterTap!();
+                //                 },
+                //               ),
+                //       )
+                //     : SizedBox(),
                 shouldShowSearch!
                     ? Container(
                         color: isSearchSelected!

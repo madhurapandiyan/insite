@@ -11,6 +11,7 @@ import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -187,8 +188,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   TextEditingController customerEmailController = TextEditingController();
 
   getSelectedDate(DateTime? value) {
+    Logger().e(value);
     _pickedDate = value;
-    hourMeterDateController.text = DateFormat.yMMMd().format(_pickedDate!);
+    var outputFormat = DateFormat('dd-MM-yyyy');
+    //var dateTime = DateFormat("dd-MM-yyyy").parse(_pickedDate.toString());
+    hourMeterDateController.text = outputFormat.format(value!);
+    // DateFormat.yMMMd().format(_pickedDate!);
     notifyListeners();
   }
 
@@ -282,45 +287,55 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   subscriptionAssetRegistration() async {
-    Logger().e(previewDeviceDetails[3].value!);
-    AssetValues deviceAssetValues;
-    deviceAssetValues = AssetValues(
-      deviceId: previewDeviceDetails[0].value,
-      machineSlNo: previewDeviceDetails[1].value,
-      machineModel: previewDeviceDetails[2].value,
-      hMRDate: previewDeviceDetails[4].value,
-      hMR: previewDeviceDetails[4].value == ""
-          ? 0
-          : double.parse(previewDeviceDetails[3].value!).toInt(),
-      plantName: generalPlantDetails[0].value == ""
-          ? null
-          : generalPlantDetails[0].value,
-      plantCode: generalPlantDetails[1].value,
-      plantEmailID: generalPlantDetails[2].value,
-      customerName: generalCustomerDetails[0].value!.isEmpty
-          ? null
-          : generalCustomerDetails[0].value,
-      customerCode: generalCustomerDetails[1].value!.isEmpty
-          ? null
-          : generalCustomerDetails[1].value,
-      customerEmailID: generalCustomerDetails[2].value!.isEmpty
-          ? null
-          : generalCustomerDetails[2].value,
-      dealerName: generalDealerDetails[0].value,
-      dealerCode: generalDealerDetails[1].value,
-      dealerEmailID: generalDealerDetails[2].value,
-      commissioningDate: null,
-      primaryIndustry: null,
-      secondaryIndustry: null,
-    );
-    _totalAssetValues.add(deviceAssetValues);
-    Logger().i(_totalAssetValues.last.toJson);
+    try {
+      Logger().e(previewDeviceDetails[3].value!);
+      AssetValues deviceAssetValues;
+      deviceAssetValues = AssetValues(
+        deviceId: previewDeviceDetails[0].value,
+        machineSlNo: previewDeviceDetails[1].value,
+        machineModel: previewDeviceDetails[2].value,
+        hMRDate: previewDeviceDetails[4].value,
+        hMR: previewDeviceDetails[4].value == ""
+            ? 0
+            : double.parse(previewDeviceDetails[3].value!).toInt(),
+        plantName: generalPlantDetails[0].value == ""
+            ? null
+            : generalPlantDetails[0].value,
+        plantCode: generalPlantDetails[1].value,
+        plantEmailID: generalPlantDetails[2].value,
+        customerName: generalCustomerDetails[0].value!.isEmpty
+            ? null
+            : generalCustomerDetails[0].value,
+        customerCode: generalCustomerDetails[1].value!.isEmpty
+            ? null
+            : generalCustomerDetails[1].value,
+        customerEmailID: generalCustomerDetails[2].value!.isEmpty
+            ? null
+            : generalCustomerDetails[2].value,
+        dealerName: generalDealerDetails[0].value!.isEmpty
+            ? null
+            : generalDealerDetails[0].value,
+        dealerCode: generalDealerDetails[1].value!.isEmpty
+            ? null
+            : generalDealerDetails[1].value,
+        dealerEmailID: generalDealerDetails[2].value!.isEmpty
+            ? null
+            : generalDealerDetails[2].value,
+        commissioningDate: null,
+        primaryIndustry: null,
+        secondaryIndustry: null,
+      );
+      _totalAssetValues.add(deviceAssetValues);
+      Logger().i(_totalAssetValues.last.toJson);
 
-     var result = await _subscriptionService!
-         .postSingleAssetRegistration(data: _totalAssetValues);
-
-    notifyListeners();
-    return result;
+       var result = await _subscriptionService!
+           .postSingleAssetRegistration(data: _totalAssetValues);
+      notifyListeners();
+      _totalAssetValues.clear();
+      return result;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   getSubcriptionDeviceListData(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -10,6 +11,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
   final TextEditingController? controller;
   final Function(String?)? onSelect;
   final bool? isAlign;
+  final bool isShowing;
   final TextInputType? keyboardType;
   final dynamic Function(String)? validator;
   final bool? isEnable;
@@ -22,61 +24,48 @@ class CustomAutoCompleteWidget extends StatelessWidget {
       this.keyboardType,
       this.validator,
       this.isEnable,
+      required this.isShowing,
       this.onSelect});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: items!.isEmpty ? 129 : 200,
-      height: items!.isEmpty ? 70 : 300,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InsiteText(
-            text: textBoxTitle,
-            size: 13,
-            fontWeight: FontWeight.w700,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InsiteText(
+          text: textBoxTitle,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1,
+          height: 60,
+          child: CustomTextBox(
+            isenabled: isEnable,
+            controller: controller,
+            onChanged: (value) {
+              onChange!(value);
+            },
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.01,
-          ),
-          Container(
-            width: 150,
-            height: 40,
-            child: CustomTextBox(
-              isenabled: isEnable,
-              validator: validator,
-              keyPadType: keyboardType,
-              controller: controller,
-              onChanged: onChange,
-            ),
-          ),
-          items!.isEmpty
-              ? SizedBox()
-              : Expanded(
-                  child: Container(
-                    //  width: 150,
-                    height: 300,
+        ),
+        isShowing
+            ? SizedBox()
+            : SingleChildScrollView(
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 8),
                     color: Theme.of(context).textTheme.bodyText1!.color,
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        ListView.builder(
-                            itemCount: items!.length,
-                            itemBuilder: (ctx, i) {
-                              return DeviceIdListWidget(
-                                  //padding: EdgeInsets.only(right: 4, left: 4),
-                                  //  size: 10,
-                                  deviceId: items![i],
-                                  onSelected: () {
-                                    onSelect!(items![i]);
-                                  });
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-        ],
-      ),
+                    child: Column(
+                      children: List.generate(
+                          items!.length,
+                          (i) => DeviceIdListWidget(
+                              onSelected: () {
+                                onSelect!(items![i]);
+                                FocusScope.of(context).unfocus();
+                              },
+                              deviceId: items![i])),
+                    )),
+              ),
+      ],
     );
   }
 }

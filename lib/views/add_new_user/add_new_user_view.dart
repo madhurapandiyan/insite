@@ -485,39 +485,23 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     try {
                                       if (widget.user != null) {
                                         Logger().i("editing user");
-                                        if (viewModel.emailController.text
-                                                .isNotEmpty &&
-                                            viewModel.firstNameController.text
-                                                .isNotEmpty &&
-                                            viewModel.lastNameController.text
-                                                .isNotEmpty) {
-                                          await viewModel.getEditUserData(
-                                              viewModel
-                                                  .firstNameController.text,
-                                              viewModel.lastNameController.text,
-                                              viewModel.emailController.text,
-                                              viewModel.jobTitleValue,
-                                              viewModel
-                                                  .phoneNumberController.text,
-                                              viewModel.jobTypeValue,
-                                              "SSO",
-                                              viewModel.addressController.text,
-                                              viewModel.stateController.text,
-                                              viewModel.countryController.text,
-                                              viewModel.pinCodeController.text);
-                                        } else {
-                                          print(
-                                              "Not a valid user while editing");
-                                        }
+
+                                        await viewModel.getEditUserData(
+                                            viewModel.firstNameController.text,
+                                            viewModel.lastNameController.text,
+                                            viewModel.emailController.text,
+                                            viewModel.jobTitleValue,
+                                            viewModel
+                                                .phoneNumberController.text,
+                                            viewModel.jobTypeValue,
+                                            "SSO",
+                                            viewModel.addressController.text,
+                                            viewModel.stateController.text,
+                                            viewModel.countryController.text,
+                                            viewModel.pinCodeController.text);
                                       } else {
                                         Logger().i("adding user");
-                                        if (viewModel.emailController.text
-                                                .isNotEmpty &&
-                                            viewModel.firstNameController.text
-                                                .isNotEmpty &&
-                                            viewModel.lastNameController.text
-                                                .isNotEmpty) {
-                                          await viewModel.getAddUserData(
+                                       await viewModel.getAddUserData(
                                             viewModel.firstNameController.text,
                                             viewModel.lastNameController.text,
                                             viewModel.emailController.text,
@@ -532,10 +516,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                             "SSO",
                                             viewModel.emailController.text,
                                           );
-                                        } else {
-                                          print(
-                                              "Not a valid user while adding");
-                                        }
+                                        
                                       }
                                     } catch (e) {
                                       Logger().e(e);

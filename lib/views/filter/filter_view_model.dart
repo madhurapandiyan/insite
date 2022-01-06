@@ -1,10 +1,8 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
-import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
-import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
@@ -88,11 +86,11 @@ class FilterViewModel extends InsiteViewModel {
 
     AssetCount? resultJobType = await _assetService!.getAssetCount(
         "JobType", FilterType.JOBTYPE, graphqlSchemaService!.allAssets);
-    addUserData(filterDataJobType, resultJobType!, FilterType.JOBTYPE);
+    addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
 
     AssetCount? resultUserType = await _assetService!.getAssetCount(
         "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
-    addUserData(filterDataUserType, resultUserType!, FilterType.USERTYPE);
+    addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
     selectedFilterData = appliedFilters;
     _loading = false;
@@ -139,7 +137,7 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  addUserData(filterData, AssetCount resultModel, type) {
+  addUserData(filterData, AssetCount? resultModel, type) {
     if (resultModel != null &&
         resultModel.countData != null &&
         resultModel.countData!.isNotEmpty) {

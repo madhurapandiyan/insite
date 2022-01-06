@@ -26,7 +26,8 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static double getHrsValueeData(double? percentageValue, double? runTimeValue) {
+  static double getHrsValueeData(
+      double? percentageValue, double? runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
@@ -34,7 +35,8 @@ class Utils {
     return hrsData;
   }
 
-  static String getPercentageValueData(double? runTimevalue, double? idleValue) {
+  static String getPercentageValueData(
+      double? runTimevalue, double? idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
       return "0";
     }
@@ -696,9 +698,8 @@ class Utils {
   }
 
   static String getUserId(String userId) {
-    return userId
-        .split("{\"userName\":null,\"userID\":")[1]
-        .split(",\"UUID\":")
-        .first;
+    var splitList = userId.split("\"userID\":");
+    var splitList2 = splitList[1].split(",\"UUID\"");
+    return splitList2[0];
   }
 }

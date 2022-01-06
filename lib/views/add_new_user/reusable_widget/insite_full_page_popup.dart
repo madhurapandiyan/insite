@@ -89,106 +89,124 @@ class _InsitePopUpState extends State<InsitePopUp> {
                       cardTitle: widget.titles![0],
                       rows: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.45,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                              itemCount: widget.data![0].length,
-                              itemBuilder: (context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsitePopupRow(
-                                      title: widget.data![0][index].title??"",
-                                      value: widget.data![0][index].value??"",
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                );
-                              }),
+                          //height: MediaQuery.of(context).size.height * 0.45,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(
+                                widget.data![0].length,
+                                (index) => Column(
+                                      children: [
+                                        InsitePopupRow(
+                                          title: widget.data![0][index].title ??
+                                              "",
+                                          value: widget.data![0][index].value ??
+                                              "",
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    )),
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     PopupCard(
                       cardTitle: widget.titles![1],
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      //height: MediaQuery.of(context).size.height * 0.35,
                       rows: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: ListView.builder(
-                              itemCount: widget.data![1].length,
-                              itemBuilder: (context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsitePopupRow(
-                                      title: widget.data![1][index].title??"",
-                                      value: widget.data![1][index].value??"",
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
+                            //height: MediaQuery.of(context).size.height * 0.25,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  widget.data![1].length,
+                                  (index) => Column(
+                                        children: [
+                                          InsitePopupRow(
+                                            title:
+                                                widget.data![1][index].title ??
+                                                    "",
+                                            value:
+                                                widget.data![1][index].value ??
+                                                    "",
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      )),
+                            )),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     PopupCard(
                       cardTitle: widget.titles![2],
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      //height: MediaQuery.of(context).size.height * 0.35,
                       rows: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: ListView.builder(
-                              itemCount: widget.data![2].length,
-                              itemBuilder: (context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsitePopupRow(
-                                      title: widget.data![2][index].title??"",
-                                      value: widget.data![2][index].value??"",
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
+                            //height: MediaQuery.of(context).size.height * 0.25,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  widget.data![2].length,
+                                  (index) => Column(
+                                        children: [
+                                          InsitePopupRow(
+                                            title:
+                                                widget.data![2][index].title ??
+                                                    "",
+                                            value:
+                                                widget.data![2][index].value ??
+                                                    "",
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      )),
+                            )),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     PopupCard(
                       cardTitle: widget.titles![3],
-                      height: MediaQuery.of(context).size.height * 0.35,
+                     // height: MediaQuery.of(context).size.height * 0.35,
                       rows: [
                         Container(
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          child: ListView.builder(
-                              itemCount: widget.data![3].length,
-                              itemBuilder: (context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InsitePopupRow(
-                                      title: widget.data![3][index].title??"",
-                                      value: widget.data![3][index].value??"",
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
+                            //height: MediaQuery.of(context).size.height * 0.25,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  widget.data![3].length,
+                                  (index) => Column(
+                                        children: [
+                                          InsitePopupRow(
+                                            title:
+                                                widget.data![3][index].title ??
+                                                    "",
+                                            value:
+                                                widget.data![3][index].value ??
+                                                    "",
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                        ],
+                                      )),
+                            )),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     GestureDetector(
                       onTap: widget.onButtonTapped as void Function()?,
                       child: Center(

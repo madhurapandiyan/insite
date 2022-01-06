@@ -116,13 +116,11 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     .height *
                                                 0.01,
                                           ),
-                                          Row(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              viewModel.serialNoList.isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
+                                              CustomAutoCompleteWidget(
                                                       controller: viewModel
                                                           .deviceIdController,
                                                       onSelect: (value) {
@@ -137,12 +135,11 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       onChange: (value) {
                                                         viewModel.getDeviceIds(
                                                             value);
-                                                      },
+                                                      }, isShowing:viewModel.gpsDeviceIdList.isEmpty,
                                                     ),
-                                              viewModel.gpsDeviceIdList
-                                                      .isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
+                                                     SizedBox(height: 10,),
+                                              CustomAutoCompleteWidget(
+                                                isShowing: viewModel.serialNoList.isEmpty,
                                                       isAlign: false,
                                                       controller: viewModel
                                                           .machineSerialNumberController,
@@ -190,7 +187,6 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
                                                       width: 130,
                                                       child: CustomTextBox(
                                                         controller: viewModel
@@ -298,13 +294,12 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     .height *
                                                 0.01,
                                           ),
-                                          Row(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              viewModel.dealerCode.isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
+                                              CustomAutoCompleteWidget(
+                                                isShowing: viewModel.dealerId.isEmpty,
                                                       controller: viewModel
                                                           .dealerNameController,
                                                       onSelect: (value) {
@@ -322,9 +317,9 @@ class SingleAssetTransferView extends StatelessWidget {
                                                                 type: "DEALER");
                                                       },
                                                     ),
-                                              viewModel.dealerId.isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
+                                                     SizedBox(height: 10,),
+                                              CustomAutoCompleteWidget(
+                                                isShowing: viewModel.dealerCode.isEmpty,
                                                       isAlign: false,
                                                       keyboardType:
                                                           TextInputType.number,
@@ -355,7 +350,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     .height *
                                                 0.02,
                                           ),
-                                          Row(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -376,14 +371,14 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
-                                                      width: 130,
+                                                      
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .dealerEmailController,
                                                       )),
                                                 ],
                                               ),
+                                              SizedBox(height: 10,),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -401,8 +396,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
-                                                      width: 130,
+                                                     
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .dealerMobileNoController,
@@ -433,7 +427,6 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0.01,
                                               ),
                                               Container(
-                                            
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: Theme.of(context)
@@ -492,19 +485,18 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     .height *
                                                 0.01,
                                           ),
-                                          Row(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              viewModel.customerCode.isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
-                                                      isEnable: viewModel
-                                                              .allowTransferAsset
-                                                          ? false
-                                                          : true,
+                                              CustomAutoCompleteWidget(
+                                                    isShowing: viewModel.customerId.isEmpty,
+                                                      isEnable:viewModel
+                                                                .allowTransferAsset
+                                                            ? false
+                                                            : true,
                                                       controller: viewModel
                                                           .customerNameController,
                                                       onSelect: (value) {
@@ -524,13 +516,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                                     "CUSTOMER");
                                                       },
                                                     ),
-                                              viewModel.customerId.isNotEmpty
-                                                  ? SizedBox()
-                                                  : CustomAutoCompleteWidget(
-                                                      isEnable: viewModel
-                                                              .allowTransferAsset
-                                                          ? false
-                                                          : true,
+                                                     SizedBox(height: 10,),
+                                              CustomAutoCompleteWidget(
+                                                isShowing: viewModel.customerCode.isEmpty,
+                                                      isEnable:viewModel
+                                                                .allowTransferAsset
+                                                            ? false
+                                                            : true,
                                                       keyboardType:
                                                           TextInputType.number,
                                                       isAlign: false,
@@ -562,7 +554,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     .height *
                                                 0.02,
                                           ),
-                                          Row(
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -583,8 +575,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
-                                                      width: 130,
+                                                     
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .customerEmailController,
@@ -595,6 +586,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       )),
                                                 ],
                                               ),
+                                               SizedBox(height: 10,),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -613,8 +605,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      height: 35,
-                                                      width: 130,
+                                                     
                                                       child: CustomTextBox(
                                                         controller: viewModel
                                                             .customerMobileNoController,
@@ -649,7 +640,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0.01,
                                               ),
                                               Container(
-                                            decoration: BoxDecoration(
+                                                decoration: BoxDecoration(
                                                     border: Border.all(
                                                       color: Theme.of(context)
                                                           .textTheme

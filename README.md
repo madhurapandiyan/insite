@@ -30,6 +30,12 @@ For Vision Link Release - flutter build ios --flavor visionlink -t lib/main_visi
 For India Stack Release - flutter build ios --flavor indiastack -t lib/main_indiastack.dart
 For Trimble Release - flutter build ios --flavor trimble -t lib/main_trimble.dart
 
+## Build app_bundle commands
+
+For Vision Link app_bundle - flutter build appbundle --flavor visionlink -t lib/main_visionlink.dart
+For India Stack app_bundle - flutter build appbundle --flavor indiastack -t lib/main_indiastack.dart
+For Trimble app_bundle - flutter build appbundle --flavor trimble -t lib/main_trimble.dart
+
 For Vision Link Split Release:
 flutter build apk --flavor visionlink -t lib/main_visionlink.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi
         or
