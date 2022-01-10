@@ -294,15 +294,27 @@ class AddgeofenseViewModel extends InsiteViewModel {
     Logger().wtf("$latitude1 last latitude1");
     LatLng correctedLatLong = LatLng(longitude1, latitude1);
     Logger().v(correctedLatLong.toJson());
-    // geodesy.LatLng correctedLatLongGeodesy =
-    //     geodesy.LatLng(longitude1, latitude1);
+    geodesy.LatLng correctedLatLongGeodesy =
+        geodesy.LatLng(longitude1, latitude1);
     // polyUtils.LatLng correctedLatLongpolyUtils =
-    //     polyUtils.LatLng(latitude1, longitude1);
+    //  polyUtils.LatLng(latitude1, longitude1);
     // point.Point polypoints =
     //     point.Point(x: userLatlong.longitude, y: userLatlong.latitude);
     lastLatLong = correctedLatLong;
     _listOfLatLong.add(userLatlong);
     correctedListofLatlang.add(correctedLatLong);
+    if (correctedListofLatlang.length >= 3) {
+      Logger().e(correctedListofLatlangGeodesy.length);
+      var checking = geodesic.isGeoPointInPolygon(
+          correctedLatLongGeodesy, correctedListofLatlangGeodesy);
+      Logger().e(checking);
+      if (checking) {
+        correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+      }
+    } else {
+      correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    }
+
     // if (correctedListofLatlangGeodesy.length >= 3) {
     //   var containsLocation = polyUtils.PolygonUtil.isLocationOnEdge(point, polygon, geodesic);
     //   Logger().e(containsLocation);

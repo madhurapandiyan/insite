@@ -86,7 +86,7 @@ class _SingleAssetRegistrationViewState
                                         children: [
                                           CustomAutoCompleteWidget(
                                             isShowing: viewModel
-                                                .serialNoList.isNotEmpty,
+                                                .gpsDeviceId.isEmpty,
                                             onChange: (value) {
                                               viewModel
                                                   .getSubcriptionDeviceListData(

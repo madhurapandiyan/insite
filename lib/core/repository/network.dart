@@ -67,8 +67,6 @@ class MyApi {
 }
 
 class HttpWrapper {
-  String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL3N0YWdlLmlkLnRyaW1ibGVjbG91ZC5jb20iLCJleHAiOjE2MzgwMDMwMDYsIm5iZiI6MTYzNzk5OTQwNiwiaWF0IjoxNjM3OTk5NDA2LCJqdGkiOiJlZGE2ZDJlODcwM2I0ZTQ5YjY2MGEyYmFiMzdhZjE5MCIsImp3dF92ZXIiOjIsInN1YiI6ImQ4ZjA4MGEzLTZmZDEtNDUzNi1iMmVkLWI0MTk5MTg4ZjNlNCIsImlkZW50aXR5X3R5cGUiOiJ1c2VyIiwiYW1yIjpbInBhc3N3b3JkIl0sImF1dGhfdGltZSI6MTYzNzk5OTQwNCwiYXpwIjoiN2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4IiwiYXVkIjpbIjdiZTc1OWIxLWFmYzUtNGE0YS04YTg2LWJkYTVlMDQ1YTUwOCJdLCJzY29wZSI6Ik9TRy1GUkFNRS1BUFAtU1RBR0UifQ.JZrlVQIEon6thyyKdkRxfr_7CW_5T6Ma7u7hx8GSSaLIBDWh7jMKN5eMfOr13kk7IuYHHVsWZ6_CGV_hGeCw7Ifa5cD6Xcoq2-hwNyKLKLbNYv1IE2HEvEzYeRwS93XDs4nnySztRdvOUCcJ62q1c8BJQ2IgEE4KHukra89sF07SLTr8mfcfyTxCHFQRQgEgZTxRytt1afMZls8oSVzpuX5w4UintmP5MSuLyPppC3NQ1TvU76sYkeWUxuTs73DuY-Uz_Hip_3O4WwApbN6WUgyaXhVzpUKk7oWyb_JB-IOjvFNICr-DmNOLZ7Ie8PUxpHaaLn1jZEDv6Gt0ieowAg";
 
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
@@ -123,11 +121,10 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-              token=await (_localService!.getToken());
-          options.headers.addAll({
+           options.headers.addAll({
             "content-type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + token,
+            "Accept": "*/*",
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
         },
@@ -178,7 +175,7 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+                await _localService!.getToken() ,
           });
            return handler.next(options);
         },
@@ -196,7 +193,7 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+                await _localService!.getToken() ,
           });
            return handler.next(options);
         },
@@ -228,7 +225,7 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+                await _localService!.getToken(),
           });
            return handler.next(options);
         },
@@ -246,7 +243,7 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+                await _localService!.getToken() 
           });
            return handler.next(options);
         },
@@ -263,7 +260,7 @@ class HttpWrapper {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + token,
+            "Authorization": "bearer " + await _localService!.getToken() ,
           });
           // var check = await _localService.getToken();
           // log('interceptor $check');
@@ -283,7 +280,7 @@ class HttpWrapper {
             "content-type": "application/json",
             "Accept": "application/json",
             "Authorization": "bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+                await _localService!.getToken() 
           });
 
            return handler.next(options);
@@ -301,7 +298,7 @@ class HttpWrapper {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + token,
+            "Authorization": "bearer " + await _localService!.getToken() 
           });
 
            return handler.next(options);

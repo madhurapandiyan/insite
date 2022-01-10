@@ -936,7 +936,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
-      r'x-visionlink-customeruid': customerId,
+      r'X-VisionLink-CustomerUid': customerId,
       r'service': service
     };
     _headers.removeWhere((k, v) => v == null);
@@ -944,7 +944,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AssetCount>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
+                .compose(_dio.options, '$url',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);

@@ -134,9 +134,9 @@ class Urls {
     return url;
   }
 
-  static logoutUrlVl(String? token, redirecturi) {
+  static logoutUrlVl(String? token) {
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl&state=$administratorBaseUrl/";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$administratorBaseUrl&state=$administratorBaseUrl/";
     return url;
   }
 

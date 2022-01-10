@@ -146,7 +146,10 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
       if (mounted) {
         Logger().i("IndiaStackLoginView URL changed: $url");
         Logger().w(url.startsWith(Urls.insiteBaseUrl + "auth?code="));
-        if (url.startsWith(Urls.insiteBaseUrl + "auth?code=")) {
+        if (url.isNotEmpty &&
+            url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
+                ? Urls.administratorBaseUrl + "/?code="
+                : Urls.tataHitachiRedirectUri + "?code=")) {
           try {
             List<String> list = url.split("=");
             Logger().i("IndiaStackLoginView url split list $list");
@@ -277,7 +280,9 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url: Urls.getV4LogoutUrl(
+                  url:AppConfig.instance!.apiFlavor == "visionlink"?
+                  Urls.logoutUrlVl(loginResponse!.id_token):
+                   Urls.getV4LogoutUrl(
                       loginResponse!.id_token, Urls.tataHitachiRedirectUri),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()

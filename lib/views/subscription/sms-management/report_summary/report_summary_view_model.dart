@@ -63,7 +63,6 @@ class ReportSummaryViewModel extends InsiteViewModel {
           await _smsScheduleService!.getsmsReportSummaryModel(startCount);
       for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
         if (i == 0) {
-          Logger().wtf(null);
           isLoading = false;
           notifyListeners();
         } else {
@@ -71,7 +70,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
             modelDataList.add(element);
           });
           for (var i = 0; i < modelDataList.length; i++) {
-            modelDataList.sort((a, b) => b.StartDate!.compareTo(a.StartDate!));
+          //  modelDataList.sort((a, b) => b.StartDate!.compareTo(a.StartDate!));
             modelDataList[i].isSelected = false;
           }
           isLoading = false;

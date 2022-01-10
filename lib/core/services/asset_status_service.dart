@@ -84,8 +84,10 @@ class AssetStatusService extends DataBaseService {
             }
           } else {
             Map<String, String?> queryMap = Map();
+            Map<String, String?> queryMap1 = Map();
             if (key != null) {
               queryMap["grouping"] = key;
+              queryMap1["FilterName"] = key;
             }
             if (customerSelected != null) {
               queryMap["customerUID"] = customerSelected!.CustomerUID;
@@ -93,9 +95,11 @@ class AssetStatusService extends DataBaseService {
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
                 .assetCount(
-                  type==FilterType.USERTYPE || type==FilterType.JOBTYPE?
-                    Urls.userCount+FilterUtils.constructQueryFromMap(queryMap):Urls.assetCountSummary +
-                        FilterUtils.constructQueryFromMap(queryMap),
+                    type == FilterType.USERTYPE || type == FilterType.JOBTYPE
+                        ? Urls.userCount +
+                            FilterUtils.constructQueryFromMap(queryMap1)
+                        : Urls.assetCountSummary +
+                            FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID,
                     Urls.vfleetPrefix);
             if (assetStatusResponse != null) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -50,21 +49,23 @@ class CustomAutoCompleteWidget extends StatelessWidget {
         ),
         isShowing
             ? SizedBox()
-            : SingleChildScrollView(
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    color: Theme.of(context).textTheme.bodyText1!.color,
-                    child: Column(
-                      children: List.generate(
-                          items!.length,
-                          (i) => DeviceIdListWidget(
-                              onSelected: () {
-                                onSelect!(items![i]);
-                                FocusScope.of(context).unfocus();
-                              },
-                              deviceId: items![i])),
-                    )),
-              ),
+            : Container(
+              height: 200,
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                color: Theme.of(context).textTheme.bodyText1!.color,
+                child: ListView(
+                  children: List.generate(
+                      items!.length,
+                      (i) => Container(
+                        child: DeviceIdListWidget(
+                            onSelected: () {
+                              onSelect!(items![i]);
+                              FocusScope.of(context).unfocus();
+                              items!.clear();
+                            },
+                            deviceId: items![i]),
+                      )),
+                )),
       ],
     );
   }

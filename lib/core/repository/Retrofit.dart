@@ -323,7 +323,7 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> assetCount(
       @Path() String url,
-      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") service);
 
   @GET('{url}')
