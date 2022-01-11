@@ -101,7 +101,9 @@ class AssetStatusService extends DataBaseService {
                         : Urls.assetCountSummary +
                             FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID,
-                    Urls.vfleetPrefix);
+                    type == FilterType.USERTYPE || type == FilterType.JOBTYPE
+                        ? Urls.userCountPrefix
+                        : Urls.vfleetPrefix);
             if (assetStatusResponse != null) {
               bool updated = await updateAssetCount(assetStatusResponse, type);
               Logger().d("updated $updated");
@@ -158,6 +160,7 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
+          Logger().e(customerSelected!.CustomerUID);
           AssetCount assetStatusResponse = await MyApi()
               .getClient()!
               .assetCount(

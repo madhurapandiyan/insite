@@ -131,6 +131,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<String> _industrySubDetails = ["Select Secondary Details"];
   List<String> get industrySubDetails => _industrySubDetails;
 
+  DeviceDetailsPerId? deviceDetailsPerId;
+  CustomerDetails? customerDetails;
+
   List<String> _popUpCardTitles = [
     "Entity Details",
     "Dealer Details",
@@ -193,8 +196,26 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   allowAssetTransferClicked() {
-    _allowTransferAsset = !_allowTransferAsset;
-    _enableCustomerDetails = !_enableCustomerDetails;
+    //_enableCustomerDetails = !_enableCustomerDetails;
+    if (deviceIdController.text.isNotEmpty) {
+      if (_allowTransferAsset == false &&
+          deviceDetailsPerId!.result!.first.CustomerCode == null &&
+          deviceDetailsPerId!.result!.first.CustomerName == null) {
+        Fluttertoast.showToast(
+            msg:
+                "This Asset/device not provisioned under a Dealer & Customer !!");
+        return;
+      } else {
+        customerCodeController.text =
+            deviceDetailsPerId!.result!.first.CustomerCode!;
+        customerNameController.text =
+            deviceDetailsPerId!.result!.first.CustomerName!;
+        customerEmailController.text =
+            customerDetails!.customerResult!.customerData!.email!;
+        _allowTransferAsset = true;
+        notifyListeners();
+      }
+    }
 
     notifyListeners();
   }
@@ -678,8 +699,10 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectedDeviceId(String value) async {
     try {
       showLoadingDialog();
-      var data = await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
-      machineModelController.text = data!.result!.first.model!;
+      deviceDetailsPerId =
+          await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
+      machineModelController.text = deviceDetailsPerId!.result!.first.model!;
+      customerDetails = await _subscriptionService!.getCustomerDetails(value);
       _deviceList.forEach((element) {
         if (element.gPSDeviceID == value) {
           deviceIdController.text = element.gPSDeviceID!;
@@ -793,7 +816,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             detailResultList.clear();
             notifyListeners();
           }
-        }else{
+        } else {
           _customerCode.clear();
           notifyListeners();
         }

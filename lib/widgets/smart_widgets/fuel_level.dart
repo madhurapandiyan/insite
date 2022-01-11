@@ -25,7 +25,7 @@ class FuelLevel extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.95,
-        height: MediaQuery.of(context).size.height * 0.38,
+        height: MediaQuery.of(context).size.height * 0.40,
         child: Column(
           children: [
             Padding(

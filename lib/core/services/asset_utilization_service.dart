@@ -91,7 +91,7 @@ class AssetUtilizationService extends BaseService {
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
       }
-      if (date != null && date.isNotEmpty) {
+      if (date.isNotEmpty && date.isNotEmpty) {
         queryMap["date"] = date;
       }
       if (isVisionLink) {
@@ -125,7 +125,7 @@ class AssetUtilizationService extends BaseService {
       List<FilterData?>? appliedFilters,
       query) async {
     try {
-      if (enableGraphQl == false) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query,
             accountSelected?.CustomerUID,
@@ -172,38 +172,41 @@ class AssetUtilizationService extends BaseService {
             return response;
           }
         } else {
+          var customer = await _localService!.getCustomerInfo();
           if (startDate != null &&
               startDate.isNotEmpty &&
               endDate != null &&
               endDate.isNotEmpty) {
-            Utilization response =
-                accountSelected != null && customerSelected != null
-                    ? await MyApi().getClient()!.utilization(
-                        Urls.utlizationSummary +
-                            FilterUtils.getFilterURL(
-                                startDate,
-                                endDate,
-                                pageNo,
-                                pageCount,
-                                customerSelected!.CustomerUID,
-                                sort,
-                                appliedFilters!,
-                                ScreenType.UTILIZATION),
-                        accountSelected!.CustomerUID,
-                        Urls.vfleetPrefix)
-                    : await MyApi().getClient()!.utilization(
-                        Urls.utlizationSummary +
-                            FilterUtils.getFilterURL(
-                                startDate,
-                                endDate,
-                                pageNo,
-                                pageCount,
-                                null,
-                                sort,
-                                appliedFilters!,
-                                ScreenType.UTILIZATION),
-                        accountSelected!.CustomerUID,
-                        Urls.vfleetPrefix);
+            Utilization response = accountSelected != null &&
+                    customerSelected != null
+                ? await MyApi().getClient()!.utilization(
+                    Urls.utlizationSummary +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNo,
+                            pageCount,
+                            accountSelected != null && customerSelected != null
+                                ? customer!.CustomerUID
+                                : null,
+                            sort,
+                            appliedFilters!,
+                            ScreenType.UTILIZATION),
+                    accountSelected!.CustomerUID,
+                    Urls.vfleetPrefix)
+                : await MyApi().getClient()!.utilization(
+                    Urls.utlizationSummary +
+                        FilterUtils.getFilterURL(
+                            startDate,
+                            endDate,
+                            pageNo,
+                            pageCount,
+                            null,
+                            sort,
+                            appliedFilters!,
+                            ScreenType.UTILIZATION),
+                    accountSelected!.CustomerUID,
+                    Urls.vfleetPrefix);
             return response;
           }
         }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
@@ -96,9 +97,16 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
           .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
       singleAssetModelResponce = _singleAssetResponce!.result;
       if (singleAssetModelResponce!.isEmpty) {
-        isShowingValidateWidget = false;
+        hideLoadingDialog();
+        Fluttertoast.showToast(
+            msg:
+                "Please check the entered value, AssetSerialNumber not matching.");
       } else {
         isShowingValidateWidget = true;
+        listOfSingleAssetSmsSchedule.clear();
+        controller.animateToPage(1,
+            duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+        hideLoadingDialog();
       }
 
       // for (var item in singleAssetModelResponce) {
@@ -107,11 +115,6 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       //   serialNo.add(item.SerialNumber);
       //   date.add(item.StartDate);
       // }
-
-      listOfSingleAssetSmsSchedule.clear();
-      controller.animateToPage(1,
-          duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-      hideLoadingDialog();
 
       notifyListeners();
     } on DioError catch (e) {

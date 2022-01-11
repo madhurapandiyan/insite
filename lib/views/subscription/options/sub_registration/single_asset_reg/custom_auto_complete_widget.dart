@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -38,7 +39,11 @@ class CustomAutoCompleteWidget extends StatelessWidget {
         ),
         Container(
           width: MediaQuery.of(context).size.width * 1,
-          height: 60,
+          // decoration: BoxDecoration(
+          //   border: Border.all(
+          //       color: cod_grey, width: 1),
+          //   borderRadius: BorderRadius.all(Radius.circular(10)),
+          // ),
           child: CustomTextBox(
             isenabled: isEnable,
             controller: controller,
@@ -50,21 +55,21 @@ class CustomAutoCompleteWidget extends StatelessWidget {
         isShowing
             ? SizedBox()
             : Container(
-              height: 200,
+                height: 200,
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 color: Theme.of(context).textTheme.bodyText1!.color,
                 child: ListView(
                   children: List.generate(
                       items!.length,
                       (i) => Container(
-                        child: DeviceIdListWidget(
-                            onSelected: () {
-                              onSelect!(items![i]);
-                              FocusScope.of(context).unfocus();
-                              items!.clear();
-                            },
-                            deviceId: items![i]),
-                      )),
+                            child: DeviceIdListWidget(
+                                onSelected: () {
+                                  onSelect!(items![i]);
+                                  FocusScope.of(context).unfocus();
+                                  items!.clear();
+                                },
+                                deviceId: items![i]),
+                          )),
                 )),
       ],
     );

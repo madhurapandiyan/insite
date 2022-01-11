@@ -107,11 +107,11 @@ class _AccountSelectionDropDownWidgetState
             : widget.selectionType == AccountType.ACCOUNT
                 ? "Select"
                 : "Search and Select",
-        overflow: TextOverflow.ellipsis,
+        //overflow: TextOverflow.ellipsis,
         style: TextStyle(
             color: Theme.of(context).textTheme.bodyText1!.color,
             fontWeight: FontWeight.bold,
-            fontSize: 18),
+            fontSize: 16),
       ),
       key: expansionTile,
       children: [

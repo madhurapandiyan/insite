@@ -26,7 +26,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
+      // height: MediaQuery.of(context).size.height * 0.3,
       // width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         children: [
@@ -36,26 +36,20 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
             children: [
               TableRow(children: [
                 Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InsiteTableRowItemWithImage(
+                    InsiteTableRowItemWithImageWithContent(
+                      contentColor: tango,
                       path: "assets/images/EX210.png",
                       title: "Device ID ",
+                      content: deviceId,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: InsiteText(
-                        text: deviceId,
-                        ),
-                    )
                   ],
                 ),
-                Center(
-                  child: InsiteTableRowItem(
-                    title: "Model",
-                    content: model,
-                  ),
+                InsiteTableRowItem(
+                  title: "Model",
+                  content: model,
                 )
               ]),
               TableRow(children: [
@@ -67,16 +61,12 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InsiteText(
-                        text: "Serial No",
+                        text: "Serial Number",
                       ),
-                      InsiteRichText(
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: tango,
-                            fontWeight: FontWeight.bold),
-                        content: serialNo,
-                        textColor: tango,
-                      )
+                      InsiteText(
+                        text: serialNo,
+                        color: tango,
+                      ),
                     ],
                   ),
                 ),
@@ -122,34 +112,28 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
               ]),
             ],
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.all(3),
-              padding: EdgeInsets.only(left: 5),
-              //height: MediaQuery.of(context).size.height * 0.07,
-              width: MediaQuery.of(context).size.width * 1,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: borderLineColor),
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(10))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InsiteText(
-                    text: "Subscription Activation Date :",
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InsiteTextOverFlow(
-                    overflow: TextOverflow.ellipsis,
-                    text: Utils.getLastReportedDateFilterData(
-                        DateFormat("yyyy-MM-dd").parse(date!)),
-                  )
-                ],
-              ),
+          Container(
+            height: 50,
+            margin: EdgeInsets.all(3),
+            padding: EdgeInsets.only(left: 5),
+            //height: MediaQuery.of(context).size.height * 0.07,
+            width: MediaQuery.of(context).size.width * 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InsiteText(
+                  text: "Subscription Activation Date :",
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                InsiteTextOverFlow(
+                  overflow: TextOverflow.ellipsis,
+                  text: Utils.getLastReportedDateFilterData(
+                      DateFormat("yyyy-MM-dd").parse(date!)),
+                )
+              ],
             ),
           )
         ],

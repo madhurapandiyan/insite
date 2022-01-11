@@ -121,43 +121,41 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
-                                                      controller: viewModel
-                                                          .deviceIdController,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedDeviceId(
-                                                                value!);
-                                                      },
-                                                      items: viewModel
-                                                          .gpsDeviceIdList,
-                                                      textBoxTitle:
-                                                          'Device ID:',
-                                                      onChange: (value) {
-                                                        viewModel.getDeviceIds(
-                                                            value);
-                                                      }, isShowing:viewModel.gpsDeviceIdList.isEmpty,
-                                                    ),
-                                                     SizedBox(height: 10,),
+                                                controller: viewModel
+                                                    .deviceIdController,
+                                                onSelect: (value) {
+                                                  viewModel.onSelectedDeviceId(
+                                                      value!);
+                                                },
+                                                items:
+                                                    viewModel.gpsDeviceIdList,
+                                                textBoxTitle: 'Device ID:',
+                                                onChange: (value) {
+                                                  viewModel.getDeviceIds(value);
+                                                },
+                                                isShowing: viewModel
+                                                    .gpsDeviceIdList.isEmpty,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               CustomAutoCompleteWidget(
-                                                isShowing: viewModel.serialNoList.isEmpty,
-                                                      isAlign: false,
-                                                      controller: viewModel
-                                                          .machineSerialNumberController,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedSerialNo(
-                                                                value!);
-                                                      },
-                                                      items: viewModel
-                                                          .serialNoList,
-                                                      textBoxTitle:
-                                                          'Serial No.:',
-                                                      onChange: (value) {
-                                                        viewModel
-                                                            .getSerialNumbers(
-                                                                value);
-                                                      },
-                                                    ),
+                                                isShowing: viewModel
+                                                    .serialNoList.isEmpty,
+                                                isAlign: false,
+                                                controller: viewModel
+                                                    .machineSerialNumberController,
+                                                onSelect: (value) {
+                                                  viewModel.onSelectedSerialNo(
+                                                      value!);
+                                                },
+                                                items: viewModel.serialNoList,
+                                                textBoxTitle: 'Serial No.:',
+                                                onChange: (value) {
+                                                  viewModel
+                                                      .getSerialNumbers(value);
+                                                },
+                                              ),
                                             ],
                                           ),
                                           SizedBox(
@@ -214,7 +212,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ),
                                                   Container(
                                                       // height: 35,
-                                                      width: 130,
+                                                      width: 150,
                                                       decoration: BoxDecoration(
                                                           border: Border.all(
                                                             color: Theme.of(
@@ -239,15 +237,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                                               ? DateTime.now()
                                                               : viewModel
                                                                   .pickedDate!,
-                                                          firstDate: DateTime
-                                                                  .now()
-                                                              .subtract(Duration(
-                                                                  days: 1000)),
+                                                          firstDate:
+                                                              DateTime(2000),
                                                           lastDate:
-                                                              DateTime.now()
-                                                                  .subtract(
-                                                            Duration(days: 0),
-                                                          ),
+                                                              DateTime.now(),
                                                         ).then((value) {
                                                           viewModel
                                                               .getSelectedDate(
@@ -299,49 +292,47 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
-                                                isShowing: viewModel.dealerId.isEmpty,
-                                                      controller: viewModel
-                                                          .dealerNameController,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedDealerNameTile(
-                                                                value!);
-                                                      },
-                                                      items: viewModel.dealerId,
-                                                      textBoxTitle:
-                                                          'Dealer Name:',
-                                                      onChange: (value) {
-                                                        viewModel
-                                                            .onDealerNameChanges(
-                                                                name: value,
-                                                                type: "DEALER");
-                                                      },
-                                                    ),
-                                                     SizedBox(height: 10,),
+                                                isShowing:
+                                                    viewModel.dealerId.isEmpty,
+                                                controller: viewModel
+                                                    .dealerNameController,
+                                                onSelect: (value) {
+                                                  viewModel
+                                                      .onSelectedDealerNameTile(
+                                                          value!);
+                                                },
+                                                items: viewModel.dealerId,
+                                                textBoxTitle: 'Dealer Name:',
+                                                onChange: (value) {
+                                                  viewModel.onDealerNameChanges(
+                                                      name: value,
+                                                      type: "DEALER");
+                                                },
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               CustomAutoCompleteWidget(
-                                                isShowing: viewModel.dealerCode.isEmpty,
-                                                      isAlign: false,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      controller: viewModel
-                                                          .dealerCodeController,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedDealerCodeTile(
-                                                                value!);
-                                                      },
-                                                      items:
-                                                          viewModel.dealerCode,
-                                                      textBoxTitle:
-                                                          'Dealer Code:',
-                                                      onChange: (value) {
-                                                        viewModel
-                                                            .onDealerCodeChanges(
-                                                                code: int.parse(
-                                                                    value),
-                                                                type: "DEALER");
-                                                      },
-                                                    ),
+                                                isShowing: viewModel
+                                                    .dealerCode.isEmpty,
+                                                isAlign: false,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                controller: viewModel
+                                                    .dealerCodeController,
+                                                onSelect: (value) {
+                                                  viewModel
+                                                      .onSelectedDealerCodeTile(
+                                                          value!);
+                                                },
+                                                items: viewModel.dealerCode,
+                                                textBoxTitle: 'Dealer Code:',
+                                                onChange: (value) {
+                                                  viewModel.onDealerCodeChanges(
+                                                      code: int.parse(value),
+                                                      type: "DEALER");
+                                                },
+                                              ),
                                             ],
                                           ),
                                           SizedBox(
@@ -371,14 +362,15 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                      
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .dealerEmailController,
-                                                      )),
+                                                    controller: viewModel
+                                                        .dealerEmailController,
+                                                  )),
                                                 ],
                                               ),
-                                              SizedBox(height: 10,),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -396,11 +388,10 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                     
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .dealerMobileNoController,
-                                                      )),
+                                                    controller: viewModel
+                                                        .dealerMobileNoController,
+                                                  )),
                                                 ],
                                               ),
                                             ],
@@ -492,60 +483,56 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomAutoCompleteWidget(
-                                                    isShowing: viewModel.customerId.isEmpty,
-                                                      isEnable:viewModel
-                                                                .allowTransferAsset
-                                                            ? false
-                                                            : true,
-                                                      controller: viewModel
-                                                          .customerNameController,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedNameTile(
-                                                                value!);
-                                                      },
-                                                      items:
-                                                          viewModel.customerId,
-                                                      textBoxTitle:
-                                                          "Customer Name",
-                                                      onChange: (value) {
-                                                        viewModel
-                                                            .onCustomerNameChanges(
-                                                                name: value,
-                                                                type:
-                                                                    "CUSTOMER");
-                                                      },
-                                                    ),
-                                                     SizedBox(height: 10,),
+                                                isShowing: viewModel
+                                                    .customerId.isEmpty,
+                                                isEnable:
+                                                    viewModel.allowTransferAsset
+                                                        ? false
+                                                        : true,
+                                                controller: viewModel
+                                                    .customerNameController,
+                                                onSelect: (value) {
+                                                  viewModel.onSelectedNameTile(
+                                                      value!);
+                                                },
+                                                items: viewModel.customerId,
+                                                textBoxTitle: "Customer Name",
+                                                onChange: (value) {
+                                                  viewModel
+                                                      .onCustomerNameChanges(
+                                                          name: value,
+                                                          type: "CUSTOMER");
+                                                },
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               CustomAutoCompleteWidget(
-                                                isShowing: viewModel.customerCode.isEmpty,
-                                                      isEnable:viewModel
-                                                                .allowTransferAsset
-                                                            ? false
-                                                            : true,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      isAlign: false,
-                                                      onSelect: (value) {
-                                                        viewModel
-                                                            .onSelectedCodeTile(
-                                                                value!);
-                                                      },
-                                                      controller: viewModel
-                                                          .customerCodeController,
-                                                      items: viewModel
-                                                          .customerCode,
-                                                      textBoxTitle:
-                                                          'Customer Code:',
-                                                      onChange: (value) {
-                                                        viewModel
-                                                            .onCustomerCodeChanges(
-                                                                code: int.parse(
-                                                                    value),
-                                                                type:
-                                                                    "CUSTOMER");
-                                                      },
-                                                    ),
+                                                isShowing: viewModel
+                                                    .customerCode.isEmpty,
+                                                isEnable:
+                                                    viewModel.allowTransferAsset
+                                                        ? false
+                                                        : true,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                isAlign: false,
+                                                onSelect: (value) {
+                                                  viewModel.onSelectedCodeTile(
+                                                      value!);
+                                                },
+                                                controller: viewModel
+                                                    .customerCodeController,
+                                                items: viewModel.customerCode,
+                                                textBoxTitle: 'Customer Code:',
+                                                onChange: (value) {
+                                                  viewModel
+                                                      .onCustomerCodeChanges(
+                                                          code:
+                                                              int.parse(value),
+                                                          type: "CUSTOMER");
+                                                },
+                                              ),
                                             ],
                                           ),
                                           SizedBox(
@@ -575,18 +562,19 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                     
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .customerEmailController,
-                                                        isenabled: viewModel
-                                                                .allowTransferAsset
-                                                            ? false
-                                                            : true,
-                                                      )),
+                                                    controller: viewModel
+                                                        .customerEmailController,
+                                                    isenabled: viewModel
+                                                            .allowTransferAsset
+                                                        ? false
+                                                        : true,
+                                                  )),
                                                 ],
                                               ),
-                                               SizedBox(height: 10,),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -605,15 +593,14 @@ class SingleAssetTransferView extends StatelessWidget {
                                                             0.01,
                                                   ),
                                                   Container(
-                                                     
                                                       child: CustomTextBox(
-                                                        controller: viewModel
-                                                            .customerMobileNoController,
-                                                        isenabled: viewModel
-                                                                .allowTransferAsset
-                                                            ? false
-                                                            : true,
-                                                      )),
+                                                    controller: viewModel
+                                                        .customerMobileNoController,
+                                                    isenabled: viewModel
+                                                            .allowTransferAsset
+                                                        ? false
+                                                        : true,
+                                                  )),
                                                 ],
                                               ),
                                             ],
@@ -776,6 +763,15 @@ class SingleAssetTransferView extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
+                                        if (viewModel.dealerCodeController.text
+                                                .isEmpty &&
+                                            viewModel.dealerNameController.text
+                                                .isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                 "Please fill the * required fields and Entity details.");
+                                          return;
+                                        }
                                         if (viewModel.machineModelController
                                             .text.isEmpty) {
                                           Fluttertoast.showToast(

@@ -283,11 +283,24 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                         width: 120,
                                                         height: 40,
                                                         title: "Yes",
-                                                        onTap: () {
+                                                        onTap: () async {
                                                           viewModel
-                                                              .onRegister();
-                                                          Navigator.of(context)
-                                                              .pop();
+                                                              .onRegister()
+                                                              .then((value) {
+                                                            if (value ==
+                                                                "success") {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                              // controller.animateToPage(
+                                                              //     0,
+                                                              //     duration: Duration(
+                                                              //         milliseconds:
+                                                              //             500),
+                                                              //     curve: Curves
+                                                              //         .easeInOut);
+                                                            } else {}
+                                                          });
                                                         },
                                                       )
                                                     ],
