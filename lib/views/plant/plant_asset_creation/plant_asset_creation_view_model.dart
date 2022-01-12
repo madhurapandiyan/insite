@@ -25,9 +25,11 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   PlantAssetCreationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    pageController = PageController(initialPage: currentPage);
   }
 
-  PlantHeirarchyAssetService? _plantService = locator<PlantHeirarchyAssetService>();
+  PlantHeirarchyAssetService? _plantService =
+      locator<PlantHeirarchyAssetService>();
 
   late int selectedIndex;
 
@@ -36,6 +38,9 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   String? deviceValue;
 
   String? hourMeterValue;
+
+  PageController? pageController;
+  int currentPage = 0;
 
   AssetCreationResetData? result;
 
@@ -172,9 +177,8 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     if (value.length < 4) {
       return null;
     } else {
-      AssetCreationResponse data =
-          await (_plantService!.getAssetCreationData(value) as FutureOr<AssetCreationResponse>);
-      getassetCreationListData[index].model = data.result!.modelName;
+      AssetCreationResponse? data = await _plantService!.getAssetCreationData(value);
+      getassetCreationListData[index].model = data!.result!.modelName;
       notifyListeners();
     }
   }
@@ -201,7 +205,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   }
 
   changedResetButtonState() {
-    _isChangingSubmitAndResetButtonState = false;
+    // _isChangingSubmitAndResetButtonState = false;
     _containerState = false;
     // _isResetButtonState = false;
     notifyListeners();
@@ -222,9 +226,10 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         _isResetButtonState = false;
         notifyListeners();
       } else {
-        _issubmitButtonState = false;
-        _isResetButtonState = false;
-        notifyListeners();
+        return null;
+        // _issubmitButtonState = false;
+        // _isResetButtonState = false;
+        // notifyListeners();
       }
     }
   }
@@ -267,9 +272,10 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
           }
         });
       }
-
-      _isChangingSubmitAndResetButtonState = true;
-      _isResetButtonState = true;
+      onNextClicked();
+      pageController!.jumpToPage(currentPage);
+      //_isChangingSubmitAndResetButtonState = true;
+      // _isResetButtonState = true;
       _issubmitButtonState = false;
       screenOne = true;
       notifyListeners();
@@ -288,7 +294,9 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
           element.model = null;
         });
         screenOne = !screenOne;
-        _isChangingSubmitAndResetButtonState = false;
+        onPreviousClicked();
+        pageController!.jumpToPage(currentPage);
+        // _isChangingSubmitAndResetButtonState = false;
         _isResetButtonState = false;
 
         notifyListeners();
@@ -361,6 +369,16 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   onItemSelect(int index) {
     getassetCreationListData[index].isSelected =
         !getassetCreationListData[index].isSelected;
+    notifyListeners();
+  }
+
+  onPreviousClicked() async {
+    currentPage--;
+    notifyListeners();
+  }
+
+  onNextClicked() async {
+    currentPage++;
     notifyListeners();
   }
 }

@@ -46,30 +46,30 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                         onCallbackSelected: (value) {
                           viewModel.onRespectiveButtonClicked(value);
                         }),
-                    AssetCardsSmall(
-                        headerText: "geofences".toUpperCase(),
-                        height: 10,
-                        icon: "assets/images/geofence.svg",
-                        showExapansionMenu: false,
-                        buttonTitle: [
-                          AdminAssetsButtonType.values[4],
-                          AdminAssetsButtonType.values[5]
-                        ],
-                        onCallbackSelected: (value) {
-                          viewModel.onRespectiveButtonClicked(value);
-                        }),
                     // AssetCardsSmall(
-                    //     headerText: "groups",
-                    //     icon: "assets/images/gear_icon.svg",
+                    //     headerText: "geofences".toUpperCase(),
                     //     height: 10,
+                    //     icon: "assets/images/geofence.svg",
                     //     showExapansionMenu: false,
                     //     buttonTitle: [
-                    //       AdminAssetsButtonType.values[2],
-                    //       AdminAssetsButtonType.values[3]
+                    //       AdminAssetsButtonType.values[4],
+                    //       AdminAssetsButtonType.values[5]
                     //     ],
                     //     onCallbackSelected: (value) {
                     //       viewModel.onRespectiveButtonClicked(value);
                     //     }),
+                    AssetCardsSmall(
+                        headerText: "groups",
+                        icon: "assets/images/gear_icon.svg",
+                        height: 10,
+                        showExapansionMenu: false,
+                        buttonTitle: [
+                          AdminAssetsButtonType.values[2],
+                          AdminAssetsButtonType.values[3]
+                        ],
+                        onCallbackSelected: (value) {
+                          viewModel.onRespectiveButtonClicked(value);
+                        }),
                   ],
                 ),
                 SizedBox(

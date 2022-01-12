@@ -125,7 +125,8 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -142,28 +143,12 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                 SizedBox(
                   height: 30,
                 ),
-                viewModel.isChangingSubmitAndResetButtonState
-                    ? Form(
-                        key: viewModel.formKeyScreenTwo,
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount:
-                                  viewModel.getassetCreationListData.length,
-                              padding: EdgeInsets.all(8),
-                              itemBuilder: (context, index) {
-                                final assetCreationData =
-                                    viewModel.getassetCreationListData[index];
-
-                                return AssetCreationValidationWidget(
-                                  data: assetCreationData,
-                                  voidCallback: () {
-                                    //viewModel.onItemSelect(index);
-                                  },
-                                );
-                              }),
-                        ),
-                      )
-                    : Form(
+                Expanded(
+                  flex: 1,
+                  child: PageView(
+                    controller: viewModel.pageController,
+                    children: [
+                      Form(
                         key: viewModel.formKeyScreenOne,
                         child: Expanded(
                           child: ListView.builder(
@@ -173,10 +158,10 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                               itemBuilder: (context, index) {
                                 final dataModel =
                                     viewModel.getassetCreationListData[index];
-
+                
                                 return AssetCreationWidget(
                                   voidCallback: () {
-                                   // viewModel.onItemSelect(index);
+                                    // viewModel.onItemSelect(index);
                                   },
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {
@@ -194,7 +179,30 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                 );
                               }),
                         ),
-                      )
+                      ),
+                      Form(
+                        key: viewModel.formKeyScreenTwo,
+                        child: Expanded(
+                          child: ListView.builder(
+                              itemCount:
+                                  viewModel.getassetCreationListData.length,
+                              padding: EdgeInsets.all(8),
+                              itemBuilder: (context, index) {
+                                final assetCreationData =
+                                    viewModel.getassetCreationListData[index];
+                
+                                return AssetCreationValidationWidget(
+                                  data: assetCreationData,
+                                  voidCallback: () {
+                                    //viewModel.onItemSelect(index);
+                                  },
+                                );
+                              }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ));
       },

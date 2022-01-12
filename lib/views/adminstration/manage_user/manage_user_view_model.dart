@@ -142,6 +142,7 @@ class ManageUserViewModel extends InsiteViewModel {
         if (_isSearching) {
           _assets = [];
         }
+
         _loading = false;
         _loadingMore = false;
         _refreshing = false;
