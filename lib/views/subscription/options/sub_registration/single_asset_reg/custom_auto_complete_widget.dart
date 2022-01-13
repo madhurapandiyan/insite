@@ -4,9 +4,10 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
-class CustomAutoCompleteWidget extends StatelessWidget {
+class CustomAutoCompleteWidget extends StatefulWidget {
   final List<String?>? items;
   final String? textBoxTitle;
+  final String? helperText;
   final Function(String)? onChange;
   final TextEditingController? controller;
   final Function(String?)? onSelect;
@@ -15,6 +16,7 @@ class CustomAutoCompleteWidget extends StatelessWidget {
   final TextInputType? keyboardType;
   final dynamic Function(String)? validator;
   final bool? isEnable;
+  bool isShowingHelperText;
   CustomAutoCompleteWidget(
       {this.items,
       this.isAlign,
@@ -24,15 +26,24 @@ class CustomAutoCompleteWidget extends StatelessWidget {
       this.keyboardType,
       this.validator,
       this.isEnable,
+      this.helperText,
       required this.isShowing,
+      required this.isShowingHelperText,
       this.onSelect});
+
+  @override
+  State<CustomAutoCompleteWidget> createState() =>
+      _CustomAutoCompleteWidgetState();
+}
+
+class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InsiteText(
-          text: textBoxTitle,
+          text: widget.textBoxTitle,
         ),
         SizedBox(
           height: 10,
@@ -45,14 +56,16 @@ class CustomAutoCompleteWidget extends StatelessWidget {
           //   borderRadius: BorderRadius.all(Radius.circular(10)),
           // ),
           child: CustomTextBox(
-            isenabled: isEnable,
-            controller: controller,
+            helperText: widget.isShowingHelperText ? widget.helperText : null,
+            helperStyle: TextStyle(color: tango),
+            isenabled: widget.isEnable,
+            controller: widget.controller,
             onChanged: (value) {
-              onChange!(value);
+              widget.onChange!(value);
             },
           ),
         ),
-        isShowing
+        widget.isShowing
             ? SizedBox()
             : Container(
                 height: 200,
@@ -60,15 +73,17 @@ class CustomAutoCompleteWidget extends StatelessWidget {
                 color: Theme.of(context).textTheme.bodyText1!.color,
                 child: ListView(
                   children: List.generate(
-                      items!.length,
+                      widget.items!.length,
                       (i) => Container(
                             child: DeviceIdListWidget(
                                 onSelected: () {
-                                  onSelect!(items![i]);
+                                  widget.isShowingHelperText = false;
+                                  widget.onSelect!(widget.items![i]);
                                   FocusScope.of(context).unfocus();
-                                  items!.clear();
+                                  widget.items!.clear();
+                                  setState(() {});
                                 },
-                                deviceId: items![i]),
+                                deviceId: widget.items![i]),
                           )),
                 )),
       ],

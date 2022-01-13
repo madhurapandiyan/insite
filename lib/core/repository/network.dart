@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'Retrofit.dart';
 
@@ -67,7 +70,7 @@ class MyApi {
 }
 
 class HttpWrapper {
-
+  SnackbarService? snackbarService = locator<SnackbarService>();
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
   final String _baseUrlTwo = "https://singlesearch.alk.com";
@@ -79,6 +82,7 @@ class HttpWrapper {
 
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
+  final NavigationService? _navigationService = locator<NavigationService>();
 
   Dio dio = new Dio();
   Dio dioOne = new Dio();
@@ -119,9 +123,28 @@ class HttpWrapper {
 
     dio.interceptors
       ..add(InterceptorsWrapper(
+        onResponse: (responce, handler) {
+          return handler.next(responce);
+        },
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-           options.headers.addAll({
+          options.headers.addAll({
             "content-type": "application/json",
             "Accept": "*/*",
             "Authorization": "Bearer " + await _localService!.getToken(),
@@ -136,6 +159,21 @@ class HttpWrapper {
 
     dioOne.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -143,7 +181,7 @@ class HttpWrapper {
             //"Authorization": "Bearer " + await _localService.getToken(),
             "timezoneoffset": -330
           });
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -153,6 +191,21 @@ class HttpWrapper {
 
     dioTwo.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -169,15 +222,29 @@ class HttpWrapper {
 
     dioThree.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await _localService!.getToken() ,
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -187,15 +254,29 @@ class HttpWrapper {
 
     dioFour.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await _localService!.getToken() ,
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -205,11 +286,26 @@ class HttpWrapper {
 
     dioFive.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+         snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers
               .addAll({"Accept": "application/json", "timezoneoffset": -330});
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -219,15 +315,29 @@ class HttpWrapper {
 
     dioSix.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await _localService!.getToken(),
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -237,15 +347,29 @@ class HttpWrapper {
 
     dioSeven.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await _localService!.getToken() 
+            "Authorization": "Bearer " + await _localService!.getToken()
           });
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -255,16 +379,31 @@ class HttpWrapper {
 
     dioEight.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + await _localService!.getToken() ,
+            "Authorization": "bearer " + await _localService!.getToken(),
           });
           // var check = await _localService.getToken();
           // log('interceptor $check');
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -274,16 +413,30 @@ class HttpWrapper {
 
     dioNine.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " +
-                await _localService!.getToken() 
+            "Authorization": "bearer " + await _localService!.getToken()
           });
 
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(
@@ -293,15 +446,30 @@ class HttpWrapper {
 
     dioTen.interceptors
       ..add(InterceptorsWrapper(
+        onError:
+            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+          if (error.response!.statusCode == 401) {
+            _localService!.setIsloggedIn(false);
+            snackbarService!.showSnackbar(
+              duration: Duration(seconds: 10),
+              message: "Session Expired Please Login Again",
+              //onMainButtonTapped: () {},
+              //mainButtonTitle: "Try Again",
+              onTap: (_) {
+                _navigationService!.navigateToView(IndiaStackSplashView());
+              },
+            );
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + await _localService!.getToken() 
+            "Authorization": "bearer " + await _localService!.getToken()
           });
 
-           return handler.next(options);
+          return handler.next(options);
         },
       ))
       ..add(LogInterceptor(

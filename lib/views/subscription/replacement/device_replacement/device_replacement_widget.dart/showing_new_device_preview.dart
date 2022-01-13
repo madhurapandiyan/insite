@@ -109,7 +109,7 @@ class ShowingNewDeviceDetail extends StatelessWidget {
                 onReplacing!();
                 },
                 // bgColor: white,
-                title: "Next",
+                title: "Replace",
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
               ),

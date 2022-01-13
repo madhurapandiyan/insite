@@ -6,7 +6,6 @@ import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
-import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';

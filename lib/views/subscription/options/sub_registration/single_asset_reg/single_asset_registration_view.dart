@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/locator.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -36,9 +38,11 @@ class _SingleAssetRegistrationViewState
   var defaultCustomFieldValidator = MultiValidator([
     RequiredValidator(errorText: "This Field is Required"),
   ]);
-
+  LocalService? _localService = locator<LocalService>();
   @override
   Widget build(BuildContext context) {
+    // _localService!.saveToken(
+    //    "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQxOTc2MjkxLCJuYmYiOjE2NDE5NzI2OTEsImlhdCI6MTY0MTk3MjY5MSwianRpIjoiOTVkYWZiODkzMTJhNDYyM2E5MGNkNmYyMDU1OWVlODMiLCJqd3RfdmVyIjoyLCJzdWIiOiIyMTgxODg1Ny01MTU1LTRjNmYtYTc0YS01NzRkYmU3NDE2NzUiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDE5NzI2OTAsImF6cCI6IjBmYzcyYTcxLWU0ZTUtNGFjMS05YzdiLWU5NjYwNTAxNTRjOSIsImF1ZCI6WyIwZmM3MmE3MS1lNGU1LTRhYzEtOWM3Yi1lOTY2MDUwMTU0YzkiXSwic2NvcGUiOiJGcmFtZS1BZG1pbmlzdHJhdG9yLUlORCJ9.ezPRMxhJ2jkXLY37GVmo_HPceoe2jFLAQ30cM69D5casQsmam4lY_97vvG8XO-w542yp-7oG1FFoKyWHYsGoZQj3TwYE-BVvz3duZudBUGouuSCrX_LSoiv1EP6l3GDWwuWaodGBN_0izyRLgOsYGukauvZ4FM0nSGEe_SxVPBgmGlSKDhndRLttOIcvZ5Zy8XOkaAbPFhz3QZIe5SBcgrUmlcKOx3ynfD-eDWIddFFJXmnL-osBA0uRHxxm5_KEhm-jcG2pI2JGsFeGEGjHecAIwoJpqcNkkUdu0qfZwERoiv3vPKwZlxCIJgeHV6dODfZ7Tw8omoijN_VBa9uJTg");
     return ViewModelBuilder<SingleAssetRegistrationViewModel>.reactive(
       builder: (BuildContext context,
           SingleAssetRegistrationViewModel viewModel, Widget? _) {
@@ -85,8 +89,15 @@ class _SingleAssetRegistrationViewState
                                       child: Column(
                                         children: [
                                           CustomAutoCompleteWidget(
-                                            isShowing: viewModel
-                                                .gpsDeviceId.isEmpty,
+                                            helperText: "No Devices Found",
+                                            isShowingHelperText: viewModel
+                                                    .deviceIdChange
+                                                    ?.result![0]
+                                                    .first
+                                                    .count ==
+                                                0,
+                                            isShowing:
+                                                viewModel.gpsDeviceId.isEmpty,
                                             onChange: (value) {
                                               viewModel
                                                   .getSubcriptionDeviceListData(
@@ -367,6 +378,13 @@ class _SingleAssetRegistrationViewState
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                        .dealerNameChange
+                                                        ?.result![0]
+                                                        .first
+                                                        .count ==
+                                                    0,
+                                                helperText: "New Dealer Name",
                                                 isShowing:
                                                     viewModel.dealerId.isEmpty,
                                                 controller: viewModel
@@ -388,6 +406,13 @@ class _SingleAssetRegistrationViewState
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                        .dealerCodeChange
+                                                        ?.result?[0]
+                                                        .first
+                                                        .count ==
+                                                    0,
+                                                helperText: "New Dealer Code",
                                                 isShowing: viewModel
                                                     .dealerCode.isEmpty,
                                                 isAlign: false,
@@ -482,6 +507,9 @@ class _SingleAssetRegistrationViewState
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                    .customerNameChange?.result![0].first.count==0,
+                                                    helperText: "New Customer Name",
                                                 isShowing: viewModel
                                                     .customerId.isEmpty,
                                                 controller: viewModel
@@ -504,6 +532,9 @@ class _SingleAssetRegistrationViewState
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                    .customerCodeChange?.result![0].first.count==0,
+                                                    helperText: "New Customer Code",
                                                 isShowing: viewModel
                                                     .customerCode.isEmpty,
                                                 keyboardType:
@@ -654,7 +685,11 @@ class _SingleAssetRegistrationViewState
                                                 onButtonTapped: () async {
                                                   final result = await viewModel
                                                       .subscriptionAssetRegistration();
+
                                                   if (result != null) {
+                                                    viewModel
+                                                        .onRegistrationSuccess();
+                                                    viewModel.onPop();
                                                     Utils.showToast(Utils
                                                         .suceessRegistration);
                                                   }
@@ -679,7 +714,8 @@ class _SingleAssetRegistrationViewState
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 40,)
                     ],
                   ),
                 ),

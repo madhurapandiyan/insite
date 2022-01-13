@@ -160,7 +160,6 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          Logger().e(customerSelected!.CustomerUID);
           AssetCount assetStatusResponse = await MyApi()
               .getClient()!
               .assetCount(

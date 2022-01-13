@@ -54,6 +54,7 @@ DetailResult _$DetailResultFromJson(Map<String, dynamic> json) => DetailResult(
       InsertUTC: json['InsertUTC'] as String?,
       SourceCustomerType: json['SourceCustomerType'] as String?,
       Status: json['Status'] as String?,
+      count: json['count'] as int?,
       vin: json['vin'] as String?,
     );
 
@@ -91,4 +92,5 @@ Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
       'DestinationCustomerType': instance.DestinationCustomerType,
       'Status': instance.Status,
       'InsertUTC': instance.InsertUTC,
+      'count': instance.count,
     };

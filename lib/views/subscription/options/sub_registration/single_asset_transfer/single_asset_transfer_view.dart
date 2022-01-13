@@ -121,6 +121,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                    .gpsDeviceIdList.isEmpty,
                                                 controller: viewModel
                                                     .deviceIdController,
                                                 onSelect: (value) {
@@ -140,6 +142,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                    .serialNoList.isEmpty,
                                                 isShowing: viewModel
                                                     .serialNoList.isEmpty,
                                                 isAlign: false,
@@ -292,6 +296,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingHelperText: viewModel
+                                                        .dealerNameChange
+                                                        ?.result?[0]
+                                                        .first
+                                                        .count ==
+                                                    0,
+                                                helperText: "New Dealer Name",
                                                 isShowing:
                                                     viewModel.dealerId.isEmpty,
                                                 controller: viewModel
@@ -313,6 +324,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                helperText: "New Dealer Code",
+                                                isShowingHelperText: viewModel
+                                                        .dealerCodeChange
+                                                        ?.result?[0]
+                                                        .first
+                                                        .count ==
+                                                    0,
                                                 isShowing: viewModel
                                                     .dealerCode.isEmpty,
                                                 isAlign: false,
@@ -483,6 +501,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                helperText: "New Customer Name",
+                                                isShowingHelperText: viewModel
+                                                        .customerNameChange
+                                                        ?.result?[0]
+                                                        .first
+                                                        .count ==
+                                                    0,
                                                 isShowing: viewModel
                                                     .customerId.isEmpty,
                                                 isEnable:
@@ -508,6 +533,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                helperText: "New Customer Code",
+                                                isShowingHelperText: viewModel
+                                                        .customerCodeChange
+                                                        ?.result?[0]
+                                                        .first
+                                                        .count ==
+                                                    0,
                                                 isShowing: viewModel
                                                     .customerCode.isEmpty,
                                                 isEnable:
@@ -769,7 +801,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 .isEmpty) {
                                           Fluttertoast.showToast(
                                               msg:
-                                                 "Please fill the * required fields and Entity details.");
+                                                  "Please fill the * required fields and Entity details.");
                                           return;
                                         }
                                         if (viewModel.machineModelController

@@ -190,6 +190,11 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   TextEditingController customerEmailController = TextEditingController();
   TextEditingController customerMobileNoController = TextEditingController();
 
+  SingleAssetRegistrationSearchModel? dealerNameChange;
+  SingleAssetRegistrationSearchModel? dealerCodeChange;
+  SingleAssetRegistrationSearchModel? customerNameChange;
+  SingleAssetRegistrationSearchModel? customerCodeChange;
+
   SingleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     Future.delayed(Duration(seconds: 1), () {});
@@ -215,6 +220,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _allowTransferAsset = true;
         notifyListeners();
       }
+    } else {
+      _allowTransferAsset = true;
+      notifyListeners();
     }
 
     notifyListeners();
@@ -750,7 +758,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _devices.clear();
         Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          customerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -760,14 +768,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             limit: pageSize,
           ));
           customerCode.clear();
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (customerNameChange!.result![1].isNotEmpty) {
+            customerNameChange!.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            
             _customerId.clear();
             _devices.clear();
             detailResultList.clear();
@@ -793,7 +801,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _customerCode.clear();
         _devices.clear();
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          customerCodeChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -803,14 +811,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             limit: pageSize,
           ));
           customerId.clear();
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (customerCodeChange!.result![1].isNotEmpty) {
+            customerCodeChange!.result![1].forEach((element) {
               _devices.add(element);
               _customerCode.add(element.Code);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            
             _customerCode.clear();
             _devices.clear();
             detailResultList.clear();
@@ -841,7 +849,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _dealerId.clear();
         Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          dealerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -851,14 +859,13 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             limit: pageSize,
           ));
           dealerCode.clear();
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (dealerNameChange!.result![1].isNotEmpty) {
+            dealerNameChange!.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
             _dealerId.clear();
             _devices.clear();
             detailResultList.clear();
@@ -885,7 +892,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         _dealerCode.clear();
 
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          dealerCodeChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -895,14 +902,14 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
             limit: pageSize,
           ));
           dealerCode.clear();
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (dealerCodeChange!.result![1].isNotEmpty) {
+           dealerCodeChange!.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            
             _devices.clear();
             _dealerCode.clear();
             detailResultList.clear();

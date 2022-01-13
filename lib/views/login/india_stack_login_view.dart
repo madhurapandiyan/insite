@@ -66,6 +66,8 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   @override
   void initState() {
     loginResponse = widget.arguments;
+    print(Urls.getV4LogoutUrl(
+        loginResponse!.id_token, Urls.tataHitachiRedirectUri));
     Logger().d(
         "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse!.id_token, Urls.tataHitachiRedirectUri)}");
     Logger().d("IndiaStackLoginView codeVerifier $codeVerifier");
@@ -145,7 +147,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLoginView URL changed: $url");
-        Logger().w(url.startsWith(Urls.insiteBaseUrl + "auth?code="));
+        Logger().w(url.startsWith(Urls.tataHitachiRedirectUri + "?code="));
         if (url.isNotEmpty &&
             url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
                 ? Urls.administratorBaseUrl + "/?code="
@@ -280,10 +282,10 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             child: Stack(
               children: [
                 WebviewScaffold(
-                  url:AppConfig.instance!.apiFlavor == "visionlink"?
-                  Urls.logoutUrlVl(loginResponse!.id_token):
-                   Urls.getV4LogoutUrl(
-                      loginResponse!.id_token, Urls.tataHitachiRedirectUri),
+                  url: AppConfig.instance!.apiFlavor == "visionlink"
+                      ? Urls.logoutUrlVl(loginResponse!.id_token)
+                      : Urls.getV4LogoutUrl(
+                          loginResponse!.id_token, Urls.tataHitachiRedirectUri),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()
               ],

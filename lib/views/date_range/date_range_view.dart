@@ -353,7 +353,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                   '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                   describeEnum(viewModel.selectedDateRange));
                               Future.delayed(Duration(milliseconds: 500), () {
-                                Navigator.pop(context, [fromDate, toDate]);
+                                Navigator.pop(context, [fromDate!, toDate!]);
                               });
                             } else {
                               Logger().i("if date not equal");

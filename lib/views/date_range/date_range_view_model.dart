@@ -40,7 +40,7 @@ class DateRangeViewModel extends BaseViewModel {
   DateRangeType get dateType => _dateType;
 
   DateRangeViewModel() {
-    _dateRangeService!.setUp();
+    _dateRangeService?.setUp();
     getDateRangeFilterData();
   }
 
@@ -58,15 +58,17 @@ class DateRangeViewModel extends BaseViewModel {
 
   getDateRangeFilterData() async {
     Logger().d("getDateRangeFilterData");
-    List<String?>? appliedFilters = await _dateRangeService!.getDateRangeFilters();
-    Logger().d(appliedFilters!.length.toString());
-    if (appliedFilters.isNotEmpty) {
+    List<String?>? appliedFilters =
+        await _dateRangeService?.getDateRangeFilters();
+    Logger().d(appliedFilters?.length.toString());
+    if (appliedFilters != null && appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];
       endDate = appliedFilters[1];
       Logger().d("start ", startDate);
       Logger().d("start ", endDate);
       Logger().d("label ", appliedFilters[2]);
       _selectedDateRange = getType(appliedFilters[2]);
+      notifyListeners();
       notifyListeners();
     } else {
       startDate = DateFormat('yyyy-MM-dd').format(

@@ -177,36 +177,36 @@ class AssetUtilizationService extends BaseService {
               startDate.isNotEmpty &&
               endDate != null &&
               endDate.isNotEmpty) {
-            Utilization response = accountSelected != null &&
-                    customerSelected != null
-                ? await MyApi().getClient()!.utilization(
-                    Urls.utlizationSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNo,
-                            pageCount,
-                            accountSelected != null && customerSelected != null
-                                ? customer!.CustomerUID
-                                : null,
-                            sort,
-                            appliedFilters!,
-                            ScreenType.UTILIZATION),
-                    accountSelected!.CustomerUID,
-                    Urls.vfleetPrefix)
-                : await MyApi().getClient()!.utilization(
-                    Urls.utlizationSummary +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNo,
-                            pageCount,
-                            null,
-                            sort,
-                            appliedFilters!,
-                            ScreenType.UTILIZATION),
-                    accountSelected!.CustomerUID,
-                    Urls.vfleetPrefix);
+            Utilization response =
+                accountSelected != null && customerSelected != null
+                    ? await MyApi().getClient()!.utilization(
+                        Urls.utlizationSummary +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNo,
+                                pageCount,
+                                customer?.CustomerUID == null
+                                    ? null
+                                    : customer!.CustomerUID,
+                                sort,
+                                appliedFilters!,
+                                ScreenType.UTILIZATION),
+                        accountSelected!.CustomerUID,
+                        Urls.vfleetPrefix)
+                    : await MyApi().getClient()!.utilization(
+                        Urls.utlizationSummary +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                pageNo,
+                                pageCount,
+                                null,
+                                sort,
+                                appliedFilters!,
+                                ScreenType.UTILIZATION),
+                        accountSelected!.CustomerUID,
+                        Urls.vfleetPrefix);
             return response;
           }
         }

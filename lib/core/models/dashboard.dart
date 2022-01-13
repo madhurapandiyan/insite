@@ -25,9 +25,9 @@ final List<Category> categories = [
   // Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
   Category(8, "ADMINISTRATION", "assets/images/admin.svg",
      ScreenType.ADMINISTRATION),
- // Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
-  // Category(
-  //     10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+  Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
+   Category(
+       10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
   // Category(
   //     11, "NOTIFICATION", "assets/images/noti.svg", ScreenType.NOTIFICATION)
 ];

@@ -120,6 +120,9 @@ class DetailResult {
   @JsonKey(name: "InsertUTC")
   String? InsertUTC;
 
+  @JsonKey(name: "count")
+  int? count;
+
   DetailResult(
       {this.totalDevice,
       this.ActualStartDate,
@@ -152,6 +155,7 @@ class DetailResult {
       this.InsertUTC,
       this.SourceCustomerType,
       this.Status,
+      this.count,
       this.vin});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>

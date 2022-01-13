@@ -58,7 +58,7 @@ class DeviceListItem extends StatelessWidget {
                             ? "assets/images/EX210.png"
                             : detailResult!.Model != null
                                 ? Utils().imageData(detailResult!.Model!)
-                                : "",
+                                : "-",
                       ),
                       // Table(
                       // children: [
@@ -72,7 +72,7 @@ class DeviceListItem extends StatelessWidget {
                         title: "Model :",
                         content: detailResult!.Model != null
                             ? detailResult!.Model
-                            : "",
+                            : "-",
                       ),
                       // ],
                       // ),
@@ -85,7 +85,7 @@ class DeviceListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult!.VIN != null ? detailResult!.VIN : "",
+                            detailResult!.VIN != null ? detailResult!.VIN : "-",
                         onTap: () {
                           onCallback!();
                         },
@@ -94,7 +94,7 @@ class DeviceListItem extends StatelessWidget {
                         title: "Product Family :",
                         content: detailResult!.ProductFamily != null
                             ? detailResult!.ProductFamily
-                            : "",
+                            : "-",
                       ),
                     ],
                   ),
@@ -110,13 +110,13 @@ class DeviceListItem extends StatelessWidget {
                           title: "Network Provider : ",
                           content: detailResult!.NetworkProvider != null
                               ? detailResult!.NetworkProvider
-                              : "",
+                              : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Dealer Name : ",
                           content: detailResult!.DealerName != null
                               ? detailResult!.DealerName
-                              : "",
+                              : "-",
                         ),
                       ],
                     ),
@@ -126,7 +126,7 @@ class DeviceListItem extends StatelessWidget {
                           title: "Dealer Code :",
                           content: detailResult!.DealerCode != null
                               ? detailResult!.DealerCode
-                              : "",
+                              : "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name :",
@@ -134,7 +134,7 @@ class DeviceListItem extends StatelessWidget {
                               ? detailResult!.CustomerName
                               : detailResult!.CustomerName != null
                                   ? detailResult!.CustomerName
-                                  : "",
+                                  : "-",
                         ),
                       ],
                     ),
