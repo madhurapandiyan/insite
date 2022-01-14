@@ -175,10 +175,16 @@
             "file_path": "views/subscription/transferhistory/transfer_history_view.dart",
             "route_name": "transfer_history_ViewRoute",
             "view_name": "TransferHistoryView"
-        },{
+        },
+        {
             "file_path": "views/palnt_asset_creation/palnt_asset_creation_view.dart",
             "route_name": "palnt_asset_creationViewRoute",
             "view_name": "PalntAssetCreationView"
+        },
+        {
+            "file_path": "views/notification/notification_view.dart",
+            "route_name": "notification_ViewRoute",
+            "view_name": "NotificationView"
         }
     ]
 }

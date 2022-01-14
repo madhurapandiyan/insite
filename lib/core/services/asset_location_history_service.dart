@@ -11,6 +11,7 @@ class AssetLocationHistoryService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  String? notificationId;
 
   AssetLocationHistoryService() {
     setUp();
@@ -20,6 +21,7 @@ class AssetLocationHistoryService extends BaseService {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
+      notificationId = await _localService!.getNotificationId();
     } catch (e) {
       Logger().e(e);
     }
@@ -34,10 +36,11 @@ class AssetLocationHistoryService extends BaseService {
       if (isVisionLink) {
         AssetLocationHistory locationHistoryResponse =
             await MyApi().getClient()!.assetLocationHistoryVL(
-                  Urls.locationHistoryVL +
-                      assetUid! +
-                      "/v2" +
-                      getLocationHistoryUrl(startTimeLocal, endTimeLocal),
+                  Urls.locationHistoryVL + assetUid! == null
+                      ? notificationId!
+                      : assetUid +
+                          "/v2" +
+                          getLocationHistoryUrl(startTimeLocal, endTimeLocal),
                   accountSelected!.CustomerUID,
                 );
         return locationHistoryResponse != null ? locationHistoryResponse : null;
@@ -45,10 +48,11 @@ class AssetLocationHistoryService extends BaseService {
         AssetLocationHistory locationHistoryResponse = await MyApi()
             .getClient()!
             .assetLocationHistory(
-                Urls.locationHistory +
-                    assetUid! +
-                    "/v2" +
-                    getLocationHistoryUrl(startTimeLocal, endTimeLocal),
+                Urls.locationHistory + assetUid! == null
+                    ? notificationId!
+                    : assetUid +
+                        "/v2" +
+                        getLocationHistoryUrl(startTimeLocal, endTimeLocal),
                 accountSelected!.CustomerUID,
                 Urls.fleetMapPrefix);
         return locationHistoryResponse != null ? locationHistoryResponse : null;

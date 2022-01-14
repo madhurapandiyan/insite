@@ -75,6 +75,7 @@ class FleetService extends BaseService {
                                 ScreenType.FLEET),
                         accountSelected!.CustomerUID,
                       );
+          Logger().wtf(accountSelected!.CustomerUID);
           return fleetSummaryResponse;
         } else {
           FleetSummaryResponse fleetSummaryResponse =

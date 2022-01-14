@@ -17,6 +17,7 @@ class FaultService extends BaseService {
   LocalService? _localService = locator<LocalService>();
   Customer? accountSelected;
   Customer? customerSelected;
+  String? notificationId;
   FaultService() {
     setUp();
   }
@@ -25,6 +26,7 @@ class FaultService extends BaseService {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
+      notificationId = await _localService!.getNotificationId();
     } catch (e) {
       Logger().e(e);
     }
@@ -45,10 +47,9 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl == false) {
         var data = await Network().getGraphqlData(
-          query,
-         accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub
-        );
+            query,
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -136,10 +137,9 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub
-        );
+            query,
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         AssetFaultSummaryResponse assetFaultSummaryResponse =
             AssetFaultSummaryResponse.fromJson(data.data!['assetData']);
@@ -231,11 +231,9 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl == false) {
         var data = await Network().getGraphqlData(
-          query,
-         
-          accountSelected!.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub
-        );
+            query,
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -318,7 +316,7 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             await MyApi().getClient()!.getHealthListDataVL(
-                  assetUid,
+                  assetUid == null ? notificationId : assetUid,
                   endDateTime,
                   'en-US',
                   limit,
@@ -331,6 +329,8 @@ class FaultService extends BaseService {
         Map<String, String> queryMap = Map();
         if (assetUid != null) {
           queryMap["assetUid"] = assetUid;
+        } else {
+          queryMap["assetUid"] = notificationId!;
         }
         if (startDateTime != null) {
           queryMap["startDateTime"] = startDateTime;
@@ -361,7 +361,7 @@ class FaultService extends BaseService {
   }
 
   Future<HealthListResponse?> getAssetViewLocationSummary(
-    String? assetUID,
+    assetUid,
     startDate,
     endDate,
     page,
@@ -383,7 +383,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                      assetUID,
+                      assetUid == null ? notificationId : assetUid,
                       accountSelected!.CustomerUID,
                     )
                 : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
@@ -397,7 +397,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                      assetUID,
+                      assetUid == null ? notificationId : assetUid,
                       accountSelected!.CustomerUID,
                     );
         return healthListResponse;
@@ -415,7 +415,7 @@ class FaultService extends BaseService {
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH),
-                    assetUID,
+                    assetUid == null ? notificationId : assetUid,
                     accountSelected!.CustomerUID,
                     Urls.faultPrefix)
                 : await MyApi().getClient()!.assetViewLocationSummaryURL(
@@ -429,7 +429,7 @@ class FaultService extends BaseService {
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH),
-                    assetUID,
+                    assetUid == null ? notificationId : assetUid,
                     accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return healthListResponse;
@@ -449,14 +449,20 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         SingleAssetFaultResponse assetCountResponse = await MyApi()
             .getClient()!
-            .getDashboardListDataVL(assetUid, endDateTime, startDateTime,
+            .getDashboardListDataVL(
+                assetUid == null ? notificationId : assetUid,
+                endDateTime,
+                startDateTime,
                 accountSelected!.CustomerUID);
         return assetCountResponse;
       } else {
         Map<String, String> queryMap = Map();
         if (assetUid != null) {
           queryMap["assetUid"] = assetUid;
+        } else {
+          queryMap["assetUid"] = notificationId!;
         }
+
         if (startDateTime != null) {
           queryMap["startDateTime"] = startDateTime;
         }

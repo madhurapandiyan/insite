@@ -19,11 +19,13 @@ class AssetService extends BaseService {
 
   Customer? accountSelected;
   Customer? customerSelected;
+  String? notificationId;
 
   setUp() async {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
+      notificationId = await _localService!.getNotificationId();
     } catch (e) {
       Logger().e("setUp $e");
     }
@@ -41,7 +43,7 @@ class AssetService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query,
-         accountSelected?.CustomerUID,
+          accountSelected?.CustomerUID,
           (await _localService!.getLoggedInUser())!.sub,
         );
 
@@ -125,14 +127,14 @@ class AssetService extends BaseService {
     try {
       if (isVisionLink) {
         AssetDetail assetResponse = await MyApi().getClient()!.assetDetailVL(
-              assetUID,
+              assetUID == null ? notificationId : assetUID,
               accountSelected!.CustomerUID,
             );
         return assetResponse;
       } else {
         AssetDetail assetResponse = await MyApi().getClient()!.assetDetail(
             Urls.assetDetails,
-            assetUID,
+            assetUID == null ? notificationId : assetUID,
             accountSelected!.CustomerUID,
             Urls.vfleetPrefix);
         return assetResponse;
@@ -145,9 +147,9 @@ class AssetService extends BaseService {
 
   Future<List<AssetDevice>?> getAssetDevice(assetUID) async {
     try {
-      AssetDeviceResponse assetResponse = await MyApi()
-          .getClient()!
-          .asset(assetUID, accountSelected!.CustomerUID);
+      AssetDeviceResponse assetResponse = await MyApi().getClient()!.asset(
+          assetUID == null ? notificationId : assetUID,
+          accountSelected!.CustomerUID);
       return assetResponse.Devices;
     } catch (e) {
       Logger().e("getAssetDevice $e");
@@ -159,7 +161,7 @@ class AssetService extends BaseService {
     try {
       if (isVisionLink) {
         List<Note> notes = await MyApi().getClient()!.getAssetNotesVL(
-              assetUID,
+              assetUID == null ? notificationId : assetUID,
               accountSelected!.CustomerUID,
             );
         if (notes != null) {
@@ -168,7 +170,7 @@ class AssetService extends BaseService {
       } else {
         List<Note> notes = await MyApi().getClient()!.getAssetNotes(
               Urls.notes,
-              assetUID,
+              assetUID == null ? notificationId : assetUID,
               Urls.assetprefix,
               accountSelected!.CustomerUID,
               (await _localService!.getLoggedInUser())!.sub,
@@ -188,12 +190,16 @@ class AssetService extends BaseService {
     try {
       if (isVisionLink) {
         await MyApi().getClient()!.postNotesVL(
-              PostNote(assetUID: assetUID, assetUserNote: note),
+              PostNote(
+                  assetUID: assetUID == null ? notificationId : assetUID,
+                  assetUserNote: note),
             );
       } else {
         await MyApi().getClient()!.postNotes(
             Urls.notes,
-            PostNote(assetUID: assetUID, assetUserNote: note),
+            PostNote(
+                assetUID: assetUID == null ? notificationId : assetUID,
+                assetUserNote: note),
             Urls.assetprefix);
       }
     } catch (e) {

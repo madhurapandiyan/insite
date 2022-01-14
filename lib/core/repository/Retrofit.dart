@@ -35,6 +35,7 @@ import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
@@ -1075,6 +1076,17 @@ abstract class RestClient {
   Future<CheckUserResponse> checkUser(
     @Path() String url,
     @Header("service") service,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @GET("{url}")
+  Future<NotificationsData> mainNotificationsData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+  @GET("{url}")
+  Future<Fleet> notificationsDetails(
+    @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
 }

@@ -10,6 +10,7 @@ import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
 import 'package:insite/views/login/login_view.dart' as VL4;
+import 'package:insite/views/notification/notification_view.dart' as view37;
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
 import 'package:insite/views/plant/plant_view.dart' as view24;
@@ -26,7 +27,7 @@ import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
-import 'package:insite/views/splash/splash_view.dart'as view37;
+import 'package:insite/views/splash/splash_view.dart' as view37;
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
     as view18;
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view.dart'
@@ -71,7 +72,7 @@ class Router {
       case visonLink.loginViewRoute:
         return MaterialPageRoute(builder: (_) => VL4.LoginView());
       case visonLink.splashViewRoute:
-        return MaterialPageRoute(builder: (_) =>view37.SplashView());
+        return MaterialPageRoute(builder: (_) => view37.SplashView());
       case indiaStackSplashViewRoute:
         return MaterialPageRoute(builder: (_) => view0.IndiaStackSplashView());
       case customerSelectionViewRoute:
@@ -169,6 +170,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => view35.FleetStatusView());
       case transferHistoryView:
         return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
+      case notificationViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.NotificationView());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

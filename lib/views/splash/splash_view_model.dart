@@ -92,7 +92,7 @@ class SplashViewModel extends InsiteViewModel {
   checkPermission(Customer? account) async {
     try {
       if (isVisionLink) {
-        //  await _localService!.saveAccountInfoData();
+        //await _localService!.saveAccountInfoData();
         //await _localService!.saveDummyToken();
         List<Permission>? list = await _loginService!.getPermissions();
         if (list!.isNotEmpty) {

@@ -3,19 +3,25 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
   Logger? log;
   AssetService? _assetSingleHistoryService = locator<AssetService>();
-  AssetUtilizationService? _assetUtilizationService = locator<AssetUtilizationService>();
+  AssetUtilizationService? _assetUtilizationService =
+      locator<AssetUtilizationService>();
 
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
+
+  Notifications? _notifications;
+  Notifications? get notifications => _notifications;
 
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
@@ -44,9 +50,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
   }
 
   getAssetUtilization() async {
-    AssetUtilization? result = await _assetUtilizationService!.getAssetUtilGraphDate(
-        assetDetail!.assetUid,
-        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
+    AssetUtilization? result = await _assetUtilizationService!
+        .getAssetUtilGraphDate(assetDetail!.assetUid,
+            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
     _utilizationGreatestValue = Utils.greatestOfThree(
         _assetUtilization!.totalDay!.runtimeHours!,
@@ -58,7 +64,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   getAssetDetail() async {
     AssetDetail? result =
-        await _assetSingleHistoryService!.getAssetDetail(assetDetail!.assetUid);
+        await _assetSingleHistoryService!.getAssetDetail(assetDetail?.assetUid);
     _assetDetail = result;
     _loading = false;
     notifyListeners();

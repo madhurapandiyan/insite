@@ -160,6 +160,11 @@
             "file_path": "views/subscription/transferhistory/transfer_history_view.dart",
             "route_name": "transfer_history_ViewRoute",
             "view_name": "TransferHistoryView"
+        },
+        {
+            "file_path": "views/notification/notification_view.dart",
+            "route_name": "notification_ViewRoute",
+            "view_name": "NotificationView"
         }
     ]
 }

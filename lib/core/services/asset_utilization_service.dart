@@ -3,6 +3,8 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
@@ -19,6 +21,7 @@ class AssetUtilizationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  String? notification;
 
   AssetUtilizationService() {
     setUp();
@@ -30,6 +33,8 @@ class AssetUtilizationService extends BaseService {
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getAccountInfo();
+      notification = await _localService!.getNotificationId();
+
       Logger().d("account selected " + accountSelected!.CustomerUID!);
       Logger().d("customer selected " + customerSelected!.CustomerUID!);
     } catch (e) {
@@ -46,6 +51,8 @@ class AssetUtilizationService extends BaseService {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
+      } else {
+        queryMap["assetUid"] = notification!;
       }
       if (startDate != null) {
         queryMap["startDate"] = startDate;
@@ -90,6 +97,8 @@ class AssetUtilizationService extends BaseService {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
+      } else {
+        queryMap["assetUid"] = notification!;
       }
       if (date != null && date.isNotEmpty) {
         queryMap["date"] = date;
@@ -225,6 +234,8 @@ class AssetUtilizationService extends BaseService {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID;
+      } else {
+        queryMap["assetUid"] = notification!;
       }
       if (startDate != null) {
         queryMap["startDate"] = startDate;

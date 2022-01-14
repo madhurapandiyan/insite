@@ -12,6 +12,7 @@ import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.
     as view16;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
+import 'package:insite/views/notification/notification_view.dart' as view37;
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
 import 'package:insite/views/plant/plant_asset_creation/plant_asset_creation_view.dart'
@@ -185,6 +186,8 @@ class Router {
       case plantAssetCreationViewRoute:
         return MaterialPageRoute(
             builder: (_) => view31.PlantAssetCreationView());
+      case notificationViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.NotificationView());
 
       default:
         return MaterialPageRoute(

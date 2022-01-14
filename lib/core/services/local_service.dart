@@ -19,6 +19,7 @@ class LocalService extends BaseService {
   static const String IS_LOGGEDIN = "isLoggedIn";
   static const String HAS_PERMISSION = "hasPermission";
   static const String USERID = "userId";
+  static const String NOTIFICATION_USERID = "notificationId";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -32,9 +33,13 @@ class LocalService extends BaseService {
     return await preferences!.setString(EXPIREY_TIME, time);
   }
 
+  Future saveNotificationId(notificationId) async {
+    return await preferences!.setString(NOTIFICATION_USERID, notificationId);
+  }
+
   Future saveDummyToken() async {
     String token =
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQwOTM0NDk0LCJuYmYiOjE2NDA5MzA4OTQsImlhdCI6MTY0MDkzMDg5NCwianRpIjoiNDdjNzlkOGRiNDE3NGEzNWE1MjA1MGFlN2Y2ZTMzNWIiLCJqd3RfdmVyIjoyLCJzdWIiOiIxZDAyMmI1YS0yZTRhLTRmNWItYmQ4MS1hZDJhNzU5NzdlMjEiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDA5MzA4OTEsImF6cCI6IjEzMDUxMGJkLThhOTAtNDI3OC1iOTdhLWQ4MTFkZjQ0ZWYxMCIsImF1ZCI6WyIxMzA1MTBiZC04YTkwLTQyNzgtYjk3YS1kODExZGY0NGVmMTAiXSwic2NvcGUiOiJPU0ctRlJBTUUtQVBQLVBST0QifQ.a7Mj5V1F20uBcp9s5I_UQlyenM91BQ-Du-uhhobNRtBf6THPuJmjW2D_f9BMzrtaqxWxcYb-oLS6pLQaKRn9izLlTFjbO2Mlv77tHYjHUs9sWGCMIUdZGMDqxPFsdNWudQwDoaStJ33JcWXaEsWOorp6PA1AQ1Ymwo5NXw1gpkg037c5-DCF1xLwIusXqXYFb4fZKPArDxvBM_yz-wOCETtpkMtkmsr89pKcHDE3fBgN6XA_AAiPe6BMZsxZ1_lnNY4s52KcwEh9QST_1Hl3OM4uPsEVXMbY96c3F8DMs6XrBTKoC6pullQ26Wkcr5Z6jSgnkj3p475XyG-GRxLfBA";
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQyMTYxOTI1LCJuYmYiOjE2NDIxNTgzMjUsImlhdCI6MTY0MjE1ODMyNSwianRpIjoiZDEwNmRiYjNjYWRjNGRkOWEyY2I1ZmVmYmI0ZWM4NWQiLCJqd3RfdmVyIjoyLCJzdWIiOiIxZDAyMmI1YS0yZTRhLTRmNWItYmQ4MS1hZDJhNzU5NzdlMjEiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDIxNTgzMjQsImF6cCI6IjdjOWQyMDRkLWFiNWEtNGMwZS04ZjEyLWNmOWU2Njg5NGQ0MSIsImF1ZCI6WyI3YzlkMjA0ZC1hYjVhLTRjMGUtOGYxMi1jZjllNjY4OTRkNDEiXSwic2NvcGUiOiJQcm9kLUFnbm9zdGljIn0.eHC28sN46lKzRzYT4yyNbq4PYCze8YazpIseSeDfiHhPGWjMpjUIRpwnJonvYFG-OG23uUJX5K2iBRhKue7wXPEqwR9WRUZdQmBkfSMDiYHKINOF-dOvIOAwcpkceEWuO0dm_n53zix7BUAQ8_0QQQsc3AR0jOMzIsPSH4cYshDsX8Rk_1cs2wdjSjXSWUTIsvMFwUbWDk8MdjKwRFLfmC48PM_e10CS-TGZXIjJy7K73JTjqfC49nyKY5VAWDDhkBqsR1xAM_9yas9LopH72-d2AFM66RVaRJtqa7XiOy8twbsKCRKHVyPPHGICXaz9qVaEORD-p66dYXPA6DGm_A";
     return await preferences!.setString(TOKEN, token);
   }
 
@@ -56,6 +61,10 @@ class LocalService extends BaseService {
 
   Future<bool?> getIsloggedIn() async {
     return preferences!.getBool(IS_LOGGEDIN);
+  }
+
+  Future<String?> getNotificationId() async {
+    return preferences!.getString(NOTIFICATION_USERID);
   }
 
   Future<bool> saveUserInfo(UserInfo? userLogin) async {
