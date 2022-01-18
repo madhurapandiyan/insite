@@ -15,7 +15,7 @@ class CustomDatePicker extends StatelessWidget {
           color: Theme.of(context).textTheme.bodyText1!.color),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
-        hintText: "MM/DD/YYYY",
+        hintText: "DD/MM/YYYY",
         hintStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,

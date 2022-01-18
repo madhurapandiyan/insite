@@ -4,6 +4,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/replacement_service.dart';
+// ignore: unused_import
 import 'package:insite/views/subscription/replacement/device_replacement_status/device_replacement_status_view.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
@@ -20,6 +21,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   DeviceReplacementViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+   
     getUserId();
   }
 

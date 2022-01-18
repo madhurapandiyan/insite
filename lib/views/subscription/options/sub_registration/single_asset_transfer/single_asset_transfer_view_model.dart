@@ -197,6 +197,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   SingleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _localService!.saveToken(
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQyNDEwOTQwLCJuYmYiOjE2NDI0MDczNDAsImlhdCI6MTY0MjQwNzM0MCwianRpIjoiMmY1ODJhNDIzMmRiNDM1MTk0M2VmMGQ5MDdlYTI5OWEiLCJqd3RfdmVyIjoyLCJzdWIiOiIyMTgxODg1Ny01MTU1LTRjNmYtYTc0YS01NzRkYmU3NDE2NzUiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDI0MDczMzgsImF6cCI6ImFmMmIwM2QwLTdiMjctNDFlYi04YTNhLTk1Yjg5ZDIwZjc4ZCIsImF1ZCI6WyJhZjJiMDNkMC03YjI3LTQxZWItOGEzYS05NWI4OWQyMGY3OGQiXSwic2NvcGUiOiJQcm9kLVZpc2lvbkxpbmtBZG1pbmlzdHJhdG9yIn0.ELBeUJlm5sehPFMCp8NhRMMbj2jPebPIrEMQQR7gaO6f7Uzqe9Q-0VFSQJVo8fms8ZtNrFSI6lQUfO1z6Vr_aoV9t8U6xFayYZ-Qj2o7829trGlSxyciQKyWtRyOdjjQgBiDsf1uVPs7m070Z7D7Kfq7gO-6UP1hkoWGJEimOL89tQ8xSKXkHqmZNoXfz-6KF8UIDu7DgYfnypW-wE7DG_UglU4Aabt8CBL4LN3s4y8YtHY0JdT7e9TUTzBtr_oCXZrD4yN8j0NrUKRE98XiINHEPSaA3Tgsnns1oFWvAw_TzQ1amunK_ODUYWHJ8sDHRGw_WzawCEn7A7UKts0TsQ");
     Future.delayed(Duration(seconds: 1), () {});
   }
 
@@ -775,7 +777,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
               notifyListeners();
             });
           } else {
-            
             _customerId.clear();
             _devices.clear();
             detailResultList.clear();
@@ -818,7 +819,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
               notifyListeners();
             });
           } else {
-            
             _customerCode.clear();
             _devices.clear();
             detailResultList.clear();
@@ -903,13 +903,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           ));
           dealerCode.clear();
           if (dealerCodeChange!.result![1].isNotEmpty) {
-           dealerCodeChange!.result![1].forEach((element) {
+            dealerCodeChange!.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
               notifyListeners();
             });
           } else {
-            
             _devices.clear();
             _dealerCode.clear();
             detailResultList.clear();
@@ -1059,7 +1058,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           _loading = false;
           _loadingMore = false;
         }
-        Logger().wtf(deviceIdResults!.result!.first.gPSDeviceID);
+        //Logger().wtf(deviceIdResults!.result!.first.gPSDeviceID);
         notifyListeners();
       }
     } on DioError catch (e) {

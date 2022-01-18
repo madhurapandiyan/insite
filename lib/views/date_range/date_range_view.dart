@@ -337,7 +337,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                         if (fromDate != null && toDate != null) {
                           if (viewModel.selectedDateRange ==
                               DateRangeType.today) {
-                          await viewModel.updateDateRange(
+                            await viewModel.updateDateRange(
                                 '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
                                 '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                 describeEnum(viewModel.selectedDateRange));
@@ -345,7 +345,6 @@ class _DateRangeViewState extends State<DateRangeView> {
                               Navigator.pop(context, [fromDate!, toDate!]);
                             });
                           } else {
-                         
                             if (DateUtil.isBothDateSame(fromDate!, toDate!)) {
                               Logger().i("if date equal");
                               await viewModel.updateDateRange(
@@ -361,7 +360,6 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 Utils.showToast(
                                     "End date cannot be less than start date.");
                               } else {
-                          
                                 await viewModel.updateDateRange(
                                     '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
                                     '${toDate!.year}-${toDate!.month}-${toDate!.day}',

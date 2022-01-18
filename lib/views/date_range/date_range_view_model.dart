@@ -69,7 +69,6 @@ class DateRangeViewModel extends BaseViewModel {
       Logger().d("label ", appliedFilters[2]);
       _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();
-      notifyListeners();
     } else {
       startDate = DateFormat('yyyy-MM-dd').format(
           DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
@@ -79,6 +78,7 @@ class DateRangeViewModel extends BaseViewModel {
 
   DateRangeType getType(value) {
     DateRangeType type = DateRangeType.currentWeek;
+    Logger().e(value);
     switch (value) {
       case "currentMonth":
         type = DateRangeType.currentMonth;
@@ -103,6 +103,9 @@ class DateRangeViewModel extends BaseViewModel {
         break;
       case "yesterday":
         type = DateRangeType.yesterday;
+        break;
+      case "previousMonth":
+        type = DateRangeType.previousMonth;
         break;
       default:
     }

@@ -1612,6 +1612,27 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<LoginResponse> getRefreshLoginData(contentType, refreshToken) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'content-type': contentType};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(refreshToken.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LoginResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: contentType)
+            .compose(_dio.options, '/oauth/token',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LoginResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<LoginResponse> getTokenWithoutLogin(authorization, contentType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

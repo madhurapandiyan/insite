@@ -508,8 +508,12 @@ class _SingleAssetRegistrationViewState
                                             children: [
                                               CustomAutoCompleteWidget(
                                                 isShowingHelperText: viewModel
-                                                    .customerNameChange?.result![0].first.count==0,
-                                                    helperText: "New Customer Name",
+                                                        .customerNameChange
+                                                        ?.result![0]
+                                                        .first
+                                                        .count ==
+                                                    0,
+                                                helperText: "New Customer Name",
                                                 isShowing: viewModel
                                                     .customerId.isEmpty,
                                                 controller: viewModel
@@ -533,8 +537,12 @@ class _SingleAssetRegistrationViewState
                                               ),
                                               CustomAutoCompleteWidget(
                                                 isShowingHelperText: viewModel
-                                                    .customerCodeChange?.result![0].first.count==0,
-                                                    helperText: "New Customer Code",
+                                                        .customerCodeChange
+                                                        ?.result![0]
+                                                        .first
+                                                        .count ==
+                                                    0,
+                                                helperText: "New Customer Code",
                                                 isShowing: viewModel
                                                     .customerCode.isEmpty,
                                                 keyboardType:
@@ -685,7 +693,6 @@ class _SingleAssetRegistrationViewState
                                                 onButtonTapped: () async {
                                                   final result = await viewModel
                                                       .subscriptionAssetRegistration();
-
                                                   if (result != null) {
                                                     viewModel
                                                         .onRegistrationSuccess();
@@ -715,7 +722,9 @@ class _SingleAssetRegistrationViewState
                           ),
                         ),
                       ),
-                      SizedBox(height: 40,)
+                      SizedBox(
+                        height: 40,
+                      )
                     ],
                   ),
                 ),
