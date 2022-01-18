@@ -4,11 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
-import 'package:insite/core/models/add_group_edit_payload.dart';
+import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/edit_group_response.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
@@ -35,7 +35,7 @@ class AddGroupViewModel extends InsiteViewModel {
 
   Customer? accountSelected;
 
-  GroupSummaryResponse? groupSummaryResponseData;
+  AssetGroupSummaryResponse? groupSummaryResponseData;
 
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
@@ -59,13 +59,14 @@ class AddGroupViewModel extends InsiteViewModel {
       // else if(assetUidData.isEmpty){
       //   _snackBarservice.showSnackbar(message: "Select the asset");
       // }
-
+      showLoadingDialog();
       AddGroupDataResponse? result =
           await _manageUserService!.getAddGroupSaveData(
         AddGroupPayLoad(
-            AssetUID: assetUidData,
-            Description: descriptionController.text,
-            GroupName: nameController.text),
+          AssetUID: assetUidData,
+          Description: descriptionController.text,
+          GroupName: nameController.text,
+        ),
       );
       if (result != null) {
         hideLoadingDialog();
@@ -79,20 +80,24 @@ class AddGroupViewModel extends InsiteViewModel {
   }
 
   getEditGroupData() async {
-    showLoadingDialog();
-    EditGroupResponse? result =
-        await _manageUserService!.getEditGroupData(groups!.GroupUid!);
-    if (result != null) {
-      nameController.text = result.GroupName!;
-      descriptionController.text = result.Description ?? "";
-      for (var i = 0; i < result.AssetUID!.length; i++) {
-        assetUidData!.add(result.AssetUID![i]);
+    try {
+      showLoadingDialog();
+      EditGroupResponse? result =
+          await _manageUserService!.getEditGroupData(groups!.GroupUid!);
+      if (result != null) {
+        nameController.text = result.GroupName!;
+        descriptionController.text = result.Description ?? "";
+        for (var i = 0; i < result.AssetUID!.length; i++) {
+          assetUidData!.add(result.AssetUID![i]);
+        }
+        Logger().i("assetUId:${assetUidData!.length}");
       }
-      Logger().i("assetUId:${assetUidData!.length}");
-    }
 
-    hideLoadingDialog();
-    notifyListeners();
+      hideLoadingDialog();
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   void getData() {
@@ -104,17 +109,23 @@ class AddGroupViewModel extends InsiteViewModel {
   }
 
   getAddGroupEditData() async {
-    Logger().i(dissociatedAssetId);
-    UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
-        AddGroupEditPayload(
-            GroupName: nameController.text,
-            GroupUid: groups!.GroupUid!,
-            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-            Description: descriptionController.text,
-            AssociatedAssetUID: associatedAssetId,
-            DissociatedAssetUID: dissociatedAssetId));
-    if (result != null) {
-      gotoManageGroupPage();
+    try {
+      Logger().i(dissociatedAssetId);
+      showLoadingDialog();
+      UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
+          EditGroupPayLoad(
+              GroupName: nameController.text,
+              GroupUid: groups!.GroupUid!,
+              CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+              Description: descriptionController.text,
+              AssociatedAssetUID: associatedAssetId,
+              DissociatedAssetUID: dissociatedAssetId));
+      if (result != null) {
+        gotoManageGroupPage();
+      }
+      hideLoadingDialog();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 

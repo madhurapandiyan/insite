@@ -3496,19 +3496,19 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<GroupSummaryResponse> getGroupListData(url, customerId) async {
+  Future<AssetGroupSummaryResponse> getGroupListData(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GroupSummaryResponse>(
+        _setStreamType<AssetGroupSummaryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GroupSummaryResponse.fromJson(_result.data!);
+    final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -3584,7 +3584,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<GroupSummaryResponse> getAdminProductFamilyFilterData(
+  Future<AssetGroupSummaryResponse> getAdminProductFamilyFilterData(
       url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -3592,29 +3592,30 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GroupSummaryResponse>(
+        _setStreamType<AssetGroupSummaryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GroupSummaryResponse.fromJson(_result.data!);
+    final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<GroupSummaryResponse> getManafactureFilterData(url, customerId) async {
+  Future<AssetGroupSummaryResponse> getManafactureFilterData(
+      url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GroupSummaryResponse>(
+        _setStreamType<AssetGroupSummaryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GroupSummaryResponse.fromJson(_result.data!);
+    final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 

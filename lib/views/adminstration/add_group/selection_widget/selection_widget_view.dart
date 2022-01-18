@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/edit_group_response.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -13,7 +13,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SelectionWidgetView extends StatefulWidget {
-  final Function(List<String> value, GroupSummaryResponse groupSummaryResponse,
+  final Function(List<String> value, AssetGroupSummaryResponse groupSummaryResponse,
       List<String> associatedAssetId)? voidCallback;
   final List<String?>? assetId;
   final Groups? group;
@@ -44,13 +44,12 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                 children: [
                   SelectedItemWidget(
                     headerText: "Asset ID",
-                    displayList: viewModel.assetId,
+                    displayList: viewModel.assetIdDisplayList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     headerBoxCountValue: "",
                     displayCountBoxValue: [],
                     callback: () {},
                     controller: viewModel.assetIDController,
-                    searchList: viewModel.assetIdDisplayList,
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedIndexData(valueData, index);
                       viewModel.selectedIndex = index;
@@ -61,18 +60,16 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     },
                     subList: [],
                     subTextEditingController: null,
-                    subSearchList: [],
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Serial Number",
-                    displayList: viewModel.assetSerialNumber,
+                    displayList: viewModel.assetSeriaNumberList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     headerBoxCountValue: "",
                     displayCountBoxValue: [],
                     callback: () {},
                     controller: viewModel.serialNumberController,
-                    searchList: viewModel.assetSeriaNumberList,
-                    isLoading: viewModel.isloading,
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedSerialNumberIndexData(valueData, index);
                       viewModel.selectedIndex = index;
@@ -83,12 +80,12 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     },
                     subList: [],
                     subTextEditingController: null,
-                    subSearchList: [],
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     pageController: viewModel.pageController,
                     headerText: "Product Family",
-                    displayList: viewModel.productFamilyData,
+                    displayList: viewModel.productFamilyList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     headerBoxCountValue: "productFamily",
                     displayCountBoxValue: viewModel.productFamilyCountData,
@@ -96,15 +93,12 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.getProductFamilyData();
                     },
                     controller: viewModel.productFamilyController,
-                    searchList: viewModel.productFamilyList,
                     productFamilyKey: (value) {
                       viewModel.getProductFamilyFilterData(value);
                     },
                     isShowingState: viewModel.isShowingState,
                     isShowingbackButtonState: () {
                       viewModel.getBackButtonState();
-                      viewModel.pageController!
-                          .jumpToPage(viewModel.currentPage);
                     },
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedProductFamilyData(valueData, index);
@@ -115,14 +109,14 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                         viewModel.associatedAssetId,
                       );
                     },
-                    subList: viewModel.subProductFamilyList,
+                    subList: viewModel.subProductFamilySearchList,
                     subTextEditingController:
                         viewModel.productFamilySubController,
-                    subSearchList: viewModel.subProductFamilySearchList,
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Manfacturer",
-                    displayList: viewModel.manfactureData,
+                    displayList: viewModel.manfactureList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     displayCountBoxValue: viewModel.manfactureCountData,
                     headerBoxCountValue: "manafacture",
@@ -130,14 +124,11 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.getManfactureGroupData();
                     },
                     controller: viewModel.manafactureController,
-                    searchList: viewModel.manfactureList,
                     productFamilyKey: (value) {
                       viewModel.getFilterManafactureData(value);
                     },
                     isShowingbackButtonState: () {
                       viewModel.getBackButtonState();
-                      viewModel.pageController!
-                          .jumpToPage(viewModel.currentPage);
                     },
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedManfactureListData(valueData, index);
@@ -150,10 +141,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     },
                     isShowingState: viewModel.isShowingManaFactureState,
                     pageController: viewModel.pageController,
-                    subList: viewModel.subManfactureList,
-                    subSearchList: viewModel.subManafactureSearchList,
+                    subList: viewModel.subManafactureSearchList,
                     subTextEditingController:
                         viewModel.manafactureSubController,
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Geofences",
@@ -165,14 +156,13 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.getGeoFenceData();
                     },
                     controller: null,
-                    searchList: [],
                     subList: [],
                     subTextEditingController: null,
-                    subSearchList: [],
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Model",
-                    displayList: viewModel.modelData,
+                    displayList: viewModel.modelList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     displayCountBoxValue: viewModel.modelCountData,
                     headerBoxCountValue: "model",
@@ -180,7 +170,6 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.getModelData();
                     },
                     controller: viewModel.modelController,
-                    searchList: viewModel.modelList,
                     productFamilyKey: (value) {
                       viewModel.getFilterModelData(value);
                     },
@@ -193,20 +182,18 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                         viewModel.associatedAssetId,
                       );
                     },
-                    subList: viewModel.subModelList,
+                    subList: viewModel.subModelSearchList,
                     isShowingState: viewModel.isShowingModelState,
                     pageController: viewModel.pageController,
                     isShowingbackButtonState: () {
                       viewModel.getBackButtonState();
-                      viewModel.pageController!
-                          .jumpToPage(viewModel.currentPage);
                     },
-                    subSearchList: viewModel.subModelSearchList,
                     subTextEditingController: viewModel.modelSubController,
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Device Type",
-                    displayList: viewModel.deviceTypdeData,
+                    displayList: viewModel.deviceTypeList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     displayCountBoxValue: viewModel.deviceTypeCountData,
                     headerBoxCountValue: "deviceType",
@@ -214,16 +201,13 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.getDeviceTypeData();
                     },
                     controller: viewModel.deviceTypeController,
-                    searchList: viewModel.devicetypeList,
                     productFamilyKey: (value) {
                       viewModel.getFilterDeviceTypeData(value);
                     },
-                    subList: viewModel.deviceTypeList,
+                    subList: viewModel.subDeviceTypeSearchList,
                     pageController: viewModel.pageController,
                     isShowingbackButtonState: () {
                       viewModel.getBackButtonState();
-                      viewModel.pageController!
-                          .jumpToPage(viewModel.currentPage);
                     },
                     isShowingState: viewModel.isShowingDeviceTypeState,
                     groupValueCallBack: (valueData, int index) {
@@ -235,16 +219,15 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                         viewModel.associatedAssetId,
                       );
                     },
-                    subSearchList: viewModel.subDeviceTypeSearchList,
                     subTextEditingController: viewModel.deviceTypeSubController,
+                    isLoading: viewModel.isSubAssetLoading,
                   ),
                   SelectedItemWidget(
                     headerText: "Account",
-                    displayList: viewModel.displayName,
+                    displayList: viewModel.accountDisplayList,
                     isAssetIdLoading: viewModel.isAssetLoading,
                     displayCountBoxValue: [],
                     headerBoxCountValue: "",
-                    searchList: viewModel.accountDisplayList,
                     callback: () {
                       viewModel.getSubCustomerList();
                     },
@@ -252,7 +235,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     productFamilyKey: (value) {
                       viewModel.getAccountSelectionData(value);
                     },
-                    subList: viewModel.accountSelectionList,
+                    subList: viewModel.subAccountSearchList,
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedAccountSelectionData(valueData, index);
                       viewModel.selectedIndex = index;
@@ -266,13 +249,11 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     pageController: viewModel.pageController,
                     isShowingbackButtonState: () {
                       viewModel.getBackButtonState();
-                      viewModel.pageController!
-                          .jumpToPage(viewModel.currentPage);
                     },
-                    subSearchList: viewModel.subAccountSearchList,
                     subTextEditingController: viewModel.accountSubController,
                     isChangingAccountSelectionState:
                         viewModel.isShowingAccountSelectedState,
+                    isLoading: viewModel.isSubAssetLoading,
                   )
                 ],
               ),
@@ -303,7 +284,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                           dropDownItem: viewModel.dropdownList,
                           dropDownValue: viewModel.dropDownValue,
                           onDropDownChange: (String value) {
-                          viewModel. getDropDownListData(value);
+                            viewModel.getDropDownListData(value);
                           },
                         )),
             )

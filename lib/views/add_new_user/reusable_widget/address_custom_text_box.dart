@@ -28,16 +28,16 @@ class AddressCustomTextBox extends StatelessWidget {
           contentPadding: EdgeInsets.only(left: 15, top: 20),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color:Theme.of(context).textTheme.bodyText1!.color!, width: 1)),
+              borderSide: BorderSide(color:black, width: 1)),
           disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: Theme.of(context).textTheme.bodyText1!.color!, width: 1)),
+              borderSide: BorderSide(color: black, width: 1)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: Theme.of(context).textTheme.bodyText1!.color!, width: 1)),
+              borderSide: BorderSide(color: black, width: 1)),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: Theme.of(context).textTheme.bodyText1!.color!)),
+              borderSide: BorderSide(color: black)),
           hintStyle: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14,

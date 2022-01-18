@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'add_group_edit_payload.dart';
+part of 'edit_group_payload.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AddGroupEditPayload _$AddGroupEditPayloadFromJson(Map<String, dynamic> json) =>
-    AddGroupEditPayload(
+EditGroupPayLoad _$EditGroupPayLoadFromJson(Map<String, dynamic> json) =>
+    EditGroupPayLoad(
       GroupUid: json['GroupUid'] as String?,
       GroupName: json['GroupName'] as String?,
       Description: json['Description'] as String?,
@@ -20,8 +20,7 @@ AddGroupEditPayload _$AddGroupEditPayloadFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$AddGroupEditPayloadToJson(
-        AddGroupEditPayload instance) =>
+Map<String, dynamic> _$EditGroupPayLoadToJson(EditGroupPayLoad instance) =>
     <String, dynamic>{
       'GroupUid': instance.GroupUid,
       'GroupName': instance.GroupName,

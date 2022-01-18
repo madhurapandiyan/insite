@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
@@ -59,6 +59,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                             title: 'manage groups'.toUpperCase(),
                             fontSize: 14,
                             onTap: () {},
+                            textColor: Colors.white,
                           ),
                         )
                       ],
@@ -120,7 +121,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                       dissociatedId: viewModel.dissociatedAssetId,
                       voidCallback: (
                         List<String> value,
-                        GroupSummaryResponse data,
+                        AssetGroupSummaryResponse data,
                         List<String> associatedAssetId,
                       ) {
                         viewModel.assetUidData = value;

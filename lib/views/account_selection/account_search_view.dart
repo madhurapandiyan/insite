@@ -80,7 +80,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                 child: SearchBox(
                                   controller: viewModel.textEditingController,
                                   hint: "Search",
-                                  onTextChanged: viewModel.onSearchTextChanged,
+                                 // onTextChanged: viewModel.onSearchTextChanged,
                                 ),
                               )
                             : SizedBox(),

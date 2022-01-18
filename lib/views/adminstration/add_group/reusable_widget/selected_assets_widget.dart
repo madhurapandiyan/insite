@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';

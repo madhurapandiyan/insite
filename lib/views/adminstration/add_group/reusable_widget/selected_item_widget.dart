@@ -14,7 +14,6 @@ class SelectedItemWidget extends StatefulWidget {
   final String? headerBoxCountValue;
   final List<String>? displayCountBoxValue;
   final VoidCallback? callback;
-  final List? searchList;
   final TextEditingController? controller;
   final bool? isLoading;
   final Function(dynamic)? productFamilyKey;
@@ -23,7 +22,6 @@ class SelectedItemWidget extends StatefulWidget {
   final Function(dynamic, int)? groupValueCallBack;
   final List? subList;
   final TextEditingController? subTextEditingController;
-  final List? subSearchList;
   final bool? isChangingAccountSelectionState;
   const SelectedItemWidget(
       {this.pageController,
@@ -34,7 +32,6 @@ class SelectedItemWidget extends StatefulWidget {
       this.displayCountBoxValue,
       this.callback,
       this.isLoading,
-      this.searchList,
       this.controller,
       this.productFamilyKey,
       this.isShowingState,
@@ -42,7 +39,6 @@ class SelectedItemWidget extends StatefulWidget {
       this.groupValueCallBack,
       this.subList,
       this.subTextEditingController,
-      this.subSearchList,
       this.isChangingAccountSelectionState});
 
   @override
@@ -87,136 +83,15 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
           child: PageView(
             controller: widget.pageController,
             children: [
-              widget.subList!.isNotEmpty && widget.isShowingState!
-                  ? ListView.builder(
-                      itemCount: widget.subSearchList!.isEmpty
-                          ? widget.subList!.length
-                          : widget.subSearchList!.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, int) {
-                        if (widget.isChangingAccountSelectionState==true) {
-                          Customer data = widget.subSearchList!.isEmpty
-                              ? widget.subList![int]
-                              : widget.subSearchList![int];
-                          return ListTile(
-                            onTap: () {
-                              List<dynamic>? customerlist;
-                              if (widget.headerText == "Account") {
-                                customerlist = widget.subList;
-                                widget.productFamilyKey!(
-                                    customerlist![int].CustomerUID!);
-                              }
-                            },
-                            title: InsiteText(
-                              text: data.Name,
-                              fontWeight: FontWeight.w700,
-                              size: 14,
-                            ),
-                            trailing: widget.headerBoxCountValue == ""
-                                ? SizedBox()
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8, top: 8, bottom: 8),
-                                    child: widget.isShowingState == true
-                                        ? SizedBox()
-                                        : InsiteButton(
-                                            width: 50,
-                                            title: widget
-                                                .displayCountBoxValue![int],
-                                            padding: EdgeInsets.all(4),
-                                            bgColor: Theme.of(context)
-                                                .backgroundColor,
-                                            fontSize: 10,
-                                          )),
-                          );
-                        } else {
-                          final data = widget.subSearchList!.isEmpty
-                              ? widget.subList![int]
-                              : widget.subSearchList![int];
-                          return widget.isAssetIdLoading!
-                              ? Center(
-                                  child: Container(
-                                      margin: EdgeInsets.only(top: 100),
-                                      child: InsiteProgressBar()))
-                              : widget.isLoading != null && widget.isLoading!
-                                  ? Center(
-                                      child: SizedBox(),
-                                    )
-                                  : data != null
-                                      ? ListTile(
-                                          onTap: () {
-                                            widget.productFamilyKey != null
-                                                ? widget.productFamilyKey!(
-                                                    widget.subList![int])
-                                                : SizedBox();
-                                          },
-                                          title: InsiteText(
-                                            text: data,
-                                            fontWeight: FontWeight.w700,
-                                            size: 14,
-                                          ),
-                                          trailing: widget
-                                                      .headerBoxCountValue ==
-                                                  ""
-                                              ? InsiteButton(
-                                                  title: "add".toUpperCase(),
-                                                  fontSize: 14,
-                                                  onTap: () {
-                                                    widget.groupValueCallBack!(
-                                                        widget.subList![int],
-                                                        int);
-                                                  },
-                                                  width: 77,
-                                                  height: 32,
-                                                )
-                                              : Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8,
-                                                          top: 8,
-                                                          bottom: 8),
-                                                  child: widget
-                                                              .isShowingState ==
-                                                          true
-                                                      ? InsiteButton(
-                                                          title: "add"
-                                                              .toUpperCase(),
-                                                          fontSize: 14,
-                                                          onTap: () {
-                                                            widget.groupValueCallBack!(
-                                                                widget.subList![
-                                                                    int],
-                                                                int);
-                                                          },
-                                                          width: 77,
-                                                          height: 32,
-                                                        )
-                                                      : InsiteButton(
-                                                          width: 50,
-                                                          title: widget
-                                                                  .displayCountBoxValue![
-                                                              int],
-                                                          padding:
-                                                              EdgeInsets.all(4),
-                                                          bgColor: Theme.of(
-                                                                  context)
-                                                              .backgroundColor,
-                                                          fontSize: 10,
-                                                        )),
-                                        )
-                                      : SizedBox();
-                        }
-                      })
+              widget.isLoading! && widget.pageController!.initialPage == 0
+                  ? InsiteProgressBar()
                   : ListView.builder(
-                      itemCount: widget.searchList!.isEmpty
-                          ? widget.displayList!.length
-                          : widget.searchList!.length,
+                      itemCount: widget.displayList!.length,
                       shrinkWrap: true,
                       itemBuilder: (context, int) {
                         if (widget.headerText == "Account") {
-                          Customer data = widget.searchList!.isEmpty
-                              ? widget.displayList![int]
-                              : widget.searchList![int];
+                          Customer data = widget.displayList![int];
+
                           return ListTile(
                             onTap: () {
                               List<dynamic>? customerlist;
@@ -249,9 +124,8 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                           )),
                           );
                         } else {
-                          final data = widget.searchList!.isEmpty
-                              ? widget.displayList![int]
-                              : widget.searchList![int];
+                          final data = widget.displayList![int];
+
                           return widget.isAssetIdLoading!
                               ? Center(
                                   child: Container(
@@ -288,6 +162,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                   },
                                                   width: 77,
                                                   height: 32,
+                                                  textColor: Colors.white,
                                                 )
                                               : Padding(
                                                   padding:
@@ -310,6 +185,128 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                           },
                                                           width: 77,
                                                           height: 32,
+                                                          textColor:
+                                                              Colors.white,
+                                                        )
+                                                      : InsiteButton(
+                                                          width: 50,
+                                                          title: widget
+                                                                  .displayCountBoxValue![
+                                                              int],
+                                                          padding:
+                                                              EdgeInsets.all(4),
+                                                          bgColor: Theme.of(
+                                                                  context)
+                                                              .backgroundColor,
+                                                          fontSize: 10,
+                                                        )),
+                                        )
+                                      : SizedBox();
+                        }
+                      }),
+              widget.subList!.isEmpty
+                  ? InsiteProgressBar()
+                  : ListView.builder(
+                      itemCount: widget.subList!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, int) {
+                        if (widget.isChangingAccountSelectionState == true) {
+                          Customer data = widget.subList![int];
+
+                          return ListTile(
+                            onTap: () {
+                              List<dynamic>? customerlist;
+                              if (widget.headerText == "Account") {
+                                customerlist = widget.subList;
+                                widget.productFamilyKey!(
+                                    customerlist![int].CustomerUID!);
+                              }
+                            },
+                            title: InsiteText(
+                              text: data.Name,
+                              fontWeight: FontWeight.w700,
+                              size: 14,
+                            ),
+                            trailing: widget.headerBoxCountValue == ""
+                                ? SizedBox()
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, top: 8, bottom: 8),
+                                    child: widget.isShowingState == true
+                                        ? SizedBox()
+                                        : InsiteButton(
+                                            width: 50,
+                                            title: widget
+                                                .displayCountBoxValue![int],
+                                            padding: EdgeInsets.all(4),
+                                            bgColor: Theme.of(context)
+                                                .backgroundColor,
+                                            fontSize: 10,
+                                          )),
+                          );
+                        } else {
+                          final data = widget.subList![int];
+
+                          return widget.isAssetIdLoading!
+                              ? Center(
+                                  child: Container(
+                                      margin: EdgeInsets.only(top: 100),
+                                      child: InsiteProgressBar()))
+                              : widget.isLoading != null && widget.isLoading!
+                                  ? Center(
+                                      child: SizedBox(),
+                                    )
+                                  : data != null
+                                      ? ListTile(
+                                          onTap: () {
+                                            widget.productFamilyKey != null
+                                                ? widget.productFamilyKey!(
+                                                    widget.subList![int])
+                                                : SizedBox();
+                                          },
+                                          title: InsiteText(
+                                            text: data,
+                                            fontWeight: FontWeight.w700,
+                                            size: 14,
+                                          ),
+                                          trailing: widget
+                                                      .headerBoxCountValue ==
+                                                  ""
+                                              ? InsiteButton(
+                                                  title: "add".toUpperCase(),
+                                                  fontSize: 14,
+                                                  onTap: () {
+                                                    widget.groupValueCallBack!(
+                                                        widget.subList![int],
+                                                        int);
+                                                  },
+                                                  width: 77,
+                                                  height: 32,
+                                                  textColor: Colors.white,
+                                                )
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8,
+                                                          top: 8,
+                                                          bottom: 8),
+                                                  child: widget
+                                                              .isShowingState ==
+                                                          true
+                                                      ? InsiteButton(
+                                                          title: "add"
+                                                              .toUpperCase(),
+                                                          fontSize: 14,
+                                                          onTap: () {
+                                                            widget.groupValueCallBack!(
+                                                                widget.subList![
+                                                                    int],
+                                                                int);
+                                                          },
+                                                          width: 77,
+                                                          height: 32,
+                                                          textColor:
+                                                              Colors.white,
                                                         )
                                                       : InsiteButton(
                                                           width: 50,

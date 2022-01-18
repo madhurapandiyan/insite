@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'add_group_edit_payload.g.dart';
+part 'edit_group_payload.g.dart';
 
 @JsonSerializable()
-class AddGroupEditPayload {
+class EditGroupPayLoad {
   String? GroupUid;
   String? GroupName;
   String? Description;
@@ -10,7 +10,7 @@ class AddGroupEditPayload {
   List<String>? AssociatedAssetUID;
   List<String>?  DissociatedAssetUID;
 
-  AddGroupEditPayload({
+  EditGroupPayLoad({
     this.GroupUid,
     this.GroupName,
     this.Description,
@@ -19,8 +19,8 @@ class AddGroupEditPayload {
     this.DissociatedAssetUID
   });
 
-  factory AddGroupEditPayload.fromJson(Map<String, dynamic> json) =>
-      _$AddGroupEditPayloadFromJson(json);
+  factory EditGroupPayLoad.fromJson(Map<String, dynamic> json) =>
+      _$EditGroupPayLoadFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AddGroupEditPayloadToJson(this);
+  Map<String, dynamic> toJson() => _$EditGroupPayLoadToJson(this);
 }

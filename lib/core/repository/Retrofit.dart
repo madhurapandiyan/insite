@@ -1,7 +1,7 @@
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
-import 'package:insite/core/models/add_group_edit_payload.dart';
+import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
@@ -33,8 +33,8 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
-import 'package:insite/core/models/group_favorite_payload.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/favorite_payload.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
@@ -1086,7 +1086,7 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
   @GET('{url}')
-  Future<GroupSummaryResponse> getGroupListData(
+  Future<AssetGroupSummaryResponse> getGroupListData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
@@ -1100,18 +1100,18 @@ abstract class RestClient {
   @PUT('{url}')
   Future<UpdateResponse> getGroupFavoriteData(
       @Path() String url,
-      @Body() GroupFavoritePayLoad groupFavoritePayLoad,
+      @Body() FavoritePayLoad groupFavoritePayLoad,
       @Header("x-visionlink-customeruid") customerId);
 
   @DELETE('{url}')
   Future<UpdateResponse> getDeleteFavoriteData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
   @GET('{url}')
-  Future<GroupSummaryResponse> getAdminProductFamilyFilterData(
+  Future<AssetGroupSummaryResponse> getAdminProductFamilyFilterData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
-  Future<GroupSummaryResponse> getManafactureFilterData(
+  Future<AssetGroupSummaryResponse> getManafactureFilterData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
@@ -1127,7 +1127,7 @@ abstract class RestClient {
   @PUT('{url}')
   Future<UpdateResponse> getAddGroupEditData(
       @Path() String url,
-      @Body() AddGroupEditPayload addGroupEditPayload,
+      @Body() EditGroupPayLoad addGroupEditPayload,
       @Header("x-visionlink-customeruid") customerId);
 }
 

@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
+import 'package:insite/views/adminstration/add_group/add_group_view.dart'
+    as view37;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
+    as view38;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view15;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
@@ -26,7 +30,7 @@ import 'package:insite/views/detail/asset_detail_view.dart' as view9;
 import 'package:insite/views/location/location_view.dart' as view10;
 import 'package:insite/views/health/health_view.dart' as view11;
 import 'package:insite/views/login/login_page.dart' as view12;
-import 'package:insite/views/splash/splash_view.dart'as view37;
+import 'package:insite/views/splash/splash_view.dart' as view37;
 import 'package:insite/views/subscription/options/sub_dash_board_details/subscription_dashboard_details_view.dart'
     as view18;
 import 'package:insite/views/subscription/options/sub_registration/multiple_asset_reg/multiple_asset_registration_view.dart'
@@ -71,7 +75,7 @@ class Router {
       case visonLink.loginViewRoute:
         return MaterialPageRoute(builder: (_) => VL4.LoginView());
       case visonLink.splashViewRoute:
-        return MaterialPageRoute(builder: (_) =>view37.SplashView());
+        return MaterialPageRoute(builder: (_) => view37.SplashView());
       case indiaStackSplashViewRoute:
         return MaterialPageRoute(builder: (_) => view0.IndiaStackSplashView());
       case customerSelectionViewRoute:
@@ -169,6 +173,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => view35.FleetStatusView());
       case transferHistoryView:
         return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
+      case addGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.AddGroupView());
+      case manageGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -6,7 +6,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/core/models/group_summary_response.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
@@ -61,7 +61,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> _modelData = [];
   List<String> get modelData => _modelData;
 
-  GroupSummaryResponse? assetIdresult;
+  AssetGroupSummaryResponse? assetIdresult;
 
   List<String> _modelCountData = [];
   List<String> get modelCountData => _modelCountData;
@@ -148,7 +148,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> assetIdentifier = [];
   List<AddGroupModel> searchSelectedItemList = [];
 
-  bool isloading = false;
+  bool isSubAssetLoading = false;
   List<String?>? assetIdentifierData = [];
 
   SelectionWidgetViewModel(
@@ -166,8 +166,10 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
     _manageUserService!.setUp();
     _assetService!.setUp();
-
+    Logger().e(currentPage);
     pageController = PageController(initialPage: currentPage);
+
+    getInitialSearchListData();
 
     accountController.addListener(() {
       onSearchTextChanged(accountController.text);
@@ -211,20 +213,20 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     });
   }
 
-  Future<GroupSummaryResponse?> getGroupListData() async {
+  Future<AssetGroupSummaryResponse?> getGroupListData() async {
     if (_assetId.isEmpty && _assetSerialNumber.isEmpty) {
       assetIdresult = await _manageUserService!.getGroupListData();
-
       assetIdresult!.assetDetailsRecords!.forEach((element) {
         if (element.assetId != null) {
           _assetId.add(element.assetId!);
-          _isAssetLoading = false;
         }
       });
       assetIdresult!.assetDetailsRecords!.forEach((element) {
         _assetSerialNumber.add(element.assetSerialNumber!);
       });
     }
+    _isAssetLoading = false;
+    isSubAssetLoading = false;
     notifyListeners();
     return assetIdresult;
   }
@@ -239,12 +241,27 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  initial(List<String?>? data, GroupSummaryResponse? value) {
+  getInitialSearchListData() {
+    assetIdDisplayList = _assetId;
+    assetSeriaNumberList = assetSerialNumber;
+    productFamilyList = productFamilyData;
+    subProductFamilySearchList = subProductFamilyList;
+    manfactureList = manfactureData;
+    subManafactureSearchList = subManfactureList;
+    modelList = modelData;
+    subModelSearchList = subModelList;
+    deviceTypeList = deviceTypdeData;
+    subDeviceTypeSearchList = deviceTypeList;
+    accountDisplayList = displayName;
+    subAccountSearchList = accountSelectionList;
+  }
+
+  initial(List<String?>? data, AssetGroupSummaryResponse? value) {
     searchingAssetId(data, value);
   }
 
   searchingAssetId(
-      List<String?>? value, GroupSummaryResponse? assetValue) async {
+      List<String?>? value, AssetGroupSummaryResponse? assetValue) async {
     assetIdentifierData = value;
     //assetIdresult = await _manageUserService!.getGroupListData();
 
@@ -293,11 +310,11 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         for (var productFamilyData in resultProductfamily.countData!) {
           _productFamilyData.add(productFamilyData.countOf!);
           _productFamilyCountData.add(productFamilyData.count.toString());
-          _isAssetLoading = false;
         }
-
-        notifyListeners();
       }
+      isSubAssetLoading = false;
+      _isAssetLoading = false;
+      notifyListeners();
     }
   }
 
@@ -308,9 +325,10 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       for (var manfactureData in resultManufacturer!.countData!) {
         _manfactureData.add(manfactureData.countOf!);
         _manfactureCountData.add(manfactureData.count.toString());
-        _isAssetLoading = false;
-        notifyListeners();
       }
+      isSubAssetLoading = false;
+      _isAssetLoading = false;
+      notifyListeners();
     }
   }
 
@@ -321,9 +339,10 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         for (var geoFenceData in result.countData!) {
           _geofenceData.add(geoFenceData.countOf!);
           _geofenceCountData.add(geoFenceData.count.toString());
-          _isAssetLoading = false;
-          notifyListeners();
         }
+        isSubAssetLoading = false;
+        _isAssetLoading = false;
+        notifyListeners();
       }
     }
   }
@@ -337,9 +356,10 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         for (var modelData in resultModel.countData!) {
           _modelData.add(modelData.countOf!);
           _modelCountData.add(modelData.count.toString());
-          _isAssetLoading = false;
-          notifyListeners();
         }
+        isSubAssetLoading = false;
+        _isAssetLoading = false;
+        notifyListeners();
       }
     }
   }
@@ -355,9 +375,10 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       for (var deviceTypeData in resultDeviceType!.countData!) {
         _deviceTypeData.add(deviceTypeData.countOf!);
         _deviceTypeCountData.add(deviceTypeData.count.toString());
-        _isAssetLoading = false;
-        notifyListeners();
       }
+      isSubAssetLoading = false;
+      _isAssetLoading = false;
+      notifyListeners();
     }
   }
 
@@ -373,8 +394,9 @@ class SelectionWidgetViewModel extends InsiteViewModel {
           for (var nameData in result) {
             _displayName.add(nameData);
           }
-          _isAssetLoading = false;
         }
+        isSubAssetLoading = false;
+        _isAssetLoading = false;
         notifyListeners();
         return result;
       }
@@ -439,9 +461,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   getProductFamilyFilterData(String? productFamilKey) async {
     Logger().i(productFamilKey);
-    onNextClicked();
 
-    GroupSummaryResponse? result = await _manageUserService!
+    AssetGroupSummaryResponse? result = await _manageUserService!
         .getAdminProductFamilyFilterData(
             pageNumber, pageSize, productFamilKey!);
     subProductFamilyList.clear();
@@ -449,6 +470,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       subProductFamilyList.add(item.assetSerialNumber!);
     }
     Logger().i(result);
+    onNextClicked();
+    pageController!.jumpToPage(currentPage);
     _isShowingState = true;
     _isAssetLoading = false;
     notifyListeners();
@@ -456,6 +479,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   getBackButtonState() {
     onPreviousClicked();
+    pageController!.jumpToPage(currentPage);
     _isShowingState = false;
     _isShowingManaFactureState = false;
     _isShowingModelState = false;
@@ -466,7 +490,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   getFilterManafactureData(String productFamilyKey) async {
     Logger().i(productFamilyKey);
-    onNextClicked();
+
     assetIdresult = await _manageUserService!
         .getManafactureFilterData(pageNumber, pageSize, "TATA HITACHI");
     subManfactureList.clear();
@@ -474,6 +498,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       subManfactureList.add(item.assetSerialNumber!);
     }
     Logger().i(assetIdresult);
+    onNextClicked();
+    pageController!.jumpToPage(currentPage);
     _isShowingManaFactureState = true;
     _isAssetLoading = false;
     notifyListeners();
@@ -482,7 +508,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   getFilterModelData(String productFamilyKey) async {
     try {
       Logger().w("running");
-      onNextClicked();
+
       assetIdresult = await _manageUserService!
           .getModelFilterData(pageNumber, pageSize, productFamilyKey);
       Logger().i(assetIdresult);
@@ -490,6 +516,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       for (var item in assetIdresult!.assetDetailsRecords!) {
         subModelList.add(item.assetSerialNumber!);
       }
+      onNextClicked();
+      pageController!.jumpToPage(currentPage);
       _isShowingModelState = true;
       _isAssetLoading = false;
       notifyListeners();
@@ -499,14 +527,14 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   }
 
   getFilterDeviceTypeData(String productFamilyKey) async {
-    onNextClicked();
-
     assetIdresult = await _manageUserService!
         .getDeviceTypeData(pageNumber, pageSize, productFamilyKey);
     deviceTypeList.clear();
     for (var item in assetIdresult!.assetDetailsRecords!) {
       deviceTypeList.add(item.assetSerialNumber!);
     }
+    onNextClicked();
+    pageController!.jumpToPage(currentPage);
     _isAssetLoading = false;
     _isShowingDeviceTypeState = true;
     Logger().i(assetIdresult);
@@ -522,6 +550,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       accountSelectionList.add(item.assetSerialNumber!);
     }
     Logger().i(assetIdresult);
+    onNextClicked();
+    pageController!.jumpToPage(currentPage);
     _isaccountSelectionState = true;
 
     _isAssetLoading = false;

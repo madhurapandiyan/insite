@@ -24,7 +24,7 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
         widget.callback!();
       },
       child: Card(
-        color: cardcolor,
+      
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(color: cardcolor)),
