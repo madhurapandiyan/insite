@@ -12,7 +12,6 @@ class SingleAssetOperationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
-  String? notificationId;
 
   SingleAssetOperationService() {
     setUp();
@@ -22,7 +21,6 @@ class SingleAssetOperationService extends BaseService {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
-      notificationId = await _localService!.getNotificationId();
     } catch (e) {
       Logger().e(e);
     }
@@ -34,8 +32,6 @@ class SingleAssetOperationService extends BaseService {
       Map<String, String> queryMap = Map();
       if (assetUID != null && assetUID.isNotEmpty) {
         queryMap["assetUid"] = assetUID;
-      } else {
-        queryMap["assetUid"] = notificationId!;
       }
       if (endDate != null && endDate.isNotEmpty) {
         queryMap["endDate"] = endDate;

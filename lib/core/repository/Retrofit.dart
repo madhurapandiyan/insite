@@ -1084,11 +1084,6 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
-  @GET("{url}")
-  Future<Fleet> notificationsDetails(
-    @Path() String url,
-    @Header("x-visionlink-customeruid") customerId,
-  );
 }
 
 @JsonSerializable()

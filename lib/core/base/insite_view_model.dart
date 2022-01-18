@@ -7,7 +7,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
-import 'package:insite/core/services/main_notification_service.dart';
+import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -43,8 +43,8 @@ abstract class InsiteViewModel extends BaseViewModel {
   DateRangeService? _dateRangeService = locator<DateRangeService>();
   SnackbarService? snackbarService = locator<SnackbarService>();
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
-  MainNotificationService? _mainNotificationService =
-      locator<MainNotificationService>();
+  NotificationService? _mainNotificationService =
+      locator<NotificationService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;

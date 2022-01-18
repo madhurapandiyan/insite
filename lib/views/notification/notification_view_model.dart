@@ -8,7 +8,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/local_service.dart';
-import 'package:insite/core/services/main_notification_service.dart';
+import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:load/load.dart';
@@ -20,8 +20,8 @@ import 'package:stacked_services/stacked_services.dart';
 class NotificationViewModel extends InsiteViewModel {
   Logger? log;
 
-  MainNotificationService? _mainNotificationService =
-      locator<MainNotificationService>();
+  NotificationService? _mainNotificationService =
+      locator<NotificationService>();
   NavigationService? _navigationService = locator<NavigationService>();
   FleetService? _fleetService = locator<FleetService>();
   LocalService? _localService = locator<LocalService>();
@@ -125,15 +125,6 @@ class NotificationViewModel extends InsiteViewModel {
     }
   }
 
-  getNotificationsDetails(assetUid) async {
-    Fleet? response =
-        await _mainNotificationService!.getNotificationDetails(assetUid);
-
-    _localService!.saveNotificationId(assetUid);
-
-    onDetailPageSelected(response);
-  }
-
   onItemSelected(index) {
     try {
       _assets[index].isSelected = !_assets[index].isSelected!;
@@ -144,10 +135,13 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  onDetailPageSelected(Fleet? fleet) {
+  onDetailPageSelected(Notifications? fleet) {
     _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
-          fleet: fleet,
+          fleet: Fleet(
+              assetSerialNumber: fleet!.serialNumber,
+              assetId: null,
+              assetIdentifier: fleet.assetUID),
           index: 0,
         ));
   }

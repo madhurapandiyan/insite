@@ -163,8 +163,8 @@ class NotificationView extends StatelessWidget {
                                               viewModel.onItemSelected(index);
                                             },
                                             showDetails: () {
-                                              viewModel.getNotificationsDetails(
-                                                  notifications.assetUID);
+                                              viewModel.onDetailPageSelected(
+                                                  notifications);
                                             },
                                           );
                                         }),

@@ -10,12 +10,12 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
-class MainNotificationService extends BaseService {
+class NotificationService extends BaseService {
   LocalService? _localService = locator<LocalService>();
   Customer? accountSelected;
   Customer? customerSelected;
 
-  MainNotificationService() {
+  NotificationService() {
     setUp();
   }
 
@@ -44,29 +44,13 @@ class MainNotificationService extends BaseService {
       queryMap["toDate"] = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate);
 
       NotificationsData? notificationsData = await MyApi()
-          .getClientEleven()!
+          .getClientThree()!
           .mainNotificationsData(
               Urls.mainNotificationUrl +
                   FilterUtils.constructQueryFromMap(queryMap),
               accountSelected!.CustomerUID);
 
       return notificationsData;
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
-
-  Future<Fleet?> getNotificationDetails(String assetUid) async {
-    try {
-      Map<String, String> queryMap = Map();
-
-      queryMap["assetUID"] = assetUid;
-      Fleet? fleetData = await MyApi().getClientThree()!.notificationsDetails(
-          Urls.notificationDetails +
-              FilterUtils.constructQueryFromMap(queryMap),
-          accountSelected!.CustomerUID);
-
-      return fleetData;
     } catch (e) {
       Logger().e(e.toString());
     }

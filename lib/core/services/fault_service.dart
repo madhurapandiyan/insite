@@ -17,7 +17,7 @@ class FaultService extends BaseService {
   LocalService? _localService = locator<LocalService>();
   Customer? accountSelected;
   Customer? customerSelected;
-  String? notificationId;
+
   FaultService() {
     setUp();
   }
@@ -26,7 +26,7 @@ class FaultService extends BaseService {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
-      notificationId = await _localService!.getNotificationId();
+     
     } catch (e) {
       Logger().e(e);
     }
@@ -316,7 +316,7 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             await MyApi().getClient()!.getHealthListDataVL(
-                  assetUid == null ? notificationId : assetUid,
+                  assetUid,
                   endDateTime,
                   'en-US',
                   limit,
@@ -329,8 +329,6 @@ class FaultService extends BaseService {
         Map<String, String> queryMap = Map();
         if (assetUid != null) {
           queryMap["assetUid"] = assetUid;
-        } else {
-          queryMap["assetUid"] = notificationId!;
         }
         if (startDateTime != null) {
           queryMap["startDateTime"] = startDateTime;
@@ -383,7 +381,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                      assetUid == null ? notificationId : assetUid,
+                       assetUid,
                       accountSelected!.CustomerUID,
                     )
                 : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
@@ -397,7 +395,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                      assetUid == null ? notificationId : assetUid,
+                       assetUid,
                       accountSelected!.CustomerUID,
                     );
         return healthListResponse;
@@ -415,7 +413,7 @@ class FaultService extends BaseService {
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH),
-                    assetUid == null ? notificationId : assetUid,
+                    assetUid,
                     accountSelected!.CustomerUID,
                     Urls.faultPrefix)
                 : await MyApi().getClient()!.assetViewLocationSummaryURL(
@@ -429,7 +427,7 @@ class FaultService extends BaseService {
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH),
-                    assetUid == null ? notificationId : assetUid,
+                    assetUid,
                     accountSelected!.CustomerUID,
                     Urls.faultPrefix);
         return healthListResponse;
@@ -450,7 +448,7 @@ class FaultService extends BaseService {
         SingleAssetFaultResponse assetCountResponse = await MyApi()
             .getClient()!
             .getDashboardListDataVL(
-                assetUid == null ? notificationId : assetUid,
+                assetUid,
                 endDateTime,
                 startDateTime,
                 accountSelected!.CustomerUID);
@@ -459,8 +457,6 @@ class FaultService extends BaseService {
         Map<String, String> queryMap = Map();
         if (assetUid != null) {
           queryMap["assetUid"] = assetUid;
-        } else {
-          queryMap["assetUid"] = notificationId!;
         }
 
         if (startDateTime != null) {
