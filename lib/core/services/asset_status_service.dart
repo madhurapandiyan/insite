@@ -36,6 +36,7 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getAssetCount(key, FilterType type, query) async {
+          
     Logger().d("getAssetCount $type");
     try {
       AssetCount? assetCountFromLocal =
@@ -92,6 +93,7 @@ class AssetStatusService extends DataBaseService {
             if (customerSelected != null) {
               queryMap["customerUID"] = customerSelected!.CustomerUID;
             }
+      
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
                 .assetCount(

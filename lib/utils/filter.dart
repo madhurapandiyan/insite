@@ -26,9 +26,10 @@ class FilterUtils {
     Logger().i("filter job type fitlers " + jobTypeFilters.length.toString());
     if (jobTypeFilters.isNotEmpty) {
       for (FilterData? data in jobTypeFilters) {
-        value.write(constructQuery("userType", data!.title, false));
+        value.write(constructQuery("userType", data!.id, false));
       }
     }
+ 
     return value.toString();
   }
 
@@ -536,9 +537,9 @@ class FilterUtils {
 
   static String constructQuery(key, value, isFirst) {
     if (isFirst) {
-      return "?" + key + "=" + value;
+      return "?" + key + "=" + value.toString();
     } else {
-      return "&" + key + "=" + value;
+      return "&" + key + "=" + value.toString();
     }
   }
 

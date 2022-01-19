@@ -955,7 +955,7 @@ abstract class RestClient {
       @Body() AddAssetRegistrationData addAssetRegistrationData);
 
   @POST("{url}")
-  Future<dynamic> postSingleAssetTransferRegistration(
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
       @Path() String url, @Body() AssetTransfer data);
 
   @POST("{url}")

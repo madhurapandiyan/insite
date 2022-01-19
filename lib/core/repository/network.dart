@@ -124,8 +124,8 @@ class HttpWrapper {
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
       baseUrl: AppConfig.instance!.baseUrl,
-      connectTimeout: 60000,
-      receiveTimeout: 60000,
+      connectTimeout: 30000,
+      receiveTimeout: 30000,
     );
     dio = Dio(options);
     dioOne = Dio(options);
@@ -139,27 +139,27 @@ class HttpWrapper {
         onResponse: (responce, handler) {
           return handler.next(responce);
         },
-        onError: (DioError error,
-            ErrorInterceptorHandler errorInterceptorHandler) async {
-          if (error.response!.statusCode == 401) {
-            var code = await _localService!.getAuthCode();
-            var token = await _localService!.getRefreshToken();
-            Logger().w("run");
-            codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
-            LoginResponse? result = await _loginService!.getRefreshLoginDataV4(
-                code: code,
-                code_challenge: codeChallenge,
-                code_verifier: codeVerifier,
-                token: token);
-            if (result != null) {
-              await _localService!.saveTokenInfo(result);
-              await _localService!.saveRefreshToken(result.refresh_token);
-              await _localService!.saveAuthCode(code);
-              await _loginService!.saveToken(
-                  result.access_token, result.expires_in.toString(), false);
-            }
-          }
-        },
+        // onError: (DioError error,
+        //     ErrorInterceptorHandler errorInterceptorHandler) async {
+        //   if (error.response?.statusCode == 401) {
+        //     var code = await _localService!.getAuthCode();
+        //     var token = await _localService!.getRefreshToken();
+        //     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+        //     LoginResponse? result = await _loginService!.getRefreshLoginDataV4(
+        //         code: code,
+        //         code_challenge: codeChallenge,
+        //         code_verifier: codeVerifier,
+        //         token: token);
+        //     if (result != null) {
+        //       await _localService!.saveTokenInfo(result);
+        //       await _localService!.saveRefreshToken(result.refresh_token);
+        //       await _localService!.saveAuthCode(code);
+        //       await _loginService!.saveToken(
+        //           result.access_token, result.expires_in.toString(), false);
+        //     }
+        //     return errorInterceptorHandler.next(error);
+        //   }
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -177,10 +177,10 @@ class HttpWrapper {
 
     dioOne.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -218,10 +218,10 @@ class HttpWrapper {
 
     dioThree.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -239,10 +239,10 @@ class HttpWrapper {
 
     dioFour.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -260,10 +260,10 @@ class HttpWrapper {
 
     dioFive.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers
@@ -278,10 +278,10 @@ class HttpWrapper {
 
     dioSix.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -299,10 +299,10 @@ class HttpWrapper {
 
     dioSeven.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -320,10 +320,10 @@ class HttpWrapper {
 
     dioEight.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -343,10 +343,10 @@ class HttpWrapper {
 
     dioNine.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -365,10 +365,10 @@ class HttpWrapper {
 
     dioTen.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({

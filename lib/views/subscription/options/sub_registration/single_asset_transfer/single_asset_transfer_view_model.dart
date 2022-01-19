@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class SingleAssetTransferViewModel extends InsiteViewModel {
   Logger? log;
@@ -195,39 +196,44 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   SingleAssetRegistrationSearchModel? customerNameChange;
   SingleAssetRegistrationSearchModel? customerCodeChange;
 
+  final SnackbarService _snackbarService = locator<SnackbarService>();
+
   SingleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    _localService!.saveToken(
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQyNDEwOTQwLCJuYmYiOjE2NDI0MDczNDAsImlhdCI6MTY0MjQwNzM0MCwianRpIjoiMmY1ODJhNDIzMmRiNDM1MTk0M2VmMGQ5MDdlYTI5OWEiLCJqd3RfdmVyIjoyLCJzdWIiOiIyMTgxODg1Ny01MTU1LTRjNmYtYTc0YS01NzRkYmU3NDE2NzUiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDI0MDczMzgsImF6cCI6ImFmMmIwM2QwLTdiMjctNDFlYi04YTNhLTk1Yjg5ZDIwZjc4ZCIsImF1ZCI6WyJhZjJiMDNkMC03YjI3LTQxZWItOGEzYS05NWI4OWQyMGY3OGQiXSwic2NvcGUiOiJQcm9kLVZpc2lvbkxpbmtBZG1pbmlzdHJhdG9yIn0.ELBeUJlm5sehPFMCp8NhRMMbj2jPebPIrEMQQR7gaO6f7Uzqe9Q-0VFSQJVo8fms8ZtNrFSI6lQUfO1z6Vr_aoV9t8U6xFayYZ-Qj2o7829trGlSxyciQKyWtRyOdjjQgBiDsf1uVPs7m070Z7D7Kfq7gO-6UP1hkoWGJEimOL89tQ8xSKXkHqmZNoXfz-6KF8UIDu7DgYfnypW-wE7DG_UglU4Aabt8CBL4LN3s4y8YtHY0JdT7e9TUTzBtr_oCXZrD4yN8j0NrUKRE98XiINHEPSaA3Tgsnns1oFWvAw_TzQ1amunK_ODUYWHJ8sDHRGw_WzawCEn7A7UKts0TsQ");
     Future.delayed(Duration(seconds: 1), () {});
   }
 
   allowAssetTransferClicked() {
     //_enableCustomerDetails = !_enableCustomerDetails;
     if (deviceIdController.text.isNotEmpty) {
-      if (_allowTransferAsset == false &&
-          deviceDetailsPerId!.result!.first.CustomerCode == null &&
+      if (deviceDetailsPerId!.result!.first.CustomerCode == null &&
           deviceDetailsPerId!.result!.first.CustomerName == null) {
+        _allowTransferAsset = !_allowTransferAsset;
+        deviceIdController.clear();
+        machineSerialNumberController.clear();
+        machineModelController.clear();
+        // customerCodeController.clear();
+        // customerEmailController.clear();
+        // customerNameController.clear();
+        notifyListeners();
         Fluttertoast.showToast(
             msg:
                 "This Asset/device not provisioned under a Dealer & Customer !!");
         return;
       } else {
-        customerCodeController.text =
-            deviceDetailsPerId!.result!.first.CustomerCode!;
-        customerNameController.text =
-            deviceDetailsPerId!.result!.first.CustomerName!;
-        customerEmailController.text =
-            customerDetails!.customerResult!.customerData!.email!;
-        _allowTransferAsset = true;
+        // customerCodeController.text =
+        //     deviceDetailsPerId!.result!.first.CustomerCode!;
+        // customerNameController.text =
+        //     deviceDetailsPerId!.result!.first.CustomerName!;
+        // customerEmailController.text =
+        //     customerDetails!.customerResult!.customerData!.email!;
+        _allowTransferAsset = !_allowTransferAsset;
         notifyListeners();
       }
     } else {
-      _allowTransferAsset = true;
+      _allowTransferAsset = !_allowTransferAsset;
       notifyListeners();
     }
-
-    notifyListeners();
   }
 
   updateLanguage(String value) {
@@ -711,8 +717,31 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       showLoadingDialog();
       deviceDetailsPerId =
           await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
-      machineModelController.text = deviceDetailsPerId!.result!.first.model!;
-      customerDetails = await _subscriptionService!.getCustomerDetails(value);
+      if (deviceDetailsPerId?.result?.first.CustomerCode == null &&
+          deviceDetailsPerId?.result?.first.CustomerName == null) {
+        if (_allowTransferAsset) {
+          _snackbarService.showSnackbar(
+              message:
+                  "This Asset/device not provisioned under a Dealer & Customer !!");
+          deviceIdController.clear();
+          machineSerialNumberController.clear();
+          machineModelController.clear();
+          customerCodeController.clear();
+          customerEmailController.clear();
+          customerNameController.clear();
+          notifyListeners();
+          return;
+        }
+      } else {
+        customerDetails = await _subscriptionService!.getCustomerDetails(value);
+        customerCodeController.text =
+            customerDetails!.customerResult!.customerData!.code!;
+        customerEmailController.text =
+            customerDetails!.customerResult!.customerData!.email!;
+        customerNameController.text =
+            customerDetails!.customerResult!.customerData!.name!;
+        machineModelController.text = deviceDetailsPerId!.result!.first.model!;
+      }
       _deviceList.forEach((element) {
         if (element.gPSDeviceID == value) {
           deviceIdController.text = element.gPSDeviceID!;
@@ -839,7 +868,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     try {
       detailResultList.clear();
       if (name == null || name.isEmpty) {
-        Logger().e("if");
         Future.delayed(Duration(seconds: 3), () {
           _dealerId.clear();
           notifyListeners();
@@ -847,7 +875,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       } else {
         _devices.clear();
         _dealerId.clear();
-        Logger().e("type");
         if (name.length >= 3) {
           dealerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
@@ -1069,7 +1096,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   subscriptionAssetRegistration() async {
     var userId = await _localService!.getUserId();
-    Logger().e(userId);
     try {
       AssetValues deviceAssetValues;
       deviceAssetValues = AssetValues(
@@ -1126,6 +1152,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
       var result =
           await _subscriptionService!.postSingleAssetTransferRegistration(data);
       Logger().e(result);
+      onTransferSuccess();
       return result;
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1140,5 +1167,20 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     totalList[3].clear();
     totalList.clear();
     notifyListeners();
+  }
+
+  onTransferSuccess() {
+    deviceIdController.clear();
+    machineSerialNumberController.clear();
+    machineModelController.clear();
+    commisioningDateController.clear();
+    dealerNameController.clear();
+    dealerCodeController.clear();
+    dealerEmailController.clear();
+    customerNameController.clear();
+    customerCodeController.clear();
+    customerEmailController.clear();
+    customerMobileNoController.clear();
+    dealerMobileNoController.clear();
   }
 }

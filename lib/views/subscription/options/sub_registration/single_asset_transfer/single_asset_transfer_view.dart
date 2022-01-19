@@ -922,6 +922,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   final result = await viewModel
                                                       .subscriptionAssetRegistration();
                                                   if (result != null) {
+                                                    viewModel.onPop();
                                                     Utils.showToast(Utils
                                                         .suceessRegistration);
                                                   }

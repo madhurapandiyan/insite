@@ -29,7 +29,7 @@ class AssetUtilizationService extends BaseService {
       //  _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
-      customerSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
       Logger().d("account selected " + accountSelected!.CustomerUID!);
       Logger().d("customer selected " + customerSelected!.CustomerUID!);
     } catch (e) {

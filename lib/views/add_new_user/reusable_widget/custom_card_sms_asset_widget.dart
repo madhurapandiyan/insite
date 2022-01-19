@@ -66,6 +66,7 @@ class CustomCardSmsAssetWidget extends StatelessWidget {
                       InsiteText(
                         text: serialNo,
                         color: tango,
+                        fontWeight: FontWeight.bold,
                       ),
                     ],
                   ),

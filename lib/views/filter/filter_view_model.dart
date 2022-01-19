@@ -92,6 +92,8 @@ class FilterViewModel extends InsiteViewModel {
         "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
+
+
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
@@ -143,6 +145,7 @@ class FilterViewModel extends InsiteViewModel {
         resultModel.countData!.isNotEmpty) {
       for (Count countData in resultModel.countData!) {
         FilterData data = FilterData(
+            id: resultModel.countData!.first.id.toString(),
             count: countData.count.toString(),
             title: countData.name,
             isSelected: isAlreadSelected(countData.countOf, type),

@@ -15,12 +15,15 @@ class FilterData {
   List<String?>? extras;
   @HiveField(5)
   final FilterSubType? subType;
+  @HiveField(6)
+  final String? id;
   FilterData(
       {this.count,
       this.title,
       this.isSelected,
       this.type,
       this.extras,
+      this.id,
       this.subType});
 }
 

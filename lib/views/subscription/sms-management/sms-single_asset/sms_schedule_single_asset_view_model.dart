@@ -95,13 +95,16 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
       }
       _singleAssetResponce = await _smsScheduleService!
           .postSingleAssetResponce(listOfSingleAssetSmsSchedule);
-      singleAssetModelResponce = _singleAssetResponce!.result;
-      if (singleAssetModelResponce!.isEmpty) {
+      if (_singleAssetResponce!.result!.isEmpty) {
         hideLoadingDialog();
+        clearingControllerValue();
         Fluttertoast.showToast(
             msg:
                 "Please check the entered value, AssetSerialNumber not matching.");
+        notifyListeners();
+        return;
       } else {
+        singleAssetModelResponce = _singleAssetResponce!.result;
         isShowingValidateWidget = true;
         listOfSingleAssetSmsSchedule.clear();
         controller.animateToPage(1,
@@ -129,10 +132,16 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     _serialNoController!.text = serialNo!;
     _mobileNoController!.text = mobileNo!;
     _nameController!.text = name!;
-
+    isShowingValidateWidget = false;
     controller.animateToPage(0,
         duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
     notifyListeners();
+  }
+
+  clearingControllerValue() {
+    _serialNoController!.clear();
+    _mobileNoController!.clear();
+    _nameController!.clear();
   }
 
   Future<SavingSmsResponce?> onSavingSmsModel() async {
@@ -149,11 +158,11 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
         listOSavingSmsModel.add(_savingSmsModel);
       }
       var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
-      _serialNoController!.clear();
-      _mobileNoController!.clear();
-      _nameController!.clear();
+      clearingControllerValue();
       hideLoadingDialog();
       listOSavingSmsModel.clear();
+      singleAssetModelResponce!.clear();
+      isShowingValidateWidget = false;
       notifyListeners();
       controller.animateToPage(0,
           duration: Duration(milliseconds: 500), curve: Curves.easeInOut);

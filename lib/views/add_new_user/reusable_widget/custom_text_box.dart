@@ -43,7 +43,7 @@ class CustomTextBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
-        keyboardType: keyPadType,
+       keyboardType: keyPadType,
         onChanged: onChanged,
         onSaved: onSaved,
         onFieldSubmitted: onFieldSubmmit,

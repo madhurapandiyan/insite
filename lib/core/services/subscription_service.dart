@@ -220,7 +220,7 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<dynamic> postSingleAssetTransferRegistration(
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
       AssetTransfer assetData) async {
     var data = await MyApi()
         .getClientNine()!
