@@ -1111,7 +1111,7 @@ abstract class RestClient {
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
-  Future<AssetGroupSummaryResponse> getManafactureFilterData(
+  Future<AssetGroupSummaryResponse> getManufacturerFilterData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')

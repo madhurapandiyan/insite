@@ -238,9 +238,7 @@ class Urls {
   static String getGeoFenceData =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
   static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
-  static String getGroupFavoriteData =
-      "/t/trimble.com/vss-groupservice/1.0/Favourite";
-  static String getGroupDeleteData = "/t/trimble.com/vss-groupservice/1.0";
+ 
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";

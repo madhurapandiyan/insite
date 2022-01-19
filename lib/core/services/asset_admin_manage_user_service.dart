@@ -965,7 +965,7 @@ class AssetAdminManagerUserService extends BaseService {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
             .getGroupFavoriteData(
-                Urls.getGroupFavoriteData,
+                Urls.getManageGroupData+"/Favourite",
                 FavoritePayLoad(groupUID: groupId, isFavourite: isFavourite),
                 accountSelected!.CustomerUID);
         return updateResponse;
@@ -984,7 +984,7 @@ class AssetAdminManagerUserService extends BaseService {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
             .getDeleteFavoriteData(
-                Urls.getGroupDeleteData +
+                Urls.getManageGroupData +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return updateResponse;
@@ -1040,7 +1040,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
-            .getManafactureFilterData(
+            .getManufacturerFilterData(
                 Urls.getGroupListData +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
@@ -1069,7 +1069,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
-            .getManafactureFilterData(
+            .getManufacturerFilterData(
                 Urls.getGroupListData +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);

@@ -3602,7 +3602,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetGroupSummaryResponse> getManafactureFilterData(
+  Future<AssetGroupSummaryResponse> getManufacturerFilterData(
       url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

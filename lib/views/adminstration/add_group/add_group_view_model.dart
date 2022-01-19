@@ -49,7 +49,7 @@ class AddGroupViewModel extends InsiteViewModel {
       getData();
     });
   }
-  List<String?>? assetUidData = [];
+  List<String> assetUidData = [];
 
   getAddGroupSaveData() async {
     try {
@@ -87,10 +87,10 @@ class AddGroupViewModel extends InsiteViewModel {
       if (result != null) {
         nameController.text = result.GroupName!;
         descriptionController.text = result.Description ?? "";
-        for (var i = 0; i < result.AssetUID!.length; i++) {
-          assetUidData!.add(result.AssetUID![i]);
+        for (var i = 0; i < result.AssetUID.length; i++) {
+          assetUidData.add(result.AssetUID[i]);
         }
-        Logger().i("assetUId:${assetUidData!.length}");
+        Logger().i("assetUId:${assetUidData.length}");
       }
 
       hideLoadingDialog();

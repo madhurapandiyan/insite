@@ -167,7 +167,7 @@ class ManageGroupView extends StatelessWidget {
                   size: 14,
                 ))
             : PopupMenuItem(child: SizedBox()),
-        viewModel.showDelete
+        viewModel.showEdit
             ? PopupMenuItem(
                 value: "Edit Group",
                 child: InsiteText(
@@ -194,7 +194,7 @@ class ManageGroupView extends StatelessWidget {
         //     return false;
         //   }
         // })
-        viewModel.isShowFavorite
+        viewModel.isFavorite
             ? PopupMenuItem(
                 value: "UnFavorite",
                 child: InsiteText(
@@ -211,16 +211,7 @@ class ManageGroupView extends StatelessWidget {
                   size: 14,
                 ),
               ),
-        // viewModel.assets.where((element) => element.groups.IsFavourite==true) != null
-        //     ? PopupMenuItem(
-        //         value: "Favorite",
-        //         child: InsiteText(
-        //           text: "Favorite",
-        //           fontWeight: FontWeight.w700,
-        //           size: 14,
-        //         ),
-        //       )
-        //     : null,
+      
         PopupMenuItem(
             value: "Deselect All",
             child: InsiteText(

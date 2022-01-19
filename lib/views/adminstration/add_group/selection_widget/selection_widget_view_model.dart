@@ -25,11 +25,12 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   AssetStatusService? _assetService = locator<AssetStatusService>();
   LoginService? _loginService = locator<LoginService>();
   LocalService? _localService = locator<LocalService>();
+  int? selectedIndex;
+
+//main List
 
   List<String> _assetId = [];
   List<String> get assetId => _assetId;
-
-  int? selectedIndex;
 
   List<String> _productFamilyData = [];
   List<String> get productFamilyData => _productFamilyData;
@@ -43,11 +44,11 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> _assetSerialNumber = [];
   List<String> get assetSerialNumber => _assetSerialNumber;
 
-  List<String> _manfactureData = [];
-  List<String> get manfactureData => _manfactureData;
+  List<String> _manufacturerData = [];
+  List<String> get manufacturerData => _manufacturerData;
 
-  List<String> _manfactureCountData = [];
-  List<String> get manfactureCountData => _manfactureCountData;
+  List<String> _manufacturerCountData = [];
+  List<String> get manufacturerCountData => _manufacturerCountData;
 
   List<String> _geofenceData = [];
   List<String> get geofenceData => _geofenceData;
@@ -55,16 +56,24 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> _geofenceCountData = [];
   List<String> get geofenceCountData => _geofenceCountData;
 
-  int pageNumber = 1;
-  int pageSize = 9999;
-
   List<String> _modelData = [];
   List<String> get modelData => _modelData;
 
+  List<String> _deviceTypeCountData = [];
+  List<String> get deviceTypeCountData => _deviceTypeCountData;
+
+  List<String> _deviceTypeData = [];
+  List<String> get deviceTypdeData => _deviceTypeData;
+
+  // apis
   AssetGroupSummaryResponse? assetIdresult;
+  int pageNumber = 1;
+  int pageSize = 9999;
 
   List<String> _modelCountData = [];
   List<String> get modelCountData => _modelCountData;
+
+//flags
 
   bool _isShowingState = false;
   bool get isShowingState => _isShowingState;
@@ -81,25 +90,22 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   bool _isShowingDeviceTypeState = false;
   bool get isShowingDeviceTypeState => _isShowingDeviceTypeState;
 
-  bool _isaccountSelectionState = false;
-  bool get isaccountSelectionState => _isaccountSelectionState;
-
+  bool _isAccountSelectionState = false;
+  bool get isAccountSelectionState => _isAccountSelectionState;
   bool isFilterChangeState = false;
 
-  bool isLoading = true;
+  bool _isAssetLoading = true;
+  bool get isAssetLoading => _isAssetLoading;
 
-  List<String> _deviceTypeData = [];
-  List<String> get deviceTypdeData => _deviceTypeData;
-
+// subList
   List<String> subProductFamilyList = [];
-  List<String> subManfactureList = [];
+  List<String> subManufacturerList = [];
   List<String> subModelList = [];
   List<String> deviceTypeList = [];
   List<String> accountSelectionList = [];
   List<String> productFamilySubList = [];
 
-  List<String> _deviceTypeCountData = [];
-  List<String> get deviceTypeCountData => _deviceTypeCountData;
+  //SubSearchController
 
   TextEditingController accountController = TextEditingController();
   TextEditingController assetIDController = TextEditingController();
@@ -115,17 +121,11 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   TextEditingController modelSubController = TextEditingController();
   TextEditingController deviceTypeSubController = TextEditingController();
   TextEditingController accountSubController = TextEditingController();
-
   TextEditingController selectedItemController = TextEditingController();
 
-  ScrollController _controller = ScrollController();
-  ScrollController get controller => _controller;
-
+//pageView
   PageController? pageController;
   int currentPage = 0;
-
-  bool _isAssetLoading = true;
-  bool get isAssetLoading => _isAssetLoading;
 
   List<Customer> accountDisplayList = [];
   List<String> assetIdDisplayList = [];
@@ -137,7 +137,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   //SUBACCOUNTSEARCHLIST
   List<String> subProductFamilySearchList = [];
-  List<String> subManafactureSearchList = [];
+  List<String> subManufacturerSearchList = [];
   List<String> subModelSearchList = [];
   List<String> subDeviceTypeSearchList = [];
   List<String> subAccountSearchList = [];
@@ -148,7 +148,6 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> assetIdentifier = [];
   List<AddGroupModel> searchSelectedItemList = [];
 
-  bool isSubAssetLoading = false;
   List<String?>? assetIdentifierData = [];
 
   SelectionWidgetViewModel(
@@ -197,7 +196,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
           productFamilySubController.text);
     });
     manafactureSubController.addListener(() {
-      onSearchSubManafactureTextChanged(manafactureSubController.text);
+      onSearchManufacturerTextChanged(manafactureSubController.text);
     });
     modelSubController.addListener(() {
       onSearchModelSubTextChanged(modelSubController.text);
@@ -226,7 +225,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       });
     }
     _isAssetLoading = false;
-    isSubAssetLoading = false;
+
     notifyListeners();
     return assetIdresult;
   }
@@ -246,8 +245,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     assetSeriaNumberList = assetSerialNumber;
     productFamilyList = productFamilyData;
     subProductFamilySearchList = subProductFamilyList;
-    manfactureList = manfactureData;
-    subManafactureSearchList = subManfactureList;
+    manfactureList = manufacturerData;
+    subManufacturerSearchList = subManufacturerList;
     modelList = modelData;
     subModelSearchList = subModelList;
     deviceTypeList = deviceTypdeData;
@@ -312,21 +311,21 @@ class SelectionWidgetViewModel extends InsiteViewModel {
           _productFamilyCountData.add(productFamilyData.count.toString());
         }
       }
-      isSubAssetLoading = false;
+
       _isAssetLoading = false;
       notifyListeners();
     }
   }
 
-  getManfactureGroupData() async {
-    if (_manfactureData.isEmpty && _manfactureCountData.isEmpty) {
+  getManufacturerGroupData() async {
+    if (_manufacturerData.isEmpty && _manufacturerCountData.isEmpty) {
       AssetCount? resultManufacturer = await _assetService!.getAssetCount(
           "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets);
       for (var manfactureData in resultManufacturer!.countData!) {
-        _manfactureData.add(manfactureData.countOf!);
-        _manfactureCountData.add(manfactureData.count.toString());
+        _manufacturerData.add(manfactureData.countOf!);
+        _manufacturerCountData.add(manfactureData.count.toString());
       }
-      isSubAssetLoading = false;
+
       _isAssetLoading = false;
       notifyListeners();
     }
@@ -340,7 +339,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
           _geofenceData.add(geoFenceData.countOf!);
           _geofenceCountData.add(geoFenceData.count.toString());
         }
-        isSubAssetLoading = false;
+
         _isAssetLoading = false;
         notifyListeners();
       }
@@ -357,7 +356,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
           _modelData.add(modelData.countOf!);
           _modelCountData.add(modelData.count.toString());
         }
-        isSubAssetLoading = false;
+
         _isAssetLoading = false;
         notifyListeners();
       }
@@ -376,7 +375,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         _deviceTypeData.add(deviceTypeData.countOf!);
         _deviceTypeCountData.add(deviceTypeData.count.toString());
       }
-      isSubAssetLoading = false;
+
       _isAssetLoading = false;
       notifyListeners();
     }
@@ -395,7 +394,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             _displayName.add(nameData);
           }
         }
-        isSubAssetLoading = false;
+
         _isAssetLoading = false;
         notifyListeners();
         return result;
@@ -484,18 +483,18 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     _isShowingManaFactureState = false;
     _isShowingModelState = false;
     _isShowingDeviceTypeState = false;
-    _isaccountSelectionState = false;
+    _isAccountSelectionState = false;
     notifyListeners();
   }
 
-  getFilterManafactureData(String productFamilyKey) async {
+  getFilterManufacturerData(String productFamilyKey) async {
     Logger().i(productFamilyKey);
 
     assetIdresult = await _manageUserService!
         .getManafactureFilterData(pageNumber, pageSize, "TATA HITACHI");
-    subManfactureList.clear();
+    subManufacturerList.clear();
     for (var item in assetIdresult!.assetDetailsRecords!) {
-      subManfactureList.add(item.assetSerialNumber!);
+      subManufacturerList.add(item.assetSerialNumber!);
     }
     Logger().i(assetIdresult);
     onNextClicked();
@@ -552,7 +551,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     Logger().i(assetIdresult);
     onNextClicked();
     pageController!.jumpToPage(currentPage);
-    _isaccountSelectionState = true;
+    _isAccountSelectionState = true;
 
     _isAssetLoading = false;
     notifyListeners();
@@ -604,16 +603,16 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       if (text.trim().isNotEmpty) {
         List<String> tempList = [];
         tempList.clear();
-        manfactureData.forEach((item) {
+        manufacturerData.forEach((item) {
           if (item.toLowerCase().contains(text.toLowerCase()))
             tempList.add(item);
         });
         manfactureList = tempList;
-        Logger().i("total list size " + manfactureData.length.toString());
+        Logger().i("total list size " + manufacturerData.length.toString());
         Logger().i("searched list size " + manfactureList.length.toString());
         notifyListeners();
       } else {
-        manfactureList = manfactureData;
+        manfactureList = manufacturerData;
         notifyListeners();
       }
     }
@@ -680,22 +679,22 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     }
   }
 
-  void onSearchSubManafactureTextChanged(String? text) {
+  void onSearchManufacturerTextChanged(String? text) {
     if (text != null) {
       if (text.trim().isNotEmpty) {
         List<String> tempList = [];
         tempList.clear();
-        subManfactureList.forEach((item) {
+        subManufacturerList.forEach((item) {
           if (item.toLowerCase().contains(text.toLowerCase()))
             tempList.add(item);
         });
-        subManafactureSearchList = tempList;
-        Logger().i("total list size " + subManfactureList.toString());
-        Logger().i(
-            "searched list size " + subManafactureSearchList.length.toString());
+        subManufacturerSearchList = tempList;
+        Logger().i("total list size " + subManufacturerList.toString());
+        Logger().i("searched list size " +
+            subManufacturerSearchList.length.toString());
         notifyListeners();
       } else {
-        subManafactureSearchList = subManfactureList;
+        subManufacturerSearchList = subManufacturerList;
         notifyListeners();
       }
     }
@@ -819,7 +818,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             model: element.model,
             assetIdentifier: element.assetIdentifier));
         subProductFamilyList.removeWhere((element) => value == element);
-        subManfactureList.removeWhere((element) => value == element);
+        subManufacturerList.removeWhere((element) => value == element);
         subModelList.removeWhere((element) => value == element);
         deviceTypeList.removeWhere((element) => value == element);
         accountSelectionList.removeWhere((element) => value == element);
@@ -841,7 +840,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             serialNo: element.assetSerialNumber,
             model: element.model,
             assetIdentifier: element.assetIdentifier));
-        subManfactureList.removeWhere((element) => valueData == element);
+        subManufacturerList.removeWhere((element) => valueData == element);
         subModelList.removeWhere((element) => valueData == element);
         deviceTypeList.removeWhere((element) => valueData == element);
         accountSelectionList.removeWhere((element) => valueData == element);
@@ -864,14 +863,13 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             serialNo: element.assetSerialNumber,
             model: element.model,
             assetIdentifier: element.assetIdentifier));
-        subManfactureList.removeWhere((element) => valueData == element);
+        subManufacturerList.removeWhere((element) => valueData == element);
         subModelList.removeWhere((element) => valueData == element);
         deviceTypeList.removeWhere((element) => valueData == element);
         accountSelectionList.removeWhere((element) => valueData == element);
         _assetSerialNumber.removeWhere((element) => valueData == element);
         subProductFamilyList.removeWhere((element) => valueData == element);
 
-        Logger().w(subManfactureList.length);
         notifyListeners();
       }
     });
@@ -890,7 +888,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             serialNo: element.assetSerialNumber,
             model: element.model,
             assetIdentifier: element.assetIdentifier));
-        subManfactureList.removeWhere((element) => valueData == element);
+        subManufacturerList.removeWhere((element) => valueData == element);
         subModelList.removeWhere((element) => valueData == element);
         deviceTypeList.removeWhere((element) => valueData == element);
         accountSelectionList.removeWhere((element) => valueData == element);
@@ -913,7 +911,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             serialNo: element.assetSerialNumber,
             model: element.model,
             assetIdentifier: element.assetIdentifier));
-        subManfactureList.removeWhere((element) => valueData == element);
+        subManufacturerList.removeWhere((element) => valueData == element);
         subModelList.removeWhere((element) => valueData == element);
         deviceTypeList.removeWhere((element) => valueData == element);
         accountSelectionList.removeWhere((element) => valueData == element);
@@ -936,7 +934,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
             serialNo: element.assetSerialNumber,
             model: element.model,
             assetIdentifier: element.assetIdentifier));
-        subManfactureList.removeWhere((element) => valueData == element);
+        subManufacturerList.removeWhere((element) => valueData == element);
         subModelList.removeWhere((element) => valueData == element);
         deviceTypeList.removeWhere((element) => valueData == element);
         accountSelectionList.removeWhere((element) => valueData == element);
@@ -957,9 +955,9 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         _assetSerialNumber.add(addData.serialNo!);
         subModelList.add(addData.serialNo!);
         subProductFamilyList.add(addData.serialNo!);
-        subManfactureList.add(addData.serialNo!);
+        subManufacturerList.add(addData.serialNo!);
         deviceTypeList.add(addData.serialNo!);
-        subManfactureList.add(addData.serialNo!);
+        subManufacturerList.add(addData.serialNo!);
         accountSelectionList.add(addData.serialNo!);
 
         assetIdSelecteList.removeAt(index);

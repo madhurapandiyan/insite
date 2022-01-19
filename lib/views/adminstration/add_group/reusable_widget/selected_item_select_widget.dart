@@ -12,7 +12,7 @@ class SelectedItemSelectWidgetView extends StatefulWidget {
   final List? searchList;
   final List<AddGroupModel>? displayList;
   final TextEditingController? textEditingController;
-  final Function(int, String serialNumber)? callBack;
+  final Function(int, String serialNumber)? onAssetDeselected;
   final Function(String)? searchCallBack;
   final VoidCallback? filterCallBack;
   final bool? filterChangeState;
@@ -21,7 +21,7 @@ class SelectedItemSelectWidgetView extends StatefulWidget {
   final Function(String)? onDropDownChange;
   const SelectedItemSelectWidgetView(
       {this.displayList,
-      this.callBack,
+      this.onAssetDeselected,
       this.textEditingController,
       this.searchList,
       this.searchCallBack,
@@ -98,7 +98,7 @@ class _SelectedItemSelectWidgetViewState
                 return SelectedAssetsWidget(
                   selectedAssetList: detailsRecords,
                   callBack: () {
-                    widget.callBack!(index, detailsRecords.assetIdentifier!);
+                    widget.onAssetDeselected!(index, detailsRecords.assetIdentifier!);
                   },
                 );
               }),

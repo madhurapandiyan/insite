@@ -15,10 +15,10 @@ class SelectedItemWidget extends StatefulWidget {
   final List<String>? displayCountBoxValue;
   final VoidCallback? callback;
   final TextEditingController? controller;
-  final bool? isLoading;
+ // final bool? isLoading;
   final Function(dynamic)? productFamilyKey;
   final bool? isShowingState;
-  final VoidCallback? isShowingbackButtonState;
+  final VoidCallback? onClickedBackButton;
   final Function(dynamic, int)? groupValueCallBack;
   final List? subList;
   final TextEditingController? subTextEditingController;
@@ -31,11 +31,11 @@ class SelectedItemWidget extends StatefulWidget {
       this.headerBoxCountValue,
       this.displayCountBoxValue,
       this.callback,
-      this.isLoading,
+      //this.isLoading,
       this.controller,
       this.productFamilyKey,
       this.isShowingState,
-      this.isShowingbackButtonState,
+      this.onClickedBackButton,
       this.groupValueCallBack,
       this.subList,
       this.subTextEditingController,
@@ -56,7 +56,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
         leading: widget.isShowingState == true
             ? GestureDetector(
                 onTap: () {
-                  widget.isShowingbackButtonState!();
+                  widget.onClickedBackButton!();
                 },
                 child: Icon(Icons.arrow_back))
             : SizedBox(),
@@ -67,9 +67,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
         ),
       ),
       children: [
-        widget.isAssetIdLoading!
-            ? InsiteProgressBar()
-            : Container(
+         Container(
                 width: MediaQuery.of(context).size.width * 0.75,
                 height: MediaQuery.of(context).size.height * 0.05,
                 child: widget.isShowingState == true
@@ -83,7 +81,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
           child: PageView(
             controller: widget.pageController,
             children: [
-              widget.isLoading! && widget.pageController!.initialPage == 0
+              widget.displayList!.isEmpty 
                   ? InsiteProgressBar()
                   : ListView.builder(
                       itemCount: widget.displayList!.length,
@@ -131,7 +129,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                   child: Container(
                                       margin: EdgeInsets.only(top: 100),
                                       child: InsiteProgressBar()))
-                              : widget.isLoading != null && widget.isLoading!
+                              : widget.isAssetIdLoading != null && widget.isAssetIdLoading!
                                   ? Center(
                                       child: SizedBox(),
                                     )
@@ -252,7 +250,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                   child: Container(
                                       margin: EdgeInsets.only(top: 100),
                                       child: InsiteProgressBar()))
-                              : widget.isLoading != null && widget.isLoading!
+                              : widget.isAssetIdLoading != null && widget.isAssetIdLoading!
                                   ? Center(
                                       child: SizedBox(),
                                     )

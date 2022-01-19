@@ -116,10 +116,10 @@ class _AddGroupViewState extends State<AddGroupView> {
                         //height: MediaQuery.of(context).size.height * 0.70,
                         child: SelectionWidgetView(
                       isEdit: widget.isEdit!,
-                      assetId: viewModel.assetUidData,
+                      assetIds: viewModel.assetUidData,
                       group: viewModel.groups,
-                      dissociatedId: viewModel.dissociatedAssetId,
-                      voidCallback: (
+                      dissociatedIds: viewModel.dissociatedAssetId,
+                      onAssetSelected: (
                         List<String> value,
                         AssetGroupSummaryResponse data,
                         List<String> associatedAssetId,

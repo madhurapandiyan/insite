@@ -10,9 +10,8 @@ EditGroupResponse _$EditGroupResponseFromJson(Map<String, dynamic> json) =>
     EditGroupResponse(
       GroupUid: json['GroupUid'] as String?,
       GroupName: json['GroupName'] as String?,
-      AssetUID: (json['AssetUID'] as List<dynamic>?)
-          ?.map((e) => e as String?)
-          .toList(),
+      AssetUID:
+          (json['AssetUID'] as List<dynamic>).map((e) => e as String).toList(),
       CustomerUID: json['CustomerUID'] as String?,
       Description: json['Description'] as String?,
     );

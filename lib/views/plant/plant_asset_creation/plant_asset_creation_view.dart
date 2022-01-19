@@ -153,15 +153,15 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         child: Expanded(
                           child: ListView.builder(
                               itemCount:
-                                  viewModel.getassetCreationListData.length,
+                                  viewModel.assetCreationListData.length,
                               padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final dataModel =
-                                    viewModel.getassetCreationListData[index];
+                                    viewModel.assetCreationListData[index];
                 
                                 return AssetCreationWidget(
                                   voidCallback: () {
-                                    // viewModel.onItemSelect(index);
+                                  
                                   },
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {
@@ -185,11 +185,11 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         child: Expanded(
                           child: ListView.builder(
                               itemCount:
-                                  viewModel.getassetCreationListData.length,
+                                  viewModel.assetCreationListData.length,
                               padding: EdgeInsets.all(8),
                               itemBuilder: (context, index) {
                                 final assetCreationData =
-                                    viewModel.getassetCreationListData[index];
+                                    viewModel.assetCreationListData[index];
                 
                                 return AssetCreationValidationWidget(
                                   data: assetCreationData,

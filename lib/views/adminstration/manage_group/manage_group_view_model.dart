@@ -19,16 +19,17 @@ import 'package:stacked_services/stacked_services.dart';
 class ManageGroupViewModel extends InsiteViewModel {
   Logger? log;
 
-  final AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  final AssetAdminManagerUserService? _manageUserService =
+      locator<AssetAdminManagerUserService>();
   final NavigationService? _navigationService = locator<NavigationService>();
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  int ?_totalCount = 0;
+  int? _totalCount = 0;
   int get totalCount => _totalCount!;
 
-  ScrollController ?scrollController;
+  ScrollController? scrollController;
 
   int pageNumber = 1;
 
@@ -36,11 +37,8 @@ class ManageGroupViewModel extends InsiteViewModel {
 
   bool get showDelete => _isShowDelete;
 
-  bool _isShowFavorite = false;
-  bool get isShowFavorite => _isShowFavorite;
-
-  bool _isShowUnFavorite = false;
-  bool get isShowUnFavorite => _isShowUnFavorite;
+  bool _isFavorite = false;
+  bool get isFavorite => _isFavorite;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -81,7 +79,7 @@ class ManageGroupViewModel extends InsiteViewModel {
       getGroupListData();
     });
   }
-  Timer ?debounce;
+  Timer? debounce;
   searchUsers(String searchValue) {
     if (debounce != null) debounce!.cancel();
     debounce = Timer(Duration(seconds: 2), () {
@@ -150,13 +148,12 @@ class ManageGroupViewModel extends InsiteViewModel {
 
   onItemSelected(index) {
     try {
-      //selectedindex1.add(index);
       _assets[index].isSelected = !_assets[index].isSelected!;
     } catch (e) {
       Logger().e(e);
     }
-    _isShowFavorite = _assets[index].groups!.IsFavourite!;
-    Logger().i(_isShowFavorite);
+    _isFavorite = _assets[index].groups!.IsFavourite!;
+    Logger().i(_isFavorite);
     notifyListeners();
     checkEditAndDeleteVisibility();
   }
@@ -206,20 +203,17 @@ class ManageGroupViewModel extends InsiteViewModel {
           _showDeSelect = true;
           _showEdit = true;
           _isShowDelete = false;
-          _isShowUnFavorite = true;
         } else {
           _showMenu = true;
           _showDeSelect = true;
           _showEdit = true;
           _isShowDelete = true;
-          _isShowUnFavorite = false;
         }
       } else {
         _showEdit = false;
         _showEdit = false;
         _showDeSelect = false;
         _isShowDelete = false;
-        _isShowUnFavorite = false;
       }
     } catch (e) {}
     notifyListeners();
@@ -263,7 +257,7 @@ class ManageGroupViewModel extends InsiteViewModel {
       },
     );
     if (value != null && value) {
-      deleteSelectedUsers();
+      deleteSelectedGroup();
     }
   }
 
@@ -314,17 +308,21 @@ class ManageGroupViewModel extends InsiteViewModel {
   }
 
   getGroupFavoriteData(groupId, isFavourite) async {
-    showLoadingDialog();
-    UpdateResponse? result =
-        await _manageUserService!.getFavoriteGroupData(groupId, isFavourite);
-    Logger().i(result);
-    hideLoadingDialog();
+    try {
+      showLoadingDialog();
+      UpdateResponse? result =
+          await _manageUserService!.getFavoriteGroupData(groupId, isFavourite);
+      Logger().i(result);
+      hideLoadingDialog();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
-  void deleteSelectedUsers() async {
+  void deleteSelectedGroup() async {
     Logger().i("deleteSelectedUsers");
     if (showDelete) {
-      String ?groupId;
+      String? groupId;
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected!) {
@@ -346,12 +344,12 @@ class ManageGroupViewModel extends InsiteViewModel {
     }
   }
 
-  onClickEditGroupSelected(Groups groups) {
+  onClickEditGroupSelected(Groups group) {
     _navigationService!.navigateToView(
         AddGroupView(
           isEdit: false,
         ),
-        arguments: groups);
+        arguments: group);
     // navigateWithTransition(
     //     AddGroupView(
     //       groups: groups,
