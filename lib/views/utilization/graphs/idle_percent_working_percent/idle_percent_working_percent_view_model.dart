@@ -118,6 +118,8 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         pageCount,
         appliedFilters,
         graphqlSchemaService!.getFleetUtilization);
+   
+    
     if (result != null &&
         result.assetResults != null &&
         result.assetResults!.isNotEmpty) {

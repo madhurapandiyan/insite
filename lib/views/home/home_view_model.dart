@@ -26,7 +26,7 @@ class HomeViewModel extends InsiteViewModel {
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    Future.delayed(Duration(seconds: 1), () {
+  Future.delayed(Duration(seconds: 1), () {
       // checkPermission();
       // _loginService.getTokenWithoutLogin();
     });
@@ -45,11 +45,10 @@ class HomeViewModel extends InsiteViewModel {
     } else if (type == ScreenType.UTILIZATION) {
       _navigationService!
           .navigateWithTransition(UtilLizationView(), transition: "fade");
-
-      } else if (type == ScreenType.LOCATION) {
-        _navigationService!.navigateWithTransition(LocationView(),
-            transition: "fade");
-      } else if (type == ScreenType.HEALTH) {
+    } else if (type == ScreenType.LOCATION) {
+      _navigationService!
+          .navigateWithTransition(LocationView(), transition: "fade");
+    } else if (type == ScreenType.HEALTH) {
       _navigationService!
           .navigateWithTransition(HealthView(), transition: "fade");
     } else if (type == ScreenType.ADMINISTRATION) {

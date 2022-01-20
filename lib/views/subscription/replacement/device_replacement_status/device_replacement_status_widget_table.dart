@@ -51,21 +51,21 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Old Device ID : ",
-                            content: modelData!.OldDeviceId ?? "null",
+                            content: modelData!.OldDeviceId ?? "-",
                           ),
                           InsiteTableRowItem(
                             title: "New Device ID :",
-                            content: modelData!.NewDeviceId ?? "null",
+                            content: modelData!.NewDeviceId ?? "-",
                           ),
                         ]),
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Serial No",
-                            content: modelData!.VIN ?? "null",
+                            content: modelData!.VIN ?? "-",
                           ),
                           InsiteTableRowItem(
                             title: "Reason  :",
-                            content: modelData!.Reason ?? "null",
+                            content: modelData!.Reason ?? "-",
                           ),
                         ]),
                       ],
@@ -79,34 +79,34 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                             children: [
                               InsiteTableRowItem(
                                 title: "Replacement Status : ",
-                                content: modelData!.State ?? "null",
+                                content: modelData!.State ?? "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Description : ",
-                                content: modelData!.Description ?? "null",
+                                content: modelData!.Description ?? "-",
                               ),
                             ],
                           ),
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "First Name :",
-                              content: modelData!.FirstName ?? "null",
+                              content: modelData!.FirstName ?? "-",
                             ),
                             InsiteTableRowItem(
                               title: "Last Name : ",
-                              content: modelData!.LastName ?? "null",
+                              content: modelData!.LastName ?? "-",
                             ),
                           ]),
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "User Email :",
-                              content: modelData!.EmailID ?? "null",
+                              content: modelData!.EmailID ?? "-",
                             ),
                             InsiteTableRowItem(
                               title: "Request Time : ",
                               content: Utils.getLastReportedDateFilterData(
                                       DateTime.parse(modelData!.InsertUTC!)) ??
-                                  "null",
+                                  "-",
                             ),
                           ]),
                         ],

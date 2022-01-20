@@ -383,7 +383,7 @@ class _FilterViewState extends State<FilterView> {
                                   )
                                 : SizedBox(),
                             widget.screenType == ScreenType.USER_MANAGEMENT
-                                ? FilterItem(
+                                ?SizedBox(): FilterItem(
                                     filterType: FilterType.JOBTYPE,
                                     key: filterJobTypeKey,
                                     data: viewModel.filterDataJobType,
@@ -397,7 +397,7 @@ class _FilterViewState extends State<FilterView> {
                                           .onFilterCleared(FilterType.JOBTYPE);
                                     },
                                   )
-                                : SizedBox(),
+                                ,
                             widget.screenType == ScreenType.USER_MANAGEMENT
                                 ? FilterItem(
                                     filterType: FilterType.USERTYPE,

@@ -145,7 +145,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         Logger().wtf(url);
         if (url.isNotEmpty &&
             url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
-                ? Urls.administratorBaseUrl + "?code="
+                ? Urls.administratorBaseUrl + "/?code="
                 : Urls.tataHitachiRedirectUri + "?code=")) {
           print("IndiaStackSplashView URL changed with auth code : $url");
           try {
@@ -192,6 +192,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService.saveTokenInfo(result);
+      await _localService.saveRefreshToken(result.refresh_token);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
     }

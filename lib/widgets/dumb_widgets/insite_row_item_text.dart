@@ -95,6 +95,58 @@ class InsiteTableRowItemWithImage extends StatelessWidget {
   }
 }
 
+class InsiteTableRowItemWithImageWithContent extends StatelessWidget {
+  final String? title;
+  final String? path;
+  final String? content;
+  final Color? contentColor;
+
+  const InsiteTableRowItemWithImageWithContent(
+      {this.title, this.path, this.content,this.contentColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+            // margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1!.color!),
+                borderRadius: BorderRadius.all(Radius.circular(4))),
+            child: InsiteImage(
+              height: 30,
+              width: 50,
+              path: path,
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InsiteText(
+                text: title,
+                size: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              InsiteText(
+                text: content,
+                color: contentColor,
+                size: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class InsiteTableRowItemWithIcon extends StatelessWidget {
   final String? title;
   final String? iconPath;

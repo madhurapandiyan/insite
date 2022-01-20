@@ -21,10 +21,18 @@ Map<String, dynamic> _$DeviceDetailsPerIdToJson(DeviceDetailsPerId instance) =>
 ResultData _$ResultDataFromJson(Map<String, dynamic> json) => ResultData(
       serialNo: json['VIN'] as String?,
       model: json['Model'] as String?,
+      CustomerCode: json['CustomerCode'] as String?,
+      CustomerName: json['CustomerName'] as String?,
+      DealerCode: json['DealerCode'] as String?,
+      DealerName: json['DealerName'] as String?,
     );
 
 Map<String, dynamic> _$ResultDataToJson(ResultData instance) =>
     <String, dynamic>{
       'VIN': instance.serialNo,
       'Model': instance.model,
+      'CustomerCode': instance.CustomerCode,
+      'CustomerName': instance.CustomerName,
+      'DealerName': instance.DealerName,
+      'DealerCode': instance.DealerCode,
     };

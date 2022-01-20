@@ -39,7 +39,8 @@ class _DateRangeViewState extends State<DateRangeView> {
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border.all(
-                color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
+                color: Theme.of(context).textTheme.bodyText1!.color!,
+                width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Padding(
@@ -274,7 +275,8 @@ class _DateRangeViewState extends State<DateRangeView> {
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
-                                  : Utils.parseDate(customToDate!).toUpperCase(),
+                                  : Utils.parseDate(customToDate!)
+                                      .toUpperCase(),
                             ),
                           ],
                         ),
@@ -340,7 +342,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                 '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                 describeEnum(viewModel.selectedDateRange));
                             Future.delayed(Duration(milliseconds: 500), () {
-                              Navigator.pop(context, [fromDate, toDate]);
+                              Navigator.pop(context, [fromDate!, toDate!]);
                             });
                           } else {
                             if (DateUtil.isBothDateSame(fromDate!, toDate!)) {
@@ -350,7 +352,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                   '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                   describeEnum(viewModel.selectedDateRange));
                               Future.delayed(Duration(milliseconds: 500), () {
-                                Navigator.pop(context, [fromDate, toDate]);
+                                Navigator.pop(context, [fromDate!, toDate!]);
                               });
                             } else {
                               Logger().i("if date not equal");
@@ -363,7 +365,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     '${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                     describeEnum(viewModel.selectedDateRange));
                                 Future.delayed(Duration(milliseconds: 500), () {
-                                  Navigator.pop(context, [fromDate, toDate]);
+                                  Navigator.pop(context, [fromDate!, toDate!]);
                                 });
                               }
                             }

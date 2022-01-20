@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_card_report_summary_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 import 'report_summary_view_model.dart';
 
@@ -77,6 +79,16 @@ class ReportSummaryView extends StatelessWidget {
                               //     ))
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        PageHeader(
+                          count: viewModel.modelDataList.length,
+                          total: viewModel
+                              .smsReportSummaryModel!.result!.first.first.count,
+                          isDashboard: false,
+                          screenType: ScreenType.SUBSCRIPTION,
                         ),
                         SizedBox(
                           height: 10,

@@ -85,19 +85,28 @@ class AssetStatusService extends DataBaseService {
           } else {
             Map<String, String?> queryMap = Map();
             if (key != null) {
-              queryMap["grouping"] = key;
+              if (type == FilterType.USERTYPE || type == FilterType.JOBTYPE) {
+                queryMap["FilterName"] = key;
+              } else {
+                queryMap["grouping"] = key;
+              }
             }
             if (customerSelected != null) {
               queryMap["customerUID"] = customerSelected!.CustomerUID;
             }
+
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
                 .assetCount(
-                  type==FilterType.USERTYPE || type==FilterType.JOBTYPE?
-                    Urls.userCount+FilterUtils.constructQueryFromMap(queryMap):Urls.assetCountSummary +
-                        FilterUtils.constructQueryFromMap(queryMap),
+                    type == FilterType.USERTYPE || type == FilterType.JOBTYPE
+                        ? Urls.userCount +
+                            FilterUtils.constructQueryFromMap(queryMap)
+                        : Urls.assetCountSummary +
+                            FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID,
-                    Urls.vfleetPrefix);
+                    type == FilterType.USERTYPE || type == FilterType.JOBTYPE
+                        ? Urls.userCountPrefix
+                        : Urls.vfleetPrefix);
             if (assetStatusResponse != null) {
               bool updated = await updateAssetCount(assetStatusResponse, type);
               Logger().d("updated $updated");

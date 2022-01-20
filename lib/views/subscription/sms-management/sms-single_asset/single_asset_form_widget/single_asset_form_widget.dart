@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
@@ -24,13 +24,13 @@ class SingleAssetFormWidget extends StatefulWidget {
 
 class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
   var formKey = GlobalKey<FormState>();
-  var serialNoValidator =
-      MultiValidator([RequiredValidator(errorText: "This Field is Required")]);
-  var modileNoValidator = MultiValidator([
-    RequiredValidator(errorText: "This Field is Required"),
-    LengthRangeValidator(
-        min: 10, max: 15, errorText: "Please Enter The Valid Mobile Number")
-  ]);
+  // var serialNoValidator =
+  //     MultiValidator([RequiredValidator(errorText: "This Field is Required")]);
+  // var modileNoValidator = MultiValidator([
+  //   RequiredValidator(errorText: "This Field is Required"),
+  //   LengthRangeValidator(
+  //       min: 10, max: 15, errorText: "Please Enter The Valid Mobile Number")
+  // ]);
 
   var nameFocus = FocusNode();
   var mobileNoFocus = FocusNode();
@@ -69,7 +69,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                       FocusScope.of(context).requestFocus(nameFocus);
                     },
                     keyPadType: TextInputType.text,
-                    validator: serialNoValidator ,
+                    //validator: serialNoValidator,
                     onChanged: (value) {
                       serialNo = value;
                     },
@@ -93,7 +93,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     onChanged: (value) {
                       name = value;
                     },
-                    validator: serialNoValidator ,
+                    //// validator: serialNoValidator,
                   ),
                   SizedBox(
                     height: 30,
@@ -114,7 +114,7 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                       mobileNo = value;
                     },
                     focusNode: mobileNoFocus,
-                    validator: modileNoValidator ,
+                    // validator: modileNoValidator,
                   ),
                   SizedBox(
                     height: 30,
@@ -132,7 +132,8 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         border: Border.all(
-                            color: Theme.of(context).textTheme.bodyText1!.color!,
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!,
                             width: 1)),
                     child: CustomDropDownWidget(
                       onFocus: languageFocus,
@@ -154,8 +155,14 @@ class _SingleAssetFormWidgetState extends State<SingleAssetFormWidget> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: MediaQuery.of(context).size.height * 0.05,
                     onTap: () {
-                      final valid = formKey.currentState!.validate();
-                      if (valid) {
+                      if (widget.serialNoController!.text.isEmpty &&
+                          widget.serialNoController!.text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please fill the required * fields !!!");
+                      } else if (widget.mobileNoController!.text.length < 10) {
+                        Fluttertoast.showToast(
+                            msg: "Please check the mobile number!!!");
+                      } else {
                         widget.onSaving!(serialNo, name, mobileNo, value);
                       }
                     },

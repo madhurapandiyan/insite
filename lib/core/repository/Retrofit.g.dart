@@ -936,7 +936,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
-      r'x-visionlink-customeruid': customerId,
+      r'X-VisionLink-CustomerUid': customerId,
       r'service': service
     };
     _headers.removeWhere((k, v) => v == null);
@@ -1598,6 +1598,27 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(tokenData.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LoginResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: contentType)
+            .compose(_dio.options, '/oauth/token',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LoginResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<LoginResponse> getRefreshLoginData(contentType, refreshToken) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'content-type': contentType};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(refreshToken.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<LoginResponse>(Options(
                 method: 'POST',
@@ -2942,7 +2963,7 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = singleAssetData.map((e) => e!.toJson()).toList();
+    final _data = singleAssetData.map((e) => e?.toJson()).toList();
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<SavingSmsResponce>(
             Options(method: 'POST', headers: _headers, extra: _extra)
@@ -3058,18 +3079,22 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<dynamic> postSingleAssetTransferRegistration(url, data) async {
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
+      url, data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddAssetRegistrationData>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : AddAssetRegistrationData.fromJson(_result.data!);
     return value;
   }
 

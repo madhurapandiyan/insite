@@ -51,11 +51,11 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                 : widget.selectionType == AccountType.ACCOUNT
                     ? "Select"
                     : "Search and Select",
-            overflow: TextOverflow.ellipsis,
+           // overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: Theme.of(context).textTheme.bodyText1!.color,
                 fontWeight: FontWeight.bold,
-                fontSize: 18),
+                fontSize: 16),
           ),
           key: expansionTile,
           children: [
@@ -116,7 +116,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                       Expanded(
                                         child: Text(
                                           data.value!.DisplayName!,
-                                          overflow: TextOverflow.ellipsis,
+                                          //overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: viewModel
                                                       .displayList![index]

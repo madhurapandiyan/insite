@@ -15,7 +15,7 @@ class FilterData {
   List<String?>? extras;
   @HiveField(5)
   final FilterSubType? subType;
-  FilterData(
+FilterData(
       {this.count,
       this.title,
       this.isSelected,

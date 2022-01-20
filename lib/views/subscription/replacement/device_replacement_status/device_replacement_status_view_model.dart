@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -51,10 +50,10 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
       totalDeviceReplacementStatusModel!.result![1].forEach((element) {
         deviceReplacementStatusModelList.add(element);
       });
-      for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
-        deviceReplacementStatusModelList
-            .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
-      }
+      // for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
+      //   deviceReplacementStatusModelList
+      //       .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
+      // }
       isLoading = false;
       isLoadMore = false;
       notifyListeners();

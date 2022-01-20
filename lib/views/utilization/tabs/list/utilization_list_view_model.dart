@@ -104,73 +104,81 @@ class UtilizationListViewModel extends InsiteViewModel {
   }
 
   getUtilization() async {
-    Logger().d("getUtilization");
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    await getUtilizationCount();
-    Utilization? result = await _utilizationService!.getUtilizationResult(
-        startDate,
-        endDate,
-        '-RuntimeHours',
-        pageNumber,
-        pageCount,
-        appliedFilters,
-        graphqlSchemaService!.getFleetUtilization(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
-    if (result != null) {
-      if (result.assetResults!.isNotEmpty) {
-        _utilLizationListData.addAll(result.assetResults!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      Logger().d("getUtilization");
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+      await getUtilizationCount();
+      Utilization? result = await _utilizationService!.getUtilizationResult(
+          startDate,
+          endDate,
+          '-RuntimeHours',
+          pageNumber,
+          pageCount,
+          appliedFilters,
+          graphqlSchemaService!.getFleetUtilization(
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      if (result != null) {
+        if (result.assetResults!.isNotEmpty) {
+          _utilLizationListData.addAll(result.assetResults!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _utilLizationListData.addAll(result.assetResults!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
   refresh() async {
-    Logger().d("refresh getUtilization list");
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    pageNumber = 1;
-    pageCount = 50;
-    _refreshing = true;
-    _shouldLoadmore = true;
-    notifyListeners();
-    Logger().d("start date " + startDate!);
-    Logger().d("end date " + endDate!);
-    await getUtilizationCount();
-    Utilization? result = await _utilizationService!.getUtilizationResult(
-        startDate,
-        endDate,
-        '-RuntimeHours',
-        pageNumber,
-        pageCount,
-        appliedFilters,
-        graphqlSchemaService!.getFleetUtilization(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
-    if (result != null) {
-      _utilLizationListData.clear();
-      _utilLizationListData.addAll(result.assetResults!);
-      _refreshing = false;
+    try {
+      Logger().d("refresh getUtilization list");
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+      pageNumber = 1;
+      pageCount = 50;
+      _refreshing = true;
+      _shouldLoadmore = true;
       notifyListeners();
-    } else {
-      _refreshing = false;
-      notifyListeners();
+      Logger().d("start date " + startDate!);
+      Logger().d("end date " + endDate!);
+      await getUtilizationCount();
+      Utilization? result = await _utilizationService!.getUtilizationResult(
+          startDate,
+          endDate,
+          '-RuntimeHours',
+          pageNumber,
+          pageCount,
+          appliedFilters,
+          graphqlSchemaService!.getFleetUtilization(
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      if (result != null) {
+        _utilLizationListData.clear();
+        _utilLizationListData.addAll(result.assetResults!);
+        _refreshing = false;
+        notifyListeners();
+      } else {
+        _refreshing = false;
+        notifyListeners();
+      }
+      Logger().i("list of _utilLizationListData " +
+          _utilLizationListData.length.toString());
+    } catch (e) {
+      Logger().e(e.toString());
     }
-    Logger().i("list of _utilLizationListData " +
-        _utilLizationListData.length.toString());
   }
 
   getUtilizationCount() async {
