@@ -70,7 +70,7 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
             : Container(
                 height: 200,
                 margin: EdgeInsets.symmetric(horizontal: 8),
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).canvasColor,
                 child: ListView(
                   children: List.generate(
                       widget.items!.length,

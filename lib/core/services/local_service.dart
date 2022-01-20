@@ -19,7 +19,6 @@ class LocalService extends BaseService {
   static const String IS_LOGGEDIN = "isLoggedIn";
   static const String HAS_PERMISSION = "hasPermission";
   static const String USERID = "userId";
-  static const String AUTHCODE = "auth_code";
   static const String REFRESH_TOKEN = "refresh_token";
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -29,9 +28,6 @@ class LocalService extends BaseService {
     return await preferences!.setString(TOKEN, token);
   }
 
-  Future saveAuthCode(code) async {
-    return await preferences!.setString(AUTHCODE, code);
-  }
 
   Future saveRefreshToken(refreshToken) async {
     return await preferences!.setString(REFRESH_TOKEN, refreshToken);
@@ -61,10 +57,6 @@ class LocalService extends BaseService {
 
   Future<String?> getRefreshToken() async {
     return preferences!.getString(REFRESH_TOKEN);
-  }
-
-  Future<String?> getAuthCode() async {
-    return preferences!.getString(AUTHCODE);
   }
 
   Future<String?> getExpiry() async {

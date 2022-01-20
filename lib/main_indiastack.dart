@@ -3,6 +3,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
+import 'package:insite/core/setup_snackbar_ui.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:load/load.dart';
@@ -31,8 +32,8 @@ void main() async {
       isProd: false,
       enableGraphql: false,
       apiFlavor: "indiastack");
-
   await LocatorInjector.setUpLocator();
+  SnackbarStyling.setupSnackbarUi();
   runApp(MyApp());
 }
 

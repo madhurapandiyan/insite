@@ -36,7 +36,6 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getAssetCount(key, FilterType type, query) async {
-          
     Logger().d("getAssetCount $type");
     try {
       AssetCount? assetCountFromLocal =
@@ -85,21 +84,23 @@ class AssetStatusService extends DataBaseService {
             }
           } else {
             Map<String, String?> queryMap = Map();
-            Map<String, String?> queryMap1 = Map();
             if (key != null) {
-              queryMap["grouping"] = key;
-              queryMap1["FilterName"] = key;
+              if (type == FilterType.USERTYPE || type == FilterType.JOBTYPE) {
+                queryMap["FilterName"] = key;
+              } else {
+                queryMap["grouping"] = key;
+              }
             }
             if (customerSelected != null) {
               queryMap["customerUID"] = customerSelected!.CustomerUID;
             }
-      
+
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
                 .assetCount(
                     type == FilterType.USERTYPE || type == FilterType.JOBTYPE
                         ? Urls.userCount +
-                            FilterUtils.constructQueryFromMap(queryMap1)
+                            FilterUtils.constructQueryFromMap(queryMap)
                         : Urls.assetCountSummary +
                             FilterUtils.constructQueryFromMap(queryMap),
                     accountSelected!.CustomerUID,

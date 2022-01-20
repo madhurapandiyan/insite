@@ -164,7 +164,7 @@ class HttpWrapper {
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
-            "Accept": "*/*",
+            "Accept": "application/json",
             "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
@@ -198,10 +198,10 @@ class HttpWrapper {
 
     dioTwo.interceptors
       ..add(InterceptorsWrapper(
-        onError:
-            (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-          if (error.response!.statusCode == 401) {}
-        },
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({

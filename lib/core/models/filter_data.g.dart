@@ -22,7 +22,6 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       isSelected: fields[3] as bool?,
       type: fields[2] as FilterType?,
       extras: (fields[4] as List?)?.cast<String?>(),
-      id: fields[6] as String?,
       subType: fields[5] as FilterSubType?,
     );
   }
@@ -30,7 +29,7 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
   @override
   void write(BinaryWriter writer, FilterData obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -42,9 +41,7 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       ..writeByte(4)
       ..write(obj.extras)
       ..writeByte(5)
-      ..write(obj.subType)
-      ..writeByte(6)
-      ..write(obj.id);
+      ..write(obj.subType);
   }
 
   @override

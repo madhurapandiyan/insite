@@ -3,7 +3,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
-import 'package:insite/core/models/refresh_token.dart';
+import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
@@ -265,7 +265,7 @@ class LoginService extends BaseService {
             .getClientFive()!
             .getRefreshLoginData(
                 "application/x-www-form-urlencoded",
-                RefreshToken(
+                RefreshTokenPayload(
                     client_id: Urls.indiaStackClientId,
                     code_challenge: code_challenge,
                     grant_type: "refresh_token",

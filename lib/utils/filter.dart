@@ -26,7 +26,7 @@ class FilterUtils {
     Logger().i("filter job type fitlers " + jobTypeFilters.length.toString());
     if (jobTypeFilters.isNotEmpty) {
       for (FilterData? data in jobTypeFilters) {
-        value.write(constructQuery("userType", data!.id, false));
+        value.write(constructQuery("userType", data!.extras!.first, false));
       }
     }
  

@@ -9,6 +9,7 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 import 'fleet_status_view_model.dart';
@@ -81,15 +82,6 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                           ),
                         )
                       ]),
-                  PageHeader(
-                    isDashboard: false,
-                    count: viewModel.devices.length,
-                    total: viewModel.devices.length,
-                    screenType: ScreenType.SUBSCRIPTION,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Expanded(
                     child: viewModel.loading
                         ? InsiteProgressBar()
@@ -101,9 +93,28 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                 itemBuilder: (context, index) {
                                   DetailResult result =
                                       viewModel.devices[index];
-                                  return DeviceListItem(
-                                    detailResult: result,
-                                    onCallback: () {},
+                                  Logger().i(result.count);
+                                  return Column(
+                                    children: [
+                                      PageHeader(
+                                        isDashboard: false,
+                                        count: viewModel.devices.length,
+                                        total: viewModel
+                                            .subscriptionDashboardDetailResult!
+                                            .result!
+                                            .first
+                                            .first
+                                            .count,
+                                        screenType: ScreenType.SUBSCRIPTION,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      DeviceListItem(
+                                        detailResult: result,
+                                        onCallback: () {},
+                                      ),
+                                    ],
                                   );
                                 },
                               )

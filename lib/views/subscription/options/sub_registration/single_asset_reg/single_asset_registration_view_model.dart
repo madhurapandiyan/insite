@@ -557,7 +557,6 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onSelectedNameTile(String value) {
-    Logger().e(value);
     _devices.forEach((element) {
       if (element.Name == value) {
         customerNameController.text = element.Name!;
@@ -610,10 +609,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-      Logger().w(_dealerId.length);
-      detailResultList.clear();
+   detailResultList.clear();
       if (name == null || name.isEmpty) {
-        Logger().e("if");
         Future.delayed(Duration(seconds: 3), () {
           _customerId.clear();
           notifyListeners();
@@ -622,7 +619,6 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _customerId.clear();
         _customerCode.clear();
         _devices.clear();
-        Logger().e("type");
         if (name.length >= 3) {
           customerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(

@@ -97,6 +97,7 @@ var indiaStackBlueWhite = ThemeData(
     primaryColor: backgroundColor1,
     dividerColor: dividerColor1,
     indicatorColor: upperCardColor1,
+    canvasColor: buttonColor1,
     iconTheme: IconThemeData(
       color: iconColor1,
     ),
@@ -120,13 +121,13 @@ var indiaStackBlueWhite = ThemeData(
     accentColor: Colors.white);
 
 var indiaStackOrangeBlack = ThemeData(
-  
     cardColor: cardBackgroundColor2,
     backgroundColor: backgroundColor3,
     fontFamily: 'Roboto',
     buttonColor: buttonColor21,
     dividerColor: dividerColor2,
     indicatorColor: upperCardColor2,
+    canvasColor: Colors.white,
     iconTheme: IconThemeData(
       color: iconColor2,
     ),
@@ -146,5 +147,7 @@ var indiaStackOrangeBlack = ThemeData(
     textTheme: TextTheme(
       bodyText1: TextStyle(color: textColor2),
     ),
-    appBarTheme: AppBarTheme(backgroundColor: appBarbackgroundColor2,),
+    appBarTheme: AppBarTheme(
+      backgroundColor: appBarbackgroundColor2,
+    ),
     accentColor: Colors.white);

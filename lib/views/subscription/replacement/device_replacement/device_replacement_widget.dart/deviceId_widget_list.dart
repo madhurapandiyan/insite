@@ -14,8 +14,7 @@ class DeviceIdListWidget extends StatelessWidget {
       contentPadding: padding,
       selectedTileColor: tango,
       onTap: onSelected as void Function()?,
-      tileColor: Theme.of(context).textTheme.bodyText1!.color,
-      title: InsiteTextOverFlow(
+     title: InsiteTextOverFlow(
         size: size,
         color: Theme.of(context).cardColor,
         text: deviceId,

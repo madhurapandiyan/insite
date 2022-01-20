@@ -39,7 +39,7 @@ import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
-import 'package:insite/core/models/refresh_token.dart';
+import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -532,7 +532,7 @@ abstract class RestClient {
   @POST("/oauth/token")
   Future<LoginResponse> getRefreshLoginData(
       @Header("content-type") String contentType,
-      @Body() RefreshToken refreshToken);
+      @Body() RefreshTokenPayload refreshToken);
 
   @POST("/oauth/token?grant_type=client_credentials")
   Future<LoginResponse> getTokenWithoutLogin(

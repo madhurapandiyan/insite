@@ -145,7 +145,6 @@ class FilterViewModel extends InsiteViewModel {
         resultModel.countData!.isNotEmpty) {
       for (Count countData in resultModel.countData!) {
         FilterData data = FilterData(
-            id: resultModel.countData!.first.id.toString(),
             count: countData.count.toString(),
             title: countData.name,
             isSelected: isAlreadSelected(countData.countOf, type),

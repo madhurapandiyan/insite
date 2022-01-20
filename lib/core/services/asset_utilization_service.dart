@@ -84,14 +84,14 @@ class AssetUtilizationService extends BaseService {
   }
 
   Future<AssetUtilization?> getAssetUtilGraphDate(
-      String? assetUID, String date) async {
+      String? assetUID, String? date) async {
     Logger().i("getAssetUtilGraphDate");
     try {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
       }
-      if (date.isNotEmpty && date.isNotEmpty) {
+      if (date!=null && date.isNotEmpty) {
         queryMap["date"] = date;
       }
       if (isVisionLink) {
@@ -172,7 +172,6 @@ class AssetUtilizationService extends BaseService {
             return response;
           }
         } else {
-          var customer = await _localService!.getCustomerInfo();
           if (startDate != null &&
               startDate.isNotEmpty &&
               endDate != null &&
@@ -186,9 +185,9 @@ class AssetUtilizationService extends BaseService {
                                 endDate,
                                 pageNo,
                                 pageCount,
-                                customer?.CustomerUID == null
+                                customerSelected?.CustomerUID == null
                                     ? null
-                                    : customer!.CustomerUID,
+                                    : customerSelected!.CustomerUID,
                                 sort,
                                 appliedFilters!,
                                 ScreenType.UTILIZATION),
