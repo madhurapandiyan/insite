@@ -24,8 +24,9 @@ class HierarchyModel {
   final String? UserName;
   final String? Email;
   final String? Code;
+  final int? count;
 
-  HierarchyModel({this.ID, this.Name, this.UserName, this.Email, this.Code});
+  HierarchyModel({this.ID, this.Name, this.UserName, this.Email, this.Code,this.count});
 
   factory HierarchyModel.fromJson(Map<String, dynamic> json) =>
       _$HierarchyModelFromJson(json);

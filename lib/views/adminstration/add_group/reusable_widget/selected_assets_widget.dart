@@ -8,7 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class SelectedAssetsWidget extends StatefulWidget {
-  final AddGroupModel ?selectedAssetList;
+  final AddGroupModel? selectedAssetList;
   final VoidCallback? callBack;
 
   SelectedAssetsWidget({this.selectedAssetList, this.callBack});
@@ -26,35 +26,33 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
         SizedBox(
           width: 10,
         ),
-        GestureDetector(
-          onTap: () {
-            isChecked = !isChecked;
-            setState(() {});
-          },
-          child: isChecked
-              ? Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: silver,
-                      ),
-                      color: tango),
-                )
-              : Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: silver,
-                      )),
-                ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
+        // GestureDetector(
+        //   onTap: () {
+        //     isChecked = !isChecked;
+        //     setState(() {});
+        //   },
+        //   child: isChecked
+        //       ? Container(
+        //           width: 20,
+        //           height: 20,
+        //           decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(5),
+        //               border: Border.all(
+        //                 color: silver,
+        //               ),
+        //               color: tango),
+        //         )
+        //       : Container(
+        //           width: 20,
+        //           height: 20,
+        //           decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(5),
+        //               border: Border.all(
+        //                 color: silver,
+        //               )),
+        //         ),
+        // ),
+       
         InsiteImage(
           width: 38,
           height: 38,

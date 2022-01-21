@@ -30,7 +30,7 @@ class ManageGroupView extends StatelessWidget {
                       height: 45,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -45,31 +45,6 @@ class ManageGroupView extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: InsiteText(
-                            text: "Manage Groups",
-                            fontWeight: FontWeight.w700,
-                            size: 14,
-                          ),
-                        ),
-
-                        // Padding(
-                        //   padding: const EdgeInsets.only(right: 8.0),
-                        //   child: InsiteButton(
-                        //     title: "add new group".toUpperCase(),
-                        //     onTap: () {},
-                        //     fontSize: 14,
-                        //   ),
-                        // ),
                         viewModel.showEdit
                             ? ClipRRect(
                                 borderRadius: BorderRadius.only(
@@ -88,22 +63,32 @@ class ManageGroupView extends StatelessWidget {
                                         viewModel, context),
                                   ),
                                 ))
-                            : SizedBox(),
+                            : Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: InsiteButton(
+                                  title: "Add Group",
+                                  fontSize: 14,
+                                  onTap: () {
+                                    viewModel.onClickAddGroupSelected();
+                                  },
+                                ),
+                              )
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: CustomTextBox(
                         controller: viewModel.searchcontroller,
                         title: "Search Group Name",
+                        showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
                           if (searchText.isNotEmpty) {
-                            viewModel.searchUsers(searchText);
+                            viewModel.searchGroups(searchText);
                           } else {
-                            viewModel.updateSearchDataToEmpty();
+                            viewModel.searchGroups(searchText);
                           }
                         },
                       ),
@@ -155,7 +140,7 @@ class ManageGroupView extends StatelessWidget {
 
   Widget onContextMenuSelected(
       ManageGroupViewModel viewModel, BuildContext context) {
-    return PopupMenuButton <String> (
+    return PopupMenuButton<String>(
       offset: Offset(30, 50),
       itemBuilder: (context) => [
         viewModel.showMenu
@@ -166,7 +151,10 @@ class ManageGroupView extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ))
-            : PopupMenuItem(child: SizedBox()),
+            : PopupMenuItem(
+                child: SizedBox(),
+                height: 0,
+              ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Edit Group",
@@ -176,7 +164,10 @@ class ManageGroupView extends StatelessWidget {
                   size: 14,
                 ),
               )
-            : PopupMenuItem(child: SizedBox()),
+            : PopupMenuItem(
+                child: SizedBox(),
+                height: 0,
+              ),
         viewModel.showDelete
             ? PopupMenuItem(
                 value: "Delete",
@@ -186,14 +177,10 @@ class ManageGroupView extends StatelessWidget {
                   size: 14,
                 ),
               )
-            :  PopupMenuItem(child: SizedBox()),
-        // !viewModel.assets.every((element) {
-        //   if (element.isSelected) {
-        //     return element.groups.IsFavourite == true;
-        //   } else {
-        //     return false;
-        //   }
-        // })
+            : PopupMenuItem(
+                child: SizedBox(),
+                height: 0,
+              ),
         viewModel.isFavorite
             ? PopupMenuItem(
                 value: "UnFavorite",
@@ -211,7 +198,6 @@ class ManageGroupView extends StatelessWidget {
                   size: 14,
                 ),
               ),
-      
         PopupMenuItem(
             value: "Deselect All",
             child: InsiteText(

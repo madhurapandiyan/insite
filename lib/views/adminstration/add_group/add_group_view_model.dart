@@ -55,10 +55,9 @@ class AddGroupViewModel extends InsiteViewModel {
     try {
       if (nameController.text.isEmpty) {
         _snackBarservice!.showSnackbar(message: "Name should be required");
+        return;
       }
-      // else if(assetUidData.isEmpty){
-      //   _snackBarservice.showSnackbar(message: "Select the asset");
-      // }
+
       showLoadingDialog();
       AddGroupDataResponse? result =
           await _manageUserService!.getAddGroupSaveData(

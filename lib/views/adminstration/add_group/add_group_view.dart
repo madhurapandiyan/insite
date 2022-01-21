@@ -29,92 +29,93 @@ class _AddGroupViewState extends State<AddGroupView> {
       builder: (BuildContext context, AddGroupViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
-            body: Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 17),
-                          child: groups != null
-                              ? InsiteText(
-                                  text: "Edit Group",
-                                  fontWeight: FontWeight.w700,
-                                  size: 14,
-                                )
-                              : InsiteText(
-                                  text: "Add New Group",
-                                  fontWeight: FontWeight.w700,
-                                  size: 14,
-                                ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: InsiteButton(
-                            title: 'manage groups'.toUpperCase(),
-                            fontSize: 14,
-                            onTap: () {},
-                            textColor: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 27,
-                    ),
-                    Container(
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 50),
+                        child: groups != null
+                            ? InsiteText(
+                                text: "Edit Group",
+                                fontWeight: FontWeight.w700,
+                                size: 14,
+                              )
+                            : InsiteText(
+                                text: "Add New Group",
+                                fontWeight: FontWeight.w700,
+                                size: 14,
+                              ),
+                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(right: 15.0),
+                      //   child: InsiteButton(
+                      //     title: 'manage groups'.toUpperCase(),
+                      //     fontSize: 14,
+                      //     onTap: () {},
+                      //     textColor: Colors.white,
+                      //   ),
+                      // )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Container(
                         width: MediaQuery.of(context).size.width * 0.75,
                         height: MediaQuery.of(context).size.height * 0.05,
                         child: CustomTextBox(
                             title: "Name",
                             controller: viewModel.nameController)),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 45.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 55.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: InsiteText(
-                              text: "Description :",
-                              fontWeight: FontWeight.w700,
-                              size: 14,
-                            ),
-                          ),
+                        InsiteText(
+                          text: "Description :",
+                          fontWeight: FontWeight.w700,
+                          size: 14,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 150.0),
-                          child: InsiteText(
-                            text: "Optional",
-                            fontWeight: FontWeight.w700,
-                            size: 14,
-                          ),
+                        InsiteText(
+                          text: "Optional",
+                          fontWeight: FontWeight.w700,
+                          size: 14,
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Container(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: AddressCustomTextBox(
                         title: "Enter",
                         controller: viewModel.descriptionController,
                       ),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                        //height: MediaQuery.of(context).size.height * 0.70,
-                        child: SelectionWidgetView(
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: SelectionWidgetView(
                       isEdit: widget.isEdit!,
                       assetIds: viewModel.assetUidData,
                       group: viewModel.groups,
@@ -128,43 +129,43 @@ class _AddGroupViewState extends State<AddGroupView> {
                         viewModel.groupSummaryResponseData = data;
                         viewModel.associatedAssetId = associatedAssetId;
                       },
-                    )),
-                    SizedBox(
-                      height: 63,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InsiteButton(
-                          bgColor: chipBackgroundOne,
-                          width: MediaQuery.of(context).size.width * 0.40,
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          title: "Cancel",
-                          fontSize: 14,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        InsiteButton(
-                          width: MediaQuery.of(context).size.width * 0.40,
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          title: "Save",
-                          fontSize: 14,
-                          onTap: () {
-                            if (groups != null) {
-                              viewModel.getAddGroupEditData();
-                            } else {
-                              viewModel.getAddGroupSaveData();
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    )
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 63,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InsiteButton(
+                        bgColor: chipBackgroundOne,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        title: "Cancel",
+                        fontSize: 14,
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      InsiteButton(
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        title: "Save",
+                        fontSize: 14,
+                        onTap: () {
+                          if (groups != null) {
+                            viewModel.getAddGroupEditData();
+                          } else {
+                            viewModel.getAddGroupSaveData();
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  )
+                ],
               ),
             ));
       },

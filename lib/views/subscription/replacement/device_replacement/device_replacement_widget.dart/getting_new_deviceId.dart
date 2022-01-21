@@ -162,14 +162,16 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                     //widget.modelData!.result!.last.any((element) =>
                     //     element.GPSDeviceID ==
                     //   widget.controller!.text.toUpperCase().trim())
-                    widget.controller!.text.isEmpty ||
-                            widget.initialValue == widget.items![0]
-                        ? (){
-                          Fluttertoast.showToast(msg: "Please check and fill the required field");
-                        }
-                        : () {
-                            widget.onNextPressed!();
-                          },
+                    // widget.controller!.text.isEmpty
+                    () {
+                  if (widget.modelData!.result!.last.any((element) =>
+                      element.GPSDeviceID == widget.controller!.text)) {
+                    widget.onNextPressed!();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Please check and fill the required field");
+                  }
+                },
                 // bgColor: white,
                 title: "Next",
                 height: MediaQuery.of(context).size.height * 0.05,

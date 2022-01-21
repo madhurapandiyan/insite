@@ -121,25 +121,23 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         Container(
                             //height: MediaQuery.of(context).size.height * 0.25,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  widget.data![1].length,
-                                  (index) => Column(
-                                        children: [
-                                          InsitePopupRow(
-                                            title:
-                                                widget.data![1][index].title ??
-                                                    "",
-                                            value:
-                                                widget.data![1][index].value ??
-                                                    "",
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                      )),
-                            )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              widget.data![1].length,
+                              (index) => Column(
+                                    children: [
+                                      InsitePopupRow(
+                                        title:
+                                            widget.data![1][index].title ?? "",
+                                        value:
+                                            widget.data![1][index].value ?? "",
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  )),
+                        )),
                       ],
                     ),
                     SizedBox(
@@ -152,25 +150,23 @@ class _InsitePopUpState extends State<InsitePopUp> {
                         Container(
                             //height: MediaQuery.of(context).size.height * 0.25,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  widget.data![2].length,
-                                  (index) => Column(
-                                        children: [
-                                          InsitePopupRow(
-                                            title:
-                                                widget.data![2][index].title ??
-                                                    "",
-                                            value:
-                                                widget.data![2][index].value ??
-                                                    "",
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                      )),
-                            )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              widget.data![2].length,
+                              (index) => Column(
+                                    children: [
+                                      InsitePopupRow(
+                                        title:
+                                            widget.data![2][index].title ?? "",
+                                        value:
+                                            widget.data![2][index].value ?? "",
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  )),
+                        )),
                       ],
                     ),
                     SizedBox(
@@ -178,37 +174,40 @@ class _InsitePopUpState extends State<InsitePopUp> {
                     ),
                     PopupCard(
                       cardTitle: widget.titles![3],
-                     // height: MediaQuery.of(context).size.height * 0.35,
+                      // height: MediaQuery.of(context).size.height * 0.35,
                       rows: [
                         Container(
                             //height: MediaQuery.of(context).size.height * 0.25,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  widget.data![3].length,
-                                  (index) => Column(
-                                        children: [
-                                          InsitePopupRow(
-                                            title:
-                                                widget.data![3][index].title ??
-                                                    "",
-                                            value:
-                                                widget.data![3][index].value ??
-                                                    "",
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                        ],
-                                      )),
-                            )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              widget.data![3].length,
+                              (index) => Column(
+                                    children: [
+                                      InsitePopupRow(
+                                        title:
+                                            widget.data![3][index].title ?? "",
+                                        value:
+                                            widget.data![3][index].value ?? "",
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  )),
+                        )),
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: widget.onButtonTapped as void Function()?,
+                      onTap: () {
+                        widget.onButtonTapped!();
+                        Future.delayed(Duration(seconds: 1), () {
+                          Navigator.of(context).pop();
+                        });
+                      },
                       child: Center(
                         child: InsiteButton(
                           width: 150,

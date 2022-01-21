@@ -18,8 +18,18 @@ class ResultData {
   String? serialNo;
   @JsonKey(name: "Model")
   String? model;
+  String? CustomerCode;
+  String? CustomerName;
+  String? DealerName;
+  String? DealerCode;
 
-  ResultData({this.serialNo, this.model});
+  ResultData(
+      {this.serialNo,
+      this.model,
+      this.CustomerCode,
+      this.CustomerName,
+      this.DealerCode,
+      this.DealerName});
   factory ResultData.fromJson(Map<String, dynamic> json) =>
       _$ResultDataFromJson(json);
 

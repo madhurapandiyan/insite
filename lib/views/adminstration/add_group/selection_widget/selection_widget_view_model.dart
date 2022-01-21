@@ -92,10 +92,11 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   bool _isAccountSelectionState = false;
   bool get isAccountSelectionState => _isAccountSelectionState;
-  bool isFilterChangeState = false;
 
   bool _isAssetLoading = true;
   bool get isAssetLoading => _isAssetLoading;
+
+  bool isFilterChangeState = false;
 
 // subList
   List<String> subProductFamilyList = [];
@@ -253,6 +254,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
     subDeviceTypeSearchList = deviceTypeList;
     accountDisplayList = displayName;
     subAccountSearchList = accountSelectionList;
+    searchSelectedItemList = assetIdSelecteList;
   }
 
   initial(List<String?>? data, AssetGroupSummaryResponse? value) {
@@ -262,7 +264,6 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   searchingAssetId(
       List<String?>? value, AssetGroupSummaryResponse? assetValue) async {
     assetIdentifierData = value;
-    //assetIdresult = await _manageUserService!.getGroupListData();
 
     var data = assetValue!.assetDetailsRecords!.where((e) {
       return value!.any((element) => element == e.assetIdentifier);
@@ -455,6 +456,37 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   filterSelectedItemSelectWidgetState() {
     isFilterChangeState = !isFilterChangeState;
+    if (isFilterChangeState) {
+      var assetIdContainedData = searchSelectedItemList
+          .where((element) => element.assetId != null)
+          .toList();
+      var assetIdNotContainedData = searchSelectedItemList
+          .where((element) => element.assetId == null)
+          .toList();
+      searchSelectedItemList.clear();
+      assetIdContainedData.forEach((element) {
+        searchSelectedItemList.add(element);
+      });
+      assetIdNotContainedData.forEach((element) {
+        searchSelectedItemList.add(element);
+      });
+    } else {
+      var assetIdContainedData = searchSelectedItemList
+          .where((element) => element.assetId != null)
+          .toList();
+      var assetIdNotContainedData = searchSelectedItemList
+          .where((element) => element.assetId == null)
+          .toList();
+      searchSelectedItemList.clear();
+      assetIdNotContainedData.forEach((element) {
+        searchSelectedItemList.add(element);
+      });
+
+      assetIdContainedData.forEach((element) {
+        searchSelectedItemList.add(element);
+      });
+    }
+
     notifyListeners();
   }
 

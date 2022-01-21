@@ -12,10 +12,9 @@ class SelectedItemWidget extends StatefulWidget {
   final List? displayList;
   final bool? isAssetIdLoading;
   final String? headerBoxCountValue;
-  final List<String>? displayCountBoxValue;
+  final List<String> displayCountBoxValue;
   final VoidCallback? callback;
   final TextEditingController? controller;
- // final bool? isLoading;
   final Function(dynamic)? productFamilyKey;
   final bool? isShowingState;
   final VoidCallback? onClickedBackButton;
@@ -29,9 +28,8 @@ class SelectedItemWidget extends StatefulWidget {
       this.displayList,
       this.isAssetIdLoading,
       this.headerBoxCountValue,
-      this.displayCountBoxValue,
+      required this.displayCountBoxValue,
       this.callback,
-      //this.isLoading,
       this.controller,
       this.productFamilyKey,
       this.isShowingState,
@@ -49,39 +47,43 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      iconColor: Colors.white,
+      collapsedIconColor: Colors.white,
       onExpansionChanged: (_) {
         widget.callback!();
       },
-      title: ListTile(
-        leading: widget.isShowingState == true
-            ? GestureDetector(
-                onTap: () {
-                  widget.onClickedBackButton!();
-                },
-                child: Icon(Icons.arrow_back))
-            : SizedBox(),
-        title: InsiteText(
-          text: widget.headerText,
-          fontWeight: FontWeight.w700,
-          size: 14,
-        ),
+      title: Row(
+        children: [
+          widget.isShowingState == true
+              ? GestureDetector(
+                  onTap: () {
+                    widget.onClickedBackButton!();
+                  },
+                  child: Icon(Icons.arrow_back))
+              : SizedBox(),
+          InsiteText(
+            text: widget.headerText,
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        ],
       ),
       children: [
-         Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: MediaQuery.of(context).size.height * 0.05,
-                child: widget.isShowingState == true
-                    ? CustomTextBox(
-                        title: "Search",
-                        controller: widget.subTextEditingController)
-                    : CustomTextBox(
-                        title: "Search", controller: widget.controller)),
+        Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            height: MediaQuery.of(context).size.height * 0.05,
+            child: widget.isShowingState == true
+                ? CustomTextBox(
+                    title: "Search",
+                    controller: widget.subTextEditingController)
+                : CustomTextBox(
+                    title: "Search", controller: widget.controller)),
         Container(
           height: MediaQuery.of(context).size.height * 0.30,
           child: PageView(
             controller: widget.pageController,
             children: [
-              widget.displayList!.isEmpty 
+              widget.displayList!.isEmpty
                   ? InsiteProgressBar()
                   : ListView.builder(
                       itemCount: widget.displayList!.length,
@@ -114,7 +116,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                         : InsiteButton(
                                             width: 50,
                                             title: widget
-                                                .displayCountBoxValue![int],
+                                                .displayCountBoxValue[int],
                                             padding: EdgeInsets.all(4),
                                             bgColor: Theme.of(context)
                                                 .backgroundColor,
@@ -129,7 +131,8 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                   child: Container(
                                       margin: EdgeInsets.only(top: 100),
                                       child: InsiteProgressBar()))
-                              : widget.isAssetIdLoading != null && widget.isAssetIdLoading!
+                              : widget.isAssetIdLoading != null &&
+                                      widget.isAssetIdLoading!
                                   ? Center(
                                       child: SizedBox(),
                                     )
@@ -189,7 +192,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                       : InsiteButton(
                                                           width: 50,
                                                           title: widget
-                                                                  .displayCountBoxValue![
+                                                                  .displayCountBoxValue[
                                                               int],
                                                           padding:
                                                               EdgeInsets.all(4),
@@ -235,7 +238,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                         : InsiteButton(
                                             width: 50,
                                             title: widget
-                                                .displayCountBoxValue![int],
+                                                .displayCountBoxValue[int],
                                             padding: EdgeInsets.all(4),
                                             bgColor: Theme.of(context)
                                                 .backgroundColor,
@@ -250,7 +253,8 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                   child: Container(
                                       margin: EdgeInsets.only(top: 100),
                                       child: InsiteProgressBar()))
-                              : widget.isAssetIdLoading != null && widget.isAssetIdLoading!
+                              : widget.isAssetIdLoading != null &&
+                                      widget.isAssetIdLoading!
                                   ? Center(
                                       child: SizedBox(),
                                     )
@@ -309,7 +313,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                       : InsiteButton(
                                                           width: 50,
                                                           title: widget
-                                                                  .displayCountBoxValue![
+                                                                  .displayCountBoxValue[
                                                               int],
                                                           padding:
                                                               EdgeInsets.all(4),

@@ -9,6 +9,7 @@ import 'package:insite/views/adminstration/add_group/reusable_widget/selected_it
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_item_widget.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -41,7 +42,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
         return Column(
           children: [
             Card(
-              margin: EdgeInsets.only(left: 43, right: 43),
+              margin: EdgeInsets.only(left: 25, right: 50),
               child: Column(
                 children: [
                   SelectedItemWidget(
@@ -253,36 +254,57 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InsiteText(
+                    text: "Selected Assets",
+                    size: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: InsiteText(
+                      text: viewModel.assetIdSelecteList.length.toString() +
+                          " " +
+                          "Assets",
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
+            ),
             Container(
+              margin: EdgeInsets.only(left: 25, right: 50),
               width: MediaQuery.of(context).size.width * 0.80,
               height: MediaQuery.of(context).size.height * 0.60,
               child: Card(
-                  child: viewModel.isAssetLoading
-                      ? InsiteProgressBar()
-                      : SelectedItemSelectWidgetView(
-                          searchList: viewModel.searchSelectedItemList,
-                          displayList: viewModel.assetIdSelecteList,
-                          textEditingController:
-                              viewModel.selectedItemController,
-                          onAssetDeselected:
-                              (int value, String assetIdentifier) {
-                            widget.dissociatedIds!.add(assetIdentifier);
-                            viewModel.onRemoveSelectedIndex(
-                                value, assetIdentifier);
-                          },
-                          searchCallBack: (String value) {
-                            viewModel.onSearchSelectedItemList(value);
-                          },
-                          filterCallBack: () {
-                            viewModel.filterSelectedItemSelectWidgetState();
-                          },
-                          filterChangeState: viewModel.isFilterChangeState,
-                          dropDownItem: viewModel.dropdownList,
-                          dropDownValue: viewModel.dropDownValue,
-                          onDropDownChange: (String value) {
-                            viewModel.getDropDownListData(value);
-                          },
-                        )),
+                  child: SelectedItemSelectWidgetView(
+                displayList: viewModel.searchSelectedItemList,
+                textEditingController: viewModel.selectedItemController,
+                onAssetDeselected: (int value, String assetIdentifier) {
+                  widget.dissociatedIds!.add(assetIdentifier);
+                  viewModel.onRemoveSelectedIndex(value, assetIdentifier);
+                },
+                searchCallBack: (String value) {
+                  viewModel.onSearchSelectedItemList(value);
+                },
+                filterCallBack: () {
+                  viewModel.filterSelectedItemSelectWidgetState();
+                },
+                filterChangeState: viewModel.isFilterChangeState,
+                dropDownItem: viewModel.dropdownList,
+                dropDownValue: viewModel.dropDownValue,
+                onDropDownChange: (String value) {
+                  viewModel.getDropDownListData(value);
+                },
+              )),
             )
           ],
         );

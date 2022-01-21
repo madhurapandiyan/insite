@@ -4,6 +4,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/replacement_service.dart';
+// ignore: unused_import
 import 'package:insite/views/subscription/replacement/device_replacement_status/device_replacement_status_view.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
@@ -20,6 +21,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   DeviceReplacementViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+   
     getUserId();
   }
 
@@ -180,7 +182,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         checkingNewDeviceIdEnter = true;
         notifyListeners();
       }
-    } catch (e) {}
+    } catch (e) {
+      Logger().e(e.toString());
+      if (_replaceDeviceModelData!.result!.last.isEmpty) {
+        Fluttertoast.showToast(msg: "Device Not Found");
+        replaceDeviceIdController.clear();
+        notifyListeners();
+        return;
+      }
+    }
   }
 
   onPageChange(int value) {
@@ -188,7 +198,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onRegister() async {
+  Future<String?> onRegister() async {
     try {
       showLoadingDialog();
       finalAlign = true;
@@ -210,14 +220,29 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
       Logger().d(replacementData.device!.first.toJson());
       var data = await replacementService!.savingReplacement(replacementData);
-      searchList.clear();
-      Fluttertoast.showToast(msg: "Replacement successfull");
-      hideLoadingDialog();
-      notifyListeners();
+      if (data["status"] == "success") {
+        searchList.clear();
+        showingNewDeviceIdPreview = false;
+        Logger().e(data);
+        Fluttertoast.showToast(msg: "Replacement successfull");
+        hideLoadingDialog();
+        //onReplacementSuccessful();
+        notifyListeners();
+        return data["status"];
+      } else {
+        notifyListeners();
+        return "failed";
+      }
     } catch (e) {
       Logger().e(e.toString());
       Fluttertoast.showToast(msg: "Invalid Request.Try again Later");
       hideLoadingDialog();
     }
+  }
+
+  onReplacementSuccessful() {
+    searchTextController.clear();
+    replaceDeviceIdController.clear();
+    _searchList.clear();
   }
 }

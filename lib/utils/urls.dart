@@ -9,8 +9,6 @@ class Urls {
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String idTokenBaseUrl = "https://id.trimble.com";
   static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
-  static String insiteBaseUrl =
-      "https://insite-in-frame.frame-oesolutions.com/";
 
   static String idTokenKey =
       "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
@@ -129,14 +127,16 @@ class Urls {
   static String tenantDomain = "Trimble.com";
 
   static getV4LogoutUrl(String? token, redirecturi) {
+    print(token);
+    print(redirecturi);
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
     return url;
   }
 
-  static logoutUrlVl(String? token, redirecturi) {
+  static logoutUrlVl(String? token) {
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl&state=$administratorBaseUrl/";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$administratorBaseUrl&state=$administratorBaseUrl/";
     return url;
   }
 

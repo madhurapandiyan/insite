@@ -58,6 +58,11 @@ class ManageGroupViewModel extends InsiteViewModel {
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
+  bool _isSearching = false;
+  bool get isSearching => _isSearching;
+
+  int? selectedIndex;
+
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
@@ -79,17 +84,14 @@ class ManageGroupViewModel extends InsiteViewModel {
       getGroupListData();
     });
   }
-  Timer? debounce;
-  searchUsers(String searchValue) {
-    if (debounce != null) debounce!.cancel();
-    debounce = Timer(Duration(seconds: 2), () {
-      _searchKeyword = searchValue;
-      getGroupListData();
-    });
-  }
 
-  updateSearchDataToEmpty() {
-    _assets = [];
+  searchGroups(String searchValue) {
+    pageNumber = 1;
+    _isSearching = true;
+    _searchKeyword = searchValue;
+    notifyListeners();
+    _searchKeyword = searchValue;
+    getGroupListData();
   }
 
   getGroupListData() async {
@@ -98,34 +100,40 @@ class ManageGroupViewModel extends InsiteViewModel {
         .getManageGroupSummaryResponseListData(pageNumber, _searchKeyword);
     if (result != null) {
       if (result.total != null) {
-        _totalCount = result.total!.items;
+        _totalCount = result.total!.items!;
       }
       if (result.groups!.isNotEmpty) {
         Logger().i("list of assets " + result.groups!.length.toString());
+        Logger().e(loadingMore);
         if (!loadingMore) {
+          Logger().i("assets");
           _assets.clear();
         }
-
-        for (var user in result.groups!) {
-          _assets.add(GroupRow(groups: user, isSelected: false));
+        for (var group in result.groups!) {
+          _assets.add(GroupRow(groups: group, isSelected: false));
         }
         _loading = false;
         _loadingMore = false;
+        _isSearching = false;
         notifyListeners();
       } else {
-        for (var user in result.groups!) {
-          _assets.add(GroupRow(groups: user, isSelected: false));
+        for (var group in result.groups!) {
+          _assets.add(GroupRow(groups: group, isSelected: false));
         }
-        Logger().i(_assets.length);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
+        _isSearching = false;
         notifyListeners();
       }
     } else {
-      _assets = [];
+      if (_isSearching) {
+        _assets = [];
+      }
+
       _loading = false;
       _loadingMore = false;
+      _isSearching = false;
       notifyListeners();
     }
   }
@@ -143,8 +151,6 @@ class ManageGroupViewModel extends InsiteViewModel {
       getGroupListData();
     }
   }
-
-  List<int> selectedindex1 = [];
 
   onItemSelected(index) {
     try {
@@ -281,6 +287,7 @@ class ManageGroupViewModel extends InsiteViewModel {
       }
     }
     getGroupFavoriteData(groupId, visibiliyData);
+    onItemDeselect();
   }
 
   checkUnFavoriteVisibility() {
@@ -305,14 +312,21 @@ class ManageGroupViewModel extends InsiteViewModel {
       }
     }
     getGroupFavoriteData(groupId, visibiliyData);
+    onItemDeselect();
   }
 
-  getGroupFavoriteData(groupId, isFavourite) async {
+  getGroupFavoriteData(groupId, isFavoriteCheck) async {
     try {
       showLoadingDialog();
-      UpdateResponse? result =
-          await _manageUserService!.getFavoriteGroupData(groupId, isFavourite);
+      UpdateResponse? result = await _manageUserService!
+          .getFavoriteGroupData(groupId, isFavoriteCheck);
       Logger().i(result);
+      if (isFavoriteCheck) {
+        snackbarService!.showSnackbar(message: "Favorite is done sucessfully");
+      } else {
+        snackbarService!
+            .showSnackbar(message: "unFavorite is done sucessfully");
+      }
       hideLoadingDialog();
     } catch (e) {
       Logger().e(e.toString());
@@ -333,15 +347,30 @@ class ManageGroupViewModel extends InsiteViewModel {
         showLoadingDialog();
         var result = await _manageUserService!.getDeleteFavoriteData(groupId);
         if (result != null) {
+          await deleteGroupsFromList(groupId);
           snackbarService!.showSnackbar(message: "Deleted successfully");
         } else {
           snackbarService!.showSnackbar(message: "Deleting failed");
         }
-        //  await deleteUsersFromList(groupId);
+
         hideLoadingDialog();
         // getManagerUserAssetList();
       }
     }
+  }
+
+  deleteGroupsFromList(String? ids) async {
+    Logger().i("deleteGroupsFromList");
+    for (int i = 0; i < assets.length; i++) {
+      var data = assets[i];
+
+      if (data.groups!.GroupUid == ids) {
+        assets.removeAt(i);
+      }
+    }
+    _totalCount = _totalCount! - ids!.length;
+    notifyListeners();
+    checkEditAndDeleteVisibility();
   }
 
   onClickEditGroupSelected(Groups group) {
@@ -350,12 +379,6 @@ class ManageGroupViewModel extends InsiteViewModel {
           isEdit: false,
         ),
         arguments: group);
-    // navigateWithTransition(
-    //     AddGroupView(
-    //       groups: groups,
-    //       isEdit: true,
-    //     ),
-    //     transition: "fade");
   }
 
   onClickAddGroupSelected() {

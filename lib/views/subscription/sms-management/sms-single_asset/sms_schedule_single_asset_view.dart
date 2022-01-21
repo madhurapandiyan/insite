@@ -100,24 +100,26 @@ class _SmsScheduleSingleAssetViewState
                         physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: [
+                          !viewModel.isShowingValidateWidget
+                              ?
                           SingleAssetFormWidget(
                               mobileNoController: viewModel.mobileNoController,
                               nameController: viewModel.nameController,
                               onSaving: viewModel.onSavingForm,
-                              serialNoController: viewModel.serialNoController),
-                          !viewModel.isShowingValidateWidget
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Center(
-                                        child: EmptyView(
-                                      title: "No Result Found",
-                                    )),
-                                  ],
-                                )
-                              : Column(
+                              serialNoController: viewModel.serialNoController):
+                           
+                              // Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceEvenly,
+                              //     children: [
+                              //       Center(
+                              //           child: EmptyView(
+                              //         title: "No Result Found",
+                              //       )),
+                              //     ],
+                              //   )
+                              Column(
                                   children: [
                                     SingleAssetValidateWidget(
                                         GPSDeviceID: viewModel

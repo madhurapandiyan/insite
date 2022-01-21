@@ -180,6 +180,7 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
   onFilterApplied() {
     viewModel.updateDateView();
     onDateChange();
+    viewModel.getAssetCount();
   }
 
   onDateChange() {

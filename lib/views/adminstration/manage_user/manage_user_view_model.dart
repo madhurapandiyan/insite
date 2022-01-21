@@ -119,6 +119,7 @@ class ManageUserViewModel extends InsiteViewModel {
         if (result.users!.isNotEmpty) {
           Logger().i("list of assets " + result.users!.length.toString());
           if (!loadingMore) {
+            Logger().i("assets");
             _assets.clear();
           }
           for (var user in result.users!) {

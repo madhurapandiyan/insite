@@ -47,6 +47,7 @@ import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
+import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -331,7 +332,7 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> assetCount(
       @Path() String url,
-      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") service);
 
   @GET('{url}')
@@ -535,6 +536,11 @@ abstract class RestClient {
   @POST("/oauth/token")
   Future<LoginResponse> getTokenV4(@Body() GetTokenData tokenData,
       @Header("content-type") String contentType);
+
+  @POST("/oauth/token")
+  Future<LoginResponse> getRefreshLoginData(
+      @Header("content-type") String contentType,
+      @Body() RefreshTokenPayload refreshToken);
 
   @POST("/oauth/token?grant_type=client_credentials")
   Future<LoginResponse> getTokenWithoutLogin(
@@ -957,7 +963,7 @@ abstract class RestClient {
       @Body() AddAssetRegistrationData addAssetRegistrationData);
 
   @POST("{url}")
-  Future<dynamic> postSingleAssetTransferRegistration(
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
       @Path() String url, @Body() AssetTransfer data);
 
   @POST("{url}")

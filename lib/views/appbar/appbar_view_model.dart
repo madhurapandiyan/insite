@@ -92,7 +92,8 @@ class AppbarViewModel extends InsiteViewModel {
         await _nativeService.logout(response?.id_token);
       } else {
         if (isVisionLink) {
-          _navigationService.replaceWith(loginViewRoute);
+          _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+              arguments: LoginArguments(response: response));
         } else {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));

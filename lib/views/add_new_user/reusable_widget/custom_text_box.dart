@@ -7,7 +7,9 @@ class CustomTextBox extends StatelessWidget {
   final FocusNode? focusNode;
   final String? value;
   final String? labelTitle;
+  final TextStyle? helperStyle;
   final Widget? suffixWidget;
+  final String? helperText;
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final Function(String)? validator;
@@ -33,13 +35,15 @@ class CustomTextBox extends StatelessWidget {
     this.validator,
     this.value,
     this.suffixWidget,
+    this.helperText,
+    this.helperStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
-        keyboardType: keyPadType,
+       keyboardType: keyPadType,
         onChanged: onChanged,
         onSaved: onSaved,
         onFieldSubmitted: onFieldSubmmit,
@@ -57,7 +61,9 @@ class CustomTextBox extends StatelessWidget {
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
+            helperStyle: helperStyle,
             suffixIcon: suffixWidget,
+            helperText: helperText,
             labelText: labelTitle,
             fillColor: black,
             hintText: title,

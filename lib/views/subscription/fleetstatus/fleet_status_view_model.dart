@@ -41,6 +41,7 @@ class FleetStatusViewModel extends InsiteViewModel {
     });
   }
   late Logger log;
+  SubscriptionDashboardDetailResult? subscriptionDashboardDetailResult;
 
   _loadMore() {
     log.i("shouldLoadmore and is already loadingMore " +
@@ -57,16 +58,16 @@ class FleetStatusViewModel extends InsiteViewModel {
 
   getFleetStatusData() async {
     Logger().i("getFleetStatusData");
-    SubscriptionDashboardDetailResult? result =
+    subscriptionDashboardDetailResult =
         await _subscriptionService!.getFleetStatusData(
       start: start == 0 ? start : start + 1,
       limit: limit,
     );
 
-    if (result != null) {
-      if (result.result!.isNotEmpty) {
+    if (subscriptionDashboardDetailResult != null) {
+      if (subscriptionDashboardDetailResult!.result!.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result![1]);
+        devices.addAll(subscriptionDashboardDetailResult!.result![1]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
