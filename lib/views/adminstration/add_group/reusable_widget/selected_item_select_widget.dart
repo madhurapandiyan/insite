@@ -50,32 +50,60 @@ class _SelectedItemSelectWidgetViewState
             padding: const EdgeInsets.all(3.0),
             child: widget.displayList!.isNotEmpty
                 ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
+                          width: MediaQuery.of(context).size.width * 0.80,
                           child: Row(
                             children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.17,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border(
-                                      bottom: BorderSide(width: 1,color:Theme.of(context).textTheme.bodyText1!.color!),
-                                      top: BorderSide(width: 1,color: Theme.of(context).textTheme.bodyText1!.color!),
-                                      left: BorderSide(width: 1,color:Theme.of(context).textTheme.bodyText1!.color!),
-                                      right: BorderSide(width: 1,color:Theme.of(context).textTheme.bodyText1!.color!)
-                                    )),
-                                child: CustomDropDownWidget(
-                                  items: widget.dropDownItem,
-                                  value: widget.dropDownValue,
-                                  onChanged: (String? value) {
-                                    Logger().i(value);
-                                    widget.onDropDownChange!(value!);
-                                  },
-                                ),
+                              SizedBox(
+                                width: 5,
                               ),
                               Flexible(
+                                flex: 2,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color!),
+                                          top: BorderSide(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color!),
+                                          left: BorderSide(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color!),
+                                          right: BorderSide(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color!))),
+                                  child: CustomDropDownWidget(
+                                    items: widget.dropDownItem,
+                                    value: widget.dropDownValue,
+                                    onChanged: (String? value) {
+                                      Logger().i(value);
+                                      widget.onDropDownChange!(value!);
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Flexible(
+                                flex: 5,
                                 child: SearchBox(
                                   hint: "Search",
                                   controller: widget.textEditingController,
@@ -86,6 +114,9 @@ class _SelectedItemSelectWidgetViewState
                               ),
                             ],
                           )),
+                      SizedBox(
+                        width: 2,
+                      ),
                       widget.filterChangeState!
                           ? GestureDetector(
                               onTap: () {
@@ -108,19 +139,21 @@ class _SelectedItemSelectWidgetViewState
                     ],
                   )
                 : null),
-        ListView.builder(
-            itemCount: widget.displayList!.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              AddGroupModel detailsRecords = widget.displayList![index];
-              return SelectedAssetsWidget(
-                selectedAssetList: detailsRecords,
-                callBack: () {
-                  widget.onAssetDeselected!(
-                      index, detailsRecords.assetIdentifier!);
-                },
-              );
-            })
+        Flexible(
+          child: ListView.builder(
+              itemCount: widget.displayList!.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                AddGroupModel detailsRecords = widget.displayList![index];
+                return SelectedAssetsWidget(
+                  selectedAssetList: detailsRecords,
+                  callBack: () {
+                    widget.onAssetDeselected!(
+                        index, detailsRecords.assetIdentifier!);
+                  },
+                );
+              }),
+        )
       ],
     );
   }

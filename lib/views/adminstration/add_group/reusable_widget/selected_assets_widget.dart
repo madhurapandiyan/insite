@@ -22,10 +22,9 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: 10,
-        ),
+       
         // GestureDetector(
         //   onTap: () {
         //     isChecked = !isChecked;
@@ -52,43 +51,53 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
         //               )),
         //         ),
         // ),
-       
-        InsiteImage(
-          width: 38,
-          height: 38,
-          path: "assets/images/crane_small_login.png",
+
+        Flexible(
+          flex: 3,
+          child: InsiteImage(
+            width: 38,
+            height: 38,
+            path: "assets/images/crane_small_login.png",
+          ),
         ),
         SizedBox(
           width: 8,
         ),
-        Container(
-          width: 80,
-          child: InsiteTextOverFlow(
-            text: widget.selectedAssetList!.serialNo,
-            overflow: TextOverflow.ellipsis,
+        Flexible(
+          flex: 4,
+          child: Container(
+            child: InsiteTextOverFlow(
+              text: widget.selectedAssetList!.serialNo,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         SizedBox(
           width: 5,
         ),
-        Container(
-          width: 80,
-          child: InsiteTextOverFlow(
-            overflow: TextOverflow.ellipsis,
-            text: widget.selectedAssetList!.make! +
-                " " +
-                "\n" +
-                widget.selectedAssetList!.model!,
+        Flexible(
+          flex: 5,
+          child: Container(
+            child: InsiteTextOverFlow(
+              overflow: TextOverflow.ellipsis,
+              text: widget.selectedAssetList!.make! +
+                  " " +
+                  "\n" +
+                  widget.selectedAssetList!.model!,
+            ),
           ),
         ),
         SizedBox(
           width: 5,
         ),
-        IconButton(
-            onPressed: () {
-              widget.callBack!();
-            },
-            icon: Icon(Icons.delete))
+        Flexible(
+          flex: 3,
+          child: IconButton(
+              onPressed: () {
+                widget.callBack!();
+              },
+              icon: Icon(Icons.delete)),
+        )
       ],
     );
   }

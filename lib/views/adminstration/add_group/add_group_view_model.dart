@@ -68,6 +68,8 @@ class AddGroupViewModel extends InsiteViewModel {
         ),
       );
       if (result != null) {
+        gotoManageGroupPage();
+        _snackBarservice!.showSnackbar(message: "You have added a new group");
         hideLoadingDialog();
       }
       Logger().i(result);
@@ -86,10 +88,12 @@ class AddGroupViewModel extends InsiteViewModel {
       if (result != null) {
         nameController.text = result.GroupName!;
         descriptionController.text = result.Description ?? "";
-        for (var i = 0; i < result.AssetUID.length; i++) {
-          assetUidData.add(result.AssetUID[i]);
+        if (result.AssetUID != null) {
+          for (var i = 0; i < result.AssetUID!.length; i++) {
+            assetUidData.add(result.AssetUID![i]);
+          }
+          Logger().i("assetUId:${assetUidData.length}");
         }
-        Logger().i("assetUId:${assetUidData.length}");
       }
 
       hideLoadingDialog();

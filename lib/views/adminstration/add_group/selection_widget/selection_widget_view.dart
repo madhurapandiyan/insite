@@ -42,7 +42,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
         return Column(
           children: [
             Card(
-              margin: EdgeInsets.only(left: 25, right: 50),
+              //margin: EdgeInsets.only(left: 25, right: 50),
               child: Column(
                 children: [
                   SelectedItemWidget(
@@ -258,7 +258,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
               height: 50,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.all(4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -267,44 +267,47 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     size: 14,
                     fontWeight: FontWeight.w700,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: InsiteText(
-                      text: viewModel.assetIdSelecteList.length.toString() +
-                          " " +
-                          "Assets",
-                      size: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
+                  InsiteText(
+                    text: viewModel.assetIdSelecteList.length.toString() +
+                        " " +
+                        "Assets",
+                    size: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ],
               ),
             ),
+            SizedBox(
+              height: 12,
+            ),
             Container(
-              margin: EdgeInsets.only(left: 25, right: 50),
-              width: MediaQuery.of(context).size.width * 0.80,
               height: MediaQuery.of(context).size.height * 0.60,
               child: Card(
-                  child: SelectedItemSelectWidgetView(
-                displayList: viewModel.searchSelectedItemList,
-                textEditingController: viewModel.selectedItemController,
-                onAssetDeselected: (int value, String assetIdentifier) {
-                  widget.dissociatedIds!.add(assetIdentifier);
-                  viewModel.onRemoveSelectedIndex(value, assetIdentifier);
-                },
-                searchCallBack: (String value) {
-                  viewModel.onSearchSelectedItemList(value);
-                },
-                filterCallBack: () {
-                  viewModel.filterSelectedItemSelectWidgetState();
-                },
-                filterChangeState: viewModel.isFilterChangeState,
-                dropDownItem: viewModel.dropdownList,
-                dropDownValue: viewModel.dropDownValue,
-                onDropDownChange: (String value) {
-                  viewModel.getDropDownListData(value);
-                },
-              )),
+                  child: viewModel.isAssetLoading
+                      ? InsiteProgressBar()
+                      : SelectedItemSelectWidgetView(
+                          displayList: viewModel.searchSelectedItemList,
+                          textEditingController:
+                              viewModel.selectedItemController,
+                          onAssetDeselected:
+                              (int value, String assetIdentifier) {
+                            widget.dissociatedIds!.add(assetIdentifier);
+                            viewModel.onRemoveSelectedIndex(
+                                value, assetIdentifier);
+                          },
+                          searchCallBack: (String value) {
+                            viewModel.onSearchSelectedItemList(value);
+                          },
+                          filterCallBack: () {
+                            viewModel.filterSelectedItemSelectWidgetState();
+                          },
+                          filterChangeState: viewModel.isFilterChangeState,
+                          dropDownItem: viewModel.dropdownList,
+                          dropDownValue: viewModel.dropDownValue,
+                          onDropDownChange: (String value) {
+                            viewModel.getDropDownListData(value);
+                          },
+                        )),
             )
           ],
         );

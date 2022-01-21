@@ -7,12 +7,12 @@ part 'edit_group_response.g.dart';
 class EditGroupResponse {
   String? GroupUid;
   String? GroupName;
-  List<String> AssetUID;
+  List<String>? AssetUID;
   String? CustomerUID;
   String ?Description;
 
   EditGroupResponse(
-      {this.GroupUid, this.GroupName,required this.AssetUID, this.CustomerUID, this.Description});
+      {this.GroupUid, this.GroupName, this.AssetUID, this.CustomerUID, this.Description});
 
  factory EditGroupResponse.fromJson(Map<String, dynamic> json)=>_$EditGroupResponseFromJson(json);
 
