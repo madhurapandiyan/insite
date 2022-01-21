@@ -2,7 +2,6 @@ import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart' as snack_bar_service;
-
 import 'locator.dart';
 import 'logger.dart';
 
