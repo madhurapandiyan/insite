@@ -28,7 +28,7 @@ class AddressCustomTextBox extends StatelessWidget {
           contentPadding: EdgeInsets.only(left: 15, top: 20),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: black, width: 1)),
+              borderSide: BorderSide(color:black, width: 1)),
           disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: black, width: 1)),

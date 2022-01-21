@@ -233,6 +233,12 @@ class Urls {
   static String deviceTypeVL =
       "t/trimble.com/vss-assetsettings/1.0/devicetypes";
   static String userCount = "$identity/2.0/Users/Count";
+  static String getGroupListData =
+      "/t/trimble.com/vss-unifiedfleetmap/1.0/api/v1/assetlist";
+  static String getGeoFenceData =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
+  static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
+ 
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -315,6 +321,9 @@ class Urls {
       "$subscriptionPrefix/assetDetail/asset/activate/";
   static String downloadResetData =
       "$subscriptionPrefix/assetDetail/asset/activate/";
+  static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
+  static String getEditGroupData="/t/trimble.com/vss-groupservice/1.0/";
+  
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

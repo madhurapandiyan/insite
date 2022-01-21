@@ -50,4 +50,6 @@ const String deviceReplacementStatusView = "deviceReplacementStatusView";
 const String replacementView = "replacementView";
 const String fleetStatusView = "fleetStatusView";
 const String transferHistoryView = "transferHistoryView";
-const String  plantAssetCreationViewRoute='plantAssetCreationViewRoute';
+const String plantAssetCreationViewRoute = 'plantAssetCreationViewRoute';
+const String addGroupViewRoute = "addGroupViewRoute";
+const String manageGroupViewRoute = "manageGroupViewRoute";

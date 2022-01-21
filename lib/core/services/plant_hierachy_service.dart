@@ -59,7 +59,7 @@ class PlantHeirarchyAssetService extends BaseService {
     }
   }
 
-  Future<AssetCreationResponse?> getAssetCreationData(
+  Future<AssetCreationResponse?>? getAssetCreationData(
       String machineSerialNumber) async {
     try {
       Map<String, String> queryMap = Map();

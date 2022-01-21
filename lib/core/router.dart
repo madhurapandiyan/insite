@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/add_group/add_group_view.dart'
+    as view37;
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
@@ -10,8 +12,11 @@ import 'package:insite/views/adminstration/asset_settings_configure/asset_settin
     as view30;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
     as view16;
+import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
+    as view38;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
+
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
 import 'package:insite/views/plant/plant_asset_creation/plant_asset_creation_view.dart'
@@ -185,6 +190,10 @@ class Router {
       case plantAssetCreationViewRoute:
         return MaterialPageRoute(
             builder: (_) => view31.PlantAssetCreationView());
+      case addGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.AddGroupView());
+      case manageGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
 
       default:
         return MaterialPageRoute(

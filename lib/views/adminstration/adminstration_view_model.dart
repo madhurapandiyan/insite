@@ -2,11 +2,12 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart';
+import 'package:insite/views/adminstration/add_group/add_group_view.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart';
+import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
-
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -37,6 +38,15 @@ class AdminstrationViewModel extends InsiteViewModel {
           transition: "fade");
     } else if (value == AdminAssetsButtonType.MANAGEGEOFENCES) {
       _navigationService!.navigateWithTransition(ManageGeofenceView(),
+          transition: "fade");
+    } else if (value == AdminAssetsButtonType.ADDNEWGROUPS) {
+      _navigationService!.navigateWithTransition(AddGroupView(
+        isEdit: false,
+        groups: null,
+      ),
+          transition: "fade");
+    } else if (value == AdminAssetsButtonType.MANAGEGROUPS) {
+      _navigationService!.navigateWithTransition(ManageGroupView(),
           transition: "fade");
     }
   }

@@ -1,5 +1,5 @@
 {
-    "last_updated": "Fri, 19 Nov 2021 06:36:17 GMT",
+    "last_updated": "Fri, 10 Dec 2021 15:19:15 GMT",
     "routes": [
         {
             "file_path": "views/splash/splash_view.dart",
@@ -175,10 +175,21 @@
             "file_path": "views/subscription/transferhistory/transfer_history_view.dart",
             "route_name": "transfer_history_ViewRoute",
             "view_name": "TransferHistoryView"
-        },{
+        },
+        {
             "file_path": "views/palnt_asset_creation/palnt_asset_creation_view.dart",
             "route_name": "palnt_asset_creationViewRoute",
             "view_name": "PalntAssetCreationView"
+        },
+        {
+            "file_path": "views/add_group/add_group_view.dart",
+            "route_name": "add_groupViewRoute",
+            "view_name": "AddGroupView"
+        },
+        {
+            "file_path": "views/manage_group/manage_group_view.dart",
+            "route_name": "manage_groupViewRoute",
+            "view_name": "ManageGroupView"
         }
     ]
 }

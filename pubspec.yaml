@@ -89,7 +89,6 @@ flutter:
   assets:
     - assets/images/add.svg
     - assets/images/edit.svg
-
     - assets/images/searchs.svg
     - assets/images/dummy.png
     - assets/images/menubar.svg
@@ -158,6 +157,8 @@ flutter:
     - assets/images/warning.svg
     - assets/images/users_items.svg
     - assets/images/assessment.svg
+    - assets/images/descending_filter_group.png
+    - assets/images/ascending_filter_group.png
     
   fonts:
     - family: Roboto

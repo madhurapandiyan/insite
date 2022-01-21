@@ -119,6 +119,7 @@ class ManageUserViewModel extends InsiteViewModel {
         if (result.users!.isNotEmpty) {
           Logger().i("list of assets " + result.users!.length.toString());
           if (!loadingMore) {
+            Logger().i("assets");
             _assets.clear();
           }
           for (var user in result.users!) {
@@ -142,6 +143,7 @@ class ManageUserViewModel extends InsiteViewModel {
         if (_isSearching) {
           _assets = [];
         }
+
         _loading = false;
         _loadingMore = false;
         _refreshing = false;

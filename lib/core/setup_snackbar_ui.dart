@@ -2,7 +2,6 @@ import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart' as snack_bar_service;
-
 import 'locator.dart';
 import 'logger.dart';
 
@@ -16,7 +15,7 @@ class SnackbarStyling {
     service.registerSnackbarConfig(snack_bar_service.SnackbarConfig(
         //messageColor: tango,
         messageColor: white,
-        backgroundColor: AppConfig.instance!.productFlavor == "tatahitachi"
+        backgroundColor: AppConfig.instance!.productFlavor == "tatahitachi"||AppConfig.instance!.productFlavor=="unifiedFleet"
             ? tango
             : buttonColor1,
         textColor: tango));
