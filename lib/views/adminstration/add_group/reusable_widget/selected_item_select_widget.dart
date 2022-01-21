@@ -52,70 +52,64 @@ class _SelectedItemSelectWidgetViewState
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!),
-                                          top: BorderSide(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!),
-                                          left: BorderSide(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!),
-                                          right: BorderSide(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!))),
-                                  child: CustomDropDownWidget(
-                                    items: widget.dropDownItem,
-                                    value: widget.dropDownValue,
-                                    onChanged: (String? value) {
-                                      Logger().i(value);
-                                      widget.onDropDownChange!(value!);
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Flexible(
-                                flex: 5,
-                                child: SearchBox(
-                                  hint: "Search",
-                                  controller: widget.textEditingController,
-                                  onTextChanged: (String value) {
-                                    widget.searchCallBack!(value);
-                                  },
-                                ),
-                              ),
-                            ],
-                          )),
                       SizedBox(
-                        width: 2,
+                        width: 5,
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 1,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!),
+                                  top: BorderSide(
+                                      width: 1,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!),
+                                  left: BorderSide(
+                                      width: 1,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!),
+                                  right: BorderSide(
+                                      width: 1,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!))),
+                          child: CustomDropDownWidget(
+                            items: widget.dropDownItem,
+                            value: widget.dropDownValue,
+                            onChanged: (String? value) {
+                              Logger().i(value);
+                              widget.onDropDownChange!(value!);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Flexible(
+                        flex: 5,
+                        child: SearchBox(
+                          hint: "Search",
+                          controller: widget.textEditingController,
+                          onTextChanged: (String value) {
+                            widget.searchCallBack!(value);
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       widget.filterChangeState!
                           ? GestureDetector(
@@ -138,7 +132,7 @@ class _SelectedItemSelectWidgetViewState
                             )
                     ],
                   )
-                : null),
+                : SizedBox()),
         Flexible(
           child: ListView.builder(
               itemCount: widget.displayList!.length,

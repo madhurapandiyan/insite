@@ -18,40 +18,13 @@ class SelectedAssetsWidget extends StatefulWidget {
 }
 
 class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
-  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-       
-        // GestureDetector(
-        //   onTap: () {
-        //     isChecked = !isChecked;
-        //     setState(() {});
-        //   },
-        //   child: isChecked
-        //       ? Container(
-        //           width: 20,
-        //           height: 20,
-        //           decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(5),
-        //               border: Border.all(
-        //                 color: silver,
-        //               ),
-        //               color: tango),
-        //         )
-        //       : Container(
-        //           width: 20,
-        //           height: 20,
-        //           decoration: BoxDecoration(
-        //               borderRadius: BorderRadius.circular(5),
-        //               border: Border.all(
-        //                 color: silver,
-        //               )),
-        //         ),
-        // ),
-
+        SizedBox(
+          width: 10,
+        ),
         Flexible(
           flex: 3,
           child: InsiteImage(
@@ -64,7 +37,7 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
           width: 8,
         ),
         Flexible(
-          flex: 4,
+          flex: 6,
           child: Container(
             child: InsiteTextOverFlow(
               text: widget.selectedAssetList!.serialNo,
@@ -75,29 +48,24 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
         SizedBox(
           width: 5,
         ),
-        Flexible(
-          flex: 5,
-          child: Container(
-            child: InsiteTextOverFlow(
-              overflow: TextOverflow.ellipsis,
-              text: widget.selectedAssetList!.make! +
-                  " " +
-                  "\n" +
-                  widget.selectedAssetList!.model!,
-            ),
+        Expanded(
+          flex: 8,
+          child: InsiteTextOverFlow(
+            overflow: TextOverflow.ellipsis,
+            text: widget.selectedAssetList!.make! +
+                " " +
+                "\n" +
+                widget.selectedAssetList!.model!,
           ),
         ),
         SizedBox(
           width: 5,
         ),
-        Flexible(
-          flex: 3,
-          child: IconButton(
-              onPressed: () {
-                widget.callBack!();
-              },
-              icon: Icon(Icons.delete)),
-        )
+        IconButton(
+            onPressed: () {
+              widget.callBack!();
+            },
+            icon: Icon(Icons.delete)),
       ],
     );
   }
