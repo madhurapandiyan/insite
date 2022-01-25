@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -51,6 +52,19 @@ class NotificationService extends BaseService {
               accountSelected!.CustomerUID);
 
       return notificationsData;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<ManageNotificationsData?> getManageNotificationsData() async {
+    try {
+      ManageNotificationsData? response = await MyApi()
+          .getClientSeven()!
+          .manageNotificationsData(
+              Urls.manageNotificationsData, accountSelected!.CustomerUID);
+
+      return response;
     } catch (e) {
       Logger().e(e.toString());
     }

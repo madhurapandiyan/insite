@@ -3,10 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/utils/enums.dart';
+
 import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
+import 'package:insite/views/adminstration/add_group/add_group_view.dart'
+    as view37;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
+import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
+    as view38;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view15;
+import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart'
+    as view38;
+import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
+    as view39;
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
 import 'package:insite/views/login/login_view.dart' as VL4;
@@ -172,7 +181,17 @@ class Router {
         return MaterialPageRoute(builder: (_) => view36.TransferHistoryView());
       case notificationViewRoute:
         return MaterialPageRoute(builder: (_) => view37.NotificationView());
+      case addNewNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view38.AddNewNotificationsView());
+      case manageNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view39.ManageNotificationsView());
 
+      case addGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.AddGroupView());
+      case manageGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,16 +1,25 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/add_group_data_response.dart';
+import 'package:insite/core/models/edit_group_payload.dart';
+import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
+import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings.dart';
 import 'package:insite/core/models/asset_fuel_burn_rate_settings_list_data.dart';
 import 'package:insite/core/models/asset_mileage_settings_list_data.dart';
 import 'package:insite/core/models/asset_settings.dart';
+import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/favorite_payload.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
+import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
@@ -870,6 +879,301 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected!.CustomerUID,
                 "in-vlmasterdata-api-vlmd-assetsettings");
         return assetMileageSettingsListData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getGroupListData() async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = "1";
+      queryMap["pageSize"] = "99999";
+      queryMap["minimalFields"] = "true";
+      // if (customerSelected != null) {
+      //   queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+      //   Logger().wtf(customerSelected!.CustomerUID);
+      // }
+
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getGroupListData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  
+
+  Future<AssetCount?> getGeofenceCountData() async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["grouping"] = "geofence";
+      if (isVisionLink) {
+        AssetCount assetCountResponse = await MyApi()
+            .getClientSeven()!
+            .getGeoFenceCountData(
+                Urls.getGeoFenceData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return assetCountResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<ManageGroupSummaryResponse?> getManageGroupSummaryResponseListData(
+      pageNumber, searckKey) async {
+    try {
+      Map<String, String?> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["Sort"] = "";
+      queryMap["SearchKey"] = "GroupName";
+      queryMap["SearchValue"] = searckKey.toString();
+
+      if (isVisionLink) {
+        ManageGroupSummaryResponse manageGroupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getManageGroupSummaryListData(
+                Urls.getManageGroupData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return manageGroupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
+    return null;
+  }
+
+  Future<UpdateResponse?> getFavoriteGroupData(
+      List<String> groupId, isFavourite) async {
+    try {
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()!
+            .getGroupFavoriteData(
+                Urls.getManageGroupData+"/Favourite",
+                FavoritePayLoad(groupUID: groupId, isFavourite: isFavourite),
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<UpdateResponse?> getDeleteFavoriteData(String groupId) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["GroupUID"] = groupId;
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()!
+            .getDeleteFavoriteData(
+                Urls.getManageGroupData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getAdminProductFamilyFilterData(
+      pageNumber, pageSize, String productFamilyKey) async {
+    try {
+      // Logger().e(productFamilyKey);
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["minimalFields"] = "true";
+
+      queryMap["productfamily"] = productFamilyKey.toString();
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getAdminProductFamilyFilterData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getManafactureFilterData(
+      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["minimalFields"] = "true";
+      if (productFamilyKey != null) {
+        queryMap["manufacturer"] = productFamilyKey;
+      }
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getManufacturerFilterData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getModelFilterData(
+      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["minimalFields"] = "true";
+      if (productFamilyKey != null) {
+        queryMap["model"] = productFamilyKey;
+      }
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getManufacturerFilterData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getDeviceTypeData(
+      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["minimalFields"] = "true";
+      queryMap["deviceType"] = productFamilyKey!;
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getAdminProductFamilyFilterData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetGroupSummaryResponse?> getAccountSelectionData(
+      int pageNumber, int pageSize, String productFamilyKey) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["pageNumber"] = pageNumber.toString();
+      queryMap["pageSize"] = pageSize.toString();
+      queryMap["minimalFields"] = "true";
+      queryMap["customerIdentifier"] = productFamilyKey;
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (isVisionLink) {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClientSeven()!
+            .getAdminProductFamilyFilterData(
+                Urls.getGroupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AddGroupDataResponse?> getAddGroupSaveData(
+      AddGroupPayLoad addGroupPayLoad) async {
+    try {
+      if (isVisionLink) {
+        AddGroupDataResponse addGroupDataResponse = await MyApi()
+            .getClientSeven()!
+            .getAddGroupSaveData(Urls.getAddGroupSaveData, addGroupPayLoad,
+                accountSelected!.CustomerUID);
+        return addGroupDataResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<EditGroupResponse?> getEditGroupData(String groupId) async {
+    try {
+      Logger().w(groupId);
+      if (isVisionLink) {
+        EditGroupResponse editGroupResponse = await MyApi()
+            .getClientSeven()!
+            .getEditGroupResponseData(
+                Urls.getEditGroupData + groupId, accountSelected!.CustomerUID);
+        return editGroupResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<UpdateResponse?> getAddGroupEditPayLoad(
+      EditGroupPayLoad addGroupEditPayload) async {
+    try {
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()!
+            .getAddGroupEditData(Urls.getEditGroupData, addGroupEditPayload,
+                accountSelected!.CustomerUID);
+        return updateResponse;
       }
     } catch (e) {
       Logger().e(e.toString());

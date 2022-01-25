@@ -201,9 +201,12 @@ class SubScriptionService extends BaseService {
 
   Future<AssetTransferData?> postSingleTransferRegistration(
       {List<Transfer>? transferData}) async {
-    var userId =await _localService!.getUserId();
+    var userId = await _localService!.getUserId();
     var body = AssetTransferData(
-        source: "THC", version: "2.1", userID: int.parse(userId!), transfer: transferData);
+        source: "THC",
+        version: "2.1",
+        userID: int.parse(userId!),
+        transfer: transferData);
 
     try {
       AssetTransferData addAssetRegistrationData = await MyApi()
@@ -217,7 +220,7 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<dynamic> postSingleAssetTransferRegistration(
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
       AssetTransfer assetData) async {
     var data = await MyApi()
         .getClientNine()!

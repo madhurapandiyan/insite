@@ -1,5 +1,8 @@
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
+import 'package:insite/core/models/add_group_data_response.dart';
+import 'package:insite/core/models/edit_group_payload.dart';
+import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
@@ -19,6 +22,7 @@ import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/device_type.dart';
+import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -29,6 +33,8 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/fuel_burn_rate_trend.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
+import 'package:insite/core/models/favorite_payload.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/health_list_response.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
@@ -36,10 +42,15 @@ import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/manage_group_summary_response.dart';
+
+import 'package:insite/core/models/manage_notifications.dart';
+
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
+import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
@@ -324,7 +335,7 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetCount> assetCount(
       @Path() String url,
-      @Header("x-visionlink-customeruid") customerId,
+      @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") service);
 
   @GET('{url}')
@@ -528,6 +539,11 @@ abstract class RestClient {
   @POST("/oauth/token")
   Future<LoginResponse> getTokenV4(@Body() GetTokenData tokenData,
       @Header("content-type") String contentType);
+
+  @POST("/oauth/token")
+  Future<LoginResponse> getRefreshLoginData(
+      @Header("content-type") String contentType,
+      @Body() RefreshTokenPayload refreshToken);
 
   @POST("/oauth/token?grant_type=client_credentials")
   Future<LoginResponse> getTokenWithoutLogin(
@@ -950,7 +966,7 @@ abstract class RestClient {
       @Body() AddAssetRegistrationData addAssetRegistrationData);
 
   @POST("{url}")
-  Future<dynamic> postSingleAssetTransferRegistration(
+  Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
       @Path() String url, @Body() AssetTransfer data);
 
   @POST("{url}")
@@ -1081,6 +1097,56 @@ abstract class RestClient {
 
   @GET("{url}")
   Future<NotificationsData> mainNotificationsData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+  @GET('{url}')
+  Future<AssetGroupSummaryResponse> getGroupListData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AssetCount> getGeoFenceCountData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<ManageGroupSummaryResponse> getManageGroupSummaryListData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<UpdateResponse> getGroupFavoriteData(
+      @Path() String url,
+      @Body() FavoritePayLoad groupFavoritePayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @DELETE('{url}')
+  Future<UpdateResponse> getDeleteFavoriteData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+  @GET('{url}')
+  Future<AssetGroupSummaryResponse> getAdminProductFamilyFilterData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AssetGroupSummaryResponse> getManufacturerFilterData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<AddGroupDataResponse> getAddGroupSaveData(
+      @Path() String url,
+      @Body() AddGroupPayLoad addGroupPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<EditGroupResponse> getEditGroupResponseData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<UpdateResponse> getAddGroupEditData(
+      @Path() String url,
+      @Body() EditGroupPayLoad addGroupEditPayload,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("{url}")
+  Future<ManageNotificationsData> manageNotificationsData(
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );

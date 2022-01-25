@@ -3,10 +3,10 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
-import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
@@ -254,6 +254,29 @@ class LoginService extends BaseService {
       Logger().e(e);
     }
     return null;
+  }
+
+  Future<LoginResponse?> getRefreshLoginDataV4({String? code,
+      String? code_challenge, String? code_verifier, String? token}) async {
+    try {
+      if (isVisionLink) {
+      } else {
+        LoginResponse loginResponse = await MyApi()
+            .getClientFive()!
+            .getRefreshLoginData(
+                "application/x-www-form-urlencoded",
+                RefreshTokenPayload(
+                    client_id: Urls.indiaStackClientId,
+                    code_challenge: code_challenge,
+                    grant_type: "refresh_token",
+                    refresh_token: token,
+                    code_verifier: code_verifier,
+                    code_challenge_method: "S256"));
+        return loginResponse;
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   Future<LoginResponse?> getTokenWithoutLogin() async {

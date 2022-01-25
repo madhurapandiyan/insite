@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/add_group/add_group_view.dart'
+    as view37;
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
@@ -10,9 +12,16 @@ import 'package:insite/views/adminstration/asset_settings_configure/asset_settin
     as view30;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart'
     as view16;
+import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
+    as view38;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
+import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart'
+    as view38;
+import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
+    as view39;
 import 'package:insite/views/notification/notification_view.dart' as view37;
+
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
 import 'package:insite/views/plant/plant_asset_creation/plant_asset_creation_view.dart'
@@ -100,16 +109,16 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs = settings.arguments as view9.DetailArguments?;
+        var fleetArgs = settings.arguments as view9.DetailArguments;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
-                  fleet: fleetArgs!.fleet,
+                  fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));
 
-      // case locationViewRoute:
-      //   return MaterialPageRoute(builder: (_) => view10.LocationView());
+      case locationViewRoute:
+        return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
       case loginPageRoute:
@@ -188,6 +197,16 @@ class Router {
             builder: (_) => view31.PlantAssetCreationView());
       case notificationViewRoute:
         return MaterialPageRoute(builder: (_) => view37.NotificationView());
+      case addGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.AddGroupView());
+      case manageGroupViewRoute:
+        return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
+      case addNewNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view38.AddNewNotificationsView());
+      case manageNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view39.ManageNotificationsView());
 
       default:
         return MaterialPageRoute(

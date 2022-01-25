@@ -106,17 +106,16 @@ class AssetOperationViewModel extends InsiteViewModel {
     notifyListeners();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    AssetSummaryResponse result = await (_assetService!.getAssetSummaryList(
-            startDate,
-            endDate,
-            pageSize,
-            pageNumber,
-            _menuItem,
-            appliedFilters,
-            graphqlSchemaService!.getAssetOperationData(
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)))
-        as FutureOr<AssetSummaryResponse>);
+    AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
+        startDate,
+        endDate,
+        pageSize,
+        pageNumber,
+        _menuItem,
+        appliedFilters,
+        graphqlSchemaService!.getAssetOperationData(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assets.clear();
       _assets.addAll(result.assets!);
@@ -128,7 +127,7 @@ class AssetOperationViewModel extends InsiteViewModel {
       _refreshing = false;
       notifyListeners();
     }
-    Logger().i("list of assets " + result.assets!.length.toString());
+    Logger().i("list of assets " + result!.assets!.length.toString());
   }
 
   getAssetSummaryList() async {

@@ -117,6 +117,7 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
       notifyListeners();
     } else {
       displayList = staticTranspotData;
+      Logger().i("else");
 
       notifyListeners();
     }

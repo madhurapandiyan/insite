@@ -7,6 +7,7 @@ import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class UtilLizationView extends StatefulWidget {

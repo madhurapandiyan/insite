@@ -52,3 +52,7 @@ const String fleetStatusView = "fleetStatusView";
 const String transferHistoryView = "transferHistoryView";
 const String plantAssetCreationViewRoute = 'plantAssetCreationViewRoute';
 const String notificationViewRoute = 'notificationViewRoute';
+const String addGroupViewRoute = "addGroupViewRoute";
+const String manageGroupViewRoute = "manageGroupViewRoute";
+const String addNewNotificationsViewRoute = 'addNewNotificationsViewRoute';
+const String manageNotificationsViewRoute = 'manageNotificationsViewRoute';

@@ -117,6 +117,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     showLoadingDialog();
     Future.delayed(Duration(seconds: 1), () {
+      
       getData();
     });
   }

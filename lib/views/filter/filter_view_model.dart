@@ -92,6 +92,8 @@ class FilterViewModel extends InsiteViewModel {
         "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
+
+
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:hive/hive.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:load/load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/models/db/asset_count_data.dart';
-import 'core/router.dart' as router;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/router_india_stack.dart' as router1;
+import 'core/setup_snackbar_ui.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +31,7 @@ void main() async {
       enableGraphql: false,
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();
+  SnackbarStyling.setupSnackbarUi();
   runApp(MyApp());
 }
 

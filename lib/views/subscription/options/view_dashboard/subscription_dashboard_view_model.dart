@@ -21,7 +21,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
 
   SubscriptionDashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    setUp();
+  setUp();
     _subscriptionService!.setUp();
     _localService!.getToken();
     Future.delayed(Duration(seconds: 2), () {

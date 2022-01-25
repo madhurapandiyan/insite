@@ -33,7 +33,10 @@ class ReplacementView extends StatelessWidget {
                       child: AssetCardsLarge(
                         headerText: 'REPLACEMENT',
                         icon: "assets/images/export.svg",
+                        cardWidth: MediaQuery.of(context).size.width * 0.7,
+                        cardHeight: MediaQuery.of(context).size.height * 0.45,
                         height: 30,
+                        scrollDirection: Axis.vertical,
                         showExapansionMenu: false,
                         buttonTitle: [
                           AdminAssetsButtonType.values[22],

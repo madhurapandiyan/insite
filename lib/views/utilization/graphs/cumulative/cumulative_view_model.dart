@@ -32,8 +32,8 @@ class CumulativeViewModel extends InsiteViewModel {
 
   getRunTimeCumulative() async {
     RunTimeCumulative? result =
-        await (_utilizationGraphService!.getRunTimeCumulative(startDate, endDate));
-    if (result!.cumulatives == null)
+        await _utilizationGraphService!.getRunTimeCumulative(startDate, endDate);
+    if (result?.cumulatives == null)
       _runTimeCumulative = null;
     else
       _runTimeCumulative = result;

@@ -27,7 +27,7 @@ class HomeViewModel extends InsiteViewModel {
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-    Future.delayed(Duration(seconds: 1), () {
+  Future.delayed(Duration(seconds: 1), () {
       // checkPermission();
       // _loginService.getTokenWithoutLogin();
     });

@@ -375,6 +375,15 @@ class Utils {
       case ScreenType.USER_MANAGEMENT:
         title = "USER";
         break;
+      case ScreenType.MANAGE_NOTIFICATION:
+        title = "MANAGE NOTIFICATION";
+        break;
+      case ScreenType.ADD_NOTIFICATION:
+        title = "ADD NOTIFICATION";
+        break;
+      case ScreenType.EDIT_NOTIFICATION:
+        title = "EDIT NOTIFICATION";
+        break;
       default:
     }
     return title;
@@ -455,6 +464,12 @@ class Utils {
         break;
       case AdminAssetsButtonType.REPLACEMENTSTATUS:
         title = "REPLACEMENT STATUS";
+        break;
+      case AdminAssetsButtonType.ADDNEWNOTIFICATION:
+        title = "ADD NEW NOTIFICATION";
+        break;
+      case AdminAssetsButtonType.MANAGENOTIFICATION:
+        title = "MANAGE NOTIFICATION";
         break;
 
       default:

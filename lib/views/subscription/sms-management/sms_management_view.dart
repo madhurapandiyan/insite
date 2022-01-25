@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/subscription/options/view_dashboard/subscription_dashboard_view_model.dart';
 import 'package:insite/widgets/smart_widgets/asset_card_large.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
+import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 
 class SmsManagementView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Logger().w(
+        "code-challenge ${Utils.generateCodeChallenge(randomAlphaNumeric(43))}");
+    Logger().wtf(randomAlphaNumeric(43));
     return ViewModelBuilder<SubscriptionDashboardViewModel>.reactive(
       builder: (BuildContext context, SubscriptionDashboardViewModel viewModel,
           Widget? _) {
@@ -33,7 +39,10 @@ class SmsManagementView extends StatelessWidget {
                       child: AssetCardsLarge(
                         headerText: 'SMS MANAGEMENT',
                         icon: "assets/images/message.svg",
+                        cardWidth: MediaQuery.of(context).size.width * 0.7,
+                        cardHeight: MediaQuery.of(context).size.height * 0.45,
                         showExapansionMenu: false,
+                        scrollDirection: Axis.vertical,
                         height: 30,
                         buttonTitle: [
                           AdminAssetsButtonType.values[19],

@@ -33,6 +33,7 @@ HierarchyModel _$HierarchyModelFromJson(Map<String, dynamic> json) =>
       UserName: json['UserName'] as String?,
       Email: json['Email'] as String?,
       Code: json['Code'] as String?,
+      count: json['count'] as int?,
     );
 
 Map<String, dynamic> _$HierarchyModelToJson(HierarchyModel instance) =>
@@ -42,4 +43,5 @@ Map<String, dynamic> _$HierarchyModelToJson(HierarchyModel instance) =>
       'UserName': instance.UserName,
       'Email': instance.Email,
       'Code': instance.Code,
+      'count': instance.count,
     };

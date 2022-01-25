@@ -21,7 +21,6 @@ class AssetUtilizationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
- 
 
   AssetUtilizationService() {
     setUp();
@@ -33,8 +32,8 @@ class AssetUtilizationService extends BaseService {
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getAccountInfo();
-      
 
+      customerSelected = await _localService!.getCustomerInfo();
       Logger().d("account selected " + accountSelected!.CustomerUID!);
       Logger().d("customer selected " + customerSelected!.CustomerUID!);
     } catch (e) {
@@ -51,7 +50,7 @@ class AssetUtilizationService extends BaseService {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
-      } 
+      }
       if (startDate != null) {
         queryMap["startDate"] = startDate;
       }
@@ -89,13 +88,13 @@ class AssetUtilizationService extends BaseService {
   }
 
   Future<AssetUtilization?> getAssetUtilGraphDate(
-      String? assetUID, String date) async {
+      String? assetUID, String? date) async {
     Logger().i("getAssetUtilGraphDate");
     try {
       Map<String, String> queryMap = Map();
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
-      } 
+      }
       if (date != null && date.isNotEmpty) {
         queryMap["date"] = date;
       }
@@ -130,7 +129,7 @@ class AssetUtilizationService extends BaseService {
       List<FilterData?>? appliedFilters,
       query) async {
     try {
-      if (enableGraphQl == false) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query,
             accountSelected?.CustomerUID,
@@ -190,7 +189,9 @@ class AssetUtilizationService extends BaseService {
                                 endDate,
                                 pageNo,
                                 pageCount,
-                                customerSelected!.CustomerUID,
+                                customerSelected?.CustomerUID == null
+                                    ? null
+                                    : customerSelected!.CustomerUID,
                                 sort,
                                 appliedFilters!,
                                 ScreenType.UTILIZATION),

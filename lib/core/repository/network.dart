@@ -3,9 +3,16 @@ import 'dart:async';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:insite/core/flavor/flavor.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
+import 'package:random_string/random_string.dart';
+import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'Retrofit.dart';
 
@@ -67,9 +74,15 @@ class MyApi {
 }
 
 class HttpWrapper {
-  String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL3N0YWdlLmlkLnRyaW1ibGVjbG91ZC5jb20iLCJleHAiOjE2MzgwMDMwMDYsIm5iZiI6MTYzNzk5OTQwNiwiaWF0IjoxNjM3OTk5NDA2LCJqdGkiOiJlZGE2ZDJlODcwM2I0ZTQ5YjY2MGEyYmFiMzdhZjE5MCIsImp3dF92ZXIiOjIsInN1YiI6ImQ4ZjA4MGEzLTZmZDEtNDUzNi1iMmVkLWI0MTk5MTg4ZjNlNCIsImlkZW50aXR5X3R5cGUiOiJ1c2VyIiwiYW1yIjpbInBhc3N3b3JkIl0sImF1dGhfdGltZSI6MTYzNzk5OTQwNCwiYXpwIjoiN2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4IiwiYXVkIjpbIjdiZTc1OWIxLWFmYzUtNGE0YS04YTg2LWJkYTVlMDQ1YTUwOCJdLCJzY29wZSI6Ik9TRy1GUkFNRS1BUFAtU1RBR0UifQ.JZrlVQIEon6thyyKdkRxfr_7CW_5T6Ma7u7hx8GSSaLIBDWh7jMKN5eMfOr13kk7IuYHHVsWZ6_CGV_hGeCw7Ifa5cD6Xcoq2-hwNyKLKLbNYv1IE2HEvEzYeRwS93XDs4nnySztRdvOUCcJ62q1c8BJQ2IgEE4KHukra89sF07SLTr8mfcfyTxCHFQRQgEgZTxRytt1afMZls8oSVzpuX5w4UintmP5MSuLyPppC3NQ1TvU76sYkeWUxuTs73DuY-Uz_Hip_3O4WwApbN6WUgyaXhVzpUKk7oWyb_JB-IOjvFNICr-DmNOLZ7Ie8PUxpHaaLn1jZEDv6Gt0ieowAg";
+  SnackbarService? snackbarService = locator<SnackbarService>();
+  String codeVerifier = randomAlphaNumeric(43);
+  static String _createCodeVerifier() {
+    // return List.generate(
+    //     128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
+    return randomAlphaNumeric(43);
+  }
 
+  String? codeChallenge;
   final String _baseUrlService = "https://unifiedservice.myvisionlink.com";
   final String _baseUrlOne = "https://identity.trimble.com";
   final String _baseUrlTwo = "https://singlesearch.alk.com";
@@ -81,6 +94,8 @@ class HttpWrapper {
 
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
+  //final NavigationService? _navigationService = locator<NavigationService>();
 
   Dio dio = new Dio();
   Dio dioOne = new Dio();
@@ -121,13 +136,36 @@ class HttpWrapper {
 
     dio.interceptors
       ..add(InterceptorsWrapper(
+        onResponse: (responce, handler) {
+          return handler.next(responce);
+        },
+        // onError: (DioError error,
+        //     ErrorInterceptorHandler errorInterceptorHandler) async {
+        //   if (error.response?.statusCode == 401) {
+        //     var code = await _localService!.getAuthCode();
+        //     var token = await _localService!.getRefreshToken();
+        //     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+        //     LoginResponse? result = await _loginService!.getRefreshLoginDataV4(
+        //         code: code,
+        //         code_challenge: codeChallenge,
+        //         code_verifier: codeVerifier,
+        //         token: token);
+        //     if (result != null) {
+        //       await _localService!.saveTokenInfo(result);
+        //       await _localService!.saveRefreshToken(result.refresh_token);
+        //       await _localService!.saveAuthCode(code);
+        //       await _loginService!.saveToken(
+        //           result.access_token, result.expires_in.toString(), false);
+        //     }
+        //     return errorInterceptorHandler.next(error);
+        //   }
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-          token = await (_localService!.getToken());
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " + token,
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
         },
@@ -139,6 +177,10 @@ class HttpWrapper {
 
     dioOne.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -156,6 +198,10 @@ class HttpWrapper {
 
     dioTwo.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -172,13 +218,16 @@ class HttpWrapper {
 
     dioThree.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
         },
@@ -190,12 +239,16 @@ class HttpWrapper {
 
     dioFour.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " + await (_localService!.getToken()),
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
         },
@@ -207,6 +260,10 @@ class HttpWrapper {
 
     dioFive.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers
@@ -221,13 +278,16 @@ class HttpWrapper {
 
     dioSix.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+            "Authorization": "Bearer " + await _localService!.getToken(),
           });
           return handler.next(options);
         },
@@ -239,13 +299,16 @@ class HttpWrapper {
 
     dioSeven.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "Bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+            "Authorization": "Bearer " + await _localService!.getToken()
           });
           return handler.next(options);
         },
@@ -257,12 +320,16 @@ class HttpWrapper {
 
     dioEight.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + token,
+            "Authorization": "bearer " + await _localService!.getToken(),
           });
           // var check = await _localService.getToken();
           // log('interceptor $check');
@@ -276,13 +343,16 @@ class HttpWrapper {
 
     dioNine.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " +
-                await (_localService!.getToken() as FutureOr<String>),
+            "Authorization": "bearer " + await _localService!.getToken()
           });
 
           return handler.next(options);
@@ -295,12 +365,16 @@ class HttpWrapper {
 
     dioTen.interceptors
       ..add(InterceptorsWrapper(
+        // onError:
+        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
+        //   if (error.response!.statusCode == 401) {}
+        // },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
             "content-type": "application/json",
             "Accept": "application/json",
-            "Authorization": "bearer " + token,
+            "Authorization": "bearer " + await _localService!.getToken()
           });
 
           return handler.next(options);

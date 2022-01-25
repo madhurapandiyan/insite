@@ -52,6 +52,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
+  bool _isShowingHelper = false;
+  bool get isShowingHelper => _isShowingHelper;
+
   DateTime? _pickedDate = DateTime.now();
   DateTime? get pickedDate => _pickedDate;
 
@@ -141,13 +144,18 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<String?> _plantCodes = ["1005", "1006", "3065"];
   List<String?> get plantCodes => _plantCodes;
 
+  SubscriptionDashboardDetailResult? deviceIdChange;
+  SingleAssetRegistrationSearchModel? dealerNameChange;
+  SingleAssetRegistrationSearchModel? dealerCodeChange;
+  SingleAssetRegistrationSearchModel? customerNameChange;
+  SingleAssetRegistrationSearchModel? customerCodeChange;
+
   SingleAssetRegistrationViewModel(
       String? filterKey, PLANTSUBSCRIPTIONFILTERTYPE? type) {
     this.log = getLogger(this.runtimeType.toString());
     this._filter = filterKey;
     this._filterType = type;
     plantDetails.add(_plantDetail);
-
     Future.delayed(Duration(seconds: 1), () {
       // getSubcriptionDeviceListData();
       getSubscriptionModelData();
@@ -155,8 +163,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   updateModelValue(String newValue) {
-    _assetModel = newValue;
-    notifyListeners();
+    if (newValue == "SHINRAI-BX80") {
+      _assetModel = newValue;
+      notifyListeners();
+    } else {
+      _assetModel = newValue;
+      serialNumberController.clear();
+      notifyListeners();
+    }
   }
 
   updateplantDEtail(String? newValue) {
@@ -288,7 +302,6 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   subscriptionAssetRegistration() async {
     try {
-      Logger().e(previewDeviceDetails[3].value!);
       AssetValues deviceAssetValues;
       deviceAssetValues = AssetValues(
         deviceId: previewDeviceDetails[0].value,
@@ -326,16 +339,29 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         secondaryIndustry: null,
       );
       _totalAssetValues.add(deviceAssetValues);
-      Logger().i(_totalAssetValues.last.toJson);
-
-       var result = await _subscriptionService!
-           .postSingleAssetRegistration(data: _totalAssetValues);
-      notifyListeners();
+      var result = await _subscriptionService!
+          .postSingleAssetRegistration(data: _totalAssetValues);
       _totalAssetValues.clear();
+      onRegistrationSuccess();
       return result;
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  onRegistrationSuccess() {
+    deviceCodeController.clear();
+    deviceEmailController.clear();
+    serialNumberController.clear();
+    deviceIdController.clear();
+    hourMeterController.clear();
+    hourMeterDateController.clear();
+    customerCodeController.clear();
+    customerEmailController.clear();
+    deviceNameController.clear();
+    deviceIdController.clear();
+    customerNameController.clear();
+    notifyListeners();
   }
 
   getSubcriptionDeviceListData(
@@ -344,7 +370,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       _detailResult.clear();
       _gpsDeviceId.clear();
       if (name.length >= 3) {
-        SubscriptionDashboardDetailResult? result = await _subscriptionService!
+        deviceIdChange = await _subscriptionService!
             .getSubscriptionDeviceListData(
                 filterType: filterType,
                 fitler: filter,
@@ -352,13 +378,13 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                 start: pageNumber,
                 limit: pageSize);
 
-        if (result != null) {
-          if (result.result![1].isNotEmpty) {
-            _detailResult.addAll(result.result![1]);
+        if (deviceIdChange != null) {
+          if (deviceIdChange!.result![1].isNotEmpty) {
+            _detailResult.addAll(deviceIdChange!.result![1]);
             _loading = false;
             _loadingMore = false;
             gpsDeviceId.clear();
-            result.result![1].forEach((element) {
+            deviceIdChange!.result![1].forEach((element) {
               if (gpsDeviceId.any((id) => id == element.GPSDeviceID)) {
               } else {
                 gpsDeviceId.add(element.GPSDeviceID);
@@ -369,7 +395,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             //   gpsDeviceId.add(element.GPSDeviceID);
             // });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            //Fluttertoast.showToast(msg: "No Data Found");
             _devices.clear();
             detailResult.clear();
             gpsDeviceId.clear();
@@ -531,7 +557,6 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onSelectedNameTile(String value) {
-    Logger().e(value);
     _devices.forEach((element) {
       if (element.Name == value) {
         customerNameController.text = element.Name!;
@@ -549,7 +574,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       if (element.Name == value) {
         deviceNameController.text = element.Name!;
         deviceCodeController.text = element.Code!;
-        deviceEmailController.text = element.Email!;
+        deviceEmailController.text = element.Email ?? "";
         _dealerId.clear();
         notifyListeners();
       }
@@ -584,10 +609,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-      Logger().w(_dealerId.length);
-      detailResultList.clear();
+   detailResultList.clear();
       if (name == null || name.isEmpty) {
-        Logger().e("if");
         Future.delayed(Duration(seconds: 3), () {
           _customerId.clear();
           notifyListeners();
@@ -596,9 +619,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _customerId.clear();
         _customerCode.clear();
         _devices.clear();
-        Logger().e("type");
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          customerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -607,14 +629,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             fitler: type,
             limit: pageSize,
           ));
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (customerNameChange!.result![1].isNotEmpty) {
+            customerNameChange!.result![1].forEach((element) {
               _devices.add(element);
               _customerId.add(element.Name);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            //Fluttertoast.showToast(msg: "No Data Found");
             _devices.clear();
             detailResult.clear();
             _customerId.clear();
@@ -641,7 +663,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _dealerId.clear();
         _dealerCode.clear();
         if (name.length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          dealerNameChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -650,14 +672,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             fitler: type,
             limit: pageSize,
           ));
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (dealerNameChange!.result![1].isNotEmpty) {
+            dealerNameChange!.result![1].forEach((element) {
               _devices.add(element);
               _dealerId.add(element.Name);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            _isShowingHelper = true;
             _devices.clear();
             detailResult.clear();
             _dealerId.clear();
@@ -685,7 +707,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _dealerId.clear();
 
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          dealerCodeChange =
               await (_subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -694,14 +716,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             fitler: type,
             limit: pageSize,
           ));
-          if (result!.result![1].isNotEmpty) {
-            result.result![1].forEach((element) {
+          if (dealerCodeChange!.result![1].isNotEmpty) {
+            dealerCodeChange!.result![1].forEach((element) {
               _devices.add(element);
               _dealerCode.add(element.Code);
               notifyListeners();
             });
           } else {
-            Fluttertoast.showToast(msg: "No Data Found");
+            //Fluttertoast.showToast(msg: "New Dealer Code");
             _devices.clear();
             _dealerCode.clear();
             detailResult.clear();
@@ -728,7 +750,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _customerCode.clear();
         _devices.clear();
         if (code.toString().length >= 3) {
-          SingleAssetRegistrationSearchModel? result =
+          customerCodeChange =
               await _subscriptionService!.getSubscriptionDevicesListData(
             filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
             start: pageNumber,
@@ -740,7 +762,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
           if (code == null) {
             return;
           } else {
-            if (result!.result![1].isEmpty) {
+            if (customerCodeChange!.result![1].isEmpty) {
               _customerCode.clear();
               snackbarService!.showSnackbar(
                 message: "No Data Found",
@@ -748,14 +770,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
               );
               notifyListeners();
             } else {
-              if (result.result![1].isNotEmpty) {
-                result.result![1].forEach((element) {
+              if (customerCodeChange!.result![1].isNotEmpty) {
+                customerCodeChange!.result![1].forEach((element) {
                   _devices.add(element);
                   _customerCode.add(element.Code);
                   notifyListeners();
                 });
               } else {
-                Fluttertoast.showToast(msg: "No Data Found");
+                //Fluttertoast.showToast(msg: "No Data Found");
                 _devices.clear();
                 detailResult.clear();
                 customerCode.clear();
@@ -803,7 +825,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
           notifyListeners();
         } else {
-          Fluttertoast.showToast(msg: "No Data Found");
+          //  Fluttertoast.showToast(msg: "No Data Found");
           _devices.clear();
           detailResult.clear();
           _loading = false;

@@ -25,9 +25,11 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   PlantAssetCreationViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    pageController = PageController(initialPage: currentPage);
   }
 
-  PlantHeirarchyAssetService? _plantService = locator<PlantHeirarchyAssetService>();
+  PlantHeirarchyAssetService? _plantService =
+      locator<PlantHeirarchyAssetService>();
 
   late int selectedIndex;
 
@@ -36,6 +38,9 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   String? deviceValue;
 
   String? hourMeterValue;
+
+  PageController? pageController;
+  int currentPage = 0;
 
   AssetCreationResetData? result;
 
@@ -61,7 +66,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   SnackbarService? _snackbarService = locator<SnackbarService>();
 
-  List<AssetCreationModel> getassetCreationListData = [
+  List<AssetCreationModel> assetCreationListData = [
     AssetCreationModel(
         assetSerialNo: "",
         deviceId: "",
@@ -147,7 +152,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   getAssetSerialListValue(String value, int index) {
     selectedIndex = index;
     assetSerialValue = value;
-    getassetCreationListData[index].assetSerialNo = value;
+    assetCreationListData[index].assetSerialNo = value;
 
     checkResetAndSubmitButtonVisiblity(value);
 
@@ -156,14 +161,14 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   getDeviceIdListValue(String value, int index) {
     selectedIndex = index;
-    getassetCreationListData[index].deviceId = value;
+    assetCreationListData[index].deviceId = value;
     checkResetAndSubmitButtonVisiblity(value);
 
     notifyListeners();
   }
 
   getHrsMeterListValue(String value, int index) {
-    getassetCreationListData[index].hourMeter = value;
+    assetCreationListData[index].hourMeter = value;
 
     checkResetAndSubmitButtonVisiblity(value);
   }
@@ -172,23 +177,23 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     if (value.length < 4) {
       return null;
     } else {
-      AssetCreationResponse data =
-          await (_plantService!.getAssetCreationData(value) as FutureOr<AssetCreationResponse>);
-      getassetCreationListData[index].model = data.result!.modelName;
+      AssetCreationResponse? data =
+          await _plantService!.getAssetCreationData(value);
+      assetCreationListData[index].model = data!.result!.modelName;
       notifyListeners();
     }
   }
 
   bool validate() {
     try {
-      if (getassetCreationListData[selectedIndex].assetSerialNo!.length < 9 &&
-          getassetCreationListData[selectedIndex].assetSerialNo!.isEmpty) {
+      if (assetCreationListData[selectedIndex].assetSerialNo!.length < 9 &&
+          assetCreationListData[selectedIndex].assetSerialNo!.isEmpty) {
         _snackbarService!.showSnackbar(
             message:
                 "Request contains special character or character length is less than 8, Please recheck & retry!!!");
         return false;
-      } else if (getassetCreationListData[selectedIndex].deviceId!.isEmpty &&
-          getassetCreationListData[selectedIndex].deviceId!.length < 9) {
+      } else if (assetCreationListData[selectedIndex].deviceId!.isEmpty &&
+          assetCreationListData[selectedIndex].deviceId!.length < 9) {
         _snackbarService!.showSnackbar(
             message:
                 "Request contains special character or character length is less than 8, Please recheck & retry!!!");
@@ -200,16 +205,9 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     return true;
   }
 
-  changedResetButtonState() {
-    _isChangingSubmitAndResetButtonState = false;
-    _containerState = false;
-    // _isResetButtonState = false;
-    notifyListeners();
-  }
-
   checkResetAndSubmitButtonVisiblity(String value) {
-    for (int i = 0; i < getassetCreationListData.length; i++) {
-      var data = getassetCreationListData[i];
+    for (int i = 0; i < assetCreationListData.length; i++) {
+      var data = assetCreationListData[i];
 
       if (value.isNotEmpty) {
         _issubmitButtonState = true;
@@ -222,9 +220,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         _isResetButtonState = false;
         notifyListeners();
       } else {
-        _issubmitButtonState = false;
-        _isResetButtonState = false;
-        notifyListeners();
+        return;
       }
     }
   }
@@ -235,8 +231,8 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     try {
       String? userId = await _localService!.getUserId();
       List<Asset> getAssetPayLoad = [];
-      Logger().d(getassetCreationListData.length);
-      getassetCreationListData.forEach((item) {
+      Logger().d(assetCreationListData.length);
+      assetCreationListData.forEach((item) {
         if (item.assetSerialNo!.isEmpty &&
             item.deviceId!.isEmpty &&
             item.model!.isEmpty &&
@@ -259,7 +255,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
                 UserID: int.parse(userId!)));
       }
       for (int i = 0; i < result!.result!.length; i++) {
-        getassetCreationListData.forEach((element) {
+        assetCreationListData.forEach((element) {
           if (element.assetSerialNo!.trim().toUpperCase() ==
               result!.result![i].vin) {
             element.status = result!.result![i].status;
@@ -267,9 +263,10 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
           }
         });
       }
-
-      _isChangingSubmitAndResetButtonState = true;
-      _isResetButtonState = true;
+      onNextClicked();
+      pageController!.jumpToPage(currentPage);
+      //_isChangingSubmitAndResetButtonState = true;
+      // _isResetButtonState = true;
       _issubmitButtonState = false;
       screenOne = true;
       notifyListeners();
@@ -284,18 +281,20 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         _issubmitButtonState = false;
 
         formKeyScreenTwo.currentState!.reset();
-        getassetCreationListData.forEach((element) {
+        assetCreationListData.forEach((element) {
           element.model = null;
         });
         screenOne = !screenOne;
-        _isChangingSubmitAndResetButtonState = false;
+        onPreviousClicked();
+        pageController!.jumpToPage(currentPage);
+        // _isChangingSubmitAndResetButtonState = false;
         _isResetButtonState = false;
 
         notifyListeners();
       } else {
         formKeyScreenOne.currentState!.reset();
 
-        getassetCreationListData.forEach((element) {
+        assetCreationListData.forEach((element) {
           element.model = "";
         });
         _issubmitButtonState = false;
@@ -359,8 +358,18 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
   }
 
   onItemSelect(int index) {
-    getassetCreationListData[index].isSelected =
-        !getassetCreationListData[index].isSelected;
+    assetCreationListData[index].isSelected =
+        !assetCreationListData[index].isSelected;
+    notifyListeners();
+  }
+
+  onPreviousClicked() async {
+    currentPage--;
+    notifyListeners();
+  }
+
+  onNextClicked() async {
+    currentPage++;
     notifyListeners();
   }
 }

@@ -45,7 +45,7 @@ class FaultService extends BaseService {
       ]
     };
     try {
-      if (enableGraphQl == false) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query,
             accountSelected?.CustomerUID,
@@ -229,11 +229,12 @@ class FaultService extends BaseService {
       assetId,
       query) async {
     try {
-      if (enableGraphQl == false) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query,
+         accountSelected!.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub
+        );
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);

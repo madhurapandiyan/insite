@@ -9,8 +9,6 @@ class Urls {
   static String administratorBaseUrl = "https://administrator.myvisionlink.com";
   static String idTokenBaseUrl = "https://id.trimble.com";
   static String idTokenBaseUrlStaging = "https://stage.id.trimblecloud.com";
-  static String insiteBaseUrl =
-      "https://insite-in-frame.frame-oesolutions.com/";
 
   static String idTokenKey =
       "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
@@ -129,14 +127,16 @@ class Urls {
   static String tenantDomain = "Trimble.com";
 
   static getV4LogoutUrl(String? token, redirecturi) {
+    print(token);
+    print(redirecturi);
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$redirecturi";
     return url;
   }
 
-  static logoutUrlVl(String? token, redirecturi) {
+  static logoutUrlVl(String? token) {
     String url = Urls.idTokenBaseUrl +
-        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$insiteBaseUrl&state=$administratorBaseUrl/";
+        "/oauth/logout?id_token_hint=$token&post_logout_redirect_uri=$administratorBaseUrl&state=$administratorBaseUrl/";
     return url;
   }
 
@@ -233,6 +233,12 @@ class Urls {
   static String deviceTypeVL =
       "t/trimble.com/vss-assetsettings/1.0/devicetypes";
   static String userCount = "$identity/2.0/Users/Count";
+  static String getGroupListData =
+      "/t/trimble.com/vss-unifiedfleetmap/1.0/api/v1/assetlist";
+  static String getGeoFenceData =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
+  static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
+ 
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -315,6 +321,9 @@ class Urls {
       "$subscriptionPrefix/assetDetail/asset/activate/";
   static String downloadResetData =
       "$subscriptionPrefix/assetDetail/asset/activate/";
+  static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
+  static String getEditGroupData="/t/trimble.com/vss-groupservice/1.0/";
+  
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -390,4 +399,9 @@ class Urls {
 
   static String notificationDetails =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
+
+//subnotification
+
+  static String manageNotificationsData =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
 }

@@ -40,13 +40,13 @@ class DateRangeViewModel extends BaseViewModel {
   DateRangeType get dateType => _dateType;
 
   DateRangeViewModel() {
-    _dateRangeService!.setUp();
+    _dateRangeService?.setUp();
     getDateRangeFilterData();
   }
 
-  updateDateRange(String startDate, String endDate, String type) async {
+  updateDateRange(String? startDate, String? endDate, String? type) async {
     Logger().d("updateDateRange start date, end date, type",
-        startDate + " " + endDate + " " + type);
+        startDate! + " " + endDate! + " " + type!);
     FilterData data = FilterData(
         title: "Date Range",
         count: type,
@@ -58,9 +58,10 @@ class DateRangeViewModel extends BaseViewModel {
 
   getDateRangeFilterData() async {
     Logger().d("getDateRangeFilterData");
-    List<String?> appliedFilters = await (_dateRangeService!.getDateRangeFilters() as FutureOr<List<String?>>);
-    Logger().d(appliedFilters.length.toString());
-    if (appliedFilters.isNotEmpty) {
+    List<String?>? appliedFilters =
+        await _dateRangeService?.getDateRangeFilters();
+    Logger().d(appliedFilters?.length.toString());
+    if (appliedFilters != null && appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];
       endDate = appliedFilters[1];
       Logger().d("start ", startDate);
@@ -77,6 +78,7 @@ class DateRangeViewModel extends BaseViewModel {
 
   DateRangeType getType(value) {
     DateRangeType type = DateRangeType.currentWeek;
+    Logger().e(value);
     switch (value) {
       case "currentMonth":
         type = DateRangeType.currentMonth;
@@ -101,6 +103,9 @@ class DateRangeViewModel extends BaseViewModel {
         break;
       case "yesterday":
         type = DateRangeType.yesterday;
+        break;
+      case "previousMonth":
+        type = DateRangeType.previousMonth;
         break;
       default:
     }
