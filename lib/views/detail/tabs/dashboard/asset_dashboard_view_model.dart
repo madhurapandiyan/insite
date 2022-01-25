@@ -20,9 +20,6 @@ class AssetDashboardViewModel extends InsiteViewModel {
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
 
-  Notifications? _notifications;
-  Notifications? get notifications => _notifications;
-
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
 
