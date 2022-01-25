@@ -4,12 +4,10 @@ part 'manage_notifications.g.dart';
 @JsonSerializable()
 class ManageNotificationsData {
   List<ConfiguredAlerts>? configuredAlerts;
-  Links? links;
-  Total? total;
+
   String? responseStatus;
 
-  ManageNotificationsData(
-      {this.configuredAlerts, this.links, this.total, this.responseStatus});
+  ManageNotificationsData({this.configuredAlerts, this.responseStatus});
 
   factory ManageNotificationsData.fromJson(Map<String, dynamic> json) =>
       _$ManageNotificationsDataFromJson(json);
@@ -33,8 +31,8 @@ class ConfiguredAlerts {
   int? numberOfGeofences;
   int? alertCategoryID;
   int? alertGroupID;
-  List<Operands>? operands;
-  List<SiteOperands>? siteOperands;
+  List<Operand>? operand;
+  List<SiteOperand>? siteOperand;
 
   ConfiguredAlerts(
       {this.alertConfigID,
@@ -51,8 +49,8 @@ class ConfiguredAlerts {
       this.numberOfGeofences,
       this.alertCategoryID,
       this.alertGroupID,
-      this.operands,
-      this.siteOperands});
+      this.operand,
+      this.siteOperand});
 
   factory ConfiguredAlerts.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredAlertsFromJson(json);
@@ -61,7 +59,7 @@ class ConfiguredAlerts {
 }
 
 @JsonSerializable()
-class Operands {
+class Operand {
   int? operandID;
   String? operandName;
   int? operatorID;
@@ -69,7 +67,7 @@ class Operands {
   String? value;
   String? unit;
 
-  Operands(
+  Operand(
       {this.operandID,
       this.operandName,
       this.operatorID,
@@ -77,53 +75,29 @@ class Operands {
       this.value,
       this.unit});
 
-  factory Operands.fromJson(Map<String, dynamic> json) =>
-      _$OperandsFromJson(json);
+  factory Operand.fromJson(Map<String, dynamic> json) =>
+      _$OperandFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OperandsToJson(this);
+  Map<String, dynamic> toJson() => _$OperandToJson(this);
 }
 
 @JsonSerializable()
-class SiteOperands {
+class SiteOperand {
   int? operandID;
   String? operandName;
   int? geoFenceID;
   String? geoFenceUID;
   String? name;
 
-  SiteOperands(
+  SiteOperand(
       {this.operandID,
       this.operandName,
       this.geoFenceID,
       this.geoFenceUID,
       this.name});
 
-  factory SiteOperands.fromJson(Map<String, dynamic> json) =>
-      _$SiteOperandsFromJson(json);
+  factory SiteOperand.fromJson(Map<String, dynamic> json) =>
+      _$SiteOperandFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SiteOperandsToJson(this);
-}
-
-@JsonSerializable()
-class Links {
-  String? prev;
-  String? next;
-  String? last;
-
-  Links({this.prev, this.next, this.last});
-
-  factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LinksToJson(this);
-}
-
-@JsonSerializable()
-class Total {
-  int? items;
-  int? pages;
-
-  Total({this.items, this.pages});
-  factory Total.fromJson(Map<String, dynamic> json) => _$TotalFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TotalToJson(this);
+  Map<String, dynamic> toJson() => _$SiteOperandToJson(this);
 }

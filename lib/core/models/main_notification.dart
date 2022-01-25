@@ -1,19 +1,16 @@
+import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'main_notification.g.dart';
 
 @JsonSerializable()
 class NotificationsData {
+  final List<Notification>? notification;
   final Total? total;
-  final List<Notifications>? notifications;
 
   final String? status;
 
-  NotificationsData({
-    this.total,
-    this.notifications,
-    this.status,
-  });
+  NotificationsData({this.notification, this.status, this.total});
 
   factory NotificationsData.fromJson(Map<String, dynamic> json) =>
       _$NotificationsDataFromJson(json);
@@ -22,18 +19,7 @@ class NotificationsData {
 }
 
 @JsonSerializable()
-class Total {
-  int? items;
-  int? pages;
-
-  Total({this.items, this.pages});
-  factory Total.fromJson(Map<String, dynamic> json) => _$TotalFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TotalToJson(this);
-}
-
-@JsonSerializable()
-class Notifications {
+class Notification {
   bool? isSelected;
   String? notificationUID;
   String? notificationTitle;
@@ -53,7 +39,7 @@ class Notifications {
   String? resolvedStatus;
   String? readStatus;
 
-  Notifications({
+  Notification({
     this.notificationUID,
     this.notificationTitle,
     this.occurUTC,
@@ -74,8 +60,8 @@ class Notifications {
     this.isSelected = false,
   });
 
-  factory Notifications.fromJson(Map<String, dynamic> json) =>
-      _$NotificationsFromJson(json);
+  factory Notification.fromJson(Map<String, dynamic> json) =>
+      _$NotificationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NotificationsToJson(this);
+  Map<String, dynamic> toJson() => _$NotificationToJson(this);
 }

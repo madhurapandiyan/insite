@@ -34,31 +34,33 @@ class NotificationItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 20,
+            Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          decoration: BoxDecoration(
+                              color: notifications!.isSelected!
+                                  ? Theme.of(context).buttonColor
+                                  : Theme.of(context).backgroundColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
+                          child: Icon(
+                            Icons.crop_square,
+                            color: notifications!.isSelected!
+                                ? Theme.of(context).buttonColor
+                                : Colors.black,
+                          )),
+                    ],
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.white),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: notifications!.isSelected!
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(
-                        Icons.crop_square,
-                        color: notifications!.isSelected!
-                            ? Theme.of(context).buttonColor
-                            : Colors.black,
-                      )),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               child: InsiteExpansionTile(

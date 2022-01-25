@@ -12,12 +12,6 @@ ManageNotificationsData _$ManageNotificationsDataFromJson(
       configuredAlerts: (json['configuredAlerts'] as List<dynamic>?)
           ?.map((e) => ConfiguredAlerts.fromJson(e as Map<String, dynamic>))
           .toList(),
-      links: json['links'] == null
-          ? null
-          : Links.fromJson(json['links'] as Map<String, dynamic>),
-      total: json['total'] == null
-          ? null
-          : Total.fromJson(json['total'] as Map<String, dynamic>),
       responseStatus: json['responseStatus'] as String?,
     );
 
@@ -25,8 +19,6 @@ Map<String, dynamic> _$ManageNotificationsDataToJson(
         ManageNotificationsData instance) =>
     <String, dynamic>{
       'configuredAlerts': instance.configuredAlerts,
-      'links': instance.links,
-      'total': instance.total,
       'responseStatus': instance.responseStatus,
     };
 
@@ -46,11 +38,11 @@ ConfiguredAlerts _$ConfiguredAlertsFromJson(Map<String, dynamic> json) =>
       numberOfGeofences: json['numberOfGeofences'] as int?,
       alertCategoryID: json['alertCategoryID'] as int?,
       alertGroupID: json['alertGroupID'] as int?,
-      operands: (json['operands'] as List<dynamic>?)
-          ?.map((e) => Operands.fromJson(e as Map<String, dynamic>))
+      operand: (json['operand'] as List<dynamic>?)
+          ?.map((e) => Operand.fromJson(e as Map<String, dynamic>))
           .toList(),
-      siteOperands: (json['siteOperands'] as List<dynamic>?)
-          ?.map((e) => SiteOperands.fromJson(e as Map<String, dynamic>))
+      siteOperand: (json['siteOperand'] as List<dynamic>?)
+          ?.map((e) => SiteOperand.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -70,11 +62,11 @@ Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
       'numberOfGeofences': instance.numberOfGeofences,
       'alertCategoryID': instance.alertCategoryID,
       'alertGroupID': instance.alertGroupID,
-      'operands': instance.operands,
-      'siteOperands': instance.siteOperands,
+      'operand': instance.operand,
+      'siteOperand': instance.siteOperand,
     };
 
-Operands _$OperandsFromJson(Map<String, dynamic> json) => Operands(
+Operand _$OperandFromJson(Map<String, dynamic> json) => Operand(
       operandID: json['operandID'] as int?,
       operandName: json['operandName'] as String?,
       operatorID: json['operatorID'] as int?,
@@ -83,7 +75,7 @@ Operands _$OperandsFromJson(Map<String, dynamic> json) => Operands(
       unit: json['unit'] as String?,
     );
 
-Map<String, dynamic> _$OperandsToJson(Operands instance) => <String, dynamic>{
+Map<String, dynamic> _$OperandToJson(Operand instance) => <String, dynamic>{
       'operandID': instance.operandID,
       'operandName': instance.operandName,
       'operatorID': instance.operatorID,
@@ -92,7 +84,7 @@ Map<String, dynamic> _$OperandsToJson(Operands instance) => <String, dynamic>{
       'unit': instance.unit,
     };
 
-SiteOperands _$SiteOperandsFromJson(Map<String, dynamic> json) => SiteOperands(
+SiteOperand _$SiteOperandFromJson(Map<String, dynamic> json) => SiteOperand(
       operandID: json['operandID'] as int?,
       operandName: json['operandName'] as String?,
       geoFenceID: json['geoFenceID'] as int?,
@@ -100,33 +92,11 @@ SiteOperands _$SiteOperandsFromJson(Map<String, dynamic> json) => SiteOperands(
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> _$SiteOperandsToJson(SiteOperands instance) =>
+Map<String, dynamic> _$SiteOperandToJson(SiteOperand instance) =>
     <String, dynamic>{
       'operandID': instance.operandID,
       'operandName': instance.operandName,
       'geoFenceID': instance.geoFenceID,
       'geoFenceUID': instance.geoFenceUID,
       'name': instance.name,
-    };
-
-Links _$LinksFromJson(Map<String, dynamic> json) => Links(
-      prev: json['prev'] as String?,
-      next: json['next'] as String?,
-      last: json['last'] as String?,
-    );
-
-Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{
-      'prev': instance.prev,
-      'next': instance.next,
-      'last': instance.last,
-    };
-
-Total _$TotalFromJson(Map<String, dynamic> json) => Total(
-      items: json['items'] as int?,
-      pages: json['pages'] as int?,
-    );
-
-Map<String, dynamic> _$TotalToJson(Total instance) => <String, dynamic>{
-      'items': instance.items,
-      'pages': instance.pages,
     };

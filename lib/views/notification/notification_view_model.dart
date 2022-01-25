@@ -3,7 +3,8 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/main_notification.dart' as Notification;
+
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
@@ -32,8 +33,8 @@ class NotificationViewModel extends InsiteViewModel {
   int? _totalFleetCount = 0;
   int get totalFleetCount => _totalFleetCount!;
 
-  List<Notifications> _assets = [];
-  List<Notifications> get assets => _assets;
+  List<Notification.Notification> _assets = [];
+  List<Notification.Notification> get assets => _assets;
 
   Users? _user;
   Users? get userData => _user;
@@ -46,6 +47,9 @@ class NotificationViewModel extends InsiteViewModel {
 
   String _serialNo = "";
   String get serialNo => _serialNo;
+
+  bool _showMenu = false;
+  bool get showMenu => _showMenu;
 
   bool _showEdit = false;
   bool get showEdit => _showEdit;
@@ -99,20 +103,19 @@ class NotificationViewModel extends InsiteViewModel {
   }
 
   getNotificationData() async {
-    NotificationsData? response = await _mainNotificationService!
+    Notification.NotificationsData? response = await _mainNotificationService!
         .getNotificationsData("0", "0", startDate, endDate);
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
       }
-      if (response.notifications != null &&
-          response.notifications!.isNotEmpty) {
-        _assets.addAll(response.notifications!);
+      if (response.notification != null && response.notification!.isNotEmpty) {
+        _assets.addAll(response.notification!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(response.notifications!);
+        _assets.addAll(response.notification!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -135,7 +138,7 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  onDetailPageSelected(Notifications? fleet) {
+  onDetailPageSelected(Notification.Notification? fleet) {
     _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
           fleet: Fleet(
@@ -147,28 +150,29 @@ class NotificationViewModel extends InsiteViewModel {
   }
 
   checkEditAndDeleteVisibility() {
-    Logger().i("checkEditAndDeleteVisibility");
     try {
       var count = 0;
+
       for (int i = 0; i < _assets.length; i++) {
         var data = _assets[i];
         if (data.isSelected!) {
           count++;
         }
       }
+
       if (count > 0) {
-        if (count >= 1) {
-          _showEdit = false;
-          _showDelete = true;
+        if (count > 1) {
+          _showMenu = true;
           _showDeSelect = true;
-        } else {
           _showEdit = true;
-          _showDelete = true;
+        } else {
+          _showMenu = true;
           _showDeSelect = true;
+          _showEdit = true;
         }
       } else {
         _showEdit = false;
-        _showDelete = false;
+        _showEdit = false;
         _showDeSelect = false;
       }
     } catch (e) {}
@@ -181,6 +185,17 @@ class NotificationViewModel extends InsiteViewModel {
       _loadingMore = true;
       notifyListeners();
       getNotificationData();
+      getNotificationData();
+    }
+  }
+
+  onSelectedItemClicK(String value, BuildContext context) {
+    if (value == "deselect") {
+      onItemDeselect();
+    } else if (value == "resolve") {
+      onItemDeselect();
+    } else if (value == "Delete") {
+      onItemDeselect();
     }
   }
 }

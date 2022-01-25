@@ -8,34 +8,19 @@ part of 'main_notification.dart';
 
 NotificationsData _$NotificationsDataFromJson(Map<String, dynamic> json) =>
     NotificationsData(
-      total: json['total'] == null
-          ? null
-          : Total.fromJson(json['total'] as Map<String, dynamic>),
-      notifications: (json['notifications'] as List<dynamic>?)
-          ?.map((e) => Notifications.fromJson(e as Map<String, dynamic>))
+      notification: (json['notification'] as List<dynamic>?)
+          ?.map((e) => Notification.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$NotificationsDataToJson(NotificationsData instance) =>
     <String, dynamic>{
-      'total': instance.total,
-      'notifications': instance.notifications,
+      'notification': instance.notification,
       'status': instance.status,
     };
 
-Total _$TotalFromJson(Map<String, dynamic> json) => Total(
-      items: json['items'] as int?,
-      pages: json['pages'] as int?,
-    );
-
-Map<String, dynamic> _$TotalToJson(Total instance) => <String, dynamic>{
-      'items': instance.items,
-      'pages': instance.pages,
-    };
-
-Notifications _$NotificationsFromJson(Map<String, dynamic> json) =>
-    Notifications(
+Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
       notificationUID: json['notificationUID'] as String?,
       notificationTitle: json['notificationTitle'] as String?,
       occurUTC: json['occurUTC'] as String?,
@@ -56,7 +41,7 @@ Notifications _$NotificationsFromJson(Map<String, dynamic> json) =>
       isSelected: json['isSelected'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$NotificationsToJson(Notifications instance) =>
+Map<String, dynamic> _$NotificationToJson(Notification instance) =>
     <String, dynamic>{
       'isSelected': instance.isSelected,
       'notificationUID': instance.notificationUID,
