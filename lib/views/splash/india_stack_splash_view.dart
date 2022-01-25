@@ -9,7 +9,6 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
-import 'package:quiver/strings.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
@@ -183,6 +182,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         }
       }
     });
+
+    flutterWebviewPlugin.onHttpError.listen((event) {
+      Logger().e(event);
+    });
   }
 
   getLoginDataV4(code) async {
@@ -219,8 +222,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                         !AppConfig.instance!.enalbeNativeLogin
                     ? WebviewScaffold(
                         url: AppConfig.instance!.apiFlavor == "visionlink"
-                            ? Urls.getV4LoginUrlVL(state, codeChallenge)
-                            : Urls.getV4LoginUrl(state, codeChallenge))
+                            ? Uri.encodeFull(
+                                Urls.getV4LoginUrlVL(state, codeChallenge))
+                            : Uri.encodeFull(
+                                Urls.getV4LoginUrl(state, codeChallenge)))
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(

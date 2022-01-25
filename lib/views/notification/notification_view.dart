@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/admin_manage_user.dart';
-import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/main_notification.dart' as notification;
+import 'package:insite/core/models/main_notification.dart' as main_notification;
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
-
-import 'package:insite/views/adminstration/reusable_widget/manage_user_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/notification_item.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
@@ -180,10 +175,9 @@ class NotificationView extends StatelessWidget {
                                         controller: viewModel.scrollController,
                                         padding: EdgeInsets.all(8),
                                         itemBuilder: (context, index) {
-                                          notification.Notification
+                                          main_notification.Notification
                                               notifications =
                                               viewModel.assets[index];
-
                                           return NotificationItem(
                                             notifications: notifications,
                                             onCallback: () {

@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
-
 import 'package:excel/excel.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -14,7 +12,6 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart' as permission;
 import 'package:file_picker/file_picker.dart' as file_picker;
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 
 class MultipleAssetRegistrationViewModel extends InsiteViewModel {

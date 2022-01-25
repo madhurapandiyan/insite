@@ -72,7 +72,7 @@
       buildConfiguration = "Debug-visionlink">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release-indiastack"
+      buildConfiguration = "Release-visionlink"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

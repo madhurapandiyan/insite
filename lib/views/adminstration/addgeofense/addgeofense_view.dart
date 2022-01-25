@@ -12,7 +12,6 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_geofence_widget/geofencing_map/geofencing_map.dart';
 import 'addgeofense_view_model.dart';

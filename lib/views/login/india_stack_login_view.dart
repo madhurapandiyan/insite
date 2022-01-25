@@ -67,7 +67,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   void initState() {
     loginResponse = widget.arguments;
     print(Urls.getV4LogoutUrl(
-        loginResponse!.id_token, Urls.tataHitachiRedirectUri));
+        loginResponse?.id_token, Urls.tataHitachiRedirectUri));
     Logger().d(
         "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse!.id_token, Urls.tataHitachiRedirectUri)}");
     Logger().d("IndiaStackLoginView codeVerifier $codeVerifier");
@@ -283,9 +283,11 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
               children: [
                 WebviewScaffold(
                   url: AppConfig.instance!.apiFlavor == "visionlink"
-                      ? Urls.logoutUrlVl(loginResponse!.id_token)
-                      : Urls.getV4LogoutUrl(
-                          loginResponse!.id_token, Urls.tataHitachiRedirectUri),
+                      ? Uri.encodeFull(
+                          Urls.logoutUrlVl(loginResponse!.id_token))
+                      : Uri.encodeFull(Urls.getV4LogoutUrl(
+                          loginResponse!.id_token,
+                          Urls.tataHitachiRedirectUri)),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()
               ],
