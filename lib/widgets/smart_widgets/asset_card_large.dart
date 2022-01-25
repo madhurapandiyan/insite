@@ -13,6 +13,9 @@ class AssetCardsLarge extends StatefulWidget {
   final List<AdminAssetsButtonType>? buttonTitle;
   final Function(AdminAssetsButtonType value)? onCallbackSelected;
   final bool showExapansionMenu;
+  final double? cardHeight;
+  final double? cardWidth;
+  final Axis? scrollDirection;
 
   AssetCardsLarge(
       {this.icon,
@@ -20,7 +23,10 @@ class AssetCardsLarge extends StatefulWidget {
       this.buttonTitle,
       this.showExapansionMenu = true,
       this.onCallbackSelected,
-      this.height});
+      this.height,
+      this.cardHeight,
+      this.cardWidth,
+      this.scrollDirection});
 
   @override
   State<AssetCardsLarge> createState() => _AssetCardsLargeState();
@@ -31,8 +37,8 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: widget.cardHeight,
+        width: widget.cardWidth,
         child: Column(
           children: [
             SizedBox(
@@ -77,6 +83,7 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
             Flexible(
               child: ListView.builder(
                   itemCount: widget.buttonTitle!.length,
+                  scrollDirection: widget.scrollDirection!,
                   itemBuilder: (builder, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),

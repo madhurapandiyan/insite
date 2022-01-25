@@ -10,6 +10,7 @@ class CustomTextBox extends StatelessWidget {
   final TextStyle? helperStyle;
   final Widget? suffixWidget;
   final String? helperText;
+  final Widget? prefixWidget;
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final Function(String)? validator;
@@ -20,30 +21,30 @@ class CustomTextBox extends StatelessWidget {
   final List<TextInputFormatter>? textInputFormat;
   bool? isenabled;
 
-  CustomTextBox({
-    this.title,
-    this.controller,
-    this.onChanged,
-    this.textInputFormat,
-    this.focusNode,
-    this.keyPadType,
-    this.showLoading = false,
-    this.labelTitle,
-    this.onFieldSubmmit,
-    this.isenabled = true,
-    this.onSaved,
-    this.validator,
-    this.value,
-    this.suffixWidget,
-    this.helperText,
-    this.helperStyle,
-  });
+  CustomTextBox(
+      {this.title,
+      this.controller,
+      this.onChanged,
+      this.textInputFormat,
+      this.focusNode,
+      this.keyPadType,
+      this.showLoading = false,
+      this.labelTitle,
+      this.onFieldSubmmit,
+      this.isenabled = true,
+      this.onSaved,
+      this.validator,
+      this.value,
+      this.suffixWidget,
+      this.prefixWidget,
+      this.helperStyle,
+      this.helperText});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
-       keyboardType: keyPadType,
+        keyboardType: keyPadType,
         onChanged: onChanged,
         onSaved: onSaved,
         onFieldSubmitted: onFieldSubmmit,

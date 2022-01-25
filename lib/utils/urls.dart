@@ -392,4 +392,16 @@ class Urls {
       "/osg-frame/frame-api/2.0/transferView/gettransferstatus";
   static String plantAssetCreationResult =
       "/osg-frame/frame-api/2.0/assetDetail/asset/model";
+
+// notification
+  static String mainNotificationUrl =
+      "/t/trimble.com/vss-notification/1.0/Notification/1";
+
+  static String notificationDetails =
+      "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
+
+//subnotification
+
+  static String manageNotificationsData =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
 }

@@ -3,6 +3,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_cards_small.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_setting_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/notification_widget.dart';
+import 'package:insite/widgets/smart_widgets/asset_card_large.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'adminstration_view_model.dart';
@@ -127,9 +128,9 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 //             viewModel.onRespectiveButtonClicked(value);
                 //           })
                 //     ]),
-                // SizedBox(
-                //   height: 30,
-                // ),
+                SizedBox(
+                  height: 30,
+                ),
                 // NotificationWidget(
                 //   showExapansionMenu: false,
                 //   icon: "assets/images/warning.svg",
@@ -138,9 +139,24 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 //     print("button is tapped");
                 //   },
                 // ),
-                // SizedBox(
-                //   height: 30,
-                // )
+                AssetCardsLarge(
+                  cardWidth: MediaQuery.of(context).size.width * 0.90,
+                  cardHeight: MediaQuery.of(context).size.height * 0.23,
+                  headerText: "notifications".toUpperCase(),
+                  icon: "assets/images/warning.svg",
+                  scrollDirection: Axis.horizontal,
+                  height: 15,
+                  buttonTitle: [
+                    AdminAssetsButtonType.values[24],
+                    AdminAssetsButtonType.values[25],
+                  ],
+                  onCallbackSelected: (value) {
+                    viewModel.onRespectiveButtonClicked(value);
+                  },
+                ),
+                SizedBox(
+                  height: 30,
+                )
               ],
             ),
           ),

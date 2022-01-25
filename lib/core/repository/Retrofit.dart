@@ -41,7 +41,10 @@ import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/core/models/idling_level.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
+
+import 'package:insite/core/models/manage_notifications.dart';
 
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/permission.dart';
@@ -1091,6 +1094,12 @@ abstract class RestClient {
     @Header("service") service,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @GET("{url}")
+  Future<NotificationsData> mainNotificationsData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
   @GET('{url}')
   Future<AssetGroupSummaryResponse> getGroupListData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
@@ -1135,6 +1144,12 @@ abstract class RestClient {
       @Path() String url,
       @Body() EditGroupPayLoad addGroupEditPayload,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("{url}")
+  Future<ManageNotificationsData> manageNotificationsData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 }
 
 @JsonSerializable()

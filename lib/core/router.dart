@@ -16,6 +16,11 @@ import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
     as view38;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
+import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart'
+    as view38;
+import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
+    as view39;
+import 'package:insite/views/notification/notification_view.dart' as view37;
 
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
@@ -104,16 +109,16 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs = settings.arguments as view9.DetailArguments?;
+        var fleetArgs = settings.arguments as view9.DetailArguments;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
-                  fleet: fleetArgs!.fleet,
+                  fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));
 
-      // case locationViewRoute:
-      //   return MaterialPageRoute(builder: (_) => view10.LocationView());
+      case locationViewRoute:
+        return MaterialPageRoute(builder: (_) => view10.LocationView());
       case healthViewRoute:
         return MaterialPageRoute(builder: (_) => view11.HealthView());
       case loginPageRoute:
@@ -190,10 +195,18 @@ class Router {
       case plantAssetCreationViewRoute:
         return MaterialPageRoute(
             builder: (_) => view31.PlantAssetCreationView());
+      case notificationViewRoute:
+        return MaterialPageRoute(builder: (_) => view37.NotificationView());
       case addGroupViewRoute:
         return MaterialPageRoute(builder: (_) => view37.AddGroupView());
       case manageGroupViewRoute:
         return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
+      case addNewNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view38.AddNewNotificationsView());
+      case manageNotificationsViewRoute:
+        return MaterialPageRoute(
+            builder: (_) => view39.ManageNotificationsView());
 
       default:
         return MaterialPageRoute(

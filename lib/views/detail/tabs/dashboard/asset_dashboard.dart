@@ -50,8 +50,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
               ),
               color: Theme.of(context).backgroundColor,
               border: Border.all(
-                    width: 1,
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
+                width: 1,
+                color: Theme.of(context).textTheme.bodyText1!.color!,
               ),
               shape: BoxShape.rectangle,
             ),
@@ -85,13 +85,13 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               ? widget.detail!.fuelLevelLastReported!
                                   .roundToDouble()
                               : null,
-                          lifeTimeFuel: widget.detail!.lifetimeFuel != null
+                          lifeTimeFuel: widget.detail?.lifetimeFuel != null
                               ? "lifetime fuel :\n" +
                                   widget.detail!.lifetimeFuel!
                                       .round()
                                       .toString() +
                                   " liters"
-                              : "",
+                              : " ",
                           percentage: widget.detail != null &&
                                   widget.detail!.fuelLevelLastReported != null
                               ? widget.detail!.fuelLevelLastReported.toString()
@@ -176,17 +176,18 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                 status: widget.detail!.lastLocationUpdateUTC !=
                                         null
                                     ? "Last Reported Time: ".toUpperCase() +
-                                        Utils.getLastReportedDateOneUTC(
-                                            widget.detail!.lastLocationUpdateUTC)
+                                        Utils.getLastReportedDateOneUTC(widget
+                                            .detail!.lastLocationUpdateUTC)
                                     : "No Data Receiveed",
                                 onMarkerTap: () {
                                   widget.switchTab!(3);
                                 },
                                 initLocation: null,
-                                location: viewModel
-                                            .assetDetail!.lastReportedLocation !=
+                                location: viewModel.assetDetail!
+                                            .lastReportedLocation !=
                                         null
-                                    ? viewModel.assetDetail!.lastReportedLocation
+                                    ? viewModel
+                                        .assetDetail!.lastReportedLocation
                                     : "",
                                 longitude: viewModel.assetDetail!
                                             .lastReportedLocationLongitude !=

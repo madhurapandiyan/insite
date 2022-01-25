@@ -28,7 +28,6 @@ class LocalService extends BaseService {
     return await preferences!.setString(TOKEN, token);
   }
 
-
   Future saveRefreshToken(refreshToken) async {
     return await preferences!.setString(REFRESH_TOKEN, refreshToken);
   }

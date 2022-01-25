@@ -162,6 +162,11 @@
             "view_name": "TransferHistoryView"
         },
         {
+            "file_path": "views/notification/notification_view.dart",
+            "route_name": "notification_ViewRoute",
+            "view_name": "NotificationView"
+        },
+        {
             "file_path": "views/add_group/add_group_view.dart",
             "route_name": "add_groupViewRoute",
             "view_name": "AddGroupView"
@@ -170,6 +175,16 @@
             "file_path": "views/manage_group/manage_group_view.dart",
             "route_name": "manage_groupViewRoute",
             "view_name": "ManageGroupView"
+        },
+        {
+            "file_path": "views/add_new_notifications/add_new_notifications_view.dart",
+            "route_name": "add_new_notificationsViewRoute",
+            "view_name": "AddNewNotificationsView"
+        },
+        {
+            "file_path": "views/manage_notifications/manage_notifications_view.dart",
+            "route_name": "manage_notificationsViewRoute",
+            "view_name": "ManageNotificationsView"
         }
     ]
 }

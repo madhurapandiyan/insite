@@ -39,7 +39,10 @@ class SmsManagementView extends StatelessWidget {
                       child: AssetCardsLarge(
                         headerText: 'SMS MANAGEMENT',
                         icon: "assets/images/message.svg",
+                        cardWidth: MediaQuery.of(context).size.width * 0.7,
+                        cardHeight: MediaQuery.of(context).size.height * 0.45,
                         showExapansionMenu: false,
+                        scrollDirection: Axis.vertical,
                         height: 30,
                         buttonTitle: [
                           AdminAssetsButtonType.values[19],

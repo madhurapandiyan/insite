@@ -11,8 +11,8 @@ class SubRegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SubRegistrationViewModel>.reactive(
-      builder:
-          (BuildContext context, SubRegistrationViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, SubRegistrationViewModel viewModel,
+          Widget? _) {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
@@ -35,6 +35,9 @@ class SubRegistrationView extends StatelessWidget {
                         headerText: 'REGISTRATION',
                         icon: "assets/images/path0.svg",
                         height: 20,
+                        scrollDirection: Axis.vertical,
+                        cardWidth: MediaQuery.of(context).size.width * 0.7,
+                        cardHeight: MediaQuery.of(context).size.height * 0.45,
                         buttonTitle: [
                           AdminAssetsButtonType.values[14],
                           AdminAssetsButtonType.values[15],

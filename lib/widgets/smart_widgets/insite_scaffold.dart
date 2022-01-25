@@ -11,7 +11,7 @@ import 'package:insite/views/filter/filter_view.dart';
 import 'package:insite/views/filter/refine.dart';
 import 'package:insite/views/global_search/global_search_view.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked_services/stacked_services.dart'as service;
+import 'package:stacked_services/stacked_services.dart' as service;
 import 'package:insite/views/error/error_widget.dart' as error;
 
 class InsiteScaffold extends StatefulWidget {
@@ -35,7 +35,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
   bool _isSearchSelected = false;
   bool _isFilterSelected = false;
   bool _isRefineSelected = false;
-  service.NavigationService? _navigationService = locator<service.NavigationService>();
+  service.NavigationService? _navigationService =
+      locator<service.NavigationService>();
 
   @override
   void initState() {
@@ -59,7 +60,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.USER_MANAGEMENT
+                  widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.NOTIFICATION
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -68,7 +70,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
               : false,
           shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
                   widget.screenType == ScreenType.ASSET_SETTINGS ||
-                  widget.screenType == ScreenType.ASSET_SETTINGS_FILTER
+                  widget.screenType == ScreenType.ASSET_SETTINGS_FILTER ||
+                  widget.screenType == ScreenType.NOTIFICATION
               ? false
               : true,
           screenType: widget.screenType,
@@ -80,7 +83,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
-                  widget.screenType == ScreenType.USER_MANAGEMENT
+                  widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.NOTIFICATION
               ? 80
               : 56,
           shouldShowTitle: widget.screenType == ScreenType.FLEET ||
@@ -91,7 +95,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.DASHBOARD ||
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
-                  widget.screenType == ScreenType.USER_MANAGEMENT
+                  widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.NOTIFICATION
               ? true
               : false,
           shouldShowRefine: widget.screenType == ScreenType.FLEET ||

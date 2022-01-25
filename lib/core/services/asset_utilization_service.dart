@@ -3,6 +3,8 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
@@ -29,6 +31,8 @@ class AssetUtilizationService extends BaseService {
       //  _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       // want to change local service customerSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getAccountInfo();
+
       customerSelected = await _localService!.getCustomerInfo();
       Logger().d("account selected " + accountSelected!.CustomerUID!);
       Logger().d("customer selected " + customerSelected!.CustomerUID!);
@@ -91,7 +95,7 @@ class AssetUtilizationService extends BaseService {
       if (assetUID != null) {
         queryMap["assetUid"] = assetUID.toString();
       }
-      if (date!=null && date.isNotEmpty) {
+      if (date != null && date.isNotEmpty) {
         queryMap["date"] = date;
       }
       if (isVisionLink) {
