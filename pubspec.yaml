@@ -58,12 +58,12 @@ dependencies:
   
 
   google_maps_controller: ^1.1.0
-  flutter_colorpicker: any
+  flutter_colorpicker: ^1.0.2
   form_field_validator: ^1.1.0
   excel: ^2.0.0-null-safety
-  file_picker: any
+  file_picker: ^4.2.7
   permission_handler: ^8.1.6
-  path_provider: any
+  path_provider: ^2.0.4
   flutter_downloader: ^1.5.1
   gql_dio_link: ^0.1.0
   open_file: ^3.2.1
