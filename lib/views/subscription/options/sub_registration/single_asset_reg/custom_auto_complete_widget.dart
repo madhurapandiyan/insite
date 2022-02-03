@@ -68,7 +68,7 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
         widget.isShowing
             ? SizedBox()
             : Container(
-                height: 200,
+                height: 150,
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 color: Theme.of(context).canvasColor,
                 child: ListView(

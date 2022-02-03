@@ -137,7 +137,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   getDateRangeFilterData() async {
     Logger().d("getDateRangeFilterData");
     List<String?>? appliedFilters =
-        await (_dateRangeService!.getDateRangeFilters());
+        await _dateRangeService!.getDateRangeFilters();
     Logger().d(appliedFilters!.length.toString());
     if (appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];

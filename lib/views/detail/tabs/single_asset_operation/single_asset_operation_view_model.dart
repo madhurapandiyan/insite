@@ -12,7 +12,8 @@ import 'package:insite/core/logger.dart';
 class SingleAssetOperationViewModel extends InsiteViewModel {
   Logger? log;
 
-  SingleAssetOperationService? _singleAssetOperationService = locator<SingleAssetOperationService>();
+  SingleAssetOperationService? _singleAssetOperationService =
+      locator<SingleAssetOperationService>();
 
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;

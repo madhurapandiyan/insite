@@ -11,6 +11,7 @@ import 'package:insite/core/services/asset_location_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
+import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
@@ -26,6 +27,7 @@ import 'package:stacked_services/stacked_services.dart';
 class DashboardViewModel extends InsiteViewModel {
   LocalService? _localService = locator<LocalService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  FilterService? _filterService = locator<FilterService>();
 
   AssetStatusService? _assetService = locator<AssetStatusService>();
   AssetLocationService? _assetLocationService = locator<AssetLocationService>();
@@ -121,6 +123,7 @@ class DashboardViewModel extends InsiteViewModel {
       getFilterData();
       getData();
     });
+    _filterService!.clearFilterDatabase();
   }
 
   void updateState(newState) {

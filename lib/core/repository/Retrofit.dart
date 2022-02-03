@@ -66,6 +66,8 @@ import 'package:insite/core/models/user.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
@@ -83,6 +85,7 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:random_string/random_string.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -1150,6 +1153,14 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @POST("{url}")
+  Future<dynamic> loginAudit(
+    @Path() String url,
+    @Header("X-VisionLink-CustomerUid") customerId,
+    @Header("service") service,
+    @Body() dynamic loginAuditPayload
+  );
 }
 
 @JsonSerializable()
@@ -1278,11 +1289,12 @@ class AuthenticatePayload {
   String? mobile;
   String? uuid;
   String? email;
+  String codeverifier = randomAlphaNumeric(43);
 
   AuthenticatePayload({
     this.env = "THC",
     this.grantType = "authorization_code",
-    this.code = "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
+    this.code,
     this.redirectUri = "https://dev-oem.frame-oesolutions.com/auth",
     this.client_key = "130510bd-8a90-4278-b97a-d811df44ef10",
     this.clientSecret = "testSecret",

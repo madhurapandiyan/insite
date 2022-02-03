@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
@@ -477,7 +479,13 @@ class Utils {
     return title;
   }
 
-  static String generateCodeChallenge(String codeVerifier) {
+  static String generateCodeChallenge(String codeVerifier, bool isToSave) {
+    final LocalService? _localService = locator<LocalService>();
+    Logger().w(codeVerifier);
+    if (isToSave) {
+      _localService!.saveCodeVerfier(codeVerifier);
+    }
+
     var bytes = utf8.encode(codeVerifier);
     var digest = sha256.convert(bytes);
     var codeChallenge = base64UrlEncode(digest.bytes);

@@ -17,7 +17,6 @@ class Network {
     String? userId,
   ) async {
     final client = dio.Dio();
-
     final Link link = DioLink(graphqlEndpoint, client: client, defaultHeaders: {
       "content-type": "application/json",
       "X-VisionLink-CustomerUid": customerId!,

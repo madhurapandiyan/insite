@@ -83,7 +83,10 @@ class Router {
       case visonLink.splashViewRoute:
         return MaterialPageRoute(builder: (_) => view37.SplashView());
       case indiaStackSplashViewRoute:
-        return MaterialPageRoute(builder: (_) => view0.IndiaStackSplashView());
+        return MaterialPageRoute(
+            builder: (_) => view0.IndiaStackSplashView(
+                  showingSnackbar: false,
+                ));
       case customerSelectionViewRoute:
         return MaterialPageRoute(builder: (_) => view1.AccountSelectionView());
       case homeViewRoute:
@@ -96,7 +99,6 @@ class Router {
             builder: (_) => view4.IndiaStackLoginView(
                   arguments: loginArgs!.response,
                 ));
-        return MaterialPageRoute(builder: (_) => view4.IndiaStackLoginView());
       case indiaStackLogoutViewRoute:
         return MaterialPageRoute(builder: (_) => view5.IndiaStackLogoutView());
       case globalSearchViewRoute:

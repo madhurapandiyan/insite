@@ -47,7 +47,8 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                 : "Fleet Status ".toUpperCase() +
                                     "(" +
                                     viewModel.devices.length.toString() +
-                                    ")",
+                                   
+                                    " of ${viewModel.subscriptionDashboardDetailResult!.result!.first.first.count}"+" )",
                             size: 14,
                             fontWeight: FontWeight.w700,
                           ),
@@ -82,6 +83,9 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                           ),
                         )
                       ]),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Expanded(
                     child: viewModel.loading
                         ? InsiteProgressBar()
@@ -94,27 +98,9 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                   DetailResult result =
                                       viewModel.devices[index];
                                   Logger().i(result.count);
-                                  return Column(
-                                    children: [
-                                      PageHeader(
-                                        isDashboard: false,
-                                        count: viewModel.devices.length,
-                                        total: viewModel
-                                            .subscriptionDashboardDetailResult!
-                                            .result!
-                                            .first
-                                            .first
-                                            .count,
-                                        screenType: ScreenType.SUBSCRIPTION,
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      DeviceListItem(
-                                        detailResult: result,
-                                        onCallback: () {},
-                                      ),
-                                    ],
+                                  return DeviceListItem(
+                                    detailResult: result,
+                                    onCallback: () {},
                                   );
                                 },
                               )

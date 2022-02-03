@@ -429,7 +429,7 @@ class _SingleAssetRegistrationViewState
                                                 textBoxTitle: 'Dealer Code:',
                                                 onChange: (value) {
                                                   viewModel.onDealerCodeChanges(
-                                                      code: int.parse(value),
+                                                      code: value,
                                                       type: "DEALER");
                                                 },
                                               ),
@@ -659,10 +659,6 @@ class _SingleAssetRegistrationViewState
                                           return;
                                         } else {
                                           viewModel.getTotalDataDetails();
-
-                                          Logger().wtf(
-                                              ' datalength: ${viewModel.totalList}');
-
                                           await showGeneralDialog(
                                             context: context,
                                             barrierDismissible: false,

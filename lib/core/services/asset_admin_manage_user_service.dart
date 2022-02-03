@@ -24,6 +24,7 @@ import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -121,8 +122,8 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<AdminManageUser?> getAdminManageUserListData(
-      pageNumber, String searchKey, List<FilterData?>? appliedFilters) async {
+  Future<AdminManageUser?> getAdminManageUserListData(pageNumber,
+      String searchKey, List<FilterData?>? appliedFilters, String query) async {
     Logger().i(
         "getAdminManageUserListData $isVisionLink filters count ${appliedFilters!.length}");
     try {
@@ -133,6 +134,11 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (customerSelected != null) {
         queryMap["customerUid"] = customerSelected!.CustomerUID!;
+      }
+      if (enableGraphQl) {
+        var data =await Network().getGraphqlData(query, accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+            Logger().e(data);
       }
       if (isVisionLink) {
         queryMap["sort"] = "";
@@ -448,6 +454,30 @@ class AssetAdminManagerUserService extends BaseService {
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
             "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
+        Logger().w(AddUserDataIndStack(
+                fname: firstName,
+                customerUid: customerSelected != null
+                    ? customerSelected!.CustomerUID
+                    : accountSelected!.CustomerUID,
+                lname: lastName,
+                email: email,
+                phone: phoneNumber,
+                isAssetSecurityEnabled: true,
+                src: "VisionLink",
+                company: "NYL",
+                language: "en-US",
+                address: AddressData(
+                    addressline1: address,
+                    state: state,
+                    addressline2: " ",
+                    country: country,
+                    zipcode: zipcode),
+                roles: roles,
+                details: Details(
+                    job_title: jobTitle,
+                    job_type: jobType,
+                    user_type: "Standard"))
+            .toJson());
         AddUser addUserResponse = await MyApi().getClient()!.inviteUser(
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
@@ -912,8 +942,6 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  
-
   Future<AssetCount?> getGeofenceCountData() async {
     try {
       Map<String, String> queryMap = Map();
@@ -965,7 +993,7 @@ class AssetAdminManagerUserService extends BaseService {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
             .getGroupFavoriteData(
-                Urls.getManageGroupData+"/Favourite",
+                Urls.getManageGroupData + "/Favourite",
                 FavoritePayLoad(groupUID: groupId, isFavourite: isFavourite),
                 accountSelected!.CustomerUID);
         return updateResponse;

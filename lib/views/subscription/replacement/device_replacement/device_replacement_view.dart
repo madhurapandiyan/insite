@@ -287,18 +287,20 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                           viewModel
                                                               .onRegister()
                                                               .then((value) {
+                                                                 viewModel.onReplacementSuccessful();
                                                             if (value ==
                                                                 "success") {
                                                               Navigator.of(
                                                                       context)
                                                                   .pop();
-                                                              // controller.animateToPage(
-                                                              //     0,
-                                                              //     duration: Duration(
-                                                              //         milliseconds:
-                                                              //             500),
-                                                              //     curve: Curves
-                                                              //         .easeInOut);
+
+                                                              controller.animateToPage(
+                                                                  0,
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          500),
+                                                                  curve: Curves
+                                                                      .easeInOut);
                                                             } else {}
                                                           });
                                                         },

@@ -292,6 +292,27 @@ faultCountData(startDateTime:$startDate, endDateTime: $endDate){
     return faultCountData;
   }
 
+  String userManagementUserList() {
+    return """query{
+userManagementUserList{
+  total{
+    pages
+    items
+  },
+  users{
+    first_name
+    last_name
+    user_type
+    loginId
+    job_type
+    job_title
+    
+  }
+}
+  
+}""";
+  }
+
   String getFleetUtilization(String startDate, String endDate) {
     final String fleetUtilization = """
   query getFleetUtilization{

@@ -43,8 +43,8 @@ class _TransferHistoryViewState extends State<TransferHistoryView> {
                                 ? "Transfer History ".toUpperCase()
                                 : "Transfer History ".toUpperCase() +
                                     "(" +
-                                    viewModel.devices.length.toString() +
-                                    ")",
+                                    viewModel.devices.length.toString() + " of ${viewModel.subscriptionDashboardDetailResultresult!.result!.last.last.count} )"
+                                    ,
                             size: 14,
                             fontWeight: FontWeight.w700,
                           ),

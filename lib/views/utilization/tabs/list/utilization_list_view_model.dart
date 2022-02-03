@@ -119,6 +119,7 @@ class UtilizationListViewModel extends InsiteViewModel {
           graphqlSchemaService!.getFleetUtilization(
               Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
               Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+              Logger().e(result?.toJson());
       if (result != null) {
         if (result.assetResults!.isNotEmpty) {
           _utilLizationListData.addAll(result.assetResults!);

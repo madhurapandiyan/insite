@@ -62,7 +62,7 @@ class CustomTextBox extends StatelessWidget {
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
-            helperStyle: helperStyle,
+           helperStyle: helperStyle,
             suffixIcon: suffixWidget,
             helperText: helperText,
             labelText: labelTitle,

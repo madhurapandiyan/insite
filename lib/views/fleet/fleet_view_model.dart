@@ -54,33 +54,41 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   getFleetSummaryList() async {
-    FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate,
-        endDate,
-        pageSize,
-        pageNumber,
-        graphqlSchemaService!.fleetSummary,
-        appliedFilters);
-    if (result != null) {
-      if (result.pagination!.totalCount != null) {
-        _totalCount = result.pagination!.totalCount!.toInt();
-      }
-      if (result.fleetRecords != null && result.fleetRecords!.isNotEmpty) {
-        Logger().i("list of assets " + result.fleetRecords!.length.toString());
-        _assets.addAll(result.fleetRecords!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
+          startDate,
+          endDate,
+          pageSize,
+          pageNumber,
+          graphqlSchemaService!.fleetSummary,
+          appliedFilters);
+      if (result != null) {
+        if (result.pagination!.totalCount != null) {
+          _totalCount = result.pagination!.totalCount!.toInt();
+        }
+        if (result.fleetRecords != null && result.fleetRecords!.isNotEmpty) {
+          Logger()
+              .i("list of assets " + result.fleetRecords!.length.toString());
+          _assets.addAll(result.fleetRecords!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _assets.addAll(result.fleetRecords!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _assets.addAll(result.fleetRecords!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
+    } catch (e) {
+      Logger().e(e.toString());
       _loading = false;
-      _loadingMore = false;
+      _assets.clear();
       notifyListeners();
     }
   }
@@ -112,31 +120,38 @@ class FleetViewModel extends InsiteViewModel {
   }
 
   void refresh() async {
-    await getSelectedFilterData();
-    pageNumber = 1;
-    pageSize = 50;
-    _isRefreshing = true;
-    _shouldLoadmore = true;
-    notifyListeners();
-    FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-        startDate,
-        endDate,
-        pageSize,
-        pageNumber,
-        graphqlSchemaService!.fleetSummary,
-        appliedFilters);
-    if (result != null &&
-        result.fleetRecords != null &&
-        result.fleetRecords!.isNotEmpty) {
-      if (result.pagination!.totalCount != null) {
-        _totalCount = result.pagination!.totalCount!.toInt();
-      }
-      _assets.clear();
-      _assets.addAll(result.fleetRecords!);
-      _isRefreshing = false;
+    try {
+      await getSelectedFilterData();
+      pageNumber = 1;
+      pageSize = 50;
+      _isRefreshing = true;
+      _shouldLoadmore = true;
       notifyListeners();
-    } else {
-      _isRefreshing = false;
+      FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
+          startDate,
+          endDate,
+          pageSize,
+          pageNumber,
+          graphqlSchemaService!.fleetSummary,
+          appliedFilters);
+      if (result != null &&
+          result.fleetRecords != null &&
+          result.fleetRecords!.isNotEmpty) {
+        if (result.pagination!.totalCount != null) {
+          _totalCount = result.pagination!.totalCount!.toInt();
+        }
+        _assets.clear();
+        _assets.addAll(result.fleetRecords!);
+        _isRefreshing = false;
+        notifyListeners();
+      } else {
+        _isRefreshing = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      _assets.clear();
+      _loading = false;
       notifyListeners();
     }
   }

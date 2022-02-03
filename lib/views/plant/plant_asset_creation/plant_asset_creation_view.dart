@@ -166,7 +166,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                   data: dataModel,
                                   onAssetSerialValueChange: (String value) {
                                     viewModel.getAssetSerialListValue(
-                                        value, index);
+                                        value.toUpperCase(), index);
                                   },
                                   onDeviceIdValueChange: (String value) {
                                     viewModel.getDeviceIdListValue(

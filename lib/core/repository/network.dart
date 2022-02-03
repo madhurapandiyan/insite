@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter/material.dart';
+
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_services/stacked_services.dart' as service;
 import '../locator.dart';
 import 'Retrofit.dart';
 
@@ -74,7 +73,7 @@ class MyApi {
 }
 
 class HttpWrapper {
-  SnackbarService? snackbarService = locator<SnackbarService>();
+  service.SnackbarService? snackbarService = locator<service.SnackbarService>();
   String codeVerifier = randomAlphaNumeric(43);
   static String _createCodeVerifier() {
     // return List.generate(
@@ -121,11 +120,158 @@ class HttpWrapper {
   var clientNine;
   var clientTen;
 
+  Future<Response<dynamic>> dioRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dio.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioOneRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioOne.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioTwoRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioThreeRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioFourRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioFiveRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioSixRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioSevenRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioEightRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioNineRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        contentType: requestOption.contentType,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioNine.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<Response<dynamic>> dioTenRetryInterceptor(
+      RequestOptions requestOption) async {
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioTwo.request(requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
+
+  Future<LoginResponse?> refreshToken() async {
+    var currentCodeVerifier = await _localService!.getCodeVerifier();
+    var refreshToken = await _localService!.getRefreshToken();
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(), true);
+    Logger().e("code verifier $currentCodeVerifier");
+    Logger().i("refresh token $refreshToken");
+    Logger().w("code challenge $codeChallenge");
+    LoginResponse? result = await _loginService!.getRefreshLoginDataV4(
+        code_challenge: codeChallenge,
+        code_verifier: currentCodeVerifier,
+        token: refreshToken);
+    return result;
+  }
+
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
       baseUrl: AppConfig.instance!.baseUrl,
-      connectTimeout: 30000,
-      receiveTimeout: 30000,
+      connectTimeout: 60000,
+      receiveTimeout: 60000,
     );
     dio = Dio(options);
     dioOne = Dio(options);
@@ -139,8 +285,25 @@ class HttpWrapper {
         onResponse: (responce, handler) {
           return handler.next(responce);
         },
-        // onError: (DioError error,
-        //     ErrorInterceptorHandler errorInterceptorHandler) async {
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          dio.interceptors.requestLock;
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioRetryInterceptor(error.requestOptions));
+
+              // await _loginService!.saveToken(
+              //     result.access_token, result.expires_in.toString(), false);
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         //   if (error.response?.statusCode == 401) {
         //     var code = await _localService!.getAuthCode();
         //     var token = await _localService!.getRefreshToken();
@@ -177,10 +340,21 @@ class HttpWrapper {
 
     dioOne.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioOneRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -198,10 +372,21 @@ class HttpWrapper {
 
     dioTwo.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioTwoRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -218,10 +403,21 @@ class HttpWrapper {
 
     dioThree.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioThreeRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -239,10 +435,21 @@ class HttpWrapper {
 
     dioFour.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioFourRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -260,10 +467,21 @@ class HttpWrapper {
 
     dioFive.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioFiveRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers
@@ -278,10 +496,21 @@ class HttpWrapper {
 
     dioSix.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioSixRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -299,10 +528,21 @@ class HttpWrapper {
 
     dioSeven.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioSevenRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -320,10 +560,21 @@ class HttpWrapper {
 
     dioEight.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioEightRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -343,10 +594,21 @@ class HttpWrapper {
 
     dioNine.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+           if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioNineRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({
@@ -365,10 +627,21 @@ class HttpWrapper {
 
     dioTen.interceptors
       ..add(InterceptorsWrapper(
-        // onError:
-        //     (DioError error, ErrorInterceptorHandler errorInterceptorHandler) {
-        //   if (error.response!.statusCode == 401) {}
-        // },
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.statusCode == 401) {
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioNineRetryInterceptor(error.requestOptions));
+            }
+            return errorInterceptorHandler.next(error);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({

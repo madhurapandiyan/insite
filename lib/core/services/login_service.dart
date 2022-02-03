@@ -11,6 +11,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+import 'package:random_string/random_string.dart';
 import 'package:stacked_services/stacked_services.dart';
 import '../locator.dart';
 import 'local_service.dart';
@@ -55,9 +56,10 @@ class LoginService extends BaseService {
 
   Future<AuthenticatedUser?> getAuthenticateUserId() async {
     try {
+      var code = await _localService!.getCodeVerifier();
       AuthenticatedUser? userAuthenticateStatus;
-      AuthenticatePayload data =
-          AuthenticatePayload(uuid: userInfo!.sub, email: userInfo!.email);
+      AuthenticatePayload data = AuthenticatePayload(
+          uuid: userInfo!.sub, email: userInfo!.email, code: code);
       Logger().d(data.toJson());
       if (isVisionLink) {
       } else {
@@ -75,7 +77,7 @@ class LoginService extends BaseService {
 
   getUser(token, shouldRemovePreviousRoutes) async {
     _localService!.setIsloggedIn(true);
-    _localService!.saveToken(token);
+   await _localService!.saveToken(token);
     try {
       userInfo = await getLoggedInUserInfo();
       await getAuthenticateUserId();
@@ -202,6 +204,16 @@ class LoginService extends BaseService {
     }
   }
 
+  Future loginAudit() async {
+    Customer? customer = await _localService!.getAccountInfo();
+    if (isVisionLink) {
+    } else {
+      var data = MyApi().getClientSix()!.loginAudit(Urls.loginAudit,customer!.CustomerUID!,
+          "in-identitymanager-identitywebapi", {"isUpdated": true});
+      return data;
+    }
+  }
+
   Future<LoginResponse?> getLoginData(
     username,
     password,
@@ -256,8 +268,8 @@ class LoginService extends BaseService {
     return null;
   }
 
-  Future<LoginResponse?> getRefreshLoginDataV4({String? code,
-      String? code_challenge, String? code_verifier, String? token}) async {
+  Future<LoginResponse?> getRefreshLoginDataV4(
+      {String? code_challenge, String? code_verifier, String? token}) async {
     try {
       if (isVisionLink) {
       } else {

@@ -175,6 +175,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   int pageNumber = 0;
   int pageSize = 100;
+  bool isDeviceIdChange = false;
 
   List<HierarchyModel> detailResultList = [];
 
@@ -203,8 +204,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {});
   }
 
-  allowAssetTransferClicked() {
+  allowAssetTransferClicked() async {
     //_enableCustomerDetails = !_enableCustomerDetails;
+    if (isDeviceIdChange) {
+      await onSelectedDeviceId(deviceIdController.text);
+    }
+
     if (deviceIdController.text.isNotEmpty) {
       if (deviceDetailsPerId!.result!.first.CustomerCode == null &&
           deviceDetailsPerId!.result!.first.CustomerName == null) {
@@ -216,8 +221,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         // customerEmailController.clear();
         // customerNameController.clear();
         notifyListeners();
-        Fluttertoast.showToast(
-            msg:
+        snackbarService!.showSnackbar(
+            message:
                 "This Asset/device not provisioned under a Dealer & Customer !!");
         return;
       } else {
@@ -731,8 +736,15 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
           customerNameController.clear();
           notifyListeners();
           return;
+        } else {
+          customerCodeController.clear();
+          customerNameController.clear();
+          customerEmailController.clear();
+          machineModelController.text =
+              deviceDetailsPerId!.result!.first.model!;
         }
       } else {
+        Logger().e(deviceDetailsPerId!.result!.first.model!);
         customerDetails = await _subscriptionService!.getCustomerDetails(value);
         customerCodeController.text =
             customerDetails!.customerResult!.customerData!.code!;
@@ -758,21 +770,56 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   }
 
   onSelectedSerialNo(String value) {
-    _deviceList.forEach((element) {
+    _deviceList.forEach((element) async {
       if (element.vIN == value) {
-        deviceIdController.text = element.gPSDeviceID!;
-        machineSerialNumberController.text = element.vIN!;
-        _serialNoList.clear();
+        var data = await _subscriptionService!
+            .getDeviceDetailsPerDeviceId(element.gPSDeviceID!);
+        if (data?.result?.first.CustomerCode == null &&
+            data?.result?.first.CustomerName == null) {
+          if (_allowTransferAsset) {
+            _snackbarService.showSnackbar(
+                message:
+                    "This Asset/device not provisioned under a Dealer & Customer !!");
+            deviceIdController.clear();
+            machineSerialNumberController.clear();
+            machineModelController.clear();
+            customerCodeController.clear();
+            customerEmailController.clear();
+            customerNameController.clear();
+            notifyListeners();
+            return;
+          } else {
+            customerCodeController.clear();
+            customerNameController.clear();
+            customerEmailController.clear();
+            machineModelController.text =
+                deviceDetailsPerId!.result!.first.model!;
+          }
+        } else {
+          customerDetails = await _subscriptionService!
+              .getCustomerDetails(element.gPSDeviceID!);
+          customerCodeController.text =
+              customerDetails!.customerResult!.customerData!.code!;
+          customerEmailController.text =
+              customerDetails!.customerResult!.customerData!.email!;
+          customerNameController.text =
+              customerDetails!.customerResult!.customerData!.name!;
+          machineModelController.text = data!.result!.first.model!;
+          deviceIdController.text = element.gPSDeviceID!;
+          machineSerialNumberController.text = element.vIN!;
+          isDeviceIdChange = true;
+          _serialNoList.clear();
+          onSelectingSerialNo(value);
+        }
       }
     });
-    onSelectingSerialNo(value);
-    notifyListeners();
   }
 
   onSelectingSerialNo(String value) async {
     var data =
         await _subscriptionService!.getDeviceAssetDetailsBySerialNo(value);
     machineModelController.text = data!.result!.first.model!;
+    notifyListeners();
   }
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
@@ -906,7 +953,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     }
   }
 
-  onDealerCodeChanges({String? name, String? type, int? code}) async {
+  onDealerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
       detailResultList.clear();
       if (code == null || code.toString().isEmpty) {

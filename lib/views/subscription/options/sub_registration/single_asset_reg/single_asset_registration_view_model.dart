@@ -361,6 +361,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     deviceNameController.clear();
     deviceIdController.clear();
     customerNameController.clear();
+    _assetModel=" ";
     notifyListeners();
   }
 
@@ -373,7 +374,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         deviceIdChange = await _subscriptionService!
             .getSubscriptionDeviceListData(
                 filterType: filterType,
-                fitler: filter,
+                filter: filter,
                 name: name,
                 start: pageNumber,
                 limit: pageSize);
@@ -693,7 +694,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  onDealerCodeChanges({String? name, String? type, int? code}) async {
+  onDealerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
       detailResultList.clear();
       if (code == null || code.toString().isEmpty) {

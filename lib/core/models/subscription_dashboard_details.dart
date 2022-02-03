@@ -117,6 +117,9 @@ class DetailResult {
   @JsonKey(name: "Status")
   String? Status;
 
+    @JsonKey(name: "Description")
+  String? Description;
+
   @JsonKey(name: "InsertUTC")
   String? InsertUTC;
 
@@ -156,6 +159,7 @@ class DetailResult {
       this.SourceCustomerType,
       this.Status,
       this.count,
+      this.Description,
       this.vin});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>

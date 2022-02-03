@@ -347,7 +347,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 textBoxTitle: 'Dealer Code:',
                                                 onChange: (value) {
                                                   viewModel.onDealerCodeChanges(
-                                                      code: int.parse(value),
+                                                      code: value,
                                                       type: "DEALER");
                                                 },
                                               ),

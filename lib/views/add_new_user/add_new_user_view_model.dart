@@ -53,8 +53,8 @@ class AddNewUserViewModel extends InsiteViewModel {
   ];
 
   List<String> jobTypeList = [
-    "Employee",
-    "Non Employee",
+    "-Employee",
+    "Non-Employee",
   ];
 
   List<String> jobTitleList = [

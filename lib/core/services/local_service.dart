@@ -20,12 +20,21 @@ class LocalService extends BaseService {
   static const String HAS_PERMISSION = "hasPermission";
   static const String USERID = "userId";
   static const String REFRESH_TOKEN = "refresh_token";
+  static const String CODE_VERIFIER="code_verifier";
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
   }
 
   Future saveToken(token) async {
     return await preferences!.setString(TOKEN, token);
+  }
+
+  Future saveCodeVerfier(code_verifier) async{
+    return await preferences!.setString(CODE_VERIFIER, code_verifier);
+  }
+
+  Future getCodeVerifier()async{
+    return await preferences!.getString(CODE_VERIFIER);
   }
 
   Future saveRefreshToken(refreshToken) async {
@@ -158,5 +167,6 @@ class LocalService extends BaseService {
     await preferences!.remove(USER_INFO);
     await preferences!.remove(IS_LOGGEDIN);
     await preferences!.clear();
+    await preferences!.remove(CODE_VERIFIER);
   }
 }

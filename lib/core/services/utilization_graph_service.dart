@@ -199,12 +199,12 @@ class UtilizationGraphsService extends BaseService {
   }
 
   Future<TotalFuelBurned?> getTotalFuelBurned(
-    String interval,
+    String? interval,
     String? startDate,
     String? endDate,
-    int pageNumber,
-    int pageSize,
-    bool includepagination,
+    int? pageNumber,
+    int? pageSize,
+    bool? includepagination,
   ) async {
     try {
       if (isVisionLink) {
@@ -214,12 +214,12 @@ class UtilizationGraphsService extends BaseService {
             endDate.isNotEmpty) {
           TotalFuelBurned response =
               await MyApi().getClient()!.getTotalFuelBurnedVL(
-                    interval,
+                    interval!,
                     startDate,
                     endDate,
-                    pageNumber,
-                    pageSize,
-                    includepagination,
+                    pageNumber!,
+                    pageSize!,
+                    includepagination!,
                     accountSelected!.CustomerUID,
                   );
           if (response != null) {
@@ -272,12 +272,12 @@ class UtilizationGraphsService extends BaseService {
   }
 
   Future<IdlePercentTrend?> getIdlePercentTrend(
-    String interval,
+    String? interval,
     String? startDate,
     String? endDate,
-    int pageNumber,
-    int pageSize,
-    bool includepagination,
+    int? pageNumber,
+    int? pageSize,
+    bool? includepagination,
   ) async {
     try {
       if (isVisionLink) {
@@ -287,12 +287,12 @@ class UtilizationGraphsService extends BaseService {
             endDate.isNotEmpty) {
           IdlePercentTrend response =
               await MyApi().getClient()!.getIdlePercentTrendVL(
-                    interval,
+                    interval!,
                     startDate,
                     endDate,
-                    pageNumber,
-                    pageSize,
-                    includepagination,
+                    pageNumber!,
+                    pageSize!,
+                    includepagination!,
                     accountSelected!.CustomerUID,
                   );
           if (response != null) {
@@ -331,7 +331,7 @@ class UtilizationGraphsService extends BaseService {
                       FilterUtils.constructQueryFromMap(queryMap),
                   accountSelected!.CustomerUID,
                   Urls.vfleetPrefix);
-          if (response != null) {
+          if (response!=null) {
             return response;
           }
           return null;
