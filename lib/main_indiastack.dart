@@ -30,7 +30,7 @@ void main() async {
       enableLogin: false,
       enalbeNativeLogin: false,
       isProd: false,
-      enableGraphql: true,
+      enableGraphql: false,
       apiFlavor: "indiastack");
   await LocatorInjector.setUpLocator();
   SnackbarStyling.setupSnackbarUi();
