@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
@@ -52,13 +53,13 @@ class FaultListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: Utils.getMakeTitle(
-                                  fault!.asset!['details']["makeCode"]) +
+                                  fault!.asset['details']["makeCode"]) +
                               "\n" +
                               fault?.asset["details"]["model"],
                           path: fault?.asset["details"] != null &&
                                   fault?.asset["details"]["model"] != null
                               ? Utils()
-                                  .imageData(fault!.asset!["details"]["model"])
+                                  .imageData(fault!.asset["details"]["model"])
                               : "assets/images/EX210.png",
                         ),
                         InsiteTableRowItem(

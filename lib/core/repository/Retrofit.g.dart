@@ -3521,7 +3521,28 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NotificationsData> mainNotificationsData(url, customerId) async {
+  Future<NotificationsData> mainNotificationsData(
+      url, customerId, service) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': service
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NotificationsData>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotificationsData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NotificationsData> mainNotificationsDataVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -3731,6 +3752,23 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageNotificationsData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AlertTypes> getNotificationTypesData(url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AlertTypes>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AlertTypes.fromJson(_result.data!);
     return value;
   }
 

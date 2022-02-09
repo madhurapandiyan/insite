@@ -219,7 +219,7 @@ class NotificationView extends StatelessWidget {
             ? PopupMenuItem(
                 value: "Deselect",
                 child: InsiteText(
-                  text: "Deselect",
+                  text: "eselect",
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ))

@@ -59,8 +59,8 @@ class FaultViewModel extends InsiteViewModel {
     Logger().d("getFaultViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Logger().d("start date " + startDate!);
-    Logger().d("end date " + endDate!);
+    // Logger().d("start date " + startDate!);
+    // Logger().d("end date " + endDate!);
     FaultSummaryResponse? result = await _faultService!.getFaultSummaryList(
         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
@@ -70,6 +70,10 @@ class FaultViewModel extends InsiteViewModel {
         graphqlSchemaService!.getfaultQueryString(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+
+    // result!.faults!.forEach((element) {
+    //   Logger().i(element.details!.toJson());
+    // });
 
     if (result != null) {
       _totalCount = result.total;

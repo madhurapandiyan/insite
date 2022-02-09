@@ -29,11 +29,13 @@ Map<String, dynamic> _$AdminManageUserToJson(AdminManageUser instance) =>
 Links _$LinksFromJson(Map<String, dynamic> json) => Links(
       next: json['next'] as String?,
       last: json['last'] as String?,
+      prev: json['prev'] as String?,
     );
 
 Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{
       'next': instance.next,
       'last': instance.last,
+      'prev': instance.prev,
     };
 
 Total _$TotalFromJson(Map<String, dynamic> json) => Total(

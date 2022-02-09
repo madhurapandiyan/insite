@@ -28,7 +28,7 @@ void main() async {
       enableLogin: true,
       enalbeNativeLogin: false,
       isProd: false,
-      enableGraphql: false,
+      enableGraphql: true,
       iconPath: "assets/images/hitachi.png");
   await LocatorInjector.setUpLocator();
   SnackbarStyling.setupSnackbarUi();

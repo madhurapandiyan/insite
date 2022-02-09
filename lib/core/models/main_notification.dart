@@ -5,12 +5,16 @@ part 'main_notification.g.dart';
 
 @JsonSerializable()
 class NotificationsData {
-  final List<Notification>? notification;
   final Total? total;
+  final List<Notification>? notifications;
 
   final String? status;
 
-  NotificationsData({this.notification, this.status, this.total});
+  NotificationsData({
+    this.total,
+    this.notifications,
+    this.status,
+  });
 
   factory NotificationsData.fromJson(Map<String, dynamic> json) =>
       _$NotificationsDataFromJson(json);

@@ -13,6 +13,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _notificationService!.setUp();
+    setUp();
     getManageNotificationsData();
   }
 

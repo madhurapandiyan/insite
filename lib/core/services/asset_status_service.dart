@@ -475,6 +475,7 @@ class AssetStatusService extends DataBaseService {
                     accountSelected!.CustomerUID,
                   );
           if (faultCountResponse != null) {
+            Logger().wtf("response");
             return faultCountResponse;
           } else {
             return null;

@@ -238,7 +238,6 @@ class Urls {
   static String getGeoFenceData =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
   static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
- 
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
@@ -322,8 +321,7 @@ class Urls {
   static String downloadResetData =
       "$subscriptionPrefix/assetDetail/asset/activate/";
   static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
-  static String getEditGroupData="/t/trimble.com/vss-groupservice/1.0/";
-  
+  static String getEditGroupData = "/t/trimble.com/vss-groupservice/1.0/";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -362,6 +360,7 @@ class Urls {
   static String assetprefix = "in-vassetmetadata-am-webapi";
   static String assetSettingsPrefix = "in-vlmasterdata-api-vlmd-assetsettings";
   static String userCountPrefix = "in-identitymanager-identitywebapi";
+  static String notificationPrefix = "in-notification-nvapi";
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
@@ -397,6 +396,9 @@ class Urls {
   static String mainNotificationUrl =
       "/t/trimble.com/vss-notification/1.0/Notification/1";
 
+  static String indiaStackMainNotificationUrl =
+      "/frame-notification/1.0/Notification/1";
+
   static String notificationDetails =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
 
@@ -404,4 +406,7 @@ class Urls {
 
   static String manageNotificationsData =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
+
+  static String getNotificationTypes =
+      "/t/trimble.com/vss-alertsmanager/2.0/NotificationTypes/AlertTypes";
 }

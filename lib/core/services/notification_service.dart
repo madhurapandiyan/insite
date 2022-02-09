@@ -4,6 +4,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/manage_notifications.dart';
+import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -35,25 +36,49 @@ class NotificationService extends BaseService {
     startDate,
     endDate,
   ) async {
-    try {
-      Map<String, String> queryMap = Map();
+    if (isVisionLink) {
+      try {
+        Map<String, String> queryMap = Map();
 
-      queryMap["notificationStatus"] = notificationStatus;
-      queryMap["notificationUserStatus"] = notificationUserStatus;
-      queryMap["fromDate"] =
-          Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate);
-      queryMap["toDate"] = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate);
+        queryMap["notificationStatus"] = notificationStatus;
+        queryMap["notificationUserStatus"] = notificationUserStatus;
+        queryMap["fromDate"] =
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate);
+        queryMap["toDate"] = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate);
 
-      NotificationsData? notificationsData = await MyApi()
-          .getClientThree()!
-          .mainNotificationsData(
-              Urls.mainNotificationUrl +
-                  FilterUtils.constructQueryFromMap(queryMap),
-              accountSelected!.CustomerUID);
+        NotificationsData? notificationsData = await MyApi()
+            .getClientThree()!
+            .mainNotificationsDataVL(
+                Urls.mainNotificationUrl +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
 
-      return notificationsData;
-    } catch (e) {
-      Logger().e(e.toString());
+        return notificationsData;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    } else {
+      try {
+        Map<String, String> queryMap = Map();
+
+        queryMap["notificationStatus"] = notificationStatus;
+        queryMap["notificationUserStatus"] = notificationUserStatus;
+        queryMap["fromDate"] =
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate);
+        queryMap["toDate"] = Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate);
+
+        NotificationsData? notificationsData = await MyApi()
+            .getClient()!
+            .mainNotificationsData(
+                Urls.indiaStackMainNotificationUrl +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID,
+                Urls.notificationPrefix);
+
+        return notificationsData;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
     }
   }
 
@@ -63,6 +88,19 @@ class NotificationService extends BaseService {
           .getClientSeven()!
           .manageNotificationsData(
               Urls.manageNotificationsData, accountSelected!.CustomerUID);
+
+      return response;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<AlertTypes?> getNotificationTypes() async {
+    try {
+      AlertTypes? response = await MyApi()
+          .getClientSeven()!
+          .getNotificationTypesData(
+              Urls.getNotificationTypes, accountSelected!.CustomerUID);
 
       return response;
     } catch (e) {

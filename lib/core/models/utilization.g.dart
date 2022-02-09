@@ -13,7 +13,7 @@ Utilization _$UtilizationFromJson(Map<String, dynamic> json) => Utilization(
       totals: (json['totals'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
-      code: json['code'] as String?,
+      code: json['code'] as int?,
       message: json['message'] as String?,
     );
 

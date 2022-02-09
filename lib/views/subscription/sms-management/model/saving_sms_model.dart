@@ -36,6 +36,7 @@ class SavingSmsResponce {
   final List<SavingSmsModel>? AssetSerialNo;
 
   SavingSmsResponce({this.AssetSerialNo, this.code, this.message, this.status});
+
   factory SavingSmsResponce.fromJson(Map<String, dynamic> json) =>
       _$SavingSmsResponceFromJson(json);
 
