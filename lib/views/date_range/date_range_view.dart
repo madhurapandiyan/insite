@@ -23,12 +23,11 @@ class DateRangeView extends StatefulWidget {
 class _DateRangeViewState extends State<DateRangeView> {
   DateTime? fromDate, toDate;
   DateTime? customFromDate, customToDate;
-  DateTime? _selectedDay = DateTime.utc(2022, 01, 31);
+  DateTime? _selectedDay;
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
   bool isCalenderVisible = false;
   bool customCalenderIndex = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  
 
   showFromToDatePicker(
       {CustomDatePick? currentCustomDatePick,
@@ -37,7 +36,9 @@ class _DateRangeViewState extends State<DateRangeView> {
       required BuildContext ctx}) {
     showDatePicker(
             context: ctx,
-            initialDate:currentCustomDatePick == CustomDatePick.customFromDate? startDate!:endDate!,
+            initialDate: currentCustomDatePick == CustomDatePick.customFromDate
+                ? startDate!
+                : endDate!,
             firstDate: currentCustomDatePick == CustomDatePick.customFromDate
                 ? DateTime.utc(1999, 01, 01)
                 : customFromDate == null
@@ -54,14 +55,13 @@ class _DateRangeViewState extends State<DateRangeView> {
         if (currentCustomDatePick == CustomDatePick.customToDate) {
           customToDate = _selectedDay;
           toDate = _selectedDay;
-          if (fromDate==null) {
+          if (fromDate == null) {
             Utils.showToast("Please select start date ");
-          }else{
+          } else {
             if (toDate!.isBefore(fromDate!)) {
-            Utils.showToast("End date cannot be less than start date.");
+              Utils.showToast("End date cannot be less than start date.");
+            }
           }
-          }
-          
         }
       });
     });
@@ -262,8 +262,9 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     ctx: context,
                                     currentCustomDatePick:
                                         CustomDatePick.customFromDate,
-                                    endDate: viewModel.endDate!,
-                                    startDate: viewModel.startDate);
+                                    endDate: DateTime.parse(viewModel.endDate!),
+                                    startDate:
+                                        DateTime.parse(viewModel.endDate!));
 
                                 // setState(() {
                                 //   fromDate = null;
@@ -312,8 +313,9 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     ctx: context,
                                     currentCustomDatePick:
                                         CustomDatePick.customToDate,
-                                    endDate: viewModel.endDate!,
-                                    startDate: viewModel.startDate);
+                                    endDate: DateTime.parse(viewModel.endDate!),
+                                    startDate:
+                                        DateTime.parse(viewModel.endDate!));
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
@@ -326,7 +328,9 @@ class _DateRangeViewState extends State<DateRangeView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 // Expanded(
                 //   child: isCalenderVisible
                 //       ? Container(
