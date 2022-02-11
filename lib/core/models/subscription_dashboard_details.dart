@@ -96,6 +96,9 @@ class DetailResult {
   @JsonKey(name: "fk_AssetId")
   int? fk_AssetId;
 
+  @JsonKey(name:"fk_State")
+  int? fk_State;
+
   @JsonKey(name: "SourceName1")
   String? SourceName1;
 
@@ -160,7 +163,7 @@ class DetailResult {
       this.Status,
       this.count,
       this.Description,
-      this.vin});
+      this.vin,this.fk_State});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>
       _$DetailResultFromJson(json);

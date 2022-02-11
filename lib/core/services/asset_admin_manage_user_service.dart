@@ -25,6 +25,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -36,6 +37,7 @@ import 'package:insite/core/models/device_type.dart';
 
 class AssetAdminManagerUserService extends BaseService {
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   Customer? accountSelected;
   Customer? customerSelected;
@@ -136,9 +138,13 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["customerUid"] = customerSelected!.CustomerUID!;
       }
       if (enableGraphQl) {
-        var data =await Network().getGraphqlData(query, accountSelected?.CustomerUID,
+        var data = await Network().getGraphqlData(
+            query,
+            accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
-            Logger().e(data);
+        AdminManageUser adminManageUserResponse =
+            AdminManageUser.fromJson(data.data["userManagementUserList"]);
+        return adminManageUserResponse;
       }
       if (isVisionLink) {
         queryMap["sort"] = "";
@@ -206,28 +212,45 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<CheckUserResponse> checkUser(String mail) async {
-    Map<String, String> queryMap = Map();
-    if (accountSelected != null) {
-      queryMap["EmailID"] = mail;
-    }
-    if (customerSelected != null) {
-      queryMap["customerUid"] = customerSelected!.CustomerUID!;
-    }
-    if (isVisionLink) {
-      CheckUserResponse response = await MyApi().getClientSeven()!.checkUserVL(
-          Urls.adminManagerUserSumaryVL +
-              "/List" +
-              FilterUtils.constructQueryFromMap(queryMap),
-          accountSelected!.CustomerUID);
-      return response;
-    } else {
-      CheckUserResponse response = await MyApi().getClient()!.checkUser(
-          Urls.adminManagerUserSumary +
-              "/List" +
-              FilterUtils.constructQueryFromMap(queryMap),
-          Urls.userCountPrefix,
-          accountSelected!.CustomerUID);
-      return response;
+    try {
+      Map<String, String> queryMap = Map();
+      if (accountSelected != null) {
+        queryMap["EmailID"] = mail;
+      }
+      if (customerSelected != null) {
+        queryMap["customerUid"] = customerSelected!.CustomerUID!;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            graphqlSchemaService!.checkUserMailId(mail),
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        Logger().w(data.data);
+        CheckUserResponse responce =
+            CheckUserResponse.fromJson(data.data["userEmail"]);
+        return responce;
+      }
+      if (isVisionLink) {
+        CheckUserResponse response = await MyApi()
+            .getClientSeven()!
+            .checkUserVL(
+                Urls.adminManagerUserSumaryVL +
+                    "/List" +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return response;
+      } else {
+        CheckUserResponse response = await MyApi().getClient()!.checkUser(
+            Urls.adminManagerUserSumary +
+                "/List" +
+                FilterUtils.constructQueryFromMap(queryMap),
+            Urls.userCountPrefix,
+            accountSelected!.CustomerUID);
+        return response;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return CheckUserResponse(users: []);
     }
   }
 
@@ -404,26 +427,65 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AddUser?> getAddUserData(
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      jobTitle,
-      jobType,
-      address,
-      state,
-      country,
-      zipcode,
-      userType,
-      sso_id,
-      roles) async {
+      {String? firstName,
+      String? lastName,
+      String? email,
+      String? phoneNumber,
+      String? jobTitle,
+      int? jobType,
+      String? address,
+      String? state,
+      String? country,
+      String? zipcode,
+      String? userType,
+      String? sso_id,
+      roles}) async {
     Logger().i("getAddUserData");
     try {
+      if (enableGraphQl) {
+        String doubleQuote = "\"";
+        Logger().w(
+          customerSelected != null
+              ? customerSelected!.CustomerUID
+              : accountSelected!.CustomerUID,
+        );
+        var data = await Network().getGraphqlData(
+            graphqlSchemaService!.addUser(
+                firstName: firstName,
+                jobType: jobType,
+                lastName: lastName,
+                customerUid: customerSelected != null
+                    ? customerSelected!.CustomerUID
+                    : accountSelected!.CustomerUID,
+                emailId: email,
+                phoneNo: phoneNumber == null ? "" : phoneNumber,
+                role: roles,
+                addressData: AddressData(
+                    addressline1: doubleQuote +
+                        "${address == null ? "" : address}" +
+                        doubleQuote,
+                    state: doubleQuote +
+                        "${state == null ? "" : state}" +
+                        doubleQuote,
+                    addressline2: "\"\"",
+                    country: doubleQuote +
+                        "${country == null ? "" : country}" +
+                        doubleQuote,
+                    zipcode: doubleQuote +
+                        "${zipcode == null ? "" : zipcode}" +
+                        doubleQuote),
+                details:
+                    Details(user_type: doubleQuote + "Standard" + doubleQuote)),
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        Logger().i(data);
+        return AddUser.fromJson(data.data["userManagementCreateUser"]);
+      }
       if (isVisionLink) {
         Logger().d(
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
+            "details ${Details(job_title: jobTitle, job_type: jobType.toString(), user_type: userType).toJson()}");
         AddUser addUserResponse = await MyApi().getClientSeven()!.addUserData(
             Urls.addUserSummaryVL,
             accountSelected!.CustomerUID,
@@ -446,14 +508,14 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType,
+                    job_type: jobType.toString(),
                     user_type: userType)));
         return addUserResponse;
       } else {
         Logger().d(
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
+            "details ${Details(job_title: jobTitle, job_type: jobType.toString(), user_type: userType).toJson()}");
         Logger().w(AddUserDataIndStack(
                 fname: firstName,
                 customerUid: customerSelected != null
@@ -475,7 +537,7 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType,
+                    job_type: jobType.toString(),
                     user_type: "Standard"))
             .toJson());
         AddUser addUserResponse = await MyApi().getClient()!.inviteUser(
@@ -501,7 +563,7 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType,
+                    job_type: jobType.toString(),
                     user_type: "Standard")),
             accountSelected!.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub,
@@ -517,6 +579,15 @@ class AssetAdminManagerUserService extends BaseService {
   Future<dynamic> deleteUsers(List<String> users) async {
     Logger().i("deleteUsers");
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            graphqlSchemaService!
+                .deleteUser(users, accountSelected!.CustomerUID!),
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        Logger().e(data);
+        return data;
+      }
       if (isVisionLink) {
         var result = await MyApi().getClientSeven()!.deleteUsersData(
             Urls.adminManagerUserSumaryVL,

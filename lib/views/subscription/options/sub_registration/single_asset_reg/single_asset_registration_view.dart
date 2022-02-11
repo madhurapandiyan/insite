@@ -89,6 +89,7 @@ class _SingleAssetRegistrationViewState
                                       child: Column(
                                         children: [
                                           CustomAutoCompleteWidget(
+                                            isShowingBorderColor: false,
                                             helperText: "No Devices Found",
                                             isShowingHelperText: viewModel
                                                     .deviceIdChange
@@ -134,8 +135,15 @@ class _SingleAssetRegistrationViewState
                                                     1,
                                                 height: 60,
                                                 child: CustomTextBox(
+                                                  helperStyle: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .buttonColor),
                                                   controller: viewModel
                                                       .serialNumberController,
+                                                  helperText: viewModel
+                                                          .isSerialNoisValid
+                                                      ? "Invalid Serial Number"
+                                                      : null,
                                                   onChanged: (value) {
                                                     viewModel
                                                         .getModelNamebySerialNumber(
@@ -378,6 +386,7 @@ class _SingleAssetRegistrationViewState
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                         .dealerNameChange
                                                         ?.result![0]
@@ -406,6 +415,7 @@ class _SingleAssetRegistrationViewState
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                         .dealerCodeChange
                                                         ?.result?[0]
@@ -507,6 +517,7 @@ class _SingleAssetRegistrationViewState
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                         .customerNameChange
                                                         ?.result![0]
@@ -536,6 +547,7 @@ class _SingleAssetRegistrationViewState
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                         .customerCodeChange
                                                         ?.result![0]

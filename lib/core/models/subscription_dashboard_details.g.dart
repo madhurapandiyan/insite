@@ -57,6 +57,7 @@ DetailResult _$DetailResultFromJson(Map<String, dynamic> json) => DetailResult(
       count: json['count'] as int?,
       Description: json['Description'] as String?,
       vin: json['vin'] as String?,
+      fk_State: json['fk_State'] as int?,
     );
 
 Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
@@ -85,6 +86,7 @@ Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
       'Code': instance.Code,
       'vin': instance.vin,
       'fk_AssetId': instance.fk_AssetId,
+      'fk_State': instance.fk_State,
       'SourceName1': instance.SourceName1,
       'SourceName2': instance.SourceName2,
       'DestinationName1': instance.DestinationName1,

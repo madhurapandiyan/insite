@@ -253,7 +253,7 @@ class Urls {
       "$utilization/1.0/api/v1/Utilization/Details/Aggregate";
   static String assetoperationsegments =
       "$utilization/1.0/assetoperationsegments";
-  static String locationSummary = "$locationMap/1.0/location/maps/v1";
+  static String locationSummary = "$locationMap/1.0/location/maps/v2";
   static String locationHistory = "$assetHistory/1.0/AssetLocationHistory/";
   static String assetCountSummary = "$fleet/1.0/UnifiedFleet/AssetCount/v1";
   static String assetCountSubscriptionSummary =

@@ -109,9 +109,9 @@ class DeviceListItem extends StatelessWidget {
                       TableRow(
                         children: [
                           InsiteTableRowItem(
-                            title: "Network Provider : ",
-                            content: detailResult!.NetworkProvider != null
-                                ? detailResult!.NetworkProvider
+                            title: "Customer Code : ",
+                            content: detailResult!.CustomerCode != null
+                                ? detailResult!.CustomerCode
                                 : "-",
                           ),
                           InsiteTableRowItem(
@@ -144,9 +144,9 @@ class DeviceListItem extends StatelessWidget {
                         children: [
                           InsiteTableRowItem(
                             title: "Status :",
-                            content: detailResult!.Status != null
-                                ? detailResult!.Status
-                                : "-",
+                            content: detailResult!.fk_State == 2
+                                ? "Success"
+                                : "Failed",
                           ),
                           InsiteTableRowItem(
                             title: "Description :",

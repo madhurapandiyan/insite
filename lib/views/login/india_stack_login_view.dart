@@ -247,7 +247,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     //   }
     // });
     if (AppConfig.instance!.apiFlavor == "indiastack") {
-      _navigationService!.navigateTo(indiaStack.indiaStackSplashViewRoute);
+      _navigationService!.clearTillFirstAndShow(indiaStack.indiaStackSplashViewRoute);
     } else {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }

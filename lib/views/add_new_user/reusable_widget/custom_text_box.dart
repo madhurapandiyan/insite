@@ -20,6 +20,8 @@ class CustomTextBox extends StatelessWidget {
   final bool showLoading;
   final List<TextInputFormatter>? textInputFormat;
   bool? isenabled;
+  final Function? onTap;
+  bool isShowingBorderColor;
 
   CustomTextBox(
       {this.title,
@@ -38,12 +40,15 @@ class CustomTextBox extends StatelessWidget {
       this.suffixWidget,
       this.prefixWidget,
       this.helperStyle,
+      this.onTap,
+      this.isShowingBorderColor = false,
       this.helperText});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
+        onTap: onTap == null ? null : onTap!(),
         keyboardType: keyPadType,
         onChanged: onChanged,
         onSaved: onSaved,
@@ -56,13 +61,15 @@ class CustomTextBox extends StatelessWidget {
           fontWeight: FontWeight.w700,
           fontSize: 14,
           fontStyle: FontStyle.normal,
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: isShowingBorderColor
+              ? Theme.of(context).backgroundColor
+              : Theme.of(context).textTheme.bodyText1!.color!,
         ),
         enabled: isenabled,
         cursorColor: addUserBgColor,
         inputFormatters: textInputFormat,
         decoration: InputDecoration(
-           helperStyle: helperStyle,
+            helperStyle: helperStyle,
             suffixIcon: suffixWidget,
             helperText: helperText,
             labelText: labelTitle,
@@ -74,22 +81,30 @@ class CustomTextBox extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
+                    color: isShowingBorderColor
+                        ? Theme.of(context).backgroundColor
+                        : Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
+                    color: isShowingBorderColor
+                        ? Theme.of(context).backgroundColor
+                        : Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
+                    color: isShowingBorderColor
+                        ? Theme.of(context).backgroundColor
+                        : Theme.of(context).textTheme.bodyText1!.color!,
                     width: 1)),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.bodyText1!.color!,
+                  color: isShowingBorderColor
+                      ? Theme.of(context).backgroundColor
+                      : Theme.of(context).textTheme.bodyText1!.color!,
                 )),
             suffix: showLoading
                 ? Padding(

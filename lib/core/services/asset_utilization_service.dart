@@ -134,7 +134,6 @@ class AssetUtilizationService extends BaseService {
             query,
             accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
-
         Utilization assetCountFromGraphql =
             Utilization.fromJson(data.data!['getfleetUtilization']);
 

@@ -329,7 +329,7 @@ class UtilizationGraphsService extends BaseService {
               .getIdlePercentTrend(
                   Urls.idlePercent +
                       FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID,
+                  accountSelected?.CustomerUID,
                   Urls.vfleetPrefix);
           if (response!=null) {
             return response;

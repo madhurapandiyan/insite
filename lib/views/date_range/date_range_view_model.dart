@@ -10,20 +10,23 @@ import 'package:stacked/stacked.dart';
 class DateRangeViewModel extends BaseViewModel {
   DateRangeService? _dateRangeService = locator<DateRangeService>();
 
-  String? _startDate = DateFormat('yyyy-MM-dd')
-      .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
-  set startDate(String? startDate) {
+  DateTime? _startDate = DateFormat('yyyy-MM-dd').parse(DateTime.now().toString());
+     
+  set startDate(DateTime? startDate) {
     this._startDate = startDate;
   }
 
-  String? get startDate => _startDate;
+  DateTime? get startDate => _startDate;
 
-  String? _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  set endDate(String? endDate) {
+  DateTime? _endDate =
+      DateFormat('yyyy-MM-dd').parse(DateTime.now()
+      .subtract(Duration(days: DateTime.now().weekday - 1))
+      .toString());
+  set endDate(DateTime? endDate) {
     this._endDate = endDate;
   }
 
-  String? get endDate => _endDate;
+  DateTime? get endDate => _endDate;
 
   DateRangeType get selectedDateRange => _selectedDateRange;
 
@@ -44,6 +47,8 @@ class DateRangeViewModel extends BaseViewModel {
     getDateRangeFilterData();
   }
 
+  
+
   updateDateRange(String? startDate, String? endDate, String? type) async {
     Logger().d("updateDateRange start date, end date, type",
         startDate! + " " + endDate! + " " + type!);
@@ -62,17 +67,18 @@ class DateRangeViewModel extends BaseViewModel {
         await _dateRangeService?.getDateRangeFilters();
     Logger().d(appliedFilters?.length.toString());
     if (appliedFilters != null && appliedFilters.isNotEmpty) {
-      startDate = appliedFilters[0];
-      endDate = appliedFilters[1];
+      startDate = DateFormat('yyyy-MM-dd').parse(appliedFilters[0]!);
+      endDate = DateFormat('yyyy-MM-dd').parse(appliedFilters[1]!);
       Logger().d("start ", startDate);
       Logger().d("start ", endDate);
       Logger().d("label ", appliedFilters[2]);
       _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();
     } else {
-      startDate = DateFormat('yyyy-MM-dd').format(
-          DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
-      endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      startDate = DateFormat('yyyy-MM-dd').parse(DateTime.now()
+          .subtract(Duration(days: DateTime.now().weekday - 1))
+          .toString());
+      endDate = DateFormat('yyyy-MM-dd').parse(DateTime.now().toString());
     }
   }
 

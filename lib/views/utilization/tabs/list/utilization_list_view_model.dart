@@ -194,7 +194,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {
-        _totalCount = assetCount.countData![0].count!.toInt();
+        _totalCount = assetCount.countData![0].count!;
       }
       Logger().wtf("result ${assetCount.toJson()}");
     }

@@ -101,7 +101,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       title: "Email",
                       controller: viewModel.emailController,
                       keyPadType: TextInputType.emailAddress,
-                      onChanged: (value) {},
+                      // isShowingBorderColor: viewModel.enableAdd ? true : false,
+                      //  onChanged: (value) {},
                     ),
                     SizedBox(
                       height: 20,

@@ -31,6 +31,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool isSerialNoisValid = false;
+
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
@@ -97,7 +99,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<String?> _customerEmail = [];
   List<String?> get customerEmail => _customerEmail;
 
-  List<String?> _modelNames = [];
+  List<String?> _modelNames = [
+    "Select Asset Model",
+  ];
   List<String?> get modelNames => _modelNames;
 
   List<String> _serialNoList = [];
@@ -361,7 +365,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     deviceNameController.clear();
     deviceIdController.clear();
     customerNameController.clear();
-    _assetModel=" ";
+    _assetModel = " ";
     notifyListeners();
   }
 
@@ -417,20 +421,28 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   getModelNamebySerialNumber(String value) async {
     try {
-      SerialNumberResults? results = await _subscriptionService!
-          .getDeviceModelNameBySerialNumber(serialNumber: value);
-      if (results != null) {
-        String? assetModelName = results.result!.modelName;
-        if (modelNames.contains(assetModelName)) {
-          _assetModel = assetModelName;
+      if (value.length >= 4) {
+        SerialNumberResults? results = await _subscriptionService!
+            .getDeviceModelNameBySerialNumber(serialNumber: value);
+        if (results != null) {
+          String? assetModelName = results.result!.modelName;
+          if (assetModel == assetModelName) {
+            _assetModel = assetModelName;
+            isSerialNoisValid = false;
+          } else {
+            _assetModel = "Select Asset Model";
+            serialNumberController.clear();
+            isSerialNoisValid = true;
+          }
         } else {
-          _assetModel = " ";
+          return 'no results found';
         }
+        notifyListeners();
       } else {
-        return 'no results found';
+        isSerialNoisValid = false;
+        notifyListeners();
+        return;
       }
-      notifyListeners();
-      _assetModel = results.result!.modelName;
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
       //Fluttertoast.showToast(msg: error.message!);
@@ -448,42 +460,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         return "no results found";
       } else {
         //model names
-        final ex70SuperPlus = result.result![2][9].modelName;
-        final ex130SuperPlus = result.result![2][3].modelName;
-        final shinRaiBx80 = result.result![2][11].modelName;
-        final notMapped = "Not Mapped";
-        final twl5 = result.result![2][1].modelName;
-        final ex110 = result.result![2][2].modelName;
-        final ex200lc = result.result![2][4].modelName;
-        final ex210lc = result.result![2][6].modelName;
-        final ex215 = result.result![2][7].modelName;
-        final ex300 = result.result![2][8].modelName;
-        final ptl340h = result.result![2][10].modelName;
-        final shinraibx80Bviv = result.result![2][12].modelName;
-        final shinraipro = result.result![2][13].modelName;
-        final th76 = result.result![2][14].modelName;
-        final tl340h = result.result![2][15].modelName;
-        final th340hPrime = result.result![2][16].modelName;
-
-        _modelNames.addAll([
-          "Select Asset Model",
-          ex70SuperPlus,
-          ex130SuperPlus,
-          shinRaiBx80,
-          notMapped,
-          twl5,
-          ex110,
-          ex200lc,
-          ex210lc,
-          ex215,
-          ex300,
-          ptl340h,
-          shinraibx80Bviv,
-          shinraipro,
-          th76,
-          tl340h,
-          th340hPrime
-        ]);
+        for (var i = 0; i < result.result!.elementAt(2).length; i++) {
+          if (i == 0) {
+          } else {
+            _modelNames.add(result.result!.elementAt(2)[i].modelName);
+          }
+        }
 
         _loading = false;
       }
@@ -610,7 +592,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-   detailResultList.clear();
+      detailResultList.clear();
       if (name == null || name.isEmpty) {
         Future.delayed(Duration(seconds: 3), () {
           _customerId.clear();

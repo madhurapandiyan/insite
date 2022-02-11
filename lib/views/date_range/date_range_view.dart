@@ -23,11 +23,49 @@ class DateRangeView extends StatefulWidget {
 class _DateRangeViewState extends State<DateRangeView> {
   DateTime? fromDate, toDate;
   DateTime? customFromDate, customToDate;
-  DateTime? _selectedDay;
+  DateTime? _selectedDay = DateTime.utc(2022, 01, 31);
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
   bool isCalenderVisible = false;
   bool customCalenderIndex = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  
+
+  showFromToDatePicker(
+      {CustomDatePick? currentCustomDatePick,
+      DateTime? startDate,
+      DateTime? endDate,
+      required BuildContext ctx}) {
+    showDatePicker(
+            context: ctx,
+            initialDate:currentCustomDatePick == CustomDatePick.customFromDate? startDate!:endDate!,
+            firstDate: currentCustomDatePick == CustomDatePick.customFromDate
+                ? DateTime.utc(1999, 01, 01)
+                : customFromDate == null
+                    ? endDate!
+                    : customFromDate!,
+            lastDate: DateTime.now())
+        .then((selectedDay) {
+      setState(() {
+        _selectedDay = selectedDay;
+        if (currentCustomDatePick == CustomDatePick.customFromDate) {
+          customFromDate = _selectedDay;
+          fromDate = _selectedDay;
+        }
+        if (currentCustomDatePick == CustomDatePick.customToDate) {
+          customToDate = _selectedDay;
+          toDate = _selectedDay;
+          if (fromDate==null) {
+            Utils.showToast("Please select start date ");
+          }else{
+            if (toDate!.isBefore(fromDate!)) {
+            Utils.showToast("End date cannot be less than start date.");
+          }
+          }
+          
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,15 +258,22 @@ class _DateRangeViewState extends State<DateRangeView> {
                               height: 40,
                               textColor: white,
                               onTap: () {
-                                setState(() {
-                                  fromDate = null;
-                                  isCalenderVisible = true;
-                                  viewModel.selectedDateRange =
-                                      DateRangeType.custom;
-                                  _selectedDay = null;
-                                  currentCustomDatePick =
-                                      CustomDatePick.customFromDate;
-                                });
+                                showFromToDatePicker(
+                                    ctx: context,
+                                    currentCustomDatePick:
+                                        CustomDatePick.customFromDate,
+                                    endDate: viewModel.endDate!,
+                                    startDate: viewModel.startDate);
+
+                                // setState(() {
+                                //   fromDate = null;
+                                //   isCalenderVisible = true;
+                                //   viewModel.selectedDateRange =
+                                //       DateRangeType.custom;
+                                //   _selectedDay = null;
+                                //   currentCustomDatePick =
+                                //       CustomDatePick.customFromDate;
+                                // });
                               },
                               title: customFromDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
@@ -263,15 +308,12 @@ class _DateRangeViewState extends State<DateRangeView> {
                               height: 40,
                               textColor: white,
                               onTap: () {
-                                setState(() {
-                                  toDate = null;
-                                  isCalenderVisible = true;
-                                  viewModel.selectedDateRange =
-                                      DateRangeType.custom;
-                                  _selectedDay = null;
-                                  currentCustomDatePick =
-                                      CustomDatePick.customToDate;
-                                });
+                                showFromToDatePicker(
+                                    ctx: context,
+                                    currentCustomDatePick:
+                                        CustomDatePick.customToDate,
+                                    endDate: viewModel.endDate!,
+                                    startDate: viewModel.startDate);
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
@@ -284,49 +326,60 @@ class _DateRangeViewState extends State<DateRangeView> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: isCalenderVisible
-                      ? Container(
-                          child: Material(
-                              child: SingleChildScrollView(
-                            child: TableCalendar(
-                              rowHeight: 35,
-                              calendarFormat: _calendarFormat,
-                              onFormatChanged: (format) {
-                                setState(() {
-                                  _calendarFormat = format;
-                                });
-                              },
-                              firstDay: DateTime.utc(2010, 10, 16),
-                              lastDay: DateTime.now(),
-                              focusedDay: DateTime.now(),
-                              selectedDayPredicate: (day) {
-                                return isSameDay(_selectedDay, day);
-                              },
-                              onDaySelected: (selectedDay, focusedDay) {
-                                setState(() {
-                                  _selectedDay = selectedDay;
-                                  if (currentCustomDatePick ==
-                                      CustomDatePick.customFromDate) {
-                                    customFromDate = _selectedDay;
-                                    fromDate = _selectedDay;
-                                  }
-                                  if (currentCustomDatePick ==
-                                      CustomDatePick.customToDate) {
-                                    customToDate = _selectedDay;
-                                    toDate = _selectedDay;
-                                    if (toDate!.isBefore(fromDate!)) {
-                                      Utils.showToast(
-                                          "End date cannot be less than start date.");
-                                    }
-                                  }
-                                });
-                              },
-                            ),
-                          )),
-                        )
-                      : Container(),
-                ),
+                SizedBox(height: 20,),
+                // Expanded(
+                //   child: isCalenderVisible
+                //       ? Container(
+                //           height: 200,
+                //           child:
+                //               // SingleChildScrollView(
+                //               //     child: DatePickerDialog(
+                //               //         initialDate: DateTime.now(),
+                //               //         firstDate: DateTime.now(),
+                //               //         lastDate: DateTime.now()))
+                //               Material(
+                //                   child: SingleChildScrollView(
+                //             child: TableCalendar(
+                //               rowHeight: 35,
+                //               calendarFormat: _calendarFormat,
+                //               onFormatChanged: (format) {
+                //                 setState(() {
+                //                   _calendarFormat = format;
+                //                 });
+                //               },
+                //               firstDay: currentCustomDatePick ==
+                //                       CustomDatePick.customFromDate
+                //                   ? DateTime.utc(1999, 01, 01)
+                //                   : customFromDate!,
+                //               lastDay: DateTime.now(),
+                //               focusedDay: DateTime.utc(2022, 01, 31),
+                //               selectedDayPredicate: (day) {
+                //                 return isSameDay(_selectedDay, day);
+                //               },
+                //               onDaySelected: (selectedDay, focusedDay) {
+                //                 setState(() {
+                //                   _selectedDay = selectedDay;
+                //                   if (currentCustomDatePick ==
+                //                       CustomDatePick.customFromDate) {
+                //                     customFromDate = _selectedDay;
+                //                     fromDate = _selectedDay;
+                //                   }
+                //                   if (currentCustomDatePick ==
+                //                       CustomDatePick.customToDate) {
+                //                     customToDate = _selectedDay;
+                //                     toDate = _selectedDay;
+                //                     if (toDate!.isBefore(fromDate!)) {
+                //                       Utils.showToast(
+                //                           "End date cannot be less than start date.");
+                //                     }
+                //                   }
+                //                 });
+                //               },
+                //             ),
+                //           )),
+                //         )
+                //       : Container(),
+                // ),
                 Row(
                   children: [
                     InsiteButton(

@@ -1,6 +1,6 @@
 import 'package:insite/core/base/base_service.dart';
-import 'package:insite/utils/helper_methods.dart';
-import 'package:intl/intl.dart';
+import 'package:insite/core/models/update_user_data.dart';
+import 'package:logger/logger.dart';
 
 class GraphqlSchemaService extends BaseService {
   final String allAssets = """
@@ -44,7 +44,7 @@ query faultDataSummary{
   String getfaultQueryString(String startDate, String endDate) {
     final String faultQueryString = """
   query faultDataSummary{
-  faultdata(page: 1, limit: 100, startDateTime: $startDate, endDateTime: $endDate){
+  faultdata(page: 1, limit: 100, startDateTime: "$startDate", endDateTime: "$endDate"){
     
     faults{
       details {
@@ -72,7 +72,7 @@ query faultDataSummary{
   String getAssetFaultQuery(String startDate, String endDate) {
     final String assetFaultQuery = """
   query assetDataSummary{
-  assetData(page: 1, limit: 100, startDateTime:$startDate, endDateTime: $endDate){
+  assetData(page: 1, limit: 100, startDateTime:"$startDate", endDateTime: "$endDate"){
     pageLinks {
       rel
       href
@@ -234,7 +234,7 @@ query faultDataSummary{
   String getAssetOperationData(String startDate, String endDate) {
     final String assetOperationData = """
  query asetOperations{
-  assetOperationsDailyTotals(sort: "-assetid", startDate: $startDate, endDate: $endDate, pageSize: 50, pageNumber: 1){
+  assetOperationsDailyTotals(sort: "-assetid", startDate: "$startDate", endDate: "$endDate", pageSize: 50, pageNumber: 1){
     assetOperations{
       links {
         rel
@@ -280,7 +280,7 @@ query faultDataSummary{
   String getFaultCountData(String startDate, String endDate) {
     final String faultCountData = """
   query getFaultCountData{
-faultCountData(startDateTime:$startDate, endDateTime: $endDate){
+faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
   countData {
     countOf
     assetCount
@@ -289,12 +289,13 @@ faultCountData(startDateTime:$startDate, endDateTime: $endDate){
 }
 }
   """;
+    Logger().w(faultCountData);
     return faultCountData;
   }
 
-  String userManagementUserList() {
+  String userManagementUserList(String? searchKey) {
     return """query{
-userManagementUserList{
+userManagementUserList(searchKey:"$searchKey"){
   total{
     pages
     items
@@ -306,17 +307,42 @@ userManagementUserList{
     loginId
     job_type
     job_title
-    
+    userUid
+    lastLoginDate
   }
 }
   
 }""";
   }
 
+  String deleteUser(List<String> usersId, String customerId) {
+    var deleteString = """mutation userManagementDeleteUser{
+  userManagementDeleteUser(deleteUser: {
+  users: $usersId,
+     customerUid:"$customerId"
+  }){
+     isDeleted
+   }
+ }""";
+    print(deleteString);
+    return deleteString;
+  }
+
+  String checkUserMailId(String emailId) {
+    var checkUserMail = """query{
+userEmail(EmailID:"$emailId"){
+  users{
+    userUid
+}
+}
+}""";
+    return checkUserMail;
+  }
+
   String getFleetUtilization(String startDate, String endDate) {
     final String fleetUtilization = """
   query getFleetUtilization{
-	getfleetUtilization(pageSize:1,pageNumber:100, startDate: $startDate, endDate: $endDate){
+	getfleetUtilization(pageSize:1,pageNumber:100, startDate: "$startDate", endDate: "$endDate"){
     assetResults {
       assetIdentifierSQLUID
       assetIcon
@@ -396,6 +422,43 @@ userManagementUserList{
   """;
 
     return fleetUtilization;
+  }
+
+  String addUser(
+      {String? firstName,
+      String? lastName,
+      String? emailId,
+      String? phoneNo,
+      AddressData? addressData,
+      List<Role>? role,
+      String? customerUid,
+      int? jobType,
+      Details? details}) {
+    String doubleQuote = "\"";
+    List<Map<String, dynamic>> roleData = [];
+    role!.forEach((element) {
+      roleData.add({
+        "role_id": element.role_id,
+        "application_name": element.application_name
+      });
+    });
+    final String addUserData = """mutation {
+  userManagementCreateUser(requestBody: {fname: ${doubleQuote + firstName! + doubleQuote}, lname: ${doubleQuote + lastName! + doubleQuote}, email: ${doubleQuote + emailId! + doubleQuote}, 
+      JobType:$jobType,
+    address: ${addressData!.toJson()}, 
+      details:{
+        user_type: "Standard"
+      }, 
+      roles: $roleData, 
+      customerUid: "$customerUid", 
+      isAssetSecurityEnabled: true
+      }) {
+    count
+    invitation_id
+  }
+}""";
+    print(addUserData);
+    return addUserData;
   }
 
   String getFleetLocationData(String startDate, String endDate) {

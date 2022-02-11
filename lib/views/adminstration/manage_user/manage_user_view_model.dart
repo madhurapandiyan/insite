@@ -111,7 +111,7 @@ class ManageUserViewModel extends InsiteViewModel {
       Logger().i("getManagerUserAssetList");
       AdminManageUser? result = await _manageUserService!
           .getAdminManageUserListData(pageNumber, _searchKeyword,
-              appliedFilters, graphqlSchemaService!.userManagementUserList());
+              appliedFilters, graphqlSchemaService!.userManagementUserList(_searchKeyword));
       if (result != null) {
         if (result.total != null) {
           _totalCount = result.total!.items!;
@@ -208,12 +208,14 @@ class ManageUserViewModel extends InsiteViewModel {
 
   deleteSelectedUsers() async {
     Logger().i("deleteSelectedUsers");
+    String doubleQuote = "\"";
+
     if (showDelete) {
       List<String> userIds = [];
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(data.user!.userUid!);
+          userIds.add(doubleQuote + data.user!.userUid! + doubleQuote);
         }
       }
       if (userIds.isNotEmpty) {
@@ -319,7 +321,7 @@ class ManageUserViewModel extends InsiteViewModel {
     notifyListeners();
     AdminManageUser? result = await _manageUserService!
         .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters,
-            graphqlSchemaService!.userManagementUserList());
+            graphqlSchemaService!.userManagementUserList(_searchKeyword));
     if (result != null) {
       if (result.total != null) {
         _totalCount = result.total!.items!;

@@ -88,6 +88,8 @@ class FleetViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
       _loading = false;
+      _loadingMore = false;
+      _isRefreshing = false;
       _assets.clear();
       notifyListeners();
     }
@@ -152,6 +154,9 @@ class FleetViewModel extends InsiteViewModel {
       Logger().e(e.toString());
       _assets.clear();
       _loading = false;
+      _loadingMore = false;
+      _isRefreshing = false;
+      _totalCount=0;
       notifyListeners();
     }
   }
