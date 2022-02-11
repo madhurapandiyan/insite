@@ -77,7 +77,7 @@ class LoginService extends BaseService {
 
   getUser(token, shouldRemovePreviousRoutes) async {
     _localService!.setIsloggedIn(true);
-   await _localService!.saveToken(token);
+    await _localService!.saveToken(token);
     try {
       userInfo = await getLoggedInUserInfo();
       await getAuthenticateUserId();
@@ -208,8 +208,11 @@ class LoginService extends BaseService {
     Customer? customer = await _localService!.getAccountInfo();
     if (isVisionLink) {
     } else {
-      var data = MyApi().getClientSix()!.loginAudit(Urls.loginAudit,customer!.CustomerUID!,
-          "in-identitymanager-identitywebapi", {"isUpdated": true});
+      var data = MyApi().getClientSix()!.loginAudit(
+          Urls.loginAudit,
+          customer!.CustomerUID!,
+          "in-identitymanager-identitywebapi",
+          {"isUpdated": true});
       return data;
     }
   }
@@ -317,6 +320,7 @@ class LoginService extends BaseService {
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
+    await loginAudit();
     await saveExpiryTime(expiryTime);
   }
 }
