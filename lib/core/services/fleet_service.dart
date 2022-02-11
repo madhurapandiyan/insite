@@ -111,8 +111,8 @@ class FleetService extends BaseService {
         }
       }
     } catch (e) {
-      Logger().e(e);
-      return null;
+      throw e;
+     // return null;
     }
   }
 

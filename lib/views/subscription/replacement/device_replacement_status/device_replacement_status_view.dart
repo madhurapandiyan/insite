@@ -20,80 +20,51 @@ class DeviceReplacementStatusView extends StatelessWidget {
               ? Center(
                   child: InsiteProgressBar(),
                 )
-              : Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: SingleChildScrollView(
-                    controller: viewModel.controller,
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InsiteText(
-                            size: 20,
-                            fontWeight: FontWeight.bold,
-                            text: "REPLACEMENT STATUS",
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InsiteText(
-                                  fontWeight: FontWeight.bold,
-                                  size: 20,
-                                  text:
-                                      "Total Entries -${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} ",
-                                ),
-                                // InsiteButton(
-                                //     height: MediaQuery.of(context).size.height *
-                                //         0.05,
-                                //     // bgColor: tuna,
-                                //     title: "",
-                                //     onTap: () {
-                                //       viewModel.onDownload();
-                                //     },
-                                //     icon: Icon(
-                                //       Icons.download,
-                                //       color: appbarcolor,
-                                //     )),
-                              ],
+              : SingleChildScrollView(
+                  controller: viewModel.controller,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InsiteText(
+                              fontWeight: FontWeight.bold,
+                              text:
+                                  "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} )",
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          PageHeader(
-                            isDashboard: false,
-                            total: viewModel.totalDeviceReplacementStatusModel
-                                ?.result?.first.first.count,
-                            screenType: ScreenType.SUBSCRIPTION,
-                            count: viewModel
-                                .deviceReplacementStatusModelList.length,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Column(
-                            children: List.generate(
-                                viewModel.deviceReplacementStatusModelList
-                                    .length, (i) {
-                              final dataList =
-                                  viewModel.deviceReplacementStatusModelList;
-                              return ReplacementStatusTableWidget(
-                                modelData: dataList[i],
-                              );
-                            }),
-                          ),
-                          viewModel.isLoadMore
-                              ? InsiteProgressBar()
-                              : SizedBox()
-                        ],
-                      ),
+                            // InsiteButton(
+                            //     height: MediaQuery.of(context).size.height *
+                            //         0.05,
+                            //     // bgColor: tuna,
+                            //     title: "",
+                            //     onTap: () {
+                            //       viewModel.onDownload();
+                            //     },
+                            //     icon: Icon(
+                            //       Icons.download,
+                            //       color: appbarcolor,
+                            //     )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          children: List.generate(
+                              viewModel.deviceReplacementStatusModelList.length,
+                              (i) {
+                            final dataList =
+                                viewModel.deviceReplacementStatusModelList;
+                            return ReplacementStatusTableWidget(
+                              modelData: dataList[i],
+                            );
+                          }),
+                        ),
+                        viewModel.isLoadMore ? InsiteProgressBar() : SizedBox()
+                      ],
                     ),
                   ),
                 ),

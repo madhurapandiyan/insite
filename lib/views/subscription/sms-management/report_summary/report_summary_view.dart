@@ -33,23 +33,15 @@ class ReportSummaryView extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(15),
-                          child: InsiteText(
-                            size: 20,
-                            fontWeight: FontWeight.bold,
-                            text: "REPORT SUMMARY FOR SMS",
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InsiteText(
-                                fontWeight: FontWeight.bold,
-                                size: 20,
-                                text:
-                                    "Total Entries -${viewModel.smsReportSummaryModel!.result!.first.first.count} ",
-                              ),
+                            
+                            fontWeight: FontWeight.bold,
+                            text:
+                                "REPORT SUMMARY FOR SMS ( ${viewModel.modelDataList.length} of ${viewModel.smsReportSummaryModel!.result!.first.first.count} )",
+                          ),
                               viewModel.showDeleteButton
                                   ? InsiteButton(
                                       height:
@@ -80,16 +72,7 @@ class ReportSummaryView extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        PageHeader(
-                          count: viewModel.modelDataList.length,
-                          total: viewModel
-                              .smsReportSummaryModel!.result!.first.first.count,
-                          isDashboard: false,
-                          screenType: ScreenType.SUBSCRIPTION,
-                        ),
+                        
                         SizedBox(
                           height: 10,
                         ),

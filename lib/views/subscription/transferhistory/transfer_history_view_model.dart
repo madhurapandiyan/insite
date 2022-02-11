@@ -31,6 +31,8 @@ class TransferHistoryViewModel extends InsiteViewModel {
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
 
+  SubscriptionDashboardDetailResult?  subscriptionDashboardDetailResultresult;
+
   TransferHistoryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
@@ -48,15 +50,15 @@ class TransferHistoryViewModel extends InsiteViewModel {
 
   getTransferHistoryViewData() async {
     Logger().i("getTransferHistoryViewData");
-    SubscriptionDashboardDetailResult? result =
+    subscriptionDashboardDetailResultresult =
         await _subscriptionService!.getTransferHistoryViewData(
       start: start == 0 ? start : start + 1,
       limit: limit,
     );
-    if (result != null) {
-      if (result.result!.isNotEmpty) {
+    if (subscriptionDashboardDetailResultresult != null) {
+      if (subscriptionDashboardDetailResultresult!.result!.isNotEmpty) {
         start = start + limit;
-        devices.addAll(result.result![0]);
+        devices.addAll(subscriptionDashboardDetailResultresult!.result![0]);
         _loading = false;
         _loadingMore = false;
         notifyListeners();

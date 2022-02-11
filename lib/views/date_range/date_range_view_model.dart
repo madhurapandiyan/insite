@@ -12,6 +12,7 @@ class DateRangeViewModel extends BaseViewModel {
 
   String? _startDate = DateFormat('yyyy-MM-dd')
       .format(DateTime.now().subtract(Duration(days: DateTime.now().weekday)));
+
   set startDate(String? startDate) {
     this._startDate = startDate;
   }
@@ -24,7 +25,6 @@ class DateRangeViewModel extends BaseViewModel {
   }
 
   String? get endDate => _endDate;
-
   DateRangeType get selectedDateRange => _selectedDateRange;
 
   DateRangeType _selectedDateRange = DateRangeType.currentWeek;

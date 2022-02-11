@@ -119,6 +119,7 @@ class UtilizationListViewModel extends InsiteViewModel {
           graphqlSchemaService!.getFleetUtilization(
               Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
               Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+              Logger().e(result?.toJson());
       if (result != null) {
         if (result.assetResults!.isNotEmpty) {
           _utilLizationListData.addAll(result.assetResults!);
@@ -193,7 +194,7 @@ class UtilizationListViewModel extends InsiteViewModel {
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {
-        _totalCount = assetCount.countData![0].count!.toInt();
+        _totalCount = assetCount.countData![0].count!;
       }
       Logger().wtf("result ${assetCount.toJson()}");
     }

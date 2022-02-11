@@ -6,6 +6,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +15,8 @@ import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
 
 class IndiaStackSplashView extends StatefulWidget {
+  final bool showingSnackbar;
+  IndiaStackSplashView({required this.showingSnackbar});
   @override
   _IndiaStackSplashViewState createState() => _IndiaStackSplashViewState();
 }
@@ -49,7 +52,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   @override
   void initState() {
     Logger().d("IndiaStackSplashView codeVerifier $codeVerifier");
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier,false);
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
     if (AppConfig.instance!.apiFlavor == "visionlink") {
@@ -67,11 +70,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   static const String _charset =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
 
-  static String _createCodeVerifier() {
-    // return List.generate(
-    //     128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
-    return randomAlphaNumeric(43);
-  }
+  static String _createCodeVerifier = randomAlphaNumeric(43);
 
   @override
   void didChangeDependencies() {
@@ -190,7 +189,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier,true);
     LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -214,7 +213,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return Scaffold(
-          backgroundColor: Theme.of(context).buttonColor,
+          backgroundColor:widget.showingSnackbar?white: Theme.of(context).buttonColor,
           body: SafeArea(
             child: Stack(
               children: [
@@ -229,7 +228,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                     : SizedBox(),
                 Center(
                   child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color:widget.showingSnackbar?Theme.of(context).buttonColor: Colors.white,
                   ),
                 ),
               ],

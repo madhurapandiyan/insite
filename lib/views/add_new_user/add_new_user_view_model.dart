@@ -53,8 +53,8 @@ class AddNewUserViewModel extends InsiteViewModel {
   ];
 
   List<String> jobTypeList = [
-    "Employee",
-    "Non Employee",
+    "-Employee",
+    "Non-Employee",
   ];
 
   List<String> jobTitleList = [
@@ -117,7 +117,6 @@ class AddNewUserViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     showLoadingDialog();
     Future.delayed(Duration(seconds: 1), () {
-      
       getData();
     });
   }
@@ -356,6 +355,7 @@ class AddNewUserViewModel extends InsiteViewModel {
       }
       showLoadingDialog();
       List<Role> roles = [];
+      String doubleQuote = "\"";
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse? roleDataResponse =
@@ -365,7 +365,8 @@ class AddNewUserViewModel extends InsiteViewModel {
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
-                application_name: data.applicationName));
+                application_name:
+                    doubleQuote + data.applicationName! + doubleQuote));
             break;
           }
         }
@@ -374,19 +375,19 @@ class AddNewUserViewModel extends InsiteViewModel {
         Logger().d("role ${role.toJson()}");
       }
       AddUser? result = await _manageUserService.getAddUserData(
-          firstName,
-          lastName,
-          email,
-          phoneNumber,
-          jobTitle,
-          jobType,
-          address,
-          state,
-          country,
-          zipcode,
-          userType,
-          sso_id,
-          roles);
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          jobTitle: jobTitle,
+          jobType: jobType == "-Employee" ? 1 : 2,
+          address: address,
+          state: state,
+          country: country,
+          zipcode: zipcode,
+          userType: userType,
+          sso_id: sso_id,
+          roles: roles);
       if (result != null) {
         snackbarService!.showSnackbar(message: "Added successfully");
         reset();
@@ -502,4 +503,5 @@ class AddNewUserViewModel extends InsiteViewModel {
     }
     notifyListeners();
   }
+
 }

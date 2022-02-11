@@ -11,7 +11,8 @@ CheckUserResponse _$CheckUserResponseFromJson(Map<String, dynamic> json) =>
       isMultiUserAccount: json['isMultiUserAccount'] as bool?,
       isUserExists: json['isUserExists'] as bool?,
       users: (json['users'] as List<dynamic>?)
-          ?.map((e) => Users.fromJson(e as Map<String, dynamic>))
+          ?.map((e) =>
+              e == null ? null : Users.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

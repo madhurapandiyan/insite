@@ -14,7 +14,6 @@ import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'login_view_model.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/router_constants_india_stack.dart' as indiaStack;
 
 class IndiaStackLoginView extends StatefulWidget {
@@ -67,11 +66,11 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   void initState() {
     loginResponse = widget.arguments;
     print(Urls.getV4LogoutUrl(
-        loginResponse?.id_token, Urls.tataHitachiRedirectUri));
+        loginResponse?.id_token, Urls.tataHitachiLogoutUrl));
     Logger().d(
-        "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse!.id_token, Urls.tataHitachiRedirectUri)}");
+        "IndiaStackLoginView pkce logout url ${Urls.getV4LogoutUrl(loginResponse!.id_token, Urls.tataHitachiLogoutUrl)}");
     Logger().d("IndiaStackLoginView codeVerifier $codeVerifier");
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier, false);
     Logger().d("IndiaStackLoginView codeChallenge $codeChallenge");
     Logger().d("IndiaStackLoginView state $state");
     Logger().d(
@@ -147,17 +146,18 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLoginView URL changed: $url");
-        Logger().w(url.startsWith(Urls.tataHitachiRedirectUri + "?code="));
+        Logger().w(url.startsWith(Urls.tataHitachiLogoutUrl + "?code="));
         if (url.isNotEmpty &&
             url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
                 ? Urls.administratorBaseUrl + "/?code="
-                : Urls.tataHitachiRedirectUri + "?code=")) {
+                : Urls.tataHitachiLogoutUrl )) {
           try {
-            List<String> list = url.split("=");
-            Logger().i("IndiaStackLoginView url split list $list");
-            if (list.isNotEmpty) {
-              _onUrlChanged!.cancel();
-              gotoSplashview();
+            gotoSplashview();
+            // List<String> list = url.split("=");
+            // Logger().i("IndiaStackLoginView url split list $list");
+            // if (list.isNotEmpty) {
+            //   _onUrlChanged!.cancel();
+            //   gotoSplashview();
               //for vision link (oauth style login)
               // String accessTokenString = list[1];
               // String expiresTokenString = list[2];
@@ -177,7 +177,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
               //     codeStringList[0],
               //   );
               // }
-            }
+           // }
             flutterWebviewPlugin.close();
           } catch (e) {
             Logger().e(e.toString());
@@ -192,7 +192,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
           Logger().d(
               "IndiaStackLoginView pkce login url launch URL ${Urls.getV4LoginUrl(state, codeChallenge)}");
           // flutterWebviewPlugin.launch(Urls.getV4LoginUrl(state, codeChallenge));
-          gotoSplashview();
+          //gotoSplashview();
           // _navigationService.replaceWith(logoutViewRoute);
           // _navigationService.pushNamedAndRemoveUntil(logoutViewRoute,
           //     predicate: (Route<dynamic> route) => false);
@@ -247,7 +247,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     //   }
     // });
     if (AppConfig.instance!.apiFlavor == "indiastack") {
-      _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
+      _navigationService!.clearTillFirstAndShow(indiaStack.indiaStackSplashViewRoute);
     } else {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }
@@ -261,7 +261,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackLoginView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(), false);
     LoginResponse? result =
         await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -286,8 +286,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
                       ? Uri.encodeFull(
                           Urls.logoutUrlVl(loginResponse!.id_token))
                       : Uri.encodeFull(Urls.getV4LogoutUrl(
-                          loginResponse!.id_token,
-                          Urls.tataHitachiRedirectUri)),
+                          loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
                 ),
                 isLoading ? InsiteProgressBar() : SizedBox()
               ],

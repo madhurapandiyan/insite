@@ -100,6 +100,7 @@ class Urls {
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
   static String tataHitachiRedirectUri = "insite://mobile";
+  static String tataHitachiLogoutUrl="insite.logout://mobile";
   static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "Frame-Administrator-IND";
 
@@ -238,13 +239,12 @@ class Urls {
   static String getGeoFenceData =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
   static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
- 
 
   // india stack api urls
-  static String fleetSummary = "$fleet/1.0/api/v2/FleetSummary";
+  static String fleetSummary = "$fleet/1.0/UnifiedFleet/FleetSummary/v5";
   static String authenticateUrl = "$subscriptionPrefix/authenticate";
   static String assetSummary = "$utilization/1.0/AssetOperation";
-  static String utlizationSummary = "$fleet/1.0/UnifiedFleet/Utilization";
+  static String utlizationSummary = "$fleet/1.0/UnifiedFleet/Utilization/v5";
   static String utilizationSummaryV1 =
       "$fleet/1.0/UnifiedFleet/Utilization/Summary/v1";
   static String utilizationDetails =
@@ -253,11 +253,11 @@ class Urls {
       "$utilization/1.0/api/v1/Utilization/Details/Aggregate";
   static String assetoperationsegments =
       "$utilization/1.0/assetoperationsegments";
-  static String locationSummary = "$locationMap/1.0/location/maps/v1";
+  static String locationSummary = "$locationMap/1.0/location/maps/v2";
   static String locationHistory = "$assetHistory/1.0/AssetLocationHistory/";
   static String assetCountSummary = "$fleet/1.0/UnifiedFleet/AssetCount/v1";
   static String assetCountSubscriptionSummary =
-      "$fleet/1.0/UnifiedFleet/AssetCount/Subscription/v1";
+      "$fleet/1.0/UnifiedFleet/AssetCount/Subscription/v5";
   static String faultViewSummary = "$health/1.0/health/Faults/Search";
   static String assetViewSummary = "$health/1.0/health/Assets/FaultTotals";
   static String assetHealthSummary = "$health/1.0/health/Assets";
@@ -322,8 +322,7 @@ class Urls {
   static String downloadResetData =
       "$subscriptionPrefix/assetDetail/asset/activate/";
   static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
-  static String getEditGroupData="/t/trimble.com/vss-groupservice/1.0/";
-  
+  static String getEditGroupData = "/t/trimble.com/vss-groupservice/1.0/";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -404,4 +403,6 @@ class Urls {
 
   static String manageNotificationsData =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
+
+  static String loginAudit = "${nameSpace + identity}/2.0/UserLogin/loginAudit";
 }

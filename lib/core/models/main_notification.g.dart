@@ -12,11 +12,15 @@ NotificationsData _$NotificationsDataFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Notification.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as String?,
+      total: json['total'] == null
+          ? null
+          : Total.fromJson(json['total'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$NotificationsDataToJson(NotificationsData instance) =>
     <String, dynamic>{
       'notification': instance.notification,
+      'total': instance.total,
       'status': instance.status,
     };
 

@@ -5,7 +5,6 @@ import 'package:insite/views/plant/plant_asset_creation/reusable_widget/asset_cr
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'plant_asset_creation_view_model.dart';
 
@@ -150,55 +149,51 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                     children: [
                       Form(
                         key: viewModel.formKeyScreenOne,
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount:
-                                  viewModel.assetCreationListData.length,
-                              padding: EdgeInsets.all(8),
-                              itemBuilder: (context, index) {
-                                final dataModel =
-                                    viewModel.assetCreationListData[index];
+                        child: ListView.builder(
+                            itemCount:
+                                viewModel.assetCreationListData.length,
+                            padding: EdgeInsets.all(8),
+                            itemBuilder: (context, index) {
+                              final dataModel =
+                                  viewModel.assetCreationListData[index];
                 
-                                return AssetCreationWidget(
-                                  voidCallback: () {
-                                  
-                                  },
-                                  data: dataModel,
-                                  onAssetSerialValueChange: (String value) {
-                                    viewModel.getAssetSerialListValue(
-                                        value, index);
-                                  },
-                                  onDeviceIdValueChange: (String value) {
-                                    viewModel.getDeviceIdListValue(
-                                        value, index);
-                                  },
-                                  onHourMeterValueChange: (String value) {
-                                    viewModel.getHrsMeterListValue(
-                                        value, index);
-                                  },
-                                );
-                              }),
-                        ),
+                              return AssetCreationWidget(
+                                voidCallback: () {
+                                
+                                },
+                                data: dataModel,
+                                onAssetSerialValueChange: (String value) {
+                                  viewModel.getAssetSerialListValue(
+                                      value.toUpperCase(), index);
+                                },
+                                onDeviceIdValueChange: (String value) {
+                                  viewModel.getDeviceIdListValue(
+                                      value, index);
+                                },
+                                onHourMeterValueChange: (String value) {
+                                  viewModel.getHrsMeterListValue(
+                                      value, index);
+                                },
+                              );
+                            }),
                       ),
                       Form(
                         key: viewModel.formKeyScreenTwo,
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount:
-                                  viewModel.assetCreationListData.length,
-                              padding: EdgeInsets.all(8),
-                              itemBuilder: (context, index) {
-                                final assetCreationData =
-                                    viewModel.assetCreationListData[index];
+                        child: ListView.builder(
+                            itemCount:
+                                viewModel.assetCreationListData.length,
+                            padding: EdgeInsets.all(8),
+                            itemBuilder: (context, index) {
+                              final assetCreationData =
+                                  viewModel.assetCreationListData[index];
                 
-                                return AssetCreationValidationWidget(
-                                  data: assetCreationData,
-                                  voidCallback: () {
-                                    //viewModel.onItemSelect(index);
-                                  },
-                                );
-                              }),
-                        ),
+                              return AssetCreationValidationWidget(
+                                data: assetCreationData,
+                                voidCallback: () {
+                                  //viewModel.onItemSelect(index);
+                                },
+                              );
+                            }),
                       ),
                     ],
                   ),

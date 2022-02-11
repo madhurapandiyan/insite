@@ -16,7 +16,9 @@ class CustomAutoCompleteWidget extends StatefulWidget {
   final TextInputType? keyboardType;
   final dynamic Function(String)? validator;
   final bool? isEnable;
+  final bool isShowingBorderColor;
   bool isShowingHelperText;
+  final Function? onTap;
   CustomAutoCompleteWidget(
       {this.items,
       this.isAlign,
@@ -29,6 +31,8 @@ class CustomAutoCompleteWidget extends StatefulWidget {
       this.helperText,
       required this.isShowing,
       required this.isShowingHelperText,
+      this.onTap,
+      required this.isShowingBorderColor,
       this.onSelect});
 
   @override
@@ -44,6 +48,9 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
       children: [
         InsiteText(
           text: widget.textBoxTitle,
+          color:widget.isShowingBorderColor
+                      ? Theme.of(context).backgroundColor
+                      : Theme.of(context).textTheme.bodyText1!.color!,
         ),
         SizedBox(
           height: 10,
@@ -56,6 +63,8 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
           //   borderRadius: BorderRadius.all(Radius.circular(10)),
           // ),
           child: CustomTextBox(
+            isShowingBorderColor: widget.isShowingBorderColor,
+            onTap: widget.onTap,
             helperText: widget.isShowingHelperText ? widget.helperText : null,
             helperStyle: TextStyle(color: tango),
             isenabled: widget.isEnable,
@@ -68,7 +77,7 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
         widget.isShowing
             ? SizedBox()
             : Container(
-                height: 200,
+                height: 150,
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 color: Theme.of(context).canvasColor,
                 child: ListView(

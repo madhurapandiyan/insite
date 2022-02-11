@@ -1,6 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/permission.dart';
+import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -24,13 +25,10 @@ class HomeViewModel extends InsiteViewModel {
       locator<service.NavigationService>();
   LoginService? _loginService = locator<LoginService>();
   LocalService? _localService = locator<LocalService>();
+  bool? isLoggedIn;
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-  Future.delayed(Duration(seconds: 1), () {
-      // checkPermission();
-      // _loginService.getTokenWithoutLogin();
-    });
   }
 
   openRespectivePage(ScreenType type) {
