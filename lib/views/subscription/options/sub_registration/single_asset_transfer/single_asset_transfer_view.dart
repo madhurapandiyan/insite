@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -121,6 +120,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                     .gpsDeviceIdList.isEmpty,
                                                 controller: viewModel
@@ -142,6 +142,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                     .serialNoList.isEmpty,
                                                 isShowing: viewModel
@@ -296,6 +297,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 isShowingHelperText: viewModel
                                                         .dealerNameChange
                                                         ?.result?[0]
@@ -324,6 +326,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: false,
                                                 helperText: "New Dealer Code",
                                                 isShowingHelperText: viewModel
                                                         .dealerCodeChange
@@ -347,7 +350,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 textBoxTitle: 'Dealer Code:',
                                                 onChange: (value) {
                                                   viewModel.onDealerCodeChanges(
-                                                      code: int.parse(value),
+                                                      code: value,
                                                       type: "DEALER");
                                                 },
                                               ),
@@ -501,6 +504,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: viewModel
+                                                    .allowTransferAsset,
                                                 helperText: "New Customer Name",
                                                 isShowingHelperText: viewModel
                                                         .customerNameChange
@@ -510,10 +515,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0,
                                                 isShowing: viewModel
                                                     .customerId.isEmpty,
-                                                isEnable:
-                                                    viewModel.allowTransferAsset
-                                                        ? false
-                                                        : true,
+                                                isEnable: !viewModel
+                                                    .allowTransferAsset,
                                                 controller: viewModel
                                                     .customerNameController,
                                                 onSelect: (value) {
@@ -533,6 +536,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 height: 10,
                                               ),
                                               CustomAutoCompleteWidget(
+                                                isShowingBorderColor: viewModel
+                                                    .allowTransferAsset,
                                                 helperText: "New Customer Code",
                                                 isShowingHelperText: viewModel
                                                         .customerCodeChange
@@ -542,10 +547,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     0,
                                                 isShowing: viewModel
                                                     .customerCode.isEmpty,
-                                                isEnable:
-                                                    viewModel.allowTransferAsset
-                                                        ? false
-                                                        : true,
+                                                isEnable: !viewModel
+                                                    .allowTransferAsset,
                                                 keyboardType:
                                                     TextInputType.number,
                                                 isAlign: false,
@@ -585,6 +588,14 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     text: 'Customer Email ID :',
                                                     size: 13,
                                                     fontWeight: FontWeight.w700,
+                                                    color: viewModel
+                                                            .allowTransferAsset
+                                                        ? Theme.of(context)
+                                                            .backgroundColor
+                                                        : Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!,
                                                   ),
                                                   SizedBox(
                                                     height:
@@ -595,12 +606,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ),
                                                   Container(
                                                       child: CustomTextBox(
+                                                    isShowingBorderColor:
+                                                        viewModel
+                                                            .allowTransferAsset,
                                                     controller: viewModel
                                                         .customerEmailController,
-                                                    isenabled: viewModel
-                                                            .allowTransferAsset
-                                                        ? false
-                                                        : true,
+                                                    isenabled: !viewModel
+                                                        .allowTransferAsset,
                                                   )),
                                                 ],
                                               ),
@@ -616,6 +628,14 @@ class SingleAssetTransferView extends StatelessWidget {
                                                         'Customer Mobile No.:',
                                                     size: 13,
                                                     fontWeight: FontWeight.w700,
+                                                    color: viewModel
+                                                            .allowTransferAsset
+                                                        ? Theme.of(context)
+                                                            .backgroundColor
+                                                        : Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!,
                                                   ),
                                                   SizedBox(
                                                     height:
@@ -626,12 +646,13 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   ),
                                                   Container(
                                                       child: CustomTextBox(
+                                                    isShowingBorderColor:
+                                                        viewModel
+                                                            .allowTransferAsset,
                                                     controller: viewModel
                                                         .customerMobileNoController,
-                                                    isenabled: viewModel
-                                                            .allowTransferAsset
-                                                        ? false
-                                                        : true,
+                                                    isenabled: !viewModel
+                                                        .allowTransferAsset,
                                                   )),
                                                 ],
                                               ),
@@ -651,6 +672,14 @@ class SingleAssetTransferView extends StatelessWidget {
                                                 text: 'SMS Languge',
                                                 size: 13,
                                                 fontWeight: FontWeight.w700,
+                                                color:
+                                                    viewModel.allowTransferAsset
+                                                        ? Theme.of(context)
+                                                            .backgroundColor
+                                                        : Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!,
                                               ),
                                               SizedBox(
                                                 height: MediaQuery.of(context)
@@ -661,22 +690,26 @@ class SingleAssetTransferView extends StatelessWidget {
                                               Container(
                                                 decoration: BoxDecoration(
                                                     border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1!
-                                                          .color!,
+                                                      color: viewModel
+                                                              .allowTransferAsset
+                                                          ? Theme.of(context)
+                                                              .backgroundColor
+                                                          : Theme.of(context)
+                                                              .textTheme
+                                                              .bodyText1!
+                                                              .color!,
                                                     ),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10)),
                                                 child: CustomDropDownWidget(
+                                                  textColorChange: viewModel
+                                                      .allowTransferAsset,
                                                   value: viewModel
                                                       .initialCustLanguge,
                                                   items: viewModel.languages,
-                                                  istappable: viewModel
-                                                          .allowTransferAsset
-                                                      ? false
-                                                      : true,
+                                                  istappable: !viewModel
+                                                      .allowTransferAsset,
                                                   onChanged: (value) {
                                                     viewModel
                                                         .updateCustomerLanguage(
@@ -741,9 +774,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                     BorderRadius.circular(10)),
                                             child: CustomDropDownWidget(
                                               istappable:
-                                                  viewModel.allowTransferAsset
-                                                      ? false
-                                                      : true,
+                                                  !viewModel.allowTransferAsset,
                                               value: viewModel
                                                   .initialIndustryDetail,
                                               items: viewModel.industryDetails,
@@ -774,10 +805,8 @@ class SingleAssetTransferView extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10)),
                                                   child: CustomDropDownWidget(
-                                                    istappable: viewModel
-                                                            .allowTransferAsset
-                                                        ? false
-                                                        : true,
+                                                    istappable: !viewModel
+                                                        .allowTransferAsset,
                                                     value: viewModel
                                                         .initialSubIndustryDetailValue,
                                                     items: viewModel

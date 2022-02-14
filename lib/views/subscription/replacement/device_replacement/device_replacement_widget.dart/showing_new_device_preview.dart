@@ -114,7 +114,8 @@ class ShowingNewDeviceDetail extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.3,
               ),
             ],
-          )
+          ),
+          SizedBox(height: 30,)
         ],
       ),
     );

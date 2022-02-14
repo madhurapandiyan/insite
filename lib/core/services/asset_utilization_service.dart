@@ -34,8 +34,8 @@ class AssetUtilizationService extends BaseService {
       customerSelected = await _localService!.getAccountInfo();
 
       customerSelected = await _localService!.getCustomerInfo();
-      Logger().d("account selected " + accountSelected!.CustomerUID!);
-      Logger().d("customer selected " + customerSelected!.CustomerUID!);
+      Logger().d("account selected ${accountSelected?.CustomerUID!}");
+      Logger().d("customer selected ${customerSelected?.CustomerUID!}");
     } catch (e) {
       Logger().e(e);
     }

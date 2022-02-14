@@ -7,6 +7,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -164,7 +165,39 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Container(
+                              width: 100,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  // border: Border.all(
+                                  //     width: 1,
+                                  //     color: Theme.of(context).buttonColor),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).backgroundColor),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomDropDownWidget(
+                                      items: [
+                                        "MAP",
+                                        "TERRAIN",
+                                        "SATELLITE",
+                                        "HYBRID"
+                                      ],
+                                      value: _currentSelectedItem,
+                                      onChanged: (value) {
+                                        _currentSelectedItem = value!;
+                                        _changemap();
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  Icon(Icons.keyboard_arrow_down)
+                                ],
+                              ),
+                            ),
                             SizedBox(
                               height: 48.0,
                             ),
@@ -346,18 +379,15 @@ class _AssetLocationViewState extends State<AssetLocationView> {
         Logger().i("map is in normal type ");
         return MapType.normal;
 
-        break;
       case "TERRAIN":
         Logger().i("map is in terrain type");
 
         return MapType.terrain;
 
-        break;
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
 
-        break;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;

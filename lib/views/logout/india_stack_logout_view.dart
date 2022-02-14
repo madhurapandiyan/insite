@@ -46,7 +46,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   @override
   void initState() {
     Logger().d("IndiaStackLogoutView  codeVerifier $codeVerifier");
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier,false);
     Logger().d("IndiaStackLogoutView  codeChallenge $codeChallenge");
     Logger().d("IndiaStackLogoutView  state $state");
     Logger().d(
@@ -180,7 +180,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackLogoutView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier());
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(),false);
     LoginResponse? result =
         await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -202,7 +202,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
             body: SafeArea(
               child: WebviewScaffold(
                 url: Urls.getV4LoginUrl(state, codeChallenge),
-                hidden: true,
+                //hidden: true,
               ),
             ),
           ),

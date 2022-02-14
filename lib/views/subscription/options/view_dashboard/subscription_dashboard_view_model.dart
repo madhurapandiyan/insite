@@ -21,9 +21,8 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
 
   SubscriptionDashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-  setUp();
+    setUp();
     _subscriptionService!.setUp();
-    _localService!.getToken();
     Future.delayed(Duration(seconds: 2), () {
       getSubscriptionDashboardData();
     });
@@ -210,8 +209,8 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
       _navigationService!.navigateWithTransition(SmsScheduleMultiAssetView(),
           transition: "fade");
     } else if (value == AdminAssetsButtonType.REPORTSUMMARYFORSMS) {
-      _navigationService!.navigateWithTransition(ReportSummaryView(),
-          transition: "fade");
+      _navigationService!
+          .navigateWithTransition(ReportSummaryView(), transition: "fade");
     }
   }
 }

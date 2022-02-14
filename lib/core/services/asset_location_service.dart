@@ -99,11 +99,9 @@ class AssetLocationService extends BaseService {
           accountSelected?.CustomerUID,
           (await _localService!.getLoggedInUser())!.sub,
         );
-
+        Logger().wtf("get asset location ${data.data!["fleetLocationDetails"]}");
         AssetLocationData assetOperationData =
             AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
-
-        Logger().wtf(assetOperationData.toJson());
 
         return assetOperationData;
       } else {

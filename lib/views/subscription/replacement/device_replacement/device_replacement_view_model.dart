@@ -21,7 +21,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   DeviceReplacementViewModel() {
     this.log = getLogger(this.runtimeType.toString());
-   
+
     getUserId();
   }
 
@@ -150,7 +150,6 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         _deviceSearchModelResponse = await replacementService!
             .getDeviceSearchModelResponse(searchTextController.text);
         isGettingOldDeviceId = true;
-        Logger().e(_deviceSearchModelResponse!.result!.toJson());
         searchingOldDeviceId = true;
         hideLoadingDialog();
         notifyListeners();
@@ -173,23 +172,22 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       if (searchWord.length < 4) {
         _replaceDeviceModelData = null;
         isGettingNewDeviceId = false;
-        _replaceDeviceModelData!.result!.last.clear();
+        checkingNewDeviceIdEnter = false;
         notifyListeners();
       } else {
         _replaceDeviceModelData =
             await replacementService!.getReplaceDeviceModel(searchWord);
-        Logger().d(_replaceDeviceModelData!.result!.last.first.toJson());
+        if (_replaceDeviceModelData!.result!.last.isEmpty) {
+          Fluttertoast.showToast(msg: "Device Not Found");
+          replaceDeviceIdController.clear();
+          notifyListeners();
+          return;
+        }
         checkingNewDeviceIdEnter = true;
         notifyListeners();
       }
     } catch (e) {
       Logger().e(e.toString());
-      if (_replaceDeviceModelData!.result!.last.isEmpty) {
-        Fluttertoast.showToast(msg: "Device Not Found");
-        replaceDeviceIdController.clear();
-        notifyListeners();
-        return;
-      }
     }
   }
 
@@ -210,21 +208,18 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           OldDeviceId: deviceSearchModelResponse!.result!.GPSDeviceID);
       //Logger().d(NewdeviceData.toJson());
       //Logger().w(userId);
-
-      Logger().e(userId);
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
           UserID: int.parse(userId!),
           Version: 2.1,
           device: [NewdeviceData]);
-
-      Logger().d(replacementData.device!.first.toJson());
       var data = await replacementService!.savingReplacement(replacementData);
       if (data["status"] == "success") {
         searchList.clear();
         showingNewDeviceIdPreview = false;
         Logger().e(data);
         Fluttertoast.showToast(msg: "Replacement successfull");
+        
         hideLoadingDialog();
         //onReplacementSuccessful();
         notifyListeners();

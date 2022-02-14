@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+
 import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';

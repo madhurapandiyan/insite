@@ -105,8 +105,7 @@ AuthenticatePayload _$AuthenticatePayloadFromJson(Map<String, dynamic> json) =>
     AuthenticatePayload(
       env: json['env'] as String? ?? "THC",
       grantType: json['grantType'] as String? ?? "authorization_code",
-      code: json['code'] as String? ??
-          "1iTfEId3nqmvNc5mune6Y0W8-CJomXmN54ZMb_UpKFT",
+      code: json['code'] as String?,
       redirectUri: json['redirectUri'] as String? ??
           "https://dev-oem.frame-oesolutions.com/auth",
       client_key: json['client_key'] as String? ??
@@ -116,7 +115,7 @@ AuthenticatePayload _$AuthenticatePayloadFromJson(Map<String, dynamic> json) =>
       mobile: json['mobile'] as String? ?? "0000000000",
       uuid: json['uuid'] as String?,
       email: json['email'] as String?,
-    );
+    )..codeverifier = json['codeverifier'] as String;
 
 Map<String, dynamic> _$AuthenticatePayloadToJson(
         AuthenticatePayload instance) =>
@@ -131,6 +130,7 @@ Map<String, dynamic> _$AuthenticatePayloadToJson(
       'mobile': instance.mobile,
       'uuid': instance.uuid,
       'email': instance.email,
+      'codeverifier': instance.codeverifier,
     };
 
 // **************************************************************************
@@ -3769,6 +3769,26 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AlertTypes.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> loginAudit(
+      url, customerId, service, loginAuditPayload) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'X-VisionLink-CustomerUid': customerId,
+      r'service': service
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = loginAuditPayload;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options, '${url}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
     return value;
   }
 

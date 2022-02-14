@@ -24,92 +24,95 @@ class AssetOperationListItem extends StatelessWidget {
         onCallback!();
       },
       child: Card(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // SizedBox(
-                  // height: 20,
-                  // ),
-                  // Icon(Icons.arrow_drop_down, color: Colors.white),
-                  // SizedBox(
-                  // height: 20,
-                  // ),
-                  // Container(
-                  //     decoration: BoxDecoration(
-                  //         color: Colors.black,
-                  //         borderRadius: BorderRadius.all(Radius.circular(4))),
-                  //     child: Icon(Icons.crop_square, color: Colors.black)),
-                ],
-              ),
-            ),
-            Expanded(
-              child: InsiteExpansionTile(
-                title: Table(
-                  border: TableBorder.all(),
-                  columnWidths: {
-                    0: FlexColumnWidth(5),
-                    1: FlexColumnWidth(3),
-                  },
+        child: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    TableRow(
-                      children: [
-                        InsiteTableRowItemWithImage(
-                          title: asset != null
-                              ? Utils.getMakeTitle(asset!.makeCode!) +
-                                  "\n" +
-                                  asset!.model!
-                              : "",
-                          path: asset == null
-                              ? "assets/images/EX210.png"
-                              : Utils().imageData(asset!.model!),
-                        ),
-                        InsiteTableRowItem(
-                          title: "Total Duration",
-                          content: asset!.dateRangeRuntimeDuration != null
-                              ? Utils.formatHHmm(Duration(
-                                      seconds: asset!.dateRangeRuntimeDuration!
-                                          .toInt())
-                                  .inSeconds)
-                              : "-",
-                        ),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        InsiteRichText(
-                          title: "Serial No. ",
-                          content: asset!.serialNumber,
-                          onTap: () {
-                            onCallback!();
-                          },
-                        ),
-                        InsiteTableRowItem(
-                          title: "Distance Travelled Kilometers",
-                          content: asset != null &&
-                                  asset!.distanceTravelledKilometers != null
-                              ? asset!.distanceTravelledKilometers!
-                                  .round()
-                                  .toString()
-                              : "-",
-                        ),
-                      ],
-                    ),
+                    // SizedBox(
+                    // height: 20,
+                    // ),
+                    // Icon(Icons.arrow_drop_down, color: Colors.white),
+                    // SizedBox(
+                    // height: 20,
+                    // ),
+                    // Container(
+                    //     decoration: BoxDecoration(
+                    //         color: Colors.black,
+                    //         borderRadius: BorderRadius.all(Radius.circular(4))),
+                    //     child: Icon(Icons.crop_square, color: Colors.black)),
                   ],
                 ),
-                tilePadding: EdgeInsets.all(0),
-                children: [
-                  DateSlider(
-                    list: getSliderData(),
-                  )
-                ],
               ),
-            ),
-          ],
+              Expanded(
+                child: InsiteExpansionTile(
+                  title: Table(
+                    border: TableBorder.all(),
+                    columnWidths: {
+                      0: FlexColumnWidth(5),
+                      1: FlexColumnWidth(3),
+                    },
+                    children: [
+                      TableRow(
+                        children: [
+                          InsiteTableRowItemWithImage(
+                            title: asset != null
+                                ? Utils.getMakeTitle(asset!.makeCode!) +
+                                    "\n" +
+                                    asset!.model!
+                                : "",
+                            path: asset == null
+                                ? "assets/images/EX210.png"
+                                : Utils().imageData(asset!.model!),
+                          ),
+                          InsiteTableRowItem(
+                            title: "Total Duration",
+                            content: asset!.dateRangeRuntimeDuration != null
+                                ? Utils.formatHHmm(Duration(
+                                        seconds: asset!.dateRangeRuntimeDuration!
+                                            .toInt())
+                                    .inSeconds)
+                                : "-",
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          InsiteRichText(
+                            title: "Serial No. ",
+                            content: asset!.serialNumber,
+                            onTap: () {
+                              onCallback!();
+                            },
+                          ),
+                          InsiteTableRowItem(
+                            title: "Distance Travelled Kilometers",
+                            content: asset != null &&
+                                    asset!.distanceTravelledKilometers != null
+                                ? asset!.distanceTravelledKilometers!
+                                    .round()
+                                    .toString()
+                                : "-",
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  tilePadding: EdgeInsets.all(0),
+                  children: [
+                    DateSlider(
+                      list: getSliderData(),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -272,128 +272,41 @@ class UtilizationListItem extends StatelessWidget {
               onCallback!();
             },
             child: Card(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                        // Icon(Icons.arrow_drop_down, color: Colors.white),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                        // Container(
-                        //     decoration: BoxDecoration(
-                        //         color: Colors.black,
-                        //         borderRadius:
-                        //             BorderRadius.all(Radius.circular(4))),
-                        //     child:
-                        //         Icon(Icons.crop_square, color: Colors.black)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: InsiteExpansionTile(
-                      title: Table(
-                        border: TableBorder(
-                            bottom: BorderSide.none,
-                            verticalInside: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Color(0xFF000000),
-                                width: 1),
-                            top: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Color(0xFF000000),
-                                width: 1),
-                            horizontalInside: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Color(0xFF000000),
-                                width: 1),
-                            left: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Color(0xFF000000),
-                                width: 1),
-                            right: BorderSide.none),
-                        columnWidths: {
-                          0: FlexColumnWidth(5),
-                          1: FlexColumnWidth(3),
-                        },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          TableRow(
-                            children: [
-                              InsiteTableRowItemWithImage(
-                                title: utilizationData!.manufacturer != null
-                                    ? utilizationData!.manufacturer
-                                    : "" + "\n" + utilizationData!.model! !=
-                                            null
-                                        ? utilizationData!.model
-                                        : "",
-                                path: utilizationData == null
-                                    ? "assets/images/EX210.png"
-                                    : Utils()
-                                        .imageData(utilizationData!.model!),
-                              ),
-                              InsiteTableRowItem(
-                                title: "Runtime Hours",
-                                content: utilizationData?.runtimeHours
-                                            .toString() ==
-                                        "null"
-                                    ? "-"
-                                    : utilizationData?.runtimeHours.toString(),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              InsiteRichText(
-                                title: "Serial No. ",
-                                content: utilizationData!.assetSerialNumber,
-                                onTap: () {
-                                  onCallback!();
-                                },
-                              ),
-                              InsiteTableRowItem(
-                                title: "Working Time Hours",
-                                content: utilizationData?.workingHours
-                                            .toString() ==
-                                        "null"
-                                    ? "-"
-                                    : utilizationData?.workingHours.toString(),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              InsiteTableRowItem(
-                                title: "Last Utiization Report",
-                                content:
-                                    utilizationData!.lastReportedTime != null
-                                        ? Utils.getLastReportedDateOne(
-                                            utilizationData!.lastReportedTime)
-                                        : '-',
-                              ),
-                              InsiteTableRowItem(
-                                title: "Idle Hours",
-                                content:
-                                    utilizationData?.idleHours.toString() ==
-                                            "null"
-                                        ? "-"
-                                        : utilizationData!.idleHours.toString(),
-                              ),
-                            ],
-                          ),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Icon(Icons.arrow_drop_down, color: Colors.white),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Container(
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.black,
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(4))),
+                          //     child:
+                          //         Icon(Icons.crop_square, color: Colors.black)),
                         ],
                       ),
-                      tilePadding: EdgeInsets.all(0),
-                      children: [
-                        Table(
+                    ),
+                    Expanded(
+                      child: InsiteExpansionTile(
+                        title: Table(
                           border: TableBorder(
-                              bottom: BorderSide.none,
+                              bottom: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Color(0xFF000000),
+                                  width: 1),
                               verticalInside: BorderSide(
                                   style: BorderStyle.solid,
                                   color: Color(0xFF000000),
@@ -410,92 +323,101 @@ class UtilizationListItem extends StatelessWidget {
                                   style: BorderStyle.solid,
                                   color: Color(0xFF000000),
                                   width: 1),
-                              right: BorderSide.none),
+                              right: BorderSide(
+                                  style: BorderStyle.solid,
+                                  color: Color(0xFF000000),
+                                  width: 1)),
                           columnWidths: {
-                            0: FlexColumnWidth(1),
+                            0: FlexColumnWidth(5),
                             1: FlexColumnWidth(3),
                           },
                           children: [
                             TableRow(
                               children: [
-                                InsiteTableRowItem(
-                                  title: "Runtime Target",
-                                  content:
-                                      utilizationData!.targetRuntime != null
-                                          ? utilizationData!.targetRuntime
-                                              .toString()
-                                          : "-",
+                                InsiteTableRowItemWithImage(
+                                  title: utilizationData!.manufacturer != null
+                                      ? utilizationData!.manufacturer
+                                      : "" + "\n" + utilizationData!.model! !=
+                                              null
+                                          ? utilizationData!.model
+                                          : "",
+                                  path: utilizationData == null
+                                      ? "assets/images/EX210.png"
+                                      : Utils()
+                                          .imageData(utilizationData!.model!),
                                 ),
-                                Table(
-                                  border: TableBorder(
-                                      bottom: BorderSide.none,
-                                      top: BorderSide(
-                                          style: BorderStyle.solid,
-                                          color: Color(0xFF000000),
-                                          width: 1),
-                                      left: BorderSide(
-                                          style: BorderStyle.solid,
-                                          color: Color(0xFF000000),
-                                          width: 1),
-                                      right: BorderSide.none),
-                                  children: [
-                                    TableRow(children: [
-                                      InsiteTableRowItem(
-                                        title: "Daily",
-                                        content:
-                                            utilizationData!.runtimeHours !=
-                                                    null
-                                                ? utilizationData!.runtimeHours
-                                                    .toString()
-                                                : "-",
-                                      ),
-                                      // InsiteTableRowItem(
-                                      //   title: "Target",
-                                      //   content:
-                                      //       utilizationData.targetRuntime !=
-                                      //               null
-                                      //           ? utilizationData.targetRuntime
-                                      //               .toString()
-                                      //           : "-",
-                                      // ),
-                                      InsiteTableRowItem(
-                                        title: "Performance",
-                                        content: utilizationData!
-                                                    .targetRuntimePerformance !=
-                                                null
-                                            ? (utilizationData!
-                                                            .targetRuntimePerformance! *
-                                                        100)
-                                                    .toStringAsFixed(2) +
-                                                " %"
-                                            : "",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Fuel Burned",
-                                        content: utilizationData!
-                                                    .runtimeFuelConsumedLiters !=
-                                                null
-                                            ? utilizationData!
-                                                .runtimeFuelConsumedLiters!
-                                                .toStringAsFixed(1)
-                                            : "-",
-                                      )
-                                    ]),
-                                  ],
+                                InsiteTableRowItem(
+                                  title: "Runtime Hours",
+                                  content: utilizationData?.runtimeHours
+                                              .toString() ==
+                                          "null"
+                                      ? "-"
+                                      : utilizationData?.runtimeHours
+                                          .toString(),
                                 ),
                               ],
                             ),
-                            TableRow(children: [
-                              InsiteTableRowItem(
-                                title: "Idle Target",
-                                content: utilizationData!.targetIdle != null
-                                    ? utilizationData!.targetIdle.toString()
-                                    : "-",
-                              ),
+                            TableRow(
+                              children: [
+                                InsiteRichText(
+                                  title: "Serial No. ",
+                                  content: utilizationData!.assetSerialNumber,
+                                  onTap: () {
+                                    onCallback!();
+                                  },
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Working Time Hours",
+                                  content: utilizationData?.workingHours
+                                              .toString() ==
+                                          "null"
+                                      ? "-"
+                                      : utilizationData?.workingHours
+                                          .toString(),
+                                ),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                InsiteTableRowItem(
+                                  title: "Last Utiization Report",
+                                  content:
+                                      utilizationData!.lastReportedTime != null
+                                          ? Utils.getLastReportedDateOne(
+                                              utilizationData!.lastReportedTime)
+                                          : '-',
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Idle Hours",
+                                  content: utilizationData?.idleHours
+                                              .toString() ==
+                                          "null"
+                                      ? "-"
+                                      : utilizationData!.idleHours.toString(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        tilePadding: EdgeInsets.all(0),
+                        children: [
+                          Column(
+                            children: [
                               Table(
                                 border: TableBorder(
-                                    bottom: BorderSide.none,
+                                    bottom: BorderSide(
+                                      style: BorderStyle.solid,
+                                      color: Color(0xFF000000),
+                                      width: 1),
+                                    verticalInside: BorderSide(
+                                        style: BorderStyle.solid,
+                                        color: Color(0xFF000000),
+                                        width: 1),
                                     top: BorderSide(
+                                        style: BorderStyle.solid,
+                                        color: Color(0xFF000000),
+                                        width: 1),
+                                    horizontalInside: BorderSide(
                                         style: BorderStyle.solid,
                                         color: Color(0xFF000000),
                                         width: 1),
@@ -503,7 +425,10 @@ class UtilizationListItem extends StatelessWidget {
                                         style: BorderStyle.solid,
                                         color: Color(0xFF000000),
                                         width: 1),
-                                    right: BorderSide.none),
+                                    right: BorderSide(
+                                      style: BorderStyle.solid,
+                                      color: Color(0xFF000000),
+                                      width: 1)),
                                 columnWidths: {
                                   0: FlexColumnWidth(1),
                                   1: FlexColumnWidth(3),
@@ -512,36 +437,133 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Daily",
+                                        title: "Runtime Target",
                                         content:
-                                            utilizationData!.idleHours != null
-                                                ? utilizationData!.idleHours
+                                            utilizationData!.targetRuntime != null
+                                                ? utilizationData!.targetRuntime
                                                     .toString()
                                                 : "-",
                                       ),
-                                      InsiteTableRowItem(
-                                        title: "Performance",
-                                        content: utilizationData!
-                                                    .targetIdlePerformance !=
-                                                null
-                                            ? (utilizationData!
-                                                            .targetIdlePerformance! *
-                                                        100)
-                                                    .toStringAsFixed(2) +
-                                                " %"
-                                            : "",
+                                      Table(
+                                        border: TableBorder(
+                                            bottom: BorderSide.none,
+                                            top: BorderSide(
+                                                style: BorderStyle.solid,
+                                                color: Color(0xFF000000),
+                                                width: 1),
+                                            left: BorderSide(
+                                                style: BorderStyle.solid,
+                                                color: Color(0xFF000000),
+                                                width: 1),
+                                            right: BorderSide.none),
+                                        children: [
+                                          TableRow(children: [
+                                            InsiteTableRowItem(
+                                              title: "Daily",
+                                              content: utilizationData!
+                                                          .runtimeHours !=
+                                                      null
+                                                  ? utilizationData!.runtimeHours
+                                                      .toString()
+                                                  : "-",
+                                            ),
+                                            // InsiteTableRowItem(
+                                            //   title: "Target",
+                                            //   content:
+                                            //       utilizationData.targetRuntime !=
+                                            //               null
+                                            //           ? utilizationData.targetRuntime
+                                            //               .toString()
+                                            //           : "-",
+                                            // ),
+                                            InsiteTableRowItem(
+                                              title: "Performance",
+                                              content: utilizationData!
+                                                          .targetRuntimePerformance !=
+                                                      null
+                                                  ? (utilizationData!
+                                                                  .targetRuntimePerformance! *
+                                                              100)
+                                                          .toStringAsFixed(2) +
+                                                      " %"
+                                                  : "",
+                                            ),
+                                            InsiteTableRowItem(
+                                              title: "Fuel Burned",
+                                              content: utilizationData!
+                                                          .runtimeFuelConsumedLiters !=
+                                                      null
+                                                  ? utilizationData!
+                                                      .runtimeFuelConsumedLiters!
+                                                      .toStringAsFixed(1)
+                                                  : "-",
+                                            )
+                                          ]),
+                                        ],
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  TableRow(children: [
+                                    InsiteTableRowItem(
+                                      title: "Idle Target",
+                                      content: utilizationData!.targetIdle != null
+                                          ? utilizationData!.targetIdle.toString()
+                                          : "-",
+                                    ),
+                                    Table(
+                                      border: TableBorder(
+                                          bottom: BorderSide.none,
+                                          top: BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color(0xFF000000),
+                                              width: 1),
+                                          left: BorderSide(
+                                              style: BorderStyle.solid,
+                                              color: Color(0xFF000000),
+                                              width: 1),
+                                          right: BorderSide.none),
+                                      columnWidths: {
+                                        0: FlexColumnWidth(1),
+                                        1: FlexColumnWidth(3),
+                                      },
+                                      children: [
+                                        TableRow(
+                                          children: [
+                                            InsiteTableRowItem(
+                                              title: "Daily",
+                                              content:
+                                                  utilizationData!.idleHours != null
+                                                      ? utilizationData!.idleHours
+                                                          .toString()
+                                                      : "-",
+                                            ),
+                                            InsiteTableRowItem(
+                                              title: "Performance",
+                                              content: utilizationData!
+                                                          .targetIdlePerformance !=
+                                                      null
+                                                  ? (utilizationData!
+                                                                  .targetIdlePerformance! *
+                                                              100)
+                                                          .toStringAsFixed(2) +
+                                                      " %"
+                                                  : "",
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )
+                                  ]),
                                 ],
-                              )
-                            ]),
-                          ],
-                        )
-                      ],
+                              ),
+                              SizedBox(height: 10,)
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

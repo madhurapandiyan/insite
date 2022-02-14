@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier,false);
     flutterWebviewPlugin.close();
 
     // Add a listener to on destroy WebView, so you can make came actions.

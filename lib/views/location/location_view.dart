@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -330,13 +331,20 @@ class _LocationViewState extends State<LocationView> {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
+                                Container(
+                                  color: Theme.of(context).backgroundColor,
+                                  margin: EdgeInsets.only(left: 10, top: 5),
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
+                                  // decoration: BoxDecoration(
+                                  //     border:
+                                  //         Border.all(width: 2, color: tuna)),
                                   child: DropdownButton(
                                     dropdownColor:
                                         Theme.of(context).backgroundColor,
                                     icon: Padding(
-                                      padding: EdgeInsets.only(right: 8.0),
+                                      padding: EdgeInsets.only(right: 4.0),
                                       child: Container(
                                         child: SvgPicture.asset(
                                           "assets/images/arrowdown.svg",
@@ -352,9 +360,7 @@ class _LocationViewState extends State<LocationView> {
                                       _currentSelectedItem,
                                       style: TextStyle(
                                           color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .color),
+                                              .backgroundColor),
                                     ),
                                     items: [
                                       'MAP',
@@ -365,6 +371,7 @@ class _LocationViewState extends State<LocationView> {
                                         .map((map) => DropdownMenuItem(
                                               value: map,
                                               child: InsiteText(
+                                              
                                                 text: map,
                                                 size: 11.0,
                                                 fontWeight: FontWeight.bold,
@@ -372,6 +379,7 @@ class _LocationViewState extends State<LocationView> {
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
+                                    
                                     onChanged: (String? value) {
                                       setState(() {
                                         _currentSelectedItem = value!;

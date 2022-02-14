@@ -63,7 +63,7 @@ class SubScriptionService extends BaseService {
   }
 
   Future<SubscriptionDashboardDetailResult?> getSubscriptionDeviceListData(
-      {String? fitler,
+      {String? filter,
       int? start,
       int? limit,
       String? name,
@@ -74,15 +74,15 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (fitler != null) {
+      if (filter != null) {
         if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
-          queryMap["calender"] = fitler;
+          queryMap["calender"] = filter;
         } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.MODEL) {
-          queryMap["model"] = fitler;
+          queryMap["model"] = filter;
         } else if (filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
-          queryMap["type"] = fitler;
+          queryMap["type"] = filter;
         } else {
-          queryMap["status"] = "inactive";
+          queryMap["status"] = filter;
         }
       }
       if (name != null) {
@@ -122,7 +122,7 @@ class SubScriptionService extends BaseService {
       int? start,
       int? limit,
       String? name,
-      int? code,
+      dynamic code,
       PLANTSUBSCRIPTIONFILTERTYPE? filterType}) async {
     try {
       Map<String, String> queryMap = Map();

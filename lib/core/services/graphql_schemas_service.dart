@@ -1,6 +1,6 @@
 import 'package:insite/core/base/base_service.dart';
-import 'package:insite/utils/helper_methods.dart';
-import 'package:intl/intl.dart';
+import 'package:insite/core/models/update_user_data.dart';
+import 'package:logger/logger.dart';
 
 class GraphqlSchemaService extends BaseService {
   final String allAssets = """
@@ -44,6 +44,7 @@ query faultDataSummary{
   String getfaultQueryString(String startDate, String endDate) {
     final String faultQueryString = """
   query faultDataSummary{
+<<<<<<< HEAD
   faultdata(page: 1, limit: 100, startDateTime: "2022-02-07T00:00:00Z", endDateTime: "2022-02-09T23:59:59Z"){
     limit
     total
@@ -95,6 +96,11 @@ query faultDataSummary{
         isFaultActive
         priority
       }
+=======
+  faultdata(page: 1, limit: 100, startDateTime: "$startDate", endDateTime: "$endDate"){
+    
+    faults{
+>>>>>>> 281c42d24b118937dccf349290d1666514798e50
       details {
         faultCode
         faultReceivedUTC
@@ -328,7 +334,54 @@ faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
 }
 }
   """;
+    Logger().w(faultCountData);
     return faultCountData;
+  }
+
+  String userManagementUserList(String? searchKey) {
+    return """query{
+userManagementUserList(searchKey:"$searchKey"){
+  total{
+    pages
+    items
+  },
+  users{
+    first_name
+    last_name
+    user_type
+    loginId
+    job_type
+    job_title
+    userUid
+    lastLoginDate
+  }
+}
+  
+}""";
+  }
+
+  String deleteUser(List<String> usersId, String customerId) {
+    var deleteString = """mutation userManagementDeleteUser{
+  userManagementDeleteUser(deleteUser: {
+  users: $usersId,
+     customerUid:"$customerId"
+  }){
+     isDeleted
+   }
+ }""";
+    print(deleteString);
+    return deleteString;
+  }
+
+  String checkUserMailId(String emailId) {
+    var checkUserMail = """query{
+userEmail(EmailID:"$emailId"){
+  users{
+    userUid
+}
+}
+}""";
+    return checkUserMail;
   }
 
   String getFleetUtilization(String startDate, String endDate) {
@@ -414,6 +467,43 @@ faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
   """;
 
     return fleetUtilization;
+  }
+
+  String addUser(
+      {String? firstName,
+      String? lastName,
+      String? emailId,
+      String? phoneNo,
+      AddressData? addressData,
+      List<Role>? role,
+      String? customerUid,
+      int? jobType,
+      Details? details}) {
+    String doubleQuote = "\"";
+    List<Map<String, dynamic>> roleData = [];
+    role!.forEach((element) {
+      roleData.add({
+        "role_id": element.role_id,
+        "application_name": element.application_name
+      });
+    });
+    final String addUserData = """mutation {
+  userManagementCreateUser(requestBody: {fname: ${doubleQuote + firstName! + doubleQuote}, lname: ${doubleQuote + lastName! + doubleQuote}, email: ${doubleQuote + emailId! + doubleQuote}, 
+      JobType:$jobType,
+    address: ${addressData!.toJson()}, 
+      details:{
+        user_type: "Standard"
+      }, 
+      roles: $roleData, 
+      customerUid: "$customerUid", 
+      isAssetSecurityEnabled: true
+      }) {
+    count
+    invitation_id
+  }
+}""";
+    print(addUserData);
+    return addUserData;
   }
 
   String getFleetLocationData(String startDate, String endDate) {

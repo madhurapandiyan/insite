@@ -28,8 +28,8 @@ class AssetStatusService extends DataBaseService {
       //  await _localService!.saveAccountInfoData();
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
-      Logger().d("account selected " + accountSelected!.CustomerUID!);
-      Logger().d("customer selected " + customerSelected!.CustomerUID!);
+      Logger().d("account selected ${accountSelected?.CustomerUID!}");
+      Logger().d("customer selected  ${customerSelected?.CustomerUID!}");
     } catch (e) {
       Logger().e(e);
     }
@@ -50,10 +50,8 @@ class AssetStatusService extends DataBaseService {
               query,
               accountSelected?.CustomerUID,
               (await _localService!.getLoggedInUser())!.sub);
-
-          AssetCount assetCountFromGraphql =
+         AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
-
           return assetCountFromGraphql;
         } else {
           if (isVisionLink) {
@@ -311,7 +309,7 @@ class AssetStatusService extends DataBaseService {
               query,
               accountSelected?.CustomerUID,
               (await _localService!.getLoggedInUser())!.sub);
-
+          Logger().w("get fueldata ${data.data!['getDashboardAsset']}");
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
 
@@ -618,7 +616,7 @@ class AssetStatusService extends DataBaseService {
             query,
             accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
-
+        Logger().wtf("get idlelevel ${data.data!['getDashboardAsset']}");
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['getDashboardAsset']);
 

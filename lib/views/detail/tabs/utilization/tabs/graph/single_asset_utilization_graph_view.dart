@@ -13,6 +13,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/idle_working_graph.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
 import 'package:insite/widgets/smart_widgets/range_selection_widget.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:intl/intl.dart';
 
@@ -33,16 +34,16 @@ class _SingleAssetUtilizationGraphViewState
   String? dropdownValue = 'Runtime Hours (Hrs)';
   SingleAssetUtilizationGraphType selectedGraph =
       SingleAssetUtilizationGraphType.RUNTIMEHOURS;
-  int rangeChoice = 1;
+  var rangeChoice = 1;
   String? startDate;
   String? endDate;
   List<DateTime>? dateRange = [];
   bool isRangeSelectionVisible = true;
   List<String?> dropDownValues = [
-    // 'Idle Time - Idle %',
-    // 'Runtime - Performance %',
     'Runtime Hours (Hrs)',
     'Distance Traveled (KMs)'
+    // 'Idle Time - Idle %',
+    // 'Runtime - Performance %',
   ];
 
   @override
@@ -162,6 +163,7 @@ class _SingleAssetUtilizationGraphViewState
                                         ? isRangeSelectionVisible = false
                                         : isRangeSelectionVisible = true;
                                   });
+                                  Logger().w(dropdownValue);
                                 },
                                 items: dropDownValues
                                     .map<DropdownMenuItem<String>>(
@@ -185,7 +187,7 @@ class _SingleAssetUtilizationGraphViewState
                             label1: 'Day',
                             label2: 'Week',
                             label3: 'Month',
-                            rangeChoice: (int choice) {
+                            rangeChoice: (dynamic choice) {
                               setState(() {
                                 rangeChoice = choice;
                               });
@@ -239,8 +241,11 @@ class _SingleAssetUtilizationGraphViewState
                                           : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization!.monthly![index].startDate!)}\n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization!.monthly![index].endDate!)}',
                                   percentage: rangeChoice == 1
                                       ? getValues(
-                                          viewModel.singleAssetUtilization!
-                                              .daily![index].data!.idleEfficiency,
+                                          viewModel
+                                              .singleAssetUtilization!
+                                              .daily![index]
+                                              .data!
+                                              .idleEfficiency,
                                           100,
                                           true)
                                       : rangeChoice == 2
@@ -316,8 +321,11 @@ class _SingleAssetUtilizationGraphViewState
                                 SingleAssetUtilizationGraphType.RUNTIMEHOURS)
                               return IdleWorkingGraphWidget(
                                 idleLength: rangeChoice == 1
-                                    ? viewModel.singleAssetUtilization!
-                                                .daily![index].data!.idleHours !=
+                                    ? viewModel
+                                                .singleAssetUtilization!
+                                                .daily![index]
+                                                .data!
+                                                .idleHours !=
                                             null
                                         ? viewModel.singleAssetUtilization!
                                             .daily![index].data!.idleHours
@@ -358,8 +366,11 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .workingHours !=
                                                 null
-                                            ? viewModel.singleAssetUtilization!
-                                                .weekly![index].data!.workingHours
+                                            ? viewModel
+                                                .singleAssetUtilization!
+                                                .weekly![index]
+                                                .data!
+                                                .workingHours
                                             : 0
                                         : viewModel
                                                     .singleAssetUtilization!
@@ -461,13 +472,13 @@ class _SingleAssetUtilizationGraphViewState
                                                     .distanceTravelledKilometers! >
                                                 100
                                             ? viewModel
-                                                    .singleAssetUtilization!
-                                                    .daily![index]
-                                                    .data!
-                                                    .distanceTravelledKilometers!
+                                                .singleAssetUtilization!
+                                                .daily![index]
+                                                .data!
+                                                .distanceTravelledKilometers!
                                                 .toStringAsFixed(1)
                                             : null
-                                        : 0 as String?
+                                        : 0.toString()
                                     : rangeChoice == 2
                                         ? viewModel
                                                     .singleAssetUtilization!

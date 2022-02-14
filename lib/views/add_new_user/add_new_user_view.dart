@@ -97,10 +97,12 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                       height: 20,
                     ),
                     CustomTextBox(
+                      isenabled: viewModel.enableAdd ? false : true,
                       title: "Email",
                       controller: viewModel.emailController,
                       keyPadType: TextInputType.emailAddress,
-                      onChanged: (value) {},
+                      // isShowingBorderColor: viewModel.enableAdd ? true : false,
+                      //  onChanged: (value) {},
                     ),
                     SizedBox(
                       height: 20,
@@ -501,22 +503,20 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                             viewModel.pinCodeController.text);
                                       } else {
                                         Logger().i("adding user");
-                                       await viewModel.getAddUserData(
-                                            viewModel.firstNameController.text,
-                                            viewModel.lastNameController.text,
-                                            viewModel.emailController.text,
-                                            viewModel
-                                                .phoneNumberController.text,
-                                            viewModel.jobTitleValue,
-                                            viewModel.jobTypeValue,
-                                            viewModel.addressController.text,
-                                            viewModel.stateController.text,
-                                            viewModel.countryController.text,
-                                            viewModel.pinCodeController.text,
-                                            "SSO",
-                                            viewModel.emailController.text,
-                                          );
-                                        
+                                        await viewModel.getAddUserData(
+                                          viewModel.firstNameController.text,
+                                          viewModel.lastNameController.text,
+                                          viewModel.emailController.text,
+                                          viewModel.phoneNumberController.text,
+                                          viewModel.jobTitleValue,
+                                          viewModel.jobTypeValue,
+                                          viewModel.addressController.text,
+                                          viewModel.stateController.text,
+                                          viewModel.countryController.text,
+                                          viewModel.pinCodeController.text,
+                                          "SSO",
+                                          viewModel.emailController.text,
+                                        );
                                       }
                                     } catch (e) {
                                       Logger().e(e);
