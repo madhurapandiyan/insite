@@ -44,63 +44,9 @@ query faultDataSummary{
   String getfaultQueryString(String startDate, String endDate) {
     final String faultQueryString = """
   query faultDataSummary{
-<<<<<<< HEAD
-  faultdata(page: 1, limit: 100, startDateTime: "2022-02-07T00:00:00Z", endDateTime: "2022-02-09T23:59:59Z"){
-    limit
-    total
-		faults{
-      asset {
-        uid
-        basic {
-          assetId
-          serialNumber
-        }
-        details {
-          makeCode
-          model
-          productFamily
-          assetIcon
-          dealerCode
-          dealerCustomerName
-          dealerName
-          universalCustomerName
-          devices {
-            deviceType
-            firmwareVersion
-          }
-        }
-        dynamic {
-          status
-          locationLatitude
-          locationLongitude
-          location
-          hourMeter
-          odometer
-          locationReportedTimeUTC
-        }
-      }
-      faultUid
-      basic {
-        faultIdentifiers
-        description
-        severityLabel
-        severity
-        faultType
-        source
-        faultOccuredUTC
-        sourceIdentifierCode
-        isResponseReceived
-        esn
-        externalFaultId
-        faultClosureUTC
-        isFaultActive
-        priority
-      }
-=======
   faultdata(page: 1, limit: 100, startDateTime: "$startDate", endDateTime: "$endDate"){
     
     faults{
->>>>>>> 281c42d24b118937dccf349290d1666514798e50
       details {
         faultCode
         faultReceivedUTC
