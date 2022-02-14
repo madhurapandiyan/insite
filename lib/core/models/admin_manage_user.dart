@@ -20,8 +20,9 @@ class AdminManageUser {
 class Links {
   String? next;
   String? last;
+  String? prev;
 
-  Links({this.next, this.last});
+  Links({this.next, this.last, this.prev});
 
   factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
 

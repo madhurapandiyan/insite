@@ -1,13 +1,16 @@
+import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'manage_notifications.g.dart';
 
 @JsonSerializable()
 class ManageNotificationsData {
   List<ConfiguredAlerts>? configuredAlerts;
-
+  Links? links;
+  Total? total;
   String? responseStatus;
 
-  ManageNotificationsData({this.configuredAlerts, this.responseStatus});
+  ManageNotificationsData(
+      {this.configuredAlerts, this.links, this.total, this.responseStatus});
 
   factory ManageNotificationsData.fromJson(Map<String, dynamic> json) =>
       _$ManageNotificationsDataFromJson(json);
@@ -31,8 +34,8 @@ class ConfiguredAlerts {
   int? numberOfGeofences;
   int? alertCategoryID;
   int? alertGroupID;
-  List<Operand>? operand;
-  List<SiteOperand>? siteOperand;
+  List<Operand>? operands;
+  List<SiteOperand>? siteOperands;
 
   ConfiguredAlerts(
       {this.alertConfigID,
@@ -49,8 +52,8 @@ class ConfiguredAlerts {
       this.numberOfGeofences,
       this.alertCategoryID,
       this.alertGroupID,
-      this.operand,
-      this.siteOperand});
+      this.operands,
+      this.siteOperands});
 
   factory ConfiguredAlerts.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredAlertsFromJson(json);

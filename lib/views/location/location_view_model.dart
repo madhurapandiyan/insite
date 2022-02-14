@@ -338,7 +338,12 @@ class LocationViewModel extends InsiteViewModel {
     print('getAssetLocationHome');
     AssetLocationData? result =
         await _assetLocationService.getAssetLocationWithoutFilter(
-            pageNumber, pageSize, '-lastlocationupdateutc');
+            pageNumber,
+            pageSize,
+            '-lastlocationupdateutc',
+            graphqlSchemaService!.getFleetLocationData(
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
       clusterMarker();

@@ -26,7 +26,6 @@ class FaultService extends BaseService {
     try {
       accountSelected = await _localService!.getAccountInfo();
       customerSelected = await _localService!.getCustomerInfo();
-     
     } catch (e) {
       Logger().e(e);
     }
@@ -50,6 +49,8 @@ class FaultService extends BaseService {
             query,
             accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
+
+        Logger().i(data.data!['faultdata']);
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -231,10 +232,9 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-         accountSelected!.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub
-        );
+            query,
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -382,7 +382,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                       assetUid,
+                      assetUid,
                       accountSelected!.CustomerUID,
                     )
                 : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
@@ -396,7 +396,7 @@ class FaultService extends BaseService {
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
-                       assetUid,
+                      assetUid,
                       accountSelected!.CustomerUID,
                     );
         return healthListResponse;
@@ -448,10 +448,7 @@ class FaultService extends BaseService {
       if (isVisionLink) {
         SingleAssetFaultResponse assetCountResponse = await MyApi()
             .getClient()!
-            .getDashboardListDataVL(
-                assetUid,
-                endDateTime,
-                startDateTime,
+            .getDashboardListDataVL(assetUid, endDateTime, startDateTime,
                 accountSelected!.CustomerUID);
         return assetCountResponse;
       } else {

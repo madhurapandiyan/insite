@@ -33,7 +33,7 @@ class FaultListItemViewModel extends InsiteViewModel {
   int pageSize = 20;
 
   FaultListItemViewModel(this._fault) {
-    Logger().d("FaultListItemViewModel ${fault!.asset["uid"]}");
+    Logger().wtf("FaultListItemViewModel ${fault!.asset["uid"]}");
     setUp();
     _faultService!.setUp();
     scrollController = new ScrollController();

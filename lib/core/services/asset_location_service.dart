@@ -207,7 +207,7 @@ class AssetLocationService extends BaseService {
   }
 
   Future<AssetLocationData?> getAssetLocationWithoutFilter(
-      int pageNumber, int pageSize, String sort) async {
+      int pageNumber, int pageSize, String sort, String query) async {
     Logger().i("getAssetLocationWithoutFilter");
     Map<String, String?> queryMap = Map();
     if (pageNumber != null) {
@@ -223,35 +223,52 @@ class AssetLocationService extends BaseService {
       queryMap["sort"] = "-lastlocationupdateutc";
     }
     try {
-      if (pageNumber != null && pageSize != null && sort != null) {
-        if (isVisionLink) {
-          AssetLocationData result =
-              await MyApi().getClient()!.assetLocationSummaryVL(
-                    Urls.locationSummaryVL +
-                        FilterUtils.constructQueryFromMap(queryMap),
-                    accountSelected!.CustomerUID,
-                  );
-          if (result != null) {
-            return result;
-          } else {
-            return null;
-          }
+      if (enableGraphQl) {
+        if (enableGraphQl) {
+          var data = await Network().getGraphqlData(
+            query,
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub,
+          );
+
+          AssetLocationData assetLocationDataResponse =
+              AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
+
+          Logger().wtf(assetLocationDataResponse.toJson());
+
+          return assetLocationDataResponse;
         } else {
-          AssetLocationData result = await MyApi()
-              .getClient()!
-              .assetLocationSummary(
-                  Urls.locationSummary +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID,
-                  Urls.vfleetMapPrefix);
-          if (result != null) {
-            return result;
-          } else {
-            return null;
+          if (pageNumber != null && pageSize != null && sort != null) {
+            if (isVisionLink) {
+              AssetLocationData result =
+                  await MyApi().getClient()!.assetLocationSummaryVL(
+                        Urls.locationSummaryVL +
+                            FilterUtils.constructQueryFromMap(queryMap),
+                        accountSelected!.CustomerUID,
+                      );
+              if (result != null) {
+                return result;
+              } else {
+                return null;
+              }
+            } else {
+              AssetLocationData result = await MyApi()
+                  .getClient()!
+                  .assetLocationSummary(
+                      Urls.locationSummary +
+                          FilterUtils.constructQueryFromMap(queryMap),
+                      accountSelected!.CustomerUID,
+                      Urls.vfleetMapPrefix);
+              if (result != null) {
+                return result;
+              } else {
+                return null;
+              }
+            }
           }
+          return null;
         }
       }
-      return null;
     } catch (e) {
       Logger().e(e);
       return null;

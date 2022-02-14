@@ -100,7 +100,7 @@ class Urls {
   // static String tataHitachiApplicationName = "InsiteFleet-2.0";
 
   static String tataHitachiRedirectUri = "insite://mobile";
-  static String tataHitachiLogoutUrl="insite.logout://mobile";
+  static String tataHitachiLogoutUrl = "insite.logout://mobile";
   static String indiaStackClientId = "0fc72a71-e4e5-4ac1-9c7b-e966050154c9";
   static String tataHitachiApplicationName = "Frame-Administrator-IND";
 
@@ -361,6 +361,7 @@ class Urls {
   static String assetprefix = "in-vassetmetadata-am-webapi";
   static String assetSettingsPrefix = "in-vlmasterdata-api-vlmd-assetsettings";
   static String userCountPrefix = "in-identitymanager-identitywebapi";
+  static String notificationPrefix = "in-notification-nvapi";
 
   //subscription
   static String subscriptionResults = "/osg-frame/frame-api/2.0/oemdetails";
@@ -396,6 +397,9 @@ class Urls {
   static String mainNotificationUrl =
       "/t/trimble.com/vss-notification/1.0/Notification/1";
 
+  static String indiaStackMainNotificationUrl =
+      "/frame-notification/1.0/Notification/1";
+
   static String notificationDetails =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
 
@@ -404,5 +408,7 @@ class Urls {
   static String manageNotificationsData =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
 
+  static String getNotificationTypes =
+      "/t/trimble.com/vss-alertsmanager/2.0/NotificationTypes/AlertTypes";
   static String loginAudit = "${nameSpace + identity}/2.0/UserLogin/loginAudit";
 }

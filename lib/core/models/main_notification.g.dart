@@ -8,19 +8,19 @@ part of 'main_notification.dart';
 
 NotificationsData _$NotificationsDataFromJson(Map<String, dynamic> json) =>
     NotificationsData(
-      notification: (json['notification'] as List<dynamic>?)
-          ?.map((e) => Notification.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      status: json['status'] as String?,
       total: json['total'] == null
           ? null
           : Total.fromJson(json['total'] as Map<String, dynamic>),
+      notifications: (json['notifications'] as List<dynamic>?)
+          ?.map((e) => Notification.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$NotificationsDataToJson(NotificationsData instance) =>
     <String, dynamic>{
-      'notification': instance.notification,
       'total': instance.total,
+      'notifications': instance.notifications,
       'status': instance.status,
     };
 

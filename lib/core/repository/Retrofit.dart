@@ -47,6 +47,7 @@ import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
@@ -1103,6 +1104,13 @@ abstract class RestClient {
   Future<NotificationsData> mainNotificationsData(
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
+    @Header("service") String service,
+  );
+
+  @GET("{url}")
+  Future<NotificationsData> mainNotificationsDataVL(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
   );
   @GET('{url}')
   Future<AssetGroupSummaryResponse> getGroupListData(
@@ -1155,13 +1163,17 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
+  @GET("{url}")
+  Future<AlertTypes> getNotificationTypesData(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
   @POST("{url}")
   Future<dynamic> loginAudit(
-    @Path() String url,
-    @Header("X-VisionLink-CustomerUid") customerId,
-    @Header("service") service,
-    @Body() dynamic loginAuditPayload
-  );
+      @Path() String url,
+      @Header("X-VisionLink-CustomerUid") customerId,
+      @Header("service") service,
+      @Body() dynamic loginAuditPayload);
 }
 
 @JsonSerializable()

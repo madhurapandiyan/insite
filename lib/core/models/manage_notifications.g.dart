@@ -12,6 +12,12 @@ ManageNotificationsData _$ManageNotificationsDataFromJson(
       configuredAlerts: (json['configuredAlerts'] as List<dynamic>?)
           ?.map((e) => ConfiguredAlerts.fromJson(e as Map<String, dynamic>))
           .toList(),
+      links: json['links'] == null
+          ? null
+          : Links.fromJson(json['links'] as Map<String, dynamic>),
+      total: json['total'] == null
+          ? null
+          : Total.fromJson(json['total'] as Map<String, dynamic>),
       responseStatus: json['responseStatus'] as String?,
     );
 
@@ -19,6 +25,8 @@ Map<String, dynamic> _$ManageNotificationsDataToJson(
         ManageNotificationsData instance) =>
     <String, dynamic>{
       'configuredAlerts': instance.configuredAlerts,
+      'links': instance.links,
+      'total': instance.total,
       'responseStatus': instance.responseStatus,
     };
 
@@ -38,10 +46,10 @@ ConfiguredAlerts _$ConfiguredAlertsFromJson(Map<String, dynamic> json) =>
       numberOfGeofences: json['numberOfGeofences'] as int?,
       alertCategoryID: json['alertCategoryID'] as int?,
       alertGroupID: json['alertGroupID'] as int?,
-      operand: (json['operand'] as List<dynamic>?)
+      operands: (json['operands'] as List<dynamic>?)
           ?.map((e) => Operand.fromJson(e as Map<String, dynamic>))
           .toList(),
-      siteOperand: (json['siteOperand'] as List<dynamic>?)
+      siteOperands: (json['siteOperands'] as List<dynamic>?)
           ?.map((e) => SiteOperand.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -62,8 +70,8 @@ Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
       'numberOfGeofences': instance.numberOfGeofences,
       'alertCategoryID': instance.alertCategoryID,
       'alertGroupID': instance.alertGroupID,
-      'operand': instance.operand,
-      'siteOperand': instance.siteOperand,
+      'operands': instance.operands,
+      'siteOperands': instance.siteOperands,
     };
 
 Operand _$OperandFromJson(Map<String, dynamic> json) => Operand(

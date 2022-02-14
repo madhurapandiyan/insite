@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/main_notification.dart' as notification;
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -7,7 +10,7 @@ import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:insite/core/models/main_notification.dart' as main_notification;
 
 class NotificationItem extends StatelessWidget {
-  final main_notification.Notification? notifications;
+  final notification.Notification? notifications;
 
   final VoidCallback? onCallback;
   final VoidCallback? showDetails;

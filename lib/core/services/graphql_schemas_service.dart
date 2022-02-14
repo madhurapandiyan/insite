@@ -54,16 +54,7 @@ query faultDataSummary{
         occurrences
         url
       }
-    }
-    page
-    limit
-    total
-    pageLinks {
-      rel
-      href
-      method
-    }
-  }
+    }}
 }
   """;
     return faultQueryString;
@@ -112,8 +103,8 @@ query faultDataSummary{
     page
     limit
     total
-    
-    
+
+
   }
 }
 
@@ -234,7 +225,7 @@ query faultDataSummary{
   String getAssetOperationData(String startDate, String endDate) {
     final String assetOperationData = """
  query asetOperations{
-  assetOperationsDailyTotals(sort: "-assetid", startDate: "$startDate", endDate: "$endDate", pageSize: 50, pageNumber: 1){
+  assetOperationsDailyTotals(sort: "-assetid", startDate:"$startDate", endDate:"$endDate", pageSize: 50, pageNumber: 1){
     assetOperations{
       links {
         rel
@@ -464,7 +455,7 @@ userEmail(EmailID:"$emailId"){
   String getFleetLocationData(String startDate, String endDate) {
     final String fleetLocationData = """
   query fleetLocationDetails{
-  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: $startDate){
+  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: "$startDate"){
     pagination {
       totalCount
       pageNumber

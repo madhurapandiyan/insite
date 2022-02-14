@@ -3,8 +3,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/fleet.dart';
-import 'package:insite/core/models/main_notification.dart' as Notification;
-
+import 'package:insite/core/models/main_notification.dart' as notification;
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
@@ -33,8 +32,8 @@ class NotificationViewModel extends InsiteViewModel {
   int? _totalFleetCount = 0;
   int get totalFleetCount => _totalFleetCount!;
 
-  List<Notification.Notification> _assets = [];
-  List<Notification.Notification> get assets => _assets;
+  List<notification.Notification> _assets = [];
+  List<notification.Notification> get assets => _assets;
 
   Users? _user;
   Users? get userData => _user;
@@ -103,19 +102,20 @@ class NotificationViewModel extends InsiteViewModel {
   }
 
   getNotificationData() async {
-    Notification.NotificationsData? response = await _mainNotificationService!
+    notification.NotificationsData? response = await _mainNotificationService!
         .getNotificationsData("0", "0", startDate, endDate);
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
       }
-      if (response.notification != null && response.notification!.isNotEmpty) {
-        _assets.addAll(response.notification!);
+      if (response.notifications != null &&
+          response.notifications!.isNotEmpty) {
+        _assets.addAll(response.notifications!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(response.notification!);
+        _assets.addAll(response.notifications!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -138,7 +138,7 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  onDetailPageSelected(Notification.Notification? fleet) {
+  onDetailPageSelected(notification.Notification? fleet) {
     _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
           fleet: Fleet(
