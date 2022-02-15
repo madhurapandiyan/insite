@@ -88,15 +88,3 @@ Map<String, dynamic> _$EmailRecipientsToJson(EmailRecipients instance) =>
       'email': instance.email,
       'isVLUser': instance.isVLUser,
     };
-
-Link _$LinkFromJson(Map<String, dynamic> json) => Link(
-      rel: json['rel'] as String?,
-      href: json['href'] as String?,
-      method: json['method'] as String?,
-    );
-
-Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
-      'rel': instance.rel,
-      'href': instance.href,
-      'method': instance.method,
-    };

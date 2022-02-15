@@ -97,7 +97,7 @@ class _AddReportViewState extends State<AddReportView> {
                                   ],
                                 )),
                     ),
-                    AddReportCustomDropDownWidget(),
+
                     SizedBox(
                       height: 15,
                     ),

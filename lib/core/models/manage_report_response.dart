@@ -1,3 +1,4 @@
+import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'manage_report_response.g.dart';
 
@@ -7,11 +8,11 @@ class ManageReportResponse {
   int? page;
   int? limit;
   int? total;
-  List<PageLinks>? pageLinks;
+  List<Link>? pageLinks;
   List<ScheduledReports>? scheduledReports;
   int? status;
   String? reqId;
-   Metadata? metadata;
+  Metadata? metadata;
 
   ManageReportResponse(
       {this.msg,
@@ -30,18 +31,18 @@ class ManageReportResponse {
   Map<String, dynamic> toJson() => _$ManageReportResponseToJson(this);
 }
 
-@JsonSerializable()
-class PageLinks {
-  String? rel;
-  String? href;
-  String? method;
+// @JsonSerializable()
+// class PageLinks {
+//   String? rel;
+//   String? href;
+//   String? method;
 
-  PageLinks({this.rel, this.href, this.method});
+//   PageLinks({this.rel, this.href, this.method});
 
-  factory PageLinks.fromJson(Map<String, dynamic> json) =>
-      _$PageLinksFromJson(json);
-  Map<String, dynamic> toJson() => _$PageLinksToJson(this);
-}
+//   factory PageLinks.fromJson(Map<String, dynamic> json) =>
+//       _$PageLinksFromJson(json);
+//   Map<String, dynamic> toJson() => _$PageLinksToJson(this);
+// }
 
 @JsonSerializable()
 class ScheduledReports {
@@ -56,7 +57,7 @@ class ScheduledReports {
   List<EmailRecipients>? emailRecipients;
   String? queryUrl;
   List<String>? reportColumns;
-  PageLinks? link;
+  Link? link;
   List<Assets>? assets;
   String? reportSourcePageName;
   String? scheduleEndDate;
@@ -131,7 +132,8 @@ class Metadata {
 
   Metadata({this.msg});
 
- factory Metadata.fromJson(Map<String, dynamic> json)=>_$MetadataFromJson(json); 
+  factory Metadata.fromJson(Map<String, dynamic> json) =>
+      _$MetadataFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$MetadataToJson(this); 
+  Map<String, dynamic> toJson() => _$MetadataToJson(this);
 }

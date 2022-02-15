@@ -14,7 +14,7 @@ ManageReportResponse _$ManageReportResponseFromJson(
       limit: json['limit'] as int?,
       total: json['total'] as int?,
       pageLinks: (json['pageLinks'] as List<dynamic>?)
-          ?.map((e) => PageLinks.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
       scheduledReports: (json['scheduledReports'] as List<dynamic>?)
           ?.map((e) => ScheduledReports.fromJson(e as Map<String, dynamic>))
@@ -40,18 +40,6 @@ Map<String, dynamic> _$ManageReportResponseToJson(
       'metadata': instance.metadata,
     };
 
-PageLinks _$PageLinksFromJson(Map<String, dynamic> json) => PageLinks(
-      rel: json['rel'] as String?,
-      href: json['href'] as String?,
-      method: json['method'] as String?,
-    );
-
-Map<String, dynamic> _$PageLinksToJson(PageLinks instance) => <String, dynamic>{
-      'rel': instance.rel,
-      'href': instance.href,
-      'method': instance.method,
-    };
-
 ScheduledReports _$ScheduledReportsFromJson(Map<String, dynamic> json) =>
     ScheduledReports(
       reportUid: json['reportUid'] as String?,
@@ -71,7 +59,7 @@ ScheduledReports _$ScheduledReportsFromJson(Map<String, dynamic> json) =>
           .toList(),
       link: json['link'] == null
           ? null
-          : PageLinks.fromJson(json['link'] as Map<String, dynamic>),
+          : Link.fromJson(json['link'] as Map<String, dynamic>),
       assets: (json['assets'] as List<dynamic>?)
           ?.map((e) => Assets.fromJson(e as Map<String, dynamic>))
           .toList(),

@@ -1,3 +1,4 @@
+import 'package:insite/core/models/asset_settings.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'search_contact_report_list_response.g.dart';
 
@@ -29,21 +30,21 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
 
-@JsonSerializable()
-class PageInfo {
-  int? totalRecords;
-  int? totalPages;
-  int? currentPageSize;
-  int? currentPageNumber;
+// @JsonSerializable()
+// class PageInfo {
+//   int? totalRecords;
+//   int? totalPages;
+//   int? currentPageSize;
+//   int? currentPageNumber;
 
-  PageInfo(
-      {this.totalRecords,
-      this.totalPages,
-      this.currentPageSize,
-      this.currentPageNumber});
+//   PageInfo(
+//       {this.totalRecords,
+//       this.totalPages,
+//       this.currentPageSize,
+//       this.currentPageNumber});
 
-  factory PageInfo.fromJson(Map<String, dynamic> json) =>
-      _$PageInfoFromJson(json);
+//   factory PageInfo.fromJson(Map<String, dynamic> json) =>
+//       _$PageInfoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PageInfoToJson(this);
-}
+//   Map<String, dynamic> toJson() => _$PageInfoToJson(this);
+// }

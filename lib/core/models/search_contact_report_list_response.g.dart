@@ -37,17 +37,3 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'isVLUser': instance.isVLUser,
       'isSelected': instance.isSelected,
     };
-
-PageInfo _$PageInfoFromJson(Map<String, dynamic> json) => PageInfo(
-      totalRecords: json['totalRecords'] as int?,
-      totalPages: json['totalPages'] as int?,
-      currentPageSize: json['currentPageSize'] as int?,
-      currentPageNumber: json['currentPageNumber'] as int?,
-    );
-
-Map<String, dynamic> _$PageInfoToJson(PageInfo instance) => <String, dynamic>{
-      'totalRecords': instance.totalRecords,
-      'totalPages': instance.totalPages,
-      'currentPageSize': instance.currentPageSize,
-      'currentPageNumber': instance.currentPageNumber,
-    };

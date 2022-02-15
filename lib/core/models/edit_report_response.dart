@@ -1,3 +1,4 @@
+import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'edit_report_response.g.dart';
 
@@ -79,15 +80,15 @@ class EmailRecipients {
   Map<String, dynamic> toJson() => _$EmailRecipientsToJson(this);
 }
 
-@JsonSerializable()
-class Link {
-  String? rel;
-  String? href;
-  String? method;
+// @JsonSerializable()
+// class Link {
+//   String? rel;
+//   String? href;
+//   String? method;
 
-  Link({this.rel, this.href, this.method});
+//   Link({this.rel, this.href, this.method});
 
-  factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
+//   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LinkToJson(this);
-}
+//   Map<String, dynamic> toJson() => _$LinkToJson(this);
+// }
