@@ -4,7 +4,9 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class NewReportTemplateWidget extends StatelessWidget {
-  // const NewReportTemplateWidget({ Key? key }) : super(key: key);
+  final String? reportTypeName;
+  final VoidCallback ? voidCallback;
+  const NewReportTemplateWidget({this.reportTypeName,this.voidCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class NewReportTemplateWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: InsiteText(
-                    text: "Asset Event Count",
+                    text: reportTypeName,
                     fontWeight: FontWeight.w700,
                     size: 18,
                   ),
@@ -63,25 +65,28 @@ class NewReportTemplateWidget extends StatelessWidget {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              InsiteButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: MediaQuery.of(context).size.height * 0.05,
-                title: "View Sample",
-                fontSize: 14,
-                textColor: appbarcolor,
-                bgColor: ship_grey,
-                onTap: () {},
-              ),
-              InsiteButton(
-                width: MediaQuery.of(context).size.width * 0.40,
-                height: MediaQuery.of(context).size.height * 0.05,
-                title: "Email Report",
-                fontSize: 14,
-                textColor: appbarcolor,
-                bgColor: tango,
-                onTap: () {},
+              // InsiteButton(
+              //   width: MediaQuery.of(context).size.width * 0.40,
+              //   height: MediaQuery.of(context).size.height * 0.05,
+              //   title: "View Sample",
+              //   fontSize: 14,
+              //   textColor: appbarcolor,
+              //   bgColor: ship_grey,
+              //   onTap: () {},
+              // ),
+              Expanded(
+                child: InsiteButton(
+                  //width: MediaQuery.of(context).size.width * 0.40,
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  title: "Email Report",
+                  fontSize: 14,
+                  textColor: appbarcolor,
+                  bgColor: tango,
+                  onTap: () {
+                    voidCallback!();
+                  },
+                ),
               )
             ],
           )

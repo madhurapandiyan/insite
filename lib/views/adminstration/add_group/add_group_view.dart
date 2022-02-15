@@ -103,6 +103,8 @@ class _AddGroupViewState extends State<AddGroupView> {
                       height: 15,
                     ),
                     SelectionWidgetView(
+                      isSelectedAssets: true,
+                      
                       isEdit: widget.isEdit!,
                       assetIds: viewModel.assetUidData,
                       group: viewModel.groups,

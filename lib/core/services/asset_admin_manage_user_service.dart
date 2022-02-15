@@ -1,6 +1,7 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
+import 'package:insite/core/models/add_report_payload.dart';
 import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -13,6 +14,7 @@ import 'package:insite/core/models/asset_mileage_settings_list_data.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/edit_group_response.dart';
+import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
@@ -20,7 +22,11 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/favorite_payload.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
+import 'package:insite/core/models/manage_report_delete_asset_response.dart';
+import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/role_data.dart';
+import 'package:insite/core/models/search_contact_report_list_response.dart';
+import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/repository/network.dart';
@@ -1278,5 +1284,159 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().e(e.toString());
     }
     return null;
+  }
+
+  Future<ManageReportResponse?> getManageReportListData(
+      int page, int limit, String searchKeyword) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["page"] = page.toString();
+      queryMap["limit"] = limit.toString();
+      if (searchKeyword.isNotEmpty) {
+        queryMap["searchText"] = searchKeyword;
+      }
+      if (isVisionLink) {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClientSeven()!
+            .getManageReportListDataVL(
+                Urls.manageReportData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return manageReportResponse;
+      } else {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClient()!
+            .getManageReportListData(
+                Urls.addReportSaveData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-reports-rpt-rmapi",
+                accountSelected!.CustomerUID,
+                "1d022b5a-2e4a-4f5b-bd81-ad2a75977e21");
+        return manageReportResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<ManageReportDeleteAssetResponse?> getDeleteManageReportAsset(
+      List<String> reqId) async {
+    try {
+      if (isVisionLink) {
+        ManageReportDeleteAssetResponse manageReportResponse = await MyApi()
+            .getClientSeven()!
+            .getDeleteManageReportAssetVL(Urls.manageReportData + "/", reqId,
+                accountSelected!.CustomerUID);
+        return manageReportResponse;
+      } else {
+        ManageReportDeleteAssetResponse manageReportDeleteAssetResponse =
+            await MyApi().getClient()!.getDeleteManageReportAsset(
+                Urls.addReportSaveData,
+                reqId,
+                "n-reports-rpt-rmapi",
+                accountSelected!.CustomerUID);
+        return manageReportDeleteAssetResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<TemplateResponse?> getTemplateReportAssetData() async {
+    try {
+      if (isVisionLink) {
+        TemplateResponse templateResponse = await MyApi()
+            .getClientSeven()!
+            .getTemplateReportAssetDataVL(
+                Urls.manageReportData + "/" + "Templates",
+                accountSelected!.CustomerUID);
+        return templateResponse;
+      } else {
+        TemplateResponse templateResponse = await MyApi()
+            .getClient()!
+            .getTemplateReportAssetData(
+                Urls.addReportSaveData + "/" + "Templates",
+                "in-reports-rpt-rmapi",
+                accountSelected!.CustomerUID);
+        return templateResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<SearchContactReportListResponse?> getSearchContactResposeData(
+      String searchValue) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["key"] = searchValue;
+      if (isVisionLink) {
+        SearchContactReportListResponse searchContactReportListResponse =
+            await MyApi().getClientSeven()!.getSearchContactReportDataVL(
+                Urls.contactSearchListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return searchContactReportListResponse;
+      } else {
+        SearchContactReportListResponse searchContactReportListResponse =
+            await MyApi().getClient()!.getSearchContactReportData(
+                Urls.contactSearchData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                    "in-contact-ct-api",
+                accountSelected!.CustomerUID);
+        return searchContactReportListResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<EditReportResponse?> getEditReportData(String reportId) async {
+    try {
+      if (isVisionLink) {
+        EditReportResponse editReportResponse = await MyApi()
+            .getClientSeven()!
+            .getEditReportData(Urls.manageReportData + "/" + reportId,
+                accountSelected!.CustomerUID);
+        return editReportResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<ManageReportResponse?> getAddReportSaveData(
+      AddReportPayLoad addReportPayLoad) async {
+    try {
+      if (isVisionLink) {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClientSeven()!
+            .getAddReportSaveDataVL(Urls.manageReportData, addReportPayLoad,
+                accountSelected!.CustomerUID);
+        return manageReportResponse;
+      } else {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClient()!
+            .getAddReportSaveData(Urls.addReportSaveData, addReportPayLoad,
+                accountSelected!.CustomerUID);
+        return manageReportResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<ManageReportResponse?> getEditReportSaveData(
+      String reqId, AddReportPayLoad addReportPayLoad) async {
+    try {
+      if (isVisionLink) {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClientSeven()!
+            .getEditReportSaveData(Urls.manageReportData + "/" + reqId,
+                addReportPayLoad, accountSelected!.CustomerUID);
+        return manageReportResponse;
+      }
+    } catch (e) {}
   }
 }

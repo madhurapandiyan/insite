@@ -12,7 +12,7 @@ class SelectedItemWidget extends StatefulWidget {
   final List? displayList;
   final bool? isAssetIdLoading;
   final String? headerBoxCountValue;
-  final List<String> displayCountBoxValue;
+  final List<String> ?displayCountBoxValue;
   final VoidCallback? callback;
   final TextEditingController? controller;
   final Function(dynamic)? productFamilyKey;
@@ -116,7 +116,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                         : InsiteButton(
                                             width: 50,
                                             title: widget
-                                                .displayCountBoxValue[int],
+                                                .displayCountBoxValue![int],
                                             padding: EdgeInsets.all(4),
                                             bgColor: Theme.of(context)
                                                 .backgroundColor,
@@ -192,7 +192,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                       : InsiteButton(
                                                           width: 50,
                                                           title: widget
-                                                                  .displayCountBoxValue[
+                                                                  .displayCountBoxValue![
                                                               int],
                                                           padding:
                                                               EdgeInsets.all(4),
@@ -238,7 +238,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                         : InsiteButton(
                                             width: 50,
                                             title: widget
-                                                .displayCountBoxValue[int],
+                                                .displayCountBoxValue![int],
                                             padding: EdgeInsets.all(4),
                                             bgColor: Theme.of(context)
                                                 .backgroundColor,
@@ -313,7 +313,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                                                       : InsiteButton(
                                                           width: 50,
                                                           title: widget
-                                                                  .displayCountBoxValue[
+                                                                  .displayCountBoxValue![
                                                               int],
                                                           padding:
                                                               EdgeInsets.all(4),

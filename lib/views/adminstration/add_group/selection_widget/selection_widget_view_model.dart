@@ -65,13 +65,13 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   List<String> _deviceTypeData = [];
   List<String> get deviceTypdeData => _deviceTypeData;
 
+  List<String> _modelCountData = [];
+  List<String> get modelCountData => _modelCountData;
+
   // apis
   AssetGroupSummaryResponse? assetIdresult;
   int pageNumber = 1;
   int pageSize = 9999;
-
-  List<String> _modelCountData = [];
-  List<String> get modelCountData => _modelCountData;
 
 //flags
 

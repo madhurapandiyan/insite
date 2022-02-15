@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+
 import 'package:insite/views/adminstration/add_group/add_group_view.dart'
     as view37;
+import 'package:insite/views/adminstration/add_report/add_report_view.dart'
+    as view42;
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart'
     as view15;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
@@ -14,12 +17,14 @@ import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.
     as view16;
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
     as view38;
+import 'package:insite/views/adminstration/manage_report/manage_report_view.dart'
+    as view43;
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart'
     as view14;
 import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart'
-    as view38;
-import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
     as view39;
+import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
+    as view40;
 import 'package:insite/views/notification/notification_view.dart' as view37;
 
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
@@ -203,10 +208,14 @@ class Router {
         return MaterialPageRoute(builder: (_) => view38.ManageGroupView());
       case addNewNotificationsViewRoute:
         return MaterialPageRoute(
-            builder: (_) => view38.AddNewNotificationsView());
+            builder: (_) => view39.AddNewNotificationsView());
       case manageNotificationsViewRoute:
         return MaterialPageRoute(
-            builder: (_) => view39.ManageNotificationsView());
+            builder: (_) => view40.ManageNotificationsView());
+      case addReportViewRoute:
+        return MaterialPageRoute(builder: (_) => view42.AddReportView());
+      case manageReportViewRoute:
+        return MaterialPageRoute(builder: (_) => view43.ManageReportView());
 
       default:
         return MaterialPageRoute(

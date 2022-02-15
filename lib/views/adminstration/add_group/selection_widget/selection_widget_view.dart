@@ -18,16 +18,19 @@ class SelectionWidgetView extends StatefulWidget {
       List<String> value,
       AssetGroupSummaryResponse groupSummaryResponse,
       List<String> associatedAssetId)? onAssetSelected;
-  final List<String> assetIds;
+  final List<String>? assetIds;
   final Groups? group;
   final bool? isEdit;
+  final bool? isSelectedAssets;
   final List<String>? dissociatedIds;
+
   SelectionWidgetView(
       {this.onAssetSelected,
-      required this.assetIds,
+      this.assetIds,
       this.group,
       this.isEdit,
-      this.dissociatedIds});
+      this.dissociatedIds,
+      this.isSelectedAssets});
 
   @override
   _SelectionWidgetViewState createState() => _SelectionWidgetViewState();

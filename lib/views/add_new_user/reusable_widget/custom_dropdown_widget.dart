@@ -41,8 +41,10 @@ class CustomDropDownWidget extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               )
             : SizedBox(),
+            
         items: items!.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
+            
             value: value,
             child: FittedBox(
               child: InsiteText(
