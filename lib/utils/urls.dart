@@ -239,6 +239,10 @@ class Urls {
   static String getGeoFenceData =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
   static String getManageGroupData = "/t/trimble.com/vss-groupservice/1.0";
+  static String manageReportData =
+      "/t/trimble.com/vss-reportmanager/v1/ScheduledReports";
+  static String contactSearchListData =
+      "/t/trimble.com/vss-contact/1.0/Contact";
 
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/UnifiedFleet/FleetSummary/v5";
@@ -323,6 +327,8 @@ class Urls {
       "$subscriptionPrefix/assetDetail/asset/activate/";
   static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
   static String getEditGroupData = "/t/trimble.com/vss-groupservice/1.0/";
+  static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
+  static String contactSearchData="/frame-contact/1.0/Contact";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

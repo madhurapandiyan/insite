@@ -3792,6 +3792,236 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<ManageReportResponse> getManageReportListDataVL(
+      url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportDeleteAssetResponse> getDeleteManageReportAssetVL(
+      url, reqId, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = reqId;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportDeleteAssetResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportDeleteAssetResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<TemplateResponse> getTemplateReportAssetDataVL(url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<TemplateResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = TemplateResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<TemplateResponse> getTemplateReportAssetData(
+      url, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<TemplateResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = TemplateResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SearchContactReportListResponse> getSearchContactReportDataVL(
+      url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SearchContactReportListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SearchContactReportListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SearchContactReportListResponse> getSearchContactReportData(
+      url, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SearchContactReportListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SearchContactReportListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<EditReportResponse> getEditReportData(url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<EditReportResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = EditReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportResponse> getAddReportSaveDataVL(
+      url, addReportPayLoad, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(addReportPayLoad.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportResponse> getEditReportSaveData(
+      url, addReportPayLoad, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(addReportPayLoad.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportResponse> getAddReportSaveData(
+      url, addReportPayLoad, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(addReportPayLoad.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportResponse> getManageReportListData(
+      url, service, customerId, userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId,
+      r'X-VisionLink-UserUid': userId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportDeleteAssetResponse> getDeleteManageReportAsset(
+      url, reqId, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = reqId;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportDeleteAssetResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportDeleteAssetResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

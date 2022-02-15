@@ -207,10 +207,12 @@ class Link {
   Link({
     this.rel,
     this.href,
+    this.method
   });
 
   String? rel;
   String? href;
+  String? method;
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 

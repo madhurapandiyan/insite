@@ -73,6 +73,7 @@ class InsitePopMenuItemButton extends StatelessWidget {
   final double? width;
   final double? height;
   final Widget? widget;
+
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final bool isSelectable;
@@ -90,18 +91,16 @@ class InsitePopMenuItemButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin != null ? margin : EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        border:
-            Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
-        color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
-      ),
-      alignment: Alignment.center,
-      height: height != null ? height : null,
-      width: width != null ? width : null,
-      child: widget,
-    );
+        margin: margin != null ? margin : EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          border:
+              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
+          color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
+        ),
+        alignment: Alignment.center,
+        height: height != null ? height : null,
+        width: width != null ? width : null,
+        child: widget);
   }
 }
 

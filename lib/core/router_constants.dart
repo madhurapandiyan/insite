@@ -56,3 +56,5 @@ const String addGroupViewRoute = "addGroupViewRoute";
 const String manageGroupViewRoute = "manageGroupViewRoute";
 const String addNewNotificationsViewRoute = 'addNewNotificationsViewRoute';
 const String manageNotificationsViewRoute = 'manageNotificationsViewRoute';
+const String addReportViewRoute = 'addReportViewRoute';
+const String manageReportViewRoute = 'manageReportViewRoute';

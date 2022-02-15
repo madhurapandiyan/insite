@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/manage_group_summary_response.dart';
+import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
-import 'package:insite/views/adminstration/reusable_widget/manage_groups_card_widget.dart';
+import 'package:insite/views/adminstration/reusable_widget/manage_report_card_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -10,24 +11,23 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'manage_group_view_model.dart';
+import 'manage_report_view_model.dart';
 
-class ManageGroupView extends StatelessWidget {
+class ManageReportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ManageGroupViewModel>.reactive(
+    return ViewModelBuilder<ManageReportViewModel>.reactive(
       builder:
-          (BuildContext context, ManageGroupViewModel viewModel, Widget? _) {
+          (BuildContext context, ManageReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
-          viewModel: viewModel,
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
+            screenType: ScreenType.ADMINISTRATION,
+            viewModel: viewModel,
+            body: Stack(
               children: [
                 Column(
                   children: [
                     SizedBox(
-                      height: 45,
+                      height: 30,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,7 +35,7 @@ class ManageGroupView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: InsiteText(
-                            text: "manage groups".toUpperCase() +
+                            text: "schedule reports".toUpperCase() +
                                 " (" +
                                 viewModel.assets.length.toString() +
                                 " of " +
@@ -45,7 +45,7 @@ class ManageGroupView extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        viewModel.showEdit
+                        viewModel.showMenu
                             ? ClipRRect(
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10),
@@ -58,18 +58,16 @@ class ManageGroupView extends StatelessWidget {
                                   child: InsitePopMenuItemButton(
                                     width: 40,
                                     height: 40,
-                                    //icon: Icon(Icons.more_vert),
                                     widget: onContextMenuSelected(
                                         viewModel, context),
                                   ),
                                 ))
                             : Padding(
-                                padding: const EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.only(right: 10.0),
                                 child: InsiteButton(
-                                  title: "Add Group",
-                                  fontSize: 14,
+                                  title: "Report Template",
                                   onTap: () {
-                                    viewModel.onClickAddGroupSelected();
+                                    viewModel.onClickedTemplatePage();
                                   },
                                 ),
                               )
@@ -82,19 +80,19 @@ class ManageGroupView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: CustomTextBox(
                         controller: viewModel.searchcontroller,
-                        title: "Search Group Name",
+                        title: "Search",
                         showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
                           if (searchText.isNotEmpty) {
-                            viewModel.searchGroups(searchText);
+                            viewModel.searchReports(searchText);
                           } else {
-                            viewModel.searchGroups(searchText);
+                            viewModel.searchReports(searchText);
                           }
                         },
                       ),
                     ),
                     SizedBox(
-                      height: 24,
+                      height: 20,
                     ),
                     viewModel.loading
                         ? InsiteProgressBar()
@@ -102,24 +100,20 @@ class ManageGroupView extends StatelessWidget {
                             ? Expanded(
                                 child: ListView.builder(
                                     itemCount: viewModel.assets.length,
-                                    controller: viewModel.scrollController,
                                     padding: EdgeInsets.all(8),
+                                    controller: viewModel.scrollController,
                                     itemBuilder: (context, index) {
-                                      GroupRow groups = viewModel.assets[index];
-                                      return ManageGroupCardWidget(
-                                        groups: groups,
-                                        callback: () {
+                                      ScheduledReportsRow scheduledReport =
+                                          viewModel.assets[index];
+                                      return ManageReportCardWidget(
+                                        voidCallback: () {
                                           viewModel.onItemSelected(index);
                                         },
-                                        favoriteCallBack: () {
-                                          viewModel
-                                              .onFavoriteItemSelected(index);
-                                        },
+                                        scheduledReportsRow: scheduledReport,
                                       );
-                                    }),
-                              )
+                                    }))
                             : EmptyView(
-                                title: "No assets found",
+                                title: "No Assets Found",
                               ),
                     viewModel.loadingMore
                         ? Padding(
@@ -129,24 +123,22 @@ class ManageGroupView extends StatelessWidget {
                   ],
                 ),
               ],
-            ),
-          ),
-        );
+            ));
       },
-      viewModelBuilder: () => ManageGroupViewModel(),
+      viewModelBuilder: () => ManageReportViewModel(false),
     );
   }
 
   Widget onContextMenuSelected(
-      ManageGroupViewModel viewModel, BuildContext context) {
+      ManageReportViewModel viewModel, BuildContext context) {
     return PopupMenuButton<String>(
       offset: Offset(30, 50),
       itemBuilder: (context) => [
-        viewModel.showMenu
+        viewModel.showEdit
             ? PopupMenuItem(
-                value: "New Group",
+                value: "Add New Report",
                 child: InsiteText(
-                  text: "New Group",
+                  text: "Add New Report",
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ))
@@ -156,9 +148,9 @@ class ManageGroupView extends StatelessWidget {
               ),
         viewModel.showEdit
             ? PopupMenuItem(
-                value: "Edit Group",
+                value: "Edit Report",
                 child: InsiteText(
-                  text: "Edit Group",
+                  text: "Edit Report",
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ),
@@ -180,30 +172,18 @@ class ManageGroupView extends StatelessWidget {
                 child: SizedBox(),
                 height: 0,
               ),
-        viewModel.isFavorite
+        viewModel.showDeselect
             ? PopupMenuItem(
-                value: "UnFavorite",
+                value: "Deselect All",
                 child: InsiteText(
-                  text: "UnFavorite",
+                  text: "Deselect All",
                   fontWeight: FontWeight.w700,
                   size: 14,
-                ),
-              )
+                ))
             : PopupMenuItem(
-                value: "Favorite",
-                child: InsiteText(
-                  text: "Favorite",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              ),
-        PopupMenuItem(
-            value: "Deselect All",
-            child: InsiteText(
-              text: "Deselect All",
-              fontWeight: FontWeight.w700,
-              size: 14,
-            )),
+                child: SizedBox(),
+                height: 0,
+              )
       ],
       onSelected: (value) {
         Logger().i("value:$value");

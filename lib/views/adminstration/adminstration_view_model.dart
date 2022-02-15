@@ -3,10 +3,12 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/add_new_user_view.dart';
 import 'package:insite/views/adminstration/add_group/add_group_view.dart';
+import 'package:insite/views/adminstration/add_report/add_report_view.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_view.dart';
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
+import 'package:insite/views/adminstration/manage_report/manage_report_view.dart';
 import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart';
 import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart';
@@ -58,6 +60,15 @@ class AdminstrationViewModel extends InsiteViewModel {
     } else if (value == AdminAssetsButtonType.MANAGEGROUPS) {
       _navigationService!
           .navigateWithTransition(ManageGroupView(), transition: "fade");
+    } else if (value == AdminAssetsButtonType.MANAGEREPORTS) {
+      _navigationService!
+          .navigateWithTransition(ManageReportView(), transition: "fade");
+    } else if (value == AdminAssetsButtonType.ADDNEWREPORT) {
+      _navigationService!
+          .navigateWithTransition(AddReportView(
+            isEdit: false,
+            scheduledReports: null,
+          ), transition: "fade");
     }
   }
 

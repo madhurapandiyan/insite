@@ -185,6 +185,16 @@
             "file_path": "views/manage_notifications/manage_notifications_view.dart",
             "route_name": "manage_notificationsViewRoute",
             "view_name": "ManageNotificationsView"
+        },
+        {
+            "file_path": "views/manage_report/manage_report_view.dart",
+            "route_name": "manage_reportViewRoute",
+            "view_name": "ManageReportView"
+        },
+        {
+            "file_path": "views/add_report/add_report_view.dart",
+            "route_name": "add_reportViewRoute",
+            "view_name": "AddReportView"
         }
     ]
 }

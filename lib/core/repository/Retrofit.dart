@@ -1,6 +1,7 @@
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
+import 'package:insite/core/models/add_report_payload.dart';
 import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -23,6 +24,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/device_type.dart';
 import 'package:insite/core/models/edit_group_response.dart';
+import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/cumulative.dart';
@@ -45,6 +47,8 @@ import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 
 import 'package:insite/core/models/manage_notifications.dart';
+import 'package:insite/core/models/manage_report_delete_asset_response.dart';
+import 'package:insite/core/models/manage_report_response.dart';
 
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/notification_type.dart';
@@ -53,12 +57,14 @@ import 'package:insite/core/models/plant_heirarchy.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/role_data.dart';
+import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/search_data.dart';
 import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
+import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/models/total_fuel_burned.dart';
 import 'package:insite/core/models/total_hours.dart';
@@ -1174,6 +1180,72 @@ abstract class RestClient {
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") service,
       @Body() dynamic loginAuditPayload);
+  @GET('{url}')
+  Future<ManageReportResponse> getManageReportListDataVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<ManageReportDeleteAssetResponse> getDeleteManageReportAssetVL(
+    @Path() String url,
+    @Body() List<String> reqId,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+  @GET('{url}')
+  Future<TemplateResponse> getTemplateReportAssetDataVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<TemplateResponse> getTemplateReportAssetData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<SearchContactReportListResponse> getSearchContactReportDataVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<SearchContactReportListResponse> getSearchContactReportData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<EditReportResponse> getEditReportData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+  @POST('{url}')
+  Future<ManageReportResponse> getAddReportSaveDataVL(
+      @Path() String url,
+      @Body() AddReportPayLoad addReportPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @PUT('{url}')
+  Future<ManageReportResponse> getEditReportSaveData(
+      @Path() String url,
+      @Body() AddReportPayLoad addReportPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<ManageReportResponse> getAddReportSaveData(
+      @Path() String url,
+      @Body() AddReportPayLoad addReportPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<ManageReportResponse> getManageReportListData(
+    @Path() String url,
+    @Header('service') service,
+    @Header("x-visionlink-customeruid") customerId,
+    @Header('X-VisionLink-UserUid') userId,
+  );
+
+  @PUT('{url}')
+  Future<ManageReportDeleteAssetResponse> getDeleteManageReportAsset(
+    @Path() String url,
+    @Body() List<String> reqId,
+    @Header("service") service,
+    @Header("x-visionlink-customeruid") customerId,
+  );
 }
 
 @JsonSerializable()

@@ -217,7 +217,6 @@ class ManageGroupViewModel extends InsiteViewModel {
         }
       } else {
         _showEdit = false;
-        _showEdit = false;
         _showDeSelect = false;
         _isShowDelete = false;
       }

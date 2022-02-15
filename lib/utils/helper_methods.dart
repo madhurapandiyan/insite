@@ -211,6 +211,22 @@ class Utils {
     }
   }
 
+  static String getDateInFormatReportCardDate(date) {
+    try {
+      DateTime parseDate =
+          new DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30));
+
+      var outputFormat = DateFormat("dd-MM-yyyy hh:mm a");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
@@ -725,4 +741,6 @@ class Utils {
     var splitList2 = splitList[1].split(",\"UUID\"");
     return splitList2[0];
   }
+  
+  
 }

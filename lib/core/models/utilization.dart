@@ -13,7 +13,7 @@ class Utilization {
 
   List<AssetResult>? assetResults;
   Map<String, double>? totals;
-  int? code;
+  String? code;
   String? message;
 
   factory Utilization.fromJson(Map<String, dynamic> json) =>
