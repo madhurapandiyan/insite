@@ -25,6 +25,7 @@ AddReportPayLoad _$AddReportPayLoadFromJson(Map<String, dynamic> json) =>
       svcbody:
           (json['svcbody'] as List<dynamic>?)?.map((e) => e as String).toList(),
       queryUrl: json['queryUrl'] as String?,
+      emailContent: json['emailContent'] as String?,
       reportType: json['reportType'] as String?,
       reportColumns: (json['reportColumns'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -46,6 +47,7 @@ Map<String, dynamic> _$AddReportPayLoadToJson(AddReportPayLoad instance) =>
       'svcMethod': instance.svcMethod,
       'svcbody': instance.svcbody,
       'allAssets': instance.allAssets,
+      'emailContent': instance.emailContent,
       'queryUrl': instance.queryUrl,
       'reportType': instance.reportType,
       'reportColumns': instance.reportColumns,

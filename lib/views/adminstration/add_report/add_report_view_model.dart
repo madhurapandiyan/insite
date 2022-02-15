@@ -209,7 +209,13 @@ class AddReportViewModel extends InsiteViewModel {
 
   addReportSaveData() async {
     var addReportPayLoad = AddReportPayLoad(
-      assetFilterCategoryID: 1,
+      assetFilterCategoryID: chooseByDropDownValue == "Assets"
+          ? 1
+          : chooseByDropDownValue == "Groups"
+              ? 2
+              : chooseByDropDownValue == "Geofences"
+                  ? 3
+                  : 0,
       allAssets: false,
       reportColumns: [
         "assetName",
@@ -228,15 +234,28 @@ class AddReportViewModel extends InsiteViewModel {
       svcbody: associatedIdentifier,
       reportTitle: nameController.text,
       reportCategoryID: 0,
-      reportPeriod: 1,
+      reportPeriod: frequencyDropDownValue == 'Daily'
+          ? 1
+          : frequencyDropDownValue == "Weekly"
+              ? 2
+              : frequencyDropDownValue == "Monthly"
+                  ? 3
+                  : 0,
+      emailContent: emailContentController.text,
       emailRecipients: selectedContactItems,
-      reportFormat: 1,
+      reportFormat: reportFormatDropDownValue == ".CSV"
+          ? 1
+          : reportFormatDropDownValue == ".XLS"
+              ? 2
+              : reportFormatDropDownValue == ".PDF"
+                  ? 3
+                  : 0,
       svcMethod: "GET",
       emailSubject: serviceDueController.text,
-      reportEndDate: "2022-02-15",
+      reportEndDate: dateTimeController.text,
       reportStartDate: "",
       reportType: "AssetLocationHistory",
-      reportScheduledDate: "2022-02-10",
+      reportScheduledDate: DateTime.now().toString(),
       queryUrl:
           "https://administrator.myvisionlink.com/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/4ff34130-3d27-11ea-8104-060d7e00a6d1/v2?endTimeLocal=&lastReported=false&pageNumber=1&pageSize=100&startTimeLocal=",
     );
@@ -261,7 +280,7 @@ class AddReportViewModel extends InsiteViewModel {
       ManageReportResponse? result =
           await _manageUserService!.getAddReportSaveData(addReportPayLoad);
       Logger().wtf(result!.msg!);
-      Logger().d(addReportPayLoad.svcbody!.first);
+      Logger().d(addReportPayLoad.toJson());
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {
@@ -271,13 +290,19 @@ class AddReportViewModel extends InsiteViewModel {
 
   getEditReportSaveData() async {
     var addReportPayLoad = AddReportPayLoad(
-      assetFilterCategoryID: 1,
+      assetFilterCategoryID: chooseByDropDownValue == "Assets"
+          ? 1
+          : chooseByDropDownValue == "Groups"
+              ? 2
+              : chooseByDropDownValue == "Geofences"
+                  ? 3
+                  : 0,
       allAssets: false,
       reportTitle: nameController.text,
-      reportCategoryID: 1,
-      reportEndDate: "",
+      reportCategoryID: 0,
+      reportEndDate: dateTimeController.text,
       emailRecipients: selectedContactItems,
-      emailSubject: "sabari one",
+      emailSubject: serviceDueController.text,
       queryUrl:
           "https://administrator.myvisionlink.com/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/4ff34130-3d27-11ea-8104-060d7e00a6d1/v2?endTimeLocal=&lastReported=false&pageNumber=1&pageSize=100&startTimeLocal=",
     );

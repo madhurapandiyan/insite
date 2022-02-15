@@ -10,6 +10,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
+import 'package:insite/views/adminstration/add_report/reusable_widget/add_report_custom_dropdown_widget.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/fault_code_reusable_widget.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/search_contact_reusable_widget.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/selected_contact_list_item.dart';
@@ -36,7 +37,7 @@ class _AddReportViewState extends State<AddReportView> {
     return ViewModelBuilder<AddReportViewModel>.reactive(
       builder: (BuildContext context, AddReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
-            viewModel: viewModel, 
+            viewModel: viewModel,
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -96,6 +97,7 @@ class _AddReportViewState extends State<AddReportView> {
                                   ],
                                 )),
                     ),
+                    AddReportCustomDropDownWidget(),
                     SizedBox(
                       height: 15,
                     ),
@@ -437,7 +439,7 @@ class _AddReportViewState extends State<AddReportView> {
                           value: viewModel.chooseByDropDownValue,
                           onChanged: (String? value) {
                             viewModel.chooseByDropDownValue = value!;
-                            
+
                             setState(() {});
                           },
                         ),
@@ -457,7 +459,8 @@ class _AddReportViewState extends State<AddReportView> {
                               AssetGroupSummaryResponse data,
                               List<String> associatedAssetId,
                             ) {
-                              viewModel.associatedIdentifier=associatedAssetId;
+                              viewModel.associatedIdentifier =
+                                  associatedAssetId;
                             },
                           )
                         : Container(),

@@ -3,7 +3,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/notification_service.dart';
-
 import 'package:logger/logger.dart';
 
 class ManageNotificationsViewModel extends InsiteViewModel {

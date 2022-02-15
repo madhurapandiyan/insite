@@ -16,6 +16,7 @@ class AddReportPayLoad {
   String? svcMethod;
   List<String>? svcbody;
   bool? allAssets;
+  String ?emailContent;
   // List<Null>? filterOptions;
   // List<Null>? filterTag;
   String? queryUrl;
@@ -39,6 +40,7 @@ class AddReportPayLoad {
       // this.filterOptions,
       // this.filterTag,
       this.queryUrl,
+      this.emailContent,
       this.reportType,
       this.reportColumns});
 
