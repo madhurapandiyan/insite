@@ -328,7 +328,7 @@ class Urls {
   static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
   static String getEditGroupData = "/t/trimble.com/vss-groupservice/1.0/";
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
-  static String contactSearchData="/frame-contact/1.0/Contact";
+  static String contactSearchData = "/frame-contact/1.0/Contact";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -417,4 +417,15 @@ class Urls {
   static String getNotificationTypes =
       "/t/trimble.com/vss-alertsmanager/2.0/NotificationTypes/AlertTypes";
   static String loginAudit = "${nameSpace + identity}/2.0/UserLogin/loginAudit";
+
+  static String getCustomerZones =
+      "/t/trimble.com/vss-alertsmanager/2.0/zone/customer";
+
+  static String getCustomerEmailAddress =
+      "/t/trimble.com/vss-contact/1.0/Contact";
+
+  static String checkIfNotificationNameExists =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertTitleExists";
+  static String saveNewNotificationData =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
 }

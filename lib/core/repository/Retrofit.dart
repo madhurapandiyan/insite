@@ -1,7 +1,9 @@
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
+import 'package:insite/core/models/add_notification_payload.dart';
 import 'package:insite/core/models/add_report_payload.dart';
+
 import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_user.dart';
@@ -1246,6 +1248,24 @@ abstract class RestClient {
     @Header("service") service,
     @Header("x-visionlink-customeruid") customerId,
   );
+
+  @GET("{url}")
+  Future<ZoneValues> getCustomerInclusionExclusion(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @GET("{url}")
+  Future<NotificationExist> checkNotificationExist(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @POST('{url}')
+  Future<NotificationAdded> addNotificationSaveData(
+      @Path() String url,
+      @Body() AddNotificationPayLoad addNotificationPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

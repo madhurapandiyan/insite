@@ -7,7 +7,11 @@ class Notification {
   final String? notificationSubType;
   final double? count;
 
-  Notification({this.notificationType, this.notificationSubType, this.count});
+  Notification({
+    this.notificationType,
+    this.notificationSubType,
+    this.count,
+  });
 
   factory Notification.fromJson(Map<String, dynamic> json) =>
       _$NotificationFromJson(json);

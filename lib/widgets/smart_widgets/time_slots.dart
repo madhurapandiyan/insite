@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
+import 'package:insite/widgets/smart_widgets/time_picker.dart';
 
 class TimeSlots extends StatelessWidget {
-  List<String>? type;
-  List<String>? startTime;
-  List<String>? endTime;
+  final List<String>? type;
+  final List<String>? startTime;
+  final List<String>? endTime;
+  final ValueChanged<String?>? startTimeChanged;
+  final ValueChanged<String?>? typeChanged;
+  final ValueChanged<String?>? endTimeChanged;
+  final String? initialTypeValue;
+  final String? initialStartValue;
+  final String? initialEndValue;
 
-  TimeSlots({this.type, this.endTime, this.startTime});
+  TimeSlots(
+      {this.type,
+      this.endTime,
+      this.startTime,
+      this.startTimeChanged,
+      this.endTimeChanged,
+      this.initialTypeValue,
+      this.initialEndValue,
+      this.initialStartValue,
+      this.typeChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +41,10 @@ class TimeSlots extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10)),
               child: CustomDropDownWidget(
-                value: "select",
+                value: initialTypeValue,
                 items: type,
                 enableHint: true,
-                onChanged: (String? value) {
-                  // viewModel.updateModelValue(value!);
-                },
+                onChanged: typeChanged,
               ),
             ),
             SizedBox(
@@ -40,39 +54,23 @@ class TimeSlots extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1!.color!,
-                      ),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: CustomDropDownWidget(
-                    value: "select",
-                    items: startTime,
-                    enableHint: true,
-                    onChanged: (String? value) {
-                      // viewModel.updateModelValue(value!);
-                    },
-                  ),
-                ),
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).textTheme.bodyText1!.color!,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TimePickerWidget()),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1!.color!,
-                      ),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: CustomDropDownWidget(
-                    value: "select",
-                    items: endTime,
-                    enableHint: true,
-                    onChanged: (String? value) {
-                      // viewModel.updateModelValue(value!);
-                    },
-                  ),
-                ),
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).textTheme.bodyText1!.color!,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TimePickerWidget()),
               ],
             )
           ],

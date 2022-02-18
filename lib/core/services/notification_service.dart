@@ -1,5 +1,7 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/add_notification_payload.dart';
+
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
@@ -83,28 +85,83 @@ class NotificationService extends BaseService {
   }
 
   Future<ManageNotificationsData?> getManageNotificationsData() async {
-    try {
-      ManageNotificationsData? response = await MyApi()
-          .getClientSeven()!
-          .manageNotificationsData(
-              Urls.manageNotificationsData, accountSelected!.CustomerUID);
+    if (isVisionLink) {
+      try {
+        ManageNotificationsData? response = await MyApi()
+            .getClientSeven()!
+            .manageNotificationsData(
+                Urls.manageNotificationsData, accountSelected!.CustomerUID);
 
-      return response;
-    } catch (e) {
-      Logger().e(e.toString());
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
     }
   }
 
   Future<AlertTypes?> getNotificationTypes() async {
-    try {
-      AlertTypes? response = await MyApi()
-          .getClientSeven()!
-          .getNotificationTypesData(
-              Urls.getNotificationTypes, accountSelected!.CustomerUID);
+    if (isVisionLink) {
+      try {
+        AlertTypes? response = await MyApi()
+            .getClientSeven()!
+            .getNotificationTypesData(
+                Urls.getNotificationTypes, accountSelected!.CustomerUID);
 
-      return response;
-    } catch (e) {
-      Logger().e(e.toString());
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    }
+  }
+
+  Future<ZoneValues?> getInclusionExclusionZones() async {
+    if (isVisionLink) {
+      try {
+        ZoneValues? response = await MyApi()
+            .getClientSeven()!
+            .getCustomerInclusionExclusion(
+                Urls.getCustomerZones, accountSelected!.CustomerUID);
+
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    }
+  }
+
+  Future<NotificationExist?> checkNotificationTitle(String? value) async {
+    if (isVisionLink) {
+      try {
+        Map<String, String> queryMap = Map();
+
+        queryMap["alertTitle"] = value!;
+        NotificationExist? response = await MyApi()
+            .getClientSeven()!
+            .checkNotificationExist(
+                Urls.checkIfNotificationNameExists +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    }
+  }
+
+  Future<NotificationAdded?> addNewNotification(
+      AddNotificationPayLoad addNotificationPayLoad) async {
+    if (isVisionLink) {
+      try {
+        NotificationAdded? response = await MyApi()
+            .getClientSeven()!
+            .addNotificationSaveData(Urls.saveNewNotificationData,
+                addNotificationPayLoad, accountSelected!.CustomerUID);
+
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
     }
   }
 }
