@@ -1119,8 +1119,14 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
   @GET('{url}')
-  Future<AssetGroupSummaryResponse> getGroupListData(
+  Future<AssetGroupSummaryResponse> getGroupListDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AssetGroupSummaryResponse> getGroupListData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
   Future<AssetCount> getGeoFenceCountData(
@@ -1211,8 +1217,14 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
-  Future<EditReportResponse> getEditReportData(
+  Future<EditReportResponse> getEditReportDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+  @GET('{url}')
+  Future<EditReportResponse> getEditReportData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
+
   @POST('{url}')
   Future<ManageReportResponse> getAddReportSaveDataVL(
       @Path() String url,
@@ -1220,15 +1232,22 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
+  Future<ManageReportResponse> getEditReportSaveDataVL(
+      @Path() String url,
+      @Body() AddReportPayLoad addReportPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+  @PUT('{url}')
   Future<ManageReportResponse> getEditReportSaveData(
       @Path() String url,
       @Body() AddReportPayLoad addReportPayLoad,
+      @Header("service") service,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<ManageReportResponse> getAddReportSaveData(
       @Path() String url,
       @Body() AddReportPayLoad addReportPayLoad,
+      @Header("service") service,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')

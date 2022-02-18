@@ -3559,10 +3559,31 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetGroupSummaryResponse> getGroupListData(url, customerId) async {
+  Future<AssetGroupSummaryResponse> getGroupListDataVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AssetGroupSummaryResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AssetGroupSummaryResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AssetGroupSummaryResponse> getGroupListData(
+      url, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -3906,10 +3927,30 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<EditReportResponse> getEditReportData(url, customerId) async {
+  Future<EditReportResponse> getEditReportDataVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<EditReportResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = EditReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<EditReportResponse> getEditReportData(url, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -3942,7 +3983,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ManageReportResponse> getEditReportSaveData(
+  Future<ManageReportResponse> getEditReportSaveDataVL(
       url, addReportPayLoad, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -3961,11 +4002,36 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ManageReportResponse> getAddReportSaveData(
-      url, addReportPayLoad, customerId) async {
+  Future<ManageReportResponse> getEditReportSaveData(
+      url, addReportPayLoad, service, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(addReportPayLoad.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ManageReportResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ManageReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ManageReportResponse> getAddReportSaveData(
+      url, addReportPayLoad, service, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addReportPayLoad.toJson());
