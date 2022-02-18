@@ -191,7 +191,7 @@ class NotificationView extends StatelessWidget {
                                         }),
                                   )
                                 : EmptyView(
-                                    title: "No User found",
+                                    title: "No records to display",
                                   ),
                         viewModel.loadingMore
                             ? Padding(

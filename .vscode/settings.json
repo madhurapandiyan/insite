@@ -3,5 +3,6 @@
         "C:\\Users\\sivap\\flutter"
     ],
     "dart.flutterSdkPath": "C:\\Users\\sivap\\flutter",
-    "debug.terminal.clearBeforeReusing": true
+    "debug.terminal.clearBeforeReusing": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

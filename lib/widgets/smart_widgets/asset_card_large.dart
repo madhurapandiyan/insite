@@ -89,8 +89,8 @@ class _AssetCardsLargeState extends State<AssetCardsLarge> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: InsiteButton(
                           //width: MediaQuery.of(context).size.width * 0.004,
-                          height: MediaQuery.of(context).size.height * 0.049,
-                          margin: EdgeInsets.all(4),
+                           height: MediaQuery.of(context).size.height * 0.043,
+                         margin: EdgeInsets.all(4),
                           title: Utils.getAdminModuleMenuTitle(
                               widget.buttonTitle![index]),
                           textColor: white,

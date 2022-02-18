@@ -33,7 +33,7 @@ dependencies:
   charts_flutter: ^0.11.0
   google_maps_cluster_manager: ^3.0.0+1
   syncfusion_flutter_gauges: ^19.1.65
-  syncfusion_flutter_charts: ^19.1.65
+  syncfusion_flutter_charts: ^19.3.57
   geodesy: ^0.4.0-nullsafety.0
   point_in_polygon: ^1.0.0
   maps_toolkit: ^2.0.0

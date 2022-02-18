@@ -47,7 +47,7 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                           viewModel.onRespectiveButtonClicked(value);
                         }),
                           AssetCardsSmall(
-                        headerText: "groups",
+                        headerText: "group",
                         icon: "assets/images/gear_icon.svg",
                         height: 10,
                         showExapansionMenu: false,

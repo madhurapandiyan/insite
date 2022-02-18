@@ -210,7 +210,7 @@ class LoginService extends BaseService {
     } else {
       var data = MyApi().getClientSix()!.loginAudit(
           Urls.loginAudit,
-          customer!.CustomerUID!,
+          customer?.CustomerUID!,
           "in-identitymanager-identitywebapi",
           {"isUpdated": true});
       return data;
@@ -320,7 +320,6 @@ class LoginService extends BaseService {
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
-    await loginAudit();
-    await saveExpiryTime(expiryTime);
+   await saveExpiryTime(expiryTime);
   }
 }

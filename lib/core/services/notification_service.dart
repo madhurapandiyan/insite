@@ -87,7 +87,7 @@ class NotificationService extends BaseService {
       ManageNotificationsData? response = await MyApi()
           .getClientSeven()!
           .manageNotificationsData(
-              Urls.manageNotificationsData, accountSelected!.CustomerUID);
+              Urls.manageNotificationsData, accountSelected?.CustomerUID);
 
       return response;
     } catch (e) {
