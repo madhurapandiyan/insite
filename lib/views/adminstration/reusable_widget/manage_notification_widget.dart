@@ -6,7 +6,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class ManageNotificationWidget extends StatelessWidget {
   final ConfiguredAlerts? alerts;
 
-  ManageNotificationWidget({this.alerts});
+  final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
+
+  ManageNotificationWidget({this.alerts, this.onDelete, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +32,14 @@ class ManageNotificationWidget extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onEdit,
                     icon: Icon(
                       Icons.edit,
                       color: Theme.of(context).textTheme.bodyText1!.color!,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onDelete,
                     icon: Icon(
                       Icons.delete,
                       color: Theme.of(context).textTheme.bodyText1!.color!,

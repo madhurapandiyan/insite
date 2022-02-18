@@ -4,9 +4,10 @@ part 'notification_type.g.dart';
 @JsonSerializable()
 class AlertTypes {
   List<NotificationTypeGroups>? notificationTypeGroups;
- 
 
-  AlertTypes({this.notificationTypeGroups,});
+  AlertTypes({
+    this.notificationTypeGroups,
+  });
 
   factory AlertTypes.fromJson(Map<String, dynamic> json) =>
       _$AlertTypesFromJson(json);
@@ -39,7 +40,7 @@ class NotificationTypes {
   String? appURL;
   List<Operands>? operands;
   List<SiteOperands>? siteOperands;
-   final bool? isSelected;
+  bool? isSelected;
 
   NotificationTypes(
       {this.notificationTypeID,
@@ -47,7 +48,7 @@ class NotificationTypes {
       this.appName,
       this.appURL,
       this.operands,
-      this.isSelected,
+      this.isSelected = false,
       this.siteOperands});
 
   factory NotificationTypes.fromJson(Map<String, dynamic> json) =>

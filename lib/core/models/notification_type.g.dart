@@ -45,6 +45,7 @@ NotificationTypes _$NotificationTypesFromJson(Map<String, dynamic> json) =>
       operands: (json['operands'] as List<dynamic>?)
           ?.map((e) => Operands.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isSelected: json['isSelected'] as bool? ?? false,
       siteOperands: (json['siteOperands'] as List<dynamic>?)
           ?.map((e) => SiteOperands.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -58,6 +59,7 @@ Map<String, dynamic> _$NotificationTypesToJson(NotificationTypes instance) =>
       'appURL': instance.appURL,
       'operands': instance.operands,
       'siteOperands': instance.siteOperands,
+      'isSelected': instance.isSelected,
     };
 
 Operands _$OperandsFromJson(Map<String, dynamic> json) => Operands(

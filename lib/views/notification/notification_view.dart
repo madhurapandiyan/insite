@@ -13,6 +13,7 @@ import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
 class NotificationView extends StatelessWidget {
+  int? selectedIndex;
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NotificationViewModel>.reactive(
@@ -73,7 +74,9 @@ class NotificationView extends StatelessWidget {
                                               height: 40,
                                               //icon: Icon(Icons.more_vert),
                                               widget: onContextMenuSelected(
-                                                  viewModel, context),
+                                                  viewModel,
+                                                  context,
+                                                  selectedIndex!),
                                             ),
                                           ))
                                       : SizedBox()
@@ -182,6 +185,7 @@ class NotificationView extends StatelessWidget {
                                             notifications: notifications,
                                             onCallback: () {
                                               viewModel.onItemSelected(index);
+                                              selectedIndex = index;
                                             },
                                             showDetails: () {
                                               viewModel.onDetailPageSelected(
@@ -211,7 +215,7 @@ class NotificationView extends StatelessWidget {
   }
 
   Widget onContextMenuSelected(
-      NotificationViewModel viewModel, BuildContext context) {
+      NotificationViewModel viewModel, BuildContext context, int? index) {
     return PopupMenuButton<String>(
       offset: Offset(30, 50),
       itemBuilder: (context) => [
@@ -219,7 +223,7 @@ class NotificationView extends StatelessWidget {
             ? PopupMenuItem(
                 value: "Deselect",
                 child: InsiteText(
-                  text: "eselect",
+                  text: "Deselect",
                   fontWeight: FontWeight.w700,
                   size: 14,
                 ))
@@ -255,7 +259,7 @@ class NotificationView extends StatelessWidget {
               ),
       ],
       onSelected: (value) {
-        viewModel.onSelectedItemClicK(value, context);
+        viewModel.onSelectedItemClicK(value, context, index!);
       },
       icon: Icon(
         Icons.more_vert,

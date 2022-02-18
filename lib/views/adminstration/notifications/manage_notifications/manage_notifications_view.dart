@@ -43,15 +43,14 @@ class ManageNotificationsView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: CustomTextBox(
-                        // controller: viewModel.textEditingController,
-
+                        controller: viewModel.searchController,
                         title: "SEARCH",
-                        //showLoading: viewModel.isSearching,
+                        showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
                           if (searchText.isNotEmpty) {
-                            //viewModel.searchUsers(searchText);
+                            viewModel.getSearchListData(searchText);
                           } else {
-                            //viewModel.updateSearchDataToEmpty();
+                            viewModel.getManageNotificationsData();
                           }
                         },
                       ),
@@ -62,20 +61,28 @@ class ManageNotificationsView extends StatelessWidget {
                     Expanded(
                       child: viewModel.loading
                           ? InsiteProgressBar()
-                          : viewModel.assets.isNotEmpty
+                          : viewModel.notifications.isNotEmpty
                               ? ListView.separated(
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
-                                        viewModel.assets[index];
+                                        viewModel.notifications[index];
 
                                     return ManageNotificationWidget(
-                                        alerts: alerts);
+                                      alerts: alerts,
+                                      onDelete: () {
+                                        viewModel.onRemovedSelectedNotification(
+                                            index);
+                                      },
+                                      onEdit: () {
+                                        //viewModel.editNotification(index)
+                                      },
+                                    );
                                   },
                                   separatorBuilder: (context, index) => Divider(
                                         color: backgroundColor3,
                                         thickness: 2.0,
                                       ),
-                                  itemCount: viewModel.assets.length)
+                                  itemCount: viewModel.notifications.length)
                               : EmptyView(title: "No Results"),
                     ),
                     viewModel.loadingMore

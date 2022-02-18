@@ -409,6 +409,9 @@ class Urls {
   static String notificationDetails =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
 
+  static String deleteNotification =
+      "/t/trimble.com/vss-notification/1.0/Notification";
+
 //subnotification
 
   static String manageNotificationsData =

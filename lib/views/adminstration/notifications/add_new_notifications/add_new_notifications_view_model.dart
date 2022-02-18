@@ -686,6 +686,25 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   cancel(){
+    _showConditionTypes = false;
+    _showNotificationType = false;
+    _showFuelLoss = false;
+    _setOdometer = false;
+    _selectPowerMode = false;
+    _showFaultCodes = false;
+    _showSwitches = false;
+    _showFluidAnalysis = false;
+    _showInspections = false;
+    _showMaintainance = false;
+    _showAssetSecurity = false;
+    _showZone = false;
+    nameController.clear();
+    notificationController.clear();
+    emailController.clear();
+    descriptionController.clear();
+    occurenceController.clear();
+
+    notifyListeners();
 
   }
 

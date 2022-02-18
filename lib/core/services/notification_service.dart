@@ -7,6 +7,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/notification_type.dart';
+import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
@@ -99,6 +100,27 @@ class NotificationService extends BaseService {
     }
   }
 
+  Future<ManageNotificationsData?> getsearchNotificationsData(
+      String? searchText) async {
+    if (isVisionLink) {
+      try {
+        Map<String, String> queryMap = Map();
+
+        queryMap["searchKey"] = searchText!;
+        ManageNotificationsData? response = await MyApi()
+            .getClientSeven()!
+            .manageNotificationsData(
+                Urls.manageNotificationsData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+
+        return response;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    }
+  }
+
   Future<AlertTypes?> getNotificationTypes() async {
     if (isVisionLink) {
       try {
@@ -163,5 +185,22 @@ class NotificationService extends BaseService {
         Logger().e(e.toString());
       }
     }
+  }
+
+  Future<UpdateResponse?> getDeleteNotification(String notificationId) async {
+    try {
+      Map<String, String> queryMap = Map();
+      queryMap["notificationUID"] = notificationId;
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientFour()!
+            .deleteNotification(
+                Urls.deleteNotification +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      }
+    } catch (e) {}
+    return null;
   }
 }

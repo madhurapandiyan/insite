@@ -1141,6 +1141,11 @@ abstract class RestClient {
   @DELETE('{url}')
   Future<UpdateResponse> getDeleteFavoriteData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @DELETE('{url}')
+  Future<UpdateResponse> deleteNotification(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
   @GET('{url}')
   Future<AssetGroupSummaryResponse> getAdminProductFamilyFilterData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);

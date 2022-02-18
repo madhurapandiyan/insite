@@ -13,7 +13,7 @@ import 'package:insite/views/adminstration/add_group/selection_widget/selection_
 import 'package:insite/views/adminstration/add_report/reusable_widget/search_contact_reusable_widget.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/selected_contact_list_item.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/custom_dropdown_add_notification.dart';
-import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/custom_auto_complete_widget.dart';
+
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/add_notification_checkbox.dart';
@@ -217,8 +217,13 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                               height: 10,
                                             ),
                                             NotificationTypeCheckBox(
-                                              title: "Red",
-                                            ),
+                                                title: "Red",
+                                                onTap: () {
+                                                  NotificationTypes()
+                                                          .isSelected =
+                                                      !NotificationTypes()
+                                                          .isSelected!;
+                                                }),
                                             NotificationTypeCheckBox(
                                                 title: "Yellow"),
                                             NotificationTypeCheckBox(

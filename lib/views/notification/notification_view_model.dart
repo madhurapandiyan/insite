@@ -101,6 +101,19 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
+  onRemovedSelectedNotification(int index) {
+    try {
+      _assets.removeAt(index);
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  deleteNotification() async{
+    
+  }
+
   getNotificationData() async {
     notification.NotificationsData? response = await _mainNotificationService!
         .getNotificationsData("0", "0", startDate, endDate);
@@ -189,13 +202,13 @@ class NotificationViewModel extends InsiteViewModel {
     }
   }
 
-  onSelectedItemClicK(String value, BuildContext context) {
+  onSelectedItemClicK(String value, BuildContext context, int? index) {
     if (value == "deselect") {
       onItemDeselect();
     } else if (value == "resolve") {
       onItemDeselect();
     } else if (value == "Delete") {
-      onItemDeselect();
+      onRemovedSelectedNotification(index!);
     }
   }
 }
