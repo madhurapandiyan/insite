@@ -91,12 +91,14 @@ class SiteOperand {
   int? geoFenceID;
   String? geoFenceUID;
   String? name;
+  String? condition;
 
   SiteOperand(
       {this.operandID,
       this.operandName,
       this.geoFenceID,
       this.geoFenceUID,
+      this.condition,
       this.name});
 
   factory SiteOperand.fromJson(Map<String, dynamic> json) =>

@@ -59,7 +59,7 @@ class HomeViewModel extends InsiteViewModel {
     } else if (type == ScreenType.PLANT) {
       _navigationService!
           .navigateWithTransition(PlantView(), transition: "fade");
-    } else if (type == ScreenType.NOTIFICATION) {
+    } else if (type == ScreenType.NOTIFICATIONS) {
       _navigationService!
           .navigateWithTransition(NotificationView(), transition: "fade");
     }

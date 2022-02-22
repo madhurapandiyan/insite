@@ -1254,6 +1254,12 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
+  @PUT('{url}')
+  Future<UpdateResponse> deleteMainNotification(
+      @Path() String url,
+      @Body() Map<String, dynamic> notifictionIds,
+      @Header("x-visionlink-customeruid") customerId);
+
   @GET("{url}")
   Future<ZoneValues> getCustomerInclusionExclusion(
     @Path() String url,

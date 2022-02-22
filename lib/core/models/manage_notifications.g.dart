@@ -97,6 +97,7 @@ SiteOperand _$SiteOperandFromJson(Map<String, dynamic> json) => SiteOperand(
       operandName: json['operandName'] as String?,
       geoFenceID: json['geoFenceID'] as int?,
       geoFenceUID: json['geoFenceUID'] as String?,
+      condition: json['condition'] as String?,
       name: json['name'] as String?,
     );
 
@@ -107,4 +108,5 @@ Map<String, dynamic> _$SiteOperandToJson(SiteOperand instance) =>
       'geoFenceID': instance.geoFenceID,
       'geoFenceUID': instance.geoFenceUID,
       'name': instance.name,
+      'condition': instance.condition,
     };

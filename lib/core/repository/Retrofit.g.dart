@@ -4040,6 +4040,25 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<UpdateResponse> deleteMainNotification(
+      url, notifictionIds, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(notifictionIds);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UpdateResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UpdateResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ZoneValues> getCustomerInclusionExclusion(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

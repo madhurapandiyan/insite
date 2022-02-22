@@ -53,7 +53,9 @@ class ManageNotificationWidget extends StatelessWidget {
             height: 20,
           ),
           InsiteText(
-            text: alerts!.notificationType,
+            text: "${alerts!.operands!.first.operandName}" +
+                "  " +
+                "${alerts!.operands!.first.condition}",
             size: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -64,7 +66,8 @@ class ManageNotificationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InsiteText(
-                text: "${alerts!.alertGroupID} Group",
+                text: "${alerts!.numberOfAssets} " +
+                    "${alerts!.numberOfAssets == 1 ? "Asset" : "Assets"}",
                 size: 15,
                 fontWeight: FontWeight.bold,
               ),

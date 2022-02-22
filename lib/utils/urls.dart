@@ -411,6 +411,8 @@ class Urls {
 
   static String deleteNotification =
       "/t/trimble.com/vss-notification/1.0/Notification";
+  static String deleteManageNotification =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
 
 //subnotification
 

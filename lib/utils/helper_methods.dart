@@ -384,8 +384,8 @@ class Utils {
       case ScreenType.SUBSCRIPTION:
         title = "SUBSCRIPTION";
         break;
-      case ScreenType.NOTIFICATION:
-        title = "NOTIFICATION";
+      case ScreenType.NOTIFICATIONS:
+        title = "NOTIFICATIONS";
         break;
       case ScreenType.HOME:
         title = "HOME";
@@ -741,6 +741,4 @@ class Utils {
     var splitList2 = splitList[1].split(",\"UUID\"");
     return splitList2[0];
   }
-  
-  
 }

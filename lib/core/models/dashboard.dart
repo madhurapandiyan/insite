@@ -29,5 +29,5 @@ final List<Category> categories = [
   Category(
       10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
   Category(
-      11, "NOTIFICATION", "assets/images/noti.svg", ScreenType.NOTIFICATION)
+      11, "NOTIFICATIONS", "assets/images/noti.svg", ScreenType.NOTIFICATIONS)
 ];

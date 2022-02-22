@@ -29,7 +29,7 @@ class NotificationView extends StatelessWidget {
               onRefineApplied: () {
                 //viewModel.refresh();
               },
-              screenType: ScreenType.NOTIFICATION,
+              screenType: ScreenType.NOTIFICATIONS,
               body: Container(
                 height: MediaQuery.of(context).size.height,
                 child: Stack(
@@ -46,7 +46,7 @@ class NotificationView extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 21.0),
                                 child: InsiteText(
                                   text:
-                                      "Notifications ( ${viewModel.assets.length.toString()} of ${viewModel.totalCount})",
+                                      "Notifications ( ${viewModel.assets.length.toString()} of ${viewModel.assets.length})",
                                   size: 14,
                                   fontWeight: FontWeight.w700,
                                 ),

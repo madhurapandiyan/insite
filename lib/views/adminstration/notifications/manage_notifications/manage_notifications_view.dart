@@ -70,8 +70,8 @@ class ManageNotificationsView extends StatelessWidget {
                                     return ManageNotificationWidget(
                                       alerts: alerts,
                                       onDelete: () {
-                                        viewModel.onRemovedSelectedNotification(
-                                            index);
+                                        viewModel.onDeleteClicked(context,
+                                            alerts.alertConfigUID, index);
                                       },
                                       onEdit: () {
                                         //viewModel.editNotification(index)

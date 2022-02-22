@@ -61,7 +61,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATIONS
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -71,7 +71,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
                   widget.screenType == ScreenType.ASSET_SETTINGS ||
                   widget.screenType == ScreenType.ASSET_SETTINGS_FILTER ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATIONS
               ? false
               : true,
           screenType: widget.screenType,
@@ -84,7 +84,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATIONS
               ? 80
               : 56,
           shouldShowTitle: widget.screenType == ScreenType.FLEET ||
@@ -96,7 +96,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATIONS
               ? true
               : false,
           shouldShowRefine: widget.screenType == ScreenType.FLEET ||

@@ -187,16 +187,28 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<UpdateResponse?> getDeleteNotification(String notificationId) async {
+  Future<UpdateResponse?> deleteMainNotification(List<String> ids) async {
     try {
-      Map<String, String> queryMap = Map();
-      queryMap["notificationUID"] = notificationId;
       if (isVisionLink) {
+        Map<String, dynamic> notificationMap = {"notificationUID": ids};
+
         UpdateResponse updateResponse = await MyApi()
             .getClientFour()!
-            .deleteNotification(
-                Urls.deleteNotification +
-                    FilterUtils.constructQueryFromMap(queryMap),
+            .deleteMainNotification(Urls.deleteNotification, notificationMap,
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  Future<UpdateResponse?> deleteManageNotification(
+      String? notificationId) async {
+    try {
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()!
+            .deleteNotification(Urls.deleteManageNotification + notificationId!,
                 accountSelected!.CustomerUID);
         return updateResponse;
       }
