@@ -286,7 +286,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
             Container(
               height: MediaQuery.of(context).size.height * 0.60,
               child: Card(
-                  child: viewModel.isAssetLoading
+                  child: viewModel.isAssetLoading&&widget.group!=null
                       ? InsiteProgressBar()
                       : SelectedItemSelectWidgetView(
                           displayList: viewModel.searchSelectedItemList,
