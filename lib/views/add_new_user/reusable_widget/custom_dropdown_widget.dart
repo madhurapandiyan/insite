@@ -8,6 +8,7 @@ class CustomDropDownWidget extends StatelessWidget {
   final FocusNode? onFocus;
   final bool enableHint;
   final bool textColorChange;
+  final Function? onTap;
 
   //final ValueChanged<String> onChanged;
   CustomDropDownWidget(
@@ -18,7 +19,8 @@ class CustomDropDownWidget extends StatelessWidget {
       this.onFocus,
       this.isEnabled = true,
       this.textColorChange = false,
-      this.enableHint = true});
+      this.enableHint = true,
+      this.onTap});
   final Function(String?)? onChanged;
   //CustomDropDownWidget({this.value, this.items, this.onChanged});
   bool isEnabled;
@@ -27,6 +29,13 @@ class CustomDropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton(
 //onChanged: onChanged,
+        onTap: () {
+          if (onTap == null) {
+            return null;
+          } else {
+            onTap!();
+          }
+        },
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
@@ -41,10 +50,8 @@ class CustomDropDownWidget extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               )
             : SizedBox(),
-            
         items: items!.map<DropdownMenuItem<String>>((String? value) {
           return DropdownMenuItem<String>(
-            
             value: value,
             child: FittedBox(
               child: InsiteText(

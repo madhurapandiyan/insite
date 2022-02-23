@@ -28,7 +28,7 @@ Reports _$ReportsFromJson(Map<String, dynamic> json) => Reports(
       reportSourcePageName: json['reportSourcePageName'] as String?,
       birstReportInd: json['birstReportInd'] as int?,
       assetParameter: json['assetParameter'] as String?,
-      defaultColumn: json['defaultColumn'] as String?,
+      defaultColumn: json['defaultColumn'],
       dateRange: json['dateRange'] as String?,
     );
 

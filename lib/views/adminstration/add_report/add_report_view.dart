@@ -32,6 +32,7 @@ class AddReportView extends StatefulWidget {
 
 class _AddReportViewState extends State<AddReportView> {
   DateTime? datePickerValue;
+  // String? dropDownValue;
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddReportViewModel>.reactive(
@@ -63,45 +64,26 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(width: 1, color: black),
-                        shape: BoxShape.rectangle,
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: widget.scheduledReports == null
-                              ? CustomDropDownWidget(
-                                  items: viewModel.reportAssets,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      viewModel.assetsDropDownValue = value!;
-                                      Logger().i("dropDownValue:$value");
-                                    });
-                                  },
-                                  value: viewModel.assetsDropDownValue,
-                                )
-                              : Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: InsiteText(
-                                        text: viewModel.reportTypeValue,
-                                        size: 14,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    Icon(Icons.arrow_drop_down)
-                                  ],
-                                )),
+                    AddReportCustomDropdownWidget(
+                      reportFleetAssets: viewModel.reportFleetAssets,
+                      reportServiceAssets: viewModel.reportServiceAssets,
+                      reportProductivityAssets:
+                          viewModel.reportProductivityAssets,
+                      reportStandartAssets: viewModel.reportStandartAssets,
+                      dropDownValue: (String value) {
+                        viewModel.dropDownValue = value;
+                        setState(() {});
+                        Logger().w(viewModel.dropDownValue);
+                      },
+                      isShowingDropDownState:
+                          widget.scheduledReports == null ? true : false,
+                      value: viewModel.dropDownValue,
                     ),
 
                     SizedBox(
                       height: 15,
                     ),
-                    viewModel.assetsDropDownValue == "Fault Code"
+                    viewModel.dropDownValue == "Fault Code"
                         ? InsiteText(
                             text: "Severity :",
                             fontWeight: FontWeight.w700,
@@ -112,7 +94,7 @@ class _AddReportViewState extends State<AddReportView> {
                       height: 8,
                     ),
 
-                    viewModel.assetsDropDownValue == "Fault Code"
+                    viewModel.dropDownValue == "Fault Code"
                         ? ListView.builder(
                             shrinkWrap: true,
                             itemCount: viewModel.severityListData!.length,
@@ -132,7 +114,7 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 2,
                     ),
-                    viewModel.assetsDropDownValue == "Fault Code"
+                    viewModel.dropDownValue == "Fault Code"
                         ? InsiteText(
                             text: "Fault Code Type :",
                             fontWeight: FontWeight.w700,
@@ -142,7 +124,7 @@ class _AddReportViewState extends State<AddReportView> {
                       height: 4,
                     ),
 
-                    viewModel.assetsDropDownValue == "Fault Code"
+                    viewModel.dropDownValue == "Fault Code"
                         ? ListView.builder(
                             shrinkWrap: true,
                             itemCount: viewModel.faultCodeTypeListData!.length,
@@ -259,8 +241,8 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 15,
                     ),
-                    viewModel.assetsDropDownValue == "Cost Analysis - Fleet" ||
-                            viewModel.assetsDropDownValue ==
+                    viewModel.dropDownValue == "Cost Analysis - Fleet" ||
+                            viewModel.dropDownValue ==
                                 "Cost Analysis - Single Asset"
                         ? InsiteText(
                             text: "Cost per Hour :",
@@ -271,8 +253,8 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 8,
                     ),
-                    viewModel.assetsDropDownValue == "Cost Analysis - Fleet" ||
-                            viewModel.assetsDropDownValue ==
+                    viewModel.dropDownValue == "Cost Analysis - Fleet" ||
+                            viewModel.dropDownValue ==
                                 "Cost Analysis - Single Asset"
                         ? Container(
                             height: MediaQuery.of(context).size.height * 0.05,
@@ -315,8 +297,8 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 15,
                     ),
-                    viewModel.assetsDropDownValue == "Cost Analysis - Fleet" ||
-                            viewModel.assetsDropDownValue ==
+                    viewModel.dropDownValue == "Cost Analysis - Fleet" ||
+                            viewModel.dropDownValue ==
                                 "Cost Analysis - Single Asset"
                         ? InsiteText(
                             text: "Idling Time Threshold:",
@@ -324,8 +306,8 @@ class _AddReportViewState extends State<AddReportView> {
                             fontWeight: FontWeight.w700,
                           )
                         : Container(),
-                    viewModel.assetsDropDownValue == "Cost Analysis - Fleet" ||
-                            viewModel.assetsDropDownValue ==
+                    viewModel.dropDownValue == "Cost Analysis - Fleet" ||
+                            viewModel.dropDownValue ==
                                 "Cost Analysis - Single Asset"
                         ? Container(
                             height: MediaQuery.of(context).size.height * 0.05,
@@ -643,7 +625,7 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedStartDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartDate);
 
       print(formattedDate);
       viewModel.getDatPickerData(formattedDate);

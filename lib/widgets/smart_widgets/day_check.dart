@@ -9,13 +9,14 @@ class DayCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
       child: Column(
         children: [
-          InsiteText(
-            text: day,
-            fontWeight: FontWeight.bold,
-            size: 16,
+          FittedBox(
+            child: InsiteText(
+              text: day,
+              fontWeight: FontWeight.bold,
+              size: 14,
+             ),
           ),
           SizedBox(
             height: 10,

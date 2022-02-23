@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/smart_widgets/time_picker.dart';
+import 'package:logger/logger.dart';
 
 class TimeSlots extends StatelessWidget {
   final List<String>? type;
-  final List<String>? startTime;
-  final List<String>? endTime;
+
   final ValueChanged<String?>? startTimeChanged;
   final ValueChanged<String?>? typeChanged;
   final ValueChanged<String?>? endTimeChanged;
@@ -15,14 +16,40 @@ class TimeSlots extends StatelessWidget {
 
   TimeSlots(
       {this.type,
-      this.endTime,
-      this.startTime,
       this.startTimeChanged,
       this.endTimeChanged,
       this.initialTypeValue,
       this.initialEndValue,
       this.initialStartValue,
       this.typeChanged});
+
+  showTimePickerWidget(Function(String) callBack, BuildContext ctx) {
+    showTimePicker(
+       
+            builder: (context, child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.dark(
+                    primary: Colors.white,
+                    onSurface: Colors.white,
+                  ),
+                  buttonTheme: ButtonThemeData(
+                    colorScheme: ColorScheme.dark(
+                      primary: Colors.white,
+                    ),
+                  ),
+                ),
+                child: child!,
+              );
+            },
+            context: ctx,
+            initialTime: TimeOfDay.now())
+        .then((value) {
+                final hours = value!.hour.toString().padLeft(2, '0');
+      final minutes = value.minute.toString().padLeft(2, '0');
+      callBack('$hours:$minutes');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +77,29 @@ class TimeSlots extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).textTheme.bodyText1!.color!,
-                        ),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: TimePickerWidget()),
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).textTheme.bodyText1!.color!,
-                        ),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: TimePickerWidget()),
-              ],
-            )
+            initialTypeValue == type![1]
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InsiteButton(
+                        width: 100,
+                        height: 50,
+                        title: initialStartValue,
+                        onTap: () {
+                          showTimePickerWidget(startTimeChanged!, context);
+                        },
+                      ),
+                      InsiteButton(
+                        width: 100,
+                        height: 50,
+                        title: initialEndValue,
+                        onTap: () {
+                          showTimePickerWidget(endTimeChanged!, context);
+                        },
+                      ),
+                    ],
+                  )
+                : SizedBox()
           ],
         ),
       ),

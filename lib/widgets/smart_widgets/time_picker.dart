@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/smart_widgets/time_button_widget.dart';
-import 'package:intl/intl.dart';
-import 'package:stacked/stacked.dart';
 
 class TimePickerWidget extends StatefulWidget {
   @override

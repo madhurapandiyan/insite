@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/add_group_data_response.dart';
@@ -82,6 +84,7 @@ import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencepayload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/materialmodel.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/fault_code_type_search.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
@@ -265,7 +268,7 @@ abstract class RestClient {
     @Header("X-VisionLink-UserUid") userId,
   );
 
-  @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1/")
+  @GET("/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1")
   Future<List<Note>> getAssetNotesVL(@Query("assetUID") String? assetUID,
       @Header("X-VisionLink-CustomerUid") customerId);
 
@@ -1121,8 +1124,14 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
   @GET('{url}')
-  Future<AssetGroupSummaryResponse> getGroupListData(
+  Future<AssetGroupSummaryResponse> getGroupListDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<AssetGroupSummaryResponse> getGroupListData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
   Future<AssetCount> getGeoFenceCountData(
@@ -1171,13 +1180,27 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET("{url}")
+  Future<ManageNotificationsData> manageNotificationsDataVL(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @GET("{url}")
   Future<ManageNotificationsData> manageNotificationsData(
+    @Header("service") String service,
+    @Path() String url,
+    @Header("X-VisionLink-CustomerUID") customerId,
+  );
+
+  @GET("{url}")
+  Future<AlertTypes> getNotificationTypesDataVL(
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
 
   @GET("{url}")
   Future<AlertTypes> getNotificationTypesData(
+    @Header("service") service,
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
@@ -1218,8 +1241,14 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
-  Future<EditReportResponse> getEditReportData(
+  Future<EditReportResponse> getEditReportDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+  @GET('{url}')
+  Future<EditReportResponse> getEditReportData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("x-visionlink-customeruid") customerId);
+
   @POST('{url}')
   Future<ManageReportResponse> getAddReportSaveDataVL(
       @Path() String url,
@@ -1227,15 +1256,22 @@ abstract class RestClient {
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
+  Future<ManageReportResponse> getEditReportSaveDataVL(
+      @Path() String url,
+      @Body() AddReportPayLoad addReportPayLoad,
+      @Header("x-visionlink-customeruid") customerId);
+  @PUT('{url}')
   Future<ManageReportResponse> getEditReportSaveData(
       @Path() String url,
       @Body() AddReportPayLoad addReportPayLoad,
+      @Header("service") service,
       @Header("x-visionlink-customeruid") customerId);
 
   @POST('{url}')
   Future<ManageReportResponse> getAddReportSaveData(
       @Path() String url,
       @Body() AddReportPayLoad addReportPayLoad,
+      @Header("service") service,
       @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
@@ -1255,22 +1291,57 @@ abstract class RestClient {
   );
 
   @GET("{url}")
+  Future<ZoneValues> getCustomerInclusionExclusionVL(
+    @Path() String url,
+    @Header("x-visionlink-customeruid") customerId,
+  );
+
+  @POST("{url}")
+  Future<dynamic> createZones(
+    @Path() String url,
+    @Header("X-VisionLink-CustomerUID") customerId,
+    @Header("service") service,
+    @Body() ZoneCreating zone,
+  );
+
+  @GET("{url}")
   Future<ZoneValues> getCustomerInclusionExclusion(
+    @Header("service") service,
+    @Path() String url,
+    @Header("X-VisionLink-CustomerUID") customerId,
+  );
+
+  @GET("{url}")
+  Future<NotificationExist> checkNotificationExistVL(
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
 
   @GET("{url}")
   Future<NotificationExist> checkNotificationExist(
+    @Header("service") service,
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
 
   @POST('{url}')
-  Future<NotificationAdded> addNotificationSaveData(
+  Future<NotificationAdded> addNotificationSaveDataVL(
       @Path() String url,
       @Body() AddNotificationPayLoad addNotificationPayLoad,
       @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<NotificationAdded> addNotificationSaveData(
+      @Header("service") service,
+      @Path() String url,
+      @Body() AddNotificationPayLoad addNotificationPayLoad,
+      @Header("X-VisionLink-CustomerUID") customerId);
+
+  @GET("{url}")
+  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearchVL(
+    @Header("x-visionlink-customeruid") customerId,
+    @Path() String url,
+  );
 }
 
 @JsonSerializable()

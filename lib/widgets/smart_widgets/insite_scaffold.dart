@@ -50,7 +50,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+
+        resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(
           shouldShowAccount:

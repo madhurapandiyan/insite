@@ -742,5 +742,11 @@ class Utils {
     return splitList2[0];
   }
   
-  
+    static List reportColumn(String value) {
+    var splitList = value.split("\"");
+    splitList.removeWhere(
+        (element) => element == "\"" || element == "[" || element == "]"|| element == ",");
+    Logger().w(splitList);
+    return splitList;
+  }
 }

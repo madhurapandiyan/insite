@@ -24,7 +24,7 @@ class Reports {
   String? reportSourcePageName;
   int? birstReportInd;
   String? assetParameter;
-  String? defaultColumn;
+  dynamic? defaultColumn;
   String? dateRange;
 
   Reports(
