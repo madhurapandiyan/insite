@@ -225,7 +225,9 @@ class SelectionWidgetViewModel extends InsiteViewModel {
         _assetSerialNumber.add(element.assetSerialNumber!);
       });
     }
-    _isAssetLoading = false;
+    
+      _isAssetLoading = false;
+    
 
     notifyListeners();
     return assetIdresult;

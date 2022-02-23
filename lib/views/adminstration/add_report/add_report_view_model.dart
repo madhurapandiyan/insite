@@ -226,7 +226,7 @@ class AddReportViewModel extends InsiteViewModel {
         nameController.text = result.scheduledReport!.reportTitle!;
         dateTimeController.text = DateFormat("yyyy-MM-dd").format(
             DateFormat("yyyy-MM-dd")
-                .parse(result.scheduledReport!.scheduleEndDate!));
+                .parse(result.scheduledReport!.scheduleEndDate ?? ""));
         result.scheduledReport!.emailRecipients!
             .forEach((element) => selectedContactItems!.add(element.email!));
         serviceDueController.text = result.scheduledReport!.emailSubject ?? "-";
@@ -241,15 +241,22 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   addReportSaveData() async {
-    var addReportPayLoad;
-    Logger().w(Utils.getLastReportedDateFilterData(DateTime.now()));
-    List<String> reportColum = [];
+    List<Reports?> defaultColumn = [];
     result!.reports!.forEach((reports) {
-      if (reports.reportName == dropDownValue) {
-        var data = Utils.reportColumn(reports.defaultColumn);
+      defaultColumn.add(reports);
+    });
+    Logger().d(defaultColumn.length);
+    var addReportPayLoad;
+
+    List<String> reportColum = [];
+    for (var item in defaultColumn) {
+      if (item!.reportName == dropDownValue) {
+        var data = Utils.reportColumn(item.defaultColumn);
         reportColum = data as List<String>;
       }
-    });
+    }
+    Logger().e(reportColum.length);
+
     if (isVisionLink) {
       addReportPayLoad = AddReportPayLoad(
           assetFilterCategoryID: chooseByDropDownValue == "Assets"
@@ -377,14 +384,21 @@ class AddReportViewModel extends InsiteViewModel {
 
   getEditReportSaveData() async {
     var addReportPayLoad;
-    Logger().w(Utils.getLastReportedDateFilterData(DateTime.now()));
-    List<String> reportColum = [];
+    List<Reports?> defaultColumn = [];
     result!.reports!.forEach((reports) {
-      if (reports.reportName == dropDownValue) {
-        var data = Utils.reportColumn(reports.defaultColumn);
+      defaultColumn.add(reports);
+    });
+    Logger().d(defaultColumn.length);
+
+    List<String> reportColum = [];
+    for (var item in defaultColumn) {
+      if (item!.reportName == dropDownValue) {
+        var data = Utils.reportColumn(item.defaultColumn);
         reportColum = data as List<String>;
       }
-    });
+    }
+    Logger().e(reportColum.length);
+
     if (isVisionLink) {
       addReportPayLoad = AddReportPayLoad(
           assetFilterCategoryID: chooseByDropDownValue == "Assets"

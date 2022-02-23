@@ -84,7 +84,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATION ||
+                  widget.screenType == ScreenType.ADD_NEW_GROUP ||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP
               ? 80
               : 56,
           shouldShowTitle: widget.screenType == ScreenType.FLEET ||
@@ -96,7 +98,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATION
+                  widget.screenType == ScreenType.NOTIFICATION ||
+                  widget.screenType == ScreenType.ADD_NEW_GROUP ||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP
               ? true
               : false,
           shouldShowRefine: widget.screenType == ScreenType.FLEET ||
