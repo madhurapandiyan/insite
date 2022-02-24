@@ -127,18 +127,18 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      AssetCardsSmall(
-                          headerText: "geofences".toUpperCase(),
-                          height: 10,
-                          icon: "assets/images/geofence.svg",
-                          showExapansionMenu: false,
-                          buttonTitle: [
-                            AdminAssetsButtonType.values[4],
-                            AdminAssetsButtonType.values[5]
-                          ],
-                          onCallbackSelected: (value) {
-                            viewModel.onRespectiveButtonClicked(value);
-                          }),
+                      // AssetCardsSmall(
+                      //     headerText: "geofences".toUpperCase(),
+                      //     height: 10,
+                      //     icon: "assets/images/geofence.svg",
+                      //     showExapansionMenu: false,
+                      //     buttonTitle: [
+                      //       AdminAssetsButtonType.values[4],
+                      //       AdminAssetsButtonType.values[5]
+                      //     ],
+                      //     onCallbackSelected: (value) {
+                      //       viewModel.onRespectiveButtonClicked(value);
+                      //     }),
                       AssetCardsSmall(
                           headerText: "reports".toUpperCase(),
                           icon: "assets/images/reports.svg",

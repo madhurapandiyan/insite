@@ -767,9 +767,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                         ),
                         SelectionWidgetView(
                           isEdit: isEdit,
-                          assetIds: viewModel.assetUidData,
+                          //assetIds: viewModel.assetUidData,
                           group: viewModel.groups,
-                          dissociatedIds: viewModel.dissociatedAssetId,
+                          dissociatedIds: viewModel.assetUidData,
                           onAssetSelected: (
                             List<String> value,
                             AssetGroupSummaryResponse data,

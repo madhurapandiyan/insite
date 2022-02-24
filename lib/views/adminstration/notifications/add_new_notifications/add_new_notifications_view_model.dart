@@ -391,8 +391,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operatorId: element.operatorID,
           value: element.value));
     });
-    schedule.clear();
-    alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
+    
+    if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
+      schedule.clear();
+      alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
       var endTimeHour =
           TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
               .hour
@@ -420,6 +422,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           initialVale: "Range",
           title: "sun"));
     });
+    }
     _notificationSubTypes.clear();
     if (data.alertConfig!.operands!.isNotEmpty) {
       data.alertConfig!.operands!.forEach((element) {
@@ -643,7 +646,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   onGettingFaultCodeData() async {
-    showLoadingDialog();
+    try {
+      showLoadingDialog();
     var faultCodeType =
         await _notificationService!.getFaultCodeTypeSearch("", page, "");
     if (_loadingMore) {
@@ -661,6 +665,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     hideLoadingDialog();
 
     notifyListeners();
+    } catch (e) {
+      hideLoadingDialog();
+    }
+    
   }
 
   onDescriptionFrontPressed() async {
@@ -904,7 +912,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   getNotificationTypesData() async {
-    alterTypes = await _notificationService!.getNotificationTypes();
+    try {
+      alterTypes = await _notificationService!.getNotificationTypes();
 
     if (alterTypes != null) {
       alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
@@ -958,6 +967,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
 
     notifyListeners();
+    } catch (e) {
+      hideLoadingDialog();
+    }
+    
   }
 
   checkIfNotificationNameExist(String? value) async {
@@ -996,6 +1009,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {
+      hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
@@ -1210,6 +1224,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         numberOfOccurences: 1);
     var data = await _notificationService!
         .editNotification(payLoadData, alertConfigUid!);
+        if (data != null) {
+        _snackBarservice!
+            .showSnackbar(message: "Edit Notification Success");
+
+        hideLoadingDialog();
+        gotoManageNotificationsPage();
+      }
   }
 
   saveAddNotificationData() async {
@@ -1220,54 +1241,54 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       var newFormat = DateFormat("dd-MM-yy");
       String date = newFormat.format(currentDate);
 
-//     await gettingNotificationIdandOperands();
-// AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
-//         alertCategoryID: 1,
-//         alertGroupId: 1,
-//         alertTitle: notificationController.text,
-//         allAssets: false,
-//         assetUIDs: assetUidData,
-//         currentDate:DateFormat("MM/dd/yyyy").format(DateTime.now()),
-//         notificationDeliveryChannel: "email",
-//         notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:[])
-//         notificationTypeGroupID: notificationTypeGroupID,
-//         notificationTypeId: notificationTypeId,
-//         operands:operandData,
-//         // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
-//         numberOfOccurences: 1
-//         schedule:schedule.map((e) => Schedule(day: e.day,endTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.endTime,startTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.startTime,)).toList()
-//         );
+    await gettingNotificationIdandOperands();
+AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
+        alertCategoryID: 1,
+        alertGroupId: 1,
+        alertTitle: notificationController.text,
+        allAssets: false,
+        assetUIDs: assetUidData,
+        currentDate:DateFormat("MM/dd/yyyy").format(DateTime.now()),
+        notificationDeliveryChannel: "email",
+        notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:[])
+        notificationTypeGroupID: notificationTypeGroupID,
+        notificationTypeId: notificationTypeId,
+        operands:operandData,
+        // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
+        numberOfOccurences: 1
+        schedule:schedule.map((e) => Schedule(day: e.day,endTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.endTime,startTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.startTime,)).toList()
+        );
 
-//         Logger().w(notificationPayLoad.toJson());
+        Logger().w(notificationPayLoad.toJson());
 
-//     try {
-//       if (notificationController.text.isEmpty) {
-//         _snackBarservice!
-//             .showSnackbar(message: "Notification Name is be required");
-//         return;
-//       }
+    try {
+      if (notificationController.text.isEmpty) {
+        _snackBarservice!
+            .showSnackbar(message: "Notification Name is be required");
+        return;
+      }
 
-//       NotificationAdded? response =
-//           await _notificationService!.addNewNotification(notificationPayLoad);
+      NotificationAdded? response =
+          await _notificationService!.addNewNotification(notificationPayLoad);
 
-//       showLoadingDialog();
+      showLoadingDialog();
 
-//       if (response != null) {
-//         _snackBarservice!
-//             .showSnackbar(message: "You have added a new notification");
+      if (response != null) {
+        _snackBarservice!
+            .showSnackbar(message: "Add Notification Success");
 
-//         hideLoadingDialog();
-//         gotoManageNotificationsPage();
-//       } else {
-//         _snackBarservice!
-//             .showSnackbar(message: "Kindly recheck credentials added");
-//       }
-//       hideLoadingDialog();
-//       Logger().i(response!.toJson());
-//       notifyListeners();
-//     } catch (e) {
-//       Logger().e(e.toString());
-//     }
+        hideLoadingDialog();
+        gotoManageNotificationsPage();
+      } else {
+        _snackBarservice!
+            .showSnackbar(message: "Kindly recheck credentials added");
+      }
+      hideLoadingDialog();
+      Logger().i(response!.toJson());
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
     }
   }
 

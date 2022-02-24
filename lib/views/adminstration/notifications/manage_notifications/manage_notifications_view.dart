@@ -85,7 +85,7 @@ class ManageNotificationsView extends StatelessWidget {
                                         thickness: 2.0,
                                       ),
                                   itemCount: viewModel.notifications.length)
-                              : EmptyView(title: "No Results"),
+                              : EmptyView(title: "No Nontification Found"),
                     ),
                     viewModel.loadingMore
                         ? Padding(
