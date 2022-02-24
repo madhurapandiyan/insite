@@ -378,6 +378,7 @@ class AddReportViewModel extends InsiteViewModel {
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {
+      hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
@@ -510,6 +511,6 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   gotoScheduleReportPage() {
-    _navigationService!.clearTillFirstAndShowView(ManageReportView());
+    _navigationService!.navigateToView(ManageReportView());
   }
 }

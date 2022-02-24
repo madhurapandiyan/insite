@@ -79,8 +79,8 @@ class NotificationItem extends StatelessWidget {
                           path: "assets/images/EX210.png",
                         ),
                         InsiteTableRowItem(
-                          title: "Make",
-                          content: notifications!.makeCode,
+                          title: "Name",
+                          content: notifications!.notificationTitle,
                         ),
                         InsiteTableRowItem(
                           title: "Model",
@@ -123,24 +123,26 @@ class NotificationItem extends StatelessWidget {
                                     notifications!.occurUTC)
                                 : "",
                           ),
+                          // InsiteTableRowItem(
+                          //   title: "Odometer",
+                          //   content: jsonValue["Odometer"].toString(),
+                          // ),
                           InsiteTableRowItem(
-                            title: "Odometer",
-                            content: jsonValue["Odometer"].toString(),
+                            title: "Value/ Occurrence",
+                            content: jsonValue["OccurrenceCount"].toString(),
                           ),
                         ],
                       ),
-                      TableRow(children: [
-                        InsiteTableRowItem(
-                          title: "Location",
-                          content: notifications!.location,
-                        ),
-                        InsiteTableRowItem(
-                          title: "Value/ Occurence",
-                          content: jsonValue["OccurrenceCount"].toString(),
-                        ),
-                      ]),
                     ],
-                  )
+                  ),
+                  Table(border: TableBorder.all(), children: [
+                    TableRow(children: [
+                      InsiteTableRowItem(
+                        title: "Location",
+                        content: notifications!.location,
+                      ),
+                    ]),
+                  ])
                 ],
               ),
             ),

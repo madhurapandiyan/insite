@@ -384,8 +384,8 @@ class Utils {
       case ScreenType.SUBSCRIPTION:
         title = "SUBSCRIPTION";
         break;
-      case ScreenType.NOTIFICATION:
-        title = "NOTIFICATION";
+      case ScreenType.NOTIFICATIONS:
+        title = "NOTIFICATIONS";
         break;
       case ScreenType.HOME:
         title = "HOME";

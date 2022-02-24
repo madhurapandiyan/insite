@@ -83,11 +83,7 @@ class ManageReportView extends StatelessWidget {
                         title: "Search",
                         showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.searchReports(searchText);
-                          } else {
-                            viewModel.searchReports(searchText);
-                          }
+                          viewModel.searchReports(searchText);
                         },
                       ),
                     ),
@@ -113,7 +109,7 @@ class ManageReportView extends StatelessWidget {
                                       );
                                     }))
                             : EmptyView(
-                                title: "No Assets Found",
+                                title: "No Reports Found",
                               ),
                     viewModel.loadingMore
                         ? Padding(

@@ -30,7 +30,7 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
       width: double.maxFinite,
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).cardColor,
         boxShadow: [new BoxShadow(blurRadius: 1.0, color: tuna)],
         border: Border.all(width: 2.5, color: tuna),
         borderRadius: BorderRadius.circular(10),
@@ -43,7 +43,7 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
             height: MediaQuery.of(context).size.height * 0.24,
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).cardColor,
               boxShadow: [new BoxShadow(blurRadius: 1.0, color: bgcolor)],
               border: Border.all(width: 2.5, color: bgcolor),
               borderRadius: BorderRadius.circular(10),

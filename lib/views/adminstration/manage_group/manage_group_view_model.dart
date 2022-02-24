@@ -350,7 +350,7 @@ class ManageGroupViewModel extends InsiteViewModel {
         var result = await _manageUserService!.getDeleteFavoriteData(groupId);
         if (result != null) {
           await deleteGroupsFromList(groupId);
-          snackbarService!.showSnackbar(message: "Deleted Group successfully");
+          snackbarService!.showSnackbar(message: "Delete Group successfully");
         } else {
           snackbarService!.showSnackbar(message: "Deleting failed");
         }

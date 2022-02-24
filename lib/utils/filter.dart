@@ -172,7 +172,7 @@ class FilterUtils {
           for (FilterData? data in fuleLevelList) {
             if (data!.title == "100") {
               value.write(
-                  constructQuery("fuelLevelPercentLTE", data.title, false));
+                  constructQuery("fuelLevelPercentLT", data.title, false));
             } else {
               value.write(
                   constructQuery("fuelLevelPercentLT", data.title, false));

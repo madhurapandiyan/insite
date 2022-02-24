@@ -92,12 +92,16 @@ class ManageReportViewModel extends InsiteViewModel {
   }
 
   searchReports(String searchValue) {
-    pageNumber = 1;
-    _isSearching = true;
-    _searchKeyword = searchValue;
-    notifyListeners();
-    _searchKeyword = searchValue;
-    getManageReportListData();
+    if (searchValue.length >= 4) {
+      pageNumber = 1;
+      _isSearching = true;
+      _searchKeyword = searchValue;
+      notifyListeners();
+      _searchKeyword = searchValue;
+      getManageReportListData();
+    } else {
+    //  getManageReportListData();
+    }
   }
 
   getManageReportListData() async {
@@ -340,7 +344,8 @@ class ManageReportViewModel extends InsiteViewModel {
       ),
     );
   }
-   onClickTemplateTypeAddReportSelected(String? templateDropDownValue) {
+
+  onClickTemplateTypeAddReportSelected(String? templateDropDownValue) {
     _navigationService.navigateToView(
       AddReportView(
         scheduledReports: null,

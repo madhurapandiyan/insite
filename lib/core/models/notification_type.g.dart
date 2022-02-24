@@ -45,6 +45,7 @@ NotificationTypes _$NotificationTypesFromJson(Map<String, dynamic> json) =>
       operands: (json['operands'] as List<dynamic>?)
           ?.map((e) => Operands.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isSelected: json['isSelected'] as bool? ?? false,
       siteOperands: (json['siteOperands'] as List<dynamic>?)
           ?.map((e) => SiteOperands.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -58,6 +59,7 @@ Map<String, dynamic> _$NotificationTypesToJson(NotificationTypes instance) =>
       'appURL': instance.appURL,
       'operands': instance.operands,
       'siteOperands': instance.siteOperands,
+      'isSelected': instance.isSelected,
     };
 
 Operands _$OperandsFromJson(Map<String, dynamic> json) => Operands(
@@ -117,4 +119,57 @@ Map<String, dynamic> _$SiteOperandsToJson(SiteOperands instance) =>
       'maxOccurrence': instance.maxOccurrence,
       'minOccurrence': instance.minOccurrence,
       'operators': instance.operators,
+    };
+
+ZoneValues _$ZoneValuesFromJson(Map<String, dynamic> json) => ZoneValues(
+      zones: (json['zones'] as List<dynamic>?)
+          ?.map((e) => Zones.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      responseStatus: json['responseStatus'] as String?,
+    );
+
+Map<String, dynamic> _$ZoneValuesToJson(ZoneValues instance) =>
+    <String, dynamic>{
+      'zones': instance.zones,
+      'responseStatus': instance.responseStatus,
+    };
+
+Zones _$ZonesFromJson(Map<String, dynamic> json) => Zones(
+      zoneUID: json['zoneUID'] as String?,
+      zoneName: json['zoneName'] as String?,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+      radius: (json['radius'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$ZonesToJson(Zones instance) => <String, dynamic>{
+      'zoneUID': instance.zoneUID,
+      'zoneName': instance.zoneName,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'radius': instance.radius,
+    };
+
+NotificationExist _$NotificationExistFromJson(Map<String, dynamic> json) =>
+    NotificationExist(
+      alertTitleExists: json['alertTitleExists'] as bool?,
+      responseStatus: json['responseStatus'] as String?,
+    );
+
+Map<String, dynamic> _$NotificationExistToJson(NotificationExist instance) =>
+    <String, dynamic>{
+      'alertTitleExists': instance.alertTitleExists,
+      'responseStatus': instance.responseStatus,
+    };
+
+NotificationAdded _$NotificationAddedFromJson(Map<String, dynamic> json) =>
+    NotificationAdded(
+      alertUID: json['alertUID'] as String?,
+      responseStatus: json['responseStatus'] as String?,
+    );
+
+Map<String, dynamic> _$NotificationAddedToJson(NotificationAdded instance) =>
+    <String, dynamic>{
+      'alertUID': instance.alertUID,
+      'responseStatus': instance.responseStatus,
     };
