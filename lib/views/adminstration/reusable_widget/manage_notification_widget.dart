@@ -6,7 +6,10 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class ManageNotificationWidget extends StatelessWidget {
   final ConfiguredAlerts? alerts;
 
-  ManageNotificationWidget({this.alerts});
+  final VoidCallback? onDelete;
+  final VoidCallback? onEdit;
+
+  ManageNotificationWidget({this.alerts, this.onDelete, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class ManageNotificationWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: InsiteText(
-                  text: alerts!.notificationTitle!.toUpperCase(),
+                  text: alerts?.notificationTitle?.toUpperCase(),
                   size: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -29,14 +32,14 @@ class ManageNotificationWidget extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onEdit,
                     icon: Icon(
                       Icons.edit,
                       color: Theme.of(context).textTheme.bodyText1!.color!,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onDelete,
                     icon: Icon(
                       Icons.delete,
                       color: Theme.of(context).textTheme.bodyText1!.color!,
@@ -50,7 +53,9 @@ class ManageNotificationWidget extends StatelessWidget {
             height: 20,
           ),
           InsiteText(
-            text: alerts!.notificationType,
+            text: "${alerts?.operands?.first.operandName}" +
+                "  " +
+                "${alerts?.operands?.first.condition}",
             size: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -61,13 +66,14 @@ class ManageNotificationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InsiteText(
-                text: "${alerts!.alertGroupID} Group",
+                text: "${alerts?.numberOfAssets} " +
+                    "${alerts?.numberOfAssets == 1 ? "Asset" : "Assets"}",
                 size: 15,
                 fontWeight: FontWeight.bold,
               ),
               InsiteText(
-                text: alerts!.createdDate != null
-                    ? Utils.getLastReportedDateOneUTC(alerts!.createdDate)
+                text: alerts?.createdDate != null
+                    ? Utils.getLastReportedDateOneUTC(alerts?.createdDate)
                     : "",
                 size: 15,
                 fontWeight: FontWeight.bold,

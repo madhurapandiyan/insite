@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class NotificationWidget extends StatelessWidget {
   final String? headerText;
   final bool? showExapansionMenu;
-  final VoidCallback? onButtonClicked;
+  final Function(AdminAssetsButtonType value)? onAddButtonClicked;
+  final Function(AdminAssetsButtonType value)? onManageButtonClicked;
+
   final String? icon;
 
   const NotificationWidget(
       {this.headerText,
       this.icon,
       this.showExapansionMenu,
-      this.onButtonClicked});
+      this.onManageButtonClicked,
+      this.onAddButtonClicked});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.23,
         child: Column(
           children: [
             SizedBox(
@@ -70,7 +74,9 @@ class NotificationWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.40,
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () {
-                    onButtonClicked!();
+                    AdminAssetsButtonType value =
+                        AdminAssetsButtonType.values[24];
+                    onAddButtonClicked!(value);
                   },
                   title: "add".toUpperCase() +
                       "\n" +
@@ -82,7 +88,9 @@ class NotificationWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.40,
                   height: MediaQuery.of(context).size.height * 0.06,
                   onTap: () {
-                    onButtonClicked!();
+                    AdminAssetsButtonType value =
+                        AdminAssetsButtonType.values[25];
+                    onAddButtonClicked!(value);
                   },
                   title: "manage".toUpperCase() +
                       "\n" +

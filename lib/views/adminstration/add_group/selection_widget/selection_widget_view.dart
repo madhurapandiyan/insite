@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/customer.dart';
-import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
-import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_item_select_widget.dart';
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_item_widget.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SelectionWidgetView extends StatefulWidget {
@@ -286,7 +281,7 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
             Container(
               height: MediaQuery.of(context).size.height * 0.60,
               child: Card(
-                  child: viewModel.isAssetLoading
+                  child: viewModel.isAssetLoading&&widget.group!=null
                       ? InsiteProgressBar()
                       : SelectedItemSelectWidgetView(
                           displayList: viewModel.searchSelectedItemList,

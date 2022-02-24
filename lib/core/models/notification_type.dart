@@ -5,7 +5,9 @@ part 'notification_type.g.dart';
 class AlertTypes {
   List<NotificationTypeGroups>? notificationTypeGroups;
 
-  AlertTypes({this.notificationTypeGroups});
+  AlertTypes({
+    this.notificationTypeGroups,
+  });
 
   factory AlertTypes.fromJson(Map<String, dynamic> json) =>
       _$AlertTypesFromJson(json);
@@ -38,6 +40,7 @@ class NotificationTypes {
   String? appURL;
   List<Operands>? operands;
   List<SiteOperands>? siteOperands;
+  bool? isSelected;
 
   NotificationTypes(
       {this.notificationTypeID,
@@ -45,6 +48,7 @@ class NotificationTypes {
       this.appName,
       this.appURL,
       this.operands,
+      this.isSelected = false,
       this.siteOperands});
 
   factory NotificationTypes.fromJson(Map<String, dynamic> json) =>
@@ -116,4 +120,61 @@ class SiteOperands {
       _$SiteOperandsFromJson(json);
 
   Map<String, dynamic> toJson() => _$SiteOperandsToJson(this);
+}
+
+@JsonSerializable()
+class ZoneValues {
+  List<Zones>? zones;
+  String? responseStatus;
+
+  ZoneValues({this.zones, this.responseStatus});
+
+  factory ZoneValues.fromJson(Map<String, dynamic> json) =>
+      _$ZoneValuesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ZoneValuesToJson(this);
+}
+
+@JsonSerializable()
+class Zones {
+  String? zoneUID;
+  String? zoneName;
+  double? latitude;
+  double? longitude;
+  double? radius;
+
+  Zones(
+      {this.zoneUID,
+      this.zoneName,
+      this.latitude,
+      this.longitude,
+      this.radius});
+
+  factory Zones.fromJson(Map<String, dynamic> json) => _$ZonesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ZonesToJson(this);
+}
+
+@JsonSerializable()
+class NotificationExist {
+  bool? alertTitleExists;
+  String? responseStatus;
+
+  NotificationExist({this.alertTitleExists, this.responseStatus});
+  factory NotificationExist.fromJson(Map<String, dynamic> json) =>
+      _$NotificationExistFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NotificationExistToJson(this);
+}
+
+@JsonSerializable()
+class NotificationAdded {
+  String? alertUID;
+  String? responseStatus;
+
+  NotificationAdded({this.alertUID, this.responseStatus});
+  factory NotificationAdded.fromJson(Map<String, dynamic> json) =>
+      _$NotificationAddedFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NotificationAddedToJson(this);
 }

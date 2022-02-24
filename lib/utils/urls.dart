@@ -185,6 +185,11 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/Faults/Search";
   static String assetViewSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/Assets/FaultTotals";
+  static String faultCodeSearchVL =
+      "/t/trimble.com/vss-service-lookup/1.0/Faults/Descriptions/Search";
+
+  static String faultCodeSearch = "/frame-fault/1.0/Faults/Descriptions/Search";
+
   static String assetHealthSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/Assets";
   static String assetViewDetailSummaryV1VL =
@@ -234,7 +239,7 @@ class Urls {
   static String deviceTypeVL =
       "t/trimble.com/vss-assetsettings/1.0/devicetypes";
   static String userCount = "$identity/2.0/Users/Count";
-  static String getGroupListData =
+  static String getGroupListDataVL =
       "/t/trimble.com/vss-unifiedfleetmap/1.0/api/v1/assetlist";
   static String getGeoFenceData =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1";
@@ -328,7 +333,9 @@ class Urls {
   static String getAddGroupSaveData = "/t/trimble.com/vss-groupservice/1.0";
   static String getEditGroupData = "/t/trimble.com/vss-groupservice/1.0/";
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
-  static String contactSearchData="/frame-contact/1.0/Contact";
+  static String contactSearchData = "/frame-contact/1.0/Contact";
+  static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
+  
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -409,12 +416,46 @@ class Urls {
   static String notificationDetails =
       "/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1";
 
+  static String deleteNotification =
+      "/t/trimble.com/vss-notification/1.0/Notification";
+  static String deleteManageNotificationVL =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
+
+  static String deleteManageNotification =
+      "/frame-alertsmanager/2.0/AlertConfigs/";
+
 //subnotification
 
-  static String manageNotificationsData =
+  static String manageNotificationsDataVL =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
 
-  static String getNotificationTypes =
+  static String manageNotificationsData =
+      "/frame-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
+
+  static String getNotificationTypesVL =
       "/t/trimble.com/vss-alertsmanager/2.0/NotificationTypes/AlertTypes";
+
+  static String getNotificationTypes =
+      "/frame-alertsmanager/2.0//NotificationTypes/AlertTypes";
   static String loginAudit = "${nameSpace + identity}/2.0/UserLogin/loginAudit";
+
+  static String getCustomerZonesVL =
+      "/t/trimble.com/vss-alertsmanager/2.0/zone/customer";
+
+  static String getCustomerZones = "/frame-alertsmanager/2.0/Zone/Customer";
+
+  static String createZone = "/frame-alertsmanager/2.0/Zone";
+
+  static String getCustomerEmailAddress =
+      "/t/trimble.com/vss-contact/1.0/Contact";
+
+  static String checkIfNotificationNameExistsVL =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertTitleExists";
+  static String checkIfNotificationNameExists =
+      "/frame-alertsmanager/2.0/AlertConfigs/AlertTitleExists";
+  static String saveNewNotificationDataVL =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
+
+  static String saveNewNotificationData =
+      "/frame-alertsmanager/2.0/AlertConfigs";
 }

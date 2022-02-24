@@ -380,7 +380,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -418,7 +418,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -455,7 +455,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -493,7 +493,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -531,7 +531,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -566,7 +566,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -604,7 +604,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -642,7 +642,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -682,7 +682,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);
@@ -721,7 +721,7 @@ class HttpWrapper {
                 .showSnackbar(message: "Session Expired Please Try Again");
             navigationService!
                 .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-                 return errorInterceptorHandler.next(error);
+            return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {
             //   await _localService!.saveTokenInfo(refreshLoginResponce);

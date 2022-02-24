@@ -1,8 +1,9 @@
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'manage_notifications.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ManageNotificationsData {
   List<ConfiguredAlerts>? configuredAlerts;
   Links? links;
@@ -18,7 +19,7 @@ class ManageNotificationsData {
   Map<String, dynamic> toJson() => _$ManageNotificationsDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ConfiguredAlerts {
   int? alertConfigID;
   String? alertConfigUID;
@@ -36,6 +37,9 @@ class ConfiguredAlerts {
   int? alertGroupID;
   List<Operand>? operands;
   List<SiteOperand>? siteOperands;
+  List<Assets>? assets;
+  List<ScheduleDetails>? scheduleDetails;
+  List<DeliveryConfig>? deliveryConfig;
 
   ConfiguredAlerts(
       {this.alertConfigID,
@@ -53,7 +57,10 @@ class ConfiguredAlerts {
       this.alertCategoryID,
       this.alertGroupID,
       this.operands,
-      this.siteOperands});
+      this.siteOperands,
+      this.assets,
+      this.deliveryConfig,
+      this.scheduleDetails});
 
   factory ConfiguredAlerts.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredAlertsFromJson(json);
@@ -61,7 +68,7 @@ class ConfiguredAlerts {
   Map<String, dynamic> toJson() => _$ConfiguredAlertsToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Operand {
   int? operandID;
   String? operandName;
@@ -84,19 +91,21 @@ class Operand {
   Map<String, dynamic> toJson() => _$OperandToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SiteOperand {
   int? operandID;
   String? operandName;
   int? geoFenceID;
   String? geoFenceUID;
   String? name;
+  String? condition;
 
   SiteOperand(
       {this.operandID,
       this.operandName,
       this.geoFenceID,
       this.geoFenceUID,
+      this.condition,
       this.name});
 
   factory SiteOperand.fromJson(Map<String, dynamic> json) =>

@@ -95,9 +95,11 @@ class AppbarViewModel extends InsiteViewModel {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));
         } else {
-          _navigationService.clearStackAndShow(
-              indiaStack.indiaStackSplashViewRoute,
-              arguments: LoginArguments(response: response));
+          _navigationService.clearTillFirstAndShowView(
+            IndiaStackLoginView(
+              arguments: response,
+            ),
+          );
         }
       }
     });

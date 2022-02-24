@@ -8,6 +8,7 @@ import 'package:insite/views/adminstration/reusable_widget/manage_notification_w
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_notifications_view_model.dart';
 
@@ -43,15 +44,14 @@ class ManageNotificationsView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: CustomTextBox(
-                        // controller: viewModel.textEditingController,
-
+                        controller: viewModel.searchController,
                         title: "SEARCH",
-                        //showLoading: viewModel.isSearching,
+                        showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
                           if (searchText.isNotEmpty) {
-                            //viewModel.searchUsers(searchText);
+                            viewModel.getSearchListData(searchText);
                           } else {
-                            //viewModel.updateSearchDataToEmpty();
+                            viewModel.getManageNotificationsData();
                           }
                         },
                       ),
@@ -62,21 +62,30 @@ class ManageNotificationsView extends StatelessWidget {
                     Expanded(
                       child: viewModel.loading
                           ? InsiteProgressBar()
-                          : viewModel.assets.isNotEmpty
+                          : viewModel.notifications.isNotEmpty
                               ? ListView.separated(
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
-                                        viewModel.assets[index];
+                                        viewModel.notifications[index];
+                                        Logger().w(viewModel.notifications.length);
 
                                     return ManageNotificationWidget(
-                                        alerts: alerts);
+                                      alerts: alerts,
+                                      onDelete: () {
+                                        viewModel.onDeleteClicked(context,
+                                            alerts.alertConfigUID, index);
+                                      },
+                                      onEdit: () {
+                                        viewModel.editNotification(index);
+                                      },
+                                    );
                                   },
                                   separatorBuilder: (context, index) => Divider(
                                         color: backgroundColor3,
                                         thickness: 2.0,
                                       ),
-                                  itemCount: viewModel.assets.length)
-                              : EmptyView(title: "No Results"),
+                                  itemCount: viewModel.notifications.length)
+                              : EmptyView(title: "No Nontification Found"),
                     ),
                     viewModel.loadingMore
                         ? Padding(

@@ -19,9 +19,11 @@ class CustomTextBox extends StatelessWidget {
   final TextInputType? keyPadType;
   final bool showLoading;
   final List<TextInputFormatter>? textInputFormat;
+  final EdgeInsetsGeometry? contentPadding;
   bool? isenabled;
   final Function? onTap;
   bool isShowingBorderColor;
+  int? maxLength;
 
   CustomTextBox(
       {this.title,
@@ -42,12 +44,14 @@ class CustomTextBox extends StatelessWidget {
       this.helperStyle,
       this.onTap,
       this.isShowingBorderColor = false,
-      this.helperText});
+      this.helperText,
+      this.contentPadding,this.maxLength});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
+        maxLength: maxLength,
         onTap: onTap == null ? null : onTap!(),
         keyboardType: keyPadType,
         onChanged: onChanged,
@@ -71,12 +75,15 @@ class CustomTextBox extends StatelessWidget {
         decoration: InputDecoration(
             helperStyle: helperStyle,
             suffixIcon: suffixWidget,
+            prefixIcon: prefixWidget,
             helperText: helperText,
             labelText: labelTitle,
             fillColor: black,
             hintText: title,
             errorStyle: TextStyle(color: Theme.of(context).errorColor),
-            contentPadding: EdgeInsets.only(left: 12, top: 8),
+            contentPadding: contentPadding == null
+                ? EdgeInsets.only(left: 12, top: 8)
+                : contentPadding,
             isDense: false,
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),

@@ -212,26 +212,31 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     return ViewModelBuilder<SplashViewModel>.reactive(
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
-        return Scaffold(
-          backgroundColor:widget.showingSnackbar?white: Theme.of(context).buttonColor,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                viewModel.shouldLoadWebview &&
-                        !AppConfig.instance!.enalbeNativeLogin
-                    ? WebviewScaffold(
-                        url: AppConfig.instance!.apiFlavor == "visionlink"
-                            ? Uri.encodeFull(
-                                Urls.getV4LoginUrlVL(state, codeChallenge))
-                            : Uri.encodeFull(
-                                Urls.getV4LoginUrl(state, codeChallenge)))
-                    : SizedBox(),
-                Center(
-                  child: CircularProgressIndicator(
-                    color:widget.showingSnackbar?Theme.of(context).buttonColor: Colors.white,
+        return WillPopScope(
+          onWillPop: (){
+            return Future.value(false);
+          },
+          child: Scaffold(
+            backgroundColor:widget.showingSnackbar?white: Theme.of(context).buttonColor,
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  viewModel.shouldLoadWebview &&
+                          !AppConfig.instance!.enalbeNativeLogin
+                      ? WebviewScaffold(
+                          url: AppConfig.instance!.apiFlavor == "visionlink"
+                              ? Uri.encodeFull(
+                                  Urls.getV4LoginUrlVL(state, codeChallenge))
+                              : Uri.encodeFull(
+                                  Urls.getV4LoginUrl(state, codeChallenge)))
+                      : SizedBox(),
+                  Center(
+                    child: CircularProgressIndicator(
+                      color:widget.showingSnackbar?Theme.of(context).buttonColor: Colors.white,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

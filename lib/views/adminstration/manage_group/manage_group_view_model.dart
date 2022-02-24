@@ -80,7 +80,7 @@ class ManageGroupViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 1), () {
       getGroupListData();
     });
   }
@@ -101,6 +101,9 @@ class ManageGroupViewModel extends InsiteViewModel {
     if (result != null) {
       if (result.total != null) {
         _totalCount = result.total!.items!;
+
+        Logger().e(result.total!.items!);
+        Logger().w(_totalCount);
       }
       if (result.groups!.isNotEmpty) {
         Logger().i("list of assets " + result.groups!.length.toString());
@@ -250,7 +253,7 @@ class ManageGroupViewModel extends InsiteViewModel {
         return Dialog(
             backgroundColor: Theme.of(context).backgroundColor,
             child: InsiteDialog(
-              title: "Delete User",
+              title: "Delete Group",
               message: "Are you sure you want to delete this group?",
               onPositiveActionClicked: () {
                 Navigator.pop(context, true);
@@ -347,7 +350,7 @@ class ManageGroupViewModel extends InsiteViewModel {
         var result = await _manageUserService!.getDeleteFavoriteData(groupId);
         if (result != null) {
           await deleteGroupsFromList(groupId);
-          snackbarService!.showSnackbar(message: "Deleted successfully");
+          snackbarService!.showSnackbar(message: "Delete Group successfully");
         } else {
           snackbarService!.showSnackbar(message: "Deleting failed");
         }
@@ -367,7 +370,8 @@ class ManageGroupViewModel extends InsiteViewModel {
         assets.removeAt(i);
       }
     }
-    _totalCount = _totalCount! - ids!.length;
+    _totalCount = _totalCount! - 1;
+    Logger().w(_totalCount);
     notifyListeners();
     checkEditAndDeleteVisibility();
   }

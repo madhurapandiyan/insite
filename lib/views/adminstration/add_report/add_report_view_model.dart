@@ -10,6 +10,8 @@ import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
+import 'package:insite/views/adminstration/manage_report/manage_report_view.dart';
+import 'package:intl/intl.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -20,8 +22,11 @@ class AddReportViewModel extends InsiteViewModel {
   final AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
 
-  List<String>? reportAssets = [];
-  List<String>? reportColumn = [];
+  List<String>? reportFleetAssets = [];
+  List<String>? reportServiceAssets = [];
+  List<String>? reportProductivityAssets = [];
+  List<String>? reportStandartAssets = [];
+
   List<User>? searchContactListName = [];
   List<String>? associatedIdentifier = [];
 
@@ -37,10 +42,15 @@ class AddReportViewModel extends InsiteViewModel {
     this._searchKeyword = keyword;
   }
 
+  NavigationService? _navigationService = locator<NavigationService>();
+
   bool isHideSearchList = false;
 
-  String? reportTypeValue = '';
+  bool isListViewState = false;
+
   int? reportFormat;
+
+  String? dropDownValue = "Select";
 
   List<String>? selectedContactItems = [];
 
@@ -57,18 +67,26 @@ class AddReportViewModel extends InsiteViewModel {
     this.scheduledReportsId = scheduledReports;
     this.log = getLogger(this.runtimeType.toString());
     _manageUserService!.setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getTemplateReportAssetData();
-      assetsDropDownValue = reportAssets![0];
-    });
-    Future.delayed(Duration(seconds: 1), () {
-      getContactSearchReportData();
-    });
+
     if (isEdit) {
       Future.delayed(Duration(seconds: 1), () {
         getEditReportData();
       });
     }
+
+    Future.delayed(Duration(seconds: 1), () {
+      getTemplateReportAssetData();
+      assetsDropDownValue = reportFleetAssets![0];
+    });
+
+    Future.delayed(Duration(seconds: 1), () {
+      getContactSearchReportData();
+    });
+  }
+
+  getListViewState() {
+    isListViewState = true;
+    notifyListeners();
   }
 
   getDatPickerData(String formattedDate) {
@@ -76,46 +94,61 @@ class AddReportViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  TemplateResponse? result;
+
   getTemplateReportAssetData() async {
     try {
-      TemplateResponse? result =
-          await _manageUserService!.getTemplateReportAssetData();
-      if (result!.reports!
-          .any((element) => element.sourceAppName == "UNIFIEDFLEET")) {
-        reportAssets!.add("Unified Fleet");
-        for (var assetItems in result.reports!) {
-          if (assetItems.sourceAppName == "UNIFIEDFLEET" &&
-              assetItems.defaultColumn != "") {
-            reportAssets!.add(assetItems.reportTypeName!);
-          }
-        }
-        if (result.reports!
-            .any((element) => element.sourceAppName == "UNIFIEDSERVICES")) {
-          reportAssets!.add("Unified Services");
-          for (var assetItems in result.reports!) {
-            if (assetItems.sourceAppName == "UNIFIEDSERVICES" &&
-                assetItems.defaultColumn != null) {
-              reportAssets!.add(assetItems.reportTypeName!);
+      result = await _manageUserService!.getTemplateReportAssetData();
+
+      for (var assetItems in result!.reports!) {
+        if (assetItems.sourceAppName == "UNIFIEDFLEET" &&
+            assetItems.defaultColumn != "") {
+          if (isVisionLink) {
+            reportFleetAssets!.add(assetItems.reportTypeName!);
+          } else {
+            if (assetItems.reportName == "MultiAssetUtilization" ||
+                assetItems.reportName == "UtilizationDetails" ||
+                assetItems.reportName == "FaultSummaryFaultsList" ||
+                assetItems.reportName == "FaultCodeAssetDetails" ||
+                assetItems.reportName == "FleetSummary" ||
+                assetItems.reportName == "AssetOperation") {
+              reportFleetAssets!.add(assetItems.reportName!);
             }
           }
         }
       }
-      if (result.reports!
-          .any((element) => element.sourceAppName == "UNIFIEDPRODUCTIVITY")) {
-        reportAssets!.add("Unified Productivity");
-        for (var assetItems in result.reports!) {
-          if (assetItems.sourceAppName == "UNIFIEDPRODUCTIVITY" &&
-              assetItems.sourceApplicationID != "") {
-            reportAssets!.add(assetItems.reportTypeName!);
+
+      for (var assetItems in result!.reports!) {
+        if (assetItems.sourceAppName == "UNIFIEDSERVICES" &&
+            assetItems.defaultColumn != null) {
+          if (isVisionLink) {
+            reportServiceAssets!.add(assetItems.reportName!);
+          } else {
+            if (assetItems.reportName == "MultiAssetUtilization" ||
+                assetItems.reportName == "UtilizationDetails" ||
+                assetItems.reportName == "FaultSummaryFaultsList" ||
+                assetItems.reportName == "FaultCodeAssetDetails" ||
+                assetItems.reportName == "FleetSummary") {
+              reportServiceAssets!.add(assetItems.reportName!);
+            }
           }
         }
       }
-      if (result.reports!.any((element) => element.sourceAppName == "BIRST")) {
-        reportAssets!.add("Standard");
-        for (var templateAssets in result.reports!) {
-          if (templateAssets.sourceAppName == "BIRST" &&
-              templateAssets.dateRange != null) {
-            reportAssets!.add(templateAssets.reportTypeName!);
+
+      for (var assetItems in result!.reports!) {
+        if (assetItems.sourceAppName == "UNIFIEDPRODUCTIVITY" &&
+            assetItems.sourceApplicationID != "") {
+          if (isVisionLink) {
+            reportProductivityAssets!.add(assetItems.reportName!);
+          }
+        }
+      }
+
+      for (var templateAssets in result!.reports!) {
+        if (templateAssets.sourceAppName == "BIRST" &&
+            templateAssets.dateRange != null) {
+          if (isVisionLink) {
+            reportStandartAssets!.add(templateAssets.reportName!);
           }
         }
       }
@@ -130,7 +163,6 @@ class AddReportViewModel extends InsiteViewModel {
     _searchKeyword = searchValue;
     isHideSearchList = true;
     notifyListeners();
-
     getContactSearchReportData();
   }
 
@@ -188,12 +220,13 @@ class AddReportViewModel extends InsiteViewModel {
       EditReportResponse? result = await _manageUserService!
           .getEditReportData(scheduledReportsId!.reportUid!);
       if (result != null) {
-        Logger().w(result.scheduledReport!.emailRecipients!.first.toJson());
-        reportTypeValue = result.scheduledReport!.reportType!;
-        reportFormat = result.scheduledReport!.reportFormat!;
+        Logger().w(result.scheduledReport!.toJson());
+        dropDownValue = result.scheduledReport!.reportType;
+
         nameController.text = result.scheduledReport!.reportTitle!;
-        dateTimeController.text = Utils.getDateInFormatddMMyyyy(
-            result.scheduledReport!.scheduleEndDate!);
+        dateTimeController.text = DateFormat("yyyy-MM-dd").format(
+            DateFormat("yyyy-MM-dd")
+                .parse(result.scheduledReport!.scheduleEndDate ?? ""));
         result.scheduledReport!.emailRecipients!
             .forEach((element) => selectedContactItems!.add(element.email!));
         serviceDueController.text = result.scheduledReport!.emailSubject ?? "-";
@@ -208,57 +241,114 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   addReportSaveData() async {
-    var addReportPayLoad = AddReportPayLoad(
-      assetFilterCategoryID: chooseByDropDownValue == "Assets"
-          ? 1
-          : chooseByDropDownValue == "Groups"
-              ? 2
-              : chooseByDropDownValue == "Geofences"
-                  ? 3
-                  : 0,
-      allAssets: false,
-      reportColumns: [
-        "assetName",
-        "serialNumber",
-        "make-model",
-        "locationEventLocalTime",
-        "hourmeter",
-        "odometer",
-        "location",
-        "assetStatus",
-        "fromDate",
-        "toDate",
-        "latitude",
-        "longitude"
-      ],
-      svcbody: associatedIdentifier,
-      reportTitle: nameController.text,
-      reportCategoryID: 0,
-      reportPeriod: frequencyDropDownValue == 'Daily'
-          ? 1
-          : frequencyDropDownValue == "Weekly"
-              ? 2
-              : frequencyDropDownValue == "Monthly"
-                  ? 3
-                  : 0,
-      emailContent: emailContentController.text,
-      emailRecipients: selectedContactItems,
-      reportFormat: reportFormatDropDownValue == ".CSV"
-          ? 1
-          : reportFormatDropDownValue == ".XLS"
-              ? 2
-              : reportFormatDropDownValue == ".PDF"
-                  ? 3
-                  : 0,
-      svcMethod: "GET",
-      emailSubject: serviceDueController.text,
-      reportEndDate: dateTimeController.text,
-      reportStartDate: "",
-      reportType: "AssetLocationHistory",
-      reportScheduledDate: DateTime.now().toString(),
-      queryUrl:
-          "https://administrator.myvisionlink.com/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/4ff34130-3d27-11ea-8104-060d7e00a6d1/v2?endTimeLocal=&lastReported=false&pageNumber=1&pageSize=100&startTimeLocal=",
-    );
+    List<Reports?> defaultColumn = [];
+    result!.reports!.forEach((reports) {
+      defaultColumn.add(reports);
+    });
+    Logger().d(defaultColumn.length);
+    var addReportPayLoad;
+
+    List<String> reportColum = [];
+    for (var item in defaultColumn) {
+      if (item!.reportName == dropDownValue) {
+        var data = Utils.reportColumn(item.defaultColumn);
+        reportColum = data as List<String>;
+      }
+    }
+    Logger().e(reportColum.length);
+
+    if (isVisionLink) {
+      addReportPayLoad = AddReportPayLoad(
+          assetFilterCategoryID: chooseByDropDownValue == "Assets"
+              ? 1
+              : chooseByDropDownValue == "Groups"
+                  ? 2
+                  : chooseByDropDownValue == "Geofences"
+                      ? 3
+                      : 0,
+          allAssets: false,
+          reportColumns: reportColum,
+          svcbody: associatedIdentifier,
+          reportTitle: nameController.text,
+          reportCategoryID: 0,
+          reportPeriod: frequencyDropDownValue == 'Daily'
+              ? 1
+              : frequencyDropDownValue == "Weekly"
+                  ? 2
+                  : frequencyDropDownValue == "Monthly"
+                      ? 3
+                      : 0,
+          emailContent: emailContentController.text,
+          emailRecipients: selectedContactItems,
+          reportFormat: reportFormatDropDownValue == ".CSV"
+              ? 1
+              : reportFormatDropDownValue == ".XLS"
+                  ? 2
+                  : reportFormatDropDownValue == ".PDF"
+                      ? 3
+                      : 0,
+          svcMethod: "POST",
+          emailSubject: serviceDueController.text,
+          reportEndDate: dateTimeController.text,
+          reportStartDate: "",
+          reportType: "AssetLocationHistory",
+          reportScheduledDate:
+              Utils.getLastReportedDateFilterData(DateTime.now()),
+          queryUrl:
+              "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid");
+    } else {
+      Logger().i(dropDownValue);
+      addReportPayLoad = AddReportPayLoad(
+          assetFilterCategoryID: chooseByDropDownValue == "Assets"
+              ? 1
+              : chooseByDropDownValue == "Groups"
+                  ? 2
+                  : chooseByDropDownValue == "Geofences"
+                      ? 3
+                      : 0,
+          allAssets: false,
+          reportColumns: reportColum,
+          svcbody: associatedIdentifier,
+          reportTitle: nameController.text,
+          reportCategoryID: 0,
+          reportPeriod: frequencyDropDownValue == 'Daily'
+              ? 1
+              : frequencyDropDownValue == "Weekly"
+                  ? 2
+                  : frequencyDropDownValue == "Monthly"
+                      ? 3
+                      : 0,
+          emailContent: emailContentController.text,
+          emailRecipients: selectedContactItems,
+          reportFormat: reportFormatDropDownValue == ".CSV"
+              ? 1
+              : reportFormatDropDownValue == ".XLS"
+                  ? 2
+                  : reportFormatDropDownValue == ".PDF"
+                      ? 3
+                      : 0,
+          svcMethod: "POST",
+          emailSubject: serviceDueController.text,
+          reportEndDate: dateTimeController.text,
+          reportStartDate: "",
+          reportType: dropDownValue,
+          reportScheduledDate:
+              Utils.getLastReportedDateFilterData(DateTime.now()),
+          queryUrl: dropDownValue == "FleetSummary"
+              ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
+              : dropDownValue == "MultiAssetUtilization"
+                  ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
+                  : dropDownValue == "UtilizationDetails"
+                      ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
+                      : dropDownValue == "AssetOperation"
+                          ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
+                          : dropDownValue == "FaultSummaryFaultsList"
+                              ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
+                              : dropDownValue == "FaultCodeAssetDetails"
+                                  ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
+                                  : "");
+    }
+
     try {
       if (nameController.text.isEmpty) {
         _snackBarservice!
@@ -279,8 +369,140 @@ class AddReportViewModel extends InsiteViewModel {
       showLoadingDialog();
       ManageReportResponse? result =
           await _manageUserService!.getAddReportSaveData(addReportPayLoad);
-      Logger().wtf(result!.msg!);
+      Logger().wtf(result!.reqId);
       Logger().d(addReportPayLoad.toJson());
+      if (result != null) {
+        _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
+        gotoScheduleReportPage();
+      }
+      hideLoadingDialog();
+      notifyListeners();
+    } catch (e) {
+      hideLoadingDialog();
+      Logger().e(e.toString());
+    }
+  }
+
+  getEditReportSaveData() async {
+    var addReportPayLoad;
+    List<Reports?> defaultColumn = [];
+    result!.reports!.forEach((reports) {
+      defaultColumn.add(reports);
+    });
+    Logger().d(defaultColumn.length);
+
+    List<String> reportColum = [];
+    for (var item in defaultColumn) {
+      if (item!.reportName == dropDownValue) {
+        var data = Utils.reportColumn(item.defaultColumn);
+        reportColum = data as List<String>;
+      }
+    }
+    Logger().e(reportColum.length);
+
+    if (isVisionLink) {
+      addReportPayLoad = AddReportPayLoad(
+          assetFilterCategoryID: chooseByDropDownValue == "Assets"
+              ? 1
+              : chooseByDropDownValue == "Groups"
+                  ? 2
+                  : chooseByDropDownValue == "Geofences"
+                      ? 3
+                      : 0,
+          allAssets: false,
+          reportColumns: reportColum,
+          svcbody: associatedIdentifier,
+          reportTitle: nameController.text,
+          reportCategoryID: 0,
+          reportPeriod: frequencyDropDownValue == 'Daily'
+              ? 1
+              : frequencyDropDownValue == "Weekly"
+                  ? 2
+                  : frequencyDropDownValue == "Monthly"
+                      ? 3
+                      : 0,
+          emailContent: emailContentController.text,
+          emailRecipients: selectedContactItems,
+          reportFormat: reportFormatDropDownValue == ".CSV"
+              ? 1
+              : reportFormatDropDownValue == ".XLS"
+                  ? 2
+                  : reportFormatDropDownValue == ".PDF"
+                      ? 3
+                      : 0,
+          svcMethod: "POST",
+          emailSubject: serviceDueController.text,
+          reportEndDate: dateTimeController.text,
+          reportStartDate: "",
+          reportType: "AssetLocationHistory",
+          reportScheduledDate:
+              Utils.getLastReportedDateFilterData(DateTime.now()),
+          queryUrl:
+              "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid");
+    } else {
+      Logger().i(dropDownValue);
+      addReportPayLoad = AddReportPayLoad(
+          assetFilterCategoryID: chooseByDropDownValue == "Assets"
+              ? 1
+              : chooseByDropDownValue == "Groups"
+                  ? 2
+                  : chooseByDropDownValue == "Geofences"
+                      ? 3
+                      : 0,
+          allAssets: false,
+          reportColumns: reportColum,
+          svcbody: associatedIdentifier,
+          reportTitle: nameController.text,
+          reportCategoryID: 0,
+          reportPeriod: frequencyDropDownValue == 'Daily'
+              ? 1
+              : frequencyDropDownValue == "Weekly"
+                  ? 2
+                  : frequencyDropDownValue == "Monthly"
+                      ? 3
+                      : 0,
+          emailContent: emailContentController.text,
+          emailRecipients: selectedContactItems,
+          reportFormat: reportFormatDropDownValue == ".CSV"
+              ? 1
+              : reportFormatDropDownValue == ".XLS"
+                  ? 2
+                  : reportFormatDropDownValue == ".PDF"
+                      ? 3
+                      : 0,
+          svcMethod: "POST",
+          emailSubject: serviceDueController.text,
+          reportEndDate: dateTimeController.text,
+          reportStartDate: "",
+          reportType: dropDownValue,
+          reportScheduledDate:
+              Utils.getLastReportedDateFilterData(DateTime.now()),
+          queryUrl: dropDownValue == "FleetSummary"
+              ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
+              : dropDownValue == "MultiAssetUtilization"
+                  ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
+                  : dropDownValue == "UtilizationDetails"
+                      ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
+                      : dropDownValue == "AssetOperation"
+                          ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
+                          : dropDownValue == "FaultSummaryFaultsList"
+                              ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
+                              : dropDownValue == "FaultCodeAssetDetails"
+                                  ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
+                                  : "");
+    }
+    try {
+      showLoadingDialog();
+      ManageReportResponse? result = await _manageUserService!
+          .getEditReportSaveData(
+              scheduledReportsId!.reportUid!, addReportPayLoad);
+      if (result != null) {
+        Logger().d(result.metadata!.toJson());
+        _snackBarservice!
+            .showSnackbar(message: "Edit Report has been done successfully");
+        gotoScheduleReportPage();
+      }
+
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {
@@ -288,34 +510,7 @@ class AddReportViewModel extends InsiteViewModel {
     }
   }
 
-  getEditReportSaveData() async {
-    var addReportPayLoad = AddReportPayLoad(
-      assetFilterCategoryID: chooseByDropDownValue == "Assets"
-          ? 1
-          : chooseByDropDownValue == "Groups"
-              ? 2
-              : chooseByDropDownValue == "Geofences"
-                  ? 3
-                  : 0,
-      allAssets: false,
-      reportTitle: nameController.text,
-      reportCategoryID: 0,
-      reportEndDate: dateTimeController.text,
-      emailRecipients: selectedContactItems,
-      emailSubject: serviceDueController.text,
-      queryUrl:
-          "https://administrator.myvisionlink.com/t/trimble.com/vss-assethistory/1.0/AssetLocationHistory/4ff34130-3d27-11ea-8104-060d7e00a6d1/v2?endTimeLocal=&lastReported=false&pageNumber=1&pageSize=100&startTimeLocal=",
-    );
-    try {
-      showLoadingDialog();
-      ManageReportResponse? result = await _manageUserService!
-          .getEditReportSaveData(
-              scheduledReportsId!.reportUid!, addReportPayLoad);
-      Logger().d(result!.metadata!.toJson());
-      hideLoadingDialog();
-      notifyListeners();
-    } catch (e) {
-      Logger().e(e.toString());
-    }
+  gotoScheduleReportPage() {
+    _navigationService!.navigateToView(ManageReportView());
   }
 }

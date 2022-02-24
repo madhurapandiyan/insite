@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
@@ -29,6 +30,7 @@ class _AddGroupViewState extends State<AddGroupView> {
       builder: (BuildContext context, AddGroupViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
+            screenType:ScreenType.ADD_NEW_GROUP ,
             body: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(
