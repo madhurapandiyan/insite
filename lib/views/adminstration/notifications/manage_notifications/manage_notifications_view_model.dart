@@ -137,6 +137,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   editNotification(int i) async {
+    showLoadingDialog();
     var data = await _notificationService!
         .alertConfigEdit(notifications[i].alertConfigUID!);
     Logger().w(data!.toJson());
@@ -144,6 +145,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
     navigationService!.navigateToView(AddNewNotificationsView(
       alertData: data,
     ));
+    hideLoadingDialog();
   }
 
   getManageNotificationsData() async {

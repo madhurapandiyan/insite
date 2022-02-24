@@ -278,19 +278,24 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                WebviewScaffold(
-                  url: AppConfig.instance!.apiFlavor == "visionlink"
-                      ? Uri.encodeFull(
-                          Urls.logoutUrlVl(loginResponse!.id_token))
-                      : Uri.encodeFull(Urls.getV4LogoutUrl(
-                          loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
-                ),
-                isLoading ? InsiteProgressBar() : SizedBox()
-              ],
+        return WillPopScope(
+           onWillPop: () {
+            return Future.value(false);
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  WebviewScaffold(
+                    url: AppConfig.instance!.apiFlavor == "visionlink"
+                        ? Uri.encodeFull(
+                            Urls.logoutUrlVl(loginResponse!.id_token))
+                        : Uri.encodeFull(Urls.getV4LogoutUrl(
+                            loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
+                  ),
+                  isLoading ? InsiteProgressBar() : SizedBox()
+                ],
+              ),
             ),
           ),
         );

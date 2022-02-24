@@ -195,7 +195,7 @@ class NotificationView extends StatelessWidget {
                                         }),
                                   )
                                 : EmptyView(
-                                    title: "No User found",
+                                    title: "No Nontification Found",
                                   ),
                         viewModel.loadingMore
                             ? Padding(

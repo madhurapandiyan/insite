@@ -37,7 +37,8 @@ class ExpansionCardWidget extends StatefulWidget {
       this.scrollController,
       required this.items,
       this.onExpanded,
-      this.title,this.onAdding});
+      this.title,
+      this.onAdding});
 
   @override
   State<ExpansionCardWidget> createState() => _ExpansionCardWidgetState();
@@ -74,6 +75,7 @@ class _ExpansionCardWidgetState extends State<ExpansionCardWidget> {
     return Card(
         child: PageView(
       controller: widget.controller,
+      physics: NeverScrollableScrollPhysics(),
       children: [
         showingPageViewCardWidget(
             title1: "Description",
@@ -144,7 +146,7 @@ class _ExpansionCardWidgetState extends State<ExpansionCardWidget> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: InsiteButton(
-                                    onTap: (){
+                                    onTap: () {
                                       widget.onAdding!(i);
                                     },
                                     title: "Add",
@@ -156,7 +158,7 @@ class _ExpansionCardWidgetState extends State<ExpansionCardWidget> {
                         ],
                         title: ListTile(
                           leading: Container(
-                           child: Icon(
+                            child: Icon(
                               widget.items[i].isExpanded
                                   ? Icons.keyboard_arrow_up
                                   : Icons.keyboard_arrow_down,
@@ -166,7 +168,7 @@ class _ExpansionCardWidgetState extends State<ExpansionCardWidget> {
                           ),
                           //trailing: InsiteButton(title: "Add",),
                           title: InsiteText(
-                           fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                             text: widget.items[i].faultDescription,
                           ),
                         ));
