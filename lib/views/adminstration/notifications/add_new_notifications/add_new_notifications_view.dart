@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/custom_dropdown_add_notification.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/expansion_card.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/text_box_with_switch.dart';
@@ -26,6 +27,8 @@ import 'reusable_widget/selcted_card_widget.dart';
 import 'reusable_widget/zone_creating_widget.dart';
 
 class AddNewNotificationsView extends StatefulWidget {
+  final AlertConfigEdit? alertData;
+  AddNewNotificationsView({this.alertData});
   @override
   State<AddNewNotificationsView> createState() =>
       _AddNewNotificationsViewState();
@@ -110,7 +113,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                         CustomTextBox(
                           title: "Notification",
                           controller: viewModel.notificationController,
-                          onFieldSubmmit: (value) {
+                          onChanged: (value) {
                             viewModel.checkIfNotificationNameExist(value);
                           },
                         ),
@@ -199,9 +202,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                 controller: viewModel
                                                     .fuelLosssOccurenceController,
                                                 onChange: (value) {
-                                                  viewModel
-                                                      .onChagingeFuelLossOccurenceBox(
-                                                          value);
+                                                  // viewModel
+                                                  //     .onChagingeFuelLossOccurenceBox(
+                                                  //         value);
                                                 },
                                               )
                                             : viewModel.dropDownInitialValue ==
@@ -259,9 +262,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                           .occurenceController,
                                                                   onChange:
                                                                       (value) {
-                                                                    viewModel
-                                                                        .onChagingOccurenceBox(
-                                                                            value);
+                                                                    // viewModel
+                                                                    //     .onChagingOccurenceBox(
+                                                                    //         value);
                                                                   },
                                                                 )),
                                                                 SizedBox(
@@ -435,6 +438,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                               ),
                                                                               viewModel.isAddingInclusionZone
                                                                                   ? ZoneCreatingWidget(
+                                                                                      onCreate: () {
+                                                                                        viewModel.onCreatingInclusionZone();
+                                                                                      },
                                                                                       controller: viewModel.inclusionZoneName,
                                                                                       onCancel: () {
                                                                                         viewModel.onCreateInclusionZone();
@@ -460,6 +466,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                   : SizedBox(),
                                                                               viewModel.isAddingExclusionZone
                                                                                   ? ZoneCreatingWidget(
+                                                                                      onCreate: () {
+                                                                                        viewModel.onCreatingExclusionZone();
+                                                                                      },
                                                                                       controller: viewModel.exclusionZoneName,
                                                                                       onCancel: () {
                                                                                         viewModel.onCreateExclusionZone();
@@ -509,6 +518,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                         ),
                                                                                         borderRadius: BorderRadius.circular(10)),
                                                                                     child: CustomDropDownWidget(
+                                                                                      istappable: !viewModel.isEditing,
                                                                                       onChanged: (value) {
                                                                                         Logger().e(value);
                                                                                         viewModel.onChangingSubType(value);
@@ -525,7 +535,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                     suffixTitle: "Occurences",
                                                                                     controller: viewModel.assetStatusOccurenceController,
                                                                                     onChange: (value) {
-                                                                                      viewModel.onChagingAssetOccurenceBox(value);
+                                                                                      //  viewModel.onChagingAssetOccurenceBox(value);
                                                                                     },
                                                                                   )
                                                                                 ],
@@ -541,6 +551,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                           ),
                                                                                           borderRadius: BorderRadius.circular(10)),
                                                                                       child: CustomDropDownWidget(
+                                                                                        istappable: !viewModel.isEditing,
                                                                                         onChanged: (value) {
                                                                                           Logger().e(value);
                                                                                           viewModel.onChangingSubType(value);
@@ -597,7 +608,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                                     suffixTitle: "Occurences",
                                                                                                     controller: viewModel.assetStatusOccurenceController,
                                                                                                     onChange: (value) {
-                                                                                                      viewModel.onChagingAssetOccurenceBox(value);
+                                                                                                      //viewModel.onChagingAssetOccurenceBox(value);
                                                                                                     },
                                                                                                   )
                                                                                                 : viewModel.dropDownInitialValue == "Engine Hours"
@@ -605,7 +616,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                                         suffixTitle: "Hours",
                                                                                                         controller: viewModel.engineHoursOccurenceController,
                                                                                                         onChange: (value) {
-                                                                                                          viewModel.onChagingeEngineHourOccurenceBox(value);
+                                                                                                          //viewModel.onChagingeEngineHourOccurenceBox(value);
                                                                                                         },
                                                                                                       )
                                                                                                     : viewModel.dropDownInitialValue == "Fuel"
@@ -613,7 +624,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                                             suffixTitle: "%",
                                                                                                             controller: viewModel.fuelOccurenceController,
                                                                                                             onChange: (value) {
-                                                                                                              viewModel.onChagingeFuelOccurenceBox(value);
+                                                                                                              //viewModel.onChagingeFuelOccurenceBox(value);
                                                                                                             },
                                                                                                           )
                                                                                                         : viewModel.dropDownInitialValue == "Odometer"
@@ -621,7 +632,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                                                 suffixTitle: "Miles",
                                                                                                                 controller: viewModel.odometerOccurenceController,
                                                                                                                 onChange: (value) {
-                                                                                                                  viewModel.onChagingeOdometerOccurenceBox(value);
+                                                                                                                  //viewModel.onChagingeOdometerOccurenceBox(value);
                                                                                                                 },
                                                                                                               )
                                                                                                             : viewModel.dropDownInitialValue == "Excessive Daily Idle"
@@ -629,7 +640,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                                                     suffixTitle: "Hours",
                                                                                                                     controller: viewModel.excessiveDailyOccurenceController,
                                                                                                                     onChange: (value) {
-                                                                                                                      viewModel.onChagingeExcessiveOccurenceBox(value);
+                                                                                                                      // viewModel.onChagingeExcessiveOccurenceBox(value);
                                                                                                                     },
                                                                                                                   )
                                                                                                                 : SizedBox()
@@ -975,7 +986,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
           ),
         );
       },
-      viewModelBuilder: () => AddNewNotificationsViewModel(),
+      viewModelBuilder: () => AddNewNotificationsViewModel(widget.alertData),
     );
   }
 }

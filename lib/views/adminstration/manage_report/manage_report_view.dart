@@ -35,7 +35,7 @@ class ManageReportView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: InsiteText(
-                            text: "schedule reports".toUpperCase() +
+                            text: "scheduled reports".toUpperCase() +
                                 " (" +
                                 viewModel.assets.length.toString() +
                                 " of " +
@@ -65,7 +65,7 @@ class ManageReportView extends StatelessWidget {
                             : Padding(
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: InsiteButton(
-                                  title: "Report Template",
+                                  title: "Report Templates",
                                   onTap: () {
                                     viewModel.onClickedTemplatePage();
                                   },
@@ -83,11 +83,7 @@ class ManageReportView extends StatelessWidget {
                         title: "Search",
                         showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.searchReports(searchText);
-                          } else {
-                            viewModel.searchReports(searchText);
-                          }
+                          viewModel.searchReports(searchText);
                         },
                       ),
                     ),
@@ -113,7 +109,7 @@ class ManageReportView extends StatelessWidget {
                                       );
                                     }))
                             : EmptyView(
-                                title: "No Assets Found",
+                                title: "No Reports Found",
                               ),
                     viewModel.loadingMore
                         ? Padding(

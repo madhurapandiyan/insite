@@ -25,7 +25,9 @@ import 'add_report_view_model.dart';
 class AddReportView extends StatefulWidget {
   final ScheduledReports? scheduledReports;
   final bool? isEdit;
-  AddReportView({this.scheduledReports, this.isEdit});
+  final String? templateDropDownValue;
+  AddReportView(
+      {this.scheduledReports, this.isEdit, this.templateDropDownValue});
   @override
   State<AddReportView> createState() => _AddReportViewState();
 }
@@ -49,7 +51,13 @@ class _AddReportViewState extends State<AddReportView> {
                       height: 15,
                     ),
                     InsiteText(
-                      text: "Schedule Email CSV Report",
+                      text: widget.templateDropDownValue == ".CSV"
+                          ? "Schedule Email CSV Report"
+                          : widget.templateDropDownValue == ".XLS"
+                              ? "Schedule Email XLS Report"
+                              : widget.templateDropDownValue == ".PDF"
+                                  ? "Schedule Email PDF Report"
+                                  : "Schedule Email CSV Report",
                       size: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -556,10 +564,25 @@ class _AddReportViewState extends State<AddReportView> {
                     SizedBox(
                       height: 30,
                     ),
-                    InsiteText(
-                      text: "Email Content",
-                      size: 14,
-                      fontWeight: FontWeight.w700,
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: InsiteText(
+                            text: "Email Content",
+                            size: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: InsiteText(
+                            text: "(Optional)",
+                            size: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(
                       height: 15,

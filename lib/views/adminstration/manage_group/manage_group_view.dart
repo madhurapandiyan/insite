@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_groups_card_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -20,6 +21,7 @@ class ManageGroupView extends StatelessWidget {
           (BuildContext context, ManageGroupViewModel viewModel, Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
+          screenType: ScreenType.MANAGE_NEW_GROUP,
           body: Container(
             height: MediaQuery.of(context).size.height,
             child: Stack(
@@ -119,7 +121,7 @@ class ManageGroupView extends StatelessWidget {
                                     }),
                               )
                             : EmptyView(
-                                title: "No assets found",
+                                title: "No Groups found",
                               ),
                     viewModel.loadingMore
                         ? Padding(

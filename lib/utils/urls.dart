@@ -185,8 +185,10 @@ class Urls {
       "/t/trimble.com/vss-service/1.0/health/Faults/Search";
   static String assetViewSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/Assets/FaultTotals";
-  static String faultCodeSearch =
+  static String faultCodeSearchVL =
       "/t/trimble.com/vss-service-lookup/1.0/Faults/Descriptions/Search";
+
+  static String faultCodeSearch = "/frame-fault/1.0/Faults/Descriptions/Search";
 
   static String assetHealthSummaryVL =
       "/t/trimble.com/vss-service/1.0/health/Assets";
@@ -333,6 +335,7 @@ class Urls {
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
   static String contactSearchData = "/frame-contact/1.0/Contact";
   static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
+  
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -415,6 +418,11 @@ class Urls {
 
   static String deleteNotification =
       "/t/trimble.com/vss-notification/1.0/Notification";
+  static String deleteManageNotificationVL =
+      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
+
+  static String deleteManageNotification =
+      "/frame-alertsmanager/2.0/AlertConfigs/";
 
 //subnotification
 

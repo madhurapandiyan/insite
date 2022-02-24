@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,6 +27,7 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import './model/zone.dart';
 
 import 'model/fault_code_type_search.dart';
 
@@ -49,7 +50,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     controller!.dispose();
   }
 
-  AddNewNotificationsViewModel() {
+  AddNewNotificationsViewModel(AlertConfigEdit? data) {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
@@ -58,6 +59,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       getNotificationTypesData();
       getData();
       onGettingFaultCodeData();
+      if (data != null) {
+        editingNotification(data);
+      }
       faultCodeScrollController.addListener(() {
         if (faultCodeScrollController.position.pixels ==
             faultCodeScrollController.position.maxScrollExtent) {
@@ -76,6 +80,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       Logger().e(e);
     }
   }
+
+  bool isEditing = false;
 
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
@@ -124,6 +130,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<User>? searchContactListName = [];
   bool isHideSearchList = false;
 
+  String? alertConfigUid;
+
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
@@ -140,6 +148,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String>? administratortAssets = [];
 
   AlertTypes? alterTypes;
+  AlertConfigEdit? alertConfigData;
 
   // text editing controller
   TextEditingController inclusionZoneName = TextEditingController();
@@ -366,6 +375,64 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  editingNotification(AlertConfigEdit data) {
+    isEditing = true;
+    notificationController.text = data.alertConfig!.notificationTitle!;
+    notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
+    notificationTypeId = data.alertConfig!.notificationTypeID!;
+    _dropDownInitialValue = data.alertConfig!.notificationType!;
+    alertConfigUid = data.alertConfig!.alertConfigUID;
+    _showZone = true;
+    alertConfigData = data;
+
+    alertConfigData?.alertConfig?.operands?.forEach((element) {
+      operandData.add(Operand(
+          operandID: element.operandID,
+          operatorId: element.operatorID,
+          value: element.value));
+    });
+    schedule.clear();
+    alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
+      var endTimeHour =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
+              .hour
+              .toString()
+              .padLeft(2, '0');
+      var endTimeMinute =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
+              .minute
+              .toString()
+              .padLeft(2, '0');
+      var startTimeHour =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
+              .hour
+              .toString()
+              .padLeft(2, '0');
+      var startTimeMinute =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
+              .minute
+              .toString()
+              .padLeft(2, '0');
+      schedule.add(ScheduleData(
+          day: element.scheduleDayNum,
+          endTime: '$endTimeHour:$endTimeMinute',
+          startTime: '$startTimeHour:$startTimeMinute',
+          initialVale: "Range",
+          title: "sun"));
+    });
+    _notificationSubTypes.clear();
+    if (data.alertConfig!.operands!.isNotEmpty) {
+      data.alertConfig!.operands!.forEach((element) {
+        _dropDownSubInitialValue = element.condition!;
+        _notificationSubTypes.add(element.condition);
+      });
+    }
+    data.alertConfig!.assets!.forEach((element) {
+      assetUidData.add(element.assetUID!);
+    });
+    notifyListeners();
+  }
+
   onAddingFaultCode(int i) {
     var data = faultCodeTypeSearch!.elementAt(i);
     faultCodeTypeSearch!.remove(data);
@@ -387,21 +454,23 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
 // occurence textbox change
 
-  onChagingOccurenceBox(String value) {}
+  // onChagingOccurenceBox(String value) {
 
-  onChagingAssetOccurenceBox(String value) {}
+  // }
 
-  onChagingeEngineHourOccurenceBox(String value) {}
+  // onChagingAssetOccurenceBox(String value) {}
 
-  onChagingeExcessiveOccurenceBox(String value) {}
+  // onChagingeEngineHourOccurenceBox(String value) {}
 
-  onChagingeFuelOccurenceBox(String value) {}
+  // onChagingeExcessiveOccurenceBox(String value) {}
 
-  onChagingeFuelLossOccurenceBox(String value) {}
+  // onChagingeFuelOccurenceBox(String value) {}
 
-  onChagingeOdometerOccurenceBox(String value) {}
+  // onChagingeFuelLossOccurenceBox(String value) {}
 
-  onChagingeGeofenceOccurenceBox(String value) {}
+  // onChagingeOdometerOccurenceBox(String value) {}
+
+  // onChagingeGeofenceOccurenceBox(String value) {}
 
   // switching state of the switch_button
 
@@ -566,6 +635,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     if (selectedUser
         .any((element) => element.email!.contains(data.first.email!))) {
     } else {
+      emailController.clear();
       selectedUser.add(data.first);
       emailIds!.add(data.first.name!);
     }
@@ -690,6 +760,28 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   updateEndTime(String value, int i) {
     schedule[i].endTime = value;
     notifyListeners();
+  }
+
+  onCreatingInclusionZone() async {
+    var data = await _notificationService!.creatingZone(ZoneCreating(
+      latitude: circle.first.center.latitude,
+      longitude: circle.first.center.longitude,
+      radius: circle.first.radius,
+      zoneName: inclusionZoneName.text,
+    ));
+    _zoneNamesInclusion.add(CheckBoxDropDown(items: inclusionZoneName.text));
+    onCreateInclusionZone();
+  }
+
+  onCreatingExclusionZone() async {
+    var data = await _notificationService!.creatingZone(ZoneCreating(
+      latitude: circle.first.center.latitude,
+      longitude: circle.first.center.longitude,
+      radius: circle.first.radius,
+      zoneName: exclusionZoneName.text,
+    ));
+    _zoneNamesExclusion.add(CheckBoxDropDown(items: exclusionZoneName.text));
+    onCreateExclusionZone();
   }
 
   getInclusionExclusionZones() async {
@@ -817,11 +909,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     if (alterTypes != null) {
       alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
         notificationTypeGroup.notificationTypes!.forEach((notificationType) {
-           Logger().w(notificationType.toJson());
           if (notificationType.appName == "VL Unified Fleet" ||
-              notificationType.appName ==
-                  "Frame-Fleet-IND") {
-                    //Logger().w(notificationType.toJson());
+              notificationType.appName == "Frame-Fleet-IND") {
+            //Logger().w(notificationType.toJson());
             if (notificationTypeGroup.notificationTypeGroupName!.isNotEmpty) {
               if (notificationFleetType!.any((element) => element.contains(
                   notificationTypeGroup.notificationTypeGroupName!))) {
@@ -852,9 +942,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             } else {
               notificationFleetType!
                   .add(notificationType.notificationTypeName!);
-           }
-            
-
+            }
           } else if (notificationType.appName == "VL Unified Service" ||
               notificationType.appName == "Frame-Service-IND") {
             notificationServiceType!
@@ -1092,12 +1180,47 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     });
   }
 
-  saveAddNotificationData() async {
-    var currentDate = DateTime.now();
-    var newFormat = DateFormat("dd-MM-yy");
-    String date = newFormat.format(currentDate);
+  editNotification() async {
+    AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
+        alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
+        alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
+        alertTitle: notificationController.text,
+        allAssets: false,
+        assetUIDs: assetUidData,
+        currentDate: alertConfigData!.alertConfig!.createdDate,
+        notificationDeliveryChannel: "email",
+        notificationTypeGroupID:
+            alertConfigData!.alertConfig!.notificationTypeGroupID,
+        notificationSubscribers: NotificationSubscribers(emailIds: emailIds),
+        notificationTypeId: alertConfigData!.alertConfig!.notificationTypeID,
+        schedule: schedule
+            .map((e) => Schedule(
+                  day: e.day,
+                  endTime: e.items![2] == e.initialVale &&
+                          e.items![0] == e.initialVale
+                      ? "00:00"
+                      : e.endTime,
+                  startTime: e.items![2] == e.initialVale &&
+                          e.items![0] == e.initialVale
+                      ? "00:00"
+                      : e.startTime,
+                ))
+            .toList(),
+        operands: operandData,
+        numberOfOccurences: 1);
+    var data = await _notificationService!
+        .editNotification(payLoadData, alertConfigUid!);
+  }
 
-    await gettingNotificationIdandOperands();
+  saveAddNotificationData() async {
+    if (isEditing) {
+      editNotification();
+    } else {
+      var currentDate = DateTime.now();
+      var newFormat = DateFormat("dd-MM-yy");
+      String date = newFormat.format(currentDate);
+
+//     await gettingNotificationIdandOperands();
 // AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
 //         alertCategoryID: 1,
 //         alertGroupId: 1,
@@ -1145,6 +1268,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 //     } catch (e) {
 //       Logger().e(e.toString());
 //     }
+    }
   }
 
   onItemContactSelected(int index) {

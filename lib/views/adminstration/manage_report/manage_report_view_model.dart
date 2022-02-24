@@ -47,6 +47,8 @@ class ManageReportViewModel extends InsiteViewModel {
   bool _isShowDelete = true;
   bool get showDelete => _isShowDelete;
 
+  String templateDropDownValue = '';
+
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
@@ -90,12 +92,16 @@ class ManageReportViewModel extends InsiteViewModel {
   }
 
   searchReports(String searchValue) {
-    pageNumber = 1;
-    _isSearching = true;
-    _searchKeyword = searchValue;
-    notifyListeners();
-    _searchKeyword = searchValue;
-    getManageReportListData();
+    if (searchValue.length >= 4) {
+      pageNumber = 1;
+      _isSearching = true;
+      _searchKeyword = searchValue;
+      notifyListeners();
+      _searchKeyword = searchValue;
+      getManageReportListData();
+    } else {
+    //  getManageReportListData();
+    }
   }
 
   getManageReportListData() async {
@@ -334,7 +340,44 @@ class ManageReportViewModel extends InsiteViewModel {
       AddReportView(
         scheduledReports: null,
         isEdit: false,
+        templateDropDownValue: templateDropDownValue,
       ),
     );
   }
+
+  onClickTemplateTypeAddReportSelected(String? templateDropDownValue) {
+    _navigationService.navigateToView(
+      AddReportView(
+        scheduledReports: null,
+        isEdit: false,
+        templateDropDownValue: templateDropDownValue,
+      ),
+    );
+  }
+
+  List<String> templateDescription = [
+    "The Asset event count report provides a summary of all the events over a 31 day period for a single asset.",
+    "The Asset Fuel report provides a detailed overview of how effectively a specific asset is using fuel by calculating the amount of fuel burned idling, working and running for the specified reporting period. Additional fuel burn rate calculations provide a relative indication of how efficiently the asset is being operated.",
+    "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan.",
+    "The Asset Security report summarizes the asset security activities performed by these users.",
+    "The Speeding Event report provides a summary of all speed events including duration and maximum speed event.",
+    "The Asset Usage report provides an overview of how effectively a single asset is being used, including the runtime for the specified reporting period as well a breakdown of the time spent idling and working. Additional calculations illustrate the performance of the asset relative to the expected hours of use.",
+    "The Asset Usage Summary report provides a consolidated running hours snapshot for the selected assets along with its last known location during the selected date range.",
+    "The Backhoe Loader Operation report provides the split in hours of machine’s operation in the Backhoe Mode and Loader Mode for the selected time frame. This report is exclusive of Backhoe Loader/ Excavator Loader Product Families. The information displayed in this report is based on the capabilities of the device as well as active subscription plan. Applicable only for assets of other OEM like Tata Hitachi etc.,",
+    "The Cost Analysis - Fleet report provides a detailed overview of the cost of excessive idling for each selected asset by calculating the money spent for runtime hours and idle hours over a specific period of time.",
+    "The Cost Analysis - Single Asset report provides a detailed overview of the cost of excessive idling for a selected asset by calculating the money spent for runtime hours and idle hours over a specific period of time.",
+    "The Cycles report provides an overview of the load & dump information for each & every cycle which can be used to evaluate the machine & operator productivity.",
+    "The Engine Idle report provides a breakdown of idle time for each asset. The report includes Idle events for assets using movement or switch based work definitions and daily idle time for assets using movement-based, switch-based or engine-sourced work definitions over the specified thresholds.",
+    "The Excavator Usage report is a single asset report that provides the split in hours of Excavator’s operation in Power Mode, Economy Mode, Auto-Idle Mode, Front & Swing and Travel. This report is exclusive of Excavator Product Families. The information displayed in this report is based on the capabilities of the device as well as active subscription plan. Applicable only for assets of other OEM like Tata Hitachi etc.,",
+    "The Fault Code summary report provides a list of Events and Diagnostics reported by the device for the selected assets over a given time frame. Fault code information displayed in the report depends on the capabilities of the device as well as having an active service plan.",
+    "The Fuel Utilization report provides an overview of how effectively assets are using fuel by calculating the amount of fuel burned idling, working and running for the specified reporting period. Additional fuel burn rate calculations provide a relative indication of how efficiently assets are being operated.",
+    "The Fleet Status report provides a current overview of the basic description of each asset. This includes identifying information such as Make and Model as well as the last known Location information and meter readings.",
+    "The Fleet Usage report provides an overview of how effectively assets are being used, including the runtime for the specified reporting period as well as a breakdown of the time spent idling and working. Additional calculations illustrate the performance of assets relative to expected hours of use.",
+    "The Fleet Utilization report provides a consolidated view of the idle time and fuel consumed for the selected assets.",
+    "The Fluid Analysis report provides a sorted list of fluid sampling results for the assets included in the report. This report is helpful in identifying sample results and whether any action needs to be taken for a particular assets based on these results.",
+    "The Payload report provides an overview of the machine based payload and cycle information which can be used to evaluate machine and operator productivity. The report also graphically represents the top and bottom performing assets based on payload.",
+    "The Shared Asset View Report provides information on the list of Shared Views created for different organizations, the assets shared, the start date and end date of the view. This Report is helpful in tracking and managing the views created for multiple organizations.",
+    "The Site Runtime Report provides a detailed list of Site Visits an asset has completed or is in-progress with. A complete Site visit is defined from corresponding Site Entry and Site Exit events, an in-progress Site visit is defined from a Site Entry Event with a Site Exit Event yet to be generated.",
+    "The State Mileage report gives an overview of the distance travelled by each asset in the United States and Canada."
+  ];
 }

@@ -110,8 +110,68 @@ class NotificationViewModel extends InsiteViewModel {
     }
   }
 
-  deleteNotification() async{
-    
+  onDeleteClicked(BuildContext context, int? index) async {
+    bool? value = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            child: InsiteDialog(
+              title: "Delete User",
+              message:
+                  "Are you sure you want to permanently remove this notification?",
+              onPositiveActionClicked: () {
+                Navigator.pop(context, true);
+              },
+              onNegativeActionClicked: () {
+                Navigator.pop(context, false);
+              },
+            ));
+      },
+    );
+    if (value != null && value) {
+      deleteSelectedNotification();
+    }
+  }
+
+  deleteSelectedNotification() async {
+    try {
+      List<String>? ids = [];
+      String doubleQuote = "\"";
+      for (int i = 0; i < assets.length; i++) {
+        var data = assets[i];
+        if (data.isSelected!) {
+          ids.add(data.notificationUID!);
+          Logger().e(ids.length.toString());
+        }
+      }
+      if (ids != null) {
+        showLoadingDialog();
+        var result =
+            await _mainNotificationService!.deleteMainNotification(ids);
+        if (result != null) {
+          await deleteNotificationFromList(ids);
+          snackbarService!.showSnackbar(message: "Deleted successfully");
+        } else {
+          snackbarService!.showSnackbar(message: "Deleting failed");
+        }
+
+        hideLoadingDialog();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  deleteNotificationFromList(List<String> ids) {
+    Logger().i("deleteReportFromList");
+    ids.forEach((id) {
+      _assets.removeWhere((element) => element.notificationUID == id);
+    });
+
+    _totalCount = _totalCount! - ids.length;
+    notifyListeners();
+    checkEditAndDeleteVisibility();
   }
 
   getNotificationData() async {
@@ -124,6 +184,7 @@ class NotificationViewModel extends InsiteViewModel {
       if (response.notifications != null &&
           response.notifications!.isNotEmpty) {
         _assets.addAll(response.notifications!);
+
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -151,13 +212,13 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  onDetailPageSelected(notification.Notification? fleet) {
+  onDetailPageSelected(notification.Notification? notification) {
     _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
           fleet: Fleet(
-              assetSerialNumber: fleet!.serialNumber,
+              assetSerialNumber: notification!.serialNumber,
               assetId: null,
-              assetIdentifier: fleet.assetUID),
+              assetIdentifier: notification.assetUID),
           index: 0,
         ));
   }
@@ -208,7 +269,7 @@ class NotificationViewModel extends InsiteViewModel {
     } else if (value == "resolve") {
       onItemDeselect();
     } else if (value == "Delete") {
-      onRemovedSelectedNotification(index!);
+      onDeleteClicked(context, index);
     }
   }
 }

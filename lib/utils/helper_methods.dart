@@ -384,8 +384,8 @@ class Utils {
       case ScreenType.SUBSCRIPTION:
         title = "SUBSCRIPTION";
         break;
-      case ScreenType.NOTIFICATION:
-        title = "NOTIFICATION";
+      case ScreenType.NOTIFICATIONS:
+        title = "NOTIFICATIONS";
         break;
       case ScreenType.HOME:
         title = "HOME";
@@ -401,6 +401,12 @@ class Utils {
         break;
       case ScreenType.EDIT_NOTIFICATION:
         title = "EDIT NOTIFICATION";
+        break;
+      case ScreenType.ADD_NEW_GROUP:
+        title = "ADD NEW GROUP";
+        break;
+      case ScreenType.MANAGE_NEW_GROUP:
+        title = "MANAGE NEW GROUP";
         break;
       default:
     }
@@ -741,11 +747,11 @@ class Utils {
     var splitList2 = splitList[1].split(",\"UUID\"");
     return splitList2[0];
   }
-  
-    static List reportColumn(String value) {
+
+  static List reportColumn(String value) {
     var splitList = value.split("\"");
-    splitList.removeWhere(
-        (element) => element == "\"" || element == "[" || element == "]"|| element == ",");
+    splitList.removeWhere((element) =>
+        element == "\"" || element == "[" || element == "]" || element == ",");
     Logger().w(splitList);
     return splitList;
   }

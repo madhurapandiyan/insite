@@ -5,16 +5,19 @@ class InsiteText extends StatelessWidget {
   final String? text;
   final Color? color;
   final double? size;
+  final int? maxLines;
 
   final FontWeight? fontWeight;
-  const InsiteText({this.text, this.color, this.fontWeight, this.size});
+  const InsiteText(
+      {this.text, this.color, this.fontWeight, this.size, this.maxLines});
 
   const InsiteText.overflow(
-      {this.text, this.color, this.fontWeight, this.size});
+      {this.text, this.color, this.fontWeight, this.size, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
     return Text(text!,
+        maxLines: maxLines != null ? maxLines : 3,
         style: TextStyle(
           color: color != null
               ? color

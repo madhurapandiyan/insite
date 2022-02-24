@@ -13,8 +13,10 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/fault_code_type_search.dart';
 import 'package:logger/logger.dart';
+import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
 
 class NotificationService extends BaseService {
   LocalService? _localService = locator<LocalService>();
@@ -37,8 +39,7 @@ class NotificationService extends BaseService {
   Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(
       String queryValue, int pageValue, String faultCodeType) async {
     Map<String, String> queryMap = Map();
-    queryMap["lang"] = "en-US";
-    queryMap["page"] = pageValue.toString();
+
     if (faultCodeType.isNotEmpty) {
       queryMap["faultCodeType"] = faultCodeType;
     }
@@ -46,11 +47,19 @@ class NotificationService extends BaseService {
       queryMap["faultDescription"] = queryValue;
     }
     if (isVisionLink) {
+      queryMap["lang"] = "en-US";
+      queryMap["page"] = pageValue.toString();
       var data = MyApi().getClientSeven()!.getFaultCodeTypeSearchVL(
+          accountSelected!.CustomerUID,
+          Urls.faultCodeSearchVL + FilterUtils.constructQueryFromMap(queryMap));
+      return data;
+    } else {
+      var data = MyApi().getClient()!.getFaultCodeTypeSearch(
+          "in-alertmanager-api",
           accountSelected!.CustomerUID,
           Urls.faultCodeSearch + FilterUtils.constructQueryFromMap(queryMap));
       return data;
-    } else {}
+    }
   }
 
   Future<NotificationsData?> getNotificationsData(
@@ -105,6 +114,17 @@ class NotificationService extends BaseService {
     }
   }
 
+  Future<AlertConfigEdit?> alertConfigEdit(String uid) async {
+    if (isVisionLink) {
+    } else {
+      var data = await MyApi().getClient()!.getAlertConfig(
+          "in-alertmanager-api",
+          accountSelected!.CustomerUID,
+          Urls.saveNewNotificationData + "/$uid" + "/1");
+      return data;
+    }
+  }
+
   Future<ManageNotificationsData?> getManageNotificationsData() async {
     try {
       if (isVisionLink) {
@@ -128,21 +148,30 @@ class NotificationService extends BaseService {
   Future<ManageNotificationsData?> getsearchNotificationsData(
       String? searchText) async {
     if (isVisionLink) {
-      try {
-        Map<String, String> queryMap = Map();
+      Map<String, String> queryMap = Map();
 
-        queryMap["searchKey"] = searchText!;
-        ManageNotificationsData? response = await MyApi()
-            .getClientSeven()!
-            .manageNotificationsDataVL(
-                Urls.manageNotificationsData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
+      queryMap["searchKey"] = searchText!;
+      ManageNotificationsData? response = await MyApi()
+          .getClientSeven()!
+          .manageNotificationsDataVL(
+              Urls.manageNotificationsData +
+                  FilterUtils.constructQueryFromMap(queryMap),
+              accountSelected!.CustomerUID);
 
-        return response;
-      } catch (e) {
-        Logger().e(e.toString());
-      }
+      return response;
+    } else {
+      Map<String, String> queryMap = Map();
+
+      queryMap["searchKey"] = searchText!;
+      ManageNotificationsData? response = await MyApi()
+          .getClient()!
+          .manageNotificationsData(
+              "in-alertmanager-api",
+              Urls.manageNotificationsData +
+                  FilterUtils.constructQueryFromMap(queryMap),
+              accountSelected!.CustomerUID);
+
+      return response;
     }
   }
 
@@ -184,11 +213,12 @@ class NotificationService extends BaseService {
     } catch (e) {}
   }
 
-  Future<dynamic> creatingZone(ZoneCreating zone){
+  creatingZone(ZoneCreating zone) async {
     if (isVisionLink) {
-      
-    }else{
-      var data=MyApi().getClient()!.createZones(Urls.createZone, customerId, service, zone)
+    } else {
+      var data = await MyApi().getClient()!.createZones(Urls.createZone,
+          accountSelected!.CustomerUID, "in-alertmanager-api", zone);
+      return data;
     }
   }
 
@@ -206,6 +236,7 @@ class NotificationService extends BaseService {
 
       return response;
     } else {
+      Logger().e("map");
       Map<String, String> queryMap = Map();
 
       queryMap["alertTitle"] = value!;
@@ -245,20 +276,53 @@ class NotificationService extends BaseService {
     } catch (e) {}
   }
 
-  Future<UpdateResponse?> getDeleteNotification(String notificationId) async {
+  Future<UpdateResponse?> deleteMainNotification(List<String> ids) async {
     try {
-      Map<String, String> queryMap = Map();
-      queryMap["notificationUID"] = notificationId;
       if (isVisionLink) {
+        Map<String, dynamic> notificationMap = {"notificationUID": ids};
+
         UpdateResponse updateResponse = await MyApi()
             .getClientFour()!
-            .deleteNotification(
-                Urls.deleteNotification +
-                    FilterUtils.constructQueryFromMap(queryMap),
+            .deleteMainNotification(Urls.deleteNotification, notificationMap,
                 accountSelected!.CustomerUID);
         return updateResponse;
       }
     } catch (e) {}
     return null;
+  }
+
+  Future<UpdateResponse?> deleteManageNotification(
+      String? notificationId) async {
+    try {
+      if (isVisionLink) {
+        UpdateResponse updateResponse = await MyApi()
+            .getClientSeven()!
+            .deleteNotificationVL(
+                Urls.deleteManageNotificationVL + notificationId!,
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      } else {
+        UpdateResponse updateResponse = await MyApi()
+            .getClient()!
+            .deleteNotification(
+                "in-alertmanager-api",
+                Urls.deleteManageNotification + notificationId!,
+                accountSelected!.CustomerUID);
+        return updateResponse;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  editNotification(AddNotificationPayLoad payload, String alertUid) async {
+    if (isVisionLink) {
+    } else {
+      var data = await MyApi().getClient()!.editNotificationSaveData(
+          "in-alertmanager-api",
+          Urls.saveNewNotificationData + "/$alertUid",
+          payload,
+          accountSelected!.CustomerUID);
+      return data;
+    }
   }
 }

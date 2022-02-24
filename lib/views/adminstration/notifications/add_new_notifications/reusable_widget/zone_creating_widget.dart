@@ -6,6 +6,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/zone_map.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 
 class ZoneCreatingWidget extends StatefulWidget {
   final Function? onEditing;
@@ -112,6 +113,7 @@ class _ZoneCreatingWidgetState extends State<ZoneCreatingWidget> {
                     ),
                     InsiteButton(
                       onTap: () {
+                        Logger().e("mappiy");
                         widget.onCreate!();
                       },
                       width: 100,

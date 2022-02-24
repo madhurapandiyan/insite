@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
@@ -1152,7 +1153,11 @@ abstract class RestClient {
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @DELETE('{url}')
-  Future<UpdateResponse> deleteNotification(
+  Future<UpdateResponse> deleteNotificationVL(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @DELETE('{url}')
+  Future<UpdateResponse> deleteNotification(@Header("service") String service,
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
 
   @GET('{url}')
@@ -1184,6 +1189,7 @@ abstract class RestClient {
     @Path() String url,
     @Header("x-visionlink-customeruid") customerId,
   );
+
 
   @GET("{url}")
   Future<ManageNotificationsData> manageNotificationsData(
@@ -1290,6 +1296,12 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
+  @PUT('{url}')
+  Future<UpdateResponse> deleteMainNotification(
+      @Path() String url,
+      @Body() Map<String, dynamic> notifictionIds,
+      @Header("x-visionlink-customeruid") customerId);
+
   @GET("{url}")
   Future<ZoneValues> getCustomerInclusionExclusionVL(
     @Path() String url,
@@ -1337,9 +1349,30 @@ abstract class RestClient {
       @Body() AddNotificationPayLoad addNotificationPayLoad,
       @Header("X-VisionLink-CustomerUID") customerId);
 
+  @PUT('{url}')
+  Future<dynamic> editNotificationSaveData(
+      @Header("service") service,
+      @Path() String url,
+      @Body() AddNotificationPayLoad addNotificationPayLoad,
+      @Header("X-VisionLink-CustomerUID") customerId);
+
   @GET("{url}")
   Future<FaultCodeTypeSearch?> getFaultCodeTypeSearchVL(
     @Header("x-visionlink-customeruid") customerId,
+    @Path() String url,
+  );
+
+  @GET("{url}")
+  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(
+    @Header("service") service,
+    @Header("X-VisionLink-CustomerUID") customerId,
+    @Path() String url,
+  );
+
+  @GET("{url}")
+  Future<AlertConfigEdit> getAlertConfig(
+    @Header("service") service,
+    @Header("X-VisionLink-CustomerUID") customerId,
     @Path() String url,
   );
 }

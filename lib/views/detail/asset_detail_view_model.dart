@@ -21,7 +21,8 @@ class AssetDetailViewModel extends InsiteViewModel {
     setUp();
     _assetService!.setUp();
     try {
-      Logger().i("asset choosen assetSerialNumber " + fleet!.assetSerialNumber!);
+      Logger()
+          .i("asset choosen assetSerialNumber " + fleet!.assetSerialNumber!);
       Logger().i("asset choosen assetIdentifier " + fleet!.assetIdentifier!);
       //Logger().i("asset choosen assetId " + fleet!.assetId!);
     } catch (e) {
@@ -33,9 +34,12 @@ class AssetDetailViewModel extends InsiteViewModel {
   }
 
   getAssetDetail() async {
-    AssetDetail? assetDetail =
-        await _assetService!.getAssetDetail(fleet!.assetIdentifier);
-    _assetDetail = assetDetail;
+    if (isVisionLink) {
+      AssetDetail? assetDetail =
+          await _assetService!.getAssetDetail(fleet!.assetIdentifier);
+      _assetDetail = assetDetail;
+    }
+
     _loading = false;
     notifyListeners();
   }

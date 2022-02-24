@@ -3668,10 +3668,30 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UpdateResponse> deleteNotification(url, customerId) async {
+  Future<UpdateResponse> deleteNotificationVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UpdateResponse>(
+            Options(method: 'DELETE', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UpdateResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UpdateResponse> deleteNotification(service, url, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'x-visionlink-customeruid': customerId
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -4147,6 +4167,25 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<UpdateResponse> deleteMainNotification(
+      url, notifictionIds, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(notifictionIds);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UpdateResponse>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UpdateResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ZoneValues> getCustomerInclusionExclusionVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4284,6 +4323,28 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<NotificationAdded> editNotificationSaveData(
+      service, url, addNotificationPayLoad, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'X-VisionLink-CustomerUID': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(addNotificationPayLoad.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<NotificationAdded>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotificationAdded.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<FaultCodeTypeSearch?> getFaultCodeTypeSearchVL(customerId, url) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4299,6 +4360,49 @@ class _RestClient implements RestClient {
     final value = _result.data == null
         ? null
         : FaultCodeTypeSearch.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(
+      service, customerId, url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'X-VisionLink-CustomerUID': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<FaultCodeTypeSearch>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data == null
+        ? null
+        : FaultCodeTypeSearch.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AlertConfigEdit> getAlertConfig(service, customerId, url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'X-VisionLink-CustomerUID': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AlertConfigEdit>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AlertConfigEdit.fromJson(_result.data!);
     return value;
   }
 

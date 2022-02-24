@@ -8,6 +8,7 @@ import 'package:insite/views/adminstration/reusable_widget/manage_notification_w
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_notifications_view_model.dart';
 
@@ -66,15 +67,16 @@ class ManageNotificationsView extends StatelessWidget {
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
                                         viewModel.notifications[index];
+                                        Logger().w(viewModel.notifications.length);
 
                                     return ManageNotificationWidget(
                                       alerts: alerts,
                                       onDelete: () {
-                                        viewModel.onRemovedSelectedNotification(
-                                            index);
+                                        viewModel.onDeleteClicked(context,
+                                            alerts.alertConfigUID, index);
                                       },
                                       onEdit: () {
-                                        //viewModel.editNotification(index)
+                                        viewModel.editNotification(index);
                                       },
                                     );
                                   },
