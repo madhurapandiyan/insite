@@ -424,10 +424,10 @@ class Utils {
         title = "MANAGE USER";
         break;
       case AdminAssetsButtonType.ADDNEWGROUPS:
-        title = "ADD NEW GROUPS";
+        title = "ADD NEW GROUP";
         break;
       case AdminAssetsButtonType.MANAGEGROUPS:
-        title = "MANAGER NEW GROUPS";
+        title = "MANAGER NEW GROUP";
         break;
       case AdminAssetsButtonType.ADDNEWGEOFENCES:
         title = "ADD NEW GEOFENCES";

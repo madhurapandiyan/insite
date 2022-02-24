@@ -18,7 +18,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   LoginService? _loginService = locator<LoginService>();
   NavigationService? _navigationService = locator<NavigationService>();
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
-
+  
   Logger? log;
 
   String? _loggedInUserMail = "";
@@ -256,6 +256,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   onHomeSelected() async {
     Logger().d("onHomeSelected");
     await _localStorageService!.clearAll();
+  await  _loginService!.loginAudit();
     _navigationService!.replaceWith(homeViewRoute);
   }
 

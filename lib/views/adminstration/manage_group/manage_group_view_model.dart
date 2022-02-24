@@ -327,7 +327,7 @@ class ManageGroupViewModel extends InsiteViewModel {
         snackbarService!.showSnackbar(message: "Favorite is done sucessfully");
       } else {
         snackbarService!
-            .showSnackbar(message: "unFavorite is done sucessfully");
+            .showSnackbar(message: "UnFavorite is done sucessfully");
       }
       hideLoadingDialog();
     } catch (e) {
