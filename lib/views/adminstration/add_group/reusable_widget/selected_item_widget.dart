@@ -206,7 +206,7 @@ class _SelectedItemWidgetState extends State<SelectedItemWidget> {
                         }
                       }),
               widget.subList!.isEmpty
-                  ? InsiteProgressBar()
+                  ? SizedBox()
                   : ListView.builder(
                       itemCount: widget.subList!.length,
                       shrinkWrap: true,

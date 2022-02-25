@@ -36,12 +36,17 @@ class _TemplateViewState extends State<TemplateView> {
                           itemBuilder: (context, index) {
                             var templateAssets =
                                 viewModel.templateAssets[index];
+                            String descriptionData =
+                                viewModel.templateDescription[index];
                             Logger().i(templateAssets);
                             return NewReportTemplateWidget(
-                              voidCallback: (){
-                                viewModel.onClickAddReportSelected();
+                              dropDownValueCallBack: (String value) {
+                                viewModel.templateDropDownValue = value;
+                                viewModel.onClickTemplateTypeAddReportSelected(
+                                    viewModel.templateDropDownValue);
                               },
                               reportTypeName: templateAssets,
+                              descriptionData: descriptionData,
                             );
                           }),
                     )

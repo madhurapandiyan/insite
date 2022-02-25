@@ -402,6 +402,12 @@ class Utils {
       case ScreenType.EDIT_NOTIFICATION:
         title = "EDIT NOTIFICATION";
         break;
+      case ScreenType.ADD_NEW_GROUP:
+        title = "ADD NEW GROUP";
+        break;
+      case ScreenType.MANAGE_NEW_GROUP:
+        title = "MANAGE NEW GROUP";
+        break;
       default:
     }
     return title;
@@ -418,10 +424,10 @@ class Utils {
         title = "MANAGE USER";
         break;
       case AdminAssetsButtonType.ADDNEWGROUPS:
-        title = "ADD NEW GROUPS";
+        title = "ADD NEW GROUP";
         break;
       case AdminAssetsButtonType.MANAGEGROUPS:
-        title = "MANAGER NEW GROUPS";
+        title = "MANAGER NEW GROUP";
         break;
       case AdminAssetsButtonType.ADDNEWGEOFENCES:
         title = "ADD NEW GEOFENCES";
@@ -740,5 +746,13 @@ class Utils {
     var splitList = userId.split("\"userID\":");
     var splitList2 = splitList[1].split(",\"UUID\"");
     return splitList2[0];
+  }
+
+  static List reportColumn(String value) {
+    var splitList = value.split("\"");
+    splitList.removeWhere((element) =>
+        element == "\"" || element == "[" || element == "]" || element == ",");
+    Logger().w(splitList);
+    return splitList;
   }
 }

@@ -503,5 +503,4 @@ class AddNewUserViewModel extends InsiteViewModel {
     }
     notifyListeners();
   }
-
 }

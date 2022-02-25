@@ -8,6 +8,7 @@ import 'package:insite/views/adminstration/reusable_widget/manage_notification_w
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'manage_notifications_view_model.dart';
 
@@ -29,7 +30,6 @@ class ManageNotificationsView extends StatelessWidget {
               //viewModel.refresh();
             },
             body: Card(
-              color: cardcolor,
               margin: EdgeInsets.only(top: 30.0, right: 20, left: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -66,6 +66,7 @@ class ManageNotificationsView extends StatelessWidget {
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
                                         viewModel.notifications[index];
+                                    Logger().w(viewModel.notifications.length);
 
                                     return ManageNotificationWidget(
                                       alerts: alerts,
@@ -74,7 +75,7 @@ class ManageNotificationsView extends StatelessWidget {
                                             alerts.alertConfigUID, index);
                                       },
                                       onEdit: () {
-                                        //viewModel.editNotification(index)
+                                        viewModel.editNotification(index);
                                       },
                                     );
                                   },
@@ -83,7 +84,7 @@ class ManageNotificationsView extends StatelessWidget {
                                         thickness: 2.0,
                                       ),
                                   itemCount: viewModel.notifications.length)
-                              : EmptyView(title: "No Results"),
+                              : EmptyView(title: "No Nontification Found"),
                     ),
                     viewModel.loadingMore
                         ? Padding(

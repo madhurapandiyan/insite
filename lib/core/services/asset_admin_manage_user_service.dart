@@ -1007,9 +1007,18 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
-            .getGroupListData(
-                Urls.getGroupListData +
+            .getGroupListDataVL(
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
       }
@@ -1117,7 +1126,7 @@ class AssetAdminManagerUserService extends BaseService {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getAdminProductFamilyFilterData(
-                Urls.getGroupListData +
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
@@ -1146,7 +1155,7 @@ class AssetAdminManagerUserService extends BaseService {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getManufacturerFilterData(
-                Urls.getGroupListData +
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
@@ -1175,7 +1184,7 @@ class AssetAdminManagerUserService extends BaseService {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getManufacturerFilterData(
-                Urls.getGroupListData +
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
@@ -1200,7 +1209,7 @@ class AssetAdminManagerUserService extends BaseService {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getAdminProductFamilyFilterData(
-                Urls.getGroupListData +
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
@@ -1227,7 +1236,7 @@ class AssetAdminManagerUserService extends BaseService {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getAdminProductFamilyFilterData(
-                Urls.getGroupListData +
+                Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
@@ -1334,7 +1343,7 @@ class AssetAdminManagerUserService extends BaseService {
             await MyApi().getClient()!.getDeleteManageReportAsset(
                 Urls.addReportSaveData,
                 reqId,
-                "n-reports-rpt-rmapi",
+                "in-reports-rpt-rmapi",
                 accountSelected!.CustomerUID);
         return manageReportDeleteAssetResponse;
       }
@@ -1383,7 +1392,7 @@ class AssetAdminManagerUserService extends BaseService {
             await MyApi().getClient()!.getSearchContactReportData(
                 Urls.contactSearchData +
                     FilterUtils.constructQueryFromMap(queryMap),
-                    "in-contact-ct-api",
+                "in-contact-ct-api",
                 accountSelected!.CustomerUID);
         return searchContactReportListResponse;
       }
@@ -1397,8 +1406,14 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         EditReportResponse editReportResponse = await MyApi()
             .getClientSeven()!
-            .getEditReportData(Urls.manageReportData + "/" + reportId,
+            .getEditReportDataVL(Urls.manageReportData + "/" + reportId,
                 accountSelected!.CustomerUID);
+        return editReportResponse;
+      } else {
+        EditReportResponse editReportResponse = await MyApi()
+            .getClient()!
+            .getEditReportData(Urls.addReportSaveData + "/" + reportId,
+                "in-reports-rpt-rmapi", accountSelected?.CustomerUID);
         return editReportResponse;
       }
     } catch (e) {
@@ -1416,10 +1431,11 @@ class AssetAdminManagerUserService extends BaseService {
                 accountSelected!.CustomerUID);
         return manageReportResponse;
       } else {
+        Logger().w(addReportPayLoad.toJson());
         ManageReportResponse manageReportResponse = await MyApi()
             .getClient()!
             .getAddReportSaveData(Urls.addReportSaveData, addReportPayLoad,
-                accountSelected!.CustomerUID);
+                "in-reports-rpt-rmapi", accountSelected!.CustomerUID);
         return manageReportResponse;
       }
     } catch (e) {
@@ -1433,10 +1449,21 @@ class AssetAdminManagerUserService extends BaseService {
       if (isVisionLink) {
         ManageReportResponse manageReportResponse = await MyApi()
             .getClientSeven()!
-            .getEditReportSaveData(Urls.manageReportData + "/" + reqId,
+            .getEditReportSaveDataVL(Urls.manageReportData + "/" + reqId,
                 addReportPayLoad, accountSelected!.CustomerUID);
         return manageReportResponse;
+      } else {
+        ManageReportResponse manageReportResponse = await MyApi()
+            .getClient()!
+            .getEditReportSaveData(
+                Urls.addReportSaveData + "/" + reqId,
+                addReportPayLoad,
+                "in-reports-rpt-rmapi",
+                accountSelected!.CustomerUID);
+        return manageReportResponse;
       }
-    } catch (e) {}
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

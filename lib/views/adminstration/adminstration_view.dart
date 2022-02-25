@@ -5,6 +5,7 @@ import 'package:insite/views/adminstration/reusable_widget/asset_cards_small.dar
 import 'package:insite/views/adminstration/reusable_widget/asset_setting_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/notification_widget.dart';
 import 'package:insite/widgets/smart_widgets/asset_card_large.dart';
+import 'package:insite/views/adminstration/reusable_widget/notification_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'adminstration_view_model.dart';
@@ -111,36 +112,36 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                     //     }),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                AssetSettingWidget(
-                  headerText: "asset settings",
-                  showExapansionMenu: false,
-                  icon: "assets/images/assessment.svg",
-                  buttonText: "Manage Asset configurations",
-                  onButtonClicked: () {
-                    viewModel.onAssetSettingStateButtonClicked();
-                  },
-                ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                // AssetSettingWidget(
+                //   headerText: "asset settings",
+                //   showExapansionMenu: false,
+                //   icon: "assets/images/assessment.svg",
+                //   buttonText: "Manage Asset configurations",
+                //   onButtonClicked: () {
+                //     viewModel.onAssetSettingStateButtonClicked();
+                //   },
+                // ),
                 SizedBox(
                   height: 21,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      AssetCardsSmall(
-                          headerText: "geofences".toUpperCase(),
-                          height: 10,
-                          icon: "assets/images/geofence.svg",
-                          showExapansionMenu: false,
-                          buttonTitle: [
-                            AdminAssetsButtonType.values[4],
-                            AdminAssetsButtonType.values[5]
-                          ],
-                          onCallbackSelected: (value) {
-                            viewModel.onRespectiveButtonClicked(value);
-                          }),
+                      // AssetCardsSmall(
+                      //     headerText: "geofences".toUpperCase(),
+                      //     height: 10,
+                      //     icon: "assets/images/geofence.svg",
+                      //     showExapansionMenu: false,
+                      //     buttonTitle: [
+                      //       AdminAssetsButtonType.values[4],
+                      //       AdminAssetsButtonType.values[5]
+                      //     ],
+                      //     onCallbackSelected: (value) {
+                      //       viewModel.onRespectiveButtonClicked(value);
+                      //     }),
                       AssetCardsSmall(
                           headerText: "reports".toUpperCase(),
                           icon: "assets/images/reports.svg",

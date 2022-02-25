@@ -50,7 +50,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(
           shouldShowAccount:
@@ -84,6 +84,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.NOTIFICATION ||
+                  widget.screenType == ScreenType.ADD_NEW_GROUP ||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP ||
                   widget.screenType == ScreenType.NOTIFICATIONS
               ? 80
               : 56,
@@ -96,6 +99,9 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.ADMINISTRATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.NOTIFICATION ||
+                  widget.screenType == ScreenType.ADD_NEW_GROUP ||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP ||
                   widget.screenType == ScreenType.NOTIFICATIONS
               ? true
               : false,

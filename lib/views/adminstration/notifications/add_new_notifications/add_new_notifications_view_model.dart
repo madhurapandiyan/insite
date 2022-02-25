@@ -1,32 +1,36 @@
+import 'dart:async';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
-import 'package:insite/core/models/add_group_data_response.dart';
-import 'package:insite/core/models/add_group_payload.dart';
 import 'package:insite/core/models/add_notification_payload.dart';
 
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/customer.dart';
-import 'package:insite/core/models/edit_group_payload.dart';
 import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
-import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/notification_service.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
-import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/multi_custom_dropDown_widget.dart';
 import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart';
 import 'package:intl/intl.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
-import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:table_calendar/table_calendar.dart';
+import './model/zone.dart';
+
+import 'model/fault_code_type_search.dart';
 
 class AddNewNotificationsViewModel extends InsiteViewModel {
   Logger? log;
@@ -38,72 +42,65 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       locator<AssetAdminManagerUserService>();
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
   TabController? controller;
   Customer? accountSelected;
-
-  AddNewNotificationsViewModel()  {
-    this.log = getLogger(this.runtimeType.toString());
-    _notificationService!.setUp();
-    setUp();
-   
-
-    Future.delayed(Duration(seconds: 1), () {
-      
-      getNotificationTypesData();
-      getInclusionExclusionZones();
-      getData();
-    });
-  }
-
-  setUp() async {
-    try {
-      accountSelected = await _localService!.getAccountInfo();
-     
-    } catch (e) {
-      Logger().e(e);
-    }
-  }
-
   @override
   void dispose() {
     super.dispose();
     controller!.dispose();
   }
 
+  AddNewNotificationsViewModel(AlertConfigEdit? data) {
+    this.log = getLogger(this.runtimeType.toString());
+    _notificationService!.setUp();
+    setUp();
+     
+
+    Future.delayed(Duration(seconds: 1), () {
+      getNotificationTypesData();
+      getData();
+      onGettingFaultCodeData();
+      if (data != null) {
+        editingNotification(data);
+      }
+      faultCodeScrollController.addListener(() {
+        if (faultCodeScrollController.position.pixels ==
+            faultCodeScrollController.position.maxScrollExtent) {
+          page++;
+          _loadingMore = true;
+          onGettingFaultCodeData();
+        }
+      });
+    });
+  }
+  ScrollController faultCodeScrollController = ScrollController();
+  setUp() async {
+    try {
+      accountSelected = await _localService!.getAccountInfo();
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  bool isEditing = false;
+
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
 
-  List<String?> _zoneNamesInclusion = ["Select Inclusion Zone"];
-  List<String?> get zoneNamesInclusion => _zoneNamesInclusion;
+  List<CheckBoxDropDown> _zoneNamesInclusion = [];
+  List<CheckBoxDropDown> get zoneNamesInclusion => _zoneNamesInclusion;
 
-  List<String?> _zoneNamesExclusion = ["Select Exclusion Zone"];
-  List<String?> get zoneNamesExclusion => _zoneNamesExclusion;
+  List<CheckBoxDropDown> _zoneNamesExclusion = [];
+  List<CheckBoxDropDown> get zoneNamesExclusion => _zoneNamesExclusion;
 
   List<String?> _notificationSubTypes = ["Options"];
   List<String?> get notificationSubTypes => _notificationSubTypes;
 
-  List<String?> _email = ["Select"];
-  List<String?> get email => _email;
-
-  List<String> _type = [
-    "select",
-    "Range",
-    "All day",
-  ];
-  List<String> get type => _type;
-
   List<String> _choiseData = [
-    
     "Assets",
-    
   ];
   List<String> get choiseData => _choiseData;
-
-  List<String> _startTimes = ["select", "12:01", "3:00", "2:00", "1:00"];
-  List<String> get startTimes => _startTimes;
-
-  List<String> _endTimes = ["select", "12:01", "3:00", "2:00", "1:00"];
-  List<String> get endTimes => _endTimes;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -111,20 +108,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
 
-  bool _shouldLoadmore = true;
-  bool get shouldLoadmore => _shouldLoadmore;
-
   String _dropDownInitialValue = "select";
   String get dropDownInitialValue => _dropDownInitialValue;
-
-  String _initialType = "select";
-  String get initialType => _initialType;
-
-  String _initialStartTime = "select";
-  String get initialStartTime => _initialStartTime;
-
-  String _initialEndTime = "select";
-  String get initialEndTime => _initialEndTime;
 
   String _dropDownSubInitialValue = "Options";
   String get dropDownSubInitialValue => _dropDownSubInitialValue;
@@ -135,62 +120,19 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   String _exclusionInitialValue = "Select Exclusion Zone";
   String get exclusionInitialValue => _exclusionInitialValue;
 
-  int? _notificationTyeGroupId = 1;
-  int? get notificationTyeGroupId => _notificationTyeGroupId;
-
-  int? _notificationTypeId = 1;
-  int? get notificationTypeId => _notificationTypeId;
-
-  int? _operandId = 1;
-  int? get operandId => _operandId;
-
-  int? _operatorId = 1;
-  int? get operatorId => _operatorId;
-
-  int? _value = 1;
-  int? get value => _value;
-
-  bool _showNotificationType = false;
-  bool get showNotificationType => _showNotificationType;
-
-  bool _showConditionTypes = false;
-  bool get showConditionTypes => _showConditionTypes;
-
-  bool _showFaultValue = false;
-  bool get showFaultValue => _showFaultValue;
-
-  bool _showFuelLoss = false;
-  bool get showFuelLoss => _showFuelLoss;
-
-  bool _setOdometer = false;
-  bool get setOdometer => _setOdometer;
-
-  bool _selectPowerMode = false;
-  bool get selectPowerMode => _selectPowerMode;
-
-  bool _showSwitches = false;
-  bool get showSwitches => _showSwitches;
-
-  bool _showFaultCodes = false;
-  bool get showFaultCodes => _showFaultCodes;
-
-  bool _showFluidAnalysis = false;
-  bool get showFluidnalysis => _showFluidAnalysis;
-
-  bool _showInspections = false;
-  bool get showInspections => _showInspections;
-
-  bool _showMaintainance = false;
-  bool get showMaintainance => _showMaintainance;
-
-  bool _showAssetSecurity = false;
-  bool get showAssetSecurity => _showAssetSecurity;
+  bool isDrawing = false;
+  bool isAddingInclusionZone = false;
+  bool isAddingExclusionZone = false;
+  bool isFaultCodePressed = false;
+  bool isShowingSelectedContact = false;
 
   bool _showZone = false;
   bool get showZone => _showZone;
 
   List<User>? searchContactListName = [];
   bool isHideSearchList = false;
+
+  String? alertConfigUid;
 
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
@@ -200,392 +142,95 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String>? selectedContactItems = [];
 
   List<String>? phoneNumbers = [];
-  List<String>? emailIds =[];
-  
+  List<String>? emailIds = [];
 
-  updateModelValue(String value) {
-    _notificationSubTypes.clear();
-    _notificationSubTypes.add("Options");
-    _dropDownSubInitialValue = "Options";
+  List<String>? notificationFleetType = [];
+  List<String>? notificationServiceType = [];
+  List<String>? geofenceAssets = [];
+  List<String>? administratortAssets = [];
 
-    _showConditionTypes = false;
-    _showNotificationType = false;
-    _showFuelLoss = false;
-    _setOdometer = false;
-    _selectPowerMode = false;
-    _showFaultCodes = false;
-    _showSwitches = false;
-    _showFluidAnalysis = false;
-    _showInspections = false;
-    _showMaintainance = false;
-    _showAssetSecurity = false;
-    _showZone = false;
+  AlertTypes? alterTypes;
+  AlertConfigEdit? alertConfigData;
 
-    _dropDownInitialValue = value;
-
-    getNotificationSubTypes(_dropDownInitialValue);
-
-    notifyListeners();
-  }
-
-  updateSubModelValue(String value) {
-    _dropDownSubInitialValue = value;
-
-    notifyListeners();
-  }
-
-  updateType(String value) {
-    _initialType = value;
-
-    notifyListeners();
-  }
-
-  updateStartTime(String value) {
-    _initialStartTime = value;
-
-    notifyListeners();
-  }
-
-  updateEndTime(String value) {
-    _initialEndTime = value;
-
-    notifyListeners();
-  }
-
-  getInclusionExclusionZones() async {
-    ZoneValues? response =
-        await _notificationService!.getInclusionExclusionZones();
-
-    if (response != null) {
-      if (response.zones != null && response.zones!.isNotEmpty) {
-        response.zones!.forEach((element) {
-          if (element != null) {
-            _zoneNamesInclusion.add(element.zoneName);
-            _zoneNamesExclusion.add(element.zoneName);
-          }
-        });
-
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-      } else {
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-      }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      _shouldLoadmore = false;
-    }
-  }
-
-  getNotificationSubTypes(String value) async {
-    AlertTypes? response = await _notificationService!.getNotificationTypes();
-
-    if (response != null) {
-      if (response.notificationTypeGroups != null &&
-          response.notificationTypeGroups!.isNotEmpty) {
-        for (var notification in response.notificationTypeGroups!) {
-          if (value == notification.notificationTypeGroupName &&
-              notification.notificationTypes!.isNotEmpty &&
-              notification.notificationTypeGroupName == "Asset Status") {
-                
-            for (var item in notification.notificationTypes!) {
-              _showNotificationType = true;
-              _notificationSubTypes.add(item.notificationTypeName);
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-              _notificationTypeId = item.notificationTypeID;
-              _operandId = item.operands!.first.operandID;
-            }
-          } else if (value == notification.notificationTypeGroupName &&
-              notification.notificationTypes!.isNotEmpty) {
-            if (notification.notificationTypeGroupName == "Fuel") {
-              for (var item in notification
-                  .notificationTypes!.first.operands!.first.operators!) {
-                _showConditionTypes = true;
-                _notificationSubTypes.add(item.name);
-                _notificationTyeGroupId = notification.notificationTypeGroupID;
-                _operandId = notification
-                  .notificationTypes!.first.operands!.first.operandID;
-
-                  if(item.name == "Equal to"){
-                    _operatorId = item.operatorID;
-                    _value = 1;
-
-                  }else if(item.name == "Greater than"){
-                     _operatorId = item.operatorID;
-                    _value = 2;
-
-                  }
-                  else if(item.name == "Less than"){
-                     _operatorId = item.operatorID;
-                    _value = 3;
-
-                  }else if(item.name == "Greater than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 4;
-
-                  }else if(item.name == "Less than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 5;
-
-                  }
-                for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                
-              }}
-            }
-            if (notification.notificationTypeGroupName == "Engine Hours") {
-              for (var item in notification
-                  .notificationTypes!.first.operands!.first.operators!) {
-                _showConditionTypes = true;
-                _notificationSubTypes.add(item.name);
-                _operandId = notification
-                  .notificationTypes!.first.operands!.first.operandID;
-                  if(item.name == "Equal to"){
-                    _operatorId = item.operatorID;
-                    _value = 1;
-
-                  }else if(item.name == "Greater than"){
-                     _operatorId = item.operatorID;
-                    _value = 2;
-
-                  }
-                  else if(item.name == "Less than"){
-                     _operatorId = item.operatorID;
-                    _value = 3;
-
-                  }else if(item.name == "Greater than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 4;
-
-                  }else if(item.name == "Less than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 5;
-
-                  }
-                _notificationTyeGroupId = notification.notificationTypeGroupID;
-                 for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-              }
-              }
-            }
-            if (notification.notificationTypeGroupName == "Odometer") {
-              for (var item in notification
-                  .notificationTypes!.first.operands!.first.operators!) {
-                _showConditionTypes = true;
-                _setOdometer = true;
-                _notificationSubTypes.add(item.name);
-                _operandId = notification
-                  .notificationTypes!.first.operands!.first.operandID;
-                  if(item.name == "Equal to"){
-                    _operatorId = item.operatorID;
-                    _value = 1;
-
-                  }else if(item.name == "Greater than"){
-                     _operatorId = item.operatorID;
-                    _value = 2;
-
-                  }
-                  else if(item.name == "Less than"){
-                     _operatorId = item.operatorID;
-                    _value = 3;
-
-                  }else if(item.name == "Greater than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 4;
-
-                  }else if(item.name == "Less than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 5;
-
-                  }
-                _notificationTyeGroupId = notification.notificationTypeGroupID;
-                 for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-              }
-              }
-            }
-            if (notification.notificationTypeGroupName == "Fuel Loss") {
-              _showFuelLoss = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Power Mode") {
-              _selectPowerMode = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Switches") {
-              _showSwitches = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Fault") {
-              _showFaultCodes = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Fluid Analysis") {
-              _showFluidAnalysis = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Inspection") {
-              _showInspections = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName == "Asset Security") {
-              _showAssetSecurity = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName ==
-                "Zone Inclusion/Exclusion") {
-              _showZone = true;
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-            if (notification.notificationTypeGroupName ==
-                "Excessive Daily Idle") {
-              for (var item in notification
-                  .notificationTypes!.first.operands!.first.operators!) {
-                _showConditionTypes = true;
-                _notificationSubTypes.add(item.name);
-                if(item.name == "Equal to"){
-                    _operatorId = item.operatorID;
-                    _value = 1;
-
-                  }else if(item.name == "Greater than"){
-                     _operatorId = item.operatorID;
-                    _value = 2;
-
-                  }
-                  else if(item.name == "Less than"){
-                     _operatorId = item.operatorID;
-                    _value = 3;
-
-                  }else if(item.name == "Greater than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 4;
-
-                  }else if(item.name == "Less than or equal to"){
-                     _operatorId = item.operatorID;
-                    _value = 5;
-
-                  }
-                _notificationTyeGroupId = notification.notificationTypeGroupID;
-                 for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId =item.operands!.first.operandID;
-              }
-              }
-            } else if (value == notification.notificationTypeGroupName &&
-                notification.notificationTypes!.isNotEmpty &&
-                notification.notificationTypeGroupName == "Maintenance") {
-              _showMaintainance = true;
-              List<String> maintainanceList = ["Overdue", "Upcoming"];
-              _notificationSubTypes.addAll(maintainanceList);
-              _notificationTyeGroupId = notification.notificationTypeGroupID;
-               for (var item in notification.notificationTypes!) {
-                _notificationTypeId = item.notificationTypeID;
-                _operandId = item.operands!.first.operandID;
-              }
-            }
-          }
-
-          _loading = false;
-          _loadingMore = false;
-        }
-      } else {
-        // for (var notification in response.notificationTypeGroups!) {
-        //   if (value == notification.notificationTypeGroupName &&
-        //       notification.notificationTypes!.isNotEmpty) {
-        //     for (var item in notification.notificationTypes!) {
-        //       notificationSubTypes.add(item.notificationTypeName);
-        //     }
-        //   }
-        // }
-
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-      }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-    }
-
-    notifyListeners();
-
-    Logger().wtf(response);
-  }
-
-  getNotificationTypesData() async {
-    AlertTypes? response = await _notificationService!.getNotificationTypes();
-
-    if (response != null) {
-      if (response.notificationTypeGroups != null &&
-          response.notificationTypeGroups!.isNotEmpty) {
-        for (var notification in response.notificationTypeGroups!) {
-          _noticationTypes.add(notification.notificationTypeGroupName!);
-        }
-
-        _loading = false;
-        _loadingMore = false;
-      } else {
-        for (var notification in response.notificationTypeGroups!) {
-          _noticationTypes.add(notification.notificationTypeGroupName!);
-        }
-
-        _loading = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-      }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-    }
-    notifyListeners();
-
-    Logger().wtf(response);
-  }
-
+  // text editing controller
+  TextEditingController inclusionZoneName = TextEditingController();
+  TextEditingController exclusionZoneName = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController notificationController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController occurenceController = TextEditingController();
+  TextEditingController assetStatusOccurenceController =
+      TextEditingController();
+  TextEditingController engineHoursOccurenceController =
+      TextEditingController();
+  TextEditingController excessiveDailyOccurenceController =
+      TextEditingController();
+  TextEditingController fuelOccurenceController = TextEditingController();
+  TextEditingController fuelLosssOccurenceController = TextEditingController();
+  TextEditingController odometerOccurenceController = TextEditingController();
+  TextEditingController geofenceOccurenceController = TextEditingController();
 
-  Groups? groups;
+  // text editing controller ----------------------------
+
 
   
+
+  onChangingSubType(value) {
+    _dropDownSubInitialValue = value;
+    notifyListeners();
+  }
+ 
+
+  
+ 
+
+  List<ScheduleData> schedule = [
+    ScheduleData(
+        day: 0,
+        title: "SUN",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "MON",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "TUE",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "WED",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "THU",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "FRI",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+    ScheduleData(
+        day: 0,
+        title: "SAT",
+        startTime: "00:00",
+        endTime: "24:00",
+        initialVale: "select"),
+  ];
+
+  Groups? groups;
 
   AssetGroupSummaryResponse? groupSummaryResponseData;
 
@@ -594,25 +239,727 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   List<String> assetUidData = [];
 
-  checkIfNotificationNameExist(String? value) async{
-    try{
-       NotificationExist? notificationExists = await _notificationService!.checkNotificationTitle(value);
+  List<SwitchState> switchState = [
+    SwitchState(state: true, text: "Open"),
+    SwitchState(state: true, text: "Close")
+  ];
+  List<SwitchState> powerModeState = [
+    SwitchState(state: true, text: "Economy"),
+    SwitchState(state: true, text: "Standard"),
+    SwitchState(state: true, text: "Run")
+  ];
 
-       if(notificationExists!.alertTitleExists == true){
-          _snackBarservice!.showSnackbar(message: "Notification title exists");
+  List<SwitchState> severityState = [
+    SwitchState(state: true, text: "High"),
+    SwitchState(state: true, text: "Medium"),
+    SwitchState(state: true, text: "Low")
+  ];
 
-       }
-       notifyListeners();
+  List<SwitchState> faultCodeType = [
+    SwitchState(state: true, text: "Event"),
+    SwitchState(state: true, text: "Diagnostic")
+  ];
 
-    }on DioError catch (e) {
-      final error = DioException.fromDioError(e);
-      Fluttertoast.showToast(msg: error.message!);
+  List<SwitchState> customizableState = [
+    SwitchState(state: false, text: "Include"),
+    SwitchState(state: false, text: "Exclude")
+  ];
+  List<SwitchState> customizable = [
+    SwitchState(state: false, text: "Customize"),
+  ];
+
+  List<SwitchState> fluidAnalysisState = [
+    SwitchState(state: true, text: "Action Required"),
+    SwitchState(state: true, text: "Monitor"),
+    SwitchState(state: true, text: "No Action"),
+  ];
+
+  List<SwitchState> inspectionState = [
+    SwitchState(state: true, text: "Red"),
+    SwitchState(state: true, text: "Yellow"),
+    SwitchState(state: true, text: "Green"),
+    SwitchState(state: true, text: "Grey"),
+  ];
+
+  List<SwitchState> assetSecurityState = [
+    SwitchState(state: true, text: "Normal Operation"),
+    SwitchState(state: true, text: "Disabled"),
+    SwitchState(state: true, text: "Derated"),
+  ];
+
+  List<SwitchState> overDueState = [
+    SwitchState(
+        state: true,
+        text: "Hours After Overdue",
+        controller: TextEditingController()),
+    SwitchState(
+        state: true,
+        text: "Distance Travelled After Overdue",
+        controller: TextEditingController()),
+  ];
+  List<SwitchState> upcomingState = [
+    SwitchState(
+        state: true,
+        text: "Due in",
+        controller: TextEditingController(),
+        suffixTitle: "Miles"),
+    SwitchState(
+        state: true,
+        text: "Due in",
+        controller: TextEditingController(),
+        suffixTitle: "Hours"),
+    SwitchState(
+        state: true,
+        text: "Due in",
+        controller: TextEditingController(),
+        suffixTitle: "Days"),
+  ];
+
+  PageController pageController = PageController();
+  Completer<GoogleMapController> googleMapController = Completer();
+  CameraPosition centerPosition = CameraPosition(
+    target: LatLng(30.666, 76.8127),
+  );
+
+  double radius = 50000;
+  int page = 1;
+  Set<Circle> circle = {};
+  List<CheckBoxDropDown> geoenceData = [];
+  List<String> selectedList = [];
+  String expansionTitle = "Description";
+  int notificationTypeGroupID = 0;
+  int notificationTypeId = 0;
+  List<Operand> operandData = [];
+  NotificationTypes? notificationType;
+
+  List<User> selectedUser = [];
+
+  TextEditingController faultCodeSearchController = TextEditingController();
+
+  List<FaultCodeDetails>? faultCodeTypeSearch = [];
+  List<FaultCodeDetails>? SelectedfaultCodeTypeSearch = [];
+
+  onConformingDropDown(List<String> value) {
+    selectedList = value;
+    Logger().e(value);
+    notifyListeners();
+  }
+
+  editingNotification(AlertConfigEdit data) {
+    isEditing = true;
+    notificationController.text = data.alertConfig!.notificationTitle!;
+    notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
+    notificationTypeId = data.alertConfig!.notificationTypeID!;
+    _dropDownInitialValue = data.alertConfig!.notificationType!;
+    alertConfigUid = data.alertConfig!.alertConfigUID;
+    _showZone = true;
+    alertConfigData = data;
+
+    alertConfigData?.alertConfig?.operands?.forEach((element) {
+      operandData.add(Operand(
+          operandID: element.operandID,
+          operatorId: element.operatorID,
+          value: element.value));
+    });
     
+    if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
+      schedule.clear();
+      alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
+      var endTimeHour =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
+              .hour
+              .toString()
+              .padLeft(2, '0');
+      var endTimeMinute =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
+              .minute
+              .toString()
+              .padLeft(2, '0');
+      var startTimeHour =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
+              .hour
+              .toString()
+              .padLeft(2, '0');
+      var startTimeMinute =
+          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
+              .minute
+              .toString()
+              .padLeft(2, '0');
+      schedule.add(ScheduleData(
+          day: element.scheduleDayNum,
+          endTime: '$endTimeHour:$endTimeMinute',
+          startTime: '$startTimeHour:$startTimeMinute',
+          initialVale: "Range",
+          title: "sun"));
+    });
+    }
+    _notificationSubTypes.clear();
+    if (data.alertConfig!.operands!.isNotEmpty) {
+      data.alertConfig!.operands!.forEach((element) {
+        _dropDownSubInitialValue = element.condition!;
+        _notificationSubTypes.add(element.condition);
+      });
+    }
+    data.alertConfig!.assets!.forEach((element) {
+      assetUidData.add(element.assetUID!);
+    });
+    notifyListeners();
+  }
 
+  onAddingFaultCode(int i) {
+    var data = faultCodeTypeSearch!.elementAt(i);
+    faultCodeTypeSearch!.remove(data);
+    SelectedfaultCodeTypeSearch!.add(data);
+    notifyListeners();
+  }
+
+  onDeletingSelectedFaultCode(int i) {
+    var data = SelectedfaultCodeTypeSearch!.elementAt(i);
+    SelectedfaultCodeTypeSearch!.remove(data);
+    faultCodeTypeSearch!.add(data);
+    notifyListeners();
+  }
+
+  onSelectingDropDown(int i) {
+    geoenceData[i].isSelected = !geoenceData[i].isSelected!;
+    notifyListeners();
+  }
+
+// occurence textbox change
+
+  // onChagingOccurenceBox(String value) {
+
+  // }
+
+  // onChagingAssetOccurenceBox(String value) {}
+
+  // onChagingeEngineHourOccurenceBox(String value) {}
+
+  // onChagingeExcessiveOccurenceBox(String value) {}
+
+  // onChagingeFuelOccurenceBox(String value) {}
+
+  // onChagingeFuelLossOccurenceBox(String value) {}
+
+  // onChagingeOdometerOccurenceBox(String value) {}
+
+  // onChagingeGeofenceOccurenceBox(String value) {}
+
+  // switching state of the switch_button
+
+  onCustomiozablestateChange(int i) {
+    customizable[i].state = !customizable[i].state!;
+    // customizableState.forEach((element) {
+    //   element.state = !element.state!;
+    // });
+    notifyListeners();
+  }
+
+  checkingSwitchState(int i) {
+    switchState[i].state = !switchState[i].state!;
+    notifyListeners();
+  }
+
+  checkingPowerModeState(int i) {
+    powerModeState[i].state = !powerModeState[i].state!;
+    notifyListeners();
+  }
+
+  checkingSeverityState(int i) {
+    severityState[i].state = !severityState[i].state!;
+    notifyListeners();
+  }
+
+  checkingFaultCodeTypeState(int i) {
+    faultCodeType[i].state = !faultCodeType[i].state!;
+    notifyListeners();
+  }
+
+  checkingCustomizeableState(int i) {
+    customizableState[i].state = !customizableState[i].state!;
+    notifyListeners();
+  }
+
+  checkingFluidAnalysisState(int i) {
+    fluidAnalysisState[i].state = !fluidAnalysisState[i].state!;
+    notifyListeners();
+  }
+
+  checkingInspectionState(int i) {
+    inspectionState[i].state = !inspectionState[i].state!;
+    notifyListeners();
+  }
+
+  checkingAssetSecurityState(int i) {
+    assetSecurityState[i].state = !assetSecurityState[i].state!;
+    notifyListeners();
+  }
+
+  checkingOverduestate(int i) {
+    overDueState[i].state = !overDueState[i].state!;
+    notifyListeners();
+  }
+
+  checkingUpcomingState(int i) {
+    upcomingState[i].state = !upcomingState[i].state!;
+    notifyListeners();
+  }
+
+  // switching state of the switch_button ------------------------------
+
+  onChangingFaultCode(String value) async {
+    try {
+      if (value.length >= 3) {
+        var faultCodeType =
+            await _notificationService!.getFaultCodeTypeSearch(value, page, "");
+
+        faultCodeTypeSearch = faultCodeType!.descriptions;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
-  
+  onExpansion(bool value, int index) {
+    faultCodeTypeSearch![index].isExpanded = value;
+    notifyListeners();
+  }
+
+  onAddingInclusion() {
+    isAddingInclusionZone = true;
+    notifyListeners();
+  }
+
+  onAddingExclusion() {
+    isAddingExclusionZone = true;
+    notifyListeners();
+  }
+
+  onSliderChange(double value) {
+    radius = value;
+    var sliderCircle;
+    circle.forEach((element) {
+      sliderCircle = Circle(
+          radius: radius,
+          strokeWidth: element.strokeWidth,
+          strokeColor: element.strokeColor,
+          visible: true,
+          circleId: element.circleId,
+          center: element.center,
+          fillColor: element.fillColor);
+    });
+    circle.clear();
+    circle.add(sliderCircle);
+
+    notifyListeners();
+  }
+
+  onEditing() {
+    isDrawing = !isDrawing;
+    Logger().i("editing $isDrawing");
+    notifyListeners();
+  }
+
+  onDeleting() {
+    circle.clear();
+    notifyListeners();
+  }
+
+  onCreateInclusionZone() {
+    isAddingInclusionZone = false;
+    isAddingExclusionZone = false;
+    notifyListeners();
+  }
+
+  onCreateExclusionZone() {
+    isAddingInclusionZone = false;
+    isAddingExclusionZone = false;
+    notifyListeners();
+  }
+
+  onInclusionZoneCreating(LatLng value) {
+    Logger().e(value);
+    if (isDrawing) {
+      var createdCircle = Circle(
+          strokeColor: Colors.lightBlue[300]!,
+          strokeWidth: 2,
+          radius: radius,
+          visible: true,
+          circleId: CircleId(DateTime.now().toString()),
+          center: value,
+          fillColor: Colors.white70);
+      circle.add(createdCircle);
+      isDrawing = false;
+    }
+    notifyListeners();
+  }
+
+  onSelectingEmailList(String value) {
+    emailController.text = value;
+    isHideSearchList = false;
+    notifyListeners();
+  }
+
+  addContact() {
+    isShowingSelectedContact = true;
+    var data = searchContactListName!
+        .where((element) => element.email!.contains(emailController.text));
+    if (selectedUser
+        .any((element) => element.email!.contains(data.first.email!))) {
+    } else {
+      emailController.clear();
+      selectedUser.add(data.first);
+      emailIds!.add(data.first.name!);
+    }
+    notifyListeners();
+  }
+
+  onGettingFaultCodeData() async {
+    try {
+      showLoadingDialog();
+    var faultCodeType =
+        await _notificationService!.getFaultCodeTypeSearch("", page, "");
+    if (_loadingMore) {
+      faultCodeType!.descriptions!.forEach((element) {
+        faultCodeTypeSearch!.add(FaultCodeDetails(
+            faultCodeIdentifier: element.faultCodeIdentifier,
+            faultCodeType: element.faultCodeType,
+            faultDescription: element.faultDescription,
+            isExpanded: element.isExpanded));
+      });
+    } else {
+      faultCodeTypeSearch = faultCodeType?.descriptions;
+    }
+
+    hideLoadingDialog();
+
+    notifyListeners();
+    } catch (e) {
+      hideLoadingDialog();
+    }
+    
+  }
+
+  onDescriptionFrontPressed() async {
+    pageController.animateToPage(2,
+        duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+  }
+
+  onDescriptionBackPressed() {
+    Logger().e(isFaultCodePressed);
+    if (isFaultCodePressed) {
+      pageController.animateToPage(1,
+          duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+    } else {
+      pageController.animateToPage(0,
+          duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+    }
+  }
+
+  onFaultCodeFrontPressed() {
+    pageController.animateToPage(1,
+        duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+    isFaultCodePressed = true;
+    notifyListeners();
+  }
+
+  onDiagnosticFrontPressed() async {
+    showLoadingDialog();
+    expansionTitle = "Fault Code Type";
+    var faultCodeType = await _notificationService!
+        .getFaultCodeTypeSearch("", page, "DIAGNOSTIC");
+    faultCodeTypeSearch = faultCodeType!.descriptions;
+    Future.delayed(Duration(seconds: 1), () {
+      pageController.animateToPage(2,
+          duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+      hideLoadingDialog();
+    });
+    notifyListeners();
+  }
+
+  onEventFrontPressed() async {
+    showLoadingDialog();
+    expansionTitle = "Fault Code Type";
+    var faultCodeType =
+        await _notificationService!.getFaultCodeTypeSearch("", page, "EVENT");
+    faultCodeTypeSearch = faultCodeType!.descriptions;
+    Future.delayed(Duration(seconds: 1), () {
+      pageController.animateToPage(2,
+          duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
+      hideLoadingDialog();
+    });
+    notifyListeners();
+  }
+
+  onChangingInclusion(List<String> value) {
+    Logger().w(value);
+    notifyListeners();
+  }
+
+  onSelectingInclusion(int i) {
+    zoneNamesInclusion[i].isSelected = !zoneNamesInclusion[i].isSelected!;
+    notifyListeners();
+  }
+
+  onSelectingExclusion(int i) {
+    zoneNamesExclusion[i].isSelected = !zoneNamesExclusion[i].isSelected!;
+    notifyListeners();
+  }
+
+  onChangingExclusion(List<String> value) {
+    Logger().e(value);
+    notifyListeners();
+  }
+
+  updateModelValue(String value) {
+    _dropDownInitialValue = value;
+    _showZone = true;
+
+    getNotificationSubTypes();
+  }
+
+  updateSubModelValue(String value) {
+    _dropDownSubInitialValue = value;
+    notifyListeners();
+  }
+
+  updateType(String value, int i) {
+    schedule[i].initialVale = value;
+    notifyListeners();
+  }
+
+  updateStartTime(String value, int i) {
+    Logger().e(value);
+    schedule[i].startTime = value;
+    notifyListeners();
+  }
+
+  updateEndTime(String value, int i) {
+    schedule[i].endTime = value;
+    notifyListeners();
+  }
+
+  onCreatingInclusionZone() async {
+    var data = await _notificationService!.creatingZone(ZoneCreating(
+      latitude: circle.first.center.latitude,
+      longitude: circle.first.center.longitude,
+      radius: circle.first.radius,
+      zoneName: inclusionZoneName.text,
+    ));
+    _zoneNamesInclusion.add(CheckBoxDropDown(items: inclusionZoneName.text));
+    onCreateInclusionZone();
+  }
+
+  onCreatingExclusionZone() async {
+    var data = await _notificationService!.creatingZone(ZoneCreating(
+      latitude: circle.first.center.latitude,
+      longitude: circle.first.center.longitude,
+      radius: circle.first.radius,
+      zoneName: exclusionZoneName.text,
+    ));
+    _zoneNamesExclusion.add(CheckBoxDropDown(items: exclusionZoneName.text));
+    onCreateExclusionZone();
+  }
+
+  getInclusionExclusionZones() async {
+    showLoadingDialog();
+    ZoneValues? response =
+        await _notificationService!.getInclusionExclusionZones();
+    if (response != null) {
+      response.zones!.forEach((zones) {
+        if (_zoneNamesInclusion
+            .any((element) => element.items!.contains(zones.zoneName!))) {
+        } else {
+          zoneNamesInclusion.add(CheckBoxDropDown(items: zones.zoneName));
+        }
+        if (_zoneNamesExclusion
+            .any((element) => element.items!.contains(zones.zoneName!))) {
+        } else {
+          zoneNamesExclusion.add(CheckBoxDropDown(items: zones.zoneName));
+        }
+      });
+    }
+    Logger().e(zoneNamesInclusion);
+    notifyListeners();
+    hideLoadingDialog();
+  }
+
+  getNotificationSubTypes() async {
+    _notificationSubTypes.clear();
+    _notificationSubTypes = ["Options"];
+    _dropDownSubInitialValue = "Options";
+    alterTypes!.notificationTypeGroups?.forEach((notificationTypeGroup) {
+      if (notificationTypeGroup.notificationTypeGroupName ==
+              _dropDownInitialValue ||
+          notificationTypeGroup.notificationTypes!.any((notificationType) =>
+              notificationType.appName!.contains(_dropDownInitialValue))) {
+        Logger().e(notificationTypeGroup.toJson());
+        if (notificationTypeGroup.notificationTypeGroupName!
+            .contains("Geofence")) {
+          notificationTypeGroup.notificationTypes!.forEach((notification) {
+            notification.siteOperands!.forEach((element) {
+              _notificationSubTypes.add(element.operandName);
+            });
+          });
+          _notificationSubTypes
+              .add("${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          Logger().e(notificationTypeGroup.toJson());
+          getGeofenceData();
+        }
+        if (notificationTypeGroup.notificationTypeGroupName!
+            .contains("Zone Inclusion/Exclusion")) {
+          _dropDownSubInitialValue = "Select Inclusion Zone";
+          getInclusionExclusionZones();
+        }
+        notificationTypeGroup.notificationTypes?.forEach((notificationType) {
+          notificationType.operands?.forEach((operand) async {
+            if (operand.operandName!.contains("Fuel Level")) {
+              _notificationSubTypes.clear();
+              _notificationSubTypes = ["Conditions"];
+              _dropDownSubInitialValue = "Conditions";
+              operand.operators!.forEach((operator) {
+                _notificationSubTypes.add(operator.name);
+              });
+            } else if (operand.operandName!.contains("Engine Hours")) {
+              _notificationSubTypes.clear();
+              _notificationSubTypes = ["Conditions"];
+              _dropDownSubInitialValue = "Conditions";
+              operand.operators!.forEach((operator) {
+                _notificationSubTypes.add(operator.name);
+              });
+            } else if (operand.operandName!.contains("Odometer")) {
+              _notificationSubTypes.clear();
+              _notificationSubTypes = ["Conditions"];
+              _dropDownSubInitialValue = "Conditions";
+              operand.operators!.forEach((operator) {
+                _notificationSubTypes.add(operator.name);
+              });
+            } else if (operand.operandName!.contains("Excessive Daily Idle")) {
+              _notificationSubTypes.clear();
+              _notificationSubTypes = ["Conditions"];
+              _dropDownSubInitialValue = "Conditions";
+              operand.operators!.forEach((operator) {
+                _notificationSubTypes.add(operator.name);
+              });
+            } else if (notificationTypeGroup.notificationTypeGroupName ==
+                "Asset Status") {
+              _notificationSubTypes.add(operand.operandName);
+            } else if (notificationTypeGroup.notificationTypeGroupName ==
+                "Maintenance") {
+              _notificationSubTypes.clear();
+              _dropDownSubInitialValue = "Status";
+              _notificationSubTypes.addAll(["Status", "Overdue", "Upcoming"]);
+            } else {
+              _notificationSubTypes.clear();
+              Logger().e(dropDownInitialValue);
+              Logger().e(dropDownSubInitialValue);
+            }
+          });
+        });
+      }
+    });
+    Logger().w(_notificationSubTypes);
+    Logger().wtf(_dropDownSubInitialValue);
+    notifyListeners();
+  }
+
+  getGeofenceData() async {
+    try {
+      showLoadingDialog();
+      geoenceData.clear();
+      var data = await _geofenceservice!.getGeofenceData();
+      if (data != null) {
+        data.Geofences!.forEach((element) {
+          geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
+        });
+      }
+      hideLoadingDialog();
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  getNotificationTypesData() async {
+    try {
+      alterTypes = await _notificationService!.getNotificationTypes();
+
+    if (alterTypes != null) {
+      alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
+        notificationTypeGroup.notificationTypes!.forEach((notificationType) {
+          if (notificationType.appName == "VL Unified Fleet" ||
+              notificationType.appName == "Frame-Fleet-IND") {
+            //Logger().w(notificationType.toJson());
+            if (notificationTypeGroup.notificationTypeGroupName!.isNotEmpty) {
+              if (notificationFleetType!.any((element) => element.contains(
+                  notificationTypeGroup.notificationTypeGroupName!))) {
+              } else {
+                if (notificationTypeGroup.notificationTypeGroupName ==
+                    "Geofence") {
+                  if (geofenceAssets!.any((element) => element.contains(
+                      notificationTypeGroup.notificationTypeGroupName!))) {
+                  } else {
+                    geofenceAssets!
+                        .add(notificationTypeGroup.notificationTypeGroupName!);
+                  }
+                } else {
+                  if (notificationTypeGroup.notificationTypeGroupName ==
+                      "Asset Security") {
+                    if (administratortAssets!.any((element) => element.contains(
+                        notificationTypeGroup.notificationTypeGroupName!))) {
+                    } else {
+                      administratortAssets!.add(
+                          notificationTypeGroup.notificationTypeGroupName!);
+                    }
+                  } else {
+                    notificationFleetType!
+                        .add(notificationTypeGroup.notificationTypeGroupName!);
+                  }
+                }
+              }
+            } else {
+              notificationFleetType!
+                  .add(notificationType.notificationTypeName!);
+            }
+          } else if (notificationType.appName == "VL Unified Service" ||
+              notificationType.appName == "Frame-Service-IND") {
+            notificationServiceType!
+                .add(notificationType.notificationTypeName!);
+          } else if (notificationType.appName == "VisionLink Administrator" ||
+              notificationType.appName == "Frame-Administrator-IND") {
+            administratortAssets!.add(notificationType.notificationTypeName!);
+          } else {
+            geofenceAssets!.add(notificationType.notificationTypeName!);
+          }
+        });
+      });
+    }
+
+    notifyListeners();
+    } catch (e) {
+      hideLoadingDialog();
+    }
+    
+  }
+
+  checkIfNotificationNameExist(String? value) async {
+    try {
+      if (value!.length >= 4) {
+        NotificationExist? notificationExists =
+            await _notificationService!.checkNotificationTitle(value);
+
+        if (notificationExists!.alertTitleExists == true) {
+          _snackBarservice!.showSnackbar(message: "Notification title exists");
+        }
+        notifyListeners();
+      }
+    } on DioError catch (e) {
+      final error = DioException.fromDioError(e);
+      Fluttertoast.showToast(msg: error.message!);
+    }
+  }
+
   getEditGroupData() async {
     try {
       showLoadingDialog();
@@ -632,6 +979,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       hideLoadingDialog();
       notifyListeners();
     } catch (e) {
+      hideLoadingDialog();
       Logger().e(e.toString());
     }
   }
@@ -644,15 +992,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
- 
-
   gotoManageNotificationsPage() {
     _navigationService!.clearTillFirstAndShowView(ManageNotificationsView());
   }
 
   onRemovedSelectedContact(int index) {
     try {
-      selectedContactItems!.removeAt(index);
+      selectedUser.removeAt(index);
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
@@ -660,11 +1006,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   searchContacts(String searchValue) {
-    _searchKeyword = searchValue;
-    isHideSearchList = true;
-    notifyListeners();
-
-    getContactSearchReportData();
+    if (searchValue.length >= 4) {
+      _searchKeyword = searchValue;
+      isHideSearchList = true;
+      notifyListeners();
+      getContactSearchReportData();
+    }
   }
 
   getContactSearchReportData() async {
@@ -685,78 +1032,234 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  cancel(){
-    _showConditionTypes = false;
-    _showNotificationType = false;
-    _showFuelLoss = false;
-    _setOdometer = false;
-    _selectPowerMode = false;
-    _showFaultCodes = false;
-    _showSwitches = false;
-    _showFluidAnalysis = false;
-    _showInspections = false;
-    _showMaintainance = false;
-    _showAssetSecurity = false;
-    _showZone = false;
-    nameController.clear();
-    notificationController.clear();
-    emailController.clear();
-    descriptionController.clear();
-    occurenceController.clear();
+  // cancel() {
+  //   _showConditionTypes = false;
+  //   _showNotificationType = false;
+  //   _showFuelLoss = false;
+  //   _setOdometer = false;
+  //   _selectPowerMode = false;
+  //   _showFaultCodes = false;
+  //   _showSwitches = false;
+  //   _showFluidAnalysis = false;
+  //   _showInspections = false;
+  //   _showMaintainance = false;
+  //   _showAssetSecurity = false;
+  //   _showZone = false;
+  //   nameController.clear();
+  //   notificationController.clear();
+  //   emailController.clear();
+  //   descriptionController.clear();
+  //   occurenceController.clear();
 
-    notifyListeners();
+  //   notifyListeners();
+  // }
 
+  gettingNotificationIdandOperands() {
+    if (_dropDownInitialValue == "Fault Code") {
+      var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+          .singleWhere(
+              (element) => element.notificationTypeGroupName == "Fault");
+      Logger().wtf(notificationTypeGroups.toJson());
+      notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+      notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+          (element) => element.notificationTypeName == _dropDownInitialValue);
+      Logger().wtf(notificationType!.toJson());
+      notificationTypeId = notificationType!.notificationTypeID!;
+    } else {
+      var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+          .singleWhere((element) =>
+              element.notificationTypeGroupName == _dropDownInitialValue);
+      Logger().wtf(notificationTypeGroups.toJson());
+      notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+      if (notificationTypeGroups.notificationTypes!
+          .any((element) => element.notificationTypeName == "Fuel Level")) {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere(
+                (element) => element.notificationTypeName == "Fuel Level");
+        notificationTypeId = notificationType!.notificationTypeID!;
+        Logger().w(notificationType!.toJson());
+      }
+      if (notificationTypeGroups.notificationTypes!.any(
+          (element) => element.notificationTypeName == _dropDownInitialValue)) {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere((element) =>
+                element.notificationTypeName == _dropDownInitialValue);
+        Logger().w(notificationType!.toJson());
+        notificationTypeId = notificationType!.notificationTypeID!;
+      }
+      if (notificationTypeGroups.notificationTypes!.any((element) =>
+          element.notificationTypeName == _dropDownSubInitialValue)) {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere((element) =>
+                element.notificationTypeName == _dropDownSubInitialValue);
+        Logger().w(notificationType!.toJson());
+        notificationTypeId = notificationType!.notificationTypeID!;
+      }
+    }
+    Logger().i("notificationGroupId : $notificationTypeGroupID");
+    Logger().i("notificationTypeId : $notificationTypeId");
+
+    notificationType?.operands?.forEach((operand) {
+      if (operand.operandName == "Fuel Loss") {
+        var operator = operand.operators!.forEach((element) {
+          Logger().e(element.toJson());
+          operandData.clear();
+          operandData.add(Operand(
+              operandID: operand.operandID,
+              operatorId: element.operatorID,
+              value: "1"));
+        });
+      }
+      if (operand.operandName == "Power Mode") {
+        var operator = operand.operators!.forEach((element) {
+          Logger().e(element.toJson());
+          if (SelectedfaultCodeTypeSearch!.isEmpty) {
+            operandData.clear();
+            operandData.add(Operand(
+                operandID: operand.operandID,
+                operatorId: element.operatorID,
+                value: "1"));
+          } else {
+            operandData.clear();
+            operandData.add(Operand(
+                operandID: operand.operandID,
+                operatorId: element.operatorID,
+                value: "1"));
+          }
+        });
+      }
+      if (operand.operandName == "Fuel Level") {
+        var operator = operand.operators!
+            .singleWhere((element) => element.name == _dropDownSubInitialValue);
+        Logger().e(operator.toJson());
+        operandData.clear();
+        operandData.add(Operand(
+            operandID: operand.operandID,
+            operatorId: operator.operatorID,
+            value: "1"));
+      }
+      if (operand.operators!
+          .any((element) => element.name == _dropDownSubInitialValue)) {
+        var operator = operand.operators!
+            .singleWhere((element) => element.name == _dropDownSubInitialValue);
+        Logger().e(operator.toJson());
+        operandData.clear();
+        operandData.add(Operand(
+            operandID: operand.operandID,
+            operatorId: operator.operatorID,
+            value: "1"));
+      } else {
+        operand.operators!.forEach((operator) {
+          // Logger().e(operator.toJson());
+          operandData.clear();
+          operandData.add(Operand(
+              operandID: operand.operandID,
+              operatorId: operator.operatorID,
+              value: "1"));
+        });
+        operandData.forEach((element) {
+          Logger().e(element.toJson());
+        });
+      }
+    });
+  }
+
+  editNotification() async {
+    AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
+        alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
+        alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
+        alertTitle: notificationController.text,
+        allAssets: false,
+        assetUIDs: assetUidData,
+        currentDate: alertConfigData!.alertConfig!.createdDate,
+        notificationDeliveryChannel: "email",
+        notificationTypeGroupID:
+            alertConfigData!.alertConfig!.notificationTypeGroupID,
+        notificationSubscribers: NotificationSubscribers(emailIds: emailIds),
+        notificationTypeId: alertConfigData!.alertConfig!.notificationTypeID,
+        schedule: schedule
+            .map((e) => Schedule(
+                  day: e.day,
+                  endTime: e.items![2] == e.initialVale &&
+                          e.items![0] == e.initialVale
+                      ? "00:00"
+                      : e.endTime,
+                  startTime: e.items![2] == e.initialVale &&
+                          e.items![0] == e.initialVale
+                      ? "00:00"
+                      : e.startTime,
+                ))
+            .toList(),
+        operands: operandData,
+        numberOfOccurences: 1);
+    var data = await _notificationService!
+        .editNotification(payLoadData, alertConfigUid!);
+        if (data != null) {
+        _snackBarservice!
+            .showSnackbar(message: "Edit Notification Success");
+
+        hideLoadingDialog();
+        gotoManageNotificationsPage();
+      }
   }
 
   saveAddNotificationData() async {
-    var currentDate = DateTime.now();
-    var newFormat = DateFormat("dd-MM-yy");
-    String date = newFormat.format(currentDate);
+    if (isEditing) {
+      editNotification();
+    } else {
+      var currentDate = DateTime.now();
+      var newFormat = DateFormat("dd-MM-yy");
+      String date = newFormat.format(currentDate);
 
-    AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
-      alertCategoryID: 1
-      alertGroupId: 1,
-      alertTitle: notificationController.text
-      allAssets: false,
-      assetUIDs: ["${accountSelected!.CustomerUID}"],
-      currentDate:date,
-      notificationDeliveryChannel: "email",
-      notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:["+917619168091@airtel.com"]),
-      notificationTypeGroupID: _notificationTyeGroupId,
-      notificationTypeId: _notificationTypeId,
-      operands:[ Operand(operandID: 36, operatorId: 51, value: "1")],
-      // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
-      numberOfOccurences: 1,
-      schedule:[ Schedule(day: 0, startTime: "00:00", endTime: " 00:24"),Schedule(day: 1, startTime: "00:00", endTime: " 00:24"),Schedule(day: 2, startTime: "00:00", endTime: " 00:24"),Schedule(day: 3, startTime: "00:00", endTime: " 00:24"),Schedule(day: 4, startTime: "00:00", endTime: " 00:24"),Schedule(day: 5, startTime: "00:00", endTime: " 00:24"),Schedule(day: 6, startTime: "00:00", endTime: " 00:24"),]
-    );
+    await gettingNotificationIdandOperands();
+AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
+        alertCategoryID: 1,
+        alertGroupId: 1,
+        alertTitle: notificationController.text,
+        allAssets: false,
+        assetUIDs: assetUidData,
+        currentDate:DateFormat("MM/dd/yyyy").format(DateTime.now()),
+        notificationDeliveryChannel: "email",
+        notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:[])
+        notificationTypeGroupID: notificationTypeGroupID,
+        notificationTypeId: notificationTypeId,
+        operands:operandData,
+        // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
+        numberOfOccurences: 1
+        schedule:schedule.map((e) => Schedule(day: e.day,endTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.endTime,startTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.startTime,)).toList()
+        );
 
-    try{
+        Logger().w(notificationPayLoad.toJson());
+
+    try {
       if (notificationController.text.isEmpty) {
-        _snackBarservice!.showSnackbar(message: "Notification Name is be required");
+        _snackBarservice!
+            .showSnackbar(message: "Notification Name is be required");
         return;
       }
 
-      NotificationAdded? response = await _notificationService!.addNewNotification(notificationPayLoad);
-
+      NotificationAdded? response =
+          await _notificationService!.addNewNotification(notificationPayLoad);
 
       showLoadingDialog();
-      
+
       if (response != null) {
-        
-        _snackBarservice!.showSnackbar(message: "You have added a new notification");
-        
+        _snackBarservice!
+            .showSnackbar(message: "Add Notification Success");
+
         hideLoadingDialog();
         gotoManageNotificationsPage();
-      }else{
-         _snackBarservice!.showSnackbar(message: "Kindly recheck credentials added");
+      } else {
+        _snackBarservice!
+            .showSnackbar(message: "Kindly recheck credentials added");
       }
       hideLoadingDialog();
       Logger().i(response!.toJson());
       notifyListeners();
-    }catch(e){
+    } catch (e) {
       Logger().e(e.toString());
     }
-
+    }
   }
 
   onItemContactSelected(int index) {
@@ -768,4 +1271,33 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
     notifyListeners();
   }
+}
+
+class SwitchState {
+  bool? state;
+  String? text;
+  TextEditingController? controller;
+  String? suffixTitle;
+  SwitchState({this.state, this.text, this.controller, this.suffixTitle});
+}
+
+class ScheduleData {
+  int? day;
+  String? startTime;
+  String? endTime;
+  String? title;
+  List<String>? items;
+  String? initialVale;
+
+  ScheduleData(
+      {this.day,
+      this.startTime,
+      this.endTime,
+      this.title,
+      this.initialVale,
+      this.items = const [
+        "select",
+        "Range",
+        "All day",
+      ]});
 }

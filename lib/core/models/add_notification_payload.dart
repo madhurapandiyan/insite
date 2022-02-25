@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'add_notification_payload.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AddNotificationPayLoad {
   int? alertCategoryID;
   List<String>? assetUIDs;
@@ -38,7 +38,7 @@ class AddNotificationPayLoad {
   Map<String, dynamic> toJson() => _$AddNotificationPayLoadToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class NotificationSubscribers {
   List<String>? emailIds;
   List<String>? phoneNumbers;
@@ -50,13 +50,14 @@ class NotificationSubscribers {
   Map<String, dynamic> toJson() => _$NotificationSubscribersToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Schedule {
   int? day;
   String? startTime;
   String? endTime;
+ 
 
-  Schedule({this.day, this.startTime, this.endTime});
+  Schedule({this.day, this.startTime, this.endTime,});
   factory Schedule.fromJson(Map<String, dynamic> json) =>
       _$ScheduleFromJson(json);
 

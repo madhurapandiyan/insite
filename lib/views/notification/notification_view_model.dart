@@ -60,7 +60,7 @@ class NotificationViewModel extends InsiteViewModel {
   bool get showDeSelect => _showDeSelect;
 
   int pageNumber = 1;
-  int pageSize = 50;
+  int pageCount = 50;
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
@@ -99,6 +99,42 @@ class NotificationViewModel extends InsiteViewModel {
     }
     notifyListeners();
     checkEditAndDeleteVisibility();
+  }
+
+  refresh() async {
+    try {
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+      pageNumber = 1;
+      pageCount = 50;
+      _refreshing = true;
+      _shouldLoadmore = true;
+      notifyListeners();
+      Logger().wtf("start date " + startDate!);
+      Logger().wtf("end date " + endDate!);
+
+      await getNotificationData();
+
+      notification.NotificationsData? response = await _mainNotificationService!
+          .getNotificationsData("0", "0", startDate!, endDate!);
+      if (response != null) {
+        _assets.clear();
+        if (response.total!.items != null) {
+          _totalCount = response.total!.items;
+        }
+        if (response.notifications != null &&
+            response.notifications!.isNotEmpty) {
+          _assets.addAll(response.notifications!);
+        }
+        _refreshing = false;
+        notifyListeners();
+      } else {
+        _refreshing = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   onRemovedSelectedNotification(int index) {

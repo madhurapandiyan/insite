@@ -8,6 +8,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
@@ -247,7 +248,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     //   }
     // });
     if (AppConfig.instance!.apiFlavor == "indiastack") {
-      _navigationService!.clearTillFirstAndShow(indiaStack.indiaStackSplashViewRoute);
+      _navigationService!.clearTillFirstAndShowView(IndiaStackSplashView(showingSnackbar: false));
     } else {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }
@@ -277,19 +278,24 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
-        return Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                WebviewScaffold(
-                  url: AppConfig.instance!.apiFlavor == "visionlink"
-                      ? Uri.encodeFull(
-                          Urls.logoutUrlVl(loginResponse!.id_token))
-                      : Uri.encodeFull(Urls.getV4LogoutUrl(
-                          loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
-                ),
-                isLoading ? InsiteProgressBar() : SizedBox()
-              ],
+        return WillPopScope(
+           onWillPop: () {
+            return Future.value(false);
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  WebviewScaffold(
+                    url: AppConfig.instance!.apiFlavor == "visionlink"
+                        ? Uri.encodeFull(
+                            Urls.logoutUrlVl(loginResponse!.id_token))
+                        : Uri.encodeFull(Urls.getV4LogoutUrl(
+                            loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
+                  ),
+                  isLoading ? InsiteProgressBar() : SizedBox()
+                ],
+              ),
             ),
           ),
         );

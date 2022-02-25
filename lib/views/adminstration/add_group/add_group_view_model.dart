@@ -54,7 +54,7 @@ class AddGroupViewModel extends InsiteViewModel {
   getAddGroupSaveData() async {
     try {
       if (nameController.text.isEmpty) {
-        _snackBarservice!.showSnackbar(message: "Name should be required");
+        _snackBarservice!.showSnackbar(message: "Name should be specified");
         return;
       }
 

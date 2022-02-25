@@ -5,6 +5,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/notification_service.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/add_new_notifications_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -94,32 +95,34 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getSearchListData(String? searchValue) async {
-    ManageNotificationsData? response =
-        await _notificationService!.getsearchNotificationsData(searchValue);
-    Logger().wtf(response!.toJson());
-    _notifications.clear();
+    if (searchValue!.length >= 4) {
+      ManageNotificationsData? response =
+          await _notificationService!.getsearchNotificationsData(searchValue);
+      Logger().wtf(response?.toJson());
+      _notifications.clear();
 
-    if (response != null) {
-      if (response.configuredAlerts != null &&
-          response.configuredAlerts!.isNotEmpty) {
-        _notifications.addAll(response.configuredAlerts!);
+      if (response != null) {
+        if (response.configuredAlerts != null &&
+            response.configuredAlerts!.isNotEmpty) {
+          _notifications.addAll(response.configuredAlerts!);
 
-        _loading = false;
-        _loadingMore = false;
-        _isSearching = false;
-        notifyListeners();
+          _loading = false;
+          _loadingMore = false;
+          _isSearching = false;
+          notifyListeners();
+        } else {
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          _isSearching = false;
+          notifyListeners();
+        }
       } else {
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         _isSearching = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      _isSearching = false;
-      notifyListeners();
     }
   }
 
@@ -131,6 +134,18 @@ class ManageNotificationsViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  editNotification(int i) async {
+    showLoadingDialog();
+    var data = await _notificationService!
+        .alertConfigEdit(notifications[i].alertConfigUID!);
+    Logger().w(data!.toJson());
+
+    navigationService!.navigateToView(AddNewNotificationsView(
+      alertData: data,
+    ));
+    hideLoadingDialog();
   }
 
   getManageNotificationsData() async {

@@ -24,9 +24,10 @@ ManageNotificationsData _$ManageNotificationsDataFromJson(
 Map<String, dynamic> _$ManageNotificationsDataToJson(
         ManageNotificationsData instance) =>
     <String, dynamic>{
-      'configuredAlerts': instance.configuredAlerts,
-      'links': instance.links,
-      'total': instance.total,
+      'configuredAlerts':
+          instance.configuredAlerts?.map((e) => e.toJson()).toList(),
+      'links': instance.links?.toJson(),
+      'total': instance.total?.toJson(),
       'responseStatus': instance.responseStatus,
     };
 
@@ -52,6 +53,15 @@ ConfiguredAlerts _$ConfiguredAlertsFromJson(Map<String, dynamic> json) =>
       siteOperands: (json['siteOperands'] as List<dynamic>?)
           ?.map((e) => SiteOperand.fromJson(e as Map<String, dynamic>))
           .toList(),
+      assets: (json['assets'] as List<dynamic>?)
+          ?.map((e) => Assets.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      deliveryConfig: (json['deliveryConfig'] as List<dynamic>?)
+          ?.map((e) => DeliveryConfig.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      scheduleDetails: (json['scheduleDetails'] as List<dynamic>?)
+          ?.map((e) => ScheduleDetails.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
@@ -70,8 +80,13 @@ Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
       'numberOfGeofences': instance.numberOfGeofences,
       'alertCategoryID': instance.alertCategoryID,
       'alertGroupID': instance.alertGroupID,
-      'operands': instance.operands,
-      'siteOperands': instance.siteOperands,
+      'operands': instance.operands?.map((e) => e.toJson()).toList(),
+      'siteOperands': instance.siteOperands?.map((e) => e.toJson()).toList(),
+      'assets': instance.assets?.map((e) => e.toJson()).toList(),
+      'scheduleDetails':
+          instance.scheduleDetails?.map((e) => e.toJson()).toList(),
+      'deliveryConfig':
+          instance.deliveryConfig?.map((e) => e.toJson()).toList(),
     };
 
 Operand _$OperandFromJson(Map<String, dynamic> json) => Operand(

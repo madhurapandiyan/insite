@@ -24,7 +24,7 @@ class ManageNotificationWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: InsiteText(
-                  text: alerts!.notificationTitle!.toUpperCase(),
+                  text: alerts?.notificationTitle?.toUpperCase(),
                   size: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -53,9 +53,9 @@ class ManageNotificationWidget extends StatelessWidget {
             height: 20,
           ),
           InsiteText(
-            text: "${alerts!.operands!.first.operandName}" +
+            text: "${alerts?.operands?.first.operandName}" +
                 "  " +
-                "${alerts!.operands!.first.condition}",
+                "${alerts?.operands?.first.condition}",
             size: 15,
             fontWeight: FontWeight.bold,
           ),
@@ -66,14 +66,14 @@ class ManageNotificationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InsiteText(
-                text: "${alerts!.numberOfAssets} " +
-                    "${alerts!.numberOfAssets == 1 ? "Asset" : "Assets"}",
+                text: "${alerts?.numberOfAssets} " +
+                    "${alerts?.numberOfAssets == 1 ? "Asset" : "Assets"}",
                 size: 15,
                 fontWeight: FontWeight.bold,
               ),
               InsiteText(
-                text: alerts!.createdDate != null
-                    ? Utils.getLastReportedDateOneUTC(alerts!.createdDate)
+                text: alerts?.createdDate != null
+                    ? Utils.getLastReportedDateOneUTC(alerts?.createdDate)
                     : "",
                 size: 15,
                 fontWeight: FontWeight.bold,
