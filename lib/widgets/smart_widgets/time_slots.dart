@@ -25,11 +25,10 @@ class TimeSlots extends StatelessWidget {
 
   showTimePickerWidget(Function(String) callBack, BuildContext ctx) {
     showTimePicker(
-       
             builder: (context, child) {
               return Theme(
                 data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.dark(
+                  colorScheme: ColorScheme.light(
                     primary: Colors.white,
                     onSurface: Colors.white,
                   ),
@@ -45,7 +44,7 @@ class TimeSlots extends StatelessWidget {
             context: ctx,
             initialTime: TimeOfDay.now())
         .then((value) {
-                final hours = value!.hour.toString().padLeft(2, '0');
+      final hours = value!.hour.toString().padLeft(2, '0');
       final minutes = value.minute.toString().padLeft(2, '0');
       callBack('$hours:$minutes');
     });

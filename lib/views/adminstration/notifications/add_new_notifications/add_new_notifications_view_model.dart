@@ -27,6 +27,7 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:table_calendar/table_calendar.dart';
 import './model/zone.dart';
 
 import 'model/fault_code_type_search.dart';
@@ -54,6 +55,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
+     
 
     Future.delayed(Duration(seconds: 1), () {
       getNotificationTypesData();
@@ -171,49 +173,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   // text editing controller ----------------------------
 
-  onTap() {
-    for (var i = 0; i < schedule.length; i++) {
-      if (i == 0) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 1) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 2) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 3) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 4) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 5) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-      if (i == 6) {
-        Logger().w(
-            "endTime :-${schedule[i].endTime},startTime :-${schedule[i].startTime},title:-${schedule[i].title},initialValue :-${schedule[i].initialVale}");
-      }
-    }
 
-    // Logger().w(hoursAfetrOverDueController.text);
-    // Logger().w(distanceTravelAfetrOverDueController.text);
-    // Logger().w(upcomingMilesController.text);
-    // Logger().w(upcomingHoursController.text);
-    // Logger().w(upcomingDaysController.text);
-  }
+  
 
   onChangingSubType(value) {
     _dropDownSubInitialValue = value;
     notifyListeners();
   }
+ 
+
+  
+ 
 
   List<ScheduleData> schedule = [
     ScheduleData(

@@ -4,19 +4,27 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class DayCheck extends StatelessWidget {
   final String? day;
-  const DayCheck({this.day});
+  final Color? colour;
+  final VoidCallback? onTap;
+
+  const DayCheck({this.day, this.colour, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          FittedBox(
-            child: InsiteText(
-              text: day,
-              fontWeight: FontWeight.bold,
-              size: 14,
-             ),
+          GestureDetector(
+            onTap: onTap,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: InsiteText(
+                text: day,
+                fontWeight: FontWeight.bold,
+                size: day == "FRI" ? 10 : null,
+                color: colour,
+              ),
+            ),
           ),
           SizedBox(
             height: 10,

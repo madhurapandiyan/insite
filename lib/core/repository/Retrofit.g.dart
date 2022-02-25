@@ -4323,7 +4323,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<NotificationAdded> editNotificationSaveData(
+  Future<dynamic> editNotificationSaveData(
       service, url, addNotificationPayLoad, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4334,13 +4334,12 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addNotificationPayLoad.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationAdded>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NotificationAdded.fromJson(_result.data!);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
+        Options(method: 'PUT', headers: _headers, extra: _extra)
+            .compose(_dio.options, '${url}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
     return value;
   }
 

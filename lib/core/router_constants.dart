@@ -1,4 +1,5 @@
 // [ This is an auto generated file ]
+// [ This is an auto generated file ]
 
 const String splashViewRoute = 'splashViewRoute';
 const String customerSelectionViewRoute = 'customerSelectionViewRoute';
@@ -58,3 +59,4 @@ const String addNewNotificationsViewRoute = 'addNewNotificationsViewRoute';
 const String manageNotificationsViewRoute = 'manageNotificationsViewRoute';
 const String addReportViewRoute = 'addReportViewRoute';
 const String manageReportViewRoute = 'manageReportViewRoute';
+const String maintenanceViewRoute = 'maintenanceViewRoute';

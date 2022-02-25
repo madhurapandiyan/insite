@@ -316,6 +316,8 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     endDate: DateTime.parse(viewModel.endDate!),
                                     startDate:
                                         DateTime.parse(viewModel.endDate!));
+
+                                  
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()

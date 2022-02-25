@@ -8,7 +8,8 @@ import 'package:insite/views/add_new_user/add_new_user_view.dart' as view14;
 
 import 'package:insite/views/adminstration/add_group/add_group_view.dart'
     as view37;
-import 'package:insite/views/adminstration/add_report/add_report_view.dart'as view42;
+import 'package:insite/views/adminstration/add_report/add_report_view.dart'
+    as view42;
 import 'package:insite/views/adminstration/adminstration_view.dart' as view13;
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart'
     as view38;
@@ -23,6 +24,7 @@ import 'package:insite/views/adminstration/notifications/manage_notifications/ma
 import 'package:insite/views/dashboard/dashboard_view.dart' as view2;
 import 'package:insite/views/home/home_view.dart' as view7;
 import 'package:insite/views/login/login_view.dart' as VL4;
+import 'package:insite/views/maintenance/maintenance_view.dart' as view44;
 import 'package:insite/views/notification/notification_view.dart' as view37;
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
     as view25;
@@ -202,6 +204,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view41.ManageReportView());
       case addReportViewRoute:
         return MaterialPageRoute(builder: (_) => view42.AddReportView());
+      case maintenanceViewRoute:
+        return MaterialPageRoute(builder: (_) => view44.MaintenanceView());
 
       default:
         return MaterialPageRoute(

@@ -175,7 +175,6 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                             viewModel.dropDownInitialValue !=
                                                 "Power Mode"
                                         ? Card(
-                                            color: cardcolor,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
@@ -684,14 +683,18 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                       child: Column(
                         children: [
                           TabBar(
+                              controller: viewModel.controller,
                               indicator: BoxDecoration(
                                   color: Theme.of(context).buttonColor,
                                   borderRadius: BorderRadius.circular(10)),
                               tabs: List.generate(
-                                  viewModel.schedule.length,
-                                  (i) => DayCheck(
-                                        day: viewModel.schedule[i].title,
-                                      ))),
+                                viewModel.schedule.length,
+                                (i) {
+                                  return DayCheck(
+                                    day: viewModel.schedule[i].title,
+                                  );
+                                },
+                              )),
                           SizedBox(
                             height: 20,
                           ),
@@ -806,7 +809,6 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                           height: 10,
                         ),
                         Card(
-                          color: cardcolor,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: InsiteText(
@@ -870,6 +872,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                               fontSize: 16,
                               height: 50,
                               width: 200,
+                              textColor: textcolor,
+                              bgColor: Theme.of(context).buttonColor,
                               title: "Add contact",
                             ),
                           ],
@@ -908,9 +912,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Theme.of(context).cardColor),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
                                         child: Center(
                                           child: Row(
                                             crossAxisAlignment:
@@ -953,7 +957,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                               title: "cancel".toUpperCase(),
                               fontSize: 12,
                               textColor: textcolor,
-                              bgColor: Theme.of(context).cardColor,
+                              bgColor: Theme.of(context).buttonColor,
                               onTap: () {
                                 //viewModel.cancel();
                               },

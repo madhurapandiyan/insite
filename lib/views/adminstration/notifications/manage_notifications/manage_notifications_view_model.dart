@@ -95,7 +95,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getSearchListData(String? searchValue) async {
-    if (searchValue!.length>=4) {
+    if (searchValue!.length >= 4) {
       ManageNotificationsData? response =
           await _notificationService!.getsearchNotificationsData(searchValue);
       Logger().wtf(response?.toJson());

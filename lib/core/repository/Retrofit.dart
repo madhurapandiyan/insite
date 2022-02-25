@@ -1190,7 +1190,6 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
   );
 
-
   @GET("{url}")
   Future<ManageNotificationsData> manageNotificationsData(
     @Header("service") String service,
