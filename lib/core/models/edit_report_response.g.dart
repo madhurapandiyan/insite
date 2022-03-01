@@ -52,6 +52,8 @@ ScheduledReport _$ScheduledReportFromJson(Map<String, dynamic> json) =>
       svcMethod: json['svcMethod'] as String?,
       assetFilterCategoryID: json['assetFilterCategoryID'] as int?,
       allAssets: json['allAssets'] as bool?,
+      svcBody:
+          (json['svcBody'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$ScheduledReportToJson(ScheduledReport instance) =>
@@ -75,6 +77,7 @@ Map<String, dynamic> _$ScheduledReportToJson(ScheduledReport instance) =>
       'assetFilterCategoryID': instance.assetFilterCategoryID,
       'emailContent': instance.emailContent,
       'allAssets': instance.allAssets,
+      'svcBody': instance.svcBody,
     };
 
 EmailRecipients _$EmailRecipientsFromJson(Map<String, dynamic> json) =>

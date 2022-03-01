@@ -417,13 +417,13 @@ class Urls {
 
   static String deleteNotification =
       "/t/trimble.com/vss-notification/1.0/Notification";
-  static String deleteManageNotification =
-      "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
+  // static String deleteManageNotification =
+  //     "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
   static String deleteManageNotificationVL =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
 
-  // static String deleteManageNotificationVL =
-  //     "/frame-alertsmanager/2.0/AlertConfigs/";
+  static String deleteManageNotification =
+      "/frame-alertsmanager/2.0/AlertConfigs/";
 
 //subnotification
 

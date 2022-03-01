@@ -53,6 +53,7 @@ class DateRangeViewModel extends BaseViewModel {
         extras: [startDate, endDate, type],
         isSelected: true,
         type: FilterType.DATE_RANGE);
+        Logger().e(endDate);
     await _dateRangeService!.updateDateFilter(data);
   }
 

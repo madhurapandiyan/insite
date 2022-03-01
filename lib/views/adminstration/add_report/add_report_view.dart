@@ -425,7 +425,7 @@ class _AddReportViewState extends State<AddReportView> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: CustomDropDownWidget(
-                          items: ["Assets", "Groups", "Geofences"],
+                          items: ["Assets"],
                           value: viewModel.chooseByDropDownValue,
                           onChanged: (String? value) {
                             viewModel.chooseByDropDownValue = value!;
@@ -558,7 +558,7 @@ class _AddReportViewState extends State<AddReportView> {
                       height: 15,
                     ),
                     CustomTextBox(
-                      title: "Service Due",
+                      title: "",
                       controller: viewModel.serviceDueController,
                     ),
                     SizedBox(

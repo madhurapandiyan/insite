@@ -11,6 +11,7 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/notification_item.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
@@ -95,10 +96,9 @@ class _NotificationViewState extends State<NotificationView> {
                                                 backgroundColor: transparent,
                                                 child: DateRangeView()),
                                       );
-                                      if (dateRange != null &&
-                                          dateRange!.isNotEmpty) {
-                                        viewModel.refresh();
-                                      }
+                                      viewModel.startDate=dateRange!.first.toString();
+                                      viewModel.endDate=dateRange!.last.toString();
+                                      viewModel.refresh();
                                     },
                                   ),
                                 ],

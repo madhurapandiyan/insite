@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
-import 'package:insite/widgets/smart_widgets/time_picker.dart';
-import 'package:logger/logger.dart';
+import '../dumb_widgets/insite_text.dart';
 
 class TimeSlots extends StatelessWidget {
   final List<String>? type;
-
+  final bool? isSelected;
   final ValueChanged<String?>? startTimeChanged;
   final ValueChanged<String?>? typeChanged;
   final ValueChanged<String?>? endTimeChanged;
   final String? initialTypeValue;
   final String? initialStartValue;
   final String? initialEndValue;
+  final Function(bool)? onSwitchChange;
 
   TimeSlots(
       {this.type,
@@ -21,7 +21,9 @@ class TimeSlots extends StatelessWidget {
       this.initialTypeValue,
       this.initialEndValue,
       this.initialStartValue,
-      this.typeChanged});
+      this.typeChanged,
+      this.isSelected,
+      this.onSwitchChange});
 
   showTimePickerWidget(Function(String) callBack, BuildContext ctx) {
     showTimePicker(
@@ -29,12 +31,13 @@ class TimeSlots extends StatelessWidget {
               return Theme(
                 data: ThemeData.light().copyWith(
                   colorScheme: ColorScheme.light(
-                    primary: Colors.white,
-                    onSurface: Colors.white,
+                    primary: Theme.of(context).cardColor,
+                    onPrimary: Theme.of(context).backgroundColor,
                   ),
                   buttonTheme: ButtonThemeData(
                     colorScheme: ColorScheme.dark(
-                      primary: Colors.white,
+                      primary: Theme.of(context).cardColor,
+                      onPrimary: Theme.of(context).backgroundColor,
                     ),
                   ),
                 ),
@@ -52,56 +55,43 @@ class TimeSlots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        height: 150,
-        width: double.infinity,
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
-                  ),
-                  borderRadius: BorderRadius.circular(10)),
-              child: CustomDropDownWidget(
-                value: initialTypeValue,
-                items: type,
-                enableHint: true,
-                onChanged: typeChanged,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            initialTypeValue == type![1]
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InsiteButton(
-                        width: 100,
-                        height: 50,
-                        title: initialStartValue,
-                        onTap: () {
-                          showTimePickerWidget(startTimeChanged!, context);
-                        },
-                      ),
-                      InsiteButton(
-                        width: 100,
-                        height: 50,
-                        title: initialEndValue,
-                        onTap: () {
-                          showTimePickerWidget(endTimeChanged!, context);
-                        },
-                      ),
-                    ],
-                  )
-                : SizedBox()
-          ],
+    var mediaquerry = MediaQuery.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InsiteButton(
+          bgColor: Theme.of(context).cardColor,
+          width: 100,
+          title: initialStartValue,
+          onTap: () {
+            showTimePickerWidget(startTimeChanged!, context);
+          },
         ),
-      ),
+        InsiteButton(
+           bgColor: Theme.of(context).cardColor,
+          width: 100,
+          title: initialEndValue,
+          onTap: () {
+            showTimePickerWidget(endTimeChanged!, context);
+          },
+        ),
+        Container(
+          width: mediaquerry.size.width * 0.4,
+          height: mediaquerry.size.height * 0.05,
+          decoration: BoxDecoration(
+              border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).textTheme.bodyText1!.color!),
+              borderRadius: BorderRadius.circular(5)),
+          child: CustomDropDownWidget(
+            items:type,
+            value: initialTypeValue,
+            onChanged: (value) {
+              typeChanged!(value);
+            },
+          ),
+        )
+      ],
     );
   }
 }

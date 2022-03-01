@@ -406,7 +406,7 @@ class Utils {
         title = "ADD NEW GROUP";
         break;
       case ScreenType.MANAGE_NEW_GROUP:
-        title = "MANAGE NEW GROUP";
+        title = "MANAGE GROUP";
         break;
       default:
     }
@@ -427,7 +427,7 @@ class Utils {
         title = "ADD NEW GROUP";
         break;
       case AdminAssetsButtonType.MANAGEGROUPS:
-        title = "MANAGER NEW GROUP";
+        title = "MANAGER GROUP";
         break;
       case AdminAssetsButtonType.ADDNEWGEOFENCES:
         title = "ADD NEW GEOFENCES";

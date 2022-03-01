@@ -452,6 +452,64 @@ userEmail(EmailID:"$emailId"){
     return addUserData;
   }
 
+  String getAccountHierarchy() {
+    String getAccountHierarchyData = """query {
+accountHierarchy(targetcustomeruid:"",toplevelsonly:"true"){
+  userUid,
+  customers{
+    customerUid,
+    customerType,
+     customerCode,
+    displayName
+    name,
+    children{
+      customerUid
+    }
+  }
+}
+}""";
+
+    return getAccountHierarchyData;
+  }
+
+  String getSubAccountHeirachryData(String data) {
+    var schema = """query {
+accountHierarchy(targetcustomeruid:"$data"){
+userUid,
+  customers{
+   customerUid,
+    name,
+    customerType,
+    customerCode,
+    displayName,
+    
+    children{
+                name,
+          customerType,
+          customerCode,
+          displayName,
+          customerUid
+      children{
+        customerUid,
+         name,
+          customerType,
+          customerCode,
+          displayName,
+          children{
+          name,
+          customerType,
+          customerCode,
+          displayName,
+          customerUid
+        }
+      }
+    }
+  }
+}
+}""";
+    return schema;
+  }
+
   String getFleetLocationData(String startDate, String endDate) {
     final String fleetLocationData = """
   query fleetLocationDetails{
