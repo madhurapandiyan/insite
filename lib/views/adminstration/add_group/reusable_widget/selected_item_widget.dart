@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -22,6 +23,7 @@ class SelectedItemWidget extends StatefulWidget {
   final List? subList;
   final TextEditingController? subTextEditingController;
   final bool? isChangingAccountSelectionState;
+  
   const SelectedItemWidget(
       {this.pageController,
       this.headerText,
@@ -37,7 +39,8 @@ class SelectedItemWidget extends StatefulWidget {
       this.groupValueCallBack,
       this.subList,
       this.subTextEditingController,
-      this.isChangingAccountSelectionState});
+      this.isChangingAccountSelectionState,
+     });
 
   @override
   _SelectedItemWidgetState createState() => _SelectedItemWidgetState();

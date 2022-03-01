@@ -8,6 +8,7 @@ import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_bo
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/add_report_custom_dropdown_widget.dart';
@@ -429,7 +430,6 @@ class _AddReportViewState extends State<AddReportView> {
                           value: viewModel.chooseByDropDownValue,
                           onChanged: (String? value) {
                             viewModel.chooseByDropDownValue = value!;
-
                             setState(() {});
                           },
                         ),
@@ -446,14 +446,21 @@ class _AddReportViewState extends State<AddReportView> {
                             dissociatedIds: [],
                             onAssetSelected: (
                               List<String> value,
-                              AssetGroupSummaryResponse data,
                               List<String> associatedAssetId,
                             ) {
                               viewModel.associatedIdentifier =
                                   associatedAssetId;
                             },
+                            selectedAssetsDisplayList:
+                                viewModel.selectedItemAssets,
+                            // onSelectedAssetsClicked:
+                            //     (List<AddGroupModel> data) {
+                            //   Logger().w(data.first.make);
+                            // },
                           )
                         : Container(),
+
+                        
                     SizedBox(
                       height: 30,
                     ),
@@ -558,7 +565,7 @@ class _AddReportViewState extends State<AddReportView> {
                       height: 15,
                     ),
                     CustomTextBox(
-                      title: "Service Due",
+                      title: "",
                       controller: viewModel.serviceDueController,
                     ),
                     SizedBox(

@@ -38,6 +38,7 @@ class ScheduledReport {
   int? assetFilterCategoryID;
   String ? emailContent;
   bool? allAssets;
+  List<String>? svcBody;
 
   ScheduledReport({
     this.reportUid,
@@ -59,6 +60,7 @@ class ScheduledReport {
     this.svcMethod,
     this.assetFilterCategoryID,
     this.allAssets,
+    this.svcBody
   });
 
   factory ScheduledReport.fromJson(Map<String, dynamic> json) =>

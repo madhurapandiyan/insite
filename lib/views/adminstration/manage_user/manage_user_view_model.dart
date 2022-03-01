@@ -322,6 +322,7 @@ class ManageUserViewModel extends InsiteViewModel {
     AdminManageUser? result = await _manageUserService!
         .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters,
             graphqlSchemaService!.userManagementUserList(_searchKeyword));
+            Logger().wtf(appliedFilters!.length);
     if (result != null) {
       if (result.total != null) {
         _totalCount = result.total!.items!;

@@ -62,6 +62,12 @@ enum FilterType {
   JOBTYPE,
   @HiveField(17)
   USERTYPE,
+  @HiveField(18)
+  FREQUENCYTYPE,
+  @HiveField(19)
+  REPORT_FORMAT,
+  @HiveField(20)
+  REPORT_TYPE
 }
 
 @HiveType(typeId: 2)

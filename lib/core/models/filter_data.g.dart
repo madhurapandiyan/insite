@@ -98,6 +98,12 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.JOBTYPE;
       case 17:
         return FilterType.USERTYPE;
+      case 18:
+        return FilterType.FREQUENCYTYPE;
+      case 19:
+        return FilterType.REPORT_FORMAT;
+      case 20:
+        return FilterType.REPORT_TYPE;
       default:
         return FilterType.ALL_ASSETS;
     }
@@ -159,6 +165,15 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.USERTYPE:
         writer.writeByte(17);
+        break;
+      case FilterType.FREQUENCYTYPE:
+        writer.writeByte(18);
+        break;
+      case FilterType.REPORT_FORMAT:
+        writer.writeByte(19);
+        break;
+      case FilterType.REPORT_TYPE:
+        writer.writeByte(20);
         break;
     }
   }

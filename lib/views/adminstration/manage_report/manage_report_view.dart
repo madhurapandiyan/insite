@@ -20,7 +20,8 @@ class ManageReportView extends StatelessWidget {
       builder:
           (BuildContext context, ManageReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
-            screenType: ScreenType.ADMINISTRATION,
+            screenType: ScreenType.MANAGE_REPORT,
+            onRefineApplied: () {},
             viewModel: viewModel,
             body: Stack(
               children: [

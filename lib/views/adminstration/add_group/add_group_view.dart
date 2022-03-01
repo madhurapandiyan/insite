@@ -5,10 +5,12 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_group_view_model.dart';
 
@@ -30,12 +32,10 @@ class _AddGroupViewState extends State<AddGroupView> {
       builder: (BuildContext context, AddGroupViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
-            screenType:ScreenType.ADD_NEW_GROUP ,
+            screenType: ScreenType.ADD_NEW_GROUP,
             body: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -106,19 +106,27 @@ class _AddGroupViewState extends State<AddGroupView> {
                     ),
                     SelectionWidgetView(
                       isSelectedAssets: true,
-                      
                       isEdit: widget.isEdit!,
                       assetIds: viewModel.assetUidData,
                       group: viewModel.groups,
                       dissociatedIds: viewModel.dissociatedAssetId,
                       onAssetSelected: (
                         List<String> value,
-                        AssetGroupSummaryResponse data,
                         List<String> associatedAssetId,
                       ) {
                         viewModel.assetUidData = value;
-                        viewModel.groupSummaryResponseData = data;
+                        // viewModel.groupSummaryResponseData = data;
                         viewModel.associatedAssetId = associatedAssetId;
+                      },
+                      selectedAssetsDisplayList:
+                          viewModel.selectedAssetDisplayList,
+                      onSelectedAssetsClicked:
+                          (List<AddGroupModel> addGroupModel) {
+                            setState(() {
+                               viewModel.selectedAssetDisplayList = addGroupModel;
+                            });
+                       
+
                       },
                     ),
                     SizedBox(

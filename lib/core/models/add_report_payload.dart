@@ -22,6 +22,7 @@ class AddReportPayLoad {
   String? queryUrl;
   String? reportType;
   List<String>? reportColumns;
+  List<String>?  svcBody;
 
   AddReportPayLoad(
       {this.assetFilterCategoryID,
@@ -42,7 +43,8 @@ class AddReportPayLoad {
       this.queryUrl,
       this.emailContent,
       this.reportType,
-      this.reportColumns});
+      this.reportColumns,
+      this.svcBody});
 
  factory AddReportPayLoad.fromJson(Map<String, dynamic> json)=>_$AddReportPayLoadFromJson(json);
 

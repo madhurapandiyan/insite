@@ -772,7 +772,6 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                           dissociatedIds: viewModel.assetUidData,
                           onAssetSelected: (
                             List<String> value,
-                            AssetGroupSummaryResponse data,
                             List<String> associatedAssetId,
                           ) {
                             viewModel.assetUidData = value;

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_report_payload.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
 import 'package:insite/views/adminstration/manage_report/manage_report_view.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +31,9 @@ class AddReportViewModel extends InsiteViewModel {
 
   List<User>? searchContactListName = [];
   List<String>? associatedIdentifier = [];
+
+  List<String>? svcBody = [];
+  List<AddGroupModel>? selectedItemAssets = [];
 
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
 
@@ -81,6 +86,7 @@ class AddReportViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getContactSearchReportData();
+      getGroupListData();
     });
   }
 
@@ -222,7 +228,6 @@ class AddReportViewModel extends InsiteViewModel {
       if (result != null) {
         Logger().w(result.scheduledReport!.toJson());
         dropDownValue = result.scheduledReport!.reportType;
-
         nameController.text = result.scheduledReport!.reportTitle!;
         dateTimeController.text = DateFormat("yyyy-MM-dd").format(
             DateFormat("yyyy-MM-dd")
@@ -232,6 +237,9 @@ class AddReportViewModel extends InsiteViewModel {
         serviceDueController.text = result.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
             result.scheduledReport!.emailContent ?? "-";
+        svcBody = result.scheduledReport!.svcBody;
+        Logger().e(svcBody!.length);
+
         hideLoadingDialog();
         notifyListeners();
       }
@@ -512,5 +520,24 @@ class AddReportViewModel extends InsiteViewModel {
 
   gotoScheduleReportPage() {
     _navigationService!.navigateToView(ManageReportView());
+  }
+
+  Future<AssetGroupSummaryResponse?> getGroupListData() async {
+    var assetIdresult = await _manageUserService!.getGroupListData();
+    if (assetIdresult != null) {
+      //Logger().w("sdn");
+      assetIdresult.assetDetailsRecords!.forEach((assedId) {
+        if (svcBody!.any((element) => element == assedId.assetIdentifier)) {
+          selectedItemAssets!.add(AddGroupModel(
+              assetId: assedId.assetId,
+              assetIdentifier: assedId.assetIdentifier,
+              make: assedId.makeCode,
+              model: assedId.model,
+              serialNo: assedId.assetSerialNumber));
+        }
+      });
+    }
+
+    notifyListeners();
   }
 }

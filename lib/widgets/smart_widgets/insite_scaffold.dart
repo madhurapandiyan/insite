@@ -50,7 +50,6 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
-
         resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(
@@ -62,7 +61,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
-                  widget.screenType == ScreenType.NOTIFICATIONS
+                  widget.screenType == ScreenType.NOTIFICATIONS ||
+                  widget.screenType == ScreenType.MANAGE_REPORT
               ? true
               : false,
           shouldShowLogout: widget.screenType == ScreenType.ACCOUNT ||
@@ -72,7 +72,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
           shouldShowSearch: widget.screenType == ScreenType.ACCOUNT ||
                   widget.screenType == ScreenType.ASSET_SETTINGS ||
                   widget.screenType == ScreenType.ASSET_SETTINGS_FILTER ||
-                  widget.screenType == ScreenType.NOTIFICATIONS
+                  widget.screenType == ScreenType.NOTIFICATIONS ||
+                  widget.screenType == ScreenType.MANAGE_REPORT
               ? false
               : true,
           screenType: widget.screenType,
@@ -87,7 +88,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
                   widget.screenType == ScreenType.NOTIFICATION ||
                   widget.screenType == ScreenType.ADD_NEW_GROUP ||
-                  widget.screenType == ScreenType.MANAGE_NEW_GROUP||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP ||
                   widget.screenType == ScreenType.NOTIFICATIONS
               ? 80
               : 56,
@@ -102,7 +103,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.USER_MANAGEMENT ||
                   widget.screenType == ScreenType.NOTIFICATION ||
                   widget.screenType == ScreenType.ADD_NEW_GROUP ||
-                  widget.screenType == ScreenType.MANAGE_NEW_GROUP||
+                  widget.screenType == ScreenType.MANAGE_NEW_GROUP ||
                   widget.screenType == ScreenType.NOTIFICATIONS
               ? true
               : false,
@@ -111,7 +112,8 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.UTILIZATION ||
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION ||
-                  widget.screenType == ScreenType.USER_MANAGEMENT
+                  widget.screenType == ScreenType.USER_MANAGEMENT ||
+                  widget.screenType == ScreenType.MANAGE_REPORT
               ? true
               : false,
           isRefineSelected: _isRefineSelected,

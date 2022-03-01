@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_item_select_widget.dart';
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_item_widget.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class SelectionWidgetView extends StatefulWidget {
-  final Function(
-      List<String> value,
-      AssetGroupSummaryResponse groupSummaryResponse,
-      List<String> associatedAssetId)? onAssetSelected;
+  final Function(List<String> value, List<String> associatedAssetId)?
+      onAssetSelected;
   final List<String>? assetIds;
   final Groups? group;
   final bool? isEdit;
   final bool? isSelectedAssets;
   final List<String>? dissociatedIds;
+  final Function(List<AddGroupModel> data)? onSelectedAssetsClicked;
+  final List<AddGroupModel>? selectedAssetsDisplayList;
+
+  //final Function(AssetGroupSummaryResponse data)? assetGroupSummaryResponse;
 
   SelectionWidgetView(
       {this.onAssetSelected,
       this.assetIds,
+      // this.assetGroupSummaryResponse,
       this.group,
       this.isEdit,
       this.dissociatedIds,
-      this.isSelectedAssets});
+      this.isSelectedAssets,
+      this.onSelectedAssetsClicked,
+      this.selectedAssetsDisplayList});
 
   @override
   _SelectionWidgetViewState createState() => _SelectionWidgetViewState();
@@ -54,10 +61,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedIndexData(valueData, index);
                       viewModel.selectedIndex = index;
-                      widget.onAssetSelected!(
-                          viewModel.assetIdentifier,
-                          viewModel.assetIdresult!,
+                      widget.onAssetSelected!(viewModel.assetIdentifier,
                           viewModel.associatedAssetId);
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     subList: [],
                     subTextEditingController: null,
@@ -73,10 +80,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                     groupValueCallBack: (valueData, int index) {
                       viewModel.selectedSerialNumberIndexData(valueData, index);
                       viewModel.selectedIndex = index;
-                      widget.onAssetSelected!(
-                          viewModel.assetIdentifier,
-                          viewModel.assetIdresult!,
+                      widget.onAssetSelected!(viewModel.assetIdentifier,
                           viewModel.associatedAssetId);
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     subList: [],
                     subTextEditingController: null,
@@ -104,9 +111,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.selectedIndex = index;
                       widget.onAssetSelected!(
                         viewModel.assetIdentifier,
-                        viewModel.assetIdresult!,
                         viewModel.associatedAssetId,
                       );
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     subList: viewModel.subProductFamilySearchList,
                     subTextEditingController:
@@ -133,9 +141,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.selectedIndex = index;
                       widget.onAssetSelected!(
                         viewModel.assetIdentifier,
-                        viewModel.assetIdresult!,
                         viewModel.associatedAssetId,
                       );
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     isShowingState: viewModel.isShowingManaFactureState,
                     pageController: viewModel.pageController,
@@ -175,9 +184,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.selectedIndex = index;
                       widget.onAssetSelected!(
                         viewModel.assetIdentifier,
-                        viewModel.assetIdresult!,
                         viewModel.associatedAssetId,
                       );
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     subList: viewModel.subModelSearchList,
                     isShowingState: viewModel.isShowingModelState,
@@ -211,9 +221,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.selectedIndex = index;
                       widget.onAssetSelected!(
                         viewModel.assetIdentifier,
-                        viewModel.assetIdresult!,
                         viewModel.associatedAssetId,
                       );
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     subTextEditingController: viewModel.deviceTypeSubController,
                   ),
@@ -236,9 +247,10 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
                       viewModel.selectedIndex = index;
                       widget.onAssetSelected!(
                         viewModel.assetIdentifier,
-                        viewModel.assetIdresult!,
                         viewModel.associatedAssetId,
                       );
+                      widget.onSelectedAssetsClicked!(
+                          viewModel.searchSelectedItemList);
                     },
                     isShowingState: viewModel.isAccountSelectionState,
                     pageController: viewModel.pageController,
@@ -255,63 +267,73 @@ class _SelectionWidgetViewState extends State<SelectionWidgetView> {
             SizedBox(
               height: 50,
             ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InsiteText(
-                    text: "Selected Assets",
-                    size: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  InsiteText(
-                    text: viewModel.assetIdSelecteList.length.toString() +
-                        " " +
-                        "Assets",
-                    size: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ],
-              ),
-            ),
+
             SizedBox(
               height: 12,
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.60,
-              child: Card(
-                  child: viewModel.isAssetLoading&&widget.group!=null
-                      ? InsiteProgressBar()
-                      : SelectedItemSelectWidgetView(
-                          displayList: viewModel.searchSelectedItemList,
-                          textEditingController:
-                              viewModel.selectedItemController,
-                          onAssetDeselected:
-                              (int value, String assetIdentifier) {
-                            widget.dissociatedIds!.add(assetIdentifier);
-                            viewModel.onRemoveSelectedIndex(
-                                value, assetIdentifier);
-                          },
-                          searchCallBack: (String value) {
-                            viewModel.onSearchSelectedItemList(value);
-                          },
-                          filterCallBack: () {
-                            viewModel.filterSelectedItemSelectWidgetState();
-                          },
-                          filterChangeState: viewModel.isFilterChangeState,
-                          dropDownItem: viewModel.dropdownList,
-                          dropDownValue: viewModel.dropDownValue,
-                          onDropDownChange: (String value) {
-                            viewModel.getDropDownListData(value);
-                          },
-                        )),
+
+            SelectedItemSelectWidgetView(
+              displayList: widget.selectedAssetsDisplayList,
+              textEditingController: viewModel.selectedItemController,
+              onAssetDeselected: (int value, String assetIdentifier) {
+                widget.dissociatedIds!.add(assetIdentifier);
+                viewModel.onRemoveSelectedIndex(value, assetIdentifier);
+              },
+              searchCallBack: (String value) {
+                viewModel.onSearchSelectedItemList(value);
+              },
+              filterCallBack: () {
+                viewModel.filterSelectedItemSelectWidgetState();
+              },
+              filterChangeState: viewModel.isFilterChangeState,
+              dropDownItem: viewModel.dropdownList,
+              dropDownValue: viewModel.dropDownValue,
+              onDropDownChange: (String value) {
+                viewModel.getDropDownListData(value);
+              },
             )
+
+            // widget.selectedAssetsDisplayList!.isNotEmpty
+            //     ? Container(
+            //         height: MediaQuery.of(context).size.height * 0.60,
+            //         child: Card(
+            //             child: viewModel.isAssetLoading && widget.group != null
+            //                 ? InsiteProgressBar()
+            //                 : SelectedItemSelectWidgetView(
+            //                     displayList: widget.selectedAssetsDisplayList,
+            //                     textEditingController:
+            //                         viewModel.selectedItemController,
+            //                     onAssetDeselected:
+            //                         (int value, String assetIdentifier) {
+            //                       widget.dissociatedIds!.add(assetIdentifier);
+            //                       viewModel.onRemoveSelectedIndex(
+            //                           value, assetIdentifier);
+            //                     },
+            //                     searchCallBack: (String value) {
+            //                       viewModel.onSearchSelectedItemList(value);
+            //                     },
+            //                     filterCallBack: () {
+            //                       viewModel
+            //                           .filterSelectedItemSelectWidgetState();
+            //                     },
+            //                     filterChangeState:
+            //                         viewModel.isFilterChangeState,
+            //                     dropDownItem: viewModel.dropdownList,
+            //                     dropDownValue: viewModel.dropDownValue,
+            //                     onDropDownChange: (String value) {
+            //                       viewModel.getDropDownListData(value);
+            //                     },
+            //                   )),
+            //       )
+            //     : SizedBox()
           ],
         );
       },
       viewModelBuilder: () => SelectionWidgetViewModel(
-          widget.group, widget.assetIds, widget.isEdit!),
+        widget.group,
+        widget.assetIds,
+        widget.isEdit!,
+      ),
     );
   }
 }

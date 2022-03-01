@@ -12,6 +12,7 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
@@ -32,10 +33,22 @@ class AddGroupViewModel extends InsiteViewModel {
   TextEditingController descriptionController = TextEditingController();
 
   Groups? groups;
+  List<AddGroupModel>? selectedAssetDisplayList = [];
+
+  TextEditingController selectedItemController = TextEditingController();
 
   Customer? accountSelected;
 
-  AssetGroupSummaryResponse? groupSummaryResponseData;
+  bool _isAssetLoading = true;
+  bool get isAssetLoading => _isAssetLoading;
+
+  List<String> _assetId = [];
+  List<String> get assetId => _assetId;
+
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> _assetSerialNumber = [];
+  List<String> get assetSerialNumber => _assetSerialNumber;
 
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
@@ -47,7 +60,9 @@ class AddGroupViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getData();
+      getGroupListData();
     });
+    
   }
   List<String> assetUidData = [];
 
@@ -134,5 +149,24 @@ class AddGroupViewModel extends InsiteViewModel {
 
   gotoManageGroupPage() {
     _navigationService!.clearTillFirstAndShowView(ManageGroupView());
+  }
+
+  Future<AssetGroupSummaryResponse?> getGroupListData() async {
+    if (_assetId.isEmpty && _assetSerialNumber.isEmpty) {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      assetIdresult!.assetDetailsRecords!.forEach((element) {
+        if (element.assetId != null) {
+          _assetId.add(element.assetId!);
+        }
+      });
+      assetIdresult!.assetDetailsRecords!.forEach((element) {
+        _assetSerialNumber.add(element.assetSerialNumber!);
+      });
+    }
+
+    _isAssetLoading = false;
+
+    notifyListeners();
+    return assetIdresult;
   }
 }

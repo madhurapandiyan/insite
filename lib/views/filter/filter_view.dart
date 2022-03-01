@@ -35,6 +35,9 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterSeverityKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterJobTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterUserTypeKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterFrequencyTypeKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterFormatTypeKey = new GlobalKey();
+   final GlobalKey<FilterItemState> filterReportTypeKey = new GlobalKey();
 
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
@@ -65,6 +68,13 @@ class _FilterViewState extends State<FilterView> {
       filterJobTypeKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.USERTYPE) {
       filterUserTypeKey.currentState!.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.FREQUENCYTYPE) {
+      filterFrequencyTypeKey.currentState!.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.REPORT_FORMAT) {
+      filterFormatTypeKey.currentState!.deSelectFromOutSide(data);
+    }
+     else if (data.type == FilterType.REPORT_TYPE) {
+      filterReportTypeKey.currentState!.deSelectFromOutSide(data);
     }
   }
 
@@ -148,7 +158,9 @@ class _FilterViewState extends State<FilterView> {
                                     height: 8,
                                   )
                                 : SizedBox(),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.ALL_ASSETS,
                                     key: filterAssetStatusKey,
@@ -167,7 +179,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.PRODUCT_FAMILY,
                                     key: filterProductFamilyKey,
@@ -185,7 +199,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.MAKE,
                                     key: filterMakeKey,
@@ -203,7 +219,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.MODEL,
                                     key: filterModelKey,
@@ -237,7 +255,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? LocationSearch(
                                     filterType: FilterType.LOCATION_SEARCH,
                                     data: [],
@@ -270,7 +290,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.ASSET_COMMISION_DATE,
                                     key: filterAssetCommisionDateKey,
@@ -288,7 +310,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.SUBSCRIPTION_DATE,
                                     key: filterSubscriptionTypesKey,
@@ -306,7 +330,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.DEVICE_TYPE,
                                     key: filterDeviceTypeKey,
@@ -324,7 +350,9 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
-                            widget.screenType != ScreenType.USER_MANAGEMENT
+                            widget.screenType != ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.FUEL_LEVEL,
                                     key: filterFuelLevelKey,
@@ -345,7 +373,9 @@ class _FilterViewState extends State<FilterView> {
                             ),
                             widget.screenType != ScreenType.HEALTH &&
                                     widget.screenType !=
-                                        ScreenType.USER_MANAGEMENT
+                                        ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.IDLING_LEVEL,
                                     key: filterIdlingLevelKey,
@@ -366,7 +396,9 @@ class _FilterViewState extends State<FilterView> {
                             ),
                             widget.screenType == ScreenType.HEALTH &&
                                     widget.screenType !=
-                                        ScreenType.USER_MANAGEMENT
+                                        ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.SEVERITY,
                                     key: filterSeverityKey,
@@ -382,8 +414,10 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            widget.screenType == ScreenType.USER_MANAGEMENT
-                                ?SizedBox(): FilterItem(
+                            widget.screenType == ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
+                                ? FilterItem(
                                     filterType: FilterType.JOBTYPE,
                                     key: filterJobTypeKey,
                                     data: viewModel.filterDataJobType,
@@ -397,8 +431,10 @@ class _FilterViewState extends State<FilterView> {
                                           .onFilterCleared(FilterType.JOBTYPE);
                                     },
                                   )
-                                ,
-                            widget.screenType == ScreenType.USER_MANAGEMENT
+                                : SizedBox(),
+                            widget.screenType == ScreenType.USER_MANAGEMENT &&
+                                    widget.screenType !=
+                                        ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.USERTYPE,
                                     key: filterUserTypeKey,
@@ -417,6 +453,60 @@ class _FilterViewState extends State<FilterView> {
                             SizedBox(
                               height: 8,
                             ),
+                            widget.screenType == ScreenType.MANAGE_REPORT
+                                ? FilterItem(
+                                    filterType: FilterType.FREQUENCYTYPE,
+                                    key: filterFrequencyTypeKey,
+                                    data: viewModel.filterFrequencyType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterCleared(
+                                          FilterType.FREQUENCYTYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.FREQUENCYTYPE);
+                                    },
+                                  )
+                                : SizedBox(),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            widget.screenType == ScreenType.MANAGE_REPORT
+                                ? FilterItem(
+                                    filterType: FilterType.REPORT_FORMAT,
+                                    key: filterFormatTypeKey,
+                                    data: viewModel.filterFormatType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterCleared(
+                                          FilterType.REPORT_FORMAT);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.REPORT_FORMAT);
+                                    },
+                                  )
+                                : SizedBox(),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            widget.screenType == ScreenType.MANAGE_REPORT
+                                ? FilterItem(
+                                    filterType: FilterType.REPORT_TYPE,
+                                    key: filterReportTypeKey,
+                                    data: viewModel.filterReportType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterCleared(
+                                          FilterType.REPORT_TYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.REPORT_TYPE);
+                                    },
+                                  )
+                                : SizedBox(),
                           ],
                         ),
                       ),
