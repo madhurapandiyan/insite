@@ -72,3 +72,18 @@ fvm flutter build apk --flavor indiastack -t lib/main_indiastack.dart
 --target-platform android-arm,android-arm64,android-x64 --split-per-abi 
         or
 fvm flutter build apk --flavor indiastack --target-platform android-arm,android-arm64,android-x64 --split-per-abi
+
+## Adding app signed details
+
+- create key.properties in android folder
+
+- get keystore.jks file,store password, key password, aliasname from your team and follow third step
+
+- add below lines in key.properties file created in the first step
+
+storePassword=<storepassword>
+keyPassword=<keypassword>
+keyAlias=<alias name>
+storeFile=<location of the key store file, such as /Users/<user name>/upload-keystore.jks>
+
+for more info #see https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app
