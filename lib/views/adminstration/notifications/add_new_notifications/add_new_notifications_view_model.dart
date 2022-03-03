@@ -59,10 +59,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getNotificationTypesData();
-      getData();
+
       onGettingFaultCodeData();
       if (data != null) {
         editingNotification(data);
+      } else {
+        getGroupListData();
       }
       faultCodeScrollController.addListener(() {
         if (faultCodeScrollController.position.pixels ==
@@ -141,6 +143,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
   }
+
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
+
+  List<Asset>? selectedAsset = [];
+
+  bool isLoading = true;
 
   List<String>? selectedContactItems = [];
 
@@ -240,8 +252,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
     notifyListeners();
   }
-
-  Groups? groups;
 
   AssetGroupSummaryResponse? groupSummaryResponseData;
 
@@ -424,6 +434,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
   onDeletingSelectedDays(int i) {
     //var data = selectedDays.elementAt(i);
     scheduleDay.removeAt(i);
@@ -454,8 +480,36 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
   editingNotification(AlertConfigEdit data) async {
-    showLoadingDialog();
+    await getGroupListData();
     isEditing = true;
     notificationController.text = data.alertConfig!.notificationTitle!;
     notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
@@ -482,6 +536,19 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandID: element.operandID,
           operatorId: element.operatorID,
           value: element.value));
+    });
+
+    assetIdresult?.assetDetailsRecords?.forEach((element) {
+      if (alertConfigData!.alertConfig!.assets!
+          .any((editData) => editData.assetUID == element.assetIdentifier)) {
+        selectedAsset!.add(Asset(
+            assetIcon: element.assetIcon,
+            assetId: element.assetId,
+            assetIdentifier: element.assetIdentifier,
+            assetSerialNumber: element.assetSerialNumber,
+            makeCode: element.makeCode,
+            model: element.model));
+      }
     });
 
     if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
@@ -578,8 +645,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     data.alertConfig!.assets!.forEach((element) {
       assetUidData.add(element.assetUID!);
     });
-    await getGroupListData();
-    hideLoadingDialog();
+
     notifyListeners();
   }
 
@@ -1192,38 +1258,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  getEditGroupData() async {
-    try {
-      showLoadingDialog();
-      EditGroupResponse? result =
-          await _manageUserService!.getEditGroupData(groups!.GroupUid!);
-      if (result != null) {
-        nameController.text = result.GroupName!;
-        descriptionController.text = result.Description ?? "";
-        if (result.AssetUID != null) {
-          for (var i = 0; i < result.AssetUID!.length; i++) {
-            assetUidData.add(result.AssetUID![i]);
-          }
-          Logger().i("assetUId:${assetUidData.length}");
-        }
-      }
-
-      hideLoadingDialog();
-      notifyListeners();
-    } catch (e) {
-      hideLoadingDialog();
-      Logger().e(e.toString());
-    }
-  }
-
-  void getData() {
-    if (groups != null) {
-      getEditGroupData();
-    } else {}
-    hideLoadingDialog();
-    notifyListeners();
-  }
-
   gotoManageNotificationsPage() {
     _navigationService!.clearTillFirstAndShowView(ManageNotificationsView());
   }
@@ -1398,6 +1432,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   editNotification() async {
     showLoadingDialog();
+    assetUidData.clear();
+    selectedAsset?.forEach((element) {
+      assetUidData.add(element.assetIdentifier!);
+     });
     AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
         alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
         alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
@@ -1424,6 +1462,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   saveAddNotificationData() async {
+    assetUidData.clear();
+    selectedAsset!.forEach((element) {
+      assetUidData.add(element.assetIdentifier!);
+    });
     if (notificationController.text.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;
@@ -1518,25 +1560,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     emailIds!.add(searchContactListName![index].email!);
     phoneNumbers!.add(searchContactListName![index].name!);
     isHideSearchList = false;
-
-    notifyListeners();
-  }
-
-  Future<AssetGroupSummaryResponse?> getGroupListData() async {
-    var assetIdresult = await _manageUserService!.getGroupListData();
-    if (assetIdresult != null) {
-      //Logger().w("sdn");
-      assetIdresult.assetDetailsRecords!.forEach((assedId) {
-        if (assetUidData.any((element) => element == assedId.assetIdentifier)) {
-          selectedItemAssets!.add(AddGroupModel(
-              assetId: assedId.assetId,
-              assetIdentifier: assedId.assetIdentifier,
-              make: assedId.makeCode,
-              model: assedId.model,
-              serialNo: assedId.assetSerialNumber));
-        }
-      });
-    }
 
     notifyListeners();
   }

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
-import 'package:insite/theme/colors.dart';
-import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
-import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
-import 'package:logger/logger.dart';
 
 class SelectedAssetsWidget extends StatefulWidget {
-  final AddGroupModel? selectedAssetList;
+  final Asset? selectedAssetList;
   final VoidCallback? callBack;
 
   SelectedAssetsWidget({this.selectedAssetList, this.callBack});
@@ -40,7 +36,7 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
           flex: 6,
           child: Container(
             child: InsiteTextOverFlow(
-              text: widget.selectedAssetList!.serialNo,
+              text: widget.selectedAssetList!.assetSerialNumber,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -52,7 +48,7 @@ class _SelectedAssetsWidgetState extends State<SelectedAssetsWidget> {
           flex: 8,
           child: InsiteTextOverFlow(
             overflow: TextOverflow.ellipsis,
-            text: widget.selectedAssetList!.make! +
+            text: widget.selectedAssetList!.makeCode! +
                 " " +
                 "\n" +
                 widget.selectedAssetList!.model!,
