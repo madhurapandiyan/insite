@@ -2,6 +2,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
@@ -23,6 +24,9 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterSeverity = [];
   List<FilterData> filterDataJobType = [];
   List<FilterData> filterDataUserType = [];
+  List<FilterData> filterFrequencyType = [];
+  List<FilterData> filterFormatType = [];
+  List<FilterData> filterReportType = [];
 
   List<FilterData?>? selectedFilterData = [];
   bool _isRefreshing = false;
@@ -92,8 +96,10 @@ class FilterViewModel extends InsiteViewModel {
         "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
-
-
+    ReportCount? resultReportFrequencyType =
+        await _assetService!.getCountReportData();
+    addReportData(filterFrequencyType, resultReportFrequencyType,
+        FilterType.FREQUENCYTYPE, filterFormatType, filterReportType);
     selectedFilterData = appliedFilters;
     _loading = false;
     notifyListeners();
@@ -151,6 +157,41 @@ class FilterViewModel extends InsiteViewModel {
             extras: [countData.id.toString()],
             type: type);
         filterData.add(data);
+      }
+    }
+  }
+
+  addReportData(filterData, ReportCount? resultModel, type, filterFormatData,
+      filterReportType) {
+    if (resultModel != null &&
+        resultModel.countData != null &&
+        resultModel.countData!.isNotEmpty) {
+      for (CountReportData countData in resultModel.countData!) {
+        if (countData.groupName == "Frequency") {
+          FilterData data = FilterData(
+              count: countData.count.toString(),
+              title: countData.name,
+              isSelected: isAlreadSelected(countData.name, type),
+              extras: [countData.id.toString()],
+              type: type);
+          filterData.add(data);
+        } else if (countData.groupName == "Report Format") {
+          FilterData data = FilterData(
+              count: countData.count.toString(),
+              title: countData.name,
+              isSelected: isAlreadSelected(countData.name, type),
+              extras: [countData.id.toString()],
+              type: type);
+          filterFormatData.add(data);
+        } else if (countData.groupName == "Report Type") {
+          FilterData data = FilterData(
+              count: countData.count.toString(),
+              title: countData.name,
+              isSelected: isAlreadSelected(countData.name, type),
+              extras: [countData.id.toString()],
+              type: type);
+          filterReportType.add(data);
+        }
       }
     }
   }

@@ -576,6 +576,16 @@ class Utils {
       case FilterType.JOBTYPE:
         title = "JOB TYPE";
         break;
+      case FilterType.FREQUENCYTYPE:
+        title = "Frequency";
+        break;
+      case FilterType.REPORT_FORMAT:
+        title = "Report Format";
+        break;
+      case FilterType.REPORT_TYPE:
+        title = "Report Type";
+        break;
+
       default:
     }
     return title;

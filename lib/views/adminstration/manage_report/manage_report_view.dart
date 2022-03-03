@@ -20,7 +20,8 @@ class ManageReportView extends StatelessWidget {
       builder:
           (BuildContext context, ManageReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
-            screenType: ScreenType.ADMINISTRATION,
+            screenType: ScreenType.MANAGE_REPORT,
+            onRefineApplied: () {},
             viewModel: viewModel,
             body: Stack(
               children: [
@@ -80,10 +81,14 @@ class ManageReportView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: CustomTextBox(
                         controller: viewModel.searchcontroller,
-                        title: "Search",
+                        title: "Search Reports",
                         showLoading: viewModel.isSearching,
-                        onChanged: (searchText) {
-                          viewModel.searchReports(searchText);
+                        onChanged: (String searchText) {
+                          if (searchText.isNotEmpty) {
+                            viewModel.searchReports(searchText);
+                          } else {
+                            viewModel.updateSearchDataToEmpty();
+                          }
                         },
                       ),
                     ),

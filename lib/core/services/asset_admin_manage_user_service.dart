@@ -1349,6 +1349,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (searchKeyword.isNotEmpty) {
         queryMap["searchText"] = searchKeyword;
       }
+      queryMap["sort"] = "";
       if (isVisionLink) {
         ManageReportResponse manageReportResponse = await MyApi()
             .getClientSeven()!

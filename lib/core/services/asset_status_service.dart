@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
@@ -50,7 +51,7 @@ class AssetStatusService extends DataBaseService {
               query,
               accountSelected?.CustomerUID,
               (await _localService!.getLoggedInUser())!.sub);
-         AssetCount assetCountFromGraphql =
+          AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data!['getDashboardAsset']);
           return assetCountFromGraphql;
         } else {
@@ -698,6 +699,20 @@ class AssetStatusService extends DataBaseService {
     } catch (e) {
       Logger().e(e);
       return null;
+    }
+  }
+
+  Future<ReportCount?> getCountReportData() async {
+    try {
+      if (isVisionLink) {
+        ReportCount reportCountResponse = await MyApi()
+            .getClientSeven()!
+            .getReportCountData(Urls.manageReportData + "/" + "Count",
+                accountSelected!.CustomerUID);
+        return reportCountResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 }

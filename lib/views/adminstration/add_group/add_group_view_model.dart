@@ -33,10 +33,22 @@ class AddGroupViewModel extends InsiteViewModel {
   TextEditingController descriptionController = TextEditingController();
 
   Groups? groups;
+  List<AddGroupModel>? selectedAssetDisplayList = [];
+
+  TextEditingController selectedItemController = TextEditingController();
 
   Customer? accountSelected;
 
-  AssetGroupSummaryResponse? groupSummaryResponseData;
+  bool _isAssetLoading = true;
+  bool get isAssetLoading => _isAssetLoading;
+
+  List<String> _assetId = [];
+  List<String> get assetId => _assetId;
+
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> _assetSerialNumber = [];
+  List<String> get assetSerialNumber => _assetSerialNumber;
 
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
@@ -56,6 +68,7 @@ class AddGroupViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getData();
+      getGroupListData();
     });
     Future.delayed(Duration(seconds: 1), () {
       getGroupListData();
@@ -63,7 +76,7 @@ class AddGroupViewModel extends InsiteViewModel {
   }
   List<String> assetUidData = [];
 
-  AssetGroupSummaryResponse? assetIdresult;
+ // AssetGroupSummaryResponse? assetIdresult;
 
   getAddGroupSaveData() async {
     try {
@@ -193,4 +206,6 @@ class AddGroupViewModel extends InsiteViewModel {
   gotoManageGroupPage() {
     _navigationService!.clearTillFirstAndShowView(ManageGroupView());
   }
+
+  
 }

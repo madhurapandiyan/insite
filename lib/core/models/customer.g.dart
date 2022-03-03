@@ -76,7 +76,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
 
 CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) =>
     CustomersResponse(
-      UserUID: json['UserUID']as String?,
+      UserUID: json['UserUID'] as String?,
       Customers: (json['Customers'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),

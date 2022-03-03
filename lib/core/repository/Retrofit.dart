@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:insite/core/models/report_count.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -1374,6 +1375,9 @@ abstract class RestClient {
     @Header("X-VisionLink-CustomerUID") customerId,
     @Path() String url,
   );
+  @GET("{url}")
+  Future<ReportCount> getReportCountData(
+      @Path() String url, @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

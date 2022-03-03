@@ -1,5 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -59,7 +61,7 @@ class ManageReportViewModel extends InsiteViewModel {
     this._searchKeyword = keyword;
   }
 
-  TextEditingController searchcontroller = TextEditingController();
+  TextEditingController searchcontroller = new TextEditingController();
 
   List<ScheduledReportsRow> _assets = [];
   List<ScheduledReportsRow> get assets => _assets;
@@ -92,60 +94,70 @@ class ManageReportViewModel extends InsiteViewModel {
   }
 
   searchReports(String searchValue) {
-    if (searchValue.length >= 4) {
-      pageNumber = 1;
-      _isSearching = true;
-      _searchKeyword = searchValue;
-      notifyListeners();
-      _searchKeyword = searchValue;
-      getManageReportListData();
-    } else {
-    //  getManageReportListData();
-    }
+    Logger().d("search Reports $searchValue");
+    pageNumber = 1;
+    _isSearching = true;
+    notifyListeners();
+    _searchKeyword = searchValue;
+    getManageReportListData();
+  }
+
+  updateSearchDataToEmpty() {
+    Logger().d("updateSearchDataToEmpty");
+    _assets = [];
+    // _isSearching = true;
+    notifyListeners();
+    getManageReportListData();
   }
 
   getManageReportListData() async {
-    ManageReportResponse? result = await _manageUserService!
-        .getManageReportListData(pageNumber, limit, _searchKeyword);
-    if (result != null) {
-      if (result.total != null) {
-        _totalCount = result.total;
-      }
-      if (result.scheduledReports!.isNotEmpty) {
-        Logger()
-            .i("list of assets " + result.scheduledReports!.length.toString());
-
-        if (!loadingMore) {
-          Logger().i("assets");
-          _assets.clear();
+    try {
+      Logger().i("getManagerUserAssetList");
+      ManageReportResponse? result = await _manageUserService!
+          .getManageReportListData(pageNumber, limit, _searchKeyword);
+      if (result != null) {
+        if (result.total != null) {
+          _totalCount = result.total;
         }
-        for (var scheduledReport in result.scheduledReports!) {
-          _assets.add(ScheduledReportsRow(
-              scheduledReports: scheduledReport, isSelected: false));
+        if (result.scheduledReports!.isNotEmpty) {
+          Logger().i(
+              "list of assets " + result.scheduledReports!.length.toString());
+          if (!loadingMore) {
+            Logger().i("assets");
+            _assets.clear();
+          }
+          for (var scheduledReport in result.scheduledReports!) {
+            _assets.add(ScheduledReportsRow(
+                scheduledReports: scheduledReport, isSelected: false));
+          }
+          _loading = false;
+          _loadingMore = false;
+          _isSearching = false;
+          notifyListeners();
+        } else {
+          for (var scheduledReport in result.scheduledReports!) {
+            _assets.add(ScheduledReportsRow(
+                scheduledReports: scheduledReport, isSelected: false));
+          }
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          _isSearching = false;
+          notifyListeners();
         }
-        _loading = false;
-        _loadingMore = false;
-        _isSearching = false;
-        notifyListeners();
       } else {
-        for (var scheduledReport in result.scheduledReports!) {
-          _assets.add(ScheduledReportsRow(
-              scheduledReports: scheduledReport, isSelected: false));
+        if (_isSearching) {
+          _assets = [];
         }
+
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
+        // _refreshing = false;
         _isSearching = false;
         notifyListeners();
       }
-    } else {
-      if (_isSearching) {
-        _assets = [];
-      }
-      _loading = false;
-      _loadingMore = false;
-      _isSearching = false;
-      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
@@ -331,6 +343,7 @@ class ManageReportViewModel extends InsiteViewModel {
       AddReportView(
         scheduledReports: scheduledReports,
         isEdit: true,
+        templateDropDownValue: null,
       ),
     );
   }
@@ -340,7 +353,6 @@ class ManageReportViewModel extends InsiteViewModel {
       AddReportView(
         scheduledReports: null,
         isEdit: false,
-        templateDropDownValue: templateDropDownValue,
       ),
     );
   }
@@ -349,7 +361,6 @@ class ManageReportViewModel extends InsiteViewModel {
     _navigationService.navigateToView(
       AddReportView(
         scheduledReports: null,
-        isEdit: false,
         templateDropDownValue: templateDropDownValue,
       ),
     );
