@@ -12,6 +12,7 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
@@ -40,6 +41,14 @@ class AddGroupViewModel extends InsiteViewModel {
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
 
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
+
+  List<Asset>? selectedAsset = [];
+
+  bool isLoading = true;
+
   AddGroupViewModel(Groups? groups) {
     this.groups = groups;
     this.log = getLogger(this.runtimeType.toString());
@@ -48,8 +57,13 @@ class AddGroupViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () {
       getData();
     });
+    Future.delayed(Duration(seconds: 1), () {
+      getGroupListData();
+    });
   }
   List<String> assetUidData = [];
+
+  AssetGroupSummaryResponse? assetIdresult;
 
   getAddGroupSaveData() async {
     try {
@@ -101,6 +115,50 @@ class AddGroupViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
   }
 
   void getData() {

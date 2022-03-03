@@ -1130,6 +1130,15 @@ class AssetAdminManagerUserService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1157,6 +1166,15 @@ class AssetAdminManagerUserService extends BaseService {
             .getManufacturerFilterData(
                 Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
       }
@@ -1188,6 +1206,15 @@ class AssetAdminManagerUserService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
       }
     } catch (e) {}
     return null;
@@ -1211,6 +1238,15 @@ class AssetAdminManagerUserService extends BaseService {
             .getAdminProductFamilyFilterData(
                 Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
       }
@@ -1238,6 +1274,15 @@ class AssetAdminManagerUserService extends BaseService {
             .getAdminProductFamilyFilterData(
                 Urls.getGroupListDataVL +
                     FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return groupSummaryResponse;
+      } else {
+        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+            .getClient()!
+            .getGroupListData(
+                Urls.groupListData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                "in-vfleet-uf-map-api",
                 accountSelected!.CustomerUID);
         return groupSummaryResponse;
       }

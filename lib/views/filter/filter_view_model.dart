@@ -156,6 +156,7 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   void onFilterApplied() {
+    Logger().e("mappiy");
     _isRefreshing = true;
     notifyListeners();
     updateFilterInDb(selectedFilterData!);

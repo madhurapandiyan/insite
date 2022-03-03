@@ -416,25 +416,25 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          AssetCount idlingLevelDataResponse = await MyApi()
-              .getClient()!
-              .idlingLevel(
-                  Urls.assetCountSummary +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID,
-                  Urls.vfleetPrefix);
-          if (idlingLevelDataResponse != null) {
-            bool updated =
-                await updateAssetCount(idlingLevelDataResponse, type);
-            Logger().d("updated $updated");
-            if (updated) {
-              return idlingLevelDataResponse;
-            } else {
-              return null;
-            }
-          } else {
-            return null;
-          }
+          // AssetCount idlingLevelDataResponse = await MyApi()
+          //     .getClient()!
+          //     .idlingLevel(
+          //         Urls.assetCountSummary +
+          //             FilterUtils.constructQueryFromMap(queryMap),
+          //         accountSelected!.CustomerUID,
+          //         Urls.vfleetPrefix);
+          // if (idlingLevelDataResponse != null) {
+          //   bool updated =
+          //       await updateAssetCount(idlingLevelDataResponse, type);
+          //   Logger().d("updated $updated");
+          //   if (updated) {
+          //     return idlingLevelDataResponse;
+          //   } else {
+          //     return null;
+          //   }
+          // } else {
+          //   return null;
+          // }
         }
       }
     } catch (e) {

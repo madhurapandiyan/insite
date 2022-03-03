@@ -28,6 +28,7 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../add_group/model/add_group_model.dart';
 import './model/zone.dart';
 
 import 'model/fault_code_type_search.dart';
@@ -55,14 +56,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
-     
 
     Future.delayed(Duration(seconds: 1), () {
       getNotificationTypesData();
-      getData();
+
       onGettingFaultCodeData();
       if (data != null) {
         editingNotification(data);
+      } else {
+        getGroupListData();
       }
       faultCodeScrollController.addListener(() {
         if (faultCodeScrollController.position.pixels ==
@@ -74,6 +76,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       });
     });
   }
+
   ScrollController faultCodeScrollController = ScrollController();
   setUp() async {
     try {
@@ -129,6 +132,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   bool _showZone = false;
   bool get showZone => _showZone;
 
+  bool isSelecetedForAllDays = false;
+
   List<User>? searchContactListName = [];
   bool isHideSearchList = false;
 
@@ -138,6 +143,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
   }
+
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
+
+  List<Asset>? selectedAsset = [];
+
+  bool isLoading = true;
 
   List<String>? selectedContactItems = [];
 
@@ -159,83 +174,92 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TextEditingController notificationController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController occurenceController = TextEditingController();
+  TextEditingController occurenceController = TextEditingController(text: "1");
   TextEditingController assetStatusOccurenceController =
-      TextEditingController();
+      TextEditingController(text: "1");
   TextEditingController engineHoursOccurenceController =
-      TextEditingController();
+      TextEditingController(text: "1");
   TextEditingController excessiveDailyOccurenceController =
-      TextEditingController();
-  TextEditingController fuelOccurenceController = TextEditingController();
-  TextEditingController fuelLosssOccurenceController = TextEditingController();
-  TextEditingController odometerOccurenceController = TextEditingController();
-  TextEditingController geofenceOccurenceController = TextEditingController();
+      TextEditingController(text: "1");
+  TextEditingController fuelOccurenceController =
+      TextEditingController(text: "1");
+  TextEditingController fuelLosssOccurenceController =
+      TextEditingController(text: "10");
+  TextEditingController odometerOccurenceController =
+      TextEditingController(text: "1");
+  TextEditingController geofenceOccurenceController =
+      TextEditingController(text: "1");
 
   // text editing controller ----------------------------
-
-
-  
-
-  onChangingSubType(value) {
-    _dropDownSubInitialValue = value;
-    notifyListeners();
-  }
- 
-
-  
- 
 
   List<ScheduleData> schedule = [
     ScheduleData(
         day: 0,
-        title: "SUN",
+        title: "S",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "MON",
+        day: 1,
+        title: "M",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "TUE",
+        day: 2,
+        title: "T",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "WED",
+        day: 3,
+        title: "W",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "THU",
+        day: 4,
+        title: "Th",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "FRI",
+        day: 5,
+        title: "F",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
     ScheduleData(
-        day: 0,
-        title: "SAT",
+        day: 6,
+        title: "SA",
         startTime: "00:00",
         endTime: "24:00",
-        initialVale: "select"),
+        initialVale: "Not To Be Schedule",
+        color: white),
   ];
 
-  Groups? groups;
+  changingTabColor(int i) {
+    schedule.forEach((element) {
+      element.color = black;
+    });
+    schedule[i].color = white;
+
+    notifyListeners();
+  }
 
   AssetGroupSummaryResponse? groupSummaryResponseData;
 
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
+
+  List<String>? svcBody = [];
+  List<AddGroupModel>? selectedItemAssets = [];
 
   List<String> assetUidData = [];
 
@@ -339,19 +363,171 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<FaultCodeDetails>? faultCodeTypeSearch = [];
   List<FaultCodeDetails>? SelectedfaultCodeTypeSearch = [];
 
+  bool isTitleExist = false;
+  bool isNotificationNameChange = false;
+
+  String initialEndValue = "24:00";
+  String initialStartValue = "00:00";
+  String initialDayOption = "All Days";
+  bool checkingAllDay = true;
+
+  List<CheckBoxDropDown> selectedDays = [];
+  List<Schedule> scheduleDay = [];
+
+  List<String> days = ["All Days", "Days"];
+
   onConformingDropDown(List<String> value) {
     selectedList = value;
     Logger().e(value);
     notifyListeners();
   }
 
-  editingNotification(AlertConfigEdit data) {
+  onSelectingDays() {
+    String? title;
+    var data = schedule.where((element) => element.isSelected == true).toList();
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].day == 0) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Sunday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 1) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Monday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 2) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Tuesday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 3) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Wednesday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 4) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Thursday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 5) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Friday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      } else if (data[i].day == 6) {
+        scheduleDay.add(Schedule(
+            day: data[i].day,
+            title: "Saturday",
+            endTime: initialEndValue,
+            startTime: initialStartValue));
+      }
+    }
+    // showSelectedDays!.replaceRange(0, 5,"");
+    notifyListeners();
+  }
+
+  getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  onDeletingSelectedDays(int i) {
+    //var data = selectedDays.elementAt(i);
+    scheduleDay.removeAt(i);
+
+    notifyListeners();
+  }
+
+  onChangingSubType(value) {
+    _dropDownSubInitialValue = value;
+    notifyListeners();
+  }
+
+  onSwitchAllscheduleDate(bool value, int i) {
+    var data = schedule.elementAt(i);
+    schedule.forEach((element) {
+      element.endTime = data.endTime;
+      element.startTime = data.startTime;
+      element.initialVale = data.initialVale;
+      element.isSelected = false;
+    });
+    schedule[i].isSelected = value;
+
+    notifyListeners();
+  }
+
+  onDaysSelected(int i) {
+    schedule[i].isSelected = !schedule[i].isSelected!;
+    notifyListeners();
+  }
+
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
+  editingNotification(AlertConfigEdit data) async {
+    await getGroupListData();
     isEditing = true;
     notificationController.text = data.alertConfig!.notificationTitle!;
     notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
     notificationTypeId = data.alertConfig!.notificationTypeID!;
+    _noticationTypes.clear();
+    _noticationTypes = [data.alertConfig!.notificationType!];
     _dropDownInitialValue = data.alertConfig!.notificationType!;
     alertConfigUid = data.alertConfig!.alertConfigUID;
+    data.alertConfig?.deliveryConfig?.forEach((element) {
+      if (element != null) {
+        selectedUser.add(User(
+          email: element.recipientStr,
+          isVLUser: element.isVLUser,
+        ));
+        emailIds!.add(element.recipientStr!);
+        isShowingSelectedContact = true;
+      }
+    });
     _showZone = true;
     alertConfigData = data;
 
@@ -361,37 +537,103 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operatorId: element.operatorID,
           value: element.value));
     });
-    
-    if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
-      schedule.clear();
-      alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
-      var endTimeHour =
-          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
-              .hour
-              .toString()
-              .padLeft(2, '0');
-      var endTimeMinute =
-          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleEndTime!))
-              .minute
-              .toString()
-              .padLeft(2, '0');
-      var startTimeHour =
-          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
-              .hour
-              .toString()
-              .padLeft(2, '0');
-      var startTimeMinute =
-          TimeOfDay.fromDateTime(DateTime.parse(element.scheduleStartTime!))
-              .minute
-              .toString()
-              .padLeft(2, '0');
-      schedule.add(ScheduleData(
-          day: element.scheduleDayNum,
-          endTime: '$endTimeHour:$endTimeMinute',
-          startTime: '$startTimeHour:$startTimeMinute',
-          initialVale: "Range",
-          title: "sun"));
+
+    assetIdresult?.assetDetailsRecords?.forEach((element) {
+      if (alertConfigData!.alertConfig!.assets!
+          .any((editData) => editData.assetUID == element.assetIdentifier)) {
+        selectedAsset!.add(Asset(
+            assetIcon: element.assetIcon,
+            assetId: element.assetId,
+            assetIdentifier: element.assetIdentifier,
+            assetSerialNumber: element.assetSerialNumber,
+            makeCode: element.makeCode,
+            model: element.model));
+      }
     });
+
+    if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
+      scheduleDay.clear();
+      for (var i = 0;
+          i < alertConfigData!.alertConfig!.scheduleDetails!.length;
+          i++) {
+        var data = alertConfigData!.alertConfig!.scheduleDetails;
+        var endTimeHour =
+            TimeOfDay.fromDateTime(DateTime.parse(data![i].scheduleEndTime!))
+                .hour
+                .toString()
+                .padLeft(2, '0');
+        var endTimeMinute =
+            TimeOfDay.fromDateTime(DateTime.parse(data[i].scheduleEndTime!))
+                .minute
+                .toString()
+                .padLeft(2, '0');
+        var startTimeHour =
+            TimeOfDay.fromDateTime(DateTime.parse(data[i].scheduleStartTime!))
+                .hour
+                .toString()
+                .padLeft(2, '0');
+        var startTimeMinute =
+            TimeOfDay.fromDateTime(DateTime.parse(data[i].scheduleStartTime!))
+                .minute
+                .toString()
+                .padLeft(2, '0');
+        if (data[i].scheduleDayNum == 0) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Sunday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 1) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Monday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 2) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Tuesday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 3) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Wednesday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 4) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Thursday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 5) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Friday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        } else if (data[i].scheduleDayNum == 6) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Saturday",
+              endTime: initialEndValue,
+              startTime: initialStartValue));
+        }
+      }
+      // alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
+      //   scheduleDay.add(Schedule(
+      //     day: element.scheduleDayNum,
+      //     endTime: '$endTimeHour:$endTimeMinute',
+      //     startTime: '$startTimeHour:$startTimeMinute',
+      //   ));
+      //   schedule.add(ScheduleData(
+      //       day: element.scheduleDayNum,
+      //       endTime: '$endTimeHour:$endTimeMinute',
+      //       startTime: '$startTimeHour:$startTimeMinute',
+      //       initialVale: "Range",
+      //       title: "sun"));
+      // });
     }
     _notificationSubTypes.clear();
     if (data.alertConfig!.operands!.isNotEmpty) {
@@ -403,6 +645,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     data.alertConfig!.assets!.forEach((element) {
       assetUidData.add(element.assetUID!);
     });
+
     notifyListeners();
   }
 
@@ -607,10 +850,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         .where((element) => element.email!.contains(emailController.text));
     if (selectedUser
         .any((element) => element.email!.contains(data.first.email!))) {
+      snackbarService?.showSnackbar(message: "User Already Selected");
     } else {
       emailController.clear();
       selectedUser.add(data.first);
-      emailIds!.add(data.first.name!);
+      emailIds!.add(data.first.email!);
     }
     notifyListeners();
   }
@@ -618,27 +862,26 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onGettingFaultCodeData() async {
     try {
       showLoadingDialog();
-    var faultCodeType =
-        await _notificationService!.getFaultCodeTypeSearch("", page, "");
-    if (_loadingMore) {
-      faultCodeType!.descriptions!.forEach((element) {
-        faultCodeTypeSearch!.add(FaultCodeDetails(
-            faultCodeIdentifier: element.faultCodeIdentifier,
-            faultCodeType: element.faultCodeType,
-            faultDescription: element.faultDescription,
-            isExpanded: element.isExpanded));
-      });
-    } else {
-      faultCodeTypeSearch = faultCodeType?.descriptions;
-    }
+      var faultCodeType =
+          await _notificationService!.getFaultCodeTypeSearch("", page, "");
+      if (_loadingMore) {
+        faultCodeType!.descriptions!.forEach((element) {
+          faultCodeTypeSearch!.add(FaultCodeDetails(
+              faultCodeIdentifier: element.faultCodeIdentifier,
+              faultCodeType: element.faultCodeType,
+              faultDescription: element.faultDescription,
+              isExpanded: element.isExpanded));
+        });
+      } else {
+        faultCodeTypeSearch = faultCodeType?.descriptions;
+      }
 
-    hideLoadingDialog();
+      hideLoadingDialog();
 
-    notifyListeners();
+      notifyListeners();
     } catch (e) {
       hideLoadingDialog();
     }
-    
   }
 
   onDescriptionFrontPressed() async {
@@ -725,18 +968,29 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   updateType(String value, int i) {
-    schedule[i].initialVale = value;
+    initialDayOption = value;
+    if (value == days[0]) {
+      schedule.forEach((element) {
+        element.isSelected = true;
+      });
+      checkingAllDay = true;
+    } else {
+      schedule.forEach((element) {
+        element.isSelected = false;
+      });
+      checkingAllDay = false;
+    }
     notifyListeners();
   }
 
   updateStartTime(String value, int i) {
     Logger().e(value);
-    schedule[i].startTime = value;
+    initialStartValue = value;
     notifyListeners();
   }
 
   updateEndTime(String value, int i) {
-    schedule[i].endTime = value;
+    initialEndValue = value;
     notifyListeners();
   }
 
@@ -859,6 +1113,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         });
       }
     });
+    if (_dropDownInitialValue == "Asset Status") {
+      _notificationSubTypes.removeWhere((element) =>
+          element!.contains("Alternate Power") ||
+          element.contains("Not Expected To Report") ||
+          element.contains("Not Ready To Run") ||
+          element.contains("Movement With Asset On") ||
+          element.contains("Movement With Asset Off"));
+    }
     Logger().w(_notificationSubTypes);
     Logger().wtf(_dropDownSubInitialValue);
     notifyListeners();
@@ -885,62 +1147,93 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     try {
       alterTypes = await _notificationService!.getNotificationTypes();
 
-    if (alterTypes != null) {
-      alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
-        notificationTypeGroup.notificationTypes!.forEach((notificationType) {
-          if (notificationType.appName == "VL Unified Fleet" ||
-              notificationType.appName == "Frame-Fleet-IND") {
-            //Logger().w(notificationType.toJson());
-            if (notificationTypeGroup.notificationTypeGroupName!.isNotEmpty) {
-              if (notificationFleetType!.any((element) => element.contains(
-                  notificationTypeGroup.notificationTypeGroupName!))) {
-              } else {
-                if (notificationTypeGroup.notificationTypeGroupName ==
-                    "Geofence") {
-                  if (geofenceAssets!.any((element) => element.contains(
-                      notificationTypeGroup.notificationTypeGroupName!))) {
-                  } else {
-                    geofenceAssets!
-                        .add(notificationTypeGroup.notificationTypeGroupName!);
-                  }
-                } else {
-                  if (notificationTypeGroup.notificationTypeGroupName ==
-                      "Asset Security") {
-                    if (administratortAssets!.any((element) => element.contains(
-                        notificationTypeGroup.notificationTypeGroupName!))) {
-                    } else {
-                      administratortAssets!.add(
-                          notificationTypeGroup.notificationTypeGroupName!);
-                    }
-                  } else {
-                    notificationFleetType!
-                        .add(notificationTypeGroup.notificationTypeGroupName!);
-                  }
-                }
-              }
-            } else {
-              notificationFleetType!
-                  .add(notificationType.notificationTypeName!);
-            }
-          } else if (notificationType.appName == "VL Unified Service" ||
-              notificationType.appName == "Frame-Service-IND") {
-            notificationServiceType!
-                .add(notificationType.notificationTypeName!);
-          } else if (notificationType.appName == "VisionLink Administrator" ||
-              notificationType.appName == "Frame-Administrator-IND") {
-            administratortAssets!.add(notificationType.notificationTypeName!);
+      if (alterTypes != null) {
+        alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
+          if (notificationTypeGroup.notificationTypeGroupName!
+              .contains("Fault")) {
+            notificationTypeGroup.notificationTypes?.forEach((element) {
+              notificationTypes.add(element.notificationTypeName);
+            });
           } else {
-            geofenceAssets!.add(notificationType.notificationTypeName!);
+            notificationTypes
+                .add(notificationTypeGroup.notificationTypeGroupName);
           }
-        });
-      });
-    }
+          // notificationTypeGroup.notificationTypes!.forEach((notificationType) {
 
-    notifyListeners();
+          // if (notificationType.appName == "VL Unified Fleet" ||
+          //     notificationType.appName == "Frame-Fleet-IND") {
+          //   //Logger().w(notificationType.toJson());
+          //   if (notificationTypeGroup.notificationTypeGroupName!.isNotEmpty) {
+          //     if (notificationFleetType!.any((element) => element.contains(
+          //         notificationTypeGroup.notificationTypeGroupName!))) {
+          //     } else {
+          //       if (notificationTypeGroup.notificationTypeGroupName ==
+          //           "Geofence") {
+          //         if (geofenceAssets!.any((element) => element.contains(
+          //             notificationTypeGroup.notificationTypeGroupName!))) {
+          //         } else {
+          //           notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //           geofenceAssets!
+          //               .add(notificationTypeGroup.notificationTypeGroupName!);
+          //         }
+          //       } else {
+          //         if (notificationTypeGroup.notificationTypeGroupName ==
+          //             "Asset Security") {
+          //           if (administratortAssets!.any((element) => element.contains(
+          //               notificationTypeGroup.notificationTypeGroupName!))) {
+          //           } else {
+          //             notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //             administratortAssets!.add(
+          //                 notificationTypeGroup.notificationTypeGroupName!);
+          //           }
+          //         } else {
+          //           notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //           notificationFleetType!
+          //               .add(notificationTypeGroup.notificationTypeGroupName!);
+          //         }
+          //       }
+          //     }
+          //   } else {
+          //     notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //     notificationFleetType!
+          //         .add(notificationType.notificationTypeName!);
+          //   }
+          // } else if (notificationType.appName == "VL Unified Service" ||
+          //     notificationType.appName == "Frame-Service-IND") {
+          //       notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //   notificationServiceType!
+          //       .add(notificationType.notificationTypeName!);
+          // } else if (notificationType.appName == "VisionLink Administrator" ||
+          //     notificationType.appName == "Frame-Administrator-IND") {
+          //       notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //   administratortAssets!.add(notificationType.notificationTypeName!);
+          // } else {
+          //   notificationTypes.add(notificationTypeGroup.notificationTypeGroupName!);
+          //   geofenceAssets!.add(notificationType.notificationTypeName!);
+          // }
+          //  });
+        });
+      }
+      notificationTypes.removeWhere((element) =>
+          element!.contains("Odometer") ||
+          element.contains("Switches") ||
+          element.contains("Fluid Analysis") ||
+          element.contains("Maintenance") ||
+          element.contains("Inspection") ||
+          element.contains("Asset Security") ||
+          element.contains("Fluid Analysis") ||
+          element.contains("Geofence") ||
+          element.contains("Zone Inclusion/Exclusion") ||
+          element.contains("Fluid Analysis") ||
+          element.contains("Power Mode") ||
+          element.contains("Back To Start") ||
+          element.contains("Usage") ||
+          element.contains("Proximity"));
+
+      notifyListeners();
     } catch (e) {
       hideLoadingDialog();
     }
-    
   }
 
   checkIfNotificationNameExist(String? value) async {
@@ -948,48 +1241,21 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (value!.length >= 4) {
         NotificationExist? notificationExists =
             await _notificationService!.checkNotificationTitle(value);
+        // isTitleExist = notificationExists!.alertTitleExists!;
 
-        if (notificationExists!.alertTitleExists == true) {
+        if (notificationExists?.alertTitleExists == true) {
           _snackBarservice!.showSnackbar(message: "Notification title exists");
+          notificationController.clear();
         }
         notifyListeners();
+      } else {
+        //isNotificationNameChange=true;
+        // notifyListeners();
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
       Fluttertoast.showToast(msg: error.message!);
     }
-  }
-
-  getEditGroupData() async {
-    try {
-      showLoadingDialog();
-      EditGroupResponse? result =
-          await _manageUserService!.getEditGroupData(groups!.GroupUid!);
-      if (result != null) {
-        nameController.text = result.GroupName!;
-        descriptionController.text = result.Description ?? "";
-        if (result.AssetUID != null) {
-          for (var i = 0; i < result.AssetUID!.length; i++) {
-            assetUidData.add(result.AssetUID![i]);
-          }
-          Logger().i("assetUId:${assetUidData.length}");
-        }
-      }
-
-      hideLoadingDialog();
-      notifyListeners();
-    } catch (e) {
-      hideLoadingDialog();
-      Logger().e(e.toString());
-    }
-  }
-
-  void getData() {
-    if (groups != null) {
-      getEditGroupData();
-    } else {}
-    hideLoadingDialog();
-    notifyListeners();
   }
 
   gotoManageNotificationsPage() {
@@ -1165,6 +1431,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   editNotification() async {
+    showLoadingDialog();
+    assetUidData.clear();
+    selectedAsset?.forEach((element) {
+      assetUidData.add(element.assetIdentifier!);
+     });
     AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
         alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
         alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
@@ -1177,88 +1448,109 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             alertConfigData!.alertConfig!.notificationTypeGroupID,
         notificationSubscribers: NotificationSubscribers(emailIds: emailIds),
         notificationTypeId: alertConfigData!.alertConfig!.notificationTypeID,
-        schedule: schedule
-            .map((e) => Schedule(
-                  day: e.day,
-                  endTime: e.items![2] == e.initialVale &&
-                          e.items![0] == e.initialVale
-                      ? "00:00"
-                      : e.endTime,
-                  startTime: e.items![2] == e.initialVale &&
-                          e.items![0] == e.initialVale
-                      ? "00:00"
-                      : e.startTime,
-                ))
-            .toList(),
+        schedule: scheduleDay,
         operands: operandData,
         numberOfOccurences: 1);
     var data = await _notificationService!
         .editNotification(payLoadData, alertConfigUid!);
-        if (data != null) {
-        _snackBarservice!
-            .showSnackbar(message: "Edit Notification Success");
+    if (data != null) {
+      _snackBarservice!.showSnackbar(message: "Edit Notification Success");
 
-        hideLoadingDialog();
-        gotoManageNotificationsPage();
-      }
+      hideLoadingDialog();
+      gotoManageNotificationsPage();
+    }
   }
 
   saveAddNotificationData() async {
+    assetUidData.clear();
+    selectedAsset!.forEach((element) {
+      assetUidData.add(element.assetIdentifier!);
+    });
+    if (notificationController.text.isEmpty) {
+      _snackBarservice!.showSnackbar(message: "Notification Name is required");
+      return;
+    }
+    if (_dropDownInitialValue == "Select") {
+      _snackBarservice!
+          .showSnackbar(message: "Please Select Notification Type");
+      return;
+    }
+    if (_dropDownSubInitialValue == "Options" ||
+        _dropDownSubInitialValue == "Conditions") {
+      _snackBarservice!
+          .showSnackbar(message: "Please Configure Notification sub Type");
+      return;
+    }
+    if (assetUidData.isEmpty) {
+      _snackBarservice!.showSnackbar(message: "Please Select Asset");
+      return;
+    }
+    if (scheduleDay.isEmpty) {
+      _snackBarservice!.showSnackbar(message: "Please Schedule Notification");
+      return;
+    }
     if (isEditing) {
       editNotification();
     } else {
+      showLoadingDialog();
       var currentDate = DateTime.now();
       var newFormat = DateFormat("dd-MM-yy");
       String date = newFormat.format(currentDate);
 
-    await gettingNotificationIdandOperands();
-AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
-        alertCategoryID: 1,
-        alertGroupId: 1,
-        alertTitle: notificationController.text,
-        allAssets: false,
-        assetUIDs: assetUidData,
-        currentDate:DateFormat("MM/dd/yyyy").format(DateTime.now()),
-        notificationDeliveryChannel: "email",
-        notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:[])
-        notificationTypeGroupID: notificationTypeGroupID,
-        notificationTypeId: notificationTypeId,
-        operands:operandData,
-        // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
-        numberOfOccurences: 1
-        schedule:schedule.map((e) => Schedule(day: e.day,endTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.endTime,startTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.startTime,)).toList()
-        );
+      await gettingNotificationIdandOperands();
+      AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
+          alertCategoryID: 1,
+          alertGroupId: 1,
+          alertTitle: notificationController.text,
+          allAssets: false,
+          assetUIDs: assetUidData,
+          currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
+          notificationDeliveryChannel: "email",
+          notificationSubscribers:
+              NotificationSubscribers(emailIds: emailIds, phoneNumbers: []),
+          notificationTypeGroupID: notificationTypeGroupID,
+          notificationTypeId: notificationTypeId,
+          operands: operandData,
+          schedule: scheduleDay,
+          numberOfOccurences: 1);
+// AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
+//         alertCategoryID: 1,
+//         alertGroupId: 1,
+//         alertTitle: notificationController.text,
+//         allAssets: false,
+//         assetUIDs: assetUidData,
+//         currentDate:DateFormat("MM/dd/yyyy").format(DateTime.now()),
+//         notificationDeliveryChannel: "email",
+//         notificationSubscribers:NotificationSubscribers(emailIds: emailIds,phoneNumbers:[])
+//         notificationTypeGroupID: notificationTypeGroupID,
+//         notificationTypeId: notificationTypeId,
+//         operands:operandData,
+//         // numberOfOccurences: occurenceController.text.isEmpty? 1 :int.parse(occurenceController.text),
+//         numberOfOccurences: 1
+//         schedule:schedule.map((e) => Schedule(day: e.day,endTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.endTime,startTime:e.items![2]==e.initialVale && e.items![0]==e.initialVale? "00:00":e.startTime,)).toList()
+//         );
 
-        Logger().w(notificationPayLoad.toJson());
+      Logger().w(notificationPayLoad.toJson());
 
-    try {
-      if (notificationController.text.isEmpty) {
-        _snackBarservice!
-            .showSnackbar(message: "Notification Name is be required");
-        return;
-      }
+      try {
+        NotificationAdded? response =
+            await _notificationService!.addNewNotification(notificationPayLoad);
 
-      NotificationAdded? response =
-          await _notificationService!.addNewNotification(notificationPayLoad);
+        if (response != null) {
+          _snackBarservice!.showSnackbar(message: "Add Notification Success");
 
-      showLoadingDialog();
-
-      if (response != null) {
-        _snackBarservice!
-            .showSnackbar(message: "Add Notification Success");
-
+          hideLoadingDialog();
+          gotoManageNotificationsPage();
+        } else {
+          _snackBarservice!
+              .showSnackbar(message: "Kindly recheck credentials added");
+        }
         hideLoadingDialog();
-        gotoManageNotificationsPage();
-      } else {
-        _snackBarservice!
-            .showSnackbar(message: "Kindly recheck credentials added");
+        Logger().i(response!.toJson());
+        notifyListeners();
+      } catch (e) {
+        Logger().e(e.toString());
       }
-      hideLoadingDialog();
-      Logger().i(response!.toJson());
-      notifyListeners();
-    } catch (e) {
-      Logger().e(e.toString());
-    }
     }
   }
 
@@ -1269,6 +1561,11 @@ AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
     phoneNumbers!.add(searchContactListName![index].name!);
     isHideSearchList = false;
 
+    notifyListeners();
+  }
+
+  onDeletingSelectedAsset(int i) {
+    selectedItemAssets!.remove(i);
     notifyListeners();
   }
 }
@@ -1288,6 +1585,8 @@ class ScheduleData {
   String? title;
   List<String>? items;
   String? initialVale;
+  Color? color;
+  bool? isSelected;
 
   ScheduleData(
       {this.day,
@@ -1295,8 +1594,10 @@ class ScheduleData {
       this.endTime,
       this.title,
       this.initialVale,
+      this.color,
+      this.isSelected = true,
       this.items = const [
-        "select",
+        "Not To Be Schedule",
         "Range",
         "All day",
       ]});

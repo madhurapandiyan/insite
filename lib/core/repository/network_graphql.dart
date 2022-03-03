@@ -13,6 +13,23 @@ class Network {
       "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
   final LocalService? _localService = locator<LocalService>();
 
+  getGraphqlAccountData(String? query,)async{
+    final client = dio.Dio();
+    final Link link = DioLink(graphqlEndpoint, client: client, defaultHeaders: {
+      "content-type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "bearer " + await _localService!.getToken(),
+    });
+
+    final res = await link
+        .request(Request(
+          operation: Operation(document: gql.parseString(query!)),
+        ))
+        .first;
+
+    return res;
+  }
+
   getGraphqlData(
     String? query,
     String? customerId,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_report_payload.dart';
+import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
@@ -48,6 +49,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   bool isListViewState = false;
 
+  bool isLoading = true;
   int? reportFormat;
 
   String? dropDownValue = "Select";
@@ -58,6 +60,13 @@ class AddReportViewModel extends InsiteViewModel {
   String reportFormatDropDownValue = ".CSV";
   String frequencyDropDownValue = "Daily";
   String chooseByDropDownValue = "Assets";
+
+  List<Asset>? selectedAsset = [];
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
 
   ScheduledReports? scheduledReportsId;
 
@@ -71,7 +80,12 @@ class AddReportViewModel extends InsiteViewModel {
     if (isEdit) {
       Future.delayed(Duration(seconds: 1), () {
         getEditReportData();
+        Future.delayed(Duration(seconds: 1), () {
+          editGroupListData();
+        });
       });
+    } else {
+      getGroupListData();
     }
 
     Future.delayed(Duration(seconds: 1), () {
@@ -240,8 +254,72 @@ class AddReportViewModel extends InsiteViewModel {
     }
   }
 
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
+  Future getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  editGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+      notifyListeners();
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
   addReportSaveData() async {
     List<Reports?> defaultColumn = [];
+    selectedAsset!.forEach((element) {
+      associatedIdentifier?.add(element.assetIdentifier!);
+    });
     result!.reports!.forEach((reports) {
       defaultColumn.add(reports);
     });

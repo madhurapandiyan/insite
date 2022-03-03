@@ -7,7 +7,9 @@ import 'package:insite/core/models/refresh_token_payload.dart';
 import 'package:insite/core/models/token.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
@@ -19,6 +21,8 @@ import 'local_service.dart';
 class LoginService extends BaseService {
   final NavigationService? _nagivationService = locator<NavigationService>();
   final LocalService? _localService = locator<LocalService>();
+  final GraphqlSchemaService? _graphqlSchemaService =
+      locator<GraphqlSchemaService>();
   UserInfo? userInfo;
 
   Future<UserInfo?> getLoggedInUserInfo() async {
@@ -120,6 +124,34 @@ class LoginService extends BaseService {
   }
 
   Future<List<Customer>?> getCustomers() async {
+    if (enableGraphQl) {
+      try {
+        var data = await Network().getGraphqlAccountData(
+            _graphqlSchemaService!.getAccountHierarchy());
+        CustomersResponse response = CustomersResponse(
+            UserUID: data.data["accountHierarchy"]["userUid"],
+            Customers:
+                (data.data["accountHierarchy"]["customers"] as List<dynamic>?)
+                    ?.map((e) => Customer(
+                        CustomerType: e["customerType"],
+                        CustomerUID: e["customerUid"],
+                        DisplayName: e["displayName"],
+                        Name: e["name"],
+                        Children: (e["children"] as List<dynamic>?)
+                            ?.map((e) => Customer(
+                                  CustomerType: e["customerType"],
+                                  CustomerUID: e["customerUid"],
+                                  DisplayName: e["displayName"],
+                                  Name: e["name"],
+                                ))
+                            .toList()))
+                    .toList());
+        Logger().w(response.Customers!.first.toJson());
+        return response.Customers;
+      } catch (e) {
+        Logger().e(e.toString());
+      }
+    }
     if (isVisionLink) {
       try {
         CustomersResponse response =
@@ -147,6 +179,45 @@ class LoginService extends BaseService {
 
   Future<List<Customer>?> getSubCustomers(customerId) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlAccountData(
+            _graphqlSchemaService!.getSubAccountHeirachryData(customerId));
+        print(data);
+        CustomersResponse response = CustomersResponse(
+            UserUID: data.data["accountHierarchy"]["userUid"],
+            Customers: (data.data["accountHierarchy"]["customers"]
+                    as List<dynamic>?)
+                ?.map((e1) => Customer(
+                    CustomerType: e1["customerType"],
+                    CustomerUID: e1["customerUid"],
+                    DisplayName: e1["displayName"],
+                    Name: e1["name"],
+                    Children: (e1["children"] as List<dynamic>?)
+                        ?.map((e2) => Customer(
+                            CustomerType: e2["customerType"],
+                            CustomerUID: e2["customerUid"],
+                            DisplayName: e2["displayName"],
+                            Name: e2["name"],
+                            Children: (e2["children"] as List<dynamic>?)
+                                ?.map((e3) => Customer(
+                                    CustomerType: e3["customerType"],
+                                    CustomerUID: e3["customerUid"],
+                                    DisplayName: e3["displayName"],
+                                    Name: e3["name"],
+                                    Children: (e3["children"] as List<dynamic>?)
+                                        ?.map((e4) => Customer(
+                                              CustomerType: e4["customerType"],
+                                              CustomerUID: e4["customerUid"],
+                                              DisplayName: e4["displayName"],
+                                              Name: e4["name"],
+                                            ))
+                                        .toList()))
+                                .toList()))
+                        .toList()))
+                .toList());
+        Logger().w(response.Customers?.first.toJson());
+        return response.Customers?[0].Children;
+      }
       if (isVisionLink) {
         CustomersResponse response =
             await MyApi().getClient()!.accountHierarchyChildrenVL(customerId);
@@ -320,6 +391,6 @@ class LoginService extends BaseService {
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
-   await saveExpiryTime(expiryTime);
+    await saveExpiryTime(expiryTime);
   }
 }

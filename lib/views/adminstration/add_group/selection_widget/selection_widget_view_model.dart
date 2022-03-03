@@ -4,16 +4,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
-import 'package:insite/core/models/edit_group_response.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
-import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
-import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:logger/logger.dart';
 

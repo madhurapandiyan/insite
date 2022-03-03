@@ -7,6 +7,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -258,6 +259,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                               height: 40,
                               textColor: white,
                               onTap: () {
+                                Logger().wtf(viewModel.startDate!);
                                 showFromToDatePicker(
                                     ctx: context,
                                     currentCustomDatePick:
@@ -278,8 +280,8 @@ class _DateRangeViewState extends State<DateRangeView> {
                               },
                               title: customFromDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
-                                  : Utils.parseDate(customFromDate!)
-                                      .toUpperCase(),
+                                  : DateFormat("dd-MM-yyyy")
+                                      .format(customFromDate!),
                             ),
                           ],
                         ),
@@ -316,13 +318,11 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     endDate: DateTime.parse(viewModel.endDate!),
                                     startDate:
                                         DateTime.parse(viewModel.endDate!));
-
-                                  
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
-                                  : Utils.parseDate(customToDate!)
-                                      .toUpperCase(),
+                                  : DateFormat("dd-MM-yyyy")
+                                      .format(customToDate!),
                             ),
                           ],
                         ),
@@ -397,8 +397,10 @@ class _DateRangeViewState extends State<DateRangeView> {
                           if (viewModel.selectedDateRange ==
                               DateRangeType.today) {
                             await viewModel.updateDateRange(
-                                '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
-                                '${toDate!.year}-${toDate!.month}-${toDate!.day}',
+                                //'${fromDate!.year}-${fromDate!.month}-${fromDate!.day}'
+                                DateFormat("yyyy-MM-dd").format(fromDate!),
+                                //'${toDate!.year}-${toDate!.month}-${toDate!.day}'
+                                DateFormat("yyyy-MM-dd").format(toDate!),
                                 describeEnum(viewModel.selectedDateRange));
                             Future.delayed(Duration(milliseconds: 500), () {
                               Navigator.pop(context, [fromDate!, toDate!]);
@@ -407,8 +409,10 @@ class _DateRangeViewState extends State<DateRangeView> {
                             if (DateUtil.isBothDateSame(fromDate!, toDate!)) {
                               Logger().i("if date equal");
                               await viewModel.updateDateRange(
-                                  '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
-                                  '${toDate!.year}-${toDate!.month}-${toDate!.day}',
+                                  DateFormat("yyyy-MM-dd").format(fromDate!),
+                                  // '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
+                                  DateFormat("yyyy-MM-dd").format(toDate!),
+                                  //'${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                   describeEnum(viewModel.selectedDateRange));
                               Future.delayed(Duration(milliseconds: 500), () {
                                 Navigator.pop(context, [fromDate!, toDate!]);
@@ -420,8 +424,10 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     "End date cannot be less than start date.");
                               } else {
                                 await viewModel.updateDateRange(
-                                    '${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
-                                    '${toDate!.year}-${toDate!.month}-${toDate!.day}',
+                                  DateFormat("yyyy-MM-dd").format(fromDate!),
+                                    //'${fromDate!.year}-${fromDate!.month}-${fromDate!.day}',
+                                    DateFormat("yyyy-MM-dd").format(toDate!),
+                                    //'${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                     describeEnum(viewModel.selectedDateRange));
                                 Future.delayed(Duration(milliseconds: 500), () {
                                   Navigator.pop(context, [fromDate!, toDate!]);
