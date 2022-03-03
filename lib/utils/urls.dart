@@ -335,7 +335,6 @@ class Urls {
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
   static String contactSearchData = "/frame-contact/1.0/Contact";
   static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
-  
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -418,6 +417,8 @@ class Urls {
 
   static String deleteNotification =
       "/t/trimble.com/vss-notification/1.0/Notification";
+  // static String deleteManageNotification =
+  //     "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
   static String deleteManageNotificationVL =
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/";
 

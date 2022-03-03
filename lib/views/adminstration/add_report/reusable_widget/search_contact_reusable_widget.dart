@@ -30,9 +30,6 @@ class SearchContactReusableWidget extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.w700,
           ),
-          Divider(
-            thickness: 2,
-          )
         ],
       ),
     );

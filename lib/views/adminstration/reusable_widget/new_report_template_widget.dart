@@ -101,20 +101,23 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                     fontWeight: FontWeight.w700,
                     size: 14,
                   ),
-                  VerticalDivider(
-                    thickness: 2,
-                  ),
+                  // VerticalDivider(
+                  //   thickness: 2,
+                  // ),
                   Expanded(
-                    child: CustomDropDownWidget(
-                      enableHint: false,
-                      //value: value,
-                      onChanged: (String? value) {
-                        value = value!;
-                        Logger().wtf(value);
-                        widget.dropDownValueCallBack!(value);
-                        setState(() {});
-                      },
-                      items: [".CSV", ".XLS", ".PDF"],
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 4,right:4),
+                      child: CustomDropDownWidget(
+                        enableHint: false,
+                        //value: value,
+                        onChanged: (String? value) {
+                          value = value!;
+                          Logger().wtf(value);
+                          widget.dropDownValueCallBack!(value);
+                          setState(() {});
+                        },
+                        items: [".CSV", ".XLS", ".PDF"],
+                      ),
                     ),
                   )
                 ],

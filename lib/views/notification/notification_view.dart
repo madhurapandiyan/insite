@@ -3,17 +3,27 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/main_notification.dart' as main_notification;
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/notification_item.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
-class NotificationView extends StatelessWidget {
+class NotificationView extends StatefulWidget {
+  @override
+  State<NotificationView> createState() => _NotificationViewState();
+}
+
+class _NotificationViewState extends State<NotificationView> {
   int? selectedIndex;
+  List<DateTime>? dateRange = [];
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<NotificationViewModel>.reactive(
@@ -46,7 +56,7 @@ class NotificationView extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 21.0),
                                 child: InsiteText(
                                   text:
-                                      "Notifications ( ${viewModel.assets.length.toString()} of ${viewModel.assets.length})",
+                                      "Notifications ( ${viewModel.assets.length.toString()} of ${viewModel.totalCount})",
                                   size: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -55,33 +65,45 @@ class NotificationView extends StatelessWidget {
                                 height: 20,
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  viewModel.showEdit
-                                      ? ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                            bottomRight: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: InsitePopMenuItemButton(
-                                              width: 40,
-                                              height: 40,
-                                              //icon: Icon(Icons.more_vert),
-                                              widget: onContextMenuSelected(
-                                                  viewModel,
-                                                  context,
-                                                  selectedIndex!),
-                                            ),
-                                          ))
-                                      : SizedBox()
+                                  InsiteText(
+                                      text: Utils.getDateInFormatddMMyyyy(
+                                              viewModel.startDate) +
+                                          " - " +
+                                          Utils.getDateInFormatddMMyyyy(
+                                              viewModel.endDate),
+                                      fontWeight: FontWeight.bold,
+                                      size: 11),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  InsiteButton(
+                                    title: "Date Range",
+                                    width: 90,
+                                    bgColor: Theme.of(context).backgroundColor,
+                                    textColor: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .color,
+                                    onTap: () async {
+                                      dateRange = [];
+                                      dateRange = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            Dialog(
+                                                backgroundColor: transparent,
+                                                child: DateRangeView()),
+                                      );
+                                      viewModel.startDate=dateRange!.first.toString();
+                                      viewModel.endDate=dateRange!.last.toString();
+                                      viewModel.refresh();
+                                    },
+                                  ),
                                 ],
                               ),
+
                               // Padding(
                               //   padding: const EdgeInsets.only(right: 10.0),
                               //   child: Row(
@@ -163,6 +185,34 @@ class NotificationView extends StatelessWidget {
                               //   ),
                               // )
                             ]),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            viewModel.showEdit
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: InsitePopMenuItemButton(
+                                        width: 40,
+                                        height: 40,
+                                        //icon: Icon(Icons.more_vert),
+                                        widget: onContextMenuSelected(
+                                            viewModel, context, selectedIndex!),
+                                      ),
+                                    ))
+                                : SizedBox()
+                          ],
+                        ),
                         SizedBox(
                           height: 20,
                         ),

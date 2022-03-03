@@ -53,6 +53,14 @@ class AddGroupViewModel extends InsiteViewModel {
   List<String> associatedAssetId = [];
   List<String> dissociatedAssetId = [];
 
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
+
+  List<Asset>? selectedAsset = [];
+
+  bool isLoading = true;
+
   AddGroupViewModel(Groups? groups) {
     this.groups = groups;
     this.log = getLogger(this.runtimeType.toString());
@@ -62,9 +70,13 @@ class AddGroupViewModel extends InsiteViewModel {
       getData();
       getGroupListData();
     });
-    
+    Future.delayed(Duration(seconds: 1), () {
+      getGroupListData();
+    });
   }
   List<String> assetUidData = [];
+
+ // AssetGroupSummaryResponse? assetIdresult;
 
   getAddGroupSaveData() async {
     try {
@@ -118,6 +130,50 @@ class AddGroupViewModel extends InsiteViewModel {
     }
   }
 
+  getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
   void getData() {
     if (groups != null) {
       getEditGroupData();
@@ -151,22 +207,5 @@ class AddGroupViewModel extends InsiteViewModel {
     _navigationService!.clearTillFirstAndShowView(ManageGroupView());
   }
 
-  Future<AssetGroupSummaryResponse?> getGroupListData() async {
-    if (_assetId.isEmpty && _assetSerialNumber.isEmpty) {
-      assetIdresult = await _manageUserService!.getGroupListData();
-      assetIdresult!.assetDetailsRecords!.forEach((element) {
-        if (element.assetId != null) {
-          _assetId.add(element.assetId!);
-        }
-      });
-      assetIdresult!.assetDetailsRecords!.forEach((element) {
-        _assetSerialNumber.add(element.assetSerialNumber!);
-      });
-    }
-
-    _isAssetLoading = false;
-
-    notifyListeners();
-    return assetIdresult;
-  }
+  
 }

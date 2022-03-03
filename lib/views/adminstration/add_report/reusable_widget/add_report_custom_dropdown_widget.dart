@@ -140,7 +140,7 @@ class DropDownItems extends StatelessWidget {
       children: [
         InsiteText(
           text: title,
-          color: tango,
+          color: Theme.of(context).buttonColor,
         ),
         SizedBox(
           height: 10,

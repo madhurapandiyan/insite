@@ -110,8 +110,11 @@ class ManageUserViewModel extends InsiteViewModel {
     try {
       Logger().i("getManagerUserAssetList");
       AdminManageUser? result = await _manageUserService!
-          .getAdminManageUserListData(pageNumber, _searchKeyword,
-              appliedFilters, graphqlSchemaService!.userManagementUserList(_searchKeyword));
+          .getAdminManageUserListData(
+              pageNumber,
+              _searchKeyword,
+              appliedFilters,
+              graphqlSchemaService!.userManagementUserList(_searchKeyword));
       if (result != null) {
         if (result.total != null) {
           _totalCount = result.total!.items!;
@@ -322,7 +325,7 @@ class ManageUserViewModel extends InsiteViewModel {
     AdminManageUser? result = await _manageUserService!
         .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters,
             graphqlSchemaService!.userManagementUserList(_searchKeyword));
-            Logger().wtf(appliedFilters!.length);
+    Logger().wtf(appliedFilters!.length);
     if (result != null) {
       if (result.total != null) {
         _totalCount = result.total!.items!;

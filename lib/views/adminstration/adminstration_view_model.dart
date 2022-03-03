@@ -64,11 +64,12 @@ class AdminstrationViewModel extends InsiteViewModel {
       _navigationService!
           .navigateWithTransition(ManageReportView(), transition: "fade");
     } else if (value == AdminAssetsButtonType.ADDNEWREPORT) {
-      _navigationService!
-          .navigateWithTransition(AddReportView(
+      _navigationService!.navigateWithTransition(
+          AddReportView(
             isEdit: false,
             scheduledReports: null,
-          ), transition: "fade");
+          ),
+          transition: "fade");
     }
   }
 

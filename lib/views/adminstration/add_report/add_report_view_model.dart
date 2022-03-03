@@ -53,30 +53,47 @@ class AddReportViewModel extends InsiteViewModel {
 
   bool isListViewState = false;
 
+  bool isLoading = true;
   int? reportFormat;
 
   String? dropDownValue = "Select";
 
   List<String>? selectedContactItems = [];
+  List<User> selectedUser = [];
 
   String? assetsDropDownValue;
   String reportFormatDropDownValue = ".CSV";
   String frequencyDropDownValue = "Daily";
   String chooseByDropDownValue = "Assets";
+  bool isShowingSelectedContact = false;
+
+  List<Asset>? selectedAsset = [];
+  AssetGroupSummaryResponse? assetIdresult;
+
+  List<String> dropDownList = ["All", "ID", "S/N"];
+
+  String initialValue = "All";
 
   ScheduledReports? scheduledReportsId;
 
   TextEditingController dateTimeController = new TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  List<String> dropvaluelist = [".CSV", ".XLS", ".PDF"];
 
-  AddReportViewModel(ScheduledReports? scheduledReports, bool isEdit) {
+  AddReportViewModel(
+      ScheduledReports? scheduledReports, bool? isEdit, String? dropdownValue) {
     this.scheduledReportsId = scheduledReports;
     this.log = getLogger(this.runtimeType.toString());
     _manageUserService!.setUp();
-
-    if (isEdit) {
+    if (isEdit == null) {
+      getDropDownValue(dropdownValue!);
+    }
+    if (isEdit == true) {
       Future.delayed(Duration(seconds: 1), () {
         getEditReportData();
       });
+    } else {
+      getGroupListData();
     }
 
     Future.delayed(Duration(seconds: 1), () {
@@ -92,6 +109,24 @@ class AddReportViewModel extends InsiteViewModel {
 
   getListViewState() {
     isListViewState = true;
+    notifyListeners();
+  }
+
+  getDropDownValue(String dropdownValue) {
+    Logger().w(dropdownValue);
+    if (dropdownValue == ".CSV") {
+      reportFormatDropDownValue = dropdownValue;
+      dropvaluelist.clear();
+      dropvaluelist.addAll([".CSV", ".XLS", ".PDF"]);
+    } else if (dropDownValue == ".XLS") {
+      reportFormatDropDownValue = dropdownValue;
+      dropvaluelist.clear();
+      dropvaluelist.addAll([".XLS", ".CSV", ".PDF"]);
+    } else {
+      reportFormatDropDownValue = dropdownValue;
+      dropvaluelist.clear();
+      dropvaluelist.addAll([".PDF", ".CSV", ".XLS"]);
+    }
     notifyListeners();
   }
 
@@ -135,7 +170,7 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "FaultSummaryFaultsList" ||
                 assetItems.reportName == "FaultCodeAssetDetails" ||
                 assetItems.reportName == "FleetSummary") {
-              reportServiceAssets!.add(assetItems.reportName!);
+              reportFleetAssets!.add(assetItems.reportName!);
             }
           }
         }
@@ -145,7 +180,7 @@ class AddReportViewModel extends InsiteViewModel {
         if (assetItems.sourceAppName == "UNIFIEDPRODUCTIVITY" &&
             assetItems.sourceApplicationID != "") {
           if (isVisionLink) {
-            reportProductivityAssets!.add(assetItems.reportName!);
+            reportFleetAssets!.add(assetItems.reportName!);
           }
         }
       }
@@ -154,7 +189,15 @@ class AddReportViewModel extends InsiteViewModel {
         if (templateAssets.sourceAppName == "BIRST" &&
             templateAssets.dateRange != null) {
           if (isVisionLink) {
-            reportStandartAssets!.add(templateAssets.reportName!);
+            reportFleetAssets!.add(templateAssets.reportName!);
+          } else {
+            if (templateAssets.reportName == "Asset Event Count" ||
+                templateAssets.reportName == "AssetHealth" ||
+                templateAssets.reportName == "ExcavatorUsageReport" ||
+                templateAssets.reportName == "EngineIdle" ||
+                templateAssets.reportName == "BackhoeLoaderOperation") {
+              reportFleetAssets!.add(templateAssets.reportName!);
+            }
           }
         }
       }
@@ -166,10 +209,12 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   searchContacts(String searchValue) {
-    _searchKeyword = searchValue;
-    isHideSearchList = true;
-    notifyListeners();
-    getContactSearchReportData();
+    if (searchValue.length >= 4) {
+      _searchKeyword = searchValue;
+      isHideSearchList = true;
+      notifyListeners();
+      getContactSearchReportData();
+    }
   }
 
   getContactSearchReportData() async {
@@ -199,7 +244,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   onRemovedSelectedContact(int index) {
     try {
-      selectedContactItems!.removeAt(index);
+      selectedUser.removeAt(index);
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
@@ -222,7 +267,8 @@ class AddReportViewModel extends InsiteViewModel {
   ];
   getEditReportData() async {
     try {
-      showLoadingDialog();
+      //showLoadingDialog();
+      await getGroupListData();
       EditReportResponse? result = await _manageUserService!
           .getEditReportData(scheduledReportsId!.reportUid!);
       if (result != null) {
@@ -232,12 +278,31 @@ class AddReportViewModel extends InsiteViewModel {
         dateTimeController.text = DateFormat("yyyy-MM-dd").format(
             DateFormat("yyyy-MM-dd")
                 .parse(result.scheduledReport!.scheduleEndDate ?? ""));
+
         result.scheduledReport!.emailRecipients!
-            .forEach((element) => selectedContactItems!.add(element.email!));
+            .forEach((element) {
+              emailIds!.add(element.email!);
+              searchContactListName!.add(User(
+                email: element.email,
+                isVLUser: element.isVLUser
+              ));
+            });
+
         serviceDueController.text = result.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
             result.scheduledReport!.emailContent ?? "-";
         svcBody = result.scheduledReport!.svcBody;
+        assetIdresult?.assetDetailsRecords?.forEach((element) {
+          if (svcBody!.any((editData) => editData == element.assetIdentifier)) {
+            selectedAsset!.add(Asset(
+                assetIcon: element.assetIcon,
+                assetId: element.assetId,
+                assetIdentifier: element.assetIdentifier,
+                assetSerialNumber: element.assetSerialNumber,
+                makeCode: element.makeCode,
+                model: element.model));
+          }
+        });
         Logger().e(svcBody!.length);
 
         hideLoadingDialog();
@@ -248,17 +313,104 @@ class AddReportViewModel extends InsiteViewModel {
     }
   }
 
+  onAddingAsset(int i, Asset? selectedData) {
+    if (selectedData != null) {
+      assetIdresult?.assetDetailsRecords?.remove(selectedData);
+      selectedAsset?.add(selectedData);
+    }
+    notifyListeners();
+  }
+
+  onDeletingAsset(int i) {
+    try {
+      if (selectedAsset != null) {
+        Logger().e(selectedAsset?.length);
+        var data = selectedAsset?.elementAt(i);
+        assetIdresult?.assetDetailsRecords?.add(data!);
+        selectedAsset?.removeAt(i);
+        Logger().e(selectedAsset?.length);
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onChangingInitialValue(value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
+  Future getGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+      notifyListeners();
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  editGroupListData() async {
+    try {
+      assetIdresult = await _manageUserService!.getGroupListData();
+
+      Future.delayed(Duration(seconds: 1), () {
+        isLoading = false;
+        notifyListeners();
+      });
+      notifyListeners();
+    } catch (e) {
+      isLoading = false;
+      hideLoadingDialog();
+      notifyListeners();
+      Logger().e(e.toString());
+    }
+  }
+
+  onSelectingEmailList(String value) {
+    emailController.text = value;
+    isHideSearchList = false;
+    notifyListeners();
+  }
+
+  // List<User> selectedUser = [];
+  List<String>? emailIds = [];
+
+  addContact() {
+    isShowingSelectedContact = true;
+    var data = searchContactListName!
+        .where((element) => element.email!.contains(emailController.text));
+    if (selectedUser
+        .any((element) => element.email!.contains(data.first.email!))) {
+    } else {
+      emailController.clear();
+      selectedUser.add(data.first);
+      emailIds!.add(data.first.email!);
+    }
+    notifyListeners();
+  }
+
   addReportSaveData() async {
     List<Reports?> defaultColumn = [];
+    selectedAsset!.forEach((element) {
+      associatedIdentifier?.add(element.assetIdentifier!);
+    });
     result!.reports!.forEach((reports) {
       defaultColumn.add(reports);
     });
     Logger().d(defaultColumn.length);
     var addReportPayLoad;
-
+    Logger().e(defaultColumn.length);
     List<String> reportColum = [];
     for (var item in defaultColumn) {
-      if (item!.reportName == dropDownValue) {
+      if (item!.reportName == assetsDropDownValue) {
         var data = Utils.reportColumn(item.defaultColumn);
         reportColum = data as List<String>;
       }
@@ -287,7 +439,7 @@ class AddReportViewModel extends InsiteViewModel {
                       ? 3
                       : 0,
           emailContent: emailContentController.text,
-          emailRecipients: selectedContactItems,
+          emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
               : reportFormatDropDownValue == ".XLS"
@@ -327,7 +479,7 @@ class AddReportViewModel extends InsiteViewModel {
                       ? 3
                       : 0,
           emailContent: emailContentController.text,
-          emailRecipients: selectedContactItems,
+          emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
               : reportFormatDropDownValue == ".XLS"
@@ -339,20 +491,20 @@ class AddReportViewModel extends InsiteViewModel {
           emailSubject: serviceDueController.text,
           reportEndDate: dateTimeController.text,
           reportStartDate: "",
-          reportType: dropDownValue,
+          reportType: assetsDropDownValue,
           reportScheduledDate:
               Utils.getLastReportedDateFilterData(DateTime.now()),
-          queryUrl: dropDownValue == "FleetSummary"
+          queryUrl: assetsDropDownValue == "FleetSummary"
               ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
-              : dropDownValue == "MultiAssetUtilization"
+              : assetsDropDownValue == "MultiAssetUtilization"
                   ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
-                  : dropDownValue == "UtilizationDetails"
+                  : assetsDropDownValue == "UtilizationDetails"
                       ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
-                      : dropDownValue == "AssetOperation"
+                      : assetsDropDownValue == "AssetOperation"
                           ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
-                          : dropDownValue == "FaultSummaryFaultsList"
+                          : assetsDropDownValue == "FaultSummaryFaultsList"
                               ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
-                              : dropDownValue == "FaultCodeAssetDetails"
+                              : assetsDropDownValue == "FaultCodeAssetDetails"
                                   ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
                                   : "");
     }
@@ -369,7 +521,7 @@ class AddReportViewModel extends InsiteViewModel {
         _snackBarservice!
             .showSnackbar(message: "Email subject Line should be required");
         return;
-      } else if (selectedContactItems!.isEmpty) {
+      } else if (emailIds!.isEmpty) {
         _snackBarservice!.showSnackbar(
             message: "Email Report Recipients should be required");
         return;
@@ -399,6 +551,14 @@ class AddReportViewModel extends InsiteViewModel {
     });
     Logger().d(defaultColumn.length);
 
+    searchContactListName!.forEach((element) { 
+      emailIds?.add(element.email!);
+    });
+
+    selectedAsset?.forEach((element) {
+      associatedIdentifier?.add(element.assetIdentifier!);
+     });
+
     List<String> reportColum = [];
     for (var item in defaultColumn) {
       if (item!.reportName == dropDownValue) {
@@ -470,7 +630,7 @@ class AddReportViewModel extends InsiteViewModel {
                       ? 3
                       : 0,
           emailContent: emailContentController.text,
-          emailRecipients: selectedContactItems,
+          emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
               : reportFormatDropDownValue == ".XLS"
@@ -482,25 +642,25 @@ class AddReportViewModel extends InsiteViewModel {
           emailSubject: serviceDueController.text,
           reportEndDate: dateTimeController.text,
           reportStartDate: "",
-          reportType: dropDownValue,
+          reportType: assetsDropDownValue,
           reportScheduledDate:
               Utils.getLastReportedDateFilterData(DateTime.now()),
-          queryUrl: dropDownValue == "FleetSummary"
+          queryUrl: assetsDropDownValue == "FleetSummary"
               ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
-              : dropDownValue == "MultiAssetUtilization"
+              : assetsDropDownValue == "MultiAssetUtilization"
                   ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
-                  : dropDownValue == "UtilizationDetails"
+                  : assetsDropDownValue == "UtilizationDetails"
                       ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
-                      : dropDownValue == "AssetOperation"
+                      : assetsDropDownValue == "AssetOperation"
                           ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
-                          : dropDownValue == "FaultSummaryFaultsList"
+                          : assetsDropDownValue == "FaultSummaryFaultsList"
                               ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
-                              : dropDownValue == "FaultCodeAssetDetails"
+                              : assetsDropDownValue == "FaultCodeAssetDetails"
                                   ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
                                   : "");
     }
     try {
-      showLoadingDialog();
+     
       ManageReportResponse? result = await _manageUserService!
           .getEditReportSaveData(
               scheduledReportsId!.reportUid!, addReportPayLoad);
@@ -520,24 +680,5 @@ class AddReportViewModel extends InsiteViewModel {
 
   gotoScheduleReportPage() {
     _navigationService!.navigateToView(ManageReportView());
-  }
-
-  Future<AssetGroupSummaryResponse?> getGroupListData() async {
-    var assetIdresult = await _manageUserService!.getGroupListData();
-    if (assetIdresult != null) {
-      //Logger().w("sdn");
-      assetIdresult.assetDetailsRecords!.forEach((assedId) {
-        if (svcBody!.any((element) => element == assedId.assetIdentifier)) {
-          selectedItemAssets!.add(AddGroupModel(
-              assetId: assedId.assetId,
-              assetIdentifier: assedId.assetIdentifier,
-              make: assedId.makeCode,
-              model: assedId.model,
-              serialNo: assedId.assetSerialNumber));
-        }
-      });
-    }
-
-    notifyListeners();
   }
 }

@@ -113,7 +113,6 @@ class _ZoneCreatingWidgetState extends State<ZoneCreatingWidget> {
                     ),
                     InsiteButton(
                       onTap: () {
-                        Logger().e("mappiy");
                         widget.onCreate!();
                       },
                       width: 100,

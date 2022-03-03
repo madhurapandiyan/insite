@@ -30,8 +30,6 @@ AddReportPayLoad _$AddReportPayLoadFromJson(Map<String, dynamic> json) =>
       reportColumns: (json['reportColumns'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      svcBody:
-          (json['svcBody'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$AddReportPayLoadToJson(AddReportPayLoad instance) =>
@@ -53,5 +51,4 @@ Map<String, dynamic> _$AddReportPayLoadToJson(AddReportPayLoad instance) =>
       'queryUrl': instance.queryUrl,
       'reportType': instance.reportType,
       'reportColumns': instance.reportColumns,
-      'svcBody': instance.svcBody,
     };

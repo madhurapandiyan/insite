@@ -61,7 +61,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
         return Dialog(
             backgroundColor: Theme.of(context).backgroundColor,
             child: InsiteDialog(
-              title: "Delete User",
+              title: "Delete Notification",
               message:
                   "Are you sure you want to permanently remove this notification?",
               onPositiveActionClicked: () {
@@ -95,10 +95,9 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getSearchListData(String? searchValue) async {
-    if (searchValue!.length>=4) {
+    if (searchValue!.length >= 4) {
       ManageNotificationsData? response =
           await _notificationService!.getsearchNotificationsData(searchValue);
-      Logger().wtf(response?.toJson());
       _notifications.clear();
 
       if (response != null) {

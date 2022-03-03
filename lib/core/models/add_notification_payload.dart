@@ -55,9 +55,10 @@ class Schedule {
   int? day;
   String? startTime;
   String? endTime;
- 
+  @JsonKey(ignore: true)
+  String? title;
 
-  Schedule({this.day, this.startTime, this.endTime,});
+  Schedule({this.day, this.startTime, this.endTime, this.title});
   factory Schedule.fromJson(Map<String, dynamic> json) =>
       _$ScheduleFromJson(json);
 

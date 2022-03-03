@@ -30,7 +30,6 @@ class ManageNotificationsView extends StatelessWidget {
               //viewModel.refresh();
             },
             body: Card(
-              color: cardcolor,
               margin: EdgeInsets.only(top: 30.0, right: 20, left: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -67,7 +66,7 @@ class ManageNotificationsView extends StatelessWidget {
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
                                         viewModel.notifications[index];
-                                        Logger().w(viewModel.notifications.length);
+                                    Logger().w(viewModel.notifications.length);
 
                                     return ManageNotificationWidget(
                                       alerts: alerts,
@@ -85,7 +84,7 @@ class ManageNotificationsView extends StatelessWidget {
                                         thickness: 2.0,
                                       ),
                                   itemCount: viewModel.notifications.length)
-                              : EmptyView(title: "No Nontification Found"),
+                              : EmptyView(title: "No Notification Found"),
                     ),
                     viewModel.loadingMore
                         ? Padding(

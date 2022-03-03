@@ -36,32 +36,31 @@ class ScheduledReport {
   int? reportGenerationCategory;
   String? svcMethod;
   int? assetFilterCategoryID;
-  String ? emailContent;
+  String? emailContent;
   bool? allAssets;
   List<String>? svcBody;
 
-  ScheduledReport({
-    this.reportUid,
-    this.reportFormat,
-    this.reportPeriod,
-    this.reportTitle,
-    this.reportType,
-    this.reportCreationDate,
-    this.emailSubject,
-    this.emailContent,
-    this.emailRecipients,
-    this.queryUrl,
-    this.reportColumns,
-    this.link,
-    this.reportSourcePageName,
-    this.scheduleEndDate,
-    this.createdBy,
-    this.reportGenerationCategory,
-    this.svcMethod,
-    this.assetFilterCategoryID,
-    this.allAssets,
-    this.svcBody
-  });
+  ScheduledReport(
+      {this.reportUid,
+      this.reportFormat,
+      this.reportPeriod,
+      this.reportTitle,
+      this.reportType,
+      this.reportCreationDate,
+      this.emailSubject,
+      this.emailContent,
+      this.emailRecipients,
+      this.queryUrl,
+      this.reportColumns,
+      this.link,
+      this.reportSourcePageName,
+      this.scheduleEndDate,
+      this.createdBy,
+      this.reportGenerationCategory,
+      this.svcMethod,
+      this.assetFilterCategoryID,
+      this.allAssets,
+      this.svcBody});
 
   factory ScheduledReport.fromJson(Map<String, dynamic> json) =>
       _$ScheduledReportFromJson(json);

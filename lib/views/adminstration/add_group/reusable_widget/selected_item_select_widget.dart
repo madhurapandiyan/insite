@@ -168,7 +168,7 @@ class _SelectedItemSelectWidgetViewState
                         AddGroupModel detailsRecords =
                             widget.displayList![index];
                         return SelectedAssetsWidget(
-                          selectedAssetList: detailsRecords,
+                         // selectedAssetList: detailsRecords,
                           callBack: () {
                             widget.onAssetDeselected!(
                                 index, detailsRecords.assetIdentifier!);
