@@ -431,7 +431,7 @@ class Urls {
       "/t/trimble.com/vss-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
 
   static String manageNotificationsData =
-      "/frame-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/1/20";
+      "/frame-alertsmanager/2.0/AlertConfigs/AlertConfigMetaData/";
 
   static String getNotificationTypesVL =
       "/t/trimble.com/vss-alertsmanager/2.0/NotificationTypes/AlertTypes";

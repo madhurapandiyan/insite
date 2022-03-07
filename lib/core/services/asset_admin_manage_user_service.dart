@@ -1024,8 +1024,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      throw e;
     }
-    return null;
   }
 
   Future<AssetCount?> getGeofenceCountData() async {

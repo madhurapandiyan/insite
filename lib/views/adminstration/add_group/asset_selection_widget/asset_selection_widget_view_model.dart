@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
@@ -37,7 +38,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     pageController = PageController(initialPage: _currentPage);
     _assetService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
-      getGroupListData(data!);
+      if (data == null) {
+      } else {
+        getGroupListData(data);
+      }
     });
   }
 
@@ -47,11 +51,20 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   bool _isloading = true;
   bool get isloading => _isloading;
 
+  bool isSearchingSerialNo = false;
+  bool isSearchingProductFamily = false;
+  bool isSearchingModel = false;
+  bool isSearchingManufacture = false;
+  bool isSearchingDeviceType = false;
+
   List<Asset>? _assetId = [];
   List<Asset>? get assetId => _assetId;
 
   List<Asset>? _assetSerialNumber = [];
   List<Asset>? get assetSerialNumber => _assetSerialNumber;
+
+  List<Asset>? _serialNoSearch = [];
+  List<Asset>? get serialNoSearch => _serialNoSearch;
 
   List<Count> _productFamilyData = [];
   List<Count> get productFamilyData => _productFamilyData;
@@ -67,6 +80,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
   List<Asset>? _productFamilyCountData = [];
   List<Asset>? get productFamilyCountData => _productFamilyCountData;
+
+  List<Asset>? _searchProductFamilyCountData = [];
+  List<Asset>? get searchProductFamilyCountData =>
+      _searchProductFamilyCountData;
 
   List<Asset>? _subManufacturerList = [];
   List<Asset>? get subManufacturerList => _subManufacturerList;
@@ -119,7 +136,6 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
   getGroupListData(AssetGroupSummaryResponse data) async {
     try {
-      showLoadingDialog();
       assetIdresult = data;
       if (assetIdresult!.assetDetailsRecords!.isNotEmpty) {
         assetIdresult?.assetDetailsRecords?.forEach((asset) {
@@ -133,7 +149,6 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       }
       Logger().e(_assetSerialNumber!.length);
       notifyListeners();
-      hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
@@ -141,19 +156,23 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   }
 
   getProductFamilyData() async {
-    if (_productFamilyData.isEmpty) {
-      AssetCount? resultProductfamily = await _assetService!.getAssetCount(
-          "productfamily",
-          FilterType.PRODUCT_FAMILY,
-          graphqlSchemaService!.allAssets);
-      Logger().e(resultProductfamily!.toJson());
-      if (resultProductfamily != null) {
-        for (var productFamilyData in resultProductfamily.countData!) {
-          _productFamilyData.add(productFamilyData);
+    try {
+      if (_productFamilyData.isEmpty) {
+        showLoadingDialog();
+        AssetCount? resultProductfamily = await _assetService!.getAssetCount(
+            "productfamily",
+            FilterType.PRODUCT_FAMILY,
+            graphqlSchemaService!.allAssets);
+        Logger().e(resultProductfamily!.toJson());
+        if (resultProductfamily != null) {
+          for (var productFamilyData in resultProductfamily.countData!) {
+            _productFamilyData.add(productFamilyData);
+          }
         }
+        hideLoadingDialog();
+        notifyListeners();
       }
-      notifyListeners();
-    }
+    } catch (e) {}
   }
 
   getProductFamilyFilterData(String? productFamilKey) async {
@@ -291,6 +310,41 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     } catch (e) {
       hideLoadingDialog();
     }
+  }
+
+  onSearchingSerialNo(String value) {
+    if (value.length == 1) {
+      isSearchingSerialNo = false;
+    } else {
+      isSearchingSerialNo = true;
+      _serialNoSearch = _assetSerialNumber!
+          .where((element) =>
+              element.assetSerialNumber!.contains(value.toUpperCase()))
+          .toList();
+
+      if (_serialNoSearch!.isEmpty) {
+        isSearchingSerialNo = false;
+        Fluttertoast.showToast(msg: "No Asset Found");
+      }
+    }
+    notifyListeners();
+  }
+
+  onSearchingProductFamily(String value) {
+    if (value.length == 1) {
+      isSearchingProductFamily = false;
+    } else {
+      isSearchingProductFamily = true;
+      _searchProductFamilyCountData = _productFamilyCountData!
+          .where((element) =>
+              element.assetSerialNumber!.contains(value.toUpperCase()))
+          .toList();
+      if (_searchProductFamilyCountData!.isEmpty) {
+        isSearchingProductFamily = false;
+        Fluttertoast.showToast(msg: "No Asset Found");
+      }
+    }
+    notifyListeners();
   }
 
   onAssetIdBackPressed() {

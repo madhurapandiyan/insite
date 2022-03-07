@@ -427,7 +427,7 @@ class Utils {
         title = "ADD NEW GROUP";
         break;
       case AdminAssetsButtonType.MANAGEGROUPS:
-        title = "MANAGER GROUP";
+        title = "MANAGE GROUP";
         break;
       case AdminAssetsButtonType.ADDNEWGEOFENCES:
         title = "ADD NEW GEOFENCES";
@@ -764,5 +764,10 @@ class Utils {
         element == "\"" || element == "[" || element == "]" || element == ",");
     Logger().w(splitList);
     return splitList;
+  }
+
+  static String getCountValue(double value) {
+    var _formattedNumber = NumberFormat.compact().format(value);
+    return _formattedNumber;
   }
 }

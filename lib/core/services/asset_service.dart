@@ -7,6 +7,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -16,6 +17,7 @@ import '../locator.dart';
 
 class AssetService extends BaseService {
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   Customer? accountSelected;
   Customer? customerSelected;
@@ -123,6 +125,15 @@ class AssetService extends BaseService {
 
   Future<AssetDetail?> getAssetDetail(assetUID) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService?.getSingleAssetDetail(assetUID),
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        AssetDetail assetDetail =
+            AssetDetail.fromJson(data.data["getSingleAssetDetails"]);
+        return assetDetail;
+      }
       if (isVisionLink) {
         AssetDetail assetResponse = await MyApi().getClient()!.assetDetailVL(
               assetUID,
@@ -157,6 +168,20 @@ class AssetService extends BaseService {
 
   Future<List<Note>?> getAssetNotes(assetUID) async {
     try {
+      if (enableGraphQl) {
+        List<Note>? notes;
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.getNotes(assetUID),
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        var notesData = data.data["getMetadataNotes"] as List;
+        notesData.forEach((element) {
+          var notesFromJson = Note.fromJson(element as Map<String, dynamic>);
+          notes?.add(notesFromJson);
+        });
+        Logger().e(notes);
+        return notes;
+      }
       if (isVisionLink) {
         List<Note> notes = await MyApi().getClient()!.getAssetNotesVL(
               assetUID,

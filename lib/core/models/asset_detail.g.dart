@@ -10,7 +10,7 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
       json['assetUid'] as String?,
       json['assetSerialNumber'] as String?,
       (json['hourMeter'] as num?)?.toDouble(),
-      (json['lifetimeFuel'] as num?)?.toDouble(),
+      json['lifetimeFuel'] as String?,
       (json['activeServicePlans'] as List<dynamic>?)
           ?.map((e) => ServicePlan.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -19,7 +19,7 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
       (json['fuelLevelLastReported'] as num?)?.toDouble(),
       json['lastReportedTimeUTC'] as String?,
       json['lastLocationUpdateUTC'] as String?,
-      (json['percentDEFRemaining'] as num?)?.toDouble(),
+      json['percentDEFRemaining'] as String?,
       (json['lifetimeDEFLiters'] as num?)?.toDouble(),
       json['manufacturer'] as String?,
       (json['devices'] as List<dynamic>?)

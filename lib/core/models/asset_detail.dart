@@ -66,10 +66,10 @@ class AssetDetail {
   final double? fuelLevelLastReported;
   final String? lastPercentFuelRemainingUTC;
   final String? fuelReportedTimeUTC;
-  final double? lifetimeFuel;
+  final String? lifetimeFuel;
   final String? lastReportedTimeUTC;
   final String? lastLocationUpdateUTC;
-  final double? percentDEFRemaining;
+  final String? percentDEFRemaining;
   final double? lifetimeDEFLiters;
   final String? lastLifetimeDEFLitersUTC;
   final String? lastPercentDEFRemainingUTC;

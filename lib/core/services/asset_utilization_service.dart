@@ -11,6 +11,7 @@ import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -21,6 +22,7 @@ class AssetUtilizationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   AssetUtilizationService() {
     setUp();
@@ -97,6 +99,16 @@ class AssetUtilizationService extends BaseService {
       }
       if (date != null && date.isNotEmpty) {
         queryMap["date"] = date;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.getAssetGraphDetail(assetUID!, date!),
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+
+        AssetUtilization assetGraphData = AssetUtilization.fromJson(
+            data.data["getDashboardUtilizationSummary"]);
+        return assetGraphData;
       }
       if (isVisionLink) {
         AssetUtilization result = await MyApi()

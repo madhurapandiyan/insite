@@ -17,11 +17,24 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   NotificationService? _notificationService = locator<NotificationService>();
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
 
+  ScrollController? controller;
+  bool? isLoadMore;
+  int pageNumber = 1;
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
     getManageNotificationsData();
+
+    controller?.addListener(() {
+      if (controller!.position.pixels == controller!.position.maxScrollExtent) {
+        Logger().e(1);
+        _loadingMore = true;
+        pageNumber = pageNumber++;
+        getManageNotificationsData();
+        notifyListeners();
+      }
+    });
   }
 
   TextEditingController searchController = TextEditingController();
@@ -149,7 +162,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getManageNotificationsData() async {
     ManageNotificationsData? response =
-        await _notificationService!.getManageNotificationsData();
+        await _notificationService!.getManageNotificationsData(pageNumber);
 
     if (response != null) {
       if (response.configuredAlerts != null &&

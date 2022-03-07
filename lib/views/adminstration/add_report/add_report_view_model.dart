@@ -273,20 +273,20 @@ class AddReportViewModel extends InsiteViewModel {
           .getEditReportData(scheduledReportsId!.reportUid!);
       if (result != null) {
         Logger().w(result.scheduledReport!.toJson());
-        dropDownValue = result.scheduledReport!.reportType;
+        assetsDropDownValue = result.scheduledReport!.reportType;
         nameController.text = result.scheduledReport!.reportTitle!;
-        dateTimeController.text = DateFormat("yyyy-MM-dd").format(
-            DateFormat("yyyy-MM-dd")
-                .parse(result.scheduledReport!.scheduleEndDate ?? ""));
-
-        result.scheduledReport!.emailRecipients!
-            .forEach((element) {
-              emailIds!.add(element.email!);
-              searchContactListName!.add(User(
-                email: element.email,
-                isVLUser: element.isVLUser
-              ));
-            });
+        reportFormat = result.scheduledReport?.reportFormat;
+        // dateTimeController.text = DateFormat("yyyy-MM-dd").format(
+        //     DateFormat("yyyy-MM-dd")
+        //         .parse(result.scheduledReport!.scheduleEndDate ?? ""));
+        emailIds!.clear();
+        selectedUser.clear();
+        result.scheduledReport!.emailRecipients!.forEach((element) {
+          isShowingSelectedContact = true;
+          emailIds!.add(element.email!);
+          selectedUser
+              .add(User(email: element.email, isVLUser: element.isVLUser));
+        });
 
         serviceDueController.text = result.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
@@ -344,11 +344,8 @@ class AddReportViewModel extends InsiteViewModel {
   Future getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData();
+      isLoading = false;
       notifyListeners();
-      Future.delayed(Duration(seconds: 1), () {
-        isLoading = false;
-        notifyListeners();
-      });
     } catch (e) {
       isLoading = false;
       hideLoadingDialog();
@@ -525,7 +522,11 @@ class AddReportViewModel extends InsiteViewModel {
         _snackBarservice!.showSnackbar(
             message: "Email Report Recipients should be required");
         return;
+      } else if (assetsDropDownValue == null) {
+        _snackBarservice!.showSnackbar(message: "Please Select Report Type");
+        return;
       }
+
       showLoadingDialog();
       ManageReportResponse? result =
           await _manageUserService!.getAddReportSaveData(addReportPayLoad);
@@ -551,13 +552,13 @@ class AddReportViewModel extends InsiteViewModel {
     });
     Logger().d(defaultColumn.length);
 
-    searchContactListName!.forEach((element) { 
+    selectedUser.forEach((element) {
       emailIds?.add(element.email!);
     });
 
     selectedAsset?.forEach((element) {
       associatedIdentifier?.add(element.assetIdentifier!);
-     });
+    });
 
     List<String> reportColum = [];
     for (var item in defaultColumn) {
@@ -660,7 +661,6 @@ class AddReportViewModel extends InsiteViewModel {
                                   : "");
     }
     try {
-     
       ManageReportResponse? result = await _manageUserService!
           .getEditReportSaveData(
               scheduledReportsId!.reportUid!, addReportPayLoad);

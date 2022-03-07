@@ -199,7 +199,7 @@ class _SingleAssetUtilizationWidgetState
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         InsiteText(
-            text: '${value.toStringAsFixed(1)}',
+            text: Utils.getCountValue(value),
             size: 12,
             fontWeight: FontWeight.bold),
         SizedBox(

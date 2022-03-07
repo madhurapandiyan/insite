@@ -42,9 +42,10 @@ class FleetService extends BaseService {
             query,
             accountSelected!.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
-
+        Logger().wtf(data.data!['fleetSummary']);
         FleetSummaryResponse fleetSummaryResponse =
             FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
+            Logger().w(fleetSummaryResponse.fleetRecords!.first.toJson());
         return fleetSummaryResponse;
       } else {
         if (isVisionLink) {
@@ -112,7 +113,7 @@ class FleetService extends BaseService {
       }
     } catch (e) {
       throw e;
-     // return null;
+      // return null;
     }
   }
 

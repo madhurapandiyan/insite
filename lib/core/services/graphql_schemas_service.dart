@@ -112,21 +112,10 @@ query faultDataSummary{
     return assetFaultQuery;
   }
 
-  final String fleetSummary = """query fleetSummary{
-  fleetSummary{
-    links {
-      prev
-      next
-      self
-    }   
-    pagination {
-      totalAsset
-      totalCount
-      assetsWithoutActiveCoreSubscription
-      pageNumber
-      pageSize
-    }
-     fleetRecords {
+  String fleetSummary() {
+    var data = """{
+  fleetSummary(pageNumber: 1, pageSize: 50, sort: "AssetSerialNumber", idleEfficiencyGT: "", idleEfficiencyLTE: "", assetIDContains: "", snContains: "") {
+    fleetRecords {
       assetIdentifier
       assetSerialNumber
       manufacturer
@@ -148,7 +137,6 @@ query faultDataSummary{
       dealerName
       fuelLevelLastReported
       lastReportedLocationLatitude
-      lastReportedLocationLongitude
       universalCustomerIdentifier
       universalCustomerName
       source
@@ -162,14 +150,31 @@ query faultDataSummary{
       lastPercentFuelRemainingUTC
       esn
       odometer
+      geofences
+      devices {
+        deviceType
+        isGpsRollOverAffected
+        mainboardSoftwareVersion
+      }
     }
-    
+        pagination{
+      totalAsset,
+      totalCount,
+      assetsWithoutActiveCoreSubscription,
+      pageNumber,
+       pageSize
+    },
+    links{
+      prev,
+      next,
+      self
+    }
   }
-  
 }
 
-
-  """;
+""";
+    return data;
+  }
 
   final String dashBoardUtilizationSummary = """
   query dashboardUtilizationSummary{
@@ -560,5 +565,119 @@ userUid,
 }
   """;
     return fleetLocationData;
+  }
+
+  String getSingleAssetDetail(String uid) {
+    var data = """query{
+getSingleAssetDetails(assetUID:"$uid"){
+  assetUid,
+  assetSerialNumber,
+  assetId,
+  lifetimeFuel,
+  lifetimeDEFLiters,
+  makeCode,
+  manufacturer,
+  model,
+  assetIcon,
+  productFamily,
+  status,
+  hourMeter,
+  odometer,
+  lastReportedLocationLatitude,
+  lastReportedLocationLongitude,
+  lastReportedLocation,
+  lastReportedTimeUtc,
+  lastLocationUpdateUtc,
+  percentDEFRemaining,
+  lastPercentDEFRemainingUTC,
+  fuelLevelLastReported,
+  lastPercentFuelRemainingUtc,
+  lastLifetimeFuelLitersUTC,
+  fuelReportedTimeUtc,
+  customStateDescription,
+  devices{
+    deviceUid,
+    deviceType,
+    deviceSerialNumber,
+    deviceState,
+    deviceState,
+    isGpsRollOverAffected,
+    activeServicePlans{
+      serviceUid,
+      type
+    }
+  },
+  dealerName,
+  dealerCustomerNumber,
+  accountName,
+  universalCustomerIdentifier,
+  universalCustomerName,
+  geofences{
+    fenceUid,
+    name,
+    areaSqM
+  },
+  groups{
+    groupUid,
+    name
+  }
+  
+}
+}""";
+    return data;
+  }
+
+  String getAssetGraphDetail(String assetId, String date) {
+    var data = """{
+  getDashboardUtilizationSummary(assetUID: "$assetId",date: "$date") {
+    totalDay {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    totalWeek {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    totalMonth {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageDay {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageWeek {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+    averageMonth {
+      idleHours
+      runtimeHours
+      workingHours
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  String getNotes(String assetUid) {
+    var data = """
+query{
+  getMetadataNotes(assetUID:"$assetUid"){
+    userAssetNoteUID,
+    assetUID,
+    userName,
+     assetUserNote,
+    lastModifiedUTC,
+    enableDeleteButton
+  }
+}""";
+    return data;
   }
 }
