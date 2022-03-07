@@ -34,11 +34,9 @@ class AssetDetailViewModel extends InsiteViewModel {
   }
 
   getAssetDetail() async {
-    if (isVisionLink) {
-      AssetDetail? assetDetail =
-          await _assetService!.getAssetDetail(fleet!.assetIdentifier);
-      _assetDetail = assetDetail;
-    }
+    AssetDetail? assetDetail =
+        await _assetService!.getAssetDetail(fleet!.assetIdentifier);
+    _assetDetail = assetDetail;
 
     _loading = false;
     notifyListeners();

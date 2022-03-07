@@ -99,7 +99,8 @@ class AssetLocationService extends BaseService {
           accountSelected?.CustomerUID,
           (await _localService!.getLoggedInUser())!.sub,
         );
-        Logger().wtf("get asset location ${data.data!["fleetLocationDetails"]}");
+        Logger()
+            .wtf("get asset location ${data.data!["fleetLocationDetails"]}");
         AssetLocationData assetOperationData =
             AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
 
@@ -224,50 +225,48 @@ class AssetLocationService extends BaseService {
     }
     try {
       if (enableGraphQl) {
-        if (enableGraphQl) {
-          var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub,
-          );
+        var data = await Network().getGraphqlData(
+          query,
+          accountSelected?.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub,
+        );
 
-          AssetLocationData assetLocationDataResponse =
-              AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
+        AssetLocationData assetLocationDataResponse =
+            AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
 
-          Logger().wtf(assetLocationDataResponse.toJson());
+        Logger().wtf(assetLocationDataResponse.toJson());
 
-          return assetLocationDataResponse;
-        } else {
-          if (pageNumber != null && pageSize != null && sort != null) {
-            if (isVisionLink) {
-              AssetLocationData result =
-                  await MyApi().getClient()!.assetLocationSummaryVL(
-                        Urls.locationSummaryVL +
-                            FilterUtils.constructQueryFromMap(queryMap),
-                        accountSelected!.CustomerUID,
-                      );
-              if (result != null) {
-                return result;
-              } else {
-                return null;
-              }
-            } else {
-              AssetLocationData result = await MyApi()
-                  .getClient()!
-                  .assetLocationSummary(
-                      Urls.locationSummary +
+        return assetLocationDataResponse;
+      } else {
+        if (pageNumber != null && pageSize != null && sort != null) {
+          if (isVisionLink) {
+            AssetLocationData result =
+                await MyApi().getClient()!.assetLocationSummaryVL(
+                      Urls.locationSummaryVL +
                           FilterUtils.constructQueryFromMap(queryMap),
                       accountSelected!.CustomerUID,
-                      Urls.vfleetMapPrefix);
-              if (result != null) {
-                return result;
-              } else {
-                return null;
-              }
+                    );
+            if (result != null) {
+              return result;
+            } else {
+              return null;
+            }
+          } else {
+            AssetLocationData result = await MyApi()
+                .getClient()!
+                .assetLocationSummary(
+                    Urls.locationSummary +
+                        FilterUtils.constructQueryFromMap(queryMap),
+                    accountSelected!.CustomerUID,
+                    Urls.vfleetMapPrefix);
+            if (result != null) {
+              return result;
+            } else {
+              return null;
             }
           }
-          return null;
         }
+        return null;
       }
     } catch (e) {
       Logger().e(e);
@@ -309,6 +308,9 @@ class AssetLocationService extends BaseService {
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
+      if (enableGraphQl) {
+        
+      }
       if (isVisionLink) {
         AssetLocationData assetLocationDataResponse =
             await MyApi().getClient()!.locationFilterDataVL(

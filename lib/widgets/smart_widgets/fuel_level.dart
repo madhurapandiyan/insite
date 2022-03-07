@@ -71,30 +71,27 @@ class FuelLevel extends StatelessWidget {
                             size: 14),
                       ),
                       value != null && percentage != null
-                          ? Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Container(
-                                height: 175,
-                                width: 175,
-                                child: LiquidCircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(liquidColor),
-                                  value: value! / 100,
-                                  center: InsiteText(
-                                      text: percentage! + "%",
-                                      fontWeight: FontWeight.bold,
-                                      size: 25),
-                                  backgroundColor:
-                                      Theme.of(context).backgroundColor,
-                                  borderColor: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
-                                  borderWidth: 2.0,
-                                  direction: Axis.vertical,
-                                ),
-                              ),
-                            )
+                          ? Container(
+                            height: 150,
+                            width: 150,
+                            child: LiquidCircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation(liquidColor),
+                              value: value! / 100,
+                              center: InsiteText(
+                                  text: percentage! + "%",
+                                  fontWeight: FontWeight.bold,
+                                  size: 25),
+                              backgroundColor:
+                                  Theme.of(context).backgroundColor,
+                              borderColor: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color,
+                              borderWidth: 2.0,
+                              direction: Axis.vertical,
+                            ),
+                          )
                           : SizedBox(
                               height: 175,
                               width: 175,

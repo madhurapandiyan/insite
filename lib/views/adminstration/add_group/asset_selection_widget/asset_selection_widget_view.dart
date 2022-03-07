@@ -4,8 +4,6 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
-import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
-import 'package:insite/views/adminstration/add_group/reusable_widget/selected_assets_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
@@ -14,12 +12,19 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_selection_widget_view_model.dart';
 
-class AssetSelectionWidgetView extends StatelessWidget {
+class AssetSelectionWidgetView extends StatefulWidget {
   final Function(AssetGroupSummaryResponse)? assetData;
-  final AssetGroupSummaryResponse? assetResult;
+  AssetGroupSummaryResponse? assetResult;
   final Function(int i, Asset? assetData)? onAddingAsset;
   AssetSelectionWidgetView(
       {this.assetData, this.assetResult, this.onAddingAsset});
+
+  @override
+  State<AssetSelectionWidgetView> createState() =>
+      _AssetSelectionWidgetViewState();
+}
+
+class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -35,6 +40,11 @@ class AssetSelectionWidgetView extends StatelessWidget {
               controller: viewModel.pageController,
               physics: NeverScrollableScrollPhysics(),
               children: [
+                // widget.assetResult == null
+                //     ? Center(
+                //         child: InsiteProgressBar(),
+                //       )
+                //     :
                 ListView(
                     children: List.generate(
                         viewModel.assetSelectionCategory!.length,
@@ -43,7 +53,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
                                 viewModel.onClickingRespectiveAssetCategory(
                                     viewModel.assetSelectionCategory![i]
                                         .assetCategoryType!);
-                                assetData!(viewModel.assetIdresult!);
+                                widget.assetData!(viewModel.assetIdresult!);
                               },
                               leading: InsiteText(
                                 text: viewModel.assetSelectionCategory![i].name,
@@ -55,7 +65,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
                             ))),
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
                   displayList: viewModel.assetId,
                   onBackPressed: () {
@@ -66,11 +76,16 @@ class AssetSelectionWidgetView extends StatelessWidget {
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
                     Logger().e(value.toJson());
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
-                  displayList: viewModel.assetSerialNumber,
+                  displayList: viewModel.isSearchingSerialNo
+                      ? viewModel.serialNoSearch
+                      : viewModel.assetSerialNumber,
                   onBackPressed: () {
                     viewModel.onAssetIdBackPressed();
+                  },
+                  onChange: (value) {
+                    viewModel.onSearchingSerialNo(value);
                   },
                   title: "Serial Number",
                 ),
@@ -87,9 +102,14 @@ class AssetSelectionWidgetView extends StatelessWidget {
                 ),
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
-                  displayList: viewModel.productFamilyCountData,
+                  onChange: (value){
+                    viewModel.onSearchingProductFamily(value);
+                  },
+                  displayList: viewModel.isSearchingProductFamily
+                      ? viewModel.searchProductFamilyCountData
+                      : viewModel.productFamilyCountData,
                   onBackPressed: () {
                     viewModel.onProductFamilyBackPressed();
                   },
@@ -108,7 +128,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
                 ),
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
                   displayList: viewModel.subManufacturerList,
                   onBackPressed: () {
@@ -128,7 +148,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
                 ),
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
                   displayList: viewModel.subModelData,
                   onBackPressed: () {
@@ -148,7 +168,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
                 ),
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
-                    onAddingAsset!(i, value);
+                    widget.onAddingAsset!(i, value);
                   },
                   displayList: viewModel.subDeviceList,
                   onBackPressed: () {
@@ -161,7 +181,7 @@ class AssetSelectionWidgetView extends StatelessWidget {
           ),
         );
       },
-      viewModelBuilder: () => AssetSelectionWidgetViewModel(assetResult),
+      viewModelBuilder: () => AssetSelectionWidgetViewModel(widget.assetResult),
     );
   }
 }
@@ -170,17 +190,18 @@ class SelectionAssetWidget extends StatelessWidget {
   final Function? onBackPressed;
   final String? title;
   final List? displayList;
-  final bool? isLoading;
+ final Function(String)? onChange;
   final Function(int i, Asset assetData)? onAddingAsset;
   SelectionAssetWidget(
       {this.displayList,
       this.onBackPressed,
       this.title,
-      this.isLoading,
-      this.onAddingAsset});
+      this.onAddingAsset,
+      this.onChange});
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -196,6 +217,16 @@ class SelectionAssetWidget extends StatelessWidget {
               text: title,
               size: 14,
             )),
+        displayList!.isNotEmpty
+            ? Container(
+                width: mediaQuery.size.width * 0.8,
+                margin: EdgeInsets.all(10),
+                child: CustomTextBox(
+                  onChanged: (value) {
+                    onChange!(value);
+                  },
+                ))
+            : SizedBox(),
         displayList!.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
@@ -302,18 +333,27 @@ class SelectionAssetCountWidget extends StatelessWidget {
   }
 }
 
-class SelectedAsset extends StatelessWidget {
+class SelectedAsset extends StatefulWidget {
   final List<Asset>? displayList;
   final Function(int)? onDeletingSelectedAsset;
   final List<String>? dropDownList;
   final String? initialValue;
   final Function(String)? onChange;
+  final Function(String)? onChangeSearchBox;
   SelectedAsset(
       {this.displayList,
       this.onDeletingSelectedAsset,
       this.dropDownList,
       this.initialValue,
-      this.onChange});
+      this.onChange,
+      this.onChangeSearchBox});
+
+  @override
+  State<SelectedAsset> createState() => _SelectedAssetState();
+}
+
+class _SelectedAssetState extends State<SelectedAsset> {
+  bool isSorting = false;
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -331,7 +371,7 @@ class SelectedAsset extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
               InsiteText(
-                text: displayList!.length.toString() + " " + "Assets",
+                text: widget.displayList!.length.toString() + " " + "Assets",
                 size: 14,
                 fontWeight: FontWeight.w700,
               ),
@@ -383,10 +423,10 @@ class SelectedAsset extends StatelessWidget {
                                           .bodyText1!
                                           .color!))),
                           child: CustomDropDownWidget(
-                            items: dropDownList,
-                            value: initialValue,
+                            items: widget.dropDownList,
+                            value: widget.initialValue,
                             onChanged: (String? value) {
-                              onChange!(value!);
+                              widget.onChange!(value!);
                             },
                           ),
                         ),
@@ -396,25 +436,35 @@ class SelectedAsset extends StatelessWidget {
                       ),
                       Flexible(
                         flex: 5,
-                        child: CustomTextBox(),
+                        child: CustomTextBox(
+                          onChanged: (value) {
+                            widget.onChangeSearchBox!(value);
+                          },
+                        ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            isSorting = !isSorting;
+                          });
+                        },
                         child: InsiteImage(
-                          path: "assets/images/descending_filter_group.png",
+                          path: isSorting
+                              ? "assets/images/ascending_filter_group.png"
+                              : "assets/images/descending_filter_group.png",
                         ),
                       )
                     ],
                   ),
-                  displayList == null
+                  widget.displayList!.isEmpty
                       ? Center(
                           child: Column(
                             children: [
                               SizedBox(
-                                height: 70,
+                                height: 100,
                               ),
                               EmptyView(
                                 bg: theme.cardColor,
@@ -425,16 +475,46 @@ class SelectedAsset extends StatelessWidget {
                         )
                       : Flexible(
                           child: ListView.builder(
-                              itemCount: displayList!.length,
+                              reverse: isSorting ? true : false,
+                              itemCount: widget.displayList!.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                Asset detailsRecords = displayList![index];
-                                return SelectedAssetsWidget(
-                                  selectedAssetList: detailsRecords,
-                                  callBack: () {
-                                    onDeletingSelectedAsset!(index);
-                                  },
+                                Asset detailsRecords =
+                                    widget.displayList![index];
+                                return ListTile(
+                                  leading: InsiteImage(
+                                    width: 38,
+                                    height: 38,
+                                    path: "assets/images/crane_small_login.png",
+                                  ),
+                                  title: Container(
+                                    child: InsiteText(
+                                      size: 14,
+                                      fontWeight: FontWeight.bold,
+                                      text: detailsRecords.assetSerialNumber,
+                                    ),
+                                  ),
+                                  subtitle: InsiteText(
+                                    size: 12,
+                                    text: detailsRecords.makeCode! +
+                                        "-" +
+                                        detailsRecords.model!,
+                                  ),
+                                  trailing: IconButton(
+                                      onPressed: () {
+                                        widget.onDeletingSelectedAsset!(index);
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: theme.textTheme.bodyText1!.color,
+                                      )),
                                 );
+                                //  SelectedAssetsWidget(
+                                //   selectedAssetList: detailsRecords,
+                                //   callBack: () {
+                                //     widget.onDeletingSelectedAsset!(index);
+                                //   },
+                                // );
                               }),
                         )
                 ],

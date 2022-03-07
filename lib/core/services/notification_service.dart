@@ -125,7 +125,8 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<ManageNotificationsData?> getManageNotificationsData() async {
+  Future<ManageNotificationsData?> getManageNotificationsData(
+      int pageNumber) async {
     try {
       if (isVisionLink) {
         ManageNotificationsData? response = await MyApi()
@@ -137,8 +138,10 @@ class NotificationService extends BaseService {
       } else {
         ManageNotificationsData? response = await MyApi()
             .getClient()!
-            .manageNotificationsData("in-alertmanager-api",
-                Urls.manageNotificationsData, accountSelected!.CustomerUID);
+            .manageNotificationsData(
+                "in-alertmanager-api",
+                Urls.manageNotificationsData + pageNumber.toString() + "/20",
+                accountSelected!.CustomerUID);
 
         return response;
       }

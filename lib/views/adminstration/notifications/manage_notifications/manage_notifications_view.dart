@@ -36,7 +36,7 @@ class ManageNotificationsView extends StatelessWidget {
                 side: BorderSide(color: cardcolor),
               ),
               child: Container(
-                height: double.infinity,
+                
                 margin: EdgeInsets.all(15),
                 child: Column(
                   children: [
@@ -63,6 +63,7 @@ class ManageNotificationsView extends StatelessWidget {
                           ? InsiteProgressBar()
                           : viewModel.notifications.isNotEmpty
                               ? ListView.separated(
+                                controller: viewModel.controller,
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
                                         viewModel.notifications[index];

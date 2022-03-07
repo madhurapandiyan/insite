@@ -55,8 +55,7 @@ class DateSlider extends StatelessWidget {
                       padding: EdgeInsets.all(8),
                       margin: EdgeInsets.all(8),
                       bgColor: Theme.of(context).buttonColor,
-                      height: 30,
-                      width: 40,
+                     
                     ),
             ],
           );

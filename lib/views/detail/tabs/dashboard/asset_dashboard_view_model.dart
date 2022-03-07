@@ -35,6 +35,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   AssetDashboardViewModel(AssetDetail? detail) {
     this._assetDetail = detail;
+    Logger().w(assetDetail?.toJson());
     this.log = getLogger(this.runtimeType.toString());
     _assetSingleHistoryService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
@@ -46,7 +47,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   getAssetUtilization() async {
     AssetUtilization? result = await _assetUtilizationService!
-        .getAssetUtilGraphDate(assetDetail!.assetUid,
+        .getAssetUtilGraphDate(assetDetail?.assetUid,
             '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
     _assetUtilization = result;
     _utilizationGreatestValue = Utils.greatestOfThree(
@@ -67,7 +68,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   getNotes() async {
     List<Note>? result =
-        await _assetSingleHistoryService!.getAssetNotes(assetDetail!.assetUid);
+        await _assetSingleHistoryService!.getAssetNotes(assetDetail?.assetUid);
     if (result != null) {
       _assetNotes = result;
     }

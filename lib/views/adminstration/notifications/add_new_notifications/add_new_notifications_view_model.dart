@@ -10,8 +10,6 @@ import 'package:insite/core/models/add_notification_payload.dart';
 
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/customer.dart';
-import 'package:insite/core/models/edit_group_response.dart';
-import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
@@ -27,7 +25,6 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:table_calendar/table_calendar.dart';
 import '../../add_group/model/add_group_model.dart';
 import './model/zone.dart';
 
@@ -56,10 +53,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
-
+    getNotificationTypesData();
     Future.delayed(Duration(seconds: 1), () {
-      getNotificationTypesData();
-
       onGettingFaultCodeData();
       if (data != null) {
         editingNotification(data);
@@ -151,8 +146,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   String initialValue = "All";
 
   List<Asset>? selectedAsset = [];
+  List<Asset>? searchAsset = [];
 
   bool isLoading = true;
+  bool isSearching = false;
 
   List<String>? selectedContactItems = [];
 
@@ -437,14 +434,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData();
+      isLoading = false;
       notifyListeners();
-      Future.delayed(Duration(seconds: 1), () {
-        isLoading = false;
-        notifyListeners();
-      });
     } catch (e) {
       isLoading = false;
       hideLoadingDialog();
+      snackbarService?.showSnackbar(
+          message:
+              "Assets Are Not Loaded.Something Went Wrong.Try Again Later ");
       notifyListeners();
       Logger().e(e.toString());
     }
@@ -508,15 +505,77 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onChangingSelectedAsset(String value) {
+    if (value.length == 0) {
+      isSearching = false;
+    } else {
+      isSearching = true;
+      var data = selectedAsset!
+          .where((element) =>
+              element.assetSerialNumber!.contains(value.toUpperCase()) ||
+              element.makeCode!.contains(value.toUpperCase()) ||
+              element.model!.contains(value.toUpperCase()))
+          .toList();
+      searchAsset = data;
+    }
+
+    notifyListeners();
+  }
+
   editingNotification(AlertConfigEdit data) async {
-    await getGroupListData();
+    List<String> assetList = ["Asset On", "Asset Off", "Not Reporting"];
+    List<String> engineHourList = [
+      "Equal to",
+      "Greater than",
+      "Less than",
+      "Greater than or equal to",
+      "Less than or equal to"
+    ];
     isEditing = true;
     notificationController.text = data.alertConfig!.notificationTitle!;
     notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
     notificationTypeId = data.alertConfig!.notificationTypeID!;
-    _noticationTypes.clear();
-    _noticationTypes = [data.alertConfig!.notificationType!];
-    _dropDownInitialValue = data.alertConfig!.notificationType!;
+    if (assetList
+        .any((element) => element == data.alertConfig!.notificationType)) {
+      _noticationTypes.clear();
+      _dropDownInitialValue = "Asset Status";
+      _noticationTypes.add("Asset Status");
+      _notificationSubTypes.clear();
+      _dropDownSubInitialValue = data.alertConfig!.notificationType!;
+      _notificationSubTypes = assetList;
+    } else if (data.alertConfig!.notificationType == "Fuel Level") {
+      if (data.alertConfig!.notificationType == "Fuel Level") {
+        _noticationTypes.clear();
+        _dropDownInitialValue = "Fuel";
+        _noticationTypes.add("Fuel");
+        _notificationSubTypes.clear();
+        if (data.alertConfig!.operands!.isNotEmpty) {
+          data.alertConfig!.operands!.forEach((element) {
+            _dropDownSubInitialValue = element.condition!;
+            _notificationSubTypes = engineHourList;
+          });
+        }
+      }
+    } else {
+      _noticationTypes.clear();
+      _dropDownInitialValue = data.alertConfig!.notificationType!;
+      _noticationTypes.add(data.alertConfig!.notificationType!);
+      _notificationSubTypes.clear();
+      if (data.alertConfig!.operands!.isNotEmpty) {
+        data.alertConfig!.operands!.forEach((element) {
+          _dropDownSubInitialValue = element.condition!;
+          _notificationSubTypes = engineHourList;
+        });
+      }
+    }
+
+    // _notificationSubTypes.clear();
+    // if (data.alertConfig!.operands!.isNotEmpty) {
+    //   data.alertConfig!.operands!.forEach((element) {
+    //     _dropDownSubInitialValue = element.condition!;
+    //     _notificationSubTypes.add(element.condition);
+    //   });
+    // }
     alertConfigUid = data.alertConfig!.alertConfigUID;
     data.alertConfig?.deliveryConfig?.forEach((element) {
       if (element != null) {
@@ -536,19 +595,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandID: element.operandID,
           operatorId: element.operatorID,
           value: element.value));
-    });
-
-    assetIdresult?.assetDetailsRecords?.forEach((element) {
-      if (alertConfigData!.alertConfig!.assets!
-          .any((editData) => editData.assetUID == element.assetIdentifier)) {
-        selectedAsset!.add(Asset(
-            assetIcon: element.assetIcon,
-            assetId: element.assetId,
-            assetIdentifier: element.assetIdentifier,
-            assetSerialNumber: element.assetSerialNumber,
-            makeCode: element.makeCode,
-            model: element.model));
-      }
     });
 
     if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
@@ -581,44 +627,44 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Sunday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 1) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Monday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 2) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Tuesday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 3) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Wednesday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 4) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Thursday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 5) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Friday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         } else if (data[i].scheduleDayNum == 6) {
           scheduleDay.add(Schedule(
               day: data[i].scheduleDayNum,
               title: "Saturday",
-              endTime: initialEndValue,
-              startTime: initialStartValue));
+              endTime: "$endTimeHour:$endTimeMinute",
+              startTime: "$startTimeHour:$startTimeMinute"));
         }
       }
       // alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
@@ -635,17 +681,24 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       //       title: "sun"));
       // });
     }
-    _notificationSubTypes.clear();
-    if (data.alertConfig!.operands!.isNotEmpty) {
-      data.alertConfig!.operands!.forEach((element) {
-        _dropDownSubInitialValue = element.condition!;
-        _notificationSubTypes.add(element.condition);
-      });
-    }
+
     data.alertConfig!.assets!.forEach((element) {
       assetUidData.add(element.assetUID!);
     });
-
+    notifyListeners();
+    await getGroupListData();
+    assetIdresult?.assetDetailsRecords?.forEach((element) {
+      if (alertConfigData!.alertConfig!.assets!
+          .any((editData) => editData.assetUID == element.assetIdentifier)) {
+        selectedAsset!.add(Asset(
+            assetIcon: element.assetIcon,
+            assetId: element.assetId,
+            assetIdentifier: element.assetIdentifier,
+            assetSerialNumber: element.assetSerialNumber,
+            makeCode: element.makeCode,
+            model: element.model));
+      }
+    });
     notifyListeners();
   }
 
@@ -1143,10 +1196,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  getNotificationTypesData() async {
+  Future getNotificationTypesData() async {
     try {
       alterTypes = await _notificationService!.getNotificationTypes();
-
       if (alterTypes != null) {
         alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
           if (notificationTypeGroup.notificationTypeGroupName!
@@ -1435,7 +1487,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     assetUidData.clear();
     selectedAsset?.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
-     });
+    });
     AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
         alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
         alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
@@ -1475,11 +1527,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           .showSnackbar(message: "Please Select Notification Type");
       return;
     }
-    if (_dropDownSubInitialValue == "Options" ||
-        _dropDownSubInitialValue == "Conditions") {
-      _snackBarservice!
-          .showSnackbar(message: "Please Configure Notification sub Type");
-      return;
+    if (_dropDownInitialValue == "Asset Status" ||
+        _dropDownInitialValue == "Fuel" ||
+        _dropDownInitialValue == "Engine Hours" ||
+        _dropDownInitialValue == "Excessive Daily Idle") {
+      if (_dropDownSubInitialValue == "Options" ||
+          _dropDownSubInitialValue == "Conditions") {
+        _snackBarservice!
+            .showSnackbar(message: "Please Configure Notification sub Type");
+        return;
+      }
     }
     if (assetUidData.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Please Select Asset");
