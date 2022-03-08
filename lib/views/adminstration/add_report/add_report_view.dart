@@ -30,8 +30,9 @@ class AddReportView extends StatefulWidget {
   final ScheduledReports? scheduledReports;
   final bool? isEdit;
   final String? templateDropDownValue;
+  final String ? templateTitleValue;
   AddReportView(
-      {this.scheduledReports, this.isEdit, this.templateDropDownValue});
+      {this.scheduledReports, this.isEdit, this.templateDropDownValue,this.templateTitleValue});
   @override
   State<AddReportView> createState() => _AddReportViewState();
 }
@@ -41,6 +42,7 @@ class _AddReportViewState extends State<AddReportView> {
   // String? dropDownValue;
   @override
   Widget build(BuildContext context) {
+    
     return ViewModelBuilder<AddReportViewModel>.reactive(
       builder: (BuildContext context, AddReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
@@ -476,9 +478,7 @@ class _AddReportViewState extends State<AddReportView> {
                           },
                         )),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
+                
                   // InsiteText(
                   //   text: "Choose by",
                   //   size: 14,
@@ -506,9 +506,7 @@ class _AddReportViewState extends State<AddReportView> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(
-                    height: 15,
-                  ),
+                 
                   // viewModel.chooseByDropDownValue == "Assets"
                   //     ? SelectionWidgetView(
                   //         isEdit: false,
@@ -532,7 +530,7 @@ class _AddReportViewState extends State<AddReportView> {
                   //     : Container(),
 
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   InsiteText(
                     text: "Email Report Recipients :",
@@ -662,10 +660,10 @@ class _AddReportViewState extends State<AddReportView> {
                   //   },
                   // ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   InsiteText(
-                    text: "Email Subject Line ",
+                    text: "Email Subject Line : ",
                     size: 14,
                     fontWeight: FontWeight.w700,
                   ),
@@ -748,7 +746,7 @@ class _AddReportViewState extends State<AddReportView> {
             )));
       },
       viewModelBuilder: () => AddReportViewModel(
-          widget.scheduledReports, widget.isEdit, widget.templateDropDownValue),
+          widget.scheduledReports, widget.isEdit, widget.templateDropDownValue,widget.templateTitleValue),
     );
   }
 

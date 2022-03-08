@@ -80,13 +80,14 @@ class AddReportViewModel extends InsiteViewModel {
   TextEditingController emailController = TextEditingController();
   List<String> dropvaluelist = [".CSV", ".XLS", ".PDF"];
 
-  AddReportViewModel(
-      ScheduledReports? scheduledReports, bool? isEdit, String? dropdownValue) {
+  AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
+      String? dropdownValue, String? templateTitleValue) {
     this.scheduledReportsId = scheduledReports;
     this.log = getLogger(this.runtimeType.toString());
     _manageUserService!.setUp();
     if (isEdit == null) {
       getDropDownValue(dropdownValue!);
+      getTemplateTitleValue(templateTitleValue!);
     }
     if (isEdit == true) {
       Future.delayed(Duration(seconds: 1), () {
@@ -130,6 +131,40 @@ class AddReportViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getTemplateTitleValue(String templateTitleValue) {
+    Logger().w(templateTitleValue);
+    if (isVisionLink) {
+    } else {
+      if (templateTitleValue == "Asset Event Count") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Fleet Summary") {
+        assetsDropDownValue = templateTitleValue;
+      }
+      else if(templateTitleValue=="Asset Operation"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Engine Idle"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Fault Code"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Fault Code Asset Details"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Fault Summary Fault Lists"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Multi-Asset Utilization"){
+        assetsDropDownValue=templateTitleValue;
+      }
+      else if(templateTitleValue=="Utilization Details"){
+        assetsDropDownValue=templateTitleValue;
+      }
+    }
+    notifyListeners();
+  }
+
   getDatPickerData(String formattedDate) {
     dateTimeController.text = formattedDate;
     notifyListeners();
@@ -145,7 +180,7 @@ class AddReportViewModel extends InsiteViewModel {
         if (assetItems.sourceAppName == "UNIFIEDFLEET" &&
             assetItems.defaultColumn != "") {
           if (isVisionLink) {
-            reportFleetAssets!.add(assetItems.reportTypeName!);
+            reportFleetAssets!.add(assetItems.reportName!);
           } else {
             if (assetItems.reportName == "MultiAssetUtilization" ||
                 assetItems.reportName == "UtilizationDetails" ||
@@ -153,7 +188,7 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "FaultCodeAssetDetails" ||
                 assetItems.reportName == "FleetSummary" ||
                 assetItems.reportName == "AssetOperation") {
-              reportFleetAssets!.add(assetItems.reportName!);
+              reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
         }
@@ -170,7 +205,7 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "FaultSummaryFaultsList" ||
                 assetItems.reportName == "FaultCodeAssetDetails" ||
                 assetItems.reportName == "FleetSummary") {
-              reportFleetAssets!.add(assetItems.reportName!);
+              reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
         }
@@ -193,10 +228,11 @@ class AddReportViewModel extends InsiteViewModel {
           } else {
             if (templateAssets.reportName == "Asset Event Count" ||
                 templateAssets.reportName == "AssetHealth" ||
-                templateAssets.reportName == "ExcavatorUsageReport" ||
+                // templateAssets.reportName == "ExcavatorUsageReport" ||
                 templateAssets.reportName == "EngineIdle" ||
-                templateAssets.reportName == "BackhoeLoaderOperation") {
-              reportFleetAssets!.add(templateAssets.reportName!);
+                // templateAssets.reportName == "BackhoeLoaderOperation" ||
+                templateAssets.reportName == "AssetEventCountReport") {
+              reportFleetAssets!.add(templateAssets.reportTypeName!);
             }
           }
         }
@@ -406,13 +442,41 @@ class AddReportViewModel extends InsiteViewModel {
     var addReportPayLoad;
     Logger().e(defaultColumn.length);
     List<String> reportColum = [];
+
+    // defaultColumn.forEach((element) {
+    //   if (element!.reportName!.contains(assetsDropDownValue!)) {
+    //     reportType = element.reportName!;
+    //   }
+    // });
+
     for (var item in defaultColumn) {
-      if (item!.reportName == assetsDropDownValue) {
+      if (item!.reportTypeName == assetsDropDownValue) {
+        Logger().wtf(item.defaultColumn);
         var data = Utils.reportColumn(item.defaultColumn);
-        reportColum = data as List<String>;
+        Logger().wtf(data.isEmpty);
+        if (data.first == "") {
+          reportColum = [
+            "assetName",
+            "serialNumber",
+            "make-model",
+            "locationEventLocalTime",
+            "hourmeter",
+            "location",
+            "assetStatus",
+            "fromDate",
+            "toDate",
+            "latitude",
+            "longitude"
+          ];
+        } else {
+          reportColum = data as List<String>;
+        }
       }
     }
     Logger().e(reportColum.length);
+    if (assetsDropDownValue == "Asset Event Count") {
+      assetsDropDownValue = "AssetEventCountReport";
+    }
 
     if (isVisionLink) {
       addReportPayLoad = AddReportPayLoad(
@@ -508,8 +572,7 @@ class AddReportViewModel extends InsiteViewModel {
 
     try {
       if (nameController.text.isEmpty) {
-        _snackBarservice!
-            .showSnackbar(message: "Report Name should be required");
+        _snackBarservice!.showSnackbar(message: "Name should be specified");
         return;
       } else if (associatedIdentifier!.isEmpty) {
         _snackBarservice!.showSnackbar(message: "Assets can't be empty");
@@ -534,7 +597,7 @@ class AddReportViewModel extends InsiteViewModel {
       Logger().d(addReportPayLoad.toJson());
       if (result != null) {
         _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
-        gotoScheduleReportPage();
+        //gotoScheduleReportPage();
       }
       hideLoadingDialog();
       notifyListeners();
@@ -562,7 +625,7 @@ class AddReportViewModel extends InsiteViewModel {
 
     List<String> reportColum = [];
     for (var item in defaultColumn) {
-      if (item!.reportName == dropDownValue) {
+      if (item!.reportName == assetsDropDownValue) {
         var data = Utils.reportColumn(item.defaultColumn);
         reportColum = data as List<String>;
       }
@@ -668,7 +731,7 @@ class AddReportViewModel extends InsiteViewModel {
         Logger().d(result.metadata!.toJson());
         _snackBarservice!
             .showSnackbar(message: "Edit Report has been done successfully");
-        gotoScheduleReportPage();
+        // gotoScheduleReportPage();
       }
 
       hideLoadingDialog();
