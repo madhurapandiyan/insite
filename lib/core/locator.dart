@@ -14,6 +14,7 @@ import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/plant_hierachy_service.dart';
@@ -93,5 +94,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => GraphqlSchemaService());
     log.d('Registering Notification Service');
     locator.registerLazySingleton(() => NotificationService());
+    log.d("Registering Maintenance Service ");
+    locator.registerLazySingleton(() => MaintenanceService());
   }
 }
