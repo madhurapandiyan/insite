@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
+import 'package:insite/views/adminstration/manage_report/manage_report_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class NewReportTemplateWidget extends StatefulWidget {
-  final String? reportTypeName;
-  final String? descriptionData;
+  final TemplateDetails? templateDetails;
   final Function(String)? dropDownValueCallBack;
   final VoidCallback? voidCallback;
   const NewReportTemplateWidget(
-      {this.reportTypeName,
-      this.voidCallback,
-      this.descriptionData,
-      this.dropDownValueCallBack});
+      {this.templateDetails, this.voidCallback, this.dropDownValueCallBack});
 
   @override
   State<NewReportTemplateWidget> createState() =>
@@ -58,7 +55,7 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30),
                   child: InsiteText(
-                    text: widget.reportTypeName,
+                    text: widget.templateDetails!.title,
                     fontWeight: FontWeight.w700,
                     size: 18,
                   ),
@@ -69,7 +66,7 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: InsiteText(
-                    text: widget.descriptionData,
+                    text: widget.templateDetails!.description,
                     maxLines: 8,
                     size: 14,
                     fontWeight: FontWeight.w400,
@@ -106,7 +103,7 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                   // ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4,right:4),
+                      padding: const EdgeInsets.only(bottom: 4, right: 4),
                       child: CustomDropDownWidget(
                         enableHint: false,
                         //value: value,

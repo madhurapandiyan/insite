@@ -32,21 +32,21 @@ class _TemplateViewState extends State<TemplateView> {
                   ? InsiteProgressBar()
                   : Expanded(
                       child: ListView.builder(
-                          itemCount: viewModel.templateAssets.length,
+                          itemCount: viewModel.templateDetaillist!.length,
                           itemBuilder: (context, index) {
-                            var templateAssets =
-                                viewModel.templateAssets[index];
-                            String descriptionData =
-                                viewModel.templateDescription[index];
-                            Logger().i(templateAssets);
+                            TemplateDetails templateDetails =
+                                viewModel.templateDetaillist![index];
+                            
                             return NewReportTemplateWidget(
+                              templateDetails: templateDetails,
                               dropDownValueCallBack: (String value) {
+                                viewModel.templateTitleValue=templateDetails.title!;
+                               
                                 viewModel.templateDropDownValue = value;
                                 viewModel.onClickTemplateTypeAddReportSelected(
-                                    viewModel.templateDropDownValue);
+                                    viewModel.templateDropDownValue,viewModel.templateTitleValue);
+                               
                               },
-                              reportTypeName: templateAssets,
-                              descriptionData: descriptionData,
                             );
                           }),
                     )

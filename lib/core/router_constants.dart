@@ -1,12 +1,5 @@
 // [ This is an auto generated file ]
 
-// [ This is an auto generated file ]
-// [ This is an auto generated file ]
-
-// [ This is an auto generated file ]
-
-// [ This is an auto generated file ]
-
 const String splashViewRoute = 'splashViewRoute';
 const String customerSelectionViewRoute = 'customerSelectionViewRoute';
 const String homeViewRoute = 'homeViewRoute';
