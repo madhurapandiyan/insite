@@ -5,7 +5,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PercentageWidget extends StatelessWidget {
   final String? label;
-  final double? percentage;
+  final dynamic percentage;
   final Color color;
   final bool? isPercentage;
   final String? value;
@@ -49,23 +49,20 @@ class PercentageWidget extends StatelessWidget {
                   )
                 : isPercentage == null
                     ? InsiteText(
-                        text:
-                            '${double.parse(percentage!.toStringAsFixed(1))}%',
+                        text: percentage.toString(),
                         color: white,
                         size: 12,
                         fontWeight: FontWeight.bold,
                       )
                     : isPercentage!
                         ? InsiteText(
-                            text:
-                                '${double.parse(percentage!.toStringAsFixed(1))}%',
+                            text: percentage.toString(),
                             color: white,
                             size: 12,
                             fontWeight: FontWeight.bold,
                           )
                         : InsiteText(
-                            text:
-                                '${double.parse(percentage!.toStringAsFixed(1))}',
+                            text: percentage.toString(),
                             color: white,
                             size: 12,
                             fontWeight: FontWeight.bold,
@@ -76,7 +73,11 @@ class PercentageWidget extends StatelessWidget {
                 size: 12,
                 fontWeight: FontWeight.bold,
               ),
-        percent: percentage == null ? 0 : percentage! / 100,
+        percent: percentage == null
+            ? 0
+            : percentage!.runtimeType == String
+                ? double.parse(percentage!) / 100
+                : percentage! / 100,
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,
         backgroundColor: concrete,

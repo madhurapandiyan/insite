@@ -1,8 +1,50 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class GraphqlSchemaService extends BaseService {
+  String? productFamily;
+  String? model;
+  String? assetStatus;
+  String? fuelLevelPercentLt;
+  String? idleEficiencyGT;
+  String? idleEfficiencyLTE;
+  String? assetIDContains;
+  String? snContains;
+  String? location;
+
+  Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
+    productFamily=null;
+    assetStatus=null;
+    model=null;
+    fuelLevelPercentLt=null;
+    filtlerList!.forEach((filterData) {
+      if (filterData?.type == FilterType.ALL_ASSETS) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.ALL_ASSETS)
+            .toList();
+        assetStatus = Utils.getFilterData(data, filterData!.type!);
+      } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
+            .toList();
+        productFamily = Utils.getFilterData(data, filterData!.type!);
+      } else if (filterData?.type == FilterType.MODEL) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.MODEL)
+            .toList();
+        model = Utils.getFilterData(data, filterData!.type!);
+      } else if (filterData?.type == FilterType.FUEL_LEVEL) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.FUEL_LEVEL)
+            .toList();
+        fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
+      }
+    });
+  }
+
   final String allAssets = """
 query faultDataSummary{
  getDashboardAsset{
@@ -11,10 +53,8 @@ query faultDataSummary{
     countOf
   }
 }
-  
-}
-
-  """;
+ }
+""";
 
   final String assetStatusCount = """
 query faultDataSummary{
@@ -112,9 +152,21 @@ query faultDataSummary{
     return assetFaultQuery;
   }
 
-  String fleetSummary() {
+  fleetSummary(List<FilterData?>? applyFilter, pagenumber) async {
+    await gettingFiltersValue(applyFilter);
     var data = """{
-  fleetSummary(pageNumber: 1, pageSize: 50, sort: "AssetSerialNumber", idleEfficiencyGT: "", idleEfficiencyLTE: "", assetIDContains: "", snContains: "") {
+  fleetSummary(pageNumber:$pagenumber,
+    pageSize:50,
+    sort:"AssetSerialNumber",
+    productfamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"},
+    model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
+    fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
+    idleEfficiencyGT:"",
+    idleEfficiencyLTE:"",
+    assetIDContains:"",
+    snContains:"",
+    location:"") {
     fleetRecords {
       assetIdentifier
       assetSerialNumber
@@ -214,18 +266,24 @@ query faultDataSummary{
   
 } 
   """;
-  final String utilizationTotalCount = """
+  String utilizationToatlCount(String startDate, String endDate) {
+    final String utilizationTotalCount = """
 
-  query utilizationTotalCount{
- utilizationTotal{
+  query {
+ utilizationTotal(
+    startDate: "$startDate",
+  EndDate:"$endDate"
+  
+){
   countData {
     countOf
     count
   }
 }
-  
 }
   """;
+    return utilizationTotalCount;
+  }
 
   String getAssetOperationData(String startDate, String endDate) {
     final String assetOperationData = """
@@ -335,10 +393,11 @@ userEmail(EmailID:"$emailId"){
     return checkUserMail;
   }
 
-  String getFleetUtilization(String startDate, String endDate) {
+  String getFleetUtilization(
+      String startDate, String endDate, int pageSize, int pageNo) {
     final String fleetUtilization = """
   query getFleetUtilization{
-	getfleetUtilization(pageSize:1,pageNumber:100, startDate: "$startDate", endDate: "$endDate"){
+	getfleetUtilization(pageSize:$pageSize,pageNumber:$pageNo, startDate: "$startDate", endDate: "$endDate"){
     assetResults {
       assetIdentifierSQLUID
       assetIcon
@@ -678,6 +737,299 @@ query{
     enableDeleteButton
   }
 }""";
+    return data;
+  }
+
+  String singleAssetUtilizationDetail(
+      {String? assetId, String? startDate, String? endDate}) {
+    String data = """
+{
+  getAssetDetailsSec(
+        assetUid: "9798351c-c1d9-11eb-82df-0ae8ba8d3970",
+    endDate: "2022-03-07",
+    includeNonReportedDays: "true",
+    includeOutsideLastReportedDay: "true",
+    sort: "-LastReportedUtilizationTime",
+    startDate: "2022-03-07",
+  ) {
+    lastReportedTime
+    assetIcon
+    assetIdentifier
+    assetId
+    assetSerialNumber
+    makeCode
+    model
+    lastRuntimeHourMeter
+    lastOdometerMeter
+    lastIdleHourMeter
+    Code
+    Message
+    capabilities {
+      hasActiveFuelSubscription
+    },
+    utilization{
+      message,
+      date,
+      idleHours,
+      supportsIdle,
+      runtimeHours,
+      workDefinitionType,
+      workingHours,
+      distanceTravelledKilometers,
+      idleEfficiency,
+      workingEfficiency,
+      idleEfficiencyCalloutTypes,
+      workingEfficiencyCalloutTypes,
+      targetIdlePerformanceCalloutTypes,
+      targetIdlePerformance,
+      targetIdle,
+      targetRuntime,
+      targetRuntimePerformance,
+      runtimeHoursCalloutTypes,
+      idleHoursCalloutTypes,
+      workingHoursCalloutTypes,
+      lastRuntimeHourMeter,
+      lastOdometerMeter,
+      lastIdleHourMeter,
+      lastRuntimeFuelConsumptionLitersMeter,
+      lastIdleFuelConsumptionLitersMeter,
+      runtimeFuelConsumedLiters,
+      workingFuelConsumptionRate,
+      idleFuelConsumptionRate,
+      idleFuelConsumptionRateCalloutTypes,
+      workingFuelConsumptionRateCalloutTypes,
+      kmsPerRuntimeFuelConsumedLiter,
+      runtimeFuelConsumedLitersCalloutTypes,
+      idleFuelConsumedLitersCalloutTypes,
+      workingFuelConsumedLitersCalloutTypes,
+      lastReportedTime,
+      lastReportedTimeZoneAbbrev,
+      dailyreportedtimeTypes
+      
+    }
+  }
+}
+
+""";
+    return data;
+  }
+
+  String getSingleAssetUtilizationGraphAggregate(
+      {String? assetId, String? startDate, String? endDate}) {
+    var data = """
+{
+  getAssetDetailsAggregate(assetUid: "$assetId", endDate: "$endDate", startDate: "$startDate", sort: "LastReportedUtilizationTime") {
+    daily {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    weekly {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        runtimeFuelConsumptionLitersMeterCalloutTypes
+        idleFuelConsumptionLitersMeterCalloutTypes
+        runtimeHoursMeterCalloutTypes
+        idleHoursMeterCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    monthly {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        runtimeFuelConsumptionLitersMeterCalloutTypes
+        idleFuelConsumptionLitersMeterCalloutTypes
+        runtimeHoursMeterCalloutTypes
+        idleHoursMeterCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    code
+    message
+  }
+}
+""";
+    return data;
+  }
+
+  String getFilterData(String grouping) {
+    var data = """
+{
+  fleetFiltersGrouping(grouping: "$grouping") {
+    countData {
+      countOf
+      count
+      referenceColumns
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  String searchLocation(String value) {
+    var data = """
+{
+  searchLocation(searchQuery: "$value", maxResult: "10") {
+    Locations {
+      Address {
+        StreetAddress
+        City
+        State
+        StateName
+        Zip
+        County
+        Country
+        CountryFullName
+        SPLC
+      }
+      Coords {
+        Lat
+        Lon
+      }
+      Region
+      POITypeID
+      PersistentPOIID
+      SiteID
+      ResultType
+      ShortString
+    }
+  }
+}
+""";
     return data;
   }
 }

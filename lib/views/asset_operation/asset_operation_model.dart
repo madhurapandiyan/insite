@@ -201,7 +201,7 @@ class AssetOperationViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.ASSET_OPERATION,
         appliedFilters,
-        graphqlSchemaService!.utilizationTotalCount);
+        graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

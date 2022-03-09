@@ -245,7 +245,7 @@ class _NotificationViewState extends State<NotificationView> {
                                         }),
                                   )
                                 : EmptyView(
-                                    title: "No Nontification Found",
+                                    title: "No Notification Found",
                                   ),
                         viewModel.loadingMore
                             ? Padding(

@@ -13,12 +13,14 @@ import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import '../locator.dart';
+import 'graphql_schemas_service.dart';
 import 'local_service.dart';
 
 class AssetStatusService extends DataBaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   AssetStatusService() {
     init();
@@ -52,7 +54,7 @@ class AssetStatusService extends DataBaseService {
               accountSelected?.CustomerUID,
               (await _localService!.getLoggedInUser())!.sub);
           AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data!['getDashboardAsset']);
+              AssetCount.fromJson(data.data['fleetFiltersGrouping']);
           return assetCountFromGraphql;
         } else {
           if (isVisionLink) {
@@ -135,7 +137,7 @@ class AssetStatusService extends DataBaseService {
             query,
             accountSelected?.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
-
+        Logger().w(data.data!['utilizationTotal']);
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['utilizationTotal']);
 
@@ -312,8 +314,7 @@ class AssetStatusService extends DataBaseService {
               (await _localService!.getLoggedInUser())!.sub);
           Logger().w("get fueldata ${data.data!['getDashboardAsset']}");
           AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data!['getDashboardAsset']);
-
+              AssetCount.fromJson(data.data['getDashboardAsset']);
           return assetCountFromGraphql;
         } else {
           if (isVisionLink) {
@@ -417,25 +418,25 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          // AssetCount idlingLevelDataResponse = await MyApi()
-          //     .getClient()!
-          //     .idlingLevel(
-          //         Urls.assetCountSummary +
-          //             FilterUtils.constructQueryFromMap(queryMap),
-          //         accountSelected!.CustomerUID,
-          //         Urls.vfleetPrefix);
-          // if (idlingLevelDataResponse != null) {
-          //   bool updated =
-          //       await updateAssetCount(idlingLevelDataResponse, type);
-          //   Logger().d("updated $updated");
-          //   if (updated) {
-          //     return idlingLevelDataResponse;
-          //   } else {
-          //     return null;
-          //   }
-          // } else {
-          //   return null;
-          // }
+          AssetCount idlingLevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevel(
+                  Urls.assetCountSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetPrefix);
+          if (idlingLevelDataResponse != null) {
+            bool updated =
+                await updateAssetCount(idlingLevelDataResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return idlingLevelDataResponse;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {

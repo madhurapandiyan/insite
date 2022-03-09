@@ -89,7 +89,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               ? "lifetime fuel :\n" +
                                   widget.detail!.lifetimeFuel! +
                                   " liters"
-                              : " ",
+                              : "lifetime fuel -",
                           percentage: widget.detail != null &&
                                   widget.detail!.fuelLevelLastReported != null
                               ? widget.detail!.fuelLevelLastReported.toString()
@@ -128,13 +128,14 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),
-                      child: FuelLevel(
+                      child:
+                      FuelLevel(
                           liquidColor: Theme.of(context).buttonColor,
                           value: widget.detail != null &&
                                   widget.detail!.percentDEFRemaining != null
                               ? double.parse(
                                   widget.detail!.percentDEFRemaining!)
-                              : null,
+                              : 0,
                           title: "Diesel Exhaust Fluid (DEF) Level ",
                           lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null
                               ? "Lifetime DEF :\n" +
@@ -146,7 +147,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           percentage: widget.detail != null &&
                                   widget.detail!.percentDEFRemaining != null
                               ? widget.detail!.percentDEFRemaining.toString()
-                              : null,
+                              : "0",
                           lastReported: widget
                                       .detail!.lastPercentDEFRemainingUTC !=
                                   null

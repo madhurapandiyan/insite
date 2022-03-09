@@ -129,6 +129,8 @@ class UtilizationListItem extends StatelessWidget {
                                                     .toStringAsFixed(1)
                                                 : "-",
                                       ),
+                                    ]),
+                                    TableRow(children: [
                                       InsiteTableRowItem(
                                         title: "Target",
                                         content: utilizationData!
@@ -146,7 +148,7 @@ class UtilizationListItem extends StatelessWidget {
                                             ? (utilizationData!
                                                             .targetRuntimePerformance! *
                                                         100)
-                                                    .toStringAsFixed(2) +
+                                                    .toString() +
                                                 " %"
                                             : "",
                                       ),
@@ -167,22 +169,24 @@ class UtilizationListItem extends StatelessWidget {
                                                   .toStringAsFixed(1)
                                               : "-",
                                         ),
-                                        InsiteTableRowItem(
-                                          title: "Burned Rate",
-                                          content: utilizationData!
-                                                      .runtimeFuelConsumptionRate !=
-                                                  null
-                                              ? utilizationData!
-                                                  .runtimeFuelConsumptionRate!
-                                                  .toStringAsFixed(2)
-                                              : "-",
-                                        ),
-                                        InsiteTableRowItem(
-                                          title: "",
-                                          content: "",
-                                        ),
                                       ],
                                     ),
+                                    TableRow(children: [
+                                      InsiteTableRowItem(
+                                        title: "Burned Rate",
+                                        content: utilizationData!
+                                                    .runtimeFuelConsumptionRate !=
+                                                null
+                                            ? utilizationData!
+                                                .runtimeFuelConsumptionRate!
+                                                .toStringAsFixed(2)
+                                            : "-",
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "",
+                                        content: "",
+                                      ),
+                                    ])
                                   ],
                                 ),
                               ],
@@ -212,31 +216,40 @@ class UtilizationListItem extends StatelessWidget {
                                         content:
                                             utilizationData!.idleHours != null
                                                 ? utilizationData!.idleHours!
-                                                    .toStringAsFixed(1)
                                                 : "-",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Target",
-                                        content:
-                                            utilizationData!.targetIdle != null
-                                                ? utilizationData!.targetIdle!
-                                                    .toStringAsFixed(1)
-                                                : "-",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Performance",
-                                        content: utilizationData!
-                                                    .targetIdlePerformance !=
-                                                null
-                                            ? (utilizationData!
-                                                            .targetIdlePerformance! *
-                                                        100)
-                                                    .toStringAsFixed(2) +
-                                                " %"
-                                            : "",
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  TableRow(children: [
+                                    InsiteTableRowItem(
+                                      title: "Target",
+                                      content:
+                                          utilizationData!.targetIdle != null
+                                              ? utilizationData!.targetIdle!
+                                                  .toStringAsFixed(1)
+                                              : "-",
+                                    ),
+                                    InsiteTableRowItem(
+                                      title: "Performance",
+                                      content: utilizationData!
+                                                  .targetIdlePerformance !=
+                                              null
+                                          ? utilizationData!
+                                                      .targetIdlePerformance!
+                                                      .runtimeType ==
+                                                  num
+                                              ? (utilizationData!
+                                                          .targetIdlePerformance! *
+                                                      100)
+                                                  .toStringAsFixed(2)
+                                              : (double.parse(utilizationData!
+                                                              .targetIdlePerformance!.toString()) *
+                                                          100)
+                                                      .toStringAsFixed(2) +
+                                                  " %"
+                                          : "-",
+                                    ),
+                                  ])
                                 ],
                               )
                             ]),
@@ -406,9 +419,9 @@ class UtilizationListItem extends StatelessWidget {
                               Table(
                                 border: TableBorder(
                                     bottom: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Color(0xFF000000),
-                                      width: 1),
+                                        style: BorderStyle.solid,
+                                        color: Color(0xFF000000),
+                                        width: 1),
                                     verticalInside: BorderSide(
                                         style: BorderStyle.solid,
                                         color: Color(0xFF000000),
@@ -426,9 +439,9 @@ class UtilizationListItem extends StatelessWidget {
                                         color: Color(0xFF000000),
                                         width: 1),
                                     right: BorderSide(
-                                      style: BorderStyle.solid,
-                                      color: Color(0xFF000000),
-                                      width: 1)),
+                                        style: BorderStyle.solid,
+                                        color: Color(0xFF000000),
+                                        width: 1)),
                                 columnWidths: {
                                   0: FlexColumnWidth(1),
                                   1: FlexColumnWidth(3),
@@ -439,7 +452,8 @@ class UtilizationListItem extends StatelessWidget {
                                       InsiteTableRowItem(
                                         title: "Runtime Target",
                                         content:
-                                            utilizationData!.targetRuntime != null
+                                            utilizationData!.targetRuntime !=
+                                                    null
                                                 ? utilizationData!.targetRuntime
                                                     .toString()
                                                 : "-",
@@ -463,7 +477,8 @@ class UtilizationListItem extends StatelessWidget {
                                               content: utilizationData!
                                                           .runtimeHours !=
                                                       null
-                                                  ? utilizationData!.runtimeHours
+                                                  ? utilizationData!
+                                                      .runtimeHours
                                                       .toString()
                                                   : "-",
                                             ),
@@ -481,11 +496,19 @@ class UtilizationListItem extends StatelessWidget {
                                               content: utilizationData!
                                                           .targetRuntimePerformance !=
                                                       null
-                                                  ? (utilizationData!
-                                                                  .targetRuntimePerformance! *
-                                                              100)
-                                                          .toStringAsFixed(2) +
-                                                      " %"
+                                                  ? utilizationData!
+                                                              .targetRuntimePerformance!
+                                                              .runtimeType ==
+                                                          num
+                                                      ? (utilizationData!
+                                                              .targetRuntimePerformance! *
+                                                          100).toString()
+                                                      : (double.parse(utilizationData!
+                                                                      .targetRuntimePerformance!.toString()) *
+                                                                  100)
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          " %"
                                                   : "",
                                             ),
                                             InsiteTableRowItem(
@@ -506,9 +529,11 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(children: [
                                     InsiteTableRowItem(
                                       title: "Idle Target",
-                                      content: utilizationData!.targetIdle != null
-                                          ? utilizationData!.targetIdle.toString()
-                                          : "-",
+                                      content:
+                                          utilizationData!.targetIdle != null
+                                              ? utilizationData!.targetIdle
+                                                  .toString()
+                                              : "-",
                                     ),
                                     Table(
                                       border: TableBorder(
@@ -531,22 +556,32 @@ class UtilizationListItem extends StatelessWidget {
                                           children: [
                                             InsiteTableRowItem(
                                               title: "Daily",
-                                              content:
-                                                  utilizationData!.idleHours != null
-                                                      ? utilizationData!.idleHours
-                                                          .toString()
-                                                      : "-",
+                                              content: utilizationData!
+                                                          .idleHours !=
+                                                      null
+                                                  ? utilizationData!.idleHours
+                                                      .toString()
+                                                  : "-",
                                             ),
                                             InsiteTableRowItem(
                                               title: "Performance",
                                               content: utilizationData!
                                                           .targetIdlePerformance !=
                                                       null
-                                                  ? (utilizationData!
+                                                  ? utilizationData!
+                                                              .targetIdlePerformance!
+                                                              .runtimeType ==
+                                                          num
+                                                      ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toStringAsFixed(2) +
-                                                      " %"
+                                                          .toString()
+                                                      : (double.parse(utilizationData!
+                                                                      .targetIdlePerformance!.toString()) *
+                                                                  100)
+                                                              .toStringAsFixed(
+                                                                  2) +
+                                                          " %"
                                                   : "",
                                             ),
                                           ],
@@ -556,7 +591,9 @@ class UtilizationListItem extends StatelessWidget {
                                   ]),
                                 ],
                               ),
-                              SizedBox(height: 10,)
+                              SizedBox(
+                                height: 10,
+                              )
                             ],
                           )
                         ],

@@ -176,26 +176,21 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   //     color: Theme.of(context).buttonColor),
                                   borderRadius: BorderRadius.circular(5),
                                   color: Theme.of(context).backgroundColor),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: CustomDropDownWidget(
-                                      items: [
-                                        "MAP",
-                                        "TERRAIN",
-                                        "SATELLITE",
-                                        "HYBRID"
-                                      ],
-                                      value: _currentSelectedItem,
-                                      onChanged: (value) {
-                                        _currentSelectedItem = value!;
-                                        _changemap();
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ),
-                                  Icon(Icons.keyboard_arrow_down)
-                                ],
+                              child: Expanded(
+                                child: CustomDropDownWidget(
+                                  items: [
+                                    "MAP",
+                                    "TERRAIN",
+                                    "SATELLITE",
+                                    "HYBRID"
+                                  ],
+                                  value: _currentSelectedItem,
+                                  onChanged: (value) {
+                                    _currentSelectedItem = value!;
+                                    _changemap();
+                                    setState(() {});
+                                  },
+                                ),
                               ),
                             ),
                             SizedBox(

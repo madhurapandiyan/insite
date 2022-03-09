@@ -15,7 +15,7 @@ class SingleAssetUtilization {
   List<Range>? daily;
   List<Range>? weekly;
   List<Range>? monthly;
-  double? code;
+  dynamic code;
   String? message;
 
   factory SingleAssetUtilization.fromJson(Map<String, dynamic> json) =>
@@ -100,7 +100,7 @@ class Data {
   dynamic capabilities;
   dynamic message;
   DateTime? date;
-  double? idleHours;
+  dynamic idleHours;
   bool? supportsIdle;
   double? runtimeHours;
   String? workDefinitionType;
@@ -111,10 +111,10 @@ class Data {
   List<String>? idleEfficiencyCalloutTypes;
   List<String>? workingEfficiencyCalloutTypes;
   List<String>? targetIdlePerformanceCalloutTypes;
-  double? targetIdlePerformance;
+  dynamic targetIdlePerformance;
   double? targetIdle;
   double? targetRuntime;
-  double? targetRuntimePerformance;
+  dynamic targetRuntimePerformance;
   List<String>? runtimeHoursCalloutTypes;
   List<String>? idleHoursCalloutTypes;
   List<String>? workingHoursCalloutTypes;

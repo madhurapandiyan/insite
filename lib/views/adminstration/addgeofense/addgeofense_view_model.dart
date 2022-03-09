@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocore/base.dart' as geo;
@@ -35,7 +34,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     isVisionlinkCheck = isVisionLink;
-    Logger().w(isVisionlinkCheck);
     if (isVisionlinkCheck!) {
       getMaterialData();
     }
@@ -680,7 +678,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   getGeofenceData(String? uid) async {
-    Logger().e("FUNCTION");
     fetchedGeofenceUid = uid;
     Geofencemodeldata data;
     GetAddgeofenceModel geofenceInputsData;

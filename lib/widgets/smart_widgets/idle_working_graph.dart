@@ -45,12 +45,20 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             isRTL: true,
             width: width,
             center: InsiteText(
-              text: "${idleLength.toStringAsFixed(1)}",
+              text: idleLength.runtimeType == num
+                  ? (idleLength as double).toStringAsFixed(2)
+                  : idleLength.toString(),
               size: 12,
               color: Colors.black,
             ),
             lineHeight: 20.0,
-            percent: (idleLength * 10 / 100) > 1 ? 1 : (idleLength * 10 / 100),
+            percent: idleLength.runtimeType == num
+                ? ((idleLength as double) * 10 / 100) > 1
+                    ? 1
+                    : ((idleLength as double) * 10 / 100)
+                : (idleLength * 10 / 100) > 1
+                    ? 1
+                    : (idleLength * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: tango,
             backgroundColor: concrete,

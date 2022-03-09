@@ -1509,7 +1509,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
 
       hideLoadingDialog();
-      gotoManageNotificationsPage();
+     // gotoManageNotificationsPage();
     }
   }
 
@@ -1597,7 +1597,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
 
           hideLoadingDialog();
-          gotoManageNotificationsPage();
+         // gotoManageNotificationsPage();
         } else {
           _snackBarservice!
               .showSnackbar(message: "Kindly recheck credentials added");

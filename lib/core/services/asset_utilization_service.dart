@@ -65,6 +65,17 @@ class AssetUtilizationService extends BaseService {
       // if (customerSelected != null) {
       //   queryMap["customerUID"] = customerSelected.CustomerUID;
       // }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.singleAssetUtilizationDetail(
+                assetId: assetUID, endDate: endDate, startDate: startDate),
+            accountSelected!.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        UtilizationSummaryResponse utilizationSummaryResponse =
+            UtilizationSummaryResponse.fromJson(
+                data.data["getAssetDetailsSec"]);
+        return utilizationSummaryResponse.utilization;
+      }
       if (isVisionLink) {
         UtilizationSummaryResponse utilizationSummaryResponse =
             await MyApi().getClient()!.utilLizationListVL(
@@ -81,6 +92,9 @@ class AssetUtilizationService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID,
                 Urls.vutilizationPrefix);
+        utilizationSummaryResponse.utilization?.forEach((element) {
+          Logger().w(element.toJson());
+        });
         return utilizationSummaryResponse.utilization;
       }
     } catch (e) {
@@ -148,10 +162,8 @@ class AssetUtilizationService extends BaseService {
             (await _localService!.getLoggedInUser())!.sub);
 
         Logger().i(data.data!['getfleetUtilization']);
-
         Utilization assetCountFromGraphql =
             Utilization.fromJson(data.data!['getfleetUtilization']);
-
         return assetCountFromGraphql;
       } else {
         if (isVisionLink) {
@@ -254,6 +266,17 @@ class AssetUtilizationService extends BaseService {
       }
       if (sort != null) {
         queryMap["sort"] = sort;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.getSingleAssetUtilizationGraphAggregate(
+                assetId: assetUID, startDate: startDate, endDate: endDate),
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+        SingleAssetUtilization response = SingleAssetUtilization.fromJson(
+            data.data["getAssetDetailsAggregate"]);
+            Logger().w(response.daily?.first.toJson());
+        return response;
       }
       if (isVisionLink) {
         SingleAssetUtilization response = await MyApi()

@@ -408,6 +408,18 @@ class Utils {
       case ScreenType.MANAGE_NEW_GROUP:
         title = "MANAGE GROUP";
         break;
+      case ScreenType.ADD_REPORT:
+        title = "ADD REPORT";
+        break;
+      case ScreenType.MANAGE_REPORT:
+        title = "MANAGE REPORT";
+        break;
+      case ScreenType.ADD_GEOFENCE:
+        title = "ADD GEOFENCE";
+        break;
+      case ScreenType.MANAGE_GEOFENCE:
+        title = "MANAGE GEOFENCE";
+        break;
       default:
     }
     return title;
@@ -769,5 +781,39 @@ class Utils {
   static String getCountValue(double value) {
     var _formattedNumber = NumberFormat.compact().format(value);
     return _formattedNumber;
+  }
+
+  static String getFilterData(
+      List<FilterData?> appliedFilter, FilterType type) {
+    String? filterDetails;
+
+    if (appliedFilter.isNotEmpty) {
+      for (var i = 0; i < appliedFilter.length; i++) {
+        // if (type == FilterType.ASSET_STATUS) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.FUEL_LEVEL) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.PRODUCT_FAMILY) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.MODEL) {
+        //   Logger().d(appliedFilter[i]!.title);
+        //   filterDetails = "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        //  }
+        filterDetails =
+            "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+      }
+      filterDetails!.trimLeft();
+
+      return filterDetails;
+    } else {
+      return "";
+    }
   }
 }

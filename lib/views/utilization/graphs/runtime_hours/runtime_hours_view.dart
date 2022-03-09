@@ -90,21 +90,33 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                           .utilLizationListData[index]
                                           .assetSerialNumber,
                                       percentage: rangeChoice == 1
-                                          ? (viewModel
-                                                  .utilLizationListData[index]
-                                                  .runtimeHours! /
-                                              100)
-                                          : rangeChoice == 2
-                                              ? (viewModel
+                                          ? viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .workingHours! /
+                                                      .runtimeHours!
+                                                      .runtimeType ==
+                                                  num
+                                              ? (viewModel.utilLizationListData[index].runtimeHours! /
                                                   100)
-                                              : (viewModel
-                                                      .utilLizationListData[
-                                                          index]
-                                                      .idleHours! /
-                                                  10),
+                                              : (double.parse(viewModel.utilLizationListData[index] as String) /
+                                                  100)
+                                          : rangeChoice == 2
+                                              ? viewModel
+                                                          .utilLizationListData[
+                                                              index]
+                                                          .runtimeHours!
+                                                          .runtimeType ==
+                                                      num
+                                                  ? (viewModel
+                                                          .utilLizationListData[
+                                                              index]
+                                                          .workingHours! /
+                                                      100)
+                                                  : (double.parse(viewModel
+                                                          .utilLizationListData[index]
+                                                          .workingHours! as String) /
+                                                      100)
+                                              : (viewModel.utilLizationListData[index].idleHours! / 10),
                                       color: Theme.of(context).buttonColor);
                                 })
                             : EmptyView(

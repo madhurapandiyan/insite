@@ -55,7 +55,8 @@ class UtilizationListViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+            Logger().w(123);
+         _loadMore();
       }
     });
     Future.delayed(Duration(seconds: 2), () {
@@ -118,8 +119,10 @@ class UtilizationListViewModel extends InsiteViewModel {
           appliedFilters,
           graphqlSchemaService!.getFleetUtilization(
               Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
-              Logger().e(result?.toJson());
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageCount,
+              pageNumber));
+
       if (result != null) {
         if (result.assetResults!.isNotEmpty) {
           _utilLizationListData.addAll(result.assetResults!);
@@ -165,7 +168,9 @@ class UtilizationListViewModel extends InsiteViewModel {
           appliedFilters,
           graphqlSchemaService!.getFleetUtilization(
               Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageCount,
+              pageNumber));
       if (result != null) {
         _utilLizationListData.clear();
         _utilLizationListData.addAll(result.assetResults!);
@@ -190,7 +195,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.UTILIZATION,
         appliedFilters,
-        graphqlSchemaService!.utilizationTotalCount);
+        graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

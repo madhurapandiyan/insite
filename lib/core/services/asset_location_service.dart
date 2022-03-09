@@ -5,6 +5,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -15,6 +16,7 @@ class AssetLocationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   AssetLocationService() {
     setUp();
@@ -279,11 +281,22 @@ class AssetLocationService extends BaseService {
     Logger().i("searchLocation");
     var authToken = "366658D213F9F1429033919FCAE365FC";
     try {
-      LocationSearchResponse result = await MyApi()
-          .getClientTwo()!
-          .getLocations(query, maxResults, authToken);
-      List<LocationSearchData>? list = result.Locations;
-      return list;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.searchLocation(query),
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+
+        LocationSearchResponse result =
+            LocationSearchResponse.fromJson(data.data["searchLocation"]);
+        return result.Locations;
+      } else {
+        LocationSearchResponse result = await MyApi()
+            .getClientTwo()!
+            .getLocations(query, maxResults, authToken);
+        List<LocationSearchData>? list = result.Locations;
+        return list;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -308,9 +321,7 @@ class AssetLocationService extends BaseService {
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
-      if (enableGraphQl) {
-        
-      }
+      if (enableGraphQl) {}
       if (isVisionLink) {
         AssetLocationData assetLocationDataResponse =
             await MyApi().getClient()!.locationFilterDataVL(

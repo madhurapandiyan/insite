@@ -62,36 +62,39 @@ class FuelLevel extends StatelessWidget {
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
                         child: InsiteText(
                             text: lifeTimeFuel.toUpperCase(),
                             fontWeight: FontWeight.bold,
                             size: 14),
                       ),
+                      SizedBox(
+                        width: 30,
+                      ),
                       value != null && percentage != null
                           ? Container(
-                            height: 150,
-                            width: 150,
-                            child: LiquidCircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation(liquidColor),
-                              value: value! / 100,
-                              center: InsiteText(
-                                  text: percentage! + "%",
-                                  fontWeight: FontWeight.bold,
-                                  size: 25),
-                              backgroundColor:
-                                  Theme.of(context).backgroundColor,
-                              borderColor: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .color,
-                              borderWidth: 2.0,
-                              direction: Axis.vertical,
-                            ),
-                          )
+                              height: 150,
+                              width: 150,
+                              child: LiquidCircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation(liquidColor),
+                                value: value! / 100,
+                                center: InsiteText(
+                                    text: percentage! + "%",
+                                    fontWeight: FontWeight.bold,
+                                    size: 25),
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                borderColor: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                                borderWidth: 2.0,
+                                direction: Axis.vertical,
+                              ),
+                            )
                           : SizedBox(
                               height: 175,
                               width: 175,
