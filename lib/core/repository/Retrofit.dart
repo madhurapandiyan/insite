@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/report_count.dart';
+import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
+
 import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
@@ -1378,6 +1382,35 @@ abstract class RestClient {
   @GET("{url}")
   Future<ReportCount> getReportCountData(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @POST('{url}')
+  Future<MaintenanceViewData> getMaintenanceViewServices(
+      @Path() String url,
+      @Body() Map<String, dynamic> maintenanceViewQuery,
+      @Header("x-visionlink-customeruid") customerId);
+
+  @GET("{url}")
+  Future<MaintenanceAsset> getMaintenanceAssetData(
+    @Query("endDateTime") String endDateTime,
+    @Query("langDesc") String langDesc,
+    @Query("limit") int limit,
+    @Query("page") int page,
+    @Query("startDateTime") String startDateTime,
+    @Header("x-visionlink-customeruid") customerId,
+    @Path() String url,
+  );
+
+  @GET("{url}")
+  Future<MaintenanceListService> getMaintenanceListServiceData(
+    @Query("assetUID") String assetUid,
+    @Query("endDateTime") String endDateTime,
+    @Query("langDesc") String langDesc,
+    @Query("limit") int limit,
+    @Query("page") int page,
+    @Query("startDateTime") String startDateTime,
+    @Header("x-visionlink-customeruid") customerId,
+    @Path() String url,
+  );
 }
 
 @JsonSerializable()

@@ -4422,6 +4422,81 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<MaintenanceViewData> getMaintenanceViewServices(
+      url, maintenanceViewQuery, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(maintenanceViewQuery);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceViewData>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceViewData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MaintenanceAsset> getMaintenanceAssetData(endDateTime, langDesc, limit,
+      page, startDateTime, customerId, url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'endDateTime': endDateTime,
+      r'langDesc': langDesc,
+      r'limit': limit,
+      r'page': page,
+      r'startDateTime': startDateTime
+    };
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceAsset>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceAsset.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MaintenanceListService> getMaintenanceListServiceData(
+      assetUid,
+      endDateTime,
+      langDesc,
+      limit,
+      page,
+      startDateTime,
+      customerId,
+      url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'assetUID': assetUid,
+      r'endDateTime': endDateTime,
+      r'langDesc': langDesc,
+      r'limit': limit,
+      r'page': page,
+      r'startDateTime': startDateTime
+    };
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceListService>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceListService.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

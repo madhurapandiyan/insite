@@ -30,9 +30,12 @@ class AddReportView extends StatefulWidget {
   final ScheduledReports? scheduledReports;
   final bool? isEdit;
   final String? templateDropDownValue;
-  final String ? templateTitleValue;
+  final String? templateTitleValue;
   AddReportView(
-      {this.scheduledReports, this.isEdit, this.templateDropDownValue,this.templateTitleValue});
+      {this.scheduledReports,
+      this.isEdit,
+      this.templateDropDownValue,
+      this.templateTitleValue});
   @override
   State<AddReportView> createState() => _AddReportViewState();
 }
@@ -42,17 +45,16 @@ class _AddReportViewState extends State<AddReportView> {
   // String? dropDownValue;
   @override
   Widget build(BuildContext context) {
-    
     return ViewModelBuilder<AddReportViewModel>.reactive(
       builder: (BuildContext context, AddReportViewModel viewModel, Widget? _) {
         return InsiteScaffold(
             viewModel: viewModel,
             body:
-                // viewModel.isLoading
-                //     ? Center(
-                //         child: InsiteProgressBar(),
-                //       )
-                //     :
+                viewModel.isLoading
+                    ? Center(
+                        child: InsiteProgressBar(),
+                      )
+                    :
                 SingleChildScrollView(
                     child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -99,22 +101,40 @@ class _AddReportViewState extends State<AddReportView> {
                   //       widget.scheduledReports == null ? true : false,
                   //   value: viewModel.dropDownValue,
                   // ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(width: 1, color: black),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: CustomDropDownWidget(
-                      value: viewModel.assetsDropDownValue,
-                      onChanged: (String? value) {
-                        viewModel.assetsDropDownValue = value;
-                        setState(() {});
-                      },
-                      items: viewModel.reportFleetAssets,
-                    ),
-                  ),
+                  widget.scheduledReports == null
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: CustomDropDownWidget(
+                            value: viewModel.assetsDropDownValue,
+                            onChanged: (String? value) {
+                              viewModel.assetsDropDownValue = value;
+                              setState(() {});
+                            },
+                            items: viewModel.reportFleetAssets,
+                          ),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InsiteText(
+                              text: viewModel.assetsDropDownValue,
+                              size: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 20,
                   ),
@@ -226,44 +246,71 @@ class _AddReportViewState extends State<AddReportView> {
                           fontWeight: FontWeight.w700,
                         )
                       : Container(),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(width: 1, color: black),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: widget.scheduledReports == null
-                            ? CustomDropDownWidget(
-                                items: [".CSV", ".XLS", ".PDF"],
-                                value: viewModel.reportFormatDropDownValue,
-                                onChanged: (String? value) {
-                                  viewModel.reportFormatDropDownValue = value!;
-                                  setState(() {});
-                                },
-                              )
-                            : Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: InsiteText(
-                                      text: viewModel.reportFormat == 1
-                                          ? "CSV"
-                                          : viewModel.reportFormat == 2
-                                              ? "XLSX"
-                                              : viewModel.reportFormat == 3
-                                                  ? "PDF"
-                                                  : "-",
-                                      size: 14,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Icon(Icons.arrow_drop_down)
-                                ],
-                              )),
-                  ),
+                  widget.scheduledReports == null
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: widget.scheduledReports == null
+                                  ? CustomDropDownWidget(
+                                      items: [".CSV", ".XLS", ".PDF"],
+                                      value:
+                                          viewModel.reportFormatDropDownValue,
+                                      onChanged: (String? value) {
+                                        viewModel.reportFormatDropDownValue =
+                                            value!;
+                                        setState(() {});
+                                      },
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: InsiteText(
+                                            text: viewModel.reportFormat == 1
+                                                ? "CSV"
+                                                : viewModel.reportFormat == 2
+                                                    ? "XLSX"
+                                                    : viewModel.reportFormat ==
+                                                            3
+                                                        ? "PDF"
+                                                        : "-",
+                                            size: 14,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Icon(Icons.arrow_drop_down)
+                                      ],
+                                    )),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InsiteText(
+                              text: viewModel.reportFormat == 1
+                                  ? "CSV"
+                                  : viewModel.reportFormat == 2
+                                      ? "XLSX"
+                                      : viewModel.reportFormat == 3
+                                          ? "PDF"
+                                          : "-",
+                              size: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 30,
                   ),
@@ -448,10 +495,22 @@ class _AddReportViewState extends State<AddReportView> {
                   SizedBox(
                     height: 30,
                   ),
-                  InsiteText(
-                    text: "Email Report Recipients :",
-                    size: 14,
-                    fontWeight: FontWeight.w700,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: InsiteText(
+                          text: "Delivery End Date :",
+                          size: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InsiteText(
+                        text: "(Optional)",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
+                      )
+                    ],
                   ),
 
                   SizedBox(
@@ -478,7 +537,7 @@ class _AddReportViewState extends State<AddReportView> {
                           },
                         )),
                   ),
-                
+
                   // InsiteText(
                   //   text: "Choose by",
                   //   size: 14,
@@ -506,7 +565,7 @@ class _AddReportViewState extends State<AddReportView> {
                   //     ),
                   //   ),
                   // ),
-                 
+
                   // viewModel.chooseByDropDownValue == "Assets"
                   //     ? SelectionWidgetView(
                   //         isEdit: false,
@@ -701,7 +760,7 @@ class _AddReportViewState extends State<AddReportView> {
                     height: 15,
                   ),
                   AddressCustomTextBox(
-                    title: "Enter here",
+                    title: "",
                     controller: viewModel.emailContentController,
                   ),
                   SizedBox(
@@ -746,7 +805,10 @@ class _AddReportViewState extends State<AddReportView> {
             )));
       },
       viewModelBuilder: () => AddReportViewModel(
-          widget.scheduledReports, widget.isEdit, widget.templateDropDownValue,widget.templateTitleValue),
+          widget.scheduledReports,
+          widget.isEdit,
+          widget.templateDropDownValue,
+          widget.templateTitleValue),
     );
   }
 

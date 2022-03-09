@@ -459,4 +459,10 @@ class Urls {
 
   static String saveNewNotificationData =
       "/frame-alertsmanager/2.0/AlertConfigs";
+  static String getMaintenanceViewData =
+      "/t/trimble.com/vss-plannedmaintenance/1.0/summary";
+  static String getMaintenanceAssetData =
+      "/t/trimble.com/vss-plannedmaintenance/1.0/assetcentric";
+  static String getMaintenaceServiceData =
+      "/t/trimble.com/vss-plannedmaintenance/1.0/asset";
 }

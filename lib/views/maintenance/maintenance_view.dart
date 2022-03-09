@@ -3,6 +3,8 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/health/asset/asset_view.dart';
 import 'package:insite/views/health/fault/fault_view.dart';
+import 'package:insite/views/maintenance/asset/asset_view.dart';
+import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -16,15 +18,16 @@ class MaintenanceView extends StatefulWidget {
 class _MaintenanceViewState extends State<MaintenanceView> {
   bool isListSelected = true;
 
-  final GlobalKey<FaultViewState> faultViewKey = new GlobalKey();
+  final GlobalKey<MainViewState> mainViewKey = new GlobalKey();
 
-  final GlobalKey<AssetViewState> assetViewKey = new GlobalKey();
+  final GlobalKey<AssetMaintenanceViewState> assetMaintenaceViewKey =
+      new GlobalKey();
 
   void refreshWithFilter() {
     if (isListSelected) {
-      faultViewKey.currentState!.onFilterApplied();
+      mainViewKey.currentState!.onFilterApplied();
     } else {
-      assetViewKey.currentState!.onFilterApplied();
+      assetMaintenaceViewKey.currentState!.onFilterApplied();
     }
   }
 
@@ -53,13 +56,13 @@ class _MaintenanceViewState extends State<MaintenanceView> {
                     children: [
                       isListSelected
                           ? Flexible(
-                              child: FaultView(
-                                key: faultViewKey,
+                              child: MainView(
+                                key: mainViewKey,
                               ),
                             )
                           : Flexible(
-                              child: AssetView(
-                                key: assetViewKey,
+                              child: AssetMaintenanceView(
+                                key: assetMaintenaceViewKey,
                               ),
                             ),
                     ],
@@ -70,7 +73,7 @@ class _MaintenanceViewState extends State<MaintenanceView> {
                     child: Row(
                       children: [
                         ToggleButton(
-                            label1: 'Fault View',
+                            label1: 'Maintenance View',
                             label2: 'Asset View',
                             optionSelected: (bool value) {
                               setState(() {
