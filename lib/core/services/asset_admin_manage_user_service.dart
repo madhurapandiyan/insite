@@ -1340,30 +1340,26 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<ManageReportResponse?> getManageReportListData(
-      int page, int limit, String searchKeyword) async {
+  Future<ManageReportResponse?> getManageReportListData(int page, int limit,
+      String searchKeyword, List<FilterData?>? appliedFilters) async {
     try {
-      Map<String, String> queryMap = Map();
-      queryMap["page"] = page.toString();
-      queryMap["limit"] = limit.toString();
-      if (searchKeyword.isNotEmpty) {
-        queryMap["searchText"] = searchKeyword;
-      }
-      queryMap["sort"] = "";
       if (isVisionLink) {
         ManageReportResponse manageReportResponse = await MyApi()
             .getClientSeven()!
             .getManageReportListDataVL(
                 Urls.manageReportData +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.reportConstructQuery(limit, page,
+                        "reportCreationDate", appliedFilters, searchKeyword),
                 accountSelected!.CustomerUID);
+
         return manageReportResponse;
       } else {
         ManageReportResponse manageReportResponse = await MyApi()
             .getClient()!
             .getManageReportListData(
                 Urls.addReportSaveData +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.reportConstructQuery(limit, page,
+                        "reportCreationDate", appliedFilters, searchKeyword),
                 "in-reports-rpt-rmapi",
                 accountSelected!.CustomerUID,
                 "1d022b5a-2e4a-4f5b-bd81-ad2a75977e21");

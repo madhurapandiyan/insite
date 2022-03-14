@@ -335,6 +335,7 @@ class Urls {
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
   static String contactSearchData = "/frame-contact/1.0/Contact";
   static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
+  static String countReportData="/frame-reports/1.0/ScheduledReports/Count";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

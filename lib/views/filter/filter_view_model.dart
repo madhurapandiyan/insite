@@ -98,9 +98,15 @@ class FilterViewModel extends InsiteViewModel {
 
     ReportCount? resultReportFrequencyType =
         await _assetService!.getCountReportData();
-    addReportData(filterFrequencyType, resultReportFrequencyType,
-        FilterType.FREQUENCYTYPE, filterFormatType, filterReportType);
-    selectedFilterData = appliedFilters;
+    addReportData(
+        filterFrequencyType,
+        resultReportFrequencyType,
+        FilterType.FREQUENCYTYPE,
+        filterFormatType,
+        filterReportType,
+        FilterType.REPORT_FORMAT,
+        FilterType.REPORT_TYPE);
+
     _loading = false;
     notifyListeners();
   }
@@ -161,35 +167,41 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  addReportData(filterData, ReportCount? resultModel, type, filterFormatData,
-      filterReportType) {
+  addReportData(filterData, ReportCount? resultModel, fiterFrequencytype,
+      filterFormatData, filterReportType, filterFormatype, filterReporttype) {
     if (resultModel != null &&
         resultModel.countData != null &&
         resultModel.countData!.isNotEmpty) {
       for (CountReportData countData in resultModel.countData!) {
-        if (countData.groupName == "Frequency") {
+        if (countData.groupName == "Frequency" &&
+            fiterFrequencytype == FilterType.FREQUENCYTYPE) {
           FilterData data = FilterData(
               count: countData.count.toString(),
               title: countData.name,
-              isSelected: isAlreadSelected(countData.name, type),
+              isSelected: isAlreadSelected(countData.name, fiterFrequencytype),
               extras: [countData.id.toString()],
-              type: type);
+              type: fiterFrequencytype,
+              id: countData.id);
           filterData.add(data);
-        } else if (countData.groupName == "Report Format") {
+        } else if (countData.groupName == "Report Format" &&
+            filterFormatype == FilterType.REPORT_FORMAT) {
           FilterData data = FilterData(
               count: countData.count.toString(),
               title: countData.name,
-              isSelected: isAlreadSelected(countData.name, type),
+              isSelected: isAlreadSelected(countData.name, filterFormatype),
               extras: [countData.id.toString()],
-              type: type);
+              type: filterFormatype,
+              id: countData.id);
           filterFormatData.add(data);
-        } else if (countData.groupName == "Report Type") {
+        } else if (countData.groupName == "Report Type" &&
+            filterReporttype == FilterType.REPORT_TYPE) {
           FilterData data = FilterData(
               count: countData.count.toString(),
               title: countData.name,
-              isSelected: isAlreadSelected(countData.name, type),
+              isSelected: isAlreadSelected(countData.name, filterReporttype),
               extras: [countData.id.toString()],
-              type: type);
+              type: filterReporttype,
+              id: countData.id);
           filterReportType.add(data);
         }
       }

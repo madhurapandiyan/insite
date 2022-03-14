@@ -4406,10 +4406,32 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<ReportCount> getReportCountData(url, customerId) async {
+  Future<ReportCount> getReportCountDataVL(url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ReportCount>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ReportCount.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ReportCount> getReportCountData(
+      url, service, customerId, userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'service': service,
+      r'X-VisionLink-CustomerUID': customerId,
+      r'X-VisionLink-UserUid': userId
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(

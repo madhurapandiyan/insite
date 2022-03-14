@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/views/adminstration/add_report/add_report_view.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/multi_custom_dropDown_widget.dart';
 import 'package:insite/views/adminstration/template/template_view.dart';
@@ -22,10 +24,14 @@ class ManageReportViewModel extends InsiteViewModel {
   final AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
 
+  final FilterService? _filterService = locator<FilterService>();
+
   var _navigationService = locator<NavigationService>();
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
+
+  List<FilterData?>? selectedFilter;
 
   int pageNumber = 1;
   int limit = 20;
@@ -53,6 +59,9 @@ class ManageReportViewModel extends InsiteViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
+
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
 
   ScrollController? scrollController;
 
@@ -253,7 +262,8 @@ class ManageReportViewModel extends InsiteViewModel {
     try {
       Logger().i("getManagerUserAssetList");
       ManageReportResponse? result = await _manageUserService!
-          .getManageReportListData(pageNumber, limit, _searchKeyword);
+          .getManageReportListData(
+              pageNumber, limit, _searchKeyword, appliedFilters);
       if (result != null) {
         if (result.total != null) {
           _totalCount = result.total;
@@ -503,6 +513,53 @@ class ManageReportViewModel extends InsiteViewModel {
         templateTitleValue: templateTitleValue,
       ),
     );
+  }
+
+  void refresh() async {
+    Logger().i("refresh");
+    await getSelectedFilterData();
+    pageNumber = 1;
+    _refreshing = true;
+    _shouldLoadmore = true;
+    notifyListeners();
+    ManageReportResponse? result = await _manageUserService!
+        .getManageReportListData(
+            pageNumber, limit, _searchKeyword, appliedFilters);
+    Logger().wtf(appliedFilters!.length);
+    if (result != null) {
+      if (result.total != null) {
+        _totalCount = result.total!;
+      }
+      if (result.scheduledReports!.isNotEmpty) {
+        Logger()
+            .i("list of assets " + result.scheduledReports!.length.toString());
+        _assets.clear();
+        for (var scheduledReport in result.scheduledReports!) {
+          _assets.add(ScheduledReportsRow(
+              scheduledReports: scheduledReport, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _refreshing = false;
+        notifyListeners();
+      } else {
+        for (var scheduledReport in result.scheduledReports!) {
+          _assets.add(ScheduledReportsRow(
+              scheduledReports: scheduledReport, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        _refreshing = false;
+        notifyListeners();
+      }
+    } else {
+      _assets = [];
+      _loading = false;
+      _loadingMore = false;
+      _refreshing = false;
+      notifyListeners();
+    }
   }
 }
 

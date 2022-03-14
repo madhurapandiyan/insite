@@ -1380,8 +1380,15 @@ abstract class RestClient {
     @Path() String url,
   );
   @GET("{url}")
-  Future<ReportCount> getReportCountData(
+  Future<ReportCount> getReportCountDataVL(
       @Path() String url, @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<ReportCount> getReportCountData(
+      @Path() String url,
+      @Header("service") service,
+      @Header("X-VisionLink-CustomerUID") customerId,
+      @Header("X-VisionLink-UserUid") userId);
 
   @POST('{url}')
   Future<MaintenanceViewData> getMaintenanceViewServices(

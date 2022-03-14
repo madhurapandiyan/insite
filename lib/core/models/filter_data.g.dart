@@ -23,13 +23,14 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       type: fields[2] as FilterType?,
       extras: (fields[4] as List?)?.cast<String?>(),
       subType: fields[5] as FilterSubType?,
+      id: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, FilterData obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class FilterDataAdapter extends TypeAdapter<FilterData> {
       ..writeByte(4)
       ..write(obj.extras)
       ..writeByte(5)
-      ..write(obj.subType);
+      ..write(obj.subType)
+      ..writeByte(6)
+      ..write(obj.id);
   }
 
   @override

@@ -707,9 +707,15 @@ class AssetStatusService extends DataBaseService {
       if (isVisionLink) {
         ReportCount reportCountResponse = await MyApi()
             .getClientSeven()!
-            .getReportCountData(Urls.manageReportData + "/" + "Count",
+            .getReportCountDataVL(Urls.manageReportData + "/" + "Count",
                 accountSelected!.CustomerUID);
         return reportCountResponse;
+      } else {
+        ReportCount reportCountResponse = await MyApi()
+            .getClient()!
+            .getReportCountData(Urls.countReportData, "in-reports-rpt-rmapi",
+                accountSelected!.CustomerUID, (await _localService!.getLoggedInUser())!.sub);
+                return reportCountResponse;
       }
     } catch (e) {
       Logger().e(e.toString());

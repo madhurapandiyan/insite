@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -19,112 +20,119 @@ class ManageReportView extends StatelessWidget {
     return ViewModelBuilder<ManageReportViewModel>.reactive(
       builder:
           (BuildContext context, ManageReportViewModel viewModel, Widget? _) {
-        return InsiteScaffold(
-            screenType: ScreenType.MANAGE_REPORT,
-            onRefineApplied: () {},
-            viewModel: viewModel,
-            body: Stack(
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: InsiteText(
-                            text: "scheduled reports".toUpperCase() +
-                                " (" +
-                                viewModel.assets.length.toString() +
-                                " of " +
-                                viewModel.totalCount.toString() +
-                                " )",
-                            size: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        viewModel.showMenu
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InsitePopMenuItemButton(
-                                    width: 40,
-                                    height: 40,
-                                    widget: onContextMenuSelected(
-                                        viewModel, context),
-                                  ),
-                                ))
-                            : Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: InsiteButton(
-                                  title: "Report Templates",
-                                  onTap: () {
-                                    viewModel.onClickedTemplatePage();
-                                  },
-                                ),
-                              )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: CustomTextBox(
-                        controller: viewModel.searchcontroller,
-                        title: "Search Reports",
-                        showLoading: viewModel.isSearching,
-                        onChanged: (String searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.searchReports(searchText);
-                          } else {
-                            viewModel.updateSearchDataToEmpty();
-                          }
-                        },
+        return InsiteInheritedDataProvider(
+          count: viewModel.appliedFilters!.length,
+          child: InsiteScaffold(
+              screenType: ScreenType.MANAGE_REPORT,
+              onRefineApplied: () {},
+              onFilterApplied: () {
+                viewModel.refresh();
+              },
+              viewModel: viewModel,
+              body: Stack(
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    viewModel.loading
-                        ? InsiteProgressBar()
-                        : viewModel.assets.isNotEmpty
-                            ? Expanded(
-                                child: ListView.builder(
-                                    itemCount: viewModel.assets.length,
-                                    padding: EdgeInsets.all(8),
-                                    controller: viewModel.scrollController,
-                                    itemBuilder: (context, index) {
-                                      ScheduledReportsRow scheduledReport =
-                                          viewModel.assets[index];
-                                      return ManageReportCardWidget(
-                                        voidCallback: () {
-                                          viewModel.onItemSelected(index);
-                                        },
-                                        scheduledReportsRow: scheduledReport,
-                                      );
-                                    }))
-                            : EmptyView(
-                                title: "No Reports Found",
-                              ),
-                    viewModel.loadingMore
-                        ? Padding(
-                            padding: EdgeInsets.all(8),
-                            child: InsiteProgressBar())
-                        : SizedBox()
-                  ],
-                ),
-              ],
-            ));
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: InsiteText(
+                              text: "scheduled reports".toUpperCase() +
+                                  " (" +
+                                  viewModel.assets.length.toString() +
+                                  " of " +
+                                  viewModel.totalCount.toString() +
+                                  " )",
+                              size: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          viewModel.showMenu
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: InsitePopMenuItemButton(
+                                      width: 40,
+                                      height: 40,
+                                      widget: onContextMenuSelected(
+                                          viewModel, context),
+                                    ),
+                                  ))
+                              : Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: InsiteButton(
+                                    title: "Report Templates",
+                                    onTap: () {
+                                      viewModel.onClickedTemplatePage();
+                                    },
+                                  ),
+                                )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: CustomTextBox(
+                          controller: viewModel.searchcontroller,
+                          title: "Search Reports",
+                          showLoading: viewModel.isSearching,
+                          onChanged: (String searchText) {
+                            if (searchText.isNotEmpty) {
+                              viewModel.searchReports(searchText);
+                            } else {
+                              viewModel.updateSearchDataToEmpty();
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      viewModel.loading
+                          ? InsiteProgressBar()
+                          : viewModel.assets.isNotEmpty
+                              ? Expanded(
+                                  child: ListView.builder(
+                                      itemCount: viewModel.assets.length,
+                                      padding: EdgeInsets.all(8),
+                                      controller: viewModel.scrollController,
+                                      itemBuilder: (context, index) {
+                                        ScheduledReportsRow scheduledReport =
+                                            viewModel.assets[index];
+                                        return ManageReportCardWidget(
+                                          voidCallback: () {
+                                            viewModel.onItemSelected(index);
+                                          },
+                                          scheduledReportsRow: scheduledReport,
+                                        );
+                                      }))
+                              : EmptyView(
+                                  title: "No Reports Found",
+                                ),
+                      viewModel.loadingMore
+                          ? Padding(
+                              padding: EdgeInsets.all(8),
+                              child: InsiteProgressBar())
+                          : SizedBox()
+                    ],
+                  ),
+                  viewModel.refreshing ? InsiteProgressBar() : SizedBox()
+                ],
+              )),
+        );
       },
       viewModelBuilder: () => ManageReportViewModel(false),
     );
