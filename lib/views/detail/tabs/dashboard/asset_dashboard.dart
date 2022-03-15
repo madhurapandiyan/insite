@@ -87,7 +87,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               : null,
                           lifeTimeFuel: widget.detail?.lifetimeFuel != null
                               ? "lifetime fuel :\n" +
-                                  widget.detail!.lifetimeFuel! +
+                                  (widget.detail!.lifetimeFuel!.toString()) +
                                   " liters"
                               : "lifetime fuel -",
                           percentage: widget.detail != null &&
@@ -134,7 +134,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           value: widget.detail != null &&
                                   widget.detail!.percentDEFRemaining != null
                               ? double.parse(
-                                  widget.detail!.percentDEFRemaining!)
+                                  widget.detail!.percentDEFRemaining!.toString())
                               : 0,
                           title: "Diesel Exhaust Fluid (DEF) Level ",
                           lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null

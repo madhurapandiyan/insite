@@ -43,13 +43,14 @@ class FilterViewModel extends InsiteViewModel {
 
   getFilterData() async {
     AssetCount? resultModel = await _assetService!.getAssetCount("model",
-        FilterType.MODEL, graphqlSchemaService!.getFilterData("model"));
+        FilterType.MODEL, graphqlSchemaService!.getFilterData("model"), false);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
     AssetCount? resultDeviceType = await _assetService!.getAssetCount(
         "deviceType",
         FilterType.DEVICE_TYPE,
-        graphqlSchemaService!.getFilterData("deviceType"));
+        graphqlSchemaService!.getFilterData("deviceType"),
+        false);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -60,20 +61,23 @@ class FilterViewModel extends InsiteViewModel {
     AssetCount? resultManufacturer = await _assetService!.getAssetCount(
         "manufacturer",
         FilterType.MAKE,
-        graphqlSchemaService!.getFilterData("manufacturer"));
+        graphqlSchemaService!.getFilterData("manufacturer"),
+        false);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
 
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
         FilterType.PRODUCT_FAMILY,
-        graphqlSchemaService!.getFilterData("productfamily"));
+        graphqlSchemaService!.getFilterData("productfamily"),
+        false);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
     AssetCount? resultAllAssets = await _assetService!.getAssetCount(
         "assetstatus",
         FilterType.ALL_ASSETS,
-        graphqlSchemaService!.getFilterData("assetstatus"));
+        graphqlSchemaService!.getFilterData("assetstatus"),
+        false);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
@@ -81,8 +85,15 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount? resultIdlingLevel = await _assetService!
-        .getIdlingLevelData(startDate, endDate, FilterType.IDLING_LEVEL, null);
+    AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
+        startDate,
+        endDate,
+        FilterType.IDLING_LEVEL,
+        null,
+        graphqlSchemaService!.getAssetCount(
+            idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+            endDate: DateTime.now().toString(),
+            startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
@@ -90,17 +101,18 @@ class FilterViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
-          Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
-          Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+              startDate),
+          endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         ));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     AssetCount? resultJobType = await _assetService!.getAssetCount(
-        "JobType", FilterType.JOBTYPE, graphqlSchemaService!.allAssets);
+        "JobType", FilterType.JOBTYPE, graphqlSchemaService!.allAssets, false);
     addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
 
-    AssetCount? resultUserType = await _assetService!.getAssetCount(
-        "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
+    AssetCount? resultUserType = await _assetService!.getAssetCount("UserType",
+        FilterType.USERTYPE, graphqlSchemaService!.allAssets, false);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
     ReportCount? resultReportFrequencyType =

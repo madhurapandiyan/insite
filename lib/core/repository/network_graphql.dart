@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
 
 import '../../utils/helper_methods.dart';
+import '../../views/adminstration/addgeofense/exception_handle.dart';
 import '../models/login_response.dart';
 import '../services/login_service.dart';
 
@@ -83,20 +84,25 @@ class Network {
           .first;
 
       return res;
-    } on DioError catch (e) {
-      Logger().e(e.toString());
-      if (e.response!.statusCode == 401) {
-        var refreshLoginResponce = await refreshToken();
-        if (refreshLoginResponce != null) {
-          await _localService!.saveTokenInfo(refreshLoginResponce);
-          await _localService!.saveToken(refreshLoginResponce.access_token);
-          await _localService!
-              .saveRefreshToken(refreshLoginResponce.refresh_token);
-          getGraphqlData(queryUrl, customerUid, customerUserId);
+    } catch (e) {
+      if (e is DioLinkServerException) {
+        var error = e;
+        if (error.response.statusCode == 401) {
+          var refreshLoginResponce = await refreshToken();
+          if (refreshLoginResponce != null) {
+            await _localService!.saveTokenInfo(refreshLoginResponce);
+            await _localService!.saveToken(refreshLoginResponce.access_token);
+            await _localService!
+                .saveRefreshToken(refreshLoginResponce.refresh_token);
+            var data =
+                await getGraphqlData(queryUrl, customerUid, customerUserId);
+            return data;
+          }
+        } else {
+          throw e;
         }
-        Logger().e(e.toString());
       } else {
-       // throw e;
+        throw e;
       }
     }
   }

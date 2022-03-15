@@ -75,7 +75,7 @@ class MapRecord {
   String? lastReportedLocation;
   DateTime? lastReportedUtc;
   double? fuelLevelLastReported;
-  int? notifications;
+  dynamic notifications;
   List<dynamic>? geofences;
   DateTime? lastLocationUpdateUtc;
 

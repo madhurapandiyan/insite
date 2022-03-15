@@ -146,6 +146,7 @@ class AssetService extends BaseService {
             assetUID,
             accountSelected!.CustomerUID,
             Urls.vfleetPrefix);
+            Logger().w(assetResponse.toJson());
         return assetResponse;
       }
     } catch (e) {

@@ -66,6 +66,7 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
                     widget.onAddingAsset!(i, value);
+                    viewModel.getGroupListData(widget.assetResult!);
                   },
                   displayList: viewModel.assetId,
                   onBackPressed: () {
@@ -77,6 +78,8 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                   onAddingAsset: (i, value) {
                     Logger().e(value.toJson());
                     widget.onAddingAsset!(i, value);
+                    // viewModel.onAddingSerialNo(i,value);
+                    // viewModel.getGroupListData(widget.assetResult!);
                   },
                   displayList: viewModel.isSearchingSerialNo
                       ? viewModel.serialNoSearch

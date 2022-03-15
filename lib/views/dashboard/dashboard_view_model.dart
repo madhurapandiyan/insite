@@ -12,7 +12,6 @@ import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
-import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -118,8 +117,8 @@ class DashboardViewModel extends InsiteViewModel {
     _assetUtilizationService!.setUp();
     _dateRangeService!.setUp();
     setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getAssetCount();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getAssetCount();
       getFilterData();
       getData();
     });
@@ -150,8 +149,11 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getAssetStatusData() async {
-    AssetCount? result = await _assetService!.getAssetCount("assetstatus",
-        FilterType.ALL_ASSETS, graphqlSchemaService!.assetStatusCount);
+    AssetCount? result = await _assetService!.getAssetCount(
+        "assetstatus",
+        FilterType.ALL_ASSETS,
+        graphqlSchemaService!.getAssetCount(grouping: "assetstatus"),
+        true);
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
@@ -163,18 +165,19 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
-    notifyListeners();
+  
   }
 
   getData() async {
     this._isFilterApplied = false;
     this._currentFilterSelected = null;
     await clearDashboardFiltersDb();
-    getAssetStatusData();
-    getFuelLevelData();
-    getIdlingLevelData(false);
-    getUtilizationSummary();
-    getFaultCountData();
+    await getAssetStatusData();
+    await getFuelLevelData();
+    await getIdlingLevelData(false);
+    await getUtilizationSummary();
+    await getFaultCountData();
+    notifyListeners();
   }
 
   onRefereshClicked() {
@@ -199,8 +202,8 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getAssetCount() async {
-    AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, graphqlSchemaService!.allAssets);
+    AssetCount? result = await _assetService!.getAssetCount(null,
+        FilterType.ASSET_STATUS, graphqlSchemaService!.getAssetCount(), true);
 
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
@@ -210,11 +213,28 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getFilterAssetCount() async {
+    AssetCount? result = await _assetService!.getAssetCount(
+        null,
+        FilterType.ASSET_STATUS,
+        graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+        true);
+
+    if (result != null) {
+      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+        _totalCount = result.countData![0].count!.toInt();
+      }
+    }
+   
+  }
+
   getFuelLevelData() async {
     Logger().i("get fuel level data");
     int totalAssetCount = 0;
     AssetCount? result = await _assetService!.getFuellevel(
-        FilterType.FUEL_LEVEL, graphqlSchemaService!.fuelLevelCount);
+        FilterType.FUEL_LEVEL,
+        graphqlSchemaService!
+            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"));
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -231,7 +251,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetFuelloading = false;
-    notifyListeners();
+   
   }
 
   getIdlingLevelData(bool switching) async {
@@ -243,7 +263,12 @@ class DashboardViewModel extends InsiteViewModel {
           getStartRange(),
           currentFilterSelected!.title,
           endDayRange,
-          graphqlSchemaService!.assetStatusCount);
+          graphqlSchemaService!.getAssetCount(
+              idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+              endDate: DateTime.now().toString(),
+              productFamily: currentFilterSelected!.title,
+              startDate:
+                  DateTime.now().subtract(Duration(days: 1)).toString()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -253,14 +278,19 @@ class DashboardViewModel extends InsiteViewModel {
           getStartRange(),
           endDayRange,
           FilterType.IDLING_LEVEL,
-          getFilterRange());
+          getFilterRange(),
+          graphqlSchemaService!.getAssetCount(
+              idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+              endDate: DateTime.now().toString(),
+              startDate:
+                  DateTime.now().subtract(Duration(days: 1)).toString()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
       }
     }
     _idlingLevelDataloading = false;
-    notifyListeners();
+    
   }
 
   getFaultCountData() async {
@@ -271,13 +301,14 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+                startDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (count != null) {
       _faultCountData = count;
     }
     _faultCountloading = false;
-    notifyListeners();
+   
   }
 
   onFilterSelected(FilterData data) async {
@@ -308,10 +339,11 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getUtilizationSummary() async {
-    UtilizationSummary? result = await _assetUtilizationService!
-        .getUtilizationSummary(
-            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
-            graphqlSchemaService!.dashBoardUtilizationSummary);
+    UtilizationSummary? result = await _assetUtilizationService!.getUtilizationSummary(
+        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
+        graphqlSchemaService!.getAssetGraphDetail(
+            date:
+                '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'));
     if (result != null) {
       _utilizationSummary = result;
       _utilizationTotalGreatestValue = Utils.greatestOfThree(
@@ -324,20 +356,20 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
-    notifyListeners();
+  
   }
 
   FilterSubType? getFilterRange() {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return FilterSubType.DAY;
-        break;
+
       case IdlingLevelRange.WEEK:
         return FilterSubType.WEEK;
-        break;
+
       case IdlingLevelRange.MONTH:
         return FilterSubType.MONTH;
-        break;
+
       default:
         return null;
     }
@@ -347,15 +379,15 @@ class DashboardViewModel extends InsiteViewModel {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return DateFormat('yyyy-MM-dd').format(DateTime.now());
-        break;
+
       case IdlingLevelRange.WEEK:
         return DateFormat('yyyy-MM-dd').format(DateTime.now()
             .subtract(Duration(days: DateTime.now().weekday - 1)));
-        break;
+
       case IdlingLevelRange.MONTH:
         return DateFormat('yyyy-MM-dd')
             .format(DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
-        break;
+
       default:
         return null;
     }
@@ -365,7 +397,8 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
         FilterType.PRODUCT_FAMILY,
-        graphqlSchemaService!.assetStatusCount);
+        graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+        false);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
   }
@@ -399,6 +432,7 @@ class DashboardViewModel extends InsiteViewModel {
       // await addFilter(filterData);
       _refreshing = true;
       notifyListeners();
+      await getFilterAssetCount();
       await getAssetStatusFilterApplied(filterData.title);
       await getFuelLevelFilterApplied(filterData.title);
       await getUtilizationSummaryFilterData(filterData.title);
@@ -425,7 +459,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
-    notifyListeners();
+   
   }
 
   getFuelLevelFilterApplied(dropDownValue) async {
@@ -447,7 +481,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetFuelloading = false;
-    notifyListeners();
+    
   }
 
   getIdlingLevelFilterData(dropDownValue) async {
@@ -455,12 +489,16 @@ class DashboardViewModel extends InsiteViewModel {
         getStartRange(),
         dropDownValue,
         endDate,
-        graphqlSchemaService!.assetStatusCount);
+        graphqlSchemaService!.getAssetCount(
+            idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+            endDate: DateTime.now().toString(),
+            productFamily: dropDownValue,
+            startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
     if (result != null) {
       _idlingLevelData = result;
     }
     _idlingLevelDataloading = false;
-    notifyListeners();
+   
   }
 
   getFaultCountDataFilterData(dropDownValue) async {
@@ -474,7 +512,7 @@ class DashboardViewModel extends InsiteViewModel {
       _faultCountData = count;
     }
     _faultCountloading = false;
-    notifyListeners();
+    
   }
 
   getUtilizationSummaryFilterData(dropDownValue) async {
@@ -492,6 +530,6 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
-    notifyListeners();
+   
   }
 }

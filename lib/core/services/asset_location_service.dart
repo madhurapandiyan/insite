@@ -321,7 +321,19 @@ class AssetLocationService extends BaseService {
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
-      if (enableGraphQl) {}
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          _graphqlSchemaService!.assetLocationData(
+              no: pageNumber.toString(),
+              pageSize: "1",
+              sort: "-lastlocationupdateutc"),
+          accountSelected?.CustomerUID,
+          (await _localService!.getLoggedInUser())!.sub,
+        );
+        AssetLocationData assetLocationDataResponse =
+            AssetLocationData.fromJson(data.data["assetLocation"]);
+        return assetLocationDataResponse;
+      }
       if (isVisionLink) {
         AssetLocationData assetLocationDataResponse =
             await MyApi().getClient()!.locationFilterDataVL(

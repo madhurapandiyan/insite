@@ -116,7 +116,8 @@ class AssetUtilizationService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            _graphqlSchemaService!.getAssetGraphDetail(assetUID!, date!),
+            _graphqlSchemaService!
+                .getAssetGraphDetail(date: date, assetId: assetUID),
             accountSelected!.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub);
 
@@ -275,7 +276,7 @@ class AssetUtilizationService extends BaseService {
             (await _localService!.getLoggedInUser())!.sub);
         SingleAssetUtilization response = SingleAssetUtilization.fromJson(
             data.data["getAssetDetailsAggregate"]);
-            Logger().w(response.daily?.first.toJson());
+        Logger().w(response.daily?.first.data?.toJson());
         return response;
       }
       if (isVisionLink) {
@@ -358,7 +359,9 @@ class AssetUtilizationService extends BaseService {
   }
 
   Future<UtilizationSummary?> getUtilizationFilterData(
-      endDate, productFamilyKey) async {
+    endDate,
+    productFamilyKey,
+  ) async {
     Logger().i("getUtilizationFilterData");
     try {
       Map<String, String?> queryMap = Map();
@@ -370,6 +373,20 @@ class AssetUtilizationService extends BaseService {
       }
       if (customerSelected != null) {
         queryMap["customerUID"] = customerSelected!.CustomerUID;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            _graphqlSchemaService!.getAssetGraphDetail(
+              productFamily: productFamilyKey,
+                date:
+                    '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'),
+            accountSelected?.CustomerUID,
+            (await _localService!.getLoggedInUser())!.sub);
+
+        UtilizationSummary utilizationSummary = UtilizationSummary.fromJson(
+            data.data!["getDashboardUtilizationSummary"]);
+
+        return utilizationSummary;
       }
       if (isVisionLink) {
         UtilizationSummary utilizationSummary = await MyApi()

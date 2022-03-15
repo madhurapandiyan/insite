@@ -55,8 +55,8 @@ class UtilizationListViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-            Logger().w(123);
-         _loadMore();
+        Logger().w(123);
+        _loadMore();
       }
     });
     Future.delayed(Duration(seconds: 2), () {
@@ -81,7 +81,10 @@ class UtilizationListViewModel extends InsiteViewModel {
   getAssetCount() async {
     Logger().d("getAssetCount");
     AssetCount? result = await _assetService!.getAssetCount(
-        null, FilterType.ASSET_STATUS, graphqlSchemaService!.assetStatusCount);
+        null,
+        FilterType.ASSET_STATUS,
+        graphqlSchemaService!.getAssetCount(grouping: "assetstatus"),
+        false);
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();

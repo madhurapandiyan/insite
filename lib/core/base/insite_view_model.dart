@@ -147,8 +147,10 @@ abstract class InsiteViewModel extends BaseViewModel {
       notifyListeners();
     } else {
       _startDate = DateFormat('yyyy-MM-dd').format(
-          DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
+          DateTime.now().subtract(Duration(days: DateTime.now().month)));
       _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      Logger().w("start date $startDate");
+      Logger().w("end date $endDate" );
     }
   }
 

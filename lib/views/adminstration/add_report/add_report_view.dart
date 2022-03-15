@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
-import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
-import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
-import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
-import 'package:insite/views/adminstration/add_report/reusable_widget/add_report_custom_dropdown_widget.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/fault_code_reusable_widget.dart';
-import 'package:insite/views/adminstration/add_report/reusable_widget/search_contact_reusable_widget.dart';
-import 'package:insite/views/adminstration/add_report/reusable_widget/selected_contact_list_item.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -30,8 +22,12 @@ class AddReportView extends StatefulWidget {
   final ScheduledReports? scheduledReports;
   final bool? isEdit;
   final String? templateDropDownValue;
+  final String? templateTitleValue;
   AddReportView(
-      {this.scheduledReports, this.isEdit, this.templateDropDownValue});
+      {this.scheduledReports,
+      this.isEdit,
+      this.templateDropDownValue,
+      this.templateTitleValue});
   @override
   State<AddReportView> createState() => _AddReportViewState();
 }
@@ -46,11 +42,11 @@ class _AddReportViewState extends State<AddReportView> {
         return InsiteScaffold(
             viewModel: viewModel,
             body:
-                // viewModel.isLoading
-                //     ? Center(
-                //         child: InsiteProgressBar(),
-                //       )
-                //     :
+                viewModel.isLoading
+                    ? Center(
+                        child: InsiteProgressBar(),
+                      )
+                    :
                 SingleChildScrollView(
                     child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -97,22 +93,40 @@ class _AddReportViewState extends State<AddReportView> {
                   //       widget.scheduledReports == null ? true : false,
                   //   value: viewModel.dropDownValue,
                   // ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(width: 1, color: black),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: CustomDropDownWidget(
-                      value: viewModel.assetsDropDownValue,
-                      onChanged: (String? value) {
-                        viewModel.assetsDropDownValue = value;
-                        setState(() {});
-                      },
-                      items: viewModel.reportFleetAssets,
-                    ),
-                  ),
+                  widget.scheduledReports == null
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: CustomDropDownWidget(
+                            value: viewModel.assetsDropDownValue,
+                            onChanged: (String? value) {
+                              viewModel.assetsDropDownValue = value;
+                              setState(() {});
+                            },
+                            items: viewModel.reportFleetAssets,
+                          ),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InsiteText(
+                              text: viewModel.assetsDropDownValue,
+                              size: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 20,
                   ),
@@ -224,44 +238,71 @@ class _AddReportViewState extends State<AddReportView> {
                           fontWeight: FontWeight.w700,
                         )
                       : Container(),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(width: 1, color: black),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: widget.scheduledReports == null
-                            ? CustomDropDownWidget(
-                                items: [".CSV", ".XLS", ".PDF"],
-                                value: viewModel.reportFormatDropDownValue,
-                                onChanged: (String? value) {
-                                  viewModel.reportFormatDropDownValue = value!;
-                                  setState(() {});
-                                },
-                              )
-                            : Row(
-                                children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: InsiteText(
-                                      text: viewModel.reportFormat == 1
-                                          ? "CSV"
-                                          : viewModel.reportFormat == 2
-                                              ? "XLSX"
-                                              : viewModel.reportFormat == 3
-                                                  ? "PDF"
-                                                  : "-",
-                                      size: 14,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Icon(Icons.arrow_drop_down)
-                                ],
-                              )),
-                  ),
+                  widget.scheduledReports == null
+                      ? Container(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: widget.scheduledReports == null
+                                  ? CustomDropDownWidget(
+                                      items: [".CSV", ".XLS", ".PDF"],
+                                      value:
+                                          viewModel.reportFormatDropDownValue,
+                                      onChanged: (String? value) {
+                                        viewModel.reportFormatDropDownValue =
+                                            value!;
+                                        setState(() {});
+                                      },
+                                    )
+                                  : Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: InsiteText(
+                                            text: viewModel.reportFormat == 1
+                                                ? "CSV"
+                                                : viewModel.reportFormat == 2
+                                                    ? "XLSX"
+                                                    : viewModel.reportFormat ==
+                                                            3
+                                                        ? "PDF"
+                                                        : "-",
+                                            size: 14,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        Icon(Icons.arrow_drop_down)
+                                      ],
+                                    )),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InsiteText(
+                              text: viewModel.reportFormat == 1
+                                  ? "CSV"
+                                  : viewModel.reportFormat == 2
+                                      ? "XLSX"
+                                      : viewModel.reportFormat == 3
+                                          ? "PDF"
+                                          : "-",
+                              size: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 30,
                   ),
@@ -402,7 +443,7 @@ class _AddReportViewState extends State<AddReportView> {
                   viewModel.chooseByDropDownValue == "Assets"
                       ? Column(
                           children: [
-                            viewModel.isLoading
+                            viewModel.isAssetLoading
                                 ? Center(
                                     child: Container(
                                       height:
@@ -446,10 +487,22 @@ class _AddReportViewState extends State<AddReportView> {
                   SizedBox(
                     height: 30,
                   ),
-                  InsiteText(
-                    text: "Email Report Recipients :",
-                    size: 14,
-                    fontWeight: FontWeight.w700,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: InsiteText(
+                          text: "Delivery End Date :",
+                          size: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      InsiteText(
+                        text: "(Optional)",
+                        size: 14,
+                        fontWeight: FontWeight.w700,
+                      )
+                    ],
                   ),
 
                   SizedBox(
@@ -476,9 +529,7 @@ class _AddReportViewState extends State<AddReportView> {
                           },
                         )),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
+
                   // InsiteText(
                   //   text: "Choose by",
                   //   size: 14,
@@ -506,9 +557,7 @@ class _AddReportViewState extends State<AddReportView> {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(
-                    height: 15,
-                  ),
+
                   // viewModel.chooseByDropDownValue == "Assets"
                   //     ? SelectionWidgetView(
                   //         isEdit: false,
@@ -532,7 +581,7 @@ class _AddReportViewState extends State<AddReportView> {
                   //     : Container(),
 
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   InsiteText(
                     text: "Email Report Recipients :",
@@ -662,10 +711,10 @@ class _AddReportViewState extends State<AddReportView> {
                   //   },
                   // ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   InsiteText(
-                    text: "Email Subject Line ",
+                    text: "Email Subject Line : ",
                     size: 14,
                     fontWeight: FontWeight.w700,
                   ),
@@ -703,7 +752,7 @@ class _AddReportViewState extends State<AddReportView> {
                     height: 15,
                   ),
                   AddressCustomTextBox(
-                    title: "Enter here",
+                    title: "",
                     controller: viewModel.emailContentController,
                   ),
                   SizedBox(
@@ -748,7 +797,10 @@ class _AddReportViewState extends State<AddReportView> {
             )));
       },
       viewModelBuilder: () => AddReportViewModel(
-          widget.scheduledReports, widget.isEdit, widget.templateDropDownValue),
+          widget.scheduledReports,
+          widget.isEdit,
+          widget.templateDropDownValue,
+          widget.templateTitleValue),
     );
   }
 

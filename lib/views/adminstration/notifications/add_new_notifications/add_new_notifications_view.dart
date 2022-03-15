@@ -212,7 +212,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           ? TextBoxWithSuffixAndPrefix(
                                               suffixTitle: "%",
                                               controller: viewModel
-                                                  .fuelLosssOccurenceController,
+                                                  .assetStatusOccurenceController,
                                               onChange: (value) {
                                                 // viewModel
                                                 //     .onChagingeFuelLossOccurenceBox(
@@ -715,7 +715,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                         suffixTitle:
                                                                             "Hours",
                                                                         controller:
-                                                                            viewModel.engineHoursOccurenceController,
+                                                                            viewModel.assetStatusOccurenceController,
                                                                         onChange:
                                                                             (value) {
                                                                           //viewModel.onChagingeEngineHourOccurenceBox(value);
@@ -727,7 +727,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             suffixTitle:
                                                                                 "%",
                                                                             controller:
-                                                                                viewModel.fuelOccurenceController,
+                                                                                viewModel.assetStatusOccurenceController,
                                                                             onChange:
                                                                                 (value) {
                                                                               //viewModel.onChagingeFuelOccurenceBox(value);
@@ -745,7 +745,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                 "Excessive Daily Idle"
                                                                             ? TextBoxWithSuffixAndPrefix(
                                                                                 suffixTitle: "Hours",
-                                                                                controller: viewModel.excessiveDailyOccurenceController,
+                                                                                controller: viewModel.assetStatusOccurenceController,
                                                                                 onChange: (value) {
                                                                                   // viewModel.onChagingeExcessiveOccurenceBox(value);
                                                                                 },

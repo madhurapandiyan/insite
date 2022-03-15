@@ -133,8 +133,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                 viewModel.onSearchingDeviceId().then((value) {
                                   Logger().w(value);
                                   if (value == true) {
-                                    Logger().d("mappiy");
-                                    controller.jumpToPage(1);
+                                   controller.jumpToPage(1);
                                   } else {}
                                 });
                               }

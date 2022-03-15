@@ -16,7 +16,7 @@ class DeviceIdListWidget extends StatelessWidget {
       onTap: onSelected as void Function()?,
      title: InsiteTextOverFlow(
         size: size,
-        color: Theme.of(context).textTheme.bodyText1!.color,
+        color: Theme.of(context).textTheme.bodyText2!.color,
         text: deviceId,
       ),
     );

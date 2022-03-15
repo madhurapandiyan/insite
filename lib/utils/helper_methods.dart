@@ -655,21 +655,25 @@ class Utils {
   }
 
   static DateTime? getMinDate(List<DateTime?> inputDates) {
-    DateTime? minDate;
+    DateTime? minDate = DateTime.now();
+
     for (DateTime? item in inputDates) {
-      if (minDate == null)
+      if (item == null) {
+      } else if (minDate!.isBefore(item)) {
         minDate = item;
-      else if (item!.isBefore(minDate)) minDate = item;
+      }
     }
+
     return minDate;
   }
 
   static DateTime? getMaxDate(List<DateTime?> inputDates) {
-    DateTime? maxDate;
+    DateTime? maxDate = DateTime.now();
     for (DateTime? item in inputDates) {
-      if (maxDate == null)
+      if (item == null) {
+      } else if (maxDate!.isAfter(item)) {
         maxDate = item;
-      else if (item!.isAfter(maxDate)) maxDate = item;
+      }
     }
     return maxDate;
   }

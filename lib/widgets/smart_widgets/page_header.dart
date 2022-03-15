@@ -36,9 +36,13 @@ class PageHeader extends StatelessWidget {
                 ? isDashboard!
                     ? "$total faults"
                     : "$count of $total faults"
-                : isDashboard!
-                    ? "$total assets"
-                    : "$count of $total assets",
+                : screenType == ScreenType.MAINTENANCE
+                    ? isDashboard!
+                        ? "$total services"
+                        : "$count of $total services"
+                    : isDashboard!
+                        ? "$total assets"
+                        : "$count of $total assets",
             fontWeight: FontWeight.bold,
             size: 15,
           ),

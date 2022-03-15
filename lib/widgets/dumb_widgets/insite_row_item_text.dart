@@ -102,7 +102,7 @@ class InsiteTableRowItemWithImageWithContent extends StatelessWidget {
   final Color? contentColor;
 
   const InsiteTableRowItemWithImageWithContent(
-      {this.title, this.path, this.content,this.contentColor});
+      {this.title, this.path, this.content, this.contentColor});
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +225,7 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
 
 class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
   final String? title;
-  final List<Count>? texts;
+  final List<dynamic>? texts;
   const InsiteTableRowItemWithMultipleButton({
     this.title,
     this.texts,

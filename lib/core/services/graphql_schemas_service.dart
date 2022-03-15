@@ -16,10 +16,10 @@ class GraphqlSchemaService extends BaseService {
   String? location;
 
   Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
-    productFamily=null;
-    assetStatus=null;
-    model=null;
-    fuelLevelPercentLt=null;
+    productFamily = null;
+    assetStatus = null;
+    model = null;
+    fuelLevelPercentLt = null;
     filtlerList!.forEach((filterData) {
       if (filterData?.type == FilterType.ALL_ASSETS) {
         var data = filtlerList
@@ -56,18 +56,32 @@ query faultDataSummary{
  }
 """;
 
-  final String assetStatusCount = """
-query faultDataSummary{
- getDashboardAsset(grouping: "assetstatus"){
-  countData{  
-    count
-    countOf
+  String getAssetCount(
+      {String? grouping,
+      String? productFamily,
+      String? threshold,
+      String? endDate,
+      String? startDate,
+      String? idleEfficiencyRanges}) {
+    final String assetStatusCount = """
+query{
+  getDashboardAsset(
+    grouping: "${grouping == null ? "" : "$grouping"}",
+    productfamily:"${productFamily == null ? "" : productFamily}",
+    thresholds:"${threshold == null ? "" : threshold}",
+    endDate:"${endDate == null ? "" : endDate}",
+    idleEfficiencyRanges:"${idleEfficiencyRanges == null ? "" : idleEfficiencyRanges}",
+    startDate:"${startDate == null ? "" : startDate}"
+  ) {
+    countData {
+      countOf
+      count
+    }
   }
 }
-  
-}
-
-  """;
+""";
+    return assetStatusCount;
+  }
 
   final String fuelLevelCount = """
 query faultDataSummary{
@@ -331,10 +345,11 @@ query faultDataSummary{
     return assetOperationData;
   }
 
-  String getFaultCountData(String startDate, String endDate) {
+  String getFaultCountData(
+      {String? startDate, String? endDate, String? prodFamily}) {
     final String faultCountData = """
   query getFaultCountData{
-faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
+faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTime: "${endDate == null ? "" : endDate}",productFamily:"${productFamily == null ? "" : prodFamily}"){
   countData {
     countOf
     assetCount
@@ -686,9 +701,10 @@ getSingleAssetDetails(assetUID:"$uid"){
     return data;
   }
 
-  String getAssetGraphDetail(String assetId, String date) {
+  String getAssetGraphDetail(
+      {String? assetId, String? date, String? productFamily}) {
     var data = """{
-  getDashboardUtilizationSummary(assetUID: "$assetId",date: "$date") {
+  getDashboardUtilizationSummary(assetUID: "${assetId == null ? "" : assetId}",date: "${date == null ? "" : date}",productfamily:"${productFamily == null ? "" : productFamily}") {
     totalDay {
       idleHours
       runtimeHours
@@ -1030,6 +1046,163 @@ query{
   }
 }
 """;
+    return data;
+  }
+
+  String getSingleAssetOperation(
+      String startDate, String endDate, String assetId) {
+    var data = """
+{
+  assetOperations(sort: "-assetid", startDate: "$startDate", endDate: "$endDate", pageSize: 50, pageNumber: 1, assetUid: "$assetId", productfamily: "") {
+    assetOperations {
+      pagination {
+        totalAssets
+        assetsWithoutActiveCoreSubscription
+        pageNumber
+        pageSize
+      }
+      links {
+        rel
+        href
+      }
+      assets {
+        assetUid
+        assetId
+        makeCode
+        model
+        serialNumber
+        assetIcon {
+          key
+        }
+        productFamily
+        customStateDescription
+        distanceTravelledKilometers
+        dateRangeRuntimeDuration
+        lastKnownOperator
+        capabilities {
+          hasActiveCoreSubscription
+        }
+        assetLocalDates {
+          assetLocalDate
+          totalRuntimeDurationSeconds
+          segments {
+            startTimeUtc
+          }
+        }
+        assetLastReceivedEvent {
+          lastReceivedEvent
+          lastReceivedEventTimeLocal
+          lastReceivedEventUTC
+          timezoneAbbrev
+          segmentType
+        }
+        esn
+      }
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  String singleAssetDetailLocation() {
+    var data = """
+query{
+  singleAssetLocationDetails(
+       pageNumber: 1,
+    pageSize: 50,
+    assetIdentifier: "9798351c-c1d9-11eb-82df-0ae8ba8d3970",
+    startTimeLocal: "02/10/2022 00:00:00",
+    endTimeLocal: "03/11/2022 23:59:59"
+  ){
+    pagination{
+      totalCount,
+      pageNumber,
+      pageSize
+    }
+    links{
+      self,
+      next,
+      prev
+    }
+    assetLocation{
+      assetIdentifier
+assetSerialNumber
+serialNumber
+manufacturer
+makeCode
+model
+assetIcon
+status
+assetStatus
+hourMeter
+hourmeter
+latitude
+longitude
+lastReportedLocationLatitude
+lastReportedLocationLongitude
+lastReportedLocation
+lastReportedUTC
+fuelLevelLastReported
+notifications
+lastLocationUpdateUTC
+assetEventHistoryID
+locationEventUTC
+locationEventLocalTime
+locationEventLocalTimeZoneAbbrev
+address{
+  city,
+  state,
+  county,
+  country,
+  zip
+}
+odometer
+    }
+  }
+}""";
+    return data;
+  }
+
+  String assetLocationData({String? no, String? pageSize, String? sort}) {
+    var data = """
+query{
+  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort"){
+    pagination{
+      totalCount,
+      pageNumber,
+      pageSize
+    },
+    links{
+       self,
+      next,
+      prev
+    },
+     countData{
+      countOf,
+      count
+    },
+    mapRecords{
+      assetIdentifier
+assetId
+assetSerialNumber
+manufacturer
+makeCode
+model
+assetIcon
+status
+hourMeter
+lastReportedLocationLatitude
+lastReportedLocationLongitude
+lastReportedLocation
+lastReportedUTC
+fuelLevelLastReported
+notifications
+geofences
+lastLocationUpdateUTC
+    }
+  }
+}""";
     return data;
   }
 }

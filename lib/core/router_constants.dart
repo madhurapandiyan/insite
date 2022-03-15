@@ -1,5 +1,4 @@
 // [ This is an auto generated file ]
-// [ This is an auto generated file ]
 
 const String splashViewRoute = 'splashViewRoute';
 const String customerSelectionViewRoute = 'customerSelectionViewRoute';
@@ -9,18 +8,20 @@ const String loginViewRoute = 'loginViewRoute';
 const String logoutViewRoute = 'logoutViewRoute';
 const String globalSearchViewRoute = 'globalSearchViewRoute';
 const String dashboardViewRoute = 'dashboardViewRoute';
+const String deviceReplacementStatusView = "deviceReplacementStatusView";
 const String assetViewRoute = 'assetViewRoute';
 const String assetDetailViewRoute = 'assetDetailViewRoute';
 const String locationViewRoute = 'locationViewRoute';
+const String deviceReplacementView = "deviceReplacementView";
+const String replacementView = "replacementView";
 const String healthViewRoute = 'healthViewRoute';
 const String loginPageRoute = 'loginPageRoute';
+const String fleetStatusView = "fleetStatusView";
+const String transferHistoryView = "transferHistoryView";
 const String administrationViewPageRoute = 'administrationViewPageRoute';
+const String plantAssetCreationViewRoute = "plantAssetCreationViewRoute";
 const String addNewUserViewRoute = 'addNewUserViewRoute';
 const String manageUserViewRoute = 'manageUserViewRoute';
-const String addgeofenseViewRoute = 'addgeofenseViewRoute';
-const String manageGeofenceViewRoute = 'manageGeofenceViewRoute';
-const String assetSettingsViewRoute = 'assetSettingsViewRoute';
-const String assetSettingsFilterViewRoute = 'assetSettingsFilterViewRoute';
 const String subscriptionViewRoute = 'subscriptionViewRoute';
 const String viewDashboardViewRoute = 'viewDashboardViewRoute';
 const String subDashBoardDetailsViewRoute = 'subDashBoardDetailsViewRoute';
@@ -31,32 +32,29 @@ const String multipleAssetRegViewRoute = 'multipleAssetRegViewRoute';
 const String multipleAssetTransferViewRoute = 'multipleAssetTransferViewRoute';
 const String plantViewRoute = 'plantViewRoute';
 const String plantDashboardViewRoute = 'plantDashboardViewRoute';
-const String smsManagementViewRoute = "smsManagementView";
+const String plantHierachyViewRoute = 'plantHierachyViewRoute';
+const String smsManagementViewRoute = 'smsManagementViewRoute';
 const String smsScheduleSingleAssetViewRoute =
     'smsScheduleSingleAssetViewRoute';
 const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
 const String reportSummaryViewRoute = 'reportSummaryViewRoute';
 const String assetSettingsConfigureViewRoute =
     'assetSettingsConfigureViewRoute';
-const String smsManagementView = "smsManagementView";
-// const String smsScheduleSingleAssetViewRoute =
-//     'smsScheduleSingleAssetViewRoute';
-// const String smsScheduleMultiAssetViewRoute = 'smsScheduleMultiAssetViewRoute';
-// const String reportSummaryViewRoute = 'reportSummaryViewRoute';
-
 const String reusableAutocompleteSearchViewRoute =
     'reusableAutocompleteSearchViewRoute';
-const String deviceReplacementView = "deviceReplacementView";
-const String deviceReplacementStatusView = "deviceReplacementStatusView";
-const String replacementView = "replacementView";
-const String fleetStatusView = "fleetStatusView";
-const String transferHistoryView = "transferHistoryView";
-const String plantAssetCreationViewRoute = 'plantAssetCreationViewRoute';
+const String fleetStatusViewRoute = 'fleetStatusViewRoute';
+const String transferHistoryViewRoute = 'transferHistoryViewRoute';
+const String palntAssetCreationViewRoute = 'palntAssetCreationViewRoute';
 const String notificationViewRoute = 'notificationViewRoute';
-const String addGroupViewRoute = "addGroupViewRoute";
-const String manageGroupViewRoute = "manageGroupViewRoute";
+const String addGroupViewRoute = 'addGroupViewRoute';
+const String manageGroupViewRoute = 'manageGroupViewRoute';
+const String addgeofenseViewRoute = "addgeofenseViewRoute";
+const String manageGeofenceViewRoute = "manageGeofenceViewRoute";
 const String addNewNotificationsViewRoute = 'addNewNotificationsViewRoute';
 const String manageNotificationsViewRoute = 'manageNotificationsViewRoute';
-const String addReportViewRoute = 'addReportViewRoute';
 const String manageReportViewRoute = 'manageReportViewRoute';
+const String addReportViewRoute = 'addReportViewRoute';
 const String maintenanceViewRoute = 'maintenanceViewRoute';
+const String assetSelectionWidgetViewRoute = 'assetSelectionWidgetViewRoute';
+const String assetViewRoute0 = 'assetViewRoute0';
+const String mainViewRoute = 'mainViewRoute';

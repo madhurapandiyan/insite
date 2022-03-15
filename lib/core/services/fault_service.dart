@@ -314,6 +314,12 @@ class FaultService extends BaseService {
   Future<HealthListResponse?> getHealthListData(
       String? assetUid, endDateTime, limit, page, startDateTime) async {
     try {
+      if (enableGraphQl) {
+        // var data = await Network().getGraphqlData(
+        //     query,
+        //     accountSelected!.CustomerUID,
+        //     (await _localService!.getLoggedInUser())!.sub);
+      }
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             await MyApi().getClient()!.getHealthListDataVL(
