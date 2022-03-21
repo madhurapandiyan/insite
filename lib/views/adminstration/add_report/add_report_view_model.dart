@@ -63,7 +63,11 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? selectedContactItems = [];
   List<User> selectedUser = [];
 
+
   String? assetsDropDownValue = "Select";
+
+  
+
 
   String reportFormatDropDownValue = ".CSV";
   String frequencyDropDownValue = "Daily";
@@ -87,6 +91,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
+
     (_manageUserService!.setUp() as Future).then((_) {
       this.scheduledReportsId = scheduledReports;
       this.log = getLogger(this.runtimeType.toString());
@@ -104,6 +109,8 @@ class AddReportViewModel extends InsiteViewModel {
         });
       }
     });
+
+    
   }
 
   getListViewState() {
@@ -153,9 +160,12 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       }
 
+
       reportFleetAssets!
           .removeWhere((element) => element == assetsDropDownValue);
       reportFleetAssets?.replaceRange(0, 1, [assetsDropDownValue!]);
+
+
     }
     notifyListeners();
   }
@@ -199,6 +209,7 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "UtilizationDetails" ||
                 assetItems.reportName == "FaultSummaryFaultsList" ||
                 assetItems.reportName == "FaultCodeAssetDetails" ||
+
                 assetItems.reportName == "FleetSummary" ||
                 assetItems.reportName == "Asset Location History"
                 //assetItems.reportName == "Engine Idle" ||
@@ -206,6 +217,9 @@ class AddReportViewModel extends InsiteViewModel {
                 //assetItems.reportName == "Asset Event Count" ||
                // assetItems.reportName == "Fault Code"
                 ) {
+
+                 {
+
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -238,7 +252,10 @@ class AddReportViewModel extends InsiteViewModel {
           }
         }
       }
+
       reportFleetAssets?.removeWhere((element) => element== "Engine Idle"||element== "Asset Event Count"||element== "Fault Code");
+
+
       assetsDropDownValue = reportFleetAssets![0];
       isLoading = false;
       notifyListeners();
@@ -652,7 +669,11 @@ class AddReportViewModel extends InsiteViewModel {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
 
+
     String? reportType;
+
+     
+
     result?.reports?.forEach((element) {
       if (element.reportTypeName == assetsDropDownValue) {
         reportType = element.reportName!;
@@ -746,7 +767,7 @@ class AddReportViewModel extends InsiteViewModel {
         Logger().d(result.metadata!.toJson());
         _snackBarservice!
             .showSnackbar(message: "Edit Report has been done successfully");
-        gotoScheduleReportPage();
+         gotoScheduleReportPage();
       }
 
       hideLoadingDialog();
