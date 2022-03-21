@@ -4,10 +4,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
-import 'package:insite/core/router_constants_india_stack.dart';
+import 'package:insite/core/models/serviceItem.dart';
+import 'package:insite/core/router_constants.dart';
+
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -45,6 +48,12 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
   List<dynamic> _maintenanceCount = [];
   List<dynamic> get maintenanceCount => _maintenanceCount;
 
+  List<Services?> _services = [];
+  List<Services?> get services => _services;
+
+  List<String?> _servicesList = [];
+  List<String?> get servicesList => _servicesList;
+
   AssetCentricData? _assetCentricData;
   AssetCentricData? get assetCentricData => _assetCentricData;
 
@@ -61,6 +70,7 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 2), () {
       getAssetViewList();
+      //getMaintenanceListItemData();
     });
   }
 
@@ -140,6 +150,52 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
     }
   }
 
+  // getMaintenanceListItemData() async {
+  //   Logger().wtf("sssssssssssssssssssssssssssssssss");
+  //   await getSelectedFilterData();
+  //   await getDateRangeFilterData();
+
+  //   notifyListeners();
+  //   Logger().d("start date " + startDate!);
+  //   Logger().d("end date " + endDate!);
+
+  //   MaintenanceListService? result =
+  //       await _maintenanceService?.getMaintenanceServiceList(
+  //           _assetCentricData!.assetUID,
+  //           Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+  //           limit,
+  //           page,
+  //           Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+
+  //   ;
+  //   if (result != null && result.services != null) {
+  //     if (result.services!.isNotEmpty) {
+  //       _services.addAll(result.services!);
+  //       Logger().i("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr ${result.services}");
+  //       for (var item in result.services!) {
+  //         _servicesList.add(item.serviceName);
+  //       }
+  //       _refreshing = false;
+  //       _loadingMore = false;
+  //       notifyListeners();
+  //     } else {
+  //       _services.addAll(result.services!);
+  //       for (var item in result.services!) {
+  //         _servicesList.add(item.serviceName);
+  //       }
+  //       _refreshing = false;
+  //       _loadingMore = false;
+  //       _shouldLoadmore = false;
+  //       notifyListeners();
+  //     }
+  //   } else {
+  //     _refreshing = false;
+  //     notifyListeners();
+  //   }
+  //   _loaded = true;
+  //   notifyListeners();
+  // }
+
   _loadMore() {
     Logger().i("shouldLoadmore and is already loadingMore " +
         _shouldLoadmore.toString() +
@@ -165,6 +221,19 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
           ),
           type: screen.ScreenType.MAINTENANCE,
           index: 1),
+    );
+  }
+
+  onServiceSelected(num? serviceId, AssetData? assetDataValue,
+      AssetCentricData? assetData, List<Services?>? services) async {
+    ServiceItem? serviceItem =
+        await _maintenanceService!.getServiceItemCheckList(serviceId!);
+    _navigationService!.navigateToView(
+      DetailPopupView(
+          serviceItem: serviceItem!,
+          assetData: assetData!,
+          assetDataValue: assetDataValue,
+          services: services!),
     );
   }
 }

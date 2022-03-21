@@ -41,6 +41,9 @@ class MaintenanceItemDetailViewModel extends InsiteViewModel {
   AssetCentricData? _assetCentricData;
   AssetCentricData? get assetCentricData => _assetCentricData;
 
+  AssetData? _assetDataValue;
+  AssetData? get assetDataValue => _assetDataValue;
+
   ScrollController? scrollController;
   int pageNumber = 1;
   int pageSize = 20;
@@ -54,7 +57,7 @@ class MaintenanceItemDetailViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        //_loadMore();
       }
     });
     Future.delayed(Duration(seconds: 1), () {
@@ -83,12 +86,14 @@ class MaintenanceItemDetailViewModel extends InsiteViewModel {
     ;
     if (result != null && result.services != null) {
       if (result.services!.isNotEmpty) {
+        _assetDataValue = result.assetData;
+        _services.clear();
         _services.addAll(result.services!);
         _refreshing = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _services.addAll(result.services!);
+        // _services.addAll(result.services!);
         _refreshing = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -102,19 +107,19 @@ class MaintenanceItemDetailViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  _loadMore() {
-    Logger().i("shouldLoadmore and is already loadingMore " +
-        _shouldLoadmore.toString() +
-        "  " +
-        _loadingMore.toString());
-    if (_shouldLoadmore && !_loadingMore) {
-      Logger().i("load more called");
-      pageNumber++;
-      _loadingMore = true;
-      notifyListeners();
-      //getMaintenanceListItemData();
-    }
-  }
+  // _loadMore() {
+  //   Logger().i("shouldLoadmore and is already loadingMore " +
+  //       _shouldLoadmore.toString() +
+  //       "  " +
+  //       _loadingMore.toString());
+  //   if (_shouldLoadmore && !_loadingMore) {
+  //     Logger().i("load more called");
+  //     pageNumber++;
+  //     _loadingMore = true;
+  //     notifyListeners();
+  //     //getMaintenanceListItemData();
+  //   }
+  // }
 
   void onExpanded() {
     Logger().d("onExpanded");

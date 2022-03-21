@@ -4497,6 +4497,51 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<ServiceItem?> getServiceCheckListData(
+      serviceId, customerId, url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'serviceId': serviceId};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ServiceItem>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value =
+        _result.data == null ? null : ServiceItem.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<Complete> completeResponse(
+      url, completeDataQuery, contentType, customerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{
+      r'content-type': contentType,
+      r'x-visionlink-customeruid': customerId
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(completeDataQuery);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<Complete>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: contentType)
+            .compose(_dio.options, '${url}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = Complete.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

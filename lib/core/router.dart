@@ -25,6 +25,8 @@ import 'package:insite/views/adminstration/notifications/add_new_notifications/a
     as view39;
 import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
     as view40;
+import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart'
+    as view47;
 import 'package:insite/views/maintenance/asset/asset_view.dart' as view45;
 import 'package:insite/views/maintenance/main/main_view.dart' as view46;
 import 'package:insite/views/maintenance/maintenance_view.dart' as view44;
@@ -225,6 +227,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view45.AssetMaintenanceView());
       case mainViewRoute:
         return MaterialPageRoute(builder: (_) => view46.MainView());
+      case detailPopupViewRoute:
+        return MaterialPageRoute(builder: (_) => view47.DetailPopupView());
 
       default:
         return MaterialPageRoute(

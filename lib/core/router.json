@@ -1,5 +1,5 @@
 {
-    "last_updated": "Mon, 28 Feb 2022 05:50:34 GMT",
+    "last_updated": "Tue, 08 Mar 2022 09:44:19 GMT",
     "routes": [
         {
             "file_path": "views/splash/splash_view.dart",
@@ -235,6 +235,11 @@
             "file_path": "views/main/main_view.dart",
             "route_name": "mainViewRoute",
             "view_name": "MainView"
+        },
+        {
+            "file_path": "views/detail_popup/detail_popup_view.dart",
+            "route_name": "detail_popupViewRoute",
+            "view_name": "DetailPopupView"
         }
     ]
 }
