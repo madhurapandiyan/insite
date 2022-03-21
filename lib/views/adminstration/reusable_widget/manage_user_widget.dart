@@ -53,8 +53,8 @@ class ManageUserWidget extends StatelessWidget {
                 border: TableBorder.all(width: 2, color: borderLineColor),
                 columnWidths: {
                   0: FlexColumnWidth(2),
-                  1: FlexColumnWidth(1),
-                  2: FlexColumnWidth(1)
+                  1: FlexColumnWidth(2),
+                  2: FlexColumnWidth(2)
                 },
                 children: [
                   TableRow(children: [
@@ -65,18 +65,22 @@ class ManageUserWidget extends StatelessWidget {
                           user!.user!.last_name!,
                     ),
                     InsiteTableRowItem(
-                      title: 'User Type:',
-                      content: user!.user!.user_type.toString(),
+                      title: 'Email ID :',
+                      content: user!.user!.loginId,
                     ),
                     InsiteTableRowItem(
-                      title: 'Job Type :',
-                      content: user!.user!.job_type.toString(),
+                      title: 'User Type:',
+                      content: user!.user!.user_type == null
+                          ? "-"
+                          : user!.user!.user_type.toString(),
                     ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
-                      title: 'Email ID :',
-                      content: user!.user!.loginId,
+                      title: 'Job Type :',
+                      content: user!.user!.job_type == null
+                          ? "-"
+                          : user!.user!.job_type.toString(),
                     ),
                     InsiteTableRowItem(
                       title: 'Job Title:',
@@ -92,6 +96,29 @@ class ManageUserWidget extends StatelessWidget {
                   ])
                 ],
               ),
+              children: [
+                Table(
+                  border: TableBorder.all(width: 2, color: borderLineColor),
+                  columnWidths: {
+                    0: FlexColumnWidth(2),
+                    1: FlexColumnWidth(1),
+                    2: FlexColumnWidth(1)
+                  },
+                  children: [
+                    TableRow(children: [
+                      InsiteTableRowItem(
+                        title: 'Created By',
+                        content: user!.user!.createdBy,
+                      ),
+                      InsiteTableRowItem(
+                        title: "Created On",
+                        content: Utils.getDateInFormatddMMyyyy(
+                            user!.user!.createdOn),
+                      ),
+                    ])
+                  ],
+                )
+              ],
               tilePadding: EdgeInsets.all(0),
               childrenPadding: EdgeInsets.all(0),
             ))

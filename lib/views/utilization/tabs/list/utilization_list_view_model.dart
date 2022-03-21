@@ -8,7 +8,6 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
-import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -60,7 +59,7 @@ class UtilizationListViewModel extends InsiteViewModel {
       }
     });
     Future.delayed(Duration(seconds: 2), () {
-      getUtilization();
+      getUtilization(true);
     });
   }
 
@@ -74,7 +73,7 @@ class UtilizationListViewModel extends InsiteViewModel {
       pageNumber++;
       _loadingMore = true;
       notifyListeners();
-      getUtilization();
+      getUtilization(false);
     }
   }
 
@@ -107,12 +106,15 @@ class UtilizationListViewModel extends InsiteViewModel {
     );
   }
 
-  getUtilization() async {
+  getUtilization(bool isFirst) async {
     try {
       Logger().d("getUtilization");
-      await getSelectedFilterData();
-      await getDateRangeFilterData();
-      await getUtilizationCount();
+      if (isFirst) {
+        await getSelectedFilterData();
+        await getDateRangeFilterData();
+        await getUtilizationCount();
+      }
+
       Utilization? result = await _utilizationService!.getUtilizationResult(
           startDate,
           endDate,
@@ -120,11 +122,13 @@ class UtilizationListViewModel extends InsiteViewModel {
           pageNumber,
           pageCount,
           appliedFilters,
-          graphqlSchemaService!.getFleetUtilization(
-              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-              pageCount,
-              pageNumber));
+          await graphqlSchemaService!.getFleetUtilization(
+            sort: null,
+              applyFilter: appliedFilters,
+              startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageSize: pageCount,
+              pageNo: pageNumber));
 
       if (result != null) {
         if (result.assetResults!.isNotEmpty) {
@@ -169,11 +173,13 @@ class UtilizationListViewModel extends InsiteViewModel {
           pageNumber,
           pageCount,
           appliedFilters,
-          graphqlSchemaService!.getFleetUtilization(
-              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-              pageCount,
-              pageNumber));
+        await  graphqlSchemaService!.getFleetUtilization(
+          sort: null,
+              pageSize: pageCount,
+              applyFilter: appliedFilters,
+              startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageNo: pageNumber));
       if (result != null) {
         _utilLizationListData.clear();
         _utilLizationListData.addAll(result.assetResults!);
@@ -198,7 +204,8 @@ class UtilizationListViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.UTILIZATION,
         appliedFilters,
-        graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!));
+        await graphqlSchemaService!
+            .utilizationToatlCount(startDate!, endDate!, appliedFilters));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

@@ -11,6 +11,8 @@ import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
+import '../core/models/manage_notifications.dart';
+
 class Utils {
   static String getLastReportedDate(date) {
     try {
@@ -597,6 +599,9 @@ class Utils {
       case FilterType.REPORT_TYPE:
         title = "Report Type";
         break;
+      case FilterType.MANUFACTURER:
+        title = "MANUFACTURER";
+        break;
 
       default:
     }
@@ -818,6 +823,33 @@ class Utils {
       return filterDetails;
     } else {
       return "";
+    }
+  }
+
+  static String getNotificationCondition(ConfiguredAlerts? alert) {
+    String? data;
+    if (alert?.notificationTypeGroupID == 1) {
+      data =
+          "Asset Staus ${alert?.operands?.first.condition} ${alert?.operands?.first.operandName}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 8) {
+      data =
+          "Fault Code ${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 5) {
+      data =
+          "Engine Hours ${alert?.operands?.first.condition}  ${alert?.operands?.first.value}${alert?.operands?.first.unit}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 3) {
+      data =
+          "Fuel ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 15) {
+      data =
+          "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else {
+      return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
     }
   }
 }

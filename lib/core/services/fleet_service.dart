@@ -15,7 +15,7 @@ import 'local_service.dart';
 
 class FleetService extends BaseService {
   LocalService? _localService = locator<LocalService>();
-  GraphqlSchemaService _graphqlSchemaService=locator<GraphqlSchemaService>();
+  GraphqlSchemaService _graphqlSchemaService = locator<GraphqlSchemaService>();
   Customer? accountSelected;
   Customer? customerSelected;
   FleetService() {
@@ -36,17 +36,23 @@ class FleetService extends BaseService {
     endDate,
     pageSize,
     pageNumber,
-   
     List<FilterData?>? appliedFilters,
   ) async {
     try {
+    
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-           await _graphqlSchemaService.fleetSummary(appliedFilters,pageNumber),
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
-         FleetSummaryResponse fleetSummaryResponse =
-            FleetSummaryResponse.fromJson(data.data!['fleetSummary']);
+          query: await _graphqlSchemaService.fleetSummary(
+              appliedFilters, pageNumber),
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          customerId: accountSelected!.CustomerUID,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        
+        FleetSummaryResponse fleetSummaryResponse =
+            FleetSummaryResponse.fromJson(data.data['fleetSummary']);
         return fleetSummaryResponse;
       } else {
         if (isVisionLink) {
@@ -59,7 +65,7 @@ class FleetService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "assetid",
                               appliedFilters!,
                               ScreenType.FLEET),
@@ -89,7 +95,7 @@ class FleetService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "AssetSerialNumber",
                               appliedFilters!,
                               ScreenType.FLEET),
@@ -113,6 +119,7 @@ class FleetService extends BaseService {
         }
       }
     } catch (e) {
+      Logger().e(e.toString());
       throw e;
       // return null;
     }

@@ -120,7 +120,7 @@ class DashboardViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () async {
       await getAssetCount();
       getFilterData();
-      getData();
+      getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
@@ -142,6 +142,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   updateDateRangeFilter(FilterData data) async {
     await clearFilterDb();
+    Logger().wtf(data.toJson());
     if (currentFilterSelected != null) {
       await addFilter(currentFilterSelected!);
     }
@@ -165,12 +166,15 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
-  
   }
 
-  getData() async {
+  getData(bool isIntial) async {
     this._isFilterApplied = false;
     this._currentFilterSelected = null;
+    if (isIntial) {
+      await getFilterAssetCount();
+    }
+
     await clearDashboardFiltersDb();
     await getAssetStatusData();
     await getFuelLevelData();
@@ -182,7 +186,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   onRefereshClicked() {
     if (currentFilterSelected != null) {
-      getFilterDataApplied(currentFilterSelected!);
+      getFilterDataApplied(currentFilterSelected!, false);
     } else {
       refresh();
     }
@@ -219,13 +223,31 @@ class DashboardViewModel extends InsiteViewModel {
         FilterType.ASSET_STATUS,
         graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
         true);
-
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
       }
     }
-   
+  }
+
+  getProductFamilyAssetCount() async {
+    if (_currentFilterSelected != null) {
+      if (_currentFilterSelected!.count!.isNotEmpty) {
+        _totalCount = int.parse(_currentFilterSelected!.count!);
+      }
+      // if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+      //   _totalCount = result.countData![0].count!.toInt();
+      // }
+    } else {
+      AssetCount? result = await _assetService!.getAssetCount(
+          null,
+          FilterType.ASSET_STATUS,
+          graphqlSchemaService!.getAssetCount(
+              grouping: "productfamily",
+              productFamily: _currentFilterSelected?.title),
+          true);
+    }
+    notifyListeners();
   }
 
   getFuelLevelData() async {
@@ -251,7 +273,6 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetFuelloading = false;
-   
   }
 
   getIdlingLevelData(bool switching) async {
@@ -272,6 +293,9 @@ class DashboardViewModel extends InsiteViewModel {
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
+      } else {
+        _idlingLevelData = result;
+        _isSwitching = false;
       }
     } else {
       AssetCount? result = await _assetService!.getIdlingLevelData(
@@ -287,10 +311,12 @@ class DashboardViewModel extends InsiteViewModel {
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
+      } else {
+        _idlingLevelData = result;
+        _isSwitching = false;
       }
     }
     _idlingLevelDataloading = false;
-    
   }
 
   getFaultCountData() async {
@@ -308,7 +334,6 @@ class DashboardViewModel extends InsiteViewModel {
       _faultCountData = count;
     }
     _faultCountloading = false;
-   
   }
 
   onFilterSelected(FilterData data) async {
@@ -356,7 +381,6 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
-  
   }
 
   FilterSubType? getFilterRange() {
@@ -398,7 +422,7 @@ class DashboardViewModel extends InsiteViewModel {
         "productfamily",
         FilterType.PRODUCT_FAMILY,
         graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
-        false);
+        true);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
   }
@@ -424,7 +448,7 @@ class DashboardViewModel extends InsiteViewModel {
     }
   }
 
-  getFilterDataApplied(FilterData filterData) async {
+  getFilterDataApplied(FilterData filterData, bool isFromProdFamily) async {
     try {
       this._isFilterApplied = true;
       this._currentFilterSelected = filterData;
@@ -432,7 +456,12 @@ class DashboardViewModel extends InsiteViewModel {
       // await addFilter(filterData);
       _refreshing = true;
       notifyListeners();
-      await getFilterAssetCount();
+      if (isFromProdFamily) {
+        await getProductFamilyAssetCount();
+      } else {
+        await getAssetCount();
+      }
+
       await getAssetStatusFilterApplied(filterData.title);
       await getFuelLevelFilterApplied(filterData.title);
       await getUtilizationSummaryFilterData(filterData.title);
@@ -459,7 +488,6 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
-   
   }
 
   getFuelLevelFilterApplied(dropDownValue) async {
@@ -481,7 +509,6 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetFuelloading = false;
-    
   }
 
   getIdlingLevelFilterData(dropDownValue) async {
@@ -498,7 +525,6 @@ class DashboardViewModel extends InsiteViewModel {
       _idlingLevelData = result;
     }
     _idlingLevelDataloading = false;
-   
   }
 
   getFaultCountDataFilterData(dropDownValue) async {
@@ -512,7 +538,6 @@ class DashboardViewModel extends InsiteViewModel {
       _faultCountData = count;
     }
     _faultCountloading = false;
-    
   }
 
   getUtilizationSummaryFilterData(dropDownValue) async {
@@ -530,6 +555,5 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
-   
   }
 }

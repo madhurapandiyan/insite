@@ -10,6 +10,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -47,306 +48,321 @@ class _AssetLocationViewState extends State<AssetLocationView> {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
-          return Container(
-            width: double.infinity,
-            height: 510,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(
-                  width: 1,
-                  color: Theme.of(context).textTheme.bodyText1!.color!),
-              shape: BoxShape.rectangle,
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InsiteButton(
-                        title: "Refresh",
-                        width: 90,
-                        height: 30,
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
-                        onTap: () async {
-                          viewModel
-                              .customInfoWindowController.hideInfoWindow!();
-                          if (widget.screenType == ScreenType.HEALTH) {
-                            viewModel.refreshForAssetView();
-                          } else {
-                            viewModel.refresh();
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      InsiteText(
-                          text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.startDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                          fontWeight: FontWeight.bold,
-                          size: 12),
-                      InsiteButton(
-                        title: "Date Range",
-                        width: 90,
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
-                        onTap: () async {
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          if (dateRange != null && dateRange!.isNotEmpty) {
-                            setState(() {
-                              dateRange = dateRange;
-                            });
-                            viewModel
-                                .customInfoWindowController.hideInfoWindow!();
-                            viewModel.refresh();
-                          }
-                        },
-                      ),
-                    ],
+          return viewModel.dataNotFound
+              ? EmptyView(
+                  title: "No Data Found",
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                        width: 1,
+                        color: Theme.of(context).textTheme.bodyText1!.color!),
+                    shape: BoxShape.rectangle,
                   ),
-                ),
-                Expanded(
-                  child: Stack(
+                  child: Column(
                     children: [
-                      GoogleMap(
-                        onTap: (position) {
-                          viewModel
-                              .customInfoWindowController.hideInfoWindow!();
-                        },
-                        onCameraMove: (position) {
-                          viewModel.customInfoWindowController.onCameraMove!();
-                        },
-                        onMapCreated: (GoogleMapController controller) {
-                          mapController = controller;
-                          _controller.complete(controller);
-                          viewModel.customInfoWindowController
-                              .googleMapController = controller;
-                          Future.delayed(Duration(seconds: 1), () {
-                            mapController.animateCamera(
-                                CameraUpdate.newLatLngBounds(
-                                    viewModel.getBound(), 0));
-                          });
-                        },
-                        mapType: _changemap(),
-                        compassEnabled: true,
-                        zoomControlsEnabled: false,
-                        markers: viewModel.markers,
-                        initialCameraPosition:
-                            viewModel.assetLocationHistory != null &&
-                                    viewModel.assetLocationHistory!
-                                        .assetLocation!.isNotEmpty
-                                ? CameraPosition(
-                                    target: LatLng(
-                                        viewModel.assetLocationHistory!
-                                            .assetLocation![0].latitude!,
-                                        viewModel.assetLocationHistory!
-                                            .assetLocation![0].longitude!),
-                                    zoom: 18)
-                                : CameraPosition(
-                                    target: LatLng(30.666, 76.8127), zoom: 4),
-                      ),
-                      CustomInfoWindow(
-                        controller: viewModel.customInfoWindowController,
-                        height:
-                            widget.screenType == ScreenType.HEALTH ? 240 : 160,
-                        width: 200,
-                        offset: 50,
-                      ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 100,
+                            InsiteButton(
+                              title: "Refresh",
+                              width: 90,
                               height: 30,
-                              decoration: BoxDecoration(
-                                  // border: Border.all(
-                                  //     width: 1,
-                                  //     color: Theme.of(context).buttonColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Theme.of(context).backgroundColor),
-                              child: Expanded(
-                                child: CustomDropDownWidget(
-                                  items: [
-                                    "MAP",
-                                    "TERRAIN",
-                                    "SATELLITE",
-                                    "HYBRID"
-                                  ],
-                                  value: _currentSelectedItem,
-                                  onChanged: (value) {
-                                    _currentSelectedItem = value!;
-                                    _changemap();
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 48.0,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (viewModel.assetLocationHistory != null) {
-                                  zoomVal++;
-                                  _plus(
-                                    zoomVal,
-                                    LatLng(
-                                        viewModel.assetLocationHistory!
-                                            .assetLocation![0].latitude!,
-                                        viewModel.assetLocationHistory!
-                                            .assetLocation![0].longitude!),
-                                  );
+                              bgColor: Theme.of(context).backgroundColor,
+                              textColor:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                              onTap: () async {
+                                viewModel.customInfoWindowController
+                                    .hideInfoWindow!();
+                                if (widget.screenType == ScreenType.HEALTH) {
+                                  viewModel.refreshForAssetView();
+                                } else {
+                                  viewModel.refresh();
                                 }
                               },
-                              child: Container(
-                                width: 27.47,
-                                height: 26.97,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).backgroundColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 1.0,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .color!,
-                                    ),
-                                  ],
-                                  border: Border.all(
-                                    width: 1.0,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color!,
-                                  ),
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/images/plus.svg",
-                                  color: Theme.of(context).iconTheme.color,
-                                ),
-                              ),
                             ),
                             SizedBox(
-                              height: 5.0,
+                              width: 20,
                             ),
-                            GestureDetector(
-                                onTap: () {
-                                  if (viewModel.assetLocationHistory != null) {
-                                    zoomVal--;
-                                    _minus(
-                                      zoomVal,
-                                      LatLng(
+                            InsiteText(
+                                text: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                                fontWeight: FontWeight.bold,
+                                size: 12),
+                            InsiteButton(
+                              title: "Date Range",
+                              width: 90,
+                              bgColor: Theme.of(context).backgroundColor,
+                              textColor:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                              onTap: () async {
+                                dateRange = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => Dialog(
+                                      backgroundColor: transparent,
+                                      child: DateRangeView()),
+                                );
+                                if (dateRange != null &&
+                                    dateRange!.isNotEmpty) {
+                                  setState(() {
+                                    dateRange = dateRange;
+                                  });
+                                  viewModel.customInfoWindowController
+                                      .hideInfoWindow!();
+                                  viewModel.refresh();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              onTap: (position) {
+                                viewModel.customInfoWindowController
+                                    .hideInfoWindow!();
+                              },
+                              onCameraMove: (position) {
+                                viewModel
+                                    .customInfoWindowController.onCameraMove!();
+                              },
+                              onMapCreated: (GoogleMapController controller) {
+                                mapController = controller;
+                                _controller.complete(controller);
+                                viewModel.customInfoWindowController
+                                    .googleMapController = controller;
+                                Future.delayed(Duration(seconds: 1), () {
+                                  mapController.animateCamera(
+                                      CameraUpdate.newLatLngBounds(
+                                          viewModel.getBound(), 0));
+                                });
+                              },
+                              mapType: _changemap(),
+                              compassEnabled: true,
+                              zoomControlsEnabled: false,
+                              markers: viewModel.markers,
+                              initialCameraPosition:
+                                  viewModel.assetLocationHistory != null &&
                                           viewModel.assetLocationHistory!
-                                              .assetLocation![0].latitude!,
-                                          viewModel.assetLocationHistory!
-                                              .assetLocation![0].longitude!),
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  width: 27.47,
-                                  height: 26.97,
+                                              .assetLocation!.isNotEmpty
+                                      ? CameraPosition(
+                                          target: LatLng(
+                                              viewModel.assetLocationHistory!
+                                                  .assetLocation![0].latitude!,
+                                              viewModel
+                                                  .assetLocationHistory!
+                                                  .assetLocation![0]
+                                                  .longitude!),
+                                          zoom: 18)
+                                      : CameraPosition(
+                                          target: LatLng(30.666, 76.8127),
+                                          zoom: 4),
+                            ),
+                            CustomInfoWindow(
+                              controller: viewModel.customInfoWindowController,
+                              height: widget.screenType == ScreenType.HEALTH
+                                  ? 240
+                                  : 160,
+                              width: 200,
+                              offset: 50,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 100,
+                                  height: 30,
+                                  margin: EdgeInsets.only(left: 20, top: 10),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).backgroundColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 1.0,
+                                      // border: Border.all(
+                                      //     width: 1,
+                                      //     color: Theme.of(context).buttonColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Theme.of(context).backgroundColor),
+                                  child: CustomDropDownWidget(
+                                    items: [
+                                      "MAP",
+                                      "TERRAIN",
+                                      "SATELLITE",
+                                      "HYBRID"
+                                    ],
+                                    value: _currentSelectedItem,
+                                    onChanged: (value) {
+                                      _currentSelectedItem = value!;
+                                      _changemap();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (viewModel.assetLocationHistory !=
+                                        null) {
+                                      zoomVal++;
+                                      _plus(
+                                        zoomVal,
+                                        LatLng(
+                                            viewModel.assetLocationHistory!
+                                                .assetLocation![0].latitude!,
+                                            viewModel.assetLocationHistory!
+                                                .assetLocation![0].longitude!),
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 27.47,
+                                    height: 26.97,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).backgroundColor,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          blurRadius: 1.0,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .color!,
+                                        ),
+                                      ],
+                                      border: Border.all(
+                                        width: 1.0,
                                         color: Theme.of(context)
                                             .textTheme
                                             .bodyText1!
                                             .color!,
                                       ),
-                                    ],
-                                    border: Border.all(
-                                      width: 1.0,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .color!,
+                                      shape: BoxShape.rectangle,
                                     ),
-                                    shape: BoxShape.rectangle,
+                                    child: SvgPicture.asset(
+                                      "assets/images/plus.svg",
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
                                   ),
-                                  child: SvgPicture.asset(
-                                    "assets/images/minus.svg",
-                                    color: Theme.of(context).iconTheme.color,
-                                  ),
-                                )),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      if (viewModel.assetLocationHistory !=
+                                          null) {
+                                        zoomVal--;
+                                        _minus(
+                                          zoomVal,
+                                          LatLng(
+                                              viewModel.assetLocationHistory!
+                                                  .assetLocation![0].latitude!,
+                                              viewModel
+                                                  .assetLocationHistory!
+                                                  .assetLocation![0]
+                                                  .longitude!),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      width: 27.47,
+                                      height: 26.97,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Theme.of(context).backgroundColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 1.0,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1!
+                                                .color!,
+                                          ),
+                                        ],
+                                        border: Border.all(
+                                          width: 1.0,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .color!,
+                                        ),
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                      child: SvgPicture.asset(
+                                        "assets/images/minus.svg",
+                                        color:
+                                            Theme.of(context).iconTheme.color,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 16.0),
+                            //   child: DropdownButton(
+                            //     dropdownColor: Theme.of(context).backgroundColor,
+                            //     icon: Padding(
+                            //       padding: EdgeInsets.only(right: 8.0),
+                            //       child: Container(
+                            //         child: SvgPicture.asset(
+                            //           "assets/images/arrowdown.svg",
+                            //           width: 10,
+                            //           color: Theme.of(context).iconTheme.color,
+                            //           height: 10,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     isExpanded: false,
+                            //     hint: Text(
+                            //       _currentSelectedItem,
+                            //       style: TextStyle(
+                            //           color: Theme.of(context)
+                            //               .textTheme
+                            //               .bodyText1
+                            //               .color),
+                            //     ),
+                            //     items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
+                            //         .map((map) => DropdownMenuItem(
+                            //               value: map,
+                            //               child: InsiteText(
+                            //                 text: map,
+                            //                 size: 11.0,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             ))
+                            //         .toList(),
+                            //     value: _currentSelectedItem,
+                            //     onChanged: (value) {
+                            //       setState(() {
+                            //         _currentSelectedItem = value;
+                            //       });
+                            //     },
+                            //     underline: Container(
+                            //         height: 1.0,
+                            //         decoration: BoxDecoration(
+                            //             border: Border(
+                            //                 bottom: BorderSide(
+                            //                     color: Colors.transparent,
+                            //                     width: 0.0)))),
+                            //   ),
+                            // ),
+                            viewModel.refreshing
+                                ? InsiteProgressBar()
+                                : SizedBox()
                           ],
                         ),
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 16.0),
-                      //   child: DropdownButton(
-                      //     dropdownColor: Theme.of(context).backgroundColor,
-                      //     icon: Padding(
-                      //       padding: EdgeInsets.only(right: 8.0),
-                      //       child: Container(
-                      //         child: SvgPicture.asset(
-                      //           "assets/images/arrowdown.svg",
-                      //           width: 10,
-                      //           color: Theme.of(context).iconTheme.color,
-                      //           height: 10,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     isExpanded: false,
-                      //     hint: Text(
-                      //       _currentSelectedItem,
-                      //       style: TextStyle(
-                      //           color: Theme.of(context)
-                      //               .textTheme
-                      //               .bodyText1
-                      //               .color),
-                      //     ),
-                      //     items: ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID']
-                      //         .map((map) => DropdownMenuItem(
-                      //               value: map,
-                      //               child: InsiteText(
-                      //                 text: map,
-                      //                 size: 11.0,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //             ))
-                      //         .toList(),
-                      //     value: _currentSelectedItem,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         _currentSelectedItem = value;
-                      //       });
-                      //     },
-                      //     underline: Container(
-                      //         height: 1.0,
-                      //         decoration: BoxDecoration(
-                      //             border: Border(
-                      //                 bottom: BorderSide(
-                      //                     color: Colors.transparent,
-                      //                     width: 0.0)))),
-                      //   ),
-                      // ),
-                      viewModel.refreshing ? InsiteProgressBar() : SizedBox()
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
-          );
+                );
         }
       },
       viewModelBuilder: () =>

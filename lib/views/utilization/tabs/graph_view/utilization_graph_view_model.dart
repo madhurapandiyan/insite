@@ -48,7 +48,7 @@ class UtilizationGraphViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.UTILIZATION,
         appliedFilters,
-        graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!));
+      await  graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!,appliedFilters));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

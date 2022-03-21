@@ -14,6 +14,7 @@ class FilterViewModel extends InsiteViewModel {
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
   List<FilterData> filterDataMake = [];
+  List<FilterData> filterDataManufacturer = [];
   List<FilterData> filterDataModel = [];
   List<FilterData> filterDataSubscription = [];
   List<FilterData> filterDataModelYear = [];
@@ -64,6 +65,8 @@ class FilterViewModel extends InsiteViewModel {
         graphqlSchemaService!.getFilterData("manufacturer"),
         false);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
+    addData(
+        filterDataManufacturer, resultManufacturer, FilterType.MANUFACTURER);
 
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
@@ -108,11 +111,17 @@ class FilterViewModel extends InsiteViewModel {
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     AssetCount? resultJobType = await _assetService!.getAssetCount(
-        "JobType", FilterType.JOBTYPE, graphqlSchemaService!.allAssets, false);
+        "JobType",
+        FilterType.JOBTYPE,
+        graphqlSchemaService!.getUserManagementRefine("JobType"),
+        null);
     addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
 
-    AssetCount? resultUserType = await _assetService!.getAssetCount("UserType",
-        FilterType.USERTYPE, graphqlSchemaService!.allAssets, false);
+    AssetCount? resultUserType = await _assetService!.getAssetCount(
+        "UserType",
+        FilterType.USERTYPE,
+        graphqlSchemaService!.getUserManagementRefine("UserType"),
+        null);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
     ReportCount? resultReportFrequencyType =
@@ -216,7 +225,6 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   void onFilterApplied() {
-    Logger().e("mappiy");
     _isRefreshing = true;
     notifyListeners();
     updateFilterInDb(selectedFilterData!);

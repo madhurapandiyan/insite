@@ -93,22 +93,22 @@ class IdlePercentWorkingPercentViewState
                                                       .idleEfficiency ==
                                                   null
                                               ? null
-                                              : viewModel
+                                              : (viewModel
                                                       .utilLizationListData[
                                                           index]
                                                       .idleEfficiency! *
-                                                  100
+                                                  100).toStringAsFixed(2)
                                           : viewModel
                                                       .utilLizationListData[
                                                           index]
                                                       .workingEfficiency ==
                                                   null
                                               ? null
-                                              : viewModel
+                                              : (viewModel
                                                       .utilLizationListData[
                                                           index]
                                                       .workingEfficiency! *
-                                                  100,
+                                                  100).toStringAsFixed(2),
                                       color: rangeChoice == 1
                                           ? Theme.of(context).buttonColor
                                           : olivine);

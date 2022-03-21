@@ -281,14 +281,19 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        graphqlSchemaService!.getFleetLocationData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      await  graphqlSchemaService!.getFleetLocationData(
+            filtlerList: appliedFilters,
+            pageNo: pageNumber,
+            pageSize: pageSize,
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
       clusterMarker();
       manager!.updateMap();
+    }else{
+      
     }
     _loading = false;
     _refreshing = false;
@@ -341,9 +346,13 @@ class LocationViewModel extends InsiteViewModel {
             pageNumber,
             pageSize,
             '-lastlocationupdateutc',
-            graphqlSchemaService!.getFleetLocationData(
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+          await  graphqlSchemaService!.getFleetLocationData(
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                pageSize: pageSize,
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
       clusterMarker();
@@ -362,9 +371,12 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-        graphqlSchemaService!.getFleetLocationData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      await  graphqlSchemaService!.getFleetLocationData(
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            filtlerList: appliedFilters,
+            pageNo: pageNumber,
+            pageSize: pageSize));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;

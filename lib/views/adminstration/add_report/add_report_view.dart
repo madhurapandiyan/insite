@@ -523,6 +523,7 @@ class _AddReportViewState extends State<AddReportView> {
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, top: 3),
                         child: CustomDatePicker(
+                          initialText: "YYYY/MM/DD",
                           controller: viewModel.dateTimeController,
                           voidCallback: () {
                             getDatePicker(viewModel);
@@ -608,7 +609,7 @@ class _AddReportViewState extends State<AddReportView> {
                       ? Container(
                           margin: EdgeInsets.all(8),
                           // height: 120,
-                          color: Theme.of(context).cardColor,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
                           child: Column(
                             children: List.generate(
                                 viewModel.searchContactListName!.length,
@@ -814,7 +815,7 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartDate);
+      String formattedDate = DateFormat('yyyy/MM/dd').format(pickedStartDate);
 
       print(formattedDate);
       viewModel.getDatPickerData(formattedDate);

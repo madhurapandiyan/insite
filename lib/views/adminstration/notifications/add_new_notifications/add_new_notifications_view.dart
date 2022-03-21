@@ -214,9 +214,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                               controller: viewModel
                                                   .assetStatusOccurenceController,
                                               onChange: (value) {
-                                                // viewModel
-                                                //     .onChagingeFuelLossOccurenceBox(
-                                                //         value);
+                                                viewModel
+                                                    .onChangingOccurence(value);
                                               },
                                             )
                                           // : viewModel.dropDownInitialValue ==
@@ -706,7 +705,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             .assetStatusOccurenceController,
                                                                     onChange:
                                                                         (value) {
-                                                                      //viewModel.onChagingAssetOccurenceBox(value);
+                                                                     viewModel.onChangingOccurence(value);
                                                                     },
                                                                   )
                                                                 : viewModel.dropDownInitialValue ==
@@ -718,7 +717,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             viewModel.assetStatusOccurenceController,
                                                                         onChange:
                                                                             (value) {
-                                                                          //viewModel.onChagingeEngineHourOccurenceBox(value);
+                                                                       viewModel.onChangingOccurence(value);
                                                                         },
                                                                       )
                                                                     : viewModel.dropDownInitialValue ==
@@ -730,7 +729,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                 viewModel.assetStatusOccurenceController,
                                                                             onChange:
                                                                                 (value) {
-                                                                              //viewModel.onChagingeFuelOccurenceBox(value);
+                                                                              viewModel.onChangingOccurence(value);
                                                                             },
                                                                           )
                                                                         // : viewModel.dropDownInitialValue == "Odometer"
@@ -747,7 +746,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                 suffixTitle: "Hours",
                                                                                 controller: viewModel.assetStatusOccurenceController,
                                                                                 onChange: (value) {
-                                                                                  // viewModel.onChagingeExcessiveOccurenceBox(value);
+                                                                                  viewModel.onChangingOccurence(value);
                                                                                 },
                                                                               )
                                                                             : SizedBox()
@@ -955,9 +954,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                         onAddingAsset: (i, value) {
                                           viewModel.onAddingAsset(i, value);
                                         },
-                                        assetData: (value) {
-                                          
-                                        },
+                                        assetData: (value) {},
                                         assetResult: viewModel.assetIdresult,
                                       ),
                                     ),

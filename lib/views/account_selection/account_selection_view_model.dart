@@ -194,6 +194,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   setAccountSelected(value) async {
     Logger().d("setAccountSelected $value");
+
     // if (isVisionLink) {
     //   // value = Customer(
     //   //     CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
@@ -214,8 +215,9 @@ class AccountSelectionViewModel extends InsiteViewModel {
     _subAccountSelected = null;
     _subCustomers.clear();
     _secondaryLoading = true;
-    notifyListeners();
-    if (accountSelected != null) {
+   notifyListeners();
+  await _localService!.saveAccountInfo(accountSelected!);
+    if (_accountSelected != null) {
       List<Customer> subCustomerlist = await getSubCustomerList();
       if (subCustomerlist.isEmpty) {
         await _localService!.saveAccountInfo(accountSelected!);
@@ -225,6 +227,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
         _secondaryLoading = false;
         notifyListeners();
       }
+    }else{
+      Logger().e("mappiy");
     }
   }
 

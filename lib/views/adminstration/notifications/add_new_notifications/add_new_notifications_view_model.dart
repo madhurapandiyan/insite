@@ -469,7 +469,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     if (selectedData != null) {
       if (selectedAsset!.any((element) =>
           element.assetIdentifier == selectedData.assetIdentifier)) {
-            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+        snackbarService!.showSnackbar(message: "Asset Alerady Selected");
       } else {
         Logger().i(assetIdresult?.assetDetailsRecords?.length);
         assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
@@ -587,6 +587,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     alertConfigData = data;
 
     alertConfigData?.alertConfig?.operands?.forEach((element) {
+      assetStatusOccurenceController.text = element.value!;
       operandData.add(Operand(
           operandID: element.operandID,
           operatorId: element.operatorID,
@@ -811,6 +812,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  onChangingOccurence(String value){
+    operandData.forEach((element) { 
+      element.value=value;
+    });
   }
 
   onExpansion(bool value, int index) {
@@ -1421,7 +1428,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandData.add(Operand(
               operandID: operand.operandID,
               operatorId: element.operatorID,
-              value: "1"));
+              value: assetStatusOccurenceController.text));
         });
       }
       if (operand.operandName == "Power Mode") {
@@ -1432,13 +1439,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             operandData.add(Operand(
                 operandID: operand.operandID,
                 operatorId: element.operatorID,
-                value: "1"));
+                value: assetStatusOccurenceController.text));
           } else {
             operandData.clear();
             operandData.add(Operand(
                 operandID: operand.operandID,
                 operatorId: element.operatorID,
-                value: "1"));
+                value: assetStatusOccurenceController.text));
           }
         });
       }
@@ -1450,7 +1457,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         operandData.add(Operand(
             operandID: operand.operandID,
             operatorId: operator.operatorID,
-            value: "1"));
+            value: assetStatusOccurenceController.text));
       }
       if (operand.operators!
           .any((element) => element.name == _dropDownSubInitialValue)) {
@@ -1461,7 +1468,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         operandData.add(Operand(
             operandID: operand.operandID,
             operatorId: operator.operatorID,
-            value: "1"));
+            value: assetStatusOccurenceController.text));
       } else {
         operand.operators!.forEach((operator) {
           // Logger().e(operator.toJson());
@@ -1469,7 +1476,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandData.add(Operand(
               operandID: operand.operandID,
               operatorId: operator.operatorID,
-              value: "1"));
+              value: assetStatusOccurenceController.text));
         });
         operandData.forEach((element) {
           Logger().e(element.toJson());

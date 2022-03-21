@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -69,6 +72,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool customerCodetype = true;
   bool customerNameType = true;
 
+  bool isSerialNoSelected = false;
   List<HierarchyModel> _devices = [];
   List<HierarchyModel> get devices => _devices;
 
@@ -306,13 +310,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   subscriptionAssetRegistration() async {
     try {
+      Logger().e(previewDeviceDetails[3].value!);
       AssetValues deviceAssetValues;
       deviceAssetValues = AssetValues(
         deviceId: previewDeviceDetails[0].value,
         machineSlNo: previewDeviceDetails[1].value,
         machineModel: previewDeviceDetails[2].value,
         hMRDate: previewDeviceDetails[4].value,
-        hMR: previewDeviceDetails[4].value == ""
+        hMR: previewDeviceDetails[3].value == ""
             ? 0
             : double.parse(previewDeviceDetails[3].value!).toInt(),
         plantName: generalPlantDetails[0].value == ""
@@ -353,7 +358,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  onRegistrationSuccess() {
+  onRegistrationSuccess() async {
     deviceCodeController.clear();
     deviceEmailController.clear();
     serialNumberController.clear();
@@ -365,7 +370,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     deviceNameController.clear();
     deviceIdController.clear();
     customerNameController.clear();
-    _assetModel = " ";
+    _assetModel = "Select Asset Model";
+    await getSubscriptionModelData();
     notifyListeners();
   }
 
@@ -421,18 +427,23 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   getModelNamebySerialNumber(String value) async {
     try {
-      if (value.length >= 4) {
+      if (value.length >= 7) {
         SerialNumberResults? results = await _subscriptionService!
             .getDeviceModelNameBySerialNumber(serialNumber: value);
         if (results != null) {
           String? assetModelName = results.result!.modelName;
-          if (assetModel == assetModelName) {
-            _assetModel = assetModelName;
-            isSerialNoisValid = false;
+          if (results.status == "success") {
+            if (_assetModel != assetModelName) {
+              _assetModel = assetModelName;
+              modelNames.replace(0, _assetModel, modelNames);
+              Logger().wtf(modelNames.length);
+              isSerialNoisValid = false;
+            }
           } else {
             _assetModel = "Select Asset Model";
             serialNumberController.clear();
             isSerialNoisValid = true;
+            notifyListeners();
           }
         } else {
           return 'no results found';
@@ -444,6 +455,12 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         return;
       }
     } on DioError catch (e) {
+      serialNumberController.clear();
+      _assetModel = "Select Asset Model";
+      modelNames.replace(0, _assetModel, modelNames);
+      isSerialNoisValid = true;
+      notifyListeners();
+      Logger().w(e.toString());
       final error = DioException.fromDioError(e);
       //Fluttertoast.showToast(msg: error.message!);
     }
@@ -874,6 +891,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onTappingCustomerName() {
+    String data;
+
     customerCodetype = true;
     customerNameType = false;
     customerCodeController.clear();
@@ -907,4 +926,23 @@ enum FieldType {
   CUSTOMERCODE,
   CUSTOMERNAME,
   DEVICEID,
+}
+
+extension on List<dynamic> {
+  Future replace(int int, dynamic value, List listData) async {
+    try {
+      if (value.runtimeType == listData.first.runtimeType) {
+        listData.remove(value);
+        for (var i = 0; i < listData.length; i++) {
+          if (i == int) {
+            listData[i] = value;
+          }
+        }
+      } else {
+        throw Exception("Type Error");
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
 }

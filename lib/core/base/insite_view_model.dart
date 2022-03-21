@@ -84,6 +84,7 @@ abstract class InsiteViewModel extends BaseViewModel {
     _filterService!.setUp();
     _dateRangeService!.setUp();
     _mainNotificationService!.setUp();
+    
   }
 
   login() {

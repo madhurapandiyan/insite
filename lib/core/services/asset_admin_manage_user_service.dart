@@ -145,9 +145,12 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
         AdminManageUser adminManageUserResponse =
             AdminManageUser.fromJson(data.data["userManagementUserList"]);
         return adminManageUserResponse;
@@ -228,9 +231,12 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            graphqlSchemaService!.checkUserMailId(mail),
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            query: graphqlSchemaService!.checkUserMailId(mail),
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
         Logger().w(data.data);
         CheckUserResponse responce =
             CheckUserResponse.fromJson(data.data["userEmail"]);
@@ -456,7 +462,7 @@ class AssetAdminManagerUserService extends BaseService {
               : accountSelected!.CustomerUID,
         );
         var data = await Network().getGraphqlData(
-            graphqlSchemaService!.addUser(
+            query: graphqlSchemaService!.addUser(
                 firstName: firstName,
                 jobType: jobType,
                 lastName: lastName,
@@ -482,8 +488,11 @@ class AssetAdminManagerUserService extends BaseService {
                         doubleQuote),
                 details:
                     Details(user_type: doubleQuote + "Standard" + doubleQuote)),
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
         Logger().i(data);
         return AddUser.fromJson(data.data["userManagementCreateUser"]);
       }
@@ -587,10 +596,13 @@ class AssetAdminManagerUserService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            graphqlSchemaService!
+            query: graphqlSchemaService!
                 .deleteUser(users, accountSelected!.CustomerUID!),
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
         Logger().e(data);
         return data;
       }
@@ -999,11 +1011,25 @@ class AssetAdminManagerUserService extends BaseService {
       queryMap["pageNumber"] = "1";
       queryMap["pageSize"] = "99999";
       queryMap["minimalFields"] = "true";
+
       // if (customerSelected != null) {
       //   queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
       //   Logger().wtf(customerSelected!.CustomerUID);
       // }
-
+      if (!enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!
+                .notificationAssetList(no: "1", pageSize: "99999"),
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
+      }
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
             .getClientSeven()!
@@ -1019,7 +1045,7 @@ class AssetAdminManagerUserService extends BaseService {
                 Urls.groupListData +
                     FilterUtils.constructQueryFromMap(queryMap),
                 "in-vfleet-uf-map-api",
-                accountSelected!.CustomerUID);
+                accountSelected?.CustomerUID);
         return groupSummaryResponse;
       }
     } catch (e) {
@@ -1413,7 +1439,7 @@ class AssetAdminManagerUserService extends BaseService {
             .getTemplateReportAssetData(
                 Urls.addReportSaveData + "/" + "Templates",
                 "in-reports-rpt-rmapi",
-                accountSelected!.CustomerUID);
+                accountSelected?.CustomerUID);
         return templateResponse;
       }
     } catch (e) {

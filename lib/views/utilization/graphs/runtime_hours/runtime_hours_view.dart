@@ -81,43 +81,69 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   return PercentageWidget(
+                                      label: viewModel
+                                          .utilLizationListData[index]
+                                          .assetSerialNumber,
                                       value: rangeChoice == 1
                                           ? ('${viewModel.utilLizationListData[index].runtimeHours}')
                                           : rangeChoice == 2
                                               ? ('${viewModel.utilLizationListData[index].workingHours}')
                                               : ('${viewModel.utilLizationListData[index].idleHours}'),
-                                      label: viewModel
-                                          .utilLizationListData[index]
-                                          .assetSerialNumber,
                                       percentage: rangeChoice == 1
-                                          ? viewModel
+                                          ? (viewModel
+                                                  .utilLizationListData[index]
+                                                  .runtimeHours! /
+                                              100)
+                                          : rangeChoice == 2
+                                              ? (viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .runtimeHours!
-                                                      .runtimeType ==
-                                                  num
-                                              ? (viewModel.utilLizationListData[index].runtimeHours! /
+                                                      .workingHours! /
                                                   100)
-                                              : (double.parse(viewModel.utilLizationListData[index] as String) /
-                                                  100)
-                                          : rangeChoice == 2
-                                              ? viewModel
-                                                          .utilLizationListData[
-                                                              index]
-                                                          .runtimeHours!
-                                                          .runtimeType ==
-                                                      num
-                                                  ? (viewModel
-                                                          .utilLizationListData[
-                                                              index]
-                                                          .workingHours! /
-                                                      100)
-                                                  : (double.parse(viewModel
-                                                          .utilLizationListData[index]
-                                                          .workingHours! as String) /
-                                                      100)
-                                              : (viewModel.utilLizationListData[index].idleHours! / 10),
-                                      color: Theme.of(context).buttonColor);
+                                              : (viewModel
+                                                      .utilLizationListData[
+                                                          index]
+                                                      .idleHours! /
+                                                  10),
+                                      color: tango);
+                                  // PercentageWidget(
+                                  //     value: rangeChoice == 1
+                                  //         ? ('${viewModel.utilLizationListData[index].runtimeHours}')
+                                  //         : rangeChoice == 2
+                                  //             ? ('${viewModel.utilLizationListData[index].workingHours}')
+                                  //             : ('${viewModel.utilLizationListData[index].idleHours}'),
+                                  //     label: viewModel
+                                  //         .utilLizationListData[index]
+                                  //         .assetSerialNumber,
+                                  //     percentage: rangeChoice == 1
+                                  //         ? viewModel
+                                  //                     .utilLizationListData[
+                                  //                         index]
+                                  //                     .runtimeHours!
+                                  //                     .runtimeType ==
+                                  //                 num
+                                  //             ? (viewModel.utilLizationListData[index].runtimeHours! /
+                                  //                 100)
+                                  //             : (double.parse(viewModel.utilLizationListData[index] as String) /
+                                  //                 100)
+                                  //         : rangeChoice == 2
+                                  //             ? viewModel
+                                  //                         .utilLizationListData[
+                                  //                             index]
+                                  //                         .runtimeHours!
+                                  //                         .runtimeType ==
+                                  //                     num
+                                  //                 ? (viewModel
+                                  //                         .utilLizationListData[
+                                  //                             index]
+                                  //                         .workingHours! /
+                                  //                     100)
+                                  //                 : (double.parse(viewModel
+                                  //                         .utilLizationListData[index]
+                                  //                         .workingHours! as String) /
+                                  //                     100)
+                                  //             : (viewModel.utilLizationListData[index].idleHours! / 10),
+                                  //     color: Theme.of(context).buttonColor);
                                 })
                             : EmptyView(
                                 title: "No Assets Found",

@@ -95,17 +95,17 @@ class _DashboardViewState extends State<DashboardView> {
                             assetDropDown = value!;
                             switchDropDownState = !switchDropDownState;
                             if (value != "All Assets") {
-                             // "BACKHOE LOADER"
+                              // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel.getFilterDataApplied(filterData);
+                              viewModel.getFilterDataApplied(filterData, false);
                               filterLocationKey.currentState!
-                                   .getAssetLocationHomeFilterData(
-                                       filterData.title);
+                                  .getAssetLocationHomeFilterData(
+                                      filterData.title);
                             } else {
-                              viewModel.getData();
-                               filterLocationKey.currentState!
-                                   .getAssetLocationHomeData();
+                              viewModel.getData(true);
+                              filterLocationKey.currentState!
+                                  .getAssetLocationHomeData();
                             }
                           },
                         ),
@@ -120,8 +120,11 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel.getFilterDataApplied(value!);
-                                           filterLocationKey.currentState!
+                                          viewModel.getFilterDataApplied(
+                                              value!, true);
+                                          viewModel
+                                              .getProductFamilyAssetCount();
+                                          filterLocationKey.currentState!
                                               .getAssetLocationHomeFilterData(
                                                   value.title);
                                         },
@@ -255,8 +258,7 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: 
-                      GoogleMapHomeWidget(
+                      child: GoogleMapHomeWidget(
                         isRefreshing: viewModel.refreshing,
                         key: filterLocationKey,
                       ),

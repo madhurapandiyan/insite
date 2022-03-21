@@ -8,6 +8,7 @@ import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -57,11 +58,29 @@ class _LocationViewState extends State<LocationView> {
                 : viewModel.assetLocation != null
                     ? Column(
                         children: [
-                          PageHeader(
-                            count: viewModel.pageSize,
-                            total: viewModel.totalCount,
-                            screenType: ScreenType.LOCATION,
-                            isDashboard: true,
+                          Container(
+                            margin: EdgeInsets.all(16.0),
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).backgroundColor,
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .color!),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4))),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10,left: 10,bottom: 5),
+                              child: InsiteText(
+                                text: viewModel.pageSize.toString() +
+                                    " of " +
+                                    viewModel.totalCount.toString(),
+                                size: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.all(16.0),
@@ -143,6 +162,23 @@ class _LocationViewState extends State<LocationView> {
                               ],
                             ),
                           ),
+                          Container(
+                            margin: EdgeInsets.all(16.0),
+                            color: Theme.of(context).cardColor,
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: Center(
+                              child: InsiteText(
+                                text: viewModel
+                                        .assetLocation!.countData!.first.count!
+                                        .toString() +
+                                    "out of " +
+                                    viewModel.totalCount.toString() +
+                                    " assets do not have location information",
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
                           Expanded(
                             child: Stack(
                               children: [
@@ -371,7 +407,6 @@ class _LocationViewState extends State<LocationView> {
                                         .map((map) => DropdownMenuItem(
                                               value: map,
                                               child: InsiteText(
-                                              
                                                 text: map,
                                                 size: 11.0,
                                                 fontWeight: FontWeight.bold,
@@ -379,7 +414,6 @@ class _LocationViewState extends State<LocationView> {
                                             ))
                                         .toList(),
                                     value: _currentSelectedItem,
-                                    
                                     onChanged: (String? value) {
                                       setState(() {
                                         _currentSelectedItem = value!;
@@ -402,7 +436,7 @@ class _LocationViewState extends State<LocationView> {
                           ),
                         ],
                       )
-                    : SizedBox(),
+                    : EmptyView(title: "No Location Found"),
           ),
         );
       },

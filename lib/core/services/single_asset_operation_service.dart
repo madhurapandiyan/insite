@@ -34,6 +34,7 @@ class SingleAssetOperationService extends BaseService {
       String? startDate, String? endDate, String? assetUID) async {
     try {
       Map<String, String> queryMap = Map();
+     
       if (assetUID != null && assetUID.isNotEmpty) {
         queryMap["assetUid"] = assetUID;
       }
@@ -43,12 +44,16 @@ class SingleAssetOperationService extends BaseService {
       if (startDate != null && startDate.isNotEmpty) {
         queryMap["startDate"] = startDate;
       }
+      Logger().wtf((await _localService?.getLoggedInUser())?.sub);
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          _graphqlSchemaService!
-              .getSingleAssetOperation(startDate!, endDate!, assetUID!),
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: _graphqlSchemaService!
+              .getSingleAssetOperation(startDate, endDate, assetUID),
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+              customerId: accountSelected?.CustomerUID
         );
         SingleAssetOperation response =
             SingleAssetOperation.fromJson(data.data["assetOperations"]);

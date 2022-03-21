@@ -97,9 +97,12 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: query,
+         customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
         Logger()
             .wtf("get asset location ${data.data!["fleetLocationDetails"]}");
@@ -121,7 +124,7 @@ class AssetLocationService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               sort,
                               appliedFilters,
                               ScreenType.LOCATION),
@@ -167,7 +170,7 @@ class AssetLocationService extends BaseService {
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected!.CustomerUID,
+                            customerSelected?.CustomerUID,
                             sort,
                             appliedFilters,
                             ScreenType.LOCATION),
@@ -220,7 +223,7 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected?.CustomerUID;
     }
     if (sort != null) {
       queryMap["sort"] = "-lastlocationupdateutc";
@@ -228,9 +231,12 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
 
         AssetLocationData assetLocationDataResponse =
@@ -283,9 +289,13 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            _graphqlSchemaService!.searchLocation(query),
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            query: _graphqlSchemaService!.searchLocation(query),
+             customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         LocationSearchResponse result =
             LocationSearchResponse.fromJson(data.data["searchLocation"]);
@@ -317,18 +327,21 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected?.CustomerUID;
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          _graphqlSchemaService!.assetLocationData(
+          query: _graphqlSchemaService!.assetLocationData(
               no: pageNumber.toString(),
               pageSize: "1",
               sort: "-lastlocationupdateutc"),
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+           customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
         AssetLocationData assetLocationDataResponse =
             AssetLocationData.fromJson(data.data["assetLocation"]);

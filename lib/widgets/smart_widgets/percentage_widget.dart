@@ -76,7 +76,7 @@ class PercentageWidget extends StatelessWidget {
         percent: percentage == null
             ? 0
             : percentage!.runtimeType == String
-                ? double.parse(percentage!) / 100
+                ? double.parse(percentage!.toString()) / 100
                 : percentage! / 100,
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,

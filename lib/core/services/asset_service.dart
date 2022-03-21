@@ -42,9 +42,12 @@ class AssetService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
 
         AssetSummaryResponse assetOperationData = AssetSummaryResponse.fromJson(
@@ -64,7 +67,7 @@ class AssetService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               menuFilterType,
                               appliedFilters!,
                               ScreenType.ASSET_OPERATION),
@@ -82,8 +85,7 @@ class AssetService extends BaseService {
                                 ScreenType.ASSET_OPERATION),
                         accountSelected!.CustomerUID,
                       );
-          Logger().wtf(
-              'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${assetResponse.assetOperations!.toJson()}');
+          
           return assetResponse.assetOperations;
         } else {
           AssetResponse assetResponse =
@@ -95,7 +97,7 @@ class AssetService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               menuFilterType,
                               appliedFilters!,
                               ScreenType.ASSET_OPERATION),
@@ -127,9 +129,13 @@ class AssetService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            _graphqlSchemaService?.getSingleAssetDetail(assetUID),
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query: _graphqlSchemaService?.getSingleAssetDetail(assetUID),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
         AssetDetail assetDetail =
             AssetDetail.fromJson(data.data["getSingleAssetDetails"]);
         return assetDetail;
@@ -146,7 +152,7 @@ class AssetService extends BaseService {
             assetUID,
             accountSelected!.CustomerUID,
             Urls.vfleetPrefix);
-            Logger().w(assetResponse.toJson());
+        Logger().w(assetResponse.toJson());
         return assetResponse;
       }
     } catch (e) {
@@ -172,9 +178,13 @@ class AssetService extends BaseService {
       if (enableGraphQl) {
         List<Note>? notes;
         var data = await Network().getGraphqlData(
-            _graphqlSchemaService!.getNotes(assetUID),
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query: _graphqlSchemaService!.getNotes(assetUID),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
         var notesData = data.data["getMetadataNotes"] as List;
         notesData.forEach((element) {
           var notesFromJson = Note.fromJson(element as Map<String, dynamic>);

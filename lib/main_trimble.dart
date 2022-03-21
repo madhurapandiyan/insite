@@ -29,7 +29,7 @@ void main() async {
       productFlavor: "trimble",
       enableLogin: true,
       isProd: false,
-      enableGraphql: true,
+      enableGraphql: false,
       enalbeNativeLogin: false,
       apiFlavor: "indiastack");
   await LocatorInjector.setUpLocator();

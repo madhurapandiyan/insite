@@ -527,10 +527,10 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            // snackbarService!
-            //     .showSnackbar(message: "Session Expired Please Try Again");
-            // navigationService!
-            //     .navigateToView(IndiaStackSplashView(showingSnackbar: true));
+            snackbarService!
+                .showSnackbar(message: "Session Expired Please Try Again");
+            navigationService!
+                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
             return errorInterceptorHandler.next(error);
             // var refreshLoginResponce = await refreshToken();
             // if (refreshLoginResponce != null) {

@@ -18,9 +18,10 @@ class Network {
   final LoginService? _loginService = locator<LoginService>();
   final client = dio.Dio();
   String? codeChallenge;
-  String? queryUrl;
-  String? customerUid;
-  String? customerUserId;
+  // String? queryUrl;
+  // String? customerUid;
+  // String? subUid;
+  // String? customerUserId;
   String codeVerifier = randomAlphaNumeric(43);
   static String _createCodeVerifier() {
     return randomAlphaNumeric(43);
@@ -56,14 +57,16 @@ class Network {
   }
 
   getGraphqlData(
-    String? query,
-    String? customerId,
-    String? userId,
-  ) async {
+      {String? query,
+      String? customerId,
+      String? userId,
+      String? subId}) async {
     try {
-      queryUrl = query;
-      customerUserId = userId;
-      customerUid = customerId;
+      // queryUrl = query;
+      // customerUserId = userId;
+      // customerUid = customerId;
+      // subUid = subId;
+      
       final Link link = DioLink(
         graphqlEndpoint,
         client: client,
@@ -74,6 +77,7 @@ class Network {
           "Accept": "application/json",
           "X-VisionLink-UserUid": userId!,
           "Authorization": "bearer " + await _localService!.getToken(),
+          "sub-customeruid": subId!
         },
       );
 
@@ -94,8 +98,11 @@ class Network {
             await _localService!.saveToken(refreshLoginResponce.access_token);
             await _localService!
                 .saveRefreshToken(refreshLoginResponce.refresh_token);
-            var data =
-                await getGraphqlData(queryUrl, customerUid, customerUserId);
+            var data = await getGraphqlData(
+                query: query,
+                customerId: customerId,
+                userId: userId,
+                subId: subId);
             return data;
           }
         } else {
