@@ -10,15 +10,18 @@ import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import '../locator.dart';
+import 'graphql_schemas_service.dart';
 import 'local_service.dart';
 
 class AssetStatusService extends DataBaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   AssetStatusService() {
     init();
@@ -36,7 +39,8 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getAssetCount(key, FilterType type, query) async {
+  Future<AssetCount?> getAssetCount(
+      key, FilterType type, query, bool? isFromDashboard) async {
     Logger().d("getAssetCount $type");
     try {
       AssetCount? assetCountFromLocal =
@@ -47,13 +51,30 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (enableGraphQl) {
-          var data = await Network().getGraphqlData(
-              query,
-              accountSelected?.CustomerUID,
-              (await _localService!.getLoggedInUser())!.sub);
+         var data = await Network().getGraphqlData(
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+          );
+         if (isFromDashboard==true) {
           AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data!['getDashboardAsset']);
+              AssetCount.fromJson(data.data['getDashboardAsset']);
           return assetCountFromGraphql;
+         }
+         if(isFromDashboard==false) {
+          AssetCount assetCountFromGraphql =
+              AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+              return assetCountFromGraphql;
+          }
+          if (isFromDashboard==null) {
+           AssetCount assetCountFromGraphql =
+                AssetCount.fromJson(data.data['userManagementRefine']);
+            return assetCountFromGraphql; 
+          }
+         
         } else {
           if (isVisionLink) {
             Map<String, String?> queryMap = Map();
@@ -61,7 +82,7 @@ class AssetStatusService extends DataBaseService {
               queryMap["grouping"] = key;
             }
             if (customerSelected != null) {
-              queryMap["customerUID"] = customerSelected!.CustomerUID;
+              queryMap["customerUID"] = customerSelected?.CustomerUID;
             }
             AssetCount assetStatusResponse = await MyApi()
                 .getClient()!
@@ -91,7 +112,7 @@ class AssetStatusService extends DataBaseService {
               }
             }
             if (customerSelected != null) {
-              queryMap["customerUID"] = customerSelected!.CustomerUID;
+              queryMap["customerUID"] = customerSelected?.CustomerUID;
             }
 
             AssetCount assetStatusResponse = await MyApi()
@@ -132,10 +153,14 @@ class AssetStatusService extends DataBaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
-
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['utilizationTotal']);
 
@@ -149,7 +174,7 @@ class AssetStatusService extends DataBaseService {
                             startDate,
                             endDate,
                             accountSelected != null && customerSelected != null
-                                ? customerSelected!.CustomerUID
+                                ? customerSelected?.CustomerUID
                                 : null,
                             sort,
                             appliedFilters,
@@ -170,7 +195,7 @@ class AssetStatusService extends DataBaseService {
                           startDate,
                           endDate,
                           accountSelected != null && customerSelected != null
-                              ? customerSelected!.CustomerUID
+                              ? customerSelected?.CustomerUID
                               : null,
                           sort,
                           appliedFilters,
@@ -307,21 +332,28 @@ class AssetStatusService extends DataBaseService {
         Logger().d("from api");
         if (enableGraphQl) {
           var data = await Network().getGraphqlData(
-              query,
-              accountSelected?.CustomerUID,
-              (await _localService!.getLoggedInUser())!.sub);
-          Logger().w("get fueldata ${data.data!['getDashboardAsset']}");
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+          );
           AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data!['getDashboardAsset']);
-
+              AssetCount.fromJson(data.data['getDashboardAsset']);
           return assetCountFromGraphql;
+          // else {
+          //     // AssetCount assetCountFromGraphql =
+          //     //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+          //     //     return assetCountFromGraphql;
+          //   }
         } else {
           if (isVisionLink) {
             Map<String, String?> queryMap = Map();
             queryMap["grouping"] = "fuellevel";
             queryMap["thresholds"] = "25-50-75-100";
             if (customerSelected != null) {
-              queryMap["customerUID"] = customerSelected!.CustomerUID;
+              queryMap["customerUID"] = customerSelected?.CustomerUID;
             }
             AssetCount fuelLevelDatarespone = customerSelected != null
                 ? await MyApi().getClient()!.assetCountVL(
@@ -350,7 +382,7 @@ class AssetStatusService extends DataBaseService {
             queryMap["grouping"] = "fuellevel";
             queryMap["thresholds"] = "25-50-75-100";
             if (customerSelected != null) {
-              queryMap["customerUID"] = customerSelected!.CustomerUID;
+              queryMap["customerUID"] = customerSelected?.CustomerUID;
             }
             AssetCount fuelLevelDatarespone = await MyApi()
                 .getClient()!
@@ -379,8 +411,8 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getIdlingLevelData(
-      startDate, endDate, FilterType type, FilterSubType? subType) async {
+  Future<AssetCount?> getIdlingLevelData(startDate, endDate, FilterType type,
+      FilterSubType? subType, String query) async {
     Logger().d("getIdlingLevelData");
     try {
       AssetCount? assetCountFromLocal =
@@ -396,6 +428,26 @@ class AssetStatusService extends DataBaseService {
         queryMap["idleEfficiencyRanges"] = "[0,10][10,15][15,25][25,]";
         if (customerSelected != null) {
           queryMap["customerUID"] = customerSelected!.CustomerUID!;
+        }
+        if (enableGraphQl) {
+          // Logger().w(isFromDashboard);
+          var data = await Network().getGraphqlData(
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+          );
+          // if (isFromDashboard) {
+          AssetCount assetCountFromGraphql =
+              AssetCount.fromJson(data.data['getDashboardAsset']);
+          return assetCountFromGraphql;
+          // } else {
+          //   // AssetCount assetCountFromGraphql =
+          //   //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+          //   //     return assetCountFromGraphql;
+          // }
         }
         if (isVisionLink) {
           AssetCount idlingLevelDataResponse =
@@ -417,25 +469,25 @@ class AssetStatusService extends DataBaseService {
             return null;
           }
         } else {
-          // AssetCount idlingLevelDataResponse = await MyApi()
-          //     .getClient()!
-          //     .idlingLevel(
-          //         Urls.assetCountSummary +
-          //             FilterUtils.constructQueryFromMap(queryMap),
-          //         accountSelected!.CustomerUID,
-          //         Urls.vfleetPrefix);
-          // if (idlingLevelDataResponse != null) {
-          //   bool updated =
-          //       await updateAssetCount(idlingLevelDataResponse, type);
-          //   Logger().d("updated $updated");
-          //   if (updated) {
-          //     return idlingLevelDataResponse;
-          //   } else {
-          //     return null;
-          //   }
-          // } else {
-          //   return null;
-          // }
+          AssetCount idlingLevelDataResponse = await MyApi()
+              .getClient()!
+              .idlingLevel(
+                  Urls.assetCountSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetPrefix);
+          if (idlingLevelDataResponse != null) {
+            bool updated =
+                await updateAssetCount(idlingLevelDataResponse, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return idlingLevelDataResponse;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -451,9 +503,13 @@ class AssetStatusService extends DataBaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         AssetCount faultCountResponse =
             AssetCount.fromJson(data.data!['faultCountData']);
@@ -465,7 +521,7 @@ class AssetStatusService extends DataBaseService {
           queryMap["startDateTime"] = startDate;
           queryMap["endDateTime"] = endDate;
           if (customerSelected != null) {
-            queryMap["customerUid"] = customerSelected!.CustomerUID;
+            queryMap["customerUid"] = customerSelected?.CustomerUID;
           }
           AssetCount faultCountResponse =
               await MyApi().getClient()!.faultCountVL(
@@ -484,7 +540,7 @@ class AssetStatusService extends DataBaseService {
           queryMap["startDateTime"] = startDate;
           queryMap["endDateTime"] = endDate;
           if (customerSelected != null) {
-            queryMap["customerUid"] = customerSelected!.CustomerUID;
+            queryMap["customerUid"] = customerSelected?.CustomerUID;
           }
           AssetCount faultCountResponse = await MyApi().getClient()!.faultCount(
               Urls.faultCountSummary +
@@ -513,6 +569,30 @@ class AssetStatusService extends DataBaseService {
       queryMap["productfamily"] = filter;
       if (customerSelected != null) {
         queryMap["customerUid"] = customerSelected!.CustomerUID!;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.getFaultCountData(
+              prodFamily: filter,
+              startDate:
+                  Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+                      startDate),
+              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        // if (isFromDashboard) {
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data['faultCountData']);
+        return assetCountFromGraphql;
+        // } else {
+        // AssetCount assetCountFromGraphql =
+        //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+        //     return assetCountFromGraphql;
+        //}
       }
       if (isVisionLink) {
         AssetCount faultCountResponse = await MyApi().getClient()!.faultCountVL(
@@ -555,6 +635,26 @@ class AssetStatusService extends DataBaseService {
       if (customerSelected != null) {
         queryMap["customerUid"] = customerSelected!.CustomerUID!;
       }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.getAssetCount(
+              grouping: "assetstatus", productFamily: productFamilyKey),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        // if (isFromDashboard) {
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data['getDashboardAsset']);
+        return assetCountFromGraphql;
+        // } else {
+        // AssetCount assetCountFromGraphql =
+        //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+        //     return assetCountFromGraphql;
+        //}
+      }
       if (isVisionLink) {
         AssetCount assetStatusResponse = await MyApi()
             .getClient()!
@@ -588,6 +688,28 @@ class AssetStatusService extends DataBaseService {
         queryMap["customerUid"] = customerSelected!.CustomerUID!;
       }
       queryMap["thresholds"] = "25-50-75-100";
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.getAssetCount(
+              grouping: "fuellevel",
+              productFamily: productFamilyKey,
+              threshold: "25-50-75-100"),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        // if (isFromDashboard) {
+        AssetCount assetCountFromGraphql =
+            AssetCount.fromJson(data.data['getDashboardAsset']);
+        return assetCountFromGraphql;
+        // } else {
+        // AssetCount assetCountFromGraphql =
+        //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+        //     return assetCountFromGraphql;
+        //}
+      }
       if (isVisionLink) {
         AssetCount assetStatusResponse = await MyApi().getClient()!.fuelLevelVL(
               Urls.assetCountSummaryVL +
@@ -613,15 +735,24 @@ class AssetStatusService extends DataBaseService {
       startDate, String? productFamilyKey, endDate, query) async {
     try {
       if (enableGraphQl) {
+        // Logger().w(isFromDashboard);
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
-        Logger().wtf("get idlelevel ${data.data!['getDashboardAsset']}");
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        // if (isFromDashboard) {
         AssetCount assetCountFromGraphql =
-            AssetCount.fromJson(data.data!['getDashboardAsset']);
-
+            AssetCount.fromJson(data.data['getDashboardAsset']);
         return assetCountFromGraphql;
+        // } else {
+        //   // AssetCount assetCountFromGraphql =
+        //   //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+        //   //     return assetCountFromGraphql;
+        // }
       } else {
         Map<String, String?> queryMap = Map();
         queryMap["startDate"] = startDate;
@@ -631,7 +762,7 @@ class AssetStatusService extends DataBaseService {
           queryMap["productfamily"] = productFamilyKey;
         }
         if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
+          queryMap["customerUid"] = customerSelected?.CustomerUID;
         }
         if (isVisionLink) {
           AssetCount idlinglevelDataResponse = await MyApi()
@@ -662,9 +793,13 @@ class AssetStatusService extends DataBaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['getDashboardAsset']);

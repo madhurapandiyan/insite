@@ -174,18 +174,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TextEditingController occurenceController = TextEditingController(text: "1");
   TextEditingController assetStatusOccurenceController =
       TextEditingController(text: "1");
-  TextEditingController engineHoursOccurenceController =
-      TextEditingController(text: "1");
-  TextEditingController excessiveDailyOccurenceController =
-      TextEditingController(text: "1");
-  TextEditingController fuelOccurenceController =
-      TextEditingController(text: "1");
-  TextEditingController fuelLosssOccurenceController =
-      TextEditingController(text: "10");
-  TextEditingController odometerOccurenceController =
-      TextEditingController(text: "1");
-  TextEditingController geofenceOccurenceController =
-      TextEditingController(text: "1");
 
   // text editing controller ----------------------------
 
@@ -479,8 +467,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   onAddingAsset(int i, Asset? selectedData) {
     if (selectedData != null) {
-      assetIdresult?.assetDetailsRecords?.remove(selectedData);
-      selectedAsset?.add(selectedData);
+      if (selectedAsset!.any((element) =>
+          element.assetIdentifier == selectedData.assetIdentifier)) {
+        snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+      } else {
+        Logger().i(assetIdresult?.assetDetailsRecords?.length);
+        assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+            element.assetIdentifier == selectedData.assetIdentifier);
+        selectedAsset?.add(selectedData);
+        Logger().d(assetIdresult?.assetDetailsRecords?.length);
+      }
     }
     notifyListeners();
   }
@@ -591,6 +587,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     alertConfigData = data;
 
     alertConfigData?.alertConfig?.operands?.forEach((element) {
+      assetStatusOccurenceController.text = element.value!;
       operandData.add(Operand(
           operandID: element.operandID,
           operatorId: element.operatorID,
@@ -815,6 +812,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  onChangingOccurence(String value){
+    operandData.forEach((element) { 
+      element.value=value;
+    });
   }
 
   onExpansion(bool value, int index) {
@@ -1425,7 +1428,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandData.add(Operand(
               operandID: operand.operandID,
               operatorId: element.operatorID,
-              value: "1"));
+              value: assetStatusOccurenceController.text));
         });
       }
       if (operand.operandName == "Power Mode") {
@@ -1436,13 +1439,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             operandData.add(Operand(
                 operandID: operand.operandID,
                 operatorId: element.operatorID,
-                value: "1"));
+                value: assetStatusOccurenceController.text));
           } else {
             operandData.clear();
             operandData.add(Operand(
                 operandID: operand.operandID,
                 operatorId: element.operatorID,
-                value: "1"));
+                value: assetStatusOccurenceController.text));
           }
         });
       }
@@ -1454,7 +1457,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         operandData.add(Operand(
             operandID: operand.operandID,
             operatorId: operator.operatorID,
-            value: "1"));
+            value: assetStatusOccurenceController.text));
       }
       if (operand.operators!
           .any((element) => element.name == _dropDownSubInitialValue)) {
@@ -1465,7 +1468,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         operandData.add(Operand(
             operandID: operand.operandID,
             operatorId: operator.operatorID,
-            value: "1"));
+            value: assetStatusOccurenceController.text));
       } else {
         operand.operators!.forEach((operator) {
           // Logger().e(operator.toJson());
@@ -1473,7 +1476,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           operandData.add(Operand(
               operandID: operand.operandID,
               operatorId: operator.operatorID,
-              value: "1"));
+              value: assetStatusOccurenceController.text));
         });
         operandData.forEach((element) {
           Logger().e(element.toJson());
@@ -1509,7 +1512,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
 
       hideLoadingDialog();
-      gotoManageNotificationsPage();
+      // gotoManageNotificationsPage();
     }
   }
 
@@ -1597,7 +1600,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
 
           hideLoadingDialog();
-          gotoManageNotificationsPage();
+          // gotoManageNotificationsPage();
         } else {
           _snackBarservice!
               .showSnackbar(message: "Kindly recheck credentials added");

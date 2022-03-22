@@ -178,10 +178,33 @@ class ManageReportCardWidget extends StatelessWidget {
                 ],
               ),
               Table(
+                  columnWidths: {0: FlexColumnWidth(20)},
                 border: TableBorder(
-                  verticalInside: BorderSide(color: borderLineColor, width: 1),
+                 // verticalInside: BorderSide(color: borderLineColor, width: 1),
                   left: BorderSide(color: borderLineColor, width: 1),
                   bottom: BorderSide(color: borderLineColor, width: 1),
+                ),
+                children: [
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: "Created by :",
+                      content:
+                          scheduledReportsRow!.scheduledReports!.createdBy !=
+                                  null
+                              ? scheduledReportsRow!.scheduledReports!.createdBy
+                              : "-",
+                    ),
+                    SizedBox(),
+                    SizedBox()
+                  ])
+                ],
+              ),
+              Table(
+                columnWidths: {0: FlexColumnWidth(20)},
+                border: TableBorder(
+                  // verticalInside: BorderSide(color: borderLineColor, width: 1),
+                  left: BorderSide(color: borderLineColor, width: 1),
+                  //bottom: BorderSide(color: borderLineColor, width: 1),
                 ),
                 children: [
                   TableRow(children: [
@@ -193,18 +216,8 @@ class ManageReportCardWidget extends StatelessWidget {
                           ? scheduledReportsRow!.scheduledReports!.emailContent!
                           : "-",
                     ),
-                    InsiteTableRowItem(
-                      title: "Created by :",
-                      content:
-                          scheduledReportsRow!.scheduledReports!.createdBy !=
-                                  null
-                              ? scheduledReportsRow!.scheduledReports!.createdBy
-                              : "-",
-                    ),
-                    InsiteTableRowItem(
-                      title: "",
-                      content: "",
-                    )
+                    SizedBox(),
+                    SizedBox()
                   ])
                 ],
               ),

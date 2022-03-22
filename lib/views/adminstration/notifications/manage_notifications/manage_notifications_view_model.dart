@@ -111,21 +111,20 @@ class ManageNotificationsViewModel extends InsiteViewModel {
     if (searchValue!.length >= 4) {
       ManageNotificationsData? response =
           await _notificationService!.getsearchNotificationsData(searchValue);
-      _notifications.clear();
 
       if (response != null) {
         if (response.configuredAlerts != null &&
             response.configuredAlerts!.isNotEmpty) {
-          _notifications.addAll(response.configuredAlerts!);
-
-          _loading = false;
-          _loadingMore = false;
+          _notifications.clear();
+          Logger().i(_notifications.contains(response.configuredAlerts!));
+          if (_notifications.contains(response.configuredAlerts!)) {
+          } else {
+            _notifications.addAll(response.configuredAlerts!);
+          }
           _isSearching = false;
           notifyListeners();
         } else {
-          _loading = false;
-          _loadingMore = false;
-          _shouldLoadmore = false;
+          _notifications.clear();
           _isSearching = false;
           notifyListeners();
         }
@@ -135,6 +134,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
         _isSearching = false;
         notifyListeners();
       }
+    } else {
+      // getManageNotificationsData();
     }
   }
 
@@ -161,6 +162,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getManageNotificationsData() async {
+    _notifications.clear();
     ManageNotificationsData? response =
         await _notificationService!.getManageNotificationsData(pageNumber);
 

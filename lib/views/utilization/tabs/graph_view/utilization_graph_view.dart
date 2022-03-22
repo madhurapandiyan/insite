@@ -205,7 +205,6 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
 
   Widget getGraphView(UtilizationGraphType utilizationGraphType, startDate,
       endDate, update(int)) {
-    Logger().e(utilizationGraphType);
     switch (utilizationGraphType) {
       case UtilizationGraphType.IDLEORWORKING:
         return IdlePercentWorkingPercentView(

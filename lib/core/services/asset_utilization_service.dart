@@ -65,6 +65,21 @@ class AssetUtilizationService extends BaseService {
       // if (customerSelected != null) {
       //   queryMap["customerUID"] = customerSelected.CustomerUID;
       // }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: _graphqlSchemaService!.singleAssetUtilizationDetail(
+              assetId: assetUID, endDate: endDate, startDate: startDate),
+              customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        UtilizationSummaryResponse utilizationSummaryResponse =
+            UtilizationSummaryResponse.fromJson(
+                data.data["getAssetDetailsSec"]);
+        return utilizationSummaryResponse.utilization;
+      }
       if (isVisionLink) {
         UtilizationSummaryResponse utilizationSummaryResponse =
             await MyApi().getClient()!.utilLizationListVL(
@@ -81,6 +96,9 @@ class AssetUtilizationService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID,
                 Urls.vutilizationPrefix);
+        utilizationSummaryResponse.utilization?.forEach((element) {
+          Logger().w(element.toJson());
+        });
         return utilizationSummaryResponse.utilization;
       }
     } catch (e) {
@@ -102,9 +120,14 @@ class AssetUtilizationService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            _graphqlSchemaService!.getAssetGraphDetail(assetUID!, date!),
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+            query: _graphqlSchemaService!
+              .getAssetGraphDetail(date: date, assetId: assetUID),
+               customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         AssetUtilization assetGraphData = AssetUtilization.fromJson(
             data.data["getDashboardUtilizationSummary"]);
@@ -143,15 +166,18 @@ class AssetUtilizationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query:  query,
+              customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
-        Logger().i(data.data!['getfleetUtilization']);
-
+       
         Utilization assetCountFromGraphql =
             Utilization.fromJson(data.data!['getfleetUtilization']);
-
+            
         return assetCountFromGraphql;
       } else {
         if (isVisionLink) {
@@ -168,7 +194,7 @@ class AssetUtilizationService extends BaseService {
                                   endDate,
                                   pageNo,
                                   pageCount,
-                                  customerSelected!.CustomerUID,
+                                  customerSelected?.CustomerUID,
                                   sort,
                                   appliedFilters!,
                                   ScreenType.UTILIZATION),
@@ -205,7 +231,7 @@ class AssetUtilizationService extends BaseService {
                                 pageCount,
                                 customerSelected?.CustomerUID == null
                                     ? null
-                                    : customerSelected!.CustomerUID,
+                                    : customerSelected?.CustomerUID,
                                 sort,
                                 appliedFilters!,
                                 ScreenType.UTILIZATION),
@@ -255,6 +281,21 @@ class AssetUtilizationService extends BaseService {
       if (sort != null) {
         queryMap["sort"] = sort;
       }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: _graphqlSchemaService!.getSingleAssetUtilizationGraphAggregate(
+              assetId: assetUID, startDate: startDate, endDate: endDate),
+              customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        SingleAssetUtilization response = SingleAssetUtilization.fromJson(
+            data.data["getAssetDetailsAggregate"]);
+        Logger().w(response.daily?.first.data?.toJson());
+        return response;
+      }
       if (isVisionLink) {
         SingleAssetUtilization response = await MyApi()
             .getClient()!
@@ -285,9 +326,13 @@ class AssetUtilizationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query:  query,
+             customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         UtilizationSummary utilizationSummary = UtilizationSummary.fromJson(
             data.data!["getDashboardUtilizationSummary"]);
@@ -299,7 +344,7 @@ class AssetUtilizationService extends BaseService {
           queryMap["date"] = date;
         }
         if (customerSelected != null) {
-          queryMap["customerUID"] = customerSelected!.CustomerUID;
+          queryMap["customerUID"] = customerSelected?.CustomerUID;
         }
         if (isVisionLink) {
           UtilizationSummary response =
@@ -335,7 +380,9 @@ class AssetUtilizationService extends BaseService {
   }
 
   Future<UtilizationSummary?> getUtilizationFilterData(
-      endDate, productFamilyKey) async {
+    endDate,
+    productFamilyKey,
+  ) async {
     Logger().i("getUtilizationFilterData");
     try {
       Map<String, String?> queryMap = Map();
@@ -346,7 +393,25 @@ class AssetUtilizationService extends BaseService {
         queryMap["date"] = endDate;
       }
       if (customerSelected != null) {
-        queryMap["customerUID"] = customerSelected!.CustomerUID;
+        queryMap["customerUID"] = customerSelected?.CustomerUID;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+           query:  _graphqlSchemaService!.getAssetGraphDetail(
+              productFamily: productFamilyKey,
+              date:
+                  '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'),
+             customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        UtilizationSummary utilizationSummary = UtilizationSummary.fromJson(
+            data.data!["getDashboardUtilizationSummary"]);
+
+        return utilizationSummary;
       }
       if (isVisionLink) {
         UtilizationSummary utilizationSummary = await MyApi()

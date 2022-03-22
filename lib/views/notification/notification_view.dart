@@ -62,7 +62,7 @@ class _NotificationViewState extends State<NotificationView> {
                                 ),
                               ),
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -81,8 +81,7 @@ class _NotificationViewState extends State<NotificationView> {
                                   ),
                                   InsiteButton(
                                     title: "Date Range",
-                                    width: 90,
-                                    bgColor: Theme.of(context).backgroundColor,
+                                  bgColor: Theme.of(context).backgroundColor,
                                     textColor: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -245,7 +244,7 @@ class _NotificationViewState extends State<NotificationView> {
                                         }),
                                   )
                                 : EmptyView(
-                                    title: "No Nontification Found",
+                                    title: "No Notification Found",
                                   ),
                         viewModel.loadingMore
                             ? Padding(

@@ -499,7 +499,7 @@ class _SingleAssetUtilizationGraphViewState
                                                     .distanceTravelledKilometers!
                                                     .toStringAsFixed(1)
                                                 : null
-                                            : 0 as String?
+                                            : "0" 
                                         : viewModel
                                                     .singleAssetUtilization!
                                                     .monthly![index]

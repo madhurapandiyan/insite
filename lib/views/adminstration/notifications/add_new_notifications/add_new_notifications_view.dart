@@ -212,11 +212,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           ? TextBoxWithSuffixAndPrefix(
                                               suffixTitle: "%",
                                               controller: viewModel
-                                                  .fuelLosssOccurenceController,
+                                                  .assetStatusOccurenceController,
                                               onChange: (value) {
-                                                // viewModel
-                                                //     .onChagingeFuelLossOccurenceBox(
-                                                //         value);
+                                                viewModel
+                                                    .onChangingOccurence(value);
                                               },
                                             )
                                           // : viewModel.dropDownInitialValue ==
@@ -706,7 +705,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             .assetStatusOccurenceController,
                                                                     onChange:
                                                                         (value) {
-                                                                      //viewModel.onChagingAssetOccurenceBox(value);
+                                                                     viewModel.onChangingOccurence(value);
                                                                     },
                                                                   )
                                                                 : viewModel.dropDownInitialValue ==
@@ -715,10 +714,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                         suffixTitle:
                                                                             "Hours",
                                                                         controller:
-                                                                            viewModel.engineHoursOccurenceController,
+                                                                            viewModel.assetStatusOccurenceController,
                                                                         onChange:
                                                                             (value) {
-                                                                          //viewModel.onChagingeEngineHourOccurenceBox(value);
+                                                                       viewModel.onChangingOccurence(value);
                                                                         },
                                                                       )
                                                                     : viewModel.dropDownInitialValue ==
@@ -727,10 +726,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             suffixTitle:
                                                                                 "%",
                                                                             controller:
-                                                                                viewModel.fuelOccurenceController,
+                                                                                viewModel.assetStatusOccurenceController,
                                                                             onChange:
                                                                                 (value) {
-                                                                              //viewModel.onChagingeFuelOccurenceBox(value);
+                                                                              viewModel.onChangingOccurence(value);
                                                                             },
                                                                           )
                                                                         // : viewModel.dropDownInitialValue == "Odometer"
@@ -745,9 +744,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                 "Excessive Daily Idle"
                                                                             ? TextBoxWithSuffixAndPrefix(
                                                                                 suffixTitle: "Hours",
-                                                                                controller: viewModel.excessiveDailyOccurenceController,
+                                                                                controller: viewModel.assetStatusOccurenceController,
                                                                                 onChange: (value) {
-                                                                                  // viewModel.onChagingeExcessiveOccurenceBox(value);
+                                                                                  viewModel.onChangingOccurence(value);
                                                                                 },
                                                                               )
                                                                             : SizedBox()
@@ -955,9 +954,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                         onAddingAsset: (i, value) {
                                           viewModel.onAddingAsset(i, value);
                                         },
-                                        assetData: (value) {
-                                          
-                                        },
+                                        assetData: (value) {},
                                         assetResult: viewModel.assetIdresult,
                                       ),
                                     ),

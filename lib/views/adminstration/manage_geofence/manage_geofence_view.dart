@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart' as type;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_widget/manage_geofensewidget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'manage_geofence_view_model.dart';
 
 class ManageGeofenceView extends StatefulWidget {
@@ -21,6 +23,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
       builder:
           (BuildContext context, ManageGeofenceViewModel viewModel, Widget? _) {
         return InsiteScaffold(
+            screenType: type.ScreenType.MANAGE_GEOFENCE,
             viewModel: viewModel,
             body: viewModel.isLoading
                 ? Center(child: InsiteProgressBar())
@@ -54,7 +57,9 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SizedBox(height: 300,),
+                                    SizedBox(
+                                      height: 300,
+                                    ),
                                     InsiteText(
                                       text: "No Geofence found",
                                       size: 20,

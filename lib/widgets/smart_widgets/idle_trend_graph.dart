@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/idle_percent_trend.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class IdleTrendGraph extends StatelessWidget {
@@ -65,12 +66,14 @@ class IdleTrendGraph extends StatelessWidget {
           item.idlePercentage));
     }
 
+    
+
     return <SplineSeries<CumulativeChartData, String>>[
       SplineSeries<CumulativeChartData, String>(
         dataSource: chartData,
         splineType: SplineType.natural,
         color: Theme.of(context).buttonColor,
-        width: 2,
+        width: 1,
         xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
         yValueMapper: (CumulativeChartData chartDate, _) =>
             chartDate.percentage,

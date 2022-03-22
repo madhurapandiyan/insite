@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -84,7 +83,9 @@ class ManageReportViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        if (totalCount != assets.length) {
+          _loadMore();
+        }
       }
     });
     if (isTemplateView) {
@@ -195,22 +196,30 @@ class ManageReportViewModel extends InsiteViewModel {
   ];
 
   List<TemplateDetails> templateDetail = [
-    TemplateDetails(
-        title: "Asset Event Count",
-        description:
-            "The Asset event count report provides a summary of all the events over a 31 day period for a single asset."),
+
+    // TemplateDetails(
+    //     title: "Asset Event Count",
+    //     description:
+    //         "The Asset event count report provides a summary of all the events over a 31 day period for a single asset."),
+
     TemplateDetails(
         title: "Asset Operation",
         description:
             "The Asset Operation report provides the Asset operated hours detail for the selected Assets corresponding to the selected date range."),
     TemplateDetails(
-        title: "Engine Idle",
+
+        title: "Asset Location History",
         description:
-            "The Engine Idle report provides a breakdown of idle time for each asset. The report includes Idle events for assets using movement or switch based work definitions and daily idle time for assets using movement-based, switch-based or engine-sourced work definitions over the specified thresholds."),
-    TemplateDetails(
-        title: "Fault Code",
-        description:
-            "The Fault Code summary report provides a list of Events and Diagnostics reported by the device for the selected assets over a given time frame. Fault code information displayed in the report depends on the capabilities of the device as well as having an active service plan."),
+            "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan."),
+    // TemplateDetails(
+    //     title: "Engine Idle",
+    //     description:
+    //         "The Engine Idle report provides a breakdown of idle time for each asset. The report includes Idle events for assets using movement or switch based work definitions and daily idle time for assets using movement-based, switch-based or engine-sourced work definitions over the specified thresholds."),
+    // TemplateDetails(
+    //     title: "Fault Code",
+    //     description:
+    //         "The Fault Code summary report provides a list of Events and Diagnostics reported by the device for the selected assets over a given time frame. Fault code information displayed in the report depends on the capabilities of the device as well as having an active service plan."),
+
     TemplateDetails(
         title: "Fault Code Asset Details",
         description:
@@ -232,20 +241,27 @@ class ManageReportViewModel extends InsiteViewModel {
         description:
             "he Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range.")
   ];
-  searchReports(String searchValue) {
-    Logger().d("search Reports $searchValue");
-    pageNumber = 1;
-    _isSearching = true;
-    notifyListeners();
-    _searchKeyword = searchValue;
-    getManageReportListData();
+
+  searchReports(String searchValue) async {
+    if (searchValue.length >= 3) {
+      Logger().d("search Reports $searchValue");
+      pageNumber = 1;
+      _isSearching = true;
+      _searchKeyword = searchValue;
+      await getManageReportListData();
+    } else {
+      return;
+    }
+
   }
 
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");
     _assets = [];
     _isSearching = true;
-    notifyListeners();
+
+    _searchKeyword = "";
+
     getManageReportListData();
   }
 
@@ -274,14 +290,16 @@ class ManageReportViewModel extends InsiteViewModel {
           _isSearching = false;
           notifyListeners();
         } else {
-          for (var scheduledReport in result.scheduledReports!) {
-            _assets.add(ScheduledReportsRow(
-                scheduledReports: scheduledReport, isSelected: false));
-          }
-          _loading = false;
-          _loadingMore = false;
-          _shouldLoadmore = false;
+          _assets.clear();
           _isSearching = false;
+          // for (var scheduledReport in result.scheduledReports!) {
+          //   _assets.add(ScheduledReportsRow(
+          //       scheduledReports: scheduledReport, isSelected: false));
+          // }
+          // _loading = false;
+          // _loadingMore = false;
+          // _shouldLoadmore = false;
+          // _isSearching = false;
           notifyListeners();
         }
       } else {

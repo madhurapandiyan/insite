@@ -8,7 +8,7 @@ import 'insite_text.dart';
 
 class InsiteTableRowItem extends StatelessWidget {
   final String? title;
-  final String? content;
+  final dynamic content;
 
   const InsiteTableRowItem({
     this.title,
@@ -28,7 +28,7 @@ class InsiteTableRowItem extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           InsiteText(
-            text: content,
+            text: content.toString(),
             size: 12,
             fontWeight: FontWeight.normal,
           )

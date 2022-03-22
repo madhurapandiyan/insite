@@ -84,6 +84,7 @@ abstract class InsiteViewModel extends BaseViewModel {
     _filterService!.setUp();
     _dateRangeService!.setUp();
     _mainNotificationService!.setUp();
+    
   }
 
   login() {
@@ -149,6 +150,8 @@ abstract class InsiteViewModel extends BaseViewModel {
       _startDate = DateFormat('yyyy-MM-dd').format(
           DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
       _endDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      Logger().w("start date $startDate");
+      Logger().w("end date $endDate" );
     }
   }
 

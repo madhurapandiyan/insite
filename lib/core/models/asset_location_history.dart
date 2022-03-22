@@ -16,8 +16,8 @@ class AssetLocationHistory {
   Links? links;
   List<AssetLocation>? assetLocation;
 
-  factory AssetLocationHistory.fromJson(Map<String, dynamic> json) =>
-      _$AssetLocationHistoryFromJson(json);
+  factory AssetLocationHistory.fromJson(Map<String, dynamic>? json) =>
+      _$AssetLocationHistoryFromJson(json!);
 
   Map<String, dynamic> toJson() => _$AssetLocationHistoryToJson(this);
 }

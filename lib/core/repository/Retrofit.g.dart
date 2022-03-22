@@ -438,7 +438,7 @@ class _RestClient implements RestClient {
 
   @override
   Future<AssetLocationData> assetLocationWithCluster(url, latitude, longitude,
-      pageNumber, pageSize, radiusKm, sort, customerId) async {
+      pageNumber, pageSize, radiusKm, sort, customerId, serviceHeader) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'latitude': latitude,
@@ -448,7 +448,10 @@ class _RestClient implements RestClient {
       r'radiuskm': radiusKm,
       r'sort': sort
     };
-    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': serviceHeader
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
