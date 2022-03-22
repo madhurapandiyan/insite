@@ -44,8 +44,7 @@ class SingleAssetOperationService extends BaseService {
       if (startDate != null && startDate.isNotEmpty) {
         queryMap["startDate"] = startDate;
       }
-      Logger().wtf((await _localService?.getLoggedInUser())?.sub);
-      if (enableGraphQl) {
+     if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: _graphqlSchemaService!
               .getSingleAssetOperation(startDate, endDate, assetUID),

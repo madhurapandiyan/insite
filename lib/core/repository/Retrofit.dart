@@ -224,7 +224,8 @@ abstract class RestClient {
       @Query("pageSize") int pageSize,
       @Query("radiuskm") double radiusKm,
       @Query("sort") String sort,
-      @Header("x-visionlink-customeruid") customerId);
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<AssetLocationData> assetLocationWithClusterVL(

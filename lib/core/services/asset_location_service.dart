@@ -80,7 +80,8 @@ class AssetLocationService extends BaseService {
                   pageSize,
                   radiusKm,
                   sort,
-                  accountSelected!.CustomerUID);
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetMapPrefix);
           return result;
         }
       }
@@ -98,7 +99,7 @@ class AssetLocationService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
-         customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -289,8 +290,8 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: _graphqlSchemaService!.searchLocation(query),
-             customerId: accountSelected?.CustomerUID,
+          query: _graphqlSchemaService!.searchLocation(query),
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -337,7 +338,7 @@ class AssetLocationService extends BaseService {
               no: pageNumber.toString(),
               pageSize: "1",
               sort: "-lastlocationupdateutc"),
-           customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
