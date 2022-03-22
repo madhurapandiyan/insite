@@ -196,15 +196,18 @@ class ManageReportViewModel extends InsiteViewModel {
   ];
 
   List<TemplateDetails> templateDetail = [
+
     // TemplateDetails(
     //     title: "Asset Event Count",
     //     description:
     //         "The Asset event count report provides a summary of all the events over a 31 day period for a single asset."),
+
     TemplateDetails(
         title: "Asset Operation",
         description:
             "The Asset Operation report provides the Asset operated hours detail for the selected Assets corresponding to the selected date range."),
     TemplateDetails(
+
         title: "Asset Location History",
         description:
             "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan."),
@@ -216,6 +219,7 @@ class ManageReportViewModel extends InsiteViewModel {
     //     title: "Fault Code",
     //     description:
     //         "The Fault Code summary report provides a list of Events and Diagnostics reported by the device for the selected assets over a given time frame. Fault code information displayed in the report depends on the capabilities of the device as well as having an active service plan."),
+
     TemplateDetails(
         title: "Fault Code Asset Details",
         description:
@@ -237,6 +241,7 @@ class ManageReportViewModel extends InsiteViewModel {
         description:
             "he Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range.")
   ];
+
   searchReports(String searchValue) async {
     if (searchValue.length >= 3) {
       Logger().d("search Reports $searchValue");
@@ -247,13 +252,16 @@ class ManageReportViewModel extends InsiteViewModel {
     } else {
       return;
     }
+
   }
 
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");
     _assets = [];
     _isSearching = true;
+
     _searchKeyword = "";
+
     getManageReportListData();
   }
 
