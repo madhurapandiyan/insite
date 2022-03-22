@@ -46,9 +46,13 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query:  query,
+           customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         Logger().i(data.data!['faultdata']);
 
@@ -67,7 +71,7 @@ class FaultService extends BaseService {
                                 endDate,
                                 pageNumber,
                                 pageSize,
-                                customerSelected!.CustomerUID,
+                                customerSelected?.CustomerUID,
                                 "en-US",
                                 appliedFilters!,
                                 ScreenType.HEALTH),
@@ -100,7 +104,7 @@ class FaultService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
@@ -138,9 +142,13 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected?.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query:  query,
+            customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         AssetFaultSummaryResponse assetFaultSummaryResponse =
             AssetFaultSummaryResponse.fromJson(data.data!['assetData']);
@@ -157,7 +165,7 @@ class FaultService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH,
@@ -190,7 +198,7 @@ class FaultService extends BaseService {
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected!.CustomerUID,
+                            customerSelected?.CustomerUID,
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH,
@@ -232,9 +240,13 @@ class FaultService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query,
-            accountSelected!.CustomerUID,
-            (await _localService!.getLoggedInUser())!.sub);
+          query:  query,
+           customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
 
         FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
@@ -252,7 +264,7 @@ class FaultService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
@@ -282,7 +294,7 @@ class FaultService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
@@ -314,6 +326,12 @@ class FaultService extends BaseService {
   Future<HealthListResponse?> getHealthListData(
       String? assetUid, endDateTime, limit, page, startDateTime) async {
     try {
+      if (enableGraphQl) {
+        // var data = await Network().getGraphqlData(
+        //     query,
+        //     accountSelected!.CustomerUID,
+        //     (await _localService!.getLoggedInUser())!.sub);
+      }
       if (isVisionLink) {
         HealthListResponse healthListResponse =
             await MyApi().getClient()!.getHealthListDataVL(
@@ -378,7 +396,7 @@ class FaultService extends BaseService {
                               endDate,
                               page,
                               limit,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               "en-US",
                               appliedFilters!,
                               ScreenType.HEALTH),
@@ -410,7 +428,7 @@ class FaultService extends BaseService {
                             endDate,
                             page,
                             limit,
-                            customerSelected!.CustomerUID,
+                            customerSelected?.CustomerUID,
                             "en-US",
                             appliedFilters!,
                             ScreenType.HEALTH),

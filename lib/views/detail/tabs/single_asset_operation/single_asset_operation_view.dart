@@ -255,10 +255,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                             .bodyText1!
                                             .color),
                                   ),
-                                  minDate: DateFormat("yyyy-MM-dd")
-                                      .parse(viewModel.startDate!),
-                                  maxDate: DateFormat("yyyy-MM-dd")
-                                      .parse(viewModel.endDate!),
+                                  minDate: viewModel.minDate,
+                                  maxDate: viewModel.maxDate,
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
                                     dayTextStyle: TextStyle(
@@ -282,6 +280,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
+                                    
                                     padding: EdgeInsets.symmetric(
                                         vertical: 90, horizontal: 16),
                                     child: Column(
@@ -317,9 +316,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 15.0,
-                                        ),
+                                        
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {

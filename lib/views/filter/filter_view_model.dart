@@ -14,6 +14,7 @@ class FilterViewModel extends InsiteViewModel {
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
   List<FilterData> filterDataMake = [];
+  List<FilterData> filterDataManufacturer = [];
   List<FilterData> filterDataModel = [];
   List<FilterData> filterDataSubscription = [];
   List<FilterData> filterDataModelYear = [];
@@ -42,12 +43,15 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   getFilterData() async {
-    AssetCount? resultModel = await _assetService!.getAssetCount(
-        "model", FilterType.MODEL, graphqlSchemaService!.allAssets);
+    AssetCount? resultModel = await _assetService!.getAssetCount("model",
+        FilterType.MODEL, graphqlSchemaService!.getFilterData("model"), false);
     addData(filterDataModel, resultModel, FilterType.MODEL);
 
     AssetCount? resultDeviceType = await _assetService!.getAssetCount(
-        "deviceType", FilterType.DEVICE_TYPE, graphqlSchemaService!.allAssets);
+        "deviceType",
+        FilterType.DEVICE_TYPE,
+        graphqlSchemaService!.getFilterData("deviceType"),
+        false);
     addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
 
     // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
@@ -56,20 +60,27 @@ class FilterViewModel extends InsiteViewModel {
     //     FilterType.SUBSCRIPTION_DATE);
 
     AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-        "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets);
+        "manufacturer",
+        FilterType.MAKE,
+        graphqlSchemaService!.getFilterData("manufacturer"),
+        false);
     addData(filterDataMake, resultManufacturer, FilterType.MAKE);
+    addData(
+        filterDataManufacturer, resultManufacturer, FilterType.MANUFACTURER);
 
     AssetCount? resultProductfamily = await _assetService!.getAssetCount(
         "productfamily",
         FilterType.PRODUCT_FAMILY,
-        graphqlSchemaService!.allAssets);
+        graphqlSchemaService!.getFilterData("productfamily"),
+        false);
     addData(filterDataProductFamily, resultProductfamily,
         FilterType.PRODUCT_FAMILY);
 
     AssetCount? resultAllAssets = await _assetService!.getAssetCount(
         "assetstatus",
         FilterType.ALL_ASSETS,
-        graphqlSchemaService!.assetStatusCount);
+        graphqlSchemaService!.getFilterData("assetstatus"),
+        false);
     addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
     AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
@@ -77,23 +88,40 @@ class FilterViewModel extends InsiteViewModel {
     filterDataFuelLevel.removeWhere((element) => element.title == "");
     addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount? resultIdlingLevel = await _assetService!
-        .getIdlingLevelData(startDate, endDate, FilterType.IDLING_LEVEL, null);
+    AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
+        startDate,
+        endDate,
+        FilterType.IDLING_LEVEL,
+        null,
+        graphqlSchemaService!.getAssetCount(
+            idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+            endDate: DateTime.now().toString(),
+            startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
 
     AssetCount? resultSeverity = await _assetService!.getFaultCount(
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        graphqlSchemaService!.getFaultCountData);
+        graphqlSchemaService!.getFaultCountData(
+          startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+              startDate),
+          endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        ));
     addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
 
     AssetCount? resultJobType = await _assetService!.getAssetCount(
-        "JobType", FilterType.JOBTYPE, graphqlSchemaService!.allAssets);
+        "JobType",
+        FilterType.JOBTYPE,
+        graphqlSchemaService!.getUserManagementRefine("JobType"),
+        null);
     addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
 
     AssetCount? resultUserType = await _assetService!.getAssetCount(
-        "UserType", FilterType.USERTYPE, graphqlSchemaService!.allAssets);
+        "UserType",
+        FilterType.USERTYPE,
+        graphqlSchemaService!.getUserManagementRefine("UserType"),
+        null);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
     ReportCount? resultReportFrequencyType =
@@ -197,7 +225,6 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   void onFilterApplied() {
-    Logger().e("mappiy");
     _isRefreshing = true;
     notifyListeners();
     updateFilterInDb(selectedFilterData!);

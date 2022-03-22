@@ -63,37 +63,47 @@ class RuntimeHoursViewModel extends InsiteViewModel {
   }
 
   getUtilization() async {
-    Logger().d("getUtilization");
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    Utilization? result = await _utilizationService!.getUtilizationResult(
-        startDate,
-        endDate,
-        '-RuntimeHours',
-        pageNumber,
-        pageCount,
-        appliedFilters,
-        graphqlSchemaService!.getFleetUtilization);
-    if (result != null) {
-      if (result.assetResults!.isNotEmpty) {
-        _utilLizationListData.addAll(result.assetResults!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      Logger().d("getUtilization");
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+      Utilization? result = await _utilizationService!.getUtilizationResult(
+          startDate,
+          endDate,
+          '-RuntimeHours',
+          pageNumber,
+          pageCount,
+          appliedFilters,
+          await graphqlSchemaService!.getFleetUtilization(
+              sort: '-RuntimeHours',
+              startDate: startDate,
+              endDate: endDate,
+              applyFilter: appliedFilters,
+              pageNo: pageNumber,
+              pageSize: pageCount));
+      if (result != null) {
+        if (result.assetResults!.isNotEmpty) {
+          _utilLizationListData.addAll(result.assetResults!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _utilLizationListData.addAll(result.assetResults!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _utilLizationListData.addAll(result.assetResults!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
+      _update = true;
       notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
-    _update = true;
-    notifyListeners();
   }
 
   refresh() async {

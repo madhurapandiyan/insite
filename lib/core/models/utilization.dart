@@ -7,13 +7,11 @@ class Utilization {
   Utilization({
     this.assetResults,
     this.totals,
-    this.code,
-    this.message,
+   this.message,
   });
 
   List<AssetResult>? assetResults;
   Map<String, double>? totals;
-  String? code;
   String? message;
 
   factory Utilization.fromJson(Map<String, dynamic> json) =>
@@ -95,7 +93,7 @@ class AssetResult {
   dynamic idleFuelConsumedLiters;
   List<String>? idleFuelConsumedLitersCalloutTypes;
   dynamic idleFuelConsumptionRate;
-  double? idleHours;
+  dynamic idleHours;
   List<String>? idleHoursCalloutTypes;
   dynamic kmsPerRuntimeFuelConsumedLiter;
   dynamic lastIdleFuelConsumptionLitersMeter;
@@ -117,9 +115,9 @@ class AssetResult {
   List<String>? runtimeHoursCalloutTypes;
   bool? supportsIdle;
   double? targetIdle;
-  double? targetIdlePerformance;
+  dynamic targetIdlePerformance;
   double? targetRuntime;
-  double? targetRuntimePerformance;
+  dynamic targetRuntimePerformance;
   String? workDefinitionType;
   double? workingEfficiency;
   dynamic workingFuelConsumedLiters;

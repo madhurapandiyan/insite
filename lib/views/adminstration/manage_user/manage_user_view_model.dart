@@ -78,7 +78,10 @@ class ManageUserViewModel extends InsiteViewModel {
       scrollController!.addListener(() {
         if (scrollController!.position.pixels ==
             scrollController!.position.maxScrollExtent) {
-          _loadMore();
+          if (_totalCount == assets.length) {
+          } else {
+            _loadMore();
+          }
         }
       });
       Future.delayed(Duration(seconds: 1), () {
@@ -114,7 +117,8 @@ class ManageUserViewModel extends InsiteViewModel {
               pageNumber,
               _searchKeyword,
               appliedFilters,
-              graphqlSchemaService!.userManagementUserList(_searchKeyword));
+              graphqlSchemaService!.userManagementUserList(
+                  searchKey: _searchKeyword, pageNo: pageNumber));
       if (result != null) {
         if (result.total != null) {
           _totalCount = result.total!.items!;
@@ -323,8 +327,12 @@ class ManageUserViewModel extends InsiteViewModel {
     _shouldLoadmore = true;
     notifyListeners();
     AdminManageUser? result = await _manageUserService!
-        .getAdminManageUserListData(pageNumber, _searchKeyword, appliedFilters,
-            graphqlSchemaService!.userManagementUserList(_searchKeyword));
+        .getAdminManageUserListData(
+            pageNumber,
+            _searchKeyword,
+            appliedFilters,
+            graphqlSchemaService!.userManagementUserList(
+                searchKey: _searchKeyword, pageNo: pageNumber));
     Logger().wtf(appliedFilters!.length);
     if (result != null) {
       if (result.total != null) {

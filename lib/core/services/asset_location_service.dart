@@ -5,6 +5,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -15,6 +16,7 @@ class AssetLocationService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
 
   AssetLocationService() {
     setUp();
@@ -78,7 +80,8 @@ class AssetLocationService extends BaseService {
                   pageSize,
                   radiusKm,
                   sort,
-                  accountSelected!.CustomerUID);
+                  accountSelected!.CustomerUID,
+                  Urls.vfleetMapPrefix);
           return result;
         }
       }
@@ -95,9 +98,12 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
         Logger()
             .wtf("get asset location ${data.data!["fleetLocationDetails"]}");
@@ -119,7 +125,7 @@ class AssetLocationService extends BaseService {
                               endDate,
                               pageNumber,
                               pageSize,
-                              customerSelected!.CustomerUID,
+                              customerSelected?.CustomerUID,
                               sort,
                               appliedFilters,
                               ScreenType.LOCATION),
@@ -165,7 +171,7 @@ class AssetLocationService extends BaseService {
                             endDate,
                             pageNumber,
                             pageSize,
-                            customerSelected!.CustomerUID,
+                            customerSelected?.CustomerUID,
                             sort,
                             appliedFilters,
                             ScreenType.LOCATION),
@@ -218,7 +224,7 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected?.CustomerUID;
     }
     if (sort != null) {
       queryMap["sort"] = "-lastlocationupdateutc";
@@ -226,9 +232,12 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query,
-          accountSelected?.CustomerUID,
-          (await _localService!.getLoggedInUser())!.sub,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
 
         AssetLocationData assetLocationDataResponse =
@@ -279,11 +288,26 @@ class AssetLocationService extends BaseService {
     Logger().i("searchLocation");
     var authToken = "366658D213F9F1429033919FCAE365FC";
     try {
-      LocationSearchResponse result = await MyApi()
-          .getClientTwo()!
-          .getLocations(query, maxResults, authToken);
-      List<LocationSearchData>? list = result.Locations;
-      return list;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: _graphqlSchemaService!.searchLocation(query),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        LocationSearchResponse result =
+            LocationSearchResponse.fromJson(data.data["searchLocation"]);
+        return result.Locations;
+      } else {
+        LocationSearchResponse result = await MyApi()
+            .getClientTwo()!
+            .getLocations(query, maxResults, authToken);
+        List<LocationSearchData>? list = result.Locations;
+        return list;
+      }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -304,12 +328,25 @@ class AssetLocationService extends BaseService {
       queryMap["pageSize"] = pageSize.toString();
     }
     if (customerSelected != null) {
-      queryMap["customerIdentifier"] = customerSelected!.CustomerUID;
+      queryMap["customerIdentifier"] = customerSelected?.CustomerUID;
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
       if (enableGraphQl) {
-        
+        var data = await Network().getGraphqlData(
+          query: _graphqlSchemaService!.assetLocationData(
+              no: pageNumber.toString(),
+              pageSize: "1",
+              sort: "-lastlocationupdateutc"),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        AssetLocationData assetLocationDataResponse =
+            AssetLocationData.fromJson(data.data["assetLocation"]);
+        return assetLocationDataResponse;
       }
       if (isVisionLink) {
         AssetLocationData assetLocationDataResponse =

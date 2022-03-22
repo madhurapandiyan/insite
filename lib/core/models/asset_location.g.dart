@@ -62,7 +62,7 @@ MapRecord _$MapRecordFromJson(Map<String, dynamic> json) => MapRecord(
           : DateTime.parse(json['lastReportedUtc'] as String),
       fuelLevelLastReported:
           (json['fuelLevelLastReported'] as num?)?.toDouble(),
-      notifications: json['notifications'] as int?,
+      notifications: json['notifications'],
       geofences: json['geofences'] as List<dynamic>?,
       lastLocationUpdateUtc: json['lastLocationUpdateUtc'] == null
           ? null

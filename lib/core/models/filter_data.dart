@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'filter_data.g.dart';
 
+@JsonSerializable()
 @HiveType(typeId: 0)
 class FilterData {
   @HiveField(0)
@@ -22,6 +24,8 @@ FilterData(
       this.type,
       this.extras,
       this.subType});
+
+        Map<String, dynamic> toJson() => _$FilterDataToJson(this);
 }
 
 @HiveType(typeId: 1)
@@ -67,7 +71,9 @@ enum FilterType {
   @HiveField(19)
   REPORT_FORMAT,
   @HiveField(20)
-  REPORT_TYPE
+  REPORT_TYPE,
+  @HiveField(21)
+  MANUFACTURER
 }
 
 @HiveType(typeId: 2)

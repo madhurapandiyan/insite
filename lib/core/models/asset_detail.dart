@@ -66,10 +66,10 @@ class AssetDetail {
   final double? fuelLevelLastReported;
   final String? lastPercentFuelRemainingUTC;
   final String? fuelReportedTimeUTC;
-  final String? lifetimeFuel;
+  final dynamic lifetimeFuel;
   final String? lastReportedTimeUTC;
   final String? lastLocationUpdateUTC;
-  final String? percentDEFRemaining;
+  final dynamic percentDEFRemaining;
   final double? lifetimeDEFLiters;
   final String? lastLifetimeDEFLitersUTC;
   final String? lastPercentDEFRemainingUTC;
@@ -112,3 +112,5 @@ class AssetDetail {
 
   Map<String, dynamic> toJson() => _$AssetDetailToJson(this);
 }
+
+

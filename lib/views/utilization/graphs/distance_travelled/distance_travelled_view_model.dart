@@ -73,7 +73,13 @@ class DistanceTravelledViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        graphqlSchemaService!.getFleetUtilization);
+       await graphqlSchemaService!.getFleetUtilization(
+            applyFilter: appliedFilters,
+            endDate: endDate,
+            startDate: startDate,
+            pageNo: pageNumber,
+            pageSize: pageCount,
+            sort: '-RuntimeHours'));
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);

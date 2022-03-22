@@ -7,7 +7,8 @@ import 'package:logger/logger.dart';
 
 class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
   Logger? log;
-  AssetUtilizationService? _assetUtilizationService = locator<AssetUtilizationService>();
+  AssetUtilizationService? _assetUtilizationService =
+      locator<AssetUtilizationService>();
 
   bool _loading = true;
   bool get loading => _loading;
@@ -46,13 +47,20 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
     if (result != null) {
       _singleAssetUtilization = result;
       for (Range data in _singleAssetUtilization!.daily!) {
-        listIdleDay.add(data.data!.idleHours);
+        listIdleDay.add(data.data!.idleHours.runtimeType == double
+            ? data.data!.idleHours
+            : double.parse(data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
       }
       for (Range data in _singleAssetUtilization!.weekly!) {
-        listWeekDay.add(data.data!.idleHours);
+        listWeekDay.add(data.data!.idleHours.runtimeType == double
+            ? data.data!.idleHours
+            : double.parse(
+                data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
       }
       for (Range data in _singleAssetUtilization!.monthly!) {
-        listMonthDay.add(data.data!.idleHours);
+        listMonthDay.add(data.data!.idleHours.runtimeType == double
+            ? data.data!.idleHours
+            : double.parse(data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
       }
       Logger().d("listIdleDay ${listIdleDay.length}");
       Logger().d("listWeekDay ${listWeekDay.length}");

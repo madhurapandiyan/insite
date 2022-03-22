@@ -66,6 +66,7 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                 SelectionAssetWidget(
                   onAddingAsset: (i, value) {
                     widget.onAddingAsset!(i, value);
+                    viewModel.getGroupListData(widget.assetResult!);
                   },
                   displayList: viewModel.assetId,
                   onBackPressed: () {
@@ -77,6 +78,8 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                   onAddingAsset: (i, value) {
                     Logger().e(value.toJson());
                     widget.onAddingAsset!(i, value);
+                    // viewModel.onAddingSerialNo(i,value);
+                    // viewModel.getGroupListData(widget.assetResult!);
                   },
                   displayList: viewModel.isSearchingSerialNo
                       ? viewModel.serialNoSearch
@@ -104,7 +107,7 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                   onAddingAsset: (i, value) {
                     widget.onAddingAsset!(i, value);
                   },
-                  onChange: (value){
+                  onChange: (value) {
                     viewModel.onSearchingProductFamily(value);
                   },
                   displayList: viewModel.isSearchingProductFamily
@@ -190,7 +193,7 @@ class SelectionAssetWidget extends StatelessWidget {
   final Function? onBackPressed;
   final String? title;
   final List? displayList;
- final Function(String)? onChange;
+  final Function(String)? onChange;
   final Function(int i, Asset assetData)? onAddingAsset;
   SelectionAssetWidget(
       {this.displayList,
@@ -217,16 +220,16 @@ class SelectionAssetWidget extends StatelessWidget {
               text: title,
               size: 14,
             )),
-        displayList!.isNotEmpty
-            ? Container(
-                width: mediaQuery.size.width * 0.8,
-                margin: EdgeInsets.all(10),
-                child: CustomTextBox(
-                  onChanged: (value) {
-                    onChange!(value);
-                  },
-                ))
-            : SizedBox(),
+        // displayList!.isNotEmpty
+        //     ? Container(
+        //         width: mediaQuery.size.width * 0.8,
+        //         margin: EdgeInsets.all(10),
+        //         child: CustomTextBox(
+        //           onChanged: (value) {
+        //             onChange!(value);
+        //           },
+        //         ))
+        //     : SizedBox(),
         displayList!.isNotEmpty
             ? Expanded(
                 child: ListView.builder(

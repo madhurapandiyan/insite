@@ -113,9 +113,13 @@ class AssetOperationViewModel extends InsiteViewModel {
         pageNumber,
         _menuItem,
         appliedFilters,
-        graphqlSchemaService!.getAssetOperationData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      await graphqlSchemaService!.getAssetOperationData(
+            assetId: "",
+            pageNo: pageNumber,
+            pageSize: pageSize,
+            appliedFilter: appliedFilters,
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assets.clear();
       _assets.addAll(result.assets!);
@@ -133,18 +137,23 @@ class AssetOperationViewModel extends InsiteViewModel {
   getAssetSummaryList() async {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    await getAssetOperationCount();
+   // await getAssetOperationCount();
     updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
-        startDate,
-        endDate,
-        pageSize,
-        pageNumber,
-        _menuItem,
-        appliedFilters,
-        graphqlSchemaService!.getAssetOperationData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+      startDate,
+      endDate,
+      pageSize,
+      pageNumber,
+      _menuItem,
+      appliedFilters,
+    await graphqlSchemaService!.getAssetOperationData(
+          startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+          endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          assetId: "",
+          appliedFilter: appliedFilters,
+          pageNo: pageNumber,
+          pageSize: pageSize),
+    );
     if (result != null) {
       if (result.pagination!.totalAssets != null) {
         _totalCount = result.pagination!.totalAssets!.toInt();
@@ -201,7 +210,8 @@ class AssetOperationViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.ASSET_OPERATION,
         appliedFilters,
-        graphqlSchemaService!.utilizationTotalCount);
+        await graphqlSchemaService!
+            .utilizationToatlCount(startDate!, endDate!, appliedFilters));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

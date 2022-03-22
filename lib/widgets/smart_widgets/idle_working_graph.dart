@@ -45,12 +45,20 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             isRTL: true,
             width: width,
             center: InsiteText(
-              text: "${idleLength.toStringAsFixed(1)}",
+              text: idleLength.runtimeType == num
+                  ? double.parse(idleLength.toString()).toString()
+                  : idleLength.toString(),
               size: 12,
               color: Colors.black,
             ),
             lineHeight: 20.0,
-            percent: (idleLength * 10 / 100) > 1 ? 1 : (idleLength * 10 / 100),
+            percent: idleLength.runtimeType == num
+                ? ((double.parse(idleLength.toString())) * 10 / 100) > 1
+                    ? 1
+                    : ((double.parse(idleLength.toString())) * 10 / 100)
+                : (double.parse(idleLength.toString()) * 10 / 100) > 1
+                    ? 1
+                    : (double.parse(idleLength.toString()) * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: tango,
             backgroundColor: concrete,
@@ -89,7 +97,8 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             width: 2,
           ),
           InsiteText(
-            text: "${(idleLength + workingLength).toStringAsFixed(1)}",
+            text:idleLength.toString(),
+               // "${double.parse((idleLength.toString() + workingLength.toString())).toStringAsFixed(1)}",
             size: 10,
             fontWeight: FontWeight.bold,
           ),

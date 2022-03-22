@@ -303,7 +303,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       AssetCount? resultProductfamily = await _assetService!.getAssetCount(
           "productfamily",
           FilterType.PRODUCT_FAMILY,
-          graphqlSchemaService!.allAssets);
+          graphqlSchemaService!.allAssets,
+          false);
       if (resultProductfamily != null) {
         for (var productFamilyData in resultProductfamily.countData!) {
           _productFamilyData.add(productFamilyData.countOf!);
@@ -319,7 +320,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   getManufacturerGroupData() async {
     if (_manufacturerData.isEmpty && _manufacturerCountData.isEmpty) {
       AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-          "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets);
+          "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets,
+          false);
       for (var manfactureData in resultManufacturer!.countData!) {
         _manufacturerData.add(manfactureData.countOf!);
         _manufacturerCountData.add(manfactureData.count.toString());
@@ -348,7 +350,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   getModelData() async {
     if (_modelData.isEmpty && modelCountData.isEmpty) {
       AssetCount? resultModel = await _assetService!.getAssetCount(
-          "model", FilterType.MODEL, graphqlSchemaService!.allAssets);
+          "model", FilterType.MODEL, graphqlSchemaService!.allAssets, false);
       if (resultModel != null) {
         Logger().wtf(resultModel.countData!.last.toJson());
         for (var modelData in resultModel.countData!) {
@@ -367,7 +369,8 @@ class SelectionWidgetViewModel extends InsiteViewModel {
       AssetCount? resultDeviceType = await _assetService!.getAssetCount(
           "deviceType",
           FilterType.DEVICE_TYPE,
-          graphqlSchemaService!.allAssets);
+          graphqlSchemaService!.allAssets,
+          false);
       deviceTypdeData.clear();
       deviceTypeCountData.clear();
       for (var deviceTypeData in resultDeviceType!.countData!) {
