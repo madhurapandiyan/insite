@@ -17,8 +17,14 @@ import 'insite_text.dart';
 class MaintenanceAssetListItem extends StatefulWidget {
   final AssetCentricData? assetData;
   final VoidCallback? onCallback;
+
+  final Function(
+          num? value, AssetData? assetDataValue, List<Services?>? serviceNames)?
+      serviceCalBack;
+
   final Key? key;
-  const MaintenanceAssetListItem({this.assetData, this.key, this.onCallback})
+  const MaintenanceAssetListItem(
+      {this.assetData, this.key, this.onCallback, this.serviceCalBack})
       : super(key: key);
 
   @override
@@ -245,10 +251,22 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                                           Services? services =
                                               viewModel.services[index];
                                           return TableRow(children: [
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: services!.serviceName,
-                                              size: 12,
+                                            // InsiteTextWithPadding(
+                                            //   padding: EdgeInsets.all(8),
+                                            //   text: services!.serviceName,
+                                            //   size: 12,
+                                            // ),
+                                            InsiteRichText(
+                                              content: services!.serviceName,
+                                              onTap: () {
+                                                // serviceName!.clear();
+
+                                                widget.serviceCalBack!(
+                                                    services.serviceId,
+                                                    viewModel.assetDataValue!,
+                                                    viewModel.services);
+                                              },
+                                              title: " ",
                                             ),
                                             InsiteButton(
                                               title: services

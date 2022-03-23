@@ -11,4 +11,8 @@ class MaintenanceViewModel extends InsiteViewModel {
   }
 
   bool isListSelected = true;
+  void refresh() async {
+    await getSelectedFilterData();
+    notifyListeners();
+  }
 }

@@ -58,4 +58,4 @@ const String maintenanceViewRoute = 'maintenanceViewRoute';
 const String assetSelectionWidgetViewRoute = 'assetSelectionWidgetViewRoute';
 const String assetViewRoute0 = 'assetViewRoute0';
 const String mainViewRoute = 'mainViewRoute';
-
+const String detailPopupViewRoute = 'detailPopupViewRoute';

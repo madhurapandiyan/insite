@@ -465,4 +465,9 @@ class Urls {
       "/t/trimble.com/vss-plannedmaintenance/1.0/assetcentric";
   static String getMaintenaceServiceData =
       "/t/trimble.com/vss-plannedmaintenance/1.0/asset";
+  static String getCompleteData =
+      "/t/trimble.com/vss-plannedmaintenance/1.0/occurrences/complete";
+
+  static String getServiceCheckListData =
+      "/t/trimble.com/vss-plannedmaintenance/1.0/checklists";
 }
