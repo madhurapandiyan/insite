@@ -1407,7 +1407,7 @@ class AssetAdminManagerUserService extends BaseService {
                           "reportCreationDate", appliedFilters, searchKeyword),
                   "in-reports-rpt-rmapi",
                   accountSelected!.CustomerUID,
-                  "1d022b5a-2e4a-4f5b-bd81-ad2a75977e21");
+                  (await _localService!.getLoggedInUser())!.sub);
           return manageReportResponse;
         }
       }

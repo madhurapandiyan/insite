@@ -1091,10 +1091,6 @@ query{
     }
   }
 }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 """;
     return data;
   }
@@ -1275,10 +1271,6 @@ query{
 query{
 fleetFiltersGrouping(
   grouping:"$grouping",
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 ){
   countData{
      countOf,
