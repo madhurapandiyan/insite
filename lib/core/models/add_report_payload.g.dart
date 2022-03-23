@@ -22,8 +22,7 @@ AddReportPayLoad _$AddReportPayLoadFromJson(Map<String, dynamic> json) =>
           .toList(),
       svcMethod: json['svcMethod'] as String?,
       allAssets: json['allAssets'] as bool?,
-      svcbody:
-          (json['svcbody'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      svcbody: json['svcbody'],
       queryUrl: json['queryUrl'] as String?,
       emailContent: json['emailContent'] as String?,
       reportType: json['reportType'] as String?,

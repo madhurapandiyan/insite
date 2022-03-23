@@ -135,19 +135,41 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   int _currentPage = 0;
 
   getGroupListData(AssetGroupSummaryResponse data) async {
+    Logger().w(data.assetDetailsRecords!.length);
     try {
       assetIdresult = data;
       if (assetIdresult!.assetDetailsRecords!.isNotEmpty) {
         assetIdresult?.assetDetailsRecords?.forEach((asset) {
           if (asset.assetId == null) {
-            _assetSerialNumber?.add(asset);
+            _assetSerialNumber?.add(Asset(
+                assetIcon: asset.assetIcon,
+                assetId: asset.assetId,
+                assetIdentifier: asset.assetIdentifier,
+                assetSerialNumber: asset.assetSerialNumber,
+                makeCode: asset.makeCode,
+                model: asset.model,
+                type: AssetCategoryType.SERIALNO));
           } else {
-            _assetId?.add(asset);
-            _assetSerialNumber?.add(asset);
+            _assetId?.add(Asset(
+                assetIcon: asset.assetIcon,
+                assetId: asset.assetId,
+                assetIdentifier: asset.assetIdentifier,
+                assetSerialNumber: asset.assetSerialNumber,
+                makeCode: asset.makeCode,
+                model: asset.model,
+                type: AssetCategoryType.ASSETID));
+            _assetSerialNumber?.add(Asset(
+                assetIcon: asset.assetIcon,
+                assetId: asset.assetId,
+                assetIdentifier: asset.assetIdentifier,
+                assetSerialNumber: asset.assetSerialNumber,
+                makeCode: asset.makeCode,
+                model: asset.model,
+                type: AssetCategoryType.SERIALNO));
           }
         });
       }
-      Logger().e(_assetSerialNumber!.length);
+
       notifyListeners();
     } catch (e) {
       hideLoadingDialog();
@@ -162,7 +184,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         AssetCount? resultProductfamily = await _assetService!.getAssetCount(
             "productfamily",
             FilterType.PRODUCT_FAMILY,
-            graphqlSchemaService!.allAssets);
+            graphqlSchemaService!.allAssets,
+            false);
         Logger().e(resultProductfamily!.toJson());
         if (resultProductfamily != null) {
           for (var productFamilyData in resultProductfamily.countData!) {
@@ -200,7 +223,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       showLoadingDialog();
       if (_manufacturerData.isEmpty) {
         AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-            "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets);
+            "manufacturer",
+            FilterType.MAKE,
+            graphqlSchemaService!.allAssets,
+            false);
         for (var manfactureData in resultManufacturer!.countData!) {
           _manufacturerData.add(manfactureData);
         }
@@ -236,7 +262,7 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       if (_modelData.isEmpty) {
         showLoadingDialog();
         AssetCount? resultModel = await _assetService!.getAssetCount(
-            "model", FilterType.MODEL, graphqlSchemaService!.allAssets);
+            "model", FilterType.MODEL, graphqlSchemaService!.allAssets, false);
         if (resultModel != null) {
           Logger().wtf(resultModel.countData!.last.toJson());
           for (var modelData in resultModel.countData!) {
@@ -279,7 +305,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         AssetCount? resultDeviceType = await _assetService!.getAssetCount(
             "deviceType",
             FilterType.DEVICE_TYPE,
-            graphqlSchemaService!.allAssets);
+            graphqlSchemaService!.allAssets,
+            false);
         deviceTypdeData.clear();
         for (var deviceTypeData in resultDeviceType!.countData!) {
           _deviceTypdeData.add(deviceTypeData);
@@ -370,6 +397,11 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   onDeviceTypeBackPressed() {
     pageController!.animateToPage(9,
         duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+  }
+
+  onAddingSerialNo(int i, Asset? asset) {
+    assetSerialNumber?.removeAt(i);
+    notifyListeners();
   }
 
   onClickingRespectiveAssetCategory(AssetCategoryType type) async {

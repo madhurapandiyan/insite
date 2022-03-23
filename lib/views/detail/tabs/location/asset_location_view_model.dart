@@ -36,6 +36,8 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  bool dataNotFound=false;
+
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -73,6 +75,8 @@ class AssetLocationViewModel extends InsiteViewModel {
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
+    }else{
+      dataNotFound=true;
     }
     _loading = false;
     notifyListeners();

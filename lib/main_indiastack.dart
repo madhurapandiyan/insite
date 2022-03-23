@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/setup_snackbar_ui.dart';
@@ -15,26 +19,32 @@ import 'core/router_india_stack.dart' as router;
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(debug: true);
-  await Hive.initFlutter();
-  Hive.registerAdapter<FilterData>(FilterDataAdapter());
-  Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
-  Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
-  Hive.registerAdapter<CountData>(CountDataAdapter());
-  Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
-  AppConfig(
-      baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
-      iconPath: "assets/images/hitachi.png",
-      productFlavor: "tatahitachi",
-      enableLogin: false,
-      enalbeNativeLogin: false,
-      isProd: false,
-      enableGraphql: false,
-      apiFlavor: "indiastack");
-  await LocatorInjector.setUpLocator();
-  SnackbarStyling.setupSnackbarUi();
-  runApp(MyApp());
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    await FlutterDownloader.initialize(debug: true);
+    await Hive.initFlutter();
+    Hive.registerAdapter<FilterData>(FilterDataAdapter());
+    Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
+    Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
+    Hive.registerAdapter<CountData>(CountDataAdapter());
+    Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
+    AppConfig(
+        baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
+        iconPath: "assets/images/hitachi.png",
+        productFlavor: "tatahitachi",
+        enableLogin: false,
+        enalbeNativeLogin: false,
+        isProd: false,
+        enableGraphql: false,
+        apiFlavor: "indiastack");
+    await LocatorInjector.setUpLocator();
+    SnackbarStyling.setupSnackbarUi();
+    runApp(MyApp());
+  },
+      (error, stack) =>
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
 }
 
 class MyApp extends StatelessWidget {

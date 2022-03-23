@@ -92,7 +92,6 @@ class MainViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    Logger().d("refresh getFaultViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
     pageNumber = 1;

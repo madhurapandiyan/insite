@@ -41,7 +41,10 @@ class FleetViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        if (_totalCount == _assets.length) {
+        } else {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 1), () {
@@ -55,12 +58,7 @@ class FleetViewModel extends InsiteViewModel {
   getFleetSummaryList() async {
     try {
       FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-          startDate,
-          endDate,
-          pageSize,
-          pageNumber,
-          graphqlSchemaService!.fleetSummary(),
-          appliedFilters);
+          startDate, endDate, pageSize, pageNumber, appliedFilters);
       if (result != null) {
         if (result.pagination?.totalCount != null) {
           _totalCount = result.pagination!.totalCount!.toInt();
@@ -85,11 +83,10 @@ class FleetViewModel extends InsiteViewModel {
         notifyListeners();
       }
     } catch (e) {
-      Logger().e(e.toString());
+      //Logger().e(e.toString());
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
-      _assets.clear();
       notifyListeners();
     }
   }
@@ -130,12 +127,7 @@ class FleetViewModel extends InsiteViewModel {
       _shouldLoadmore = true;
       notifyListeners();
       FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-          startDate,
-          endDate,
-          pageSize,
-          pageNumber,
-          graphqlSchemaService!.fleetSummary,
-          appliedFilters);
+          startDate, endDate, pageSize, pageNumber, appliedFilters);
       if (result != null &&
           result.fleetRecords != null &&
           result.fleetRecords!.isNotEmpty) {

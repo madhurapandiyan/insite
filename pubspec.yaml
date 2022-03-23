@@ -57,6 +57,7 @@ dependencies:
   geocore: ^0.7.0
   google_polyline_algorithm: ^3.1.0
   
+  
 
   google_maps_controller: ^1.1.0
   flutter_colorpicker: ^1.0.2
@@ -68,6 +69,8 @@ dependencies:
   flutter_downloader: ^1.5.1
   gql_dio_link: ^0.1.0
   open_file: ^3.2.1
+  firebase_crashlytics: ^2.5.3
+  firebase_core: ^1.13.1
   
   
   

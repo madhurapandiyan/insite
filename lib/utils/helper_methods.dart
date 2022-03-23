@@ -11,6 +11,8 @@ import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
+import '../core/models/manage_notifications.dart';
+
 class Utils {
   static String getLastReportedDate(date) {
     try {
@@ -408,6 +410,18 @@ class Utils {
       case ScreenType.MANAGE_NEW_GROUP:
         title = "MANAGE GROUP";
         break;
+      case ScreenType.ADD_REPORT:
+        title = "ADD REPORT";
+        break;
+      case ScreenType.MANAGE_REPORT:
+        title = "MANAGE REPORT";
+        break;
+      case ScreenType.ADD_GEOFENCE:
+        title = "ADD GEOFENCE";
+        break;
+      case ScreenType.MANAGE_GEOFENCE:
+        title = "MANAGE GEOFENCE";
+        break;
       default:
     }
     return title;
@@ -585,6 +599,9 @@ class Utils {
       case FilterType.REPORT_TYPE:
         title = "Report Type";
         break;
+      case FilterType.MANUFACTURER:
+        title = "MANUFACTURER";
+        break;
 
       default:
     }
@@ -643,21 +660,25 @@ class Utils {
   }
 
   static DateTime? getMinDate(List<DateTime?> inputDates) {
-    DateTime? minDate;
+    DateTime? minDate = DateTime.now();
+
     for (DateTime? item in inputDates) {
-      if (minDate == null)
+      if (item == null) {
+      } else if (minDate!.isBefore(item)) {
         minDate = item;
-      else if (item!.isBefore(minDate)) minDate = item;
+      }
     }
+
     return minDate;
   }
 
   static DateTime? getMaxDate(List<DateTime?> inputDates) {
-    DateTime? maxDate;
+    DateTime? maxDate = DateTime.now();
     for (DateTime? item in inputDates) {
-      if (maxDate == null)
+      if (item == null) {
+      } else if (maxDate!.isAfter(item)) {
         maxDate = item;
-      else if (item!.isAfter(maxDate)) maxDate = item;
+      }
     }
     return maxDate;
   }
@@ -769,5 +790,173 @@ class Utils {
   static String getCountValue(double value) {
     var _formattedNumber = NumberFormat.compact().format(value);
     return _formattedNumber;
+  }
+
+  static String getFilterData(
+      List<FilterData?> appliedFilter, FilterType type) {
+    String? filterDetails;
+
+    if (appliedFilter.isNotEmpty) {
+      for (var i = 0; i < appliedFilter.length; i++) {
+        // if (type == FilterType.ASSET_STATUS) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.FUEL_LEVEL) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.PRODUCT_FAMILY) {
+        //   filterDetails =
+        //       "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        // } else if (type == FilterType.MODEL) {
+        //   Logger().d(appliedFilter[i]!.title);
+        //   filterDetails = "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+
+        //  }
+        filterDetails =
+            "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+      }
+      filterDetails!.trimLeft();
+
+      return filterDetails;
+    } else {
+      return "";
+    }
+  }
+
+  static List getStringListData(List listData) {
+    String doublequotes = "\"";
+    List<dynamic> value = [];
+    value.clear();
+    listData.forEach((element) {
+      value.add(doublequotes + element + doublequotes);
+    });
+
+    return value;
+  }
+
+  static String getNotificationCondition(ConfiguredAlerts? alert) {
+    String? data;
+    if (alert?.notificationTypeGroupID == 1) {
+      data =
+          "Asset Staus ${alert?.operands?.first.condition} ${alert?.operands?.first.operandName}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 8) {
+      data =
+          "Fault Code ${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 5) {
+      data =
+          "Engine Hours ${alert?.operands?.first.condition}  ${alert?.operands?.first.value}${alert?.operands?.first.unit}";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 3) {
+      data =
+          "Fuel ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 15) {
+      data =
+          "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else {
+      return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
+    }
+  }
+
+  static getReportColumn(String value) {
+    var list = [];
+    if (value == "Asset Operation") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "lastEvent",
+        "lastEventTime",
+        "customAssetState",
+        "distanceTravelledKilometers",
+        "lastKnownOperator",
+        "totalDuration"
+      ];
+    } else if (value == "Fleet Summary") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "lastEvent",
+        "lastEventTime",
+        "customAssetState",
+        "distanceTravelledKilometers",
+        "lastKnownOperator",
+        "totalDuration"
+      ];
+    } else if (value == "Multi-Asset Utilization") {
+      list = [
+        "callouts",
+        "assetId",
+        "assetSerialNumber",
+        "make-model",
+        "latestUtzReport",
+        "runtimeHours",
+        "targetRuntime",
+        "runtimeFuelConsumedLiters",
+        "runtimeFuelConsumptionRate",
+        "workingHours",
+        "workingFuelConsumedLiters",
+        "workingFuelConsumptionRate",
+        "idleHours",
+        "idleFuelConsumedLiters",
+        "idleFuelConsumptionRate",
+        "lastUtzLocation",
+        "startDate",
+        "endDate"
+      ];
+    } else if (value == "Utilization Details") {
+      list = [
+        "callouts",
+        "lastReportedTime",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "lastRuntimeFuelConsumptionLitersMeter",
+        "runtimeFuelConsumedLiters",
+        "runtimeFuelConsumptionRate",
+        "workingHours",
+        "workingFuelConsumedLiters",
+        "workingFuelConsumptionRate",
+        "lastIdleHourMeter",
+        "idleHours",
+        "lastIdleFuelConsumptionLitersMeter",
+        "idleFuelConsumedLiters",
+        "idleFuelConsumptionRate",
+        "startDate",
+        "endDate"
+      ];
+    } else if (value == "Fault Code Asset Details") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "make-model",
+        "faultIdentifiers",
+        "description",
+        "source",
+        "lastReportedTime",
+        "severityLabel",
+        "hourMeter",
+        "lastReportedLocation"
+      ];
+    } else if (value == "Fault Summary Faults List") {
+      list = [
+        "assetId",
+        "serialNo",
+        "make-model",
+        "faultCode",
+        "faultDate",
+        "severityLabel",
+        "source",
+        "description",
+        "currentLocation",
+        "lastReportedDate",
+        "hourMeter"
+      ];
+    }
+    return list;
   }
 }

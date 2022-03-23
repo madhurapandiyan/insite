@@ -1,8 +1,210 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class GraphqlSchemaService extends BaseService {
+  GraphqlSchemaService._internal() {
+    productFamily = null;
+    model = null;
+    assetStatus = null;
+    fuelLevelPercentLt = null;
+    idleEficiencyGT = null;
+    idleEfficiencyLTE = null;
+    assetIDContains = null;
+    snContains = null;
+    location = null;
+    deviceType = null;
+    make = null;
+    manufacturer = null;
+  }
+  static final GraphqlSchemaService _singleton =
+      GraphqlSchemaService._internal();
+
+  factory GraphqlSchemaService() => _singleton;
+  String? productFamily;
+  String? make;
+  String? model;
+  String? assetStatus;
+  String? fuelLevelPercentLt;
+  String? idleEficiencyGT;
+  String? idleEfficiencyLTE;
+  String? assetIDContains;
+  String? snContains;
+  String? location;
+  String? deviceType;
+  String? manufacturer;
+
+  List<String> modelList = [];
+  List<String> manufacturerList = [];
+  List<String> assetstatusList = [];
+  List<String> deviceTypeList = [];
+  List<String> idleEfficiencyList = [];
+  List<String> fuelLevelList = [];
+  List<String> productfamilyList = [];
+  List<String> locationList = [];
+  List<int> reportFrequency = [];
+  List<int> reportFormat = [];
+  List<int> reportType = [];
+
+  getReportFilterindividualList(
+      {List<FilterData?>? filtlerList,
+      FilterType? type,
+      List? individualList}) {
+    var data = filtlerList!.where((element) => element?.type == type).toList();
+    data.forEach((element) {
+      if (assetstatusList.contains(element)) {
+      } else {
+        individualList!.add(int.parse(element!.id!));
+      }
+    });
+  }
+
+  getReportFilterData(
+    List<FilterData?>? filtlerList,
+  ) {
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportFrequency,
+        type: FilterType.FREQUENCYTYPE);
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportFormat,
+        type: FilterType.REPORT_FORMAT);
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportType,
+        type: FilterType.REPORT_TYPE);
+  }
+
+  getIndividualList(
+      {List<FilterData?>? filtlerList,
+      FilterType? type,
+      List<String>? individualList}) {
+    String doubleQuote = "\"";
+    var data = filtlerList!.where((element) => element?.type == type).toList();
+    data.forEach((element) {
+      if (assetstatusList.contains(element)) {
+      } else {
+        individualList!.add(doubleQuote + element!.title! + doubleQuote);
+      }
+    });
+  }
+
+  clearAllList() {
+    modelList.clear();
+    manufacturerList.clear();
+    assetstatusList.clear();
+    deviceTypeList.clear();
+    idleEfficiencyList.clear();
+    fuelLevelList.clear();
+    productfamilyList.clear();
+    locationList.clear();
+    reportFrequency.clear();
+    reportFormat.clear();
+    reportType.clear();
+  }
+
+  Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
+    String doubleQuote = "\"";
+
+    if (filtlerList!.isNotEmpty) {
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: assetstatusList,
+          type: FilterType.ASSET_STATUS);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: productfamilyList,
+          type: FilterType.PRODUCT_FAMILY);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: modelList,
+          type: FilterType.MODEL);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: manufacturerList,
+          type: FilterType.MANUFACTURER);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: deviceTypeList,
+          type: FilterType.DEVICE_TYPE);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: fuelLevelList,
+          type: FilterType.FUEL_LEVEL);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: locationList,
+          type: FilterType.LOCATION_SEARCH);
+      getIndividualList(
+          filtlerList: filtlerList,
+          individualList: idleEfficiencyList,
+          type: FilterType.IDLING_LEVEL);
+    }
+  }
+
+  Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
+    filtlerList!.forEach((filterData) {
+      if (filterData?.type == FilterType.ALL_ASSETS) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.ALL_ASSETS)
+            .toList();
+        assetStatus = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("assetStatus $assetStatus");
+      } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
+            .toList();
+        productFamily = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("productFamily $productFamily");
+      } else if (filterData?.type == FilterType.MODEL) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.MODEL)
+            .toList();
+        model = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("model $model");
+      } else if (filterData?.type == FilterType.FUEL_LEVEL) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.FUEL_LEVEL)
+            .toList();
+        fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
+      } else if (filterData?.type == FilterType.MAKE) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.MAKE)
+            .toList();
+        make = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("make $make");
+      } else if (filterData?.type == FilterType.DEVICE_TYPE) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.DEVICE_TYPE)
+            .toList();
+        deviceType = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("deviceType $deviceType");
+      } else if (filterData?.type == FilterType.IDLING_LEVEL) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.IDLING_LEVEL)
+            .toList();
+        idleEficiencyGT = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("idleEficiencyGT $idleEficiencyGT");
+      } else if (filterData?.type == FilterType.LOCATION_SEARCH) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.LOCATION_SEARCH)
+            .toList();
+        location = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("locations $location");
+      } else if (filterData?.type == FilterType.MANUFACTURER) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.MANUFACTURER)
+            .toList();
+        manufacturer = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("manucaturer $manufacturer");
+      }
+    });
+  }
+
   final String allAssets = """
 query faultDataSummary{
  getDashboardAsset{
@@ -11,23 +213,49 @@ query faultDataSummary{
     countOf
   }
 }
-  
-}
+ }
+""";
 
-  """;
+  getUserManagementRefine(String filter) {
+    var data = """
+query{
+  userManagementRefine(FilterName:"$filter"){
+    countData{
+      id,
+      name,
+      count
+    }
+  }
+}""";
+    return data;
+  }
 
-  final String assetStatusCount = """
-query faultDataSummary{
- getDashboardAsset(grouping: "assetstatus"){
-  countData{  
-    count
-    countOf
+  String getAssetCount(
+      {String? grouping,
+      String? productFamily,
+      String? threshold,
+      String? endDate,
+      String? startDate,
+      String? idleEfficiencyRanges}) {
+    final String assetStatusCount = """
+query{
+  getDashboardAsset(
+    grouping: "${grouping == null ? "" : "$grouping"}",
+    productfamily:"${productFamily == null ? "" : productFamily}",
+    thresholds:"${threshold == null ? "" : threshold}",
+    endDate:"${endDate == null ? "" : endDate}",
+    idleEfficiencyRanges:"${idleEfficiencyRanges == null ? "" : idleEfficiencyRanges}",
+    startDate:"${startDate == null ? "" : startDate}"
+  ) {
+    countData {
+      countOf
+      count
+    }
   }
 }
-  
-}
-
-  """;
+""";
+    return assetStatusCount;
+  }
 
   final String fuelLevelCount = """
 query faultDataSummary{
@@ -39,7 +267,6 @@ query faultDataSummary{
 }
   
 }
-
   """;
   String getfaultQueryString(String startDate, String endDate) {
     final String faultQueryString = """
@@ -103,18 +330,28 @@ query faultDataSummary{
     page
     limit
     total
-
-
   }
 }
-
   """;
     return assetFaultQuery;
   }
 
-  String fleetSummary() {
+  fleetSummary(List<FilterData?>? applyFilter, pagenumber) async {
+    await gettingFiltersValue(applyFilter);
     var data = """{
-  fleetSummary(pageNumber: 1, pageSize: 50, sort: "AssetSerialNumber", idleEfficiencyGT: "", idleEfficiencyLTE: "", assetIDContains: "", snContains: "") {
+  fleetSummary(pageNumber:$pagenumber,
+    pageSize:50,
+    sort:"AssetSerialNumber",
+    productfamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"},
+    model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
+    fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
+    idleEfficiencyGT:"",
+    idleEfficiencyLTE:"",
+    assetIDContains:"",
+    snContains:"",
+    manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
+    location:"") {
     fleetRecords {
       assetIdentifier
       assetSerialNumber
@@ -150,7 +387,11 @@ query faultDataSummary{
       lastPercentFuelRemainingUTC
       esn
       odometer
-      geofences
+      geofences{
+        fenceIdentifier,
+        name,
+        areaSqM
+      }
       devices {
         deviceType
         isGpsRollOverAffected
@@ -171,7 +412,6 @@ query faultDataSummary{
     }
   }
 }
-
 """;
     return data;
   }
@@ -214,23 +454,58 @@ query faultDataSummary{
   
 } 
   """;
-  final String utilizationTotalCount = """
-
-  query utilizationTotalCount{
- utilizationTotal{
-  countData {
-    countOf
-    count
+  utilizationToatlCount(
+      String startDate, String endDate, List<FilterData?>? applyFilter) async {
+    await gettingFiltersValue(applyFilter);
+    final String utilizationTotalCount = """
+{
+  utilizationTotal(
+    productfamily: ${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
+  model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}, 
+  manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
+  assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
+  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
+  idleEfficiencyGT:${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
+  idleEfficiencyLTE: "", 
+  idleEfficiencyRanges: "", 
+  startDate: "$startDate", 
+  EndDate: "$endDate") {
+    countData {
+      countOf
+      count
+      referenceColumns
+    }
   }
 }
-  
-}
-  """;
+""";
+    return utilizationTotalCount;
+  }
 
-  String getAssetOperationData(String startDate, String endDate) {
+  getAssetOperationData({
+    String? startDate,
+    List<FilterData?>? appliedFilter,
+    String? endDate,
+    int? pageSize,
+    int? pageNo,
+    String? assetId,
+  }) async {
+    await gettingFiltersValue(appliedFilter);
     final String assetOperationData = """
  query asetOperations{
-  assetOperationsDailyTotals(sort: "-assetid", startDate:"$startDate", endDate:"$endDate", pageSize: 50, pageNumber: 1){
+  assetOperationsDailyTotals(
+   pageNumber: $pageNo,
+pageSize: $pageSize,
+sort: "-assetid",
+startDate:"$startDate",
+endDate: "$endDate",
+productfamily: ${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"},
+model: ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
+assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
+idleEfficiencyGT:${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"},
+idleEfficiencyLTE: "",
+fuelLevelPercentLT: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
+    ){
     assetOperations{
       links {
         rel
@@ -273,10 +548,11 @@ query faultDataSummary{
     return assetOperationData;
   }
 
-  String getFaultCountData(String startDate, String endDate) {
+  String getFaultCountData(
+      {String? startDate, String? endDate, String? prodFamily}) {
     final String faultCountData = """
   query getFaultCountData{
-faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
+faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTime: "${endDate == null ? "" : endDate}",productFamily:"${productFamily == null ? "" : prodFamily}"){
   countData {
     countOf
     assetCount
@@ -289,26 +565,43 @@ faultCountData(startDateTime:"$startDate", endDateTime: "$endDate"){
     return faultCountData;
   }
 
-  String userManagementUserList(String? searchKey) {
-    return """query{
-userManagementUserList(searchKey:"$searchKey"){
-  total{
-    pages
-    items
-  },
-  users{
-    first_name
-    last_name
-    user_type
-    loginId
-    job_type
-    job_title
-    userUid
-    lastLoginDate
+  String userManagementUserList(
+      {String? searchKey,
+      int? userType,
+      int? jobType,
+      String? email,
+      int? pageNo}) {
+    return """{
+  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, EmailID: "${email == null ? "" : email}") {
+    users {
+      first_name
+      last_name
+      user_type
+      loginId
+      job_type
+      job_title
+      userUid
+      lastLoginDate
+      createdOn
+      createdBy
+      application_access {
+        userUID
+        role_name
+        applicationIconUrl
+        applicationName
+      }
+    }
+    total {
+      items
+      pages
+    }
+    links {
+      next
+      last
+    }
   }
 }
-  
-}""";
+""";
   }
 
   String deleteUser(List<String> usersId, String customerId) {
@@ -335,10 +628,28 @@ userEmail(EmailID:"$emailId"){
     return checkUserMail;
   }
 
-  String getFleetUtilization(String startDate, String endDate) {
+  getFleetUtilization(
+      {String? startDate,
+      String? endDate,
+      int? pageSize,
+      int? pageNo,
+      List<FilterData?>? applyFilter,
+      String? sort}) async {
+    await gettingFiltersValue(applyFilter);
     final String fleetUtilization = """
   query getFleetUtilization{
-	getfleetUtilization(pageSize:1,pageNumber:100, startDate: "$startDate", endDate: "$endDate"){
+	getfleetUtilization(pageNumber: $pageNo, 
+  pageSize: $pageSize , 
+  sort: ${sort == null ? "\"\"" : "${"\"" + sort + "\""}"}, 
+  startDate: "$startDate", 
+  endDate: "$endDate", 
+  idleEfficiencyGT: "", 
+  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
+  idleEfficiencyLTE: "", 
+  productfamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
+  model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}, 
+  manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
+  assetstatus: ${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}){
     assetResults {
       assetIdentifierSQLUID
       assetIcon
@@ -413,7 +724,6 @@ userEmail(EmailID:"$emailId"){
     code
     message
   }
-
 }
   """;
 
@@ -515,10 +825,40 @@ userUid,
     return schema;
   }
 
-  String getFleetLocationData(String startDate, String endDate) {
+  getFleetLocationData(
+      {String? startDate,
+      String? endDate,
+      List<FilterData?>? filtlerList,
+      int? pageNo,
+      int? pageSize}) async {
+    await clearAllList();
+    if (filtlerList != null) {
+      await gettingLocationFilter(filtlerList);
+    }
+
     final String fleetLocationData = """
   query fleetLocationDetails{
-  fleetLocationDetails(pageNumber: 1, pageSize: 1000, assetIdentifier: "", sort: "assetid", startDateLocal: "$startDate"){
+  fleetLocationDetails
+ (
+  pageNumber:$pageNo
+pageSize:$pageSize
+sort:"assetid"
+assetIdentifier: ""
+startDateLocal:"$startDate"
+endDateLocal: "$endDate"
+search:{
+  manufacturer: ${manufacturerList.isEmpty ? [] : manufacturerList}
+model: ${modelList.isEmpty ? [] : modelList}
+assetstatus: ${assetstatusList.isEmpty ? [] : assetstatusList}
+deviceType: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+idleEfficiency: ${idleEfficiencyList.isEmpty ? [] : idleEfficiencyList}
+fuelLevel: ${fuelLevelList.isEmpty ? [] : fuelLevelList}
+productfamily: ${productfamilyList.isEmpty ? [] : productfamilyList}
+location: ${locationList.isEmpty ? [] : locationList}
+}
+productfamily: ""
+)
+{
     pagination {
       totalCount
       pageNumber
@@ -627,9 +967,10 @@ getSingleAssetDetails(assetUID:"$uid"){
     return data;
   }
 
-  String getAssetGraphDetail(String assetId, String date) {
+  String getAssetGraphDetail(
+      {String? assetId, String? date, String? productFamily}) {
     var data = """{
-  getDashboardUtilizationSummary(assetUID: "$assetId",date: "$date") {
+  getDashboardUtilizationSummary(assetUID: "${assetId == null ? "" : assetId}",date: "${date == null ? "" : date}",productfamily:"${productFamily == null ? "" : productFamily}") {
     totalDay {
       idleHours
       runtimeHours
@@ -680,4 +1021,707 @@ query{
 }""";
     return data;
   }
+
+  String singleAssetUtilizationDetail(
+      {String? assetId, String? startDate, String? endDate}) {
+    String data = """
+{
+  getAssetDetailsSec(
+        assetUid: "$assetId",
+    endDate: "$endDate",
+    includeNonReportedDays: "true",
+    includeOutsideLastReportedDay: "true",
+    sort: "-LastReportedUtilizationTime",
+    startDate: "$startDate",
+  ) {
+    lastReportedTime
+    assetIcon
+    assetIdentifier
+    assetId
+    assetSerialNumber
+    makeCode
+    model
+    lastRuntimeHourMeter
+    lastOdometerMeter
+    lastIdleHourMeter
+    Code
+    Message
+    capabilities {
+      hasActiveFuelSubscription
+    },
+    utilization{
+      message,
+      date,
+      idleHours,
+      supportsIdle,
+      runtimeHours,
+      workDefinitionType,
+      workingHours,
+      distanceTravelledKilometers,
+      idleEfficiency,
+      workingEfficiency,
+      idleEfficiencyCalloutTypes,
+      workingEfficiencyCalloutTypes,
+      targetIdlePerformanceCalloutTypes,
+      targetIdlePerformance,
+      targetIdle,
+      targetRuntime,
+      targetRuntimePerformance,
+      runtimeHoursCalloutTypes,
+      idleHoursCalloutTypes,
+      workingHoursCalloutTypes,
+      lastRuntimeHourMeter,
+      lastOdometerMeter,
+      lastIdleHourMeter,
+      lastRuntimeFuelConsumptionLitersMeter,
+      lastIdleFuelConsumptionLitersMeter,
+      runtimeFuelConsumedLiters,
+      workingFuelConsumptionRate,
+      idleFuelConsumptionRate,
+      idleFuelConsumptionRateCalloutTypes,
+      workingFuelConsumptionRateCalloutTypes,
+      kmsPerRuntimeFuelConsumedLiter,
+      runtimeFuelConsumedLitersCalloutTypes,
+      idleFuelConsumedLitersCalloutTypes,
+      workingFuelConsumedLitersCalloutTypes,
+      lastReportedTime,
+      lastReportedTimeZoneAbbrev,
+      dailyreportedtimeTypes
+      
+    }
+  }
+}
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
+""";
+    return data;
+  }
+
+  String getSingleAssetUtilizationGraphAggregate(
+      {String? assetId, String? startDate, String? endDate}) {
+    var data = """
+{
+  getAssetDetailsAggregate(assetUid: "$assetId", endDate: "$endDate", startDate: "$startDate", sort: "LastReportedUtilizationTime") {
+    daily {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    weekly {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        runtimeFuelConsumptionLitersMeterCalloutTypes
+        idleFuelConsumptionLitersMeterCalloutTypes
+        runtimeHoursMeterCalloutTypes
+        idleHoursMeterCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    monthly {
+      aggregateType
+      startDate
+      endDate
+      data {
+        capabilities {
+          hasActiveFuelSubscription
+        }
+        message
+        date
+        idleHours
+        supportsIdle
+        runtimeHours
+        workDefinitionType
+        workingHours
+        distanceTravelledKilometers
+        idleEfficiency
+        workingEfficiency
+        idleEfficiencyCalloutTypes
+        workingEfficiencyCalloutTypes
+        targetIdlePerformanceCalloutTypes
+        targetIdlePerformance
+        targetIdle
+        targetRuntime
+        targetRuntimePerformance
+        runtimeHoursCalloutTypes
+        idleHoursCalloutTypes
+        workingHoursCalloutTypes
+        lastRuntimeHourMeter
+        lastOdometerMeter
+        lastIdleHourMeter
+        lastRuntimeFuelConsumptionLitersMeter
+        lastIdleFuelConsumptionLitersMeter
+        runtimeFuelConsumedLiters
+        workingFuelConsumedLiters
+        idleFuelConsumedLiters
+        runtimeFuelConsumptionRate
+        workingFuelConsumptionRate
+        idleFuelConsumptionRate
+        idleFuelConsumptionRateCalloutTypes
+        workingFuelConsumptionRateCalloutTypes
+        kmsPerRuntimeFuelConsumedLiter
+        runtimeFuelConsumedLitersCalloutTypes
+        idleFuelConsumedLitersCalloutTypes
+        workingFuelConsumedLitersCalloutTypes
+        runtimeFuelConsumptionLitersMeterCalloutTypes
+        idleFuelConsumptionLitersMeterCalloutTypes
+        runtimeHoursMeterCalloutTypes
+        idleHoursMeterCalloutTypes
+        lastReportedTime
+        lastReportedTimeZoneAbbrev
+        dailyreportedtimeTypes
+      }
+    }
+    code
+    message
+  }
+}
+""";
+    return data;
+  }
+
+  String getFilterData(String grouping) {
+    var data = """
+query{
+fleetFiltersGrouping(
+  grouping:"$grouping",
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
+){
+  countData{
+     countOf,
+    count,
+    referenceColumns
+  }
+}
+}
+""";
+    return data;
+  }
+
+  String searchLocation(String value) {
+    var data = """
+{
+  searchLocation(searchQuery: "$value", maxResult: "10") {
+    Locations {
+      Address {
+        StreetAddress
+        City
+        State
+        StateName
+        Zip
+        County
+        Country
+        CountryFullName
+        SPLC
+      }
+      Coords {
+        Lat
+        Lon
+      }
+      Region
+      POITypeID
+      PersistentPOIID
+      SiteID
+      ResultType
+      ShortString
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  String getSingleAssetOperation(
+      String? startDate, String? endDate, String? assetId) {
+    var data = """
+{
+  assetOperations(sort: "-assetid", startDate: "$startDate", endDate: "$endDate", pageSize: 50, pageNumber: 1, assetUid: "$assetId", productfamily: "") {
+    assetOperations {
+      pagination {
+        totalAssets
+        assetsWithoutActiveCoreSubscription
+        pageNumber
+        pageSize
+      }
+      links {
+        rel
+        href
+      }
+      assets {
+        assetUid
+        assetId
+        makeCode
+        model
+        serialNumber
+        assetIcon {
+          key
+        }
+        productFamily
+        customStateDescription
+        distanceTravelledKilometers
+        dateRangeRuntimeDuration
+        lastKnownOperator
+        capabilities {
+          hasActiveCoreSubscription
+        }
+        assetLocalDates {
+          assetLocalDate
+          totalRuntimeDurationSeconds
+          segments {
+            startTimeUtc
+          }
+        }
+        assetLastReceivedEvent {
+          lastReceivedEvent
+          lastReceivedEventTimeLocal
+          lastReceivedEventUTC
+          timezoneAbbrev
+          segmentType
+        }
+        esn
+      }
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  String singleAssetDetailLocation(String startDate, String endDate) {
+    var data = """
+query{
+  singleAssetLocationDetails(
+       pageNumber: 1,
+    pageSize: 50,
+    assetIdentifier: "9798351c-c1d9-11eb-82df-0ae8ba8d3970",
+    startTimeLocal: "$startDate",
+    endTimeLocal: "$endDate"
+  ){
+    pagination{
+      totalCount,
+      pageNumber,
+      pageSize
+    }
+    links{
+      self,
+      next,
+      prev
+    }
+    assetLocation{
+      assetIdentifier
+assetSerialNumber
+serialNumber
+manufacturer
+makeCode
+model
+assetIcon
+status
+assetStatus
+hourMeter
+hourmeter
+latitude
+longitude
+lastReportedLocationLatitude
+lastReportedLocationLongitude
+lastReportedLocation
+lastReportedUTC
+fuelLevelLastReported
+notifications
+lastLocationUpdateUTC
+assetEventHistoryID
+locationEventUTC
+locationEventLocalTime
+locationEventLocalTimeZoneAbbrev
+address{
+  city,
+  state,
+  county,
+  country,
+  zip
+}
+odometer
+    }
+  }
+}""";
+    return data;
+  }
+
+  String assetLocationData({String? no, String? pageSize, String? sort}) {
+    var data = """
+query{
+  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort"){
+    pagination{
+      totalCount,
+      pageNumber,
+      pageSize
+    },
+    links{
+       self,
+      next,
+      prev
+    },
+     countData{
+      countOf,
+      count
+    },
+    mapRecords{
+      assetIdentifier
+assetId
+assetSerialNumber
+manufacturer
+makeCode
+model
+assetIcon
+status
+hourMeter
+lastReportedLocationLatitude
+lastReportedLocationLongitude
+lastReportedLocation
+lastReportedUTC
+fuelLevelLastReported
+notifications
+geofences
+lastLocationUpdateUTC
+    }
+  }
+}""";
+    return data;
+  }
+
+  String notificationAssetList({String? no, String? pageSize}) {
+    var data = """
+{
+  notificationAssetList(pageNumber: $no, pageSize: $pageSize, productfamily: "", model: "", manufacturer: "", deviceType: "") {
+    assetDetailsRecords {
+      assetSerialNumber,
+      assetIdentifier,
+       makeCode,
+      assetId,
+      model,
+      assetIcon
+    },
+    pagination{
+      totalCount,
+      pageNumber,
+      pageSize
+    },
+    links{
+      self,
+    }
+  }
+}
+""";
+    return data;
+  }
+
+  getManageReportListData(
+      {int? page,
+      String? searchtext,
+      int? limit,
+      List<FilterData?>? appliedFilters}) async {
+        await clearAllList();
+    await getReportFilterData(appliedFilters);
+
+    var reportListData = """{
+  gridReport(searchText: "$searchtext", limit: $limit, page: $page,sort: "",reportFormat:$reportFormat,reportFrequency:$reportFrequency,reportTypeID:$reportType) {
+    total
+    page
+    limit
+    pageLinks {
+      rel
+      href
+      method
+    }
+    status
+    reqId
+    metadata
+    scheduledReports {
+      reportUid
+      reportFormat
+      reportPeriod
+      reportTitle
+      reportType
+      reportTypeName
+      reportCreationDate
+      emailSubject
+      emailContent
+      emailRecipients {
+        email
+        isVLUser
+      }
+      queryUrl
+      reportColumns
+      link {
+        rel
+        href
+        method
+      }
+      assets {
+        serialNumber
+      }
+      reportSourcePageName
+      scheduleEndDate
+      createdBy
+      reportGenerationCategory
+      svcMethod
+      svcBody
+      assetFilterCategoryID
+      allAssets
+    }
+    msg
+  }
+}
+""";
+
+    return reportListData;
+  }
+
+  String getContactSearchData(String key) {
+    Logger().e(key);
+    var contactData = """{
+  emailReport(key:"$key"){
+    users{
+      email,
+      name,
+      isVLUser,
+      
+    }
+  }
+}""";
+    return contactData;
+  }
+
+  String addReportPayLoad(
+      {int? reportCategoryID,
+      int? reportFormat,
+      String? reportTitle,
+      String? reportScheduledDate,
+      String? reportStartDate,
+      String? reportEndDate,
+      String? emailSubject,
+      List? emailRecipients,
+      String? emailContent,
+      String? svcMethod,
+      bool? allAssets,
+      dynamic svcbody,
+      String? queryUrl,
+      List? reportColumns,
+      String? reportType}) {
+    var addReportPayLoad = """ mutation{
+  createNotificationReport(
+      assetFilterCategoryID: 1,
+    reportCategoryID: 0,
+  reportFormat: $reportFormat,
+    reportPeriod:1,
+    reportTitle: "$reportTitle",
+  reportScheduledDate: "$reportEndDate",
+    reportStartDate:"$reportStartDate",
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients,
+    svcMethod: "$svcMethod",
+    allAssets: false,
+    filterOptions: [],
+    filterTag: [],
+    queryUrl: "$queryUrl",
+    reportType: "$reportType",
+    reportColumns:${Utils.getStringListData(reportColumns!)}
+    svcbody:$svcbody,
+    reportEndDate:"$reportEndDate"
+    ){
+    status,
+    msg,
+    reportUid
+  }
+}""";
+    Logger().w(addReportPayLoad);
+    return addReportPayLoad;
+  }
+
+  String deleteReport(List<String> reportUid) {
+    var deleteReport = """mutation{
+  deleteReports(reportUid:${Utils.getStringListData(reportUid)}){
+     status,
+    reqId,
+    msg
+  }
+}""";
+    return deleteReport;
+  }
+
+  String getEditReportData(String reportUid) {
+    var getReportData = """query{
+  notificationSingleReport(reportUid:"$reportUid"){
+    msg,
+    status,
+    scheduledReport{
+      reportUid,
+      reportType,
+      reportFormat,
+      reportType,
+      reportCreationDate,
+      emailSubject,
+      emailContent,
+      emailRecipients{
+        email,
+        isVLUser
+      },
+      createdBy,
+      svcBody,
+      svcMethod,
+      reportGenerationCategory,
+      queryUrl,
+      reportColumns,
+       scheduleEndDate,
+         allAssets,
+      link{
+        rel,
+        href,
+         method
+      },
+      reportSourcePageName,
+        reportTitle,
+      reportPeriod
+    }
+  }
+}""";
+    return getReportData;
+  }
+
+  String getEditReportsaveData({
+    String? reportUid,
+    String? emailSubject,
+    List? emailRecipients,
+    String? queryUrl,
+    List? svcbody,
+    String? emailContent,
+    String? reportTitle,
+    String? reportEndDate,
+  }) {
+    var editSaveData = """mutation{
+  updateNotificationReport(reportUid:"$reportUid",
+    reportPeriod:1,
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients ,
+    queryUrl:"$queryUrl",
+    svcbody:$svcbody,
+    emailContent:"$emailContent",
+    assetFilterCategoryID:1,
+    allAssets:false,
+    filterTag:[],
+    filterOptions:[],  
+    reportTitle:"$reportTitle",
+    reportEndDate:"$reportEndDate",
+    
+    
+  ){
+    status,
+    reqId
+  }
+}""";
+    return editSaveData;
+  }
+
+  var reportFilterCountData = """query{
+  reportCount{
+    countData{
+      id,
+      groupName,
+      name,
+      count
+    }
+     }
+  }""";
 }

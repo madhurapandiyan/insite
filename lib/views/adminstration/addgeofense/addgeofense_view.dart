@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
@@ -66,6 +67,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
           viewModel.getGeofenceData(uid);
         }
         return InsiteScaffold(
+          screenType: ScreenType.ADD_GEOFENCE,
           viewModel: viewModel,
           body: viewModel.isLoading
               ? Center(

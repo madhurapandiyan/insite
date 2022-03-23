@@ -47,8 +47,8 @@ class AddNewUserViewModel extends InsiteViewModel {
   Users? user;
   List<String> dropDownlist = [
     "Administrator",
-    "Contributor",
-    "Creator",
+   // "Contributor",
+    //"Creator",
     "Viewer"
   ];
 

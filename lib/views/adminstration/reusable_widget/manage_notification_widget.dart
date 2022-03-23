@@ -53,9 +53,10 @@ class ManageNotificationWidget extends StatelessWidget {
             height: 20,
           ),
           InsiteText(
-            text: "${alerts?.operands?.first.operandName}" +
-                "  " +
-                "${alerts?.operands?.first.condition}",
+            text: Utils.getNotificationCondition(alerts),
+            // "${alerts?.operands?.first.operandName}" +
+            //     "  " +
+            //     "${alerts?.operands?.first.condition}",
             size: 15,
             fontWeight: FontWeight.bold,
           ),

@@ -18,7 +18,7 @@ SingleAssetUtilization _$SingleAssetUtilizationFromJson(
       monthly: (json['monthly'] as List<dynamic>?)
           ?.map((e) => Range.fromJson(e as Map<String, dynamic>))
           .toList(),
-      code: (json['code'] as num?)?.toDouble(),
+      code: json['code'],
       message: json['message'] as String?,
     );
 
@@ -57,7 +57,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       message: json['message'],
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
-      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      idleHours: json['idleHours'],
       supportsIdle: json['supportsIdle'] as bool?,
       runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
       workDefinitionType: json['workDefinitionType'] as String?,
@@ -78,12 +78,10 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
           (json['targetIdlePerformanceCalloutTypes'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList(),
-      targetIdlePerformance:
-          (json['targetIdlePerformance'] as num?)?.toDouble(),
+      targetIdlePerformance: json['targetIdlePerformance'],
       targetIdle: (json['targetIdle'] as num?)?.toDouble(),
       targetRuntime: (json['targetRuntime'] as num?)?.toDouble(),
-      targetRuntimePerformance:
-          (json['targetRuntimePerformance'] as num?)?.toDouble(),
+      targetRuntimePerformance: json['targetRuntimePerformance'],
       runtimeHoursCalloutTypes:
           (json['runtimeHoursCalloutTypes'] as List<dynamic>?)
               ?.map((e) => e as String)

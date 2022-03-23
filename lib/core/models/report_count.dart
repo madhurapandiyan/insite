@@ -16,7 +16,7 @@ class ReportCount {
 @JsonSerializable()
 class CountReportData {
   String? groupName;
-  String? id;
+  int? id;
   String? name;
   int? count;
 

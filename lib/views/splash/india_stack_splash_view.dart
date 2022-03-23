@@ -52,7 +52,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   @override
   void initState() {
     Logger().d("IndiaStackSplashView codeVerifier $codeVerifier");
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier,false);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier, false);
     Logger().d("IndiaStackSplashView codeChallenge $codeChallenge");
     Logger().d("IndiaStackSplashView state $state");
     if (AppConfig.instance!.apiFlavor == "visionlink") {
@@ -182,14 +182,11 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       }
     });
 
-    flutterWebviewPlugin.onHttpError.listen((event) {
-      Logger().e(event);
-    });
   }
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier,true);
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier, true);
     LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -213,17 +210,20 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return WillPopScope(
-          onWillPop: (){
+          onWillPop: () {
             return Future.value(false);
           },
           child: Scaffold(
-            backgroundColor:widget.showingSnackbar?white: Theme.of(context).buttonColor,
+            backgroundColor:
+                widget.showingSnackbar ? white : Theme.of(context).buttonColor,
             body: SafeArea(
               child: Stack(
                 children: [
                   viewModel.shouldLoadWebview &&
                           !AppConfig.instance!.enalbeNativeLogin
                       ? WebviewScaffold(
+                        clearCache: true,
+                        clearCookies: true,
                           url: AppConfig.instance!.apiFlavor == "visionlink"
                               ? Uri.encodeFull(
                                   Urls.getV4LoginUrlVL(state, codeChallenge))
@@ -232,7 +232,9 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                       : SizedBox(),
                   Center(
                     child: CircularProgressIndicator(
-                      color:widget.showingSnackbar?Theme.of(context).buttonColor: Colors.white,
+                      color: widget.showingSnackbar
+                          ? Theme.of(context).buttonColor
+                          : Colors.white,
                     ),
                   ),
                 ],

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 
 import '../../views/adminstration/notifications/add_new_notifications/model/zone.dart';
@@ -224,7 +226,8 @@ abstract class RestClient {
       @Query("pageSize") int pageSize,
       @Query("radiuskm") double radiusKm,
       @Query("sort") String sort,
-      @Header("x-visionlink-customeruid") customerId);
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
 
   @GET("/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1")
   Future<AssetLocationData> assetLocationWithClusterVL(
@@ -1418,6 +1421,20 @@ abstract class RestClient {
     @Header("x-visionlink-customeruid") customerId,
     @Path() String url,
   );
+
+  @GET("{url}")
+  Future<ServiceItem?> getServiceCheckListData(
+    @Query("serviceId") num serviceId,
+    @Header("x-visionlink-customeruid") customerId,
+    @Path() String url,
+  );
+
+  @POST('{url}')
+  Future<Complete> completeResponse(
+      @Path() String url,
+      @Body() Map<String, dynamic> completeDataQuery,
+      @Header("content-type") String? contentType,
+      @Header("x-visionlink-customeruid") customerId);
 }
 
 @JsonSerializable()

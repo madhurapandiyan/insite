@@ -24,6 +24,7 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterProductFamilyKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterMakeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterModelKey = new GlobalKey();
+    final GlobalKey<FilterItemState> filterManufacturerKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterModelYearKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterApplicationKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterAssetCommisionDateKey =
@@ -102,9 +103,7 @@ class _FilterViewState extends State<FilterView> {
                         padding: EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             viewModel.selectedFilterData!.isNotEmpty
                                 ? FilterChipView(
                                     filters: viewModel.selectedFilterData,
@@ -175,9 +174,7 @@ class _FilterViewState extends State<FilterView> {
                                   )
                                 : SizedBox(),
 
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
                                         ScreenType.MANAGE_REPORT
@@ -195,12 +192,11 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? FilterItem(
                                     filterType: FilterType.MAKE,
                                     key: filterMakeKey,
@@ -215,9 +211,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
                                         ScreenType.MANAGE_REPORT
@@ -235,9 +229,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             // FilterItem(
                             //   filterType: FilterType.MODEL_YEAR,
                             //   key: filterModelYearKey,
@@ -250,13 +242,26 @@ class _FilterViewState extends State<FilterView> {
                             //     viewModel
                             //         .onFilterCleared(FilterType.MODEL_YEAR);
                             //   },
-                            // ),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            // ), widget.screenType != ScreenType.USER_MANAGEMENT &&
+                            widget.screenType != ScreenType.MANAGE_REPORT
+                                ? FilterItem(
+                                    filterType: FilterType.MANUFACTURER,
+                                    key: filterManufacturerKey,
+                                    data: viewModel.filterDataManufacturer,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.MANUFACTURER);
+                                    },
+                                    onClear: () {
+                                      viewModel
+                                          .onFilterCleared(FilterType.MANUFACTURER);
+                                    },
+                                  )
+                                : SizedBox(),
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? LocationSearch(
                                     filterType: FilterType.LOCATION_SEARCH,
                                     data: [],
@@ -270,9 +275,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             // FilterItem(
                             //   filterType: FilterType.APPLICATION,
                             //   key: filterApplicationKey,
@@ -286,12 +289,11 @@ class _FilterViewState extends State<FilterView> {
                             //         .onFilterCleared(FilterType.APPLICATION);
                             //   },
                             // ),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? FilterItem(
                                     filterType: FilterType.ASSET_COMMISION_DATE,
                                     key: filterAssetCommisionDateKey,
@@ -306,12 +308,11 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? FilterItem(
                                     filterType: FilterType.SUBSCRIPTION_DATE,
                                     key: filterSubscriptionTypesKey,
@@ -326,9 +327,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
                                         ScreenType.MANAGE_REPORT
@@ -346,9 +345,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
                                         ScreenType.MANAGE_REPORT
@@ -367,14 +364,13 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType != ScreenType.HEALTH &&
                                     widget.screenType !=
                                         ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? FilterItem(
                                     filterType: FilterType.IDLING_LEVEL,
                                     key: filterIdlingLevelKey,
@@ -390,14 +386,13 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType == ScreenType.HEALTH &&
                                     widget.screenType !=
                                         ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&
+                                    widget.screenType != ScreenType.FLEET
                                 ? FilterItem(
                                     filterType: FilterType.SEVERITY,
                                     key: filterSeverityKey,
@@ -449,9 +444,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType == ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.FREQUENCYTYPE,
@@ -468,9 +461,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType == ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.REPORT_FORMAT,
@@ -487,9 +478,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            SizedBox(
-                              height: 8,
-                            ),
+                            
                             widget.screenType == ScreenType.MANAGE_REPORT
                                 ? FilterItem(
                                     filterType: FilterType.REPORT_TYPE,

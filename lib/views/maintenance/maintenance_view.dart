@@ -41,11 +41,11 @@ class _MaintenanceViewState extends State<MaintenanceView> {
           child: InsiteScaffold(
             viewModel: viewModel,
             onFilterApplied: () {
-              //viewModel.refresh();
+              viewModel.refresh();
               refreshWithFilter();
             },
             onRefineApplied: () {
-              // viewModel.refresh();
+              viewModel.refresh();
               refreshWithFilter();
             },
             screenType: ScreenType.MAINTENANCE,

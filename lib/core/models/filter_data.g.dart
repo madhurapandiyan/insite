@@ -107,6 +107,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.REPORT_FORMAT;
       case 20:
         return FilterType.REPORT_TYPE;
+      case 21:
+        return FilterType.MANUFACTURER;
       default:
         return FilterType.ALL_ASSETS;
     }
@@ -178,6 +180,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
       case FilterType.REPORT_TYPE:
         writer.writeByte(20);
         break;
+      case FilterType.MANUFACTURER:
+        writer.writeByte(21);
+        break;
     }
   }
 
@@ -235,3 +240,103 @@ class FilterSubTypeAdapter extends TypeAdapter<FilterSubType> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+FilterData _$FilterDataFromJson(Map<String, dynamic> json) => FilterData(
+      count: json['count'] as String?,
+      title: json['title'] as String?,
+      isSelected: json['isSelected'] as bool?,
+      type: _$enumDecodeNullable(_$FilterTypeEnumMap, json['type']),
+      extras:
+          (json['extras'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+      subType: _$enumDecodeNullable(_$FilterSubTypeEnumMap, json['subType']),
+<<<<<<< Updated upstream
+=======
+      id: json['id'] as String?,
+>>>>>>> Stashed changes
+    );
+
+Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'count': instance.count,
+      'type': _$FilterTypeEnumMap[instance.type],
+      'isSelected': instance.isSelected,
+      'extras': instance.extras,
+      'subType': _$FilterSubTypeEnumMap[instance.subType],
+<<<<<<< Updated upstream
+=======
+      'id': instance.id,
+>>>>>>> Stashed changes
+    };
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$FilterTypeEnumMap = {
+  FilterType.ALL_ASSETS: 'ALL_ASSETS',
+  FilterType.PRODUCT_FAMILY: 'PRODUCT_FAMILY',
+  FilterType.MAKE: 'MAKE',
+  FilterType.MODEL: 'MODEL',
+  FilterType.MODEL_YEAR: 'MODEL_YEAR',
+  FilterType.LOCATION_SEARCH: 'LOCATION_SEARCH',
+  FilterType.APPLICATION: 'APPLICATION',
+  FilterType.ASSET_COMMISION_DATE: 'ASSET_COMMISION_DATE',
+  FilterType.SUBSCRIPTION_DATE: 'SUBSCRIPTION_DATE',
+  FilterType.DEVICE_TYPE: 'DEVICE_TYPE',
+  FilterType.FUEL_LEVEL: 'FUEL_LEVEL',
+  FilterType.IDLING_LEVEL: 'IDLING_LEVEL',
+  FilterType.DATE_RANGE: 'DATE_RANGE',
+  FilterType.CLUSTOR: 'CLUSTOR',
+  FilterType.ASSET_STATUS: 'ASSET_STATUS',
+  FilterType.SEVERITY: 'SEVERITY',
+  FilterType.JOBTYPE: 'JOBTYPE',
+  FilterType.USERTYPE: 'USERTYPE',
+  FilterType.FREQUENCYTYPE: 'FREQUENCYTYPE',
+  FilterType.REPORT_FORMAT: 'REPORT_FORMAT',
+  FilterType.REPORT_TYPE: 'REPORT_TYPE',
+  FilterType.MANUFACTURER: 'MANUFACTURER',
+};
+
+const _$FilterSubTypeEnumMap = {
+  FilterSubType.DAY: 'DAY',
+  FilterSubType.WEEK: 'WEEK',
+  FilterSubType.MONTH: 'MONTH',
+};

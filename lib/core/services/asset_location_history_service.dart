@@ -3,15 +3,18 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
+
+import 'graphql_schemas_service.dart';
 
 class AssetLocationHistoryService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
-
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
   AssetLocationHistoryService() {
     setUp();
   }
@@ -31,6 +34,24 @@ class AssetLocationHistoryService extends BaseService {
     String? assetUid,
   ) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: _graphqlSchemaService!.singleAssetDetailLocation(startTimeLocal!,endTimeLocal!),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        if (data.data["singleAssetLocationDetails"] != null) {
+          AssetLocationHistory? locationHistoryResponse =
+              AssetLocationHistory.fromJson(
+                  data.data["singleAssetLocationDetails"]);
+          return locationHistoryResponse;
+        } else {
+          return null;
+        }
+      }
       if (isVisionLink) {
         AssetLocationHistory locationHistoryResponse =
             await MyApi().getClient()!.assetLocationHistoryVL(

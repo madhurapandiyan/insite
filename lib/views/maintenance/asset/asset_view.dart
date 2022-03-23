@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -11,6 +12,7 @@ import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/maintenance_asset_list_item.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_view_model.dart';
 
@@ -103,12 +105,21 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                               itemBuilder: (context, index) {
                                 AssetCentricData? assetCentricData =
                                     viewModel.assetData[index];
+
                                 return MaintenanceAssetListItem(
                                   key: UniqueKey(),
                                   assetData: assetCentricData,
                                   onCallback: () {
                                     viewModel
                                         .onDetailPageSelected(assetCentricData);
+                                  },
+                                  serviceCalBack:
+                                      (value, assetDataVaue, services) {
+                                    viewModel.onServiceSelected(
+                                        value,
+                                        assetDataVaue,
+                                        assetCentricData,
+                                        services);
                                   },
                                 );
                               },

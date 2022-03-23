@@ -13,7 +13,6 @@ Utilization _$UtilizationFromJson(Map<String, dynamic> json) => Utilization(
       totals: (json['totals'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
-      code: json['code'] as String?,
       message: json['message'] as String?,
     );
 
@@ -21,7 +20,6 @@ Map<String, dynamic> _$UtilizationToJson(Utilization instance) =>
     <String, dynamic>{
       'assetResults': instance.assetResults,
       'totals': instance.totals,
-      'code': instance.code,
       'message': instance.message,
     };
 
@@ -40,7 +38,7 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) => AssetResult(
               ?.map((e) => e as String)
               .toList(),
       idleFuelConsumptionRate: json['idleFuelConsumptionRate'],
-      idleHours: (json['idleHours'] as num?)?.toDouble(),
+      idleHours: json['idleHours'],
       idleHoursCalloutTypes: (json['idleHoursCalloutTypes'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -74,11 +72,9 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) => AssetResult(
               .toList(),
       supportsIdle: json['supportsIdle'] as bool?,
       targetIdle: (json['targetIdle'] as num?)?.toDouble(),
-      targetIdlePerformance:
-          (json['targetIdlePerformance'] as num?)?.toDouble(),
+      targetIdlePerformance: json['targetIdlePerformance'],
       targetRuntime: (json['targetRuntime'] as num?)?.toDouble(),
-      targetRuntimePerformance:
-          (json['targetRuntimePerformance'] as num?)?.toDouble(),
+      targetRuntimePerformance: json['targetRuntimePerformance'],
       workDefinitionType: json['workDefinitionType'] as String?,
       workingEfficiency: (json['workingEfficiency'] as num?)?.toDouble(),
       workingFuelConsumedLiters: json['workingFuelConsumedLiters'],
