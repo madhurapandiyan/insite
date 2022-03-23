@@ -51,7 +51,7 @@ class AssetStatusService extends DataBaseService {
       } else {
         Logger().d("from api");
         if (enableGraphQl) {
-         var data = await Network().getGraphqlData(
+          var data = await Network().getGraphqlData(
             query: query,
             customerId: accountSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub,
@@ -59,22 +59,21 @@ class AssetStatusService extends DataBaseService {
                 ? ""
                 : customerSelected?.CustomerUID,
           );
-         if (isFromDashboard==true) {
-          AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data['getDashboardAsset']);
-          return assetCountFromGraphql;
-         }
-         if(isFromDashboard==false) {
-          AssetCount assetCountFromGraphql =
-              AssetCount.fromJson(data.data['fleetFiltersGrouping']);
-              return assetCountFromGraphql;
+          if (isFromDashboard == true) {
+            AssetCount assetCountFromGraphql =
+                AssetCount.fromJson(data.data['getDashboardAsset']);
+            return assetCountFromGraphql;
           }
-          if (isFromDashboard==null) {
-           AssetCount assetCountFromGraphql =
+          if (isFromDashboard == false) {
+            AssetCount assetCountFromGraphql =
+                AssetCount.fromJson(data.data['fleetFiltersGrouping']);
+            return assetCountFromGraphql;
+          }
+          if (isFromDashboard == null) {
+            AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['userManagementRefine']);
-            return assetCountFromGraphql; 
+            return assetCountFromGraphql;
           }
-         
         } else {
           if (isVisionLink) {
             Map<String, String?> queryMap = Map();
@@ -160,7 +159,6 @@ class AssetStatusService extends DataBaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['utilizationTotal']);
 
@@ -837,14 +835,37 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<ReportCount?> getCountReportData() async {
+  Future<ReportCount?> getCountReportData(query) async {
     try {
-      if (isVisionLink) {
-        ReportCount reportCountResponse = await MyApi()
-            .getClientSeven()!
-            .getReportCountData(Urls.manageReportData + "/" + "Count",
-                accountSelected!.CustomerUID);
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        ReportCount reportCountResponse =
+            ReportCount.fromJson(data.data['reportCount']);
         return reportCountResponse;
+      } else {
+        if (isVisionLink) {
+          ReportCount reportCountResponse = await MyApi()
+              .getClientSeven()!
+              .getReportCountDataVL(Urls.manageReportData + "/" + "Count",
+                  accountSelected!.CustomerUID);
+          return reportCountResponse;
+        } else {
+          ReportCount reportCountResponse = await MyApi()
+              .getClient()!
+              .getReportCountData(
+                  Urls.countReportData,
+                  "in-reports-rpt-rmapi",
+                  accountSelected!.CustomerUID,
+                  (await _localService!.getLoggedInUser())!.sub);
+          return reportCountResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());

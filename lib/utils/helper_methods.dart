@@ -826,6 +826,17 @@ class Utils {
     }
   }
 
+  static List getStringListData(List listData) {
+    String doublequotes = "\"";
+    List<dynamic> value = [];
+    value.clear();
+    listData.forEach((element) {
+      value.add(doublequotes + element + doublequotes);
+    });
+
+    return value;
+  }
+
   static String getNotificationCondition(ConfiguredAlerts? alert) {
     String? data;
     if (alert?.notificationTypeGroupID == 1) {
@@ -851,5 +862,101 @@ class Utils {
     } else {
       return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
     }
+  }
+
+  static getReportColumn(String value) {
+    var list = [];
+    if (value == "Asset Operation") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "lastEvent",
+        "lastEventTime",
+        "customAssetState",
+        "distanceTravelledKilometers",
+        "lastKnownOperator",
+        "totalDuration"
+      ];
+    } else if (value == "Fleet Summary") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "lastEvent",
+        "lastEventTime",
+        "customAssetState",
+        "distanceTravelledKilometers",
+        "lastKnownOperator",
+        "totalDuration"
+      ];
+    } else if (value == "Multi-Asset Utilization") {
+      list = [
+        "callouts",
+        "assetId",
+        "assetSerialNumber",
+        "make-model",
+        "latestUtzReport",
+        "runtimeHours",
+        "targetRuntime",
+        "runtimeFuelConsumedLiters",
+        "runtimeFuelConsumptionRate",
+        "workingHours",
+        "workingFuelConsumedLiters",
+        "workingFuelConsumptionRate",
+        "idleHours",
+        "idleFuelConsumedLiters",
+        "idleFuelConsumptionRate",
+        "lastUtzLocation",
+        "startDate",
+        "endDate"
+      ];
+    } else if (value == "Utilization Details") {
+      list = [
+        "callouts",
+        "lastReportedTime",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "lastRuntimeFuelConsumptionLitersMeter",
+        "runtimeFuelConsumedLiters",
+        "runtimeFuelConsumptionRate",
+        "workingHours",
+        "workingFuelConsumedLiters",
+        "workingFuelConsumptionRate",
+        "lastIdleHourMeter",
+        "idleHours",
+        "lastIdleFuelConsumptionLitersMeter",
+        "idleFuelConsumedLiters",
+        "idleFuelConsumptionRate",
+        "startDate",
+        "endDate"
+      ];
+    } else if (value == "Fault Code Asset Details") {
+      list = [
+        "assetId",
+        "assetSerialNumber",
+        "make-model",
+        "faultIdentifiers",
+        "description",
+        "source",
+        "lastReportedTime",
+        "severityLabel",
+        "hourMeter",
+        "lastReportedLocation"
+      ];
+    } else if (value == "Fault Summary Faults List") {
+      list = [
+        "assetId",
+        "serialNo",
+        "make-model",
+        "faultCode",
+        "faultDate",
+        "severityLabel",
+        "source",
+        "description",
+        "currentLocation",
+        "lastReportedDate",
+        "hourMeter"
+      ];
+    }
+    return list;
   }
 }

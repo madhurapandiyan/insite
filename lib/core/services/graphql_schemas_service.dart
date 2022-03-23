@@ -44,6 +44,39 @@ class GraphqlSchemaService extends BaseService {
   List<String> fuelLevelList = [];
   List<String> productfamilyList = [];
   List<String> locationList = [];
+  List<int> reportFrequency = [];
+  List<int> reportFormat = [];
+  List<int> reportType = [];
+
+  getReportFilterindividualList(
+      {List<FilterData?>? filtlerList,
+      FilterType? type,
+      List? individualList}) {
+    var data = filtlerList!.where((element) => element?.type == type).toList();
+    data.forEach((element) {
+      if (assetstatusList.contains(element)) {
+      } else {
+        individualList!.add(int.parse(element!.id!));
+      }
+    });
+  }
+
+  getReportFilterData(
+    List<FilterData?>? filtlerList,
+  ) {
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportFrequency,
+        type: FilterType.FREQUENCYTYPE);
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportFormat,
+        type: FilterType.REPORT_FORMAT);
+    getReportFilterindividualList(
+        filtlerList: filtlerList,
+        individualList: reportType,
+        type: FilterType.REPORT_TYPE);
+  }
 
   getIndividualList(
       {List<FilterData?>? filtlerList,
@@ -68,6 +101,9 @@ class GraphqlSchemaService extends BaseService {
     fuelLevelList.clear();
     productfamilyList.clear();
     locationList.clear();
+    reportFrequency.clear();
+    reportFormat.clear();
+    reportType.clear();
   }
 
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
@@ -231,7 +267,6 @@ query faultDataSummary{
 }
   
 }
-
   """;
   String getfaultQueryString(String startDate, String endDate) {
     final String faultQueryString = """
@@ -295,11 +330,8 @@ query faultDataSummary{
     page
     limit
     total
-
-
   }
 }
-
   """;
     return assetFaultQuery;
   }
@@ -380,7 +412,6 @@ query faultDataSummary{
     }
   }
 }
-
 """;
     return data;
   }
@@ -693,7 +724,6 @@ userEmail(EmailID:"$emailId"){
     code
     message
   }
-
 }
   """;
 
@@ -1061,7 +1091,6 @@ query{
     }
   }
 }
-
 """;
     return data;
   }
@@ -1242,7 +1271,6 @@ query{
 query{
 fleetFiltersGrouping(
   grouping:"$grouping",
-
 ){
   countData{
      countOf,
@@ -1470,4 +1498,222 @@ lastLocationUpdateUTC
 """;
     return data;
   }
+
+  getManageReportListData(
+      {int? page,
+      String? searchtext,
+      int? limit,
+      List<FilterData?>? appliedFilters}) async {
+        await clearAllList();
+    await getReportFilterData(appliedFilters);
+
+    var reportListData = """{
+  gridReport(searchText: "$searchtext", limit: $limit, page: $page,sort: "",reportFormat:$reportFormat,reportFrequency:$reportFrequency,reportTypeID:$reportType) {
+    total
+    page
+    limit
+    pageLinks {
+      rel
+      href
+      method
+    }
+    status
+    reqId
+    metadata
+    scheduledReports {
+      reportUid
+      reportFormat
+      reportPeriod
+      reportTitle
+      reportType
+      reportTypeName
+      reportCreationDate
+      emailSubject
+      emailContent
+      emailRecipients {
+        email
+        isVLUser
+      }
+      queryUrl
+      reportColumns
+      link {
+        rel
+        href
+        method
+      }
+      assets {
+        serialNumber
+      }
+      reportSourcePageName
+      scheduleEndDate
+      createdBy
+      reportGenerationCategory
+      svcMethod
+      svcBody
+      assetFilterCategoryID
+      allAssets
+    }
+    msg
+  }
+}
+""";
+
+    return reportListData;
+  }
+
+  String getContactSearchData(String key) {
+    Logger().e(key);
+    var contactData = """{
+  emailReport(key:"$key"){
+    users{
+      email,
+      name,
+      isVLUser,
+      
+    }
+  }
+}""";
+    return contactData;
+  }
+
+  String addReportPayLoad(
+      {int? reportCategoryID,
+      int? reportFormat,
+      String? reportTitle,
+      String? reportScheduledDate,
+      String? reportStartDate,
+      String? reportEndDate,
+      String? emailSubject,
+      List? emailRecipients,
+      String? emailContent,
+      String? svcMethod,
+      bool? allAssets,
+      dynamic svcbody,
+      String? queryUrl,
+      List? reportColumns,
+      String? reportType}) {
+    var addReportPayLoad = """ mutation{
+  createNotificationReport(
+      assetFilterCategoryID: 1,
+    reportCategoryID: 0,
+  reportFormat: $reportFormat,
+    reportPeriod:1,
+    reportTitle: "$reportTitle",
+  reportScheduledDate: "$reportEndDate",
+    reportStartDate:"$reportStartDate",
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients,
+    svcMethod: "$svcMethod",
+    allAssets: false,
+    filterOptions: [],
+    filterTag: [],
+    queryUrl: "$queryUrl",
+    reportType: "$reportType",
+    reportColumns:${Utils.getStringListData(reportColumns!)}
+    svcbody:$svcbody,
+    reportEndDate:"$reportEndDate"
+    ){
+    status,
+    msg,
+    reportUid
+  }
+}""";
+    Logger().w(addReportPayLoad);
+    return addReportPayLoad;
+  }
+
+  String deleteReport(List<String> reportUid) {
+    var deleteReport = """mutation{
+  deleteReports(reportUid:${Utils.getStringListData(reportUid)}){
+     status,
+    reqId,
+    msg
+  }
+}""";
+    return deleteReport;
+  }
+
+  String getEditReportData(String reportUid) {
+    var getReportData = """query{
+  notificationSingleReport(reportUid:"$reportUid"){
+    msg,
+    status,
+    scheduledReport{
+      reportUid,
+      reportType,
+      reportFormat,
+      reportType,
+      reportCreationDate,
+      emailSubject,
+      emailContent,
+      emailRecipients{
+        email,
+        isVLUser
+      },
+      createdBy,
+      svcBody,
+      svcMethod,
+      reportGenerationCategory,
+      queryUrl,
+      reportColumns,
+       scheduleEndDate,
+         allAssets,
+      link{
+        rel,
+        href,
+         method
+      },
+      reportSourcePageName,
+        reportTitle,
+      reportPeriod
+    }
+  }
+}""";
+    return getReportData;
+  }
+
+  String getEditReportsaveData({
+    String? reportUid,
+    String? emailSubject,
+    List? emailRecipients,
+    String? queryUrl,
+    List? svcbody,
+    String? emailContent,
+    String? reportTitle,
+    String? reportEndDate,
+  }) {
+    var editSaveData = """mutation{
+  updateNotificationReport(reportUid:"$reportUid",
+    reportPeriod:1,
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients ,
+    queryUrl:"$queryUrl",
+    svcbody:$svcbody,
+    emailContent:"$emailContent",
+    assetFilterCategoryID:1,
+    allAssets:false,
+    filterTag:[],
+    filterOptions:[],  
+    reportTitle:"$reportTitle",
+    reportEndDate:"$reportEndDate",
+    
+    
+  ){
+    status,
+    reqId
+  }
+}""";
+    return editSaveData;
+  }
+
+  var reportFilterCountData = """query{
+  reportCount{
+    countData{
+      id,
+      groupName,
+      name,
+      count
+    }
+     }
+  }""";
 }

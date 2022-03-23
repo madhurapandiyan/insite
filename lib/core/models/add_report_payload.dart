@@ -14,7 +14,7 @@ class AddReportPayLoad {
   String? emailSubject;
   List<String>? emailRecipients;
   String? svcMethod;
-  List<String>? svcbody;
+  dynamic svcbody;
   bool? allAssets;
   String ?emailContent;
   // List<Null>? filterOptions;

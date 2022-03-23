@@ -1366,34 +1366,50 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<ManageReportResponse?> getManageReportListData(
-      int page, int limit, String searchKeyword) async {
+  Future<ManageReportResponse?> getManageReportListData(int page, int limit,
+      String searchKeyword, List<FilterData?>? appliedFilters, query) async {
     try {
-      Map<String, String> queryMap = Map();
-      queryMap["page"] = page.toString();
-      queryMap["limit"] = limit.toString();
-      if (searchKeyword.isNotEmpty) {
-        queryMap["searchText"] = searchKeyword;
-      }
-      queryMap["sort"] = "";
-      if (isVisionLink) {
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClientSeven()!
-            .getManageReportListDataVL(
-                Urls.manageReportData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
+      if (enableGraphQl) {
+        // Logger().w(appliedFilters![0]!.title);
+        //  Logger().w(appliedFilters[1]!.title);
+        //    Logger().w(appliedFilters[2]!.title);
+        Logger().wtf(query);
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())?.sub);
+        Logger().wtf(data.data['gridReport']);
+        ManageReportResponse manageReportResponse =
+            ManageReportResponse.fromJson(data.data['gridReport']);
+
         return manageReportResponse;
       } else {
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClient()!
-            .getManageReportListData(
-                Urls.addReportSaveData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                "in-reports-rpt-rmapi",
-                accountSelected!.CustomerUID,
-                "1d022b5a-2e4a-4f5b-bd81-ad2a75977e21");
-        return manageReportResponse;
+        if (isVisionLink) {
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClientSeven()!
+              .getManageReportListDataVL(
+                  Urls.manageReportData +
+                      FilterUtils.reportConstructQuery(limit, page,
+                          "reportCreationDate", appliedFilters, searchKeyword),
+                  accountSelected!.CustomerUID);
+
+          return manageReportResponse;
+        } else {
+          
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClient()!
+              .getManageReportListData(
+                  Urls.addReportSaveData +
+                      FilterUtils.reportConstructQuery(limit, page,
+                          "reportCreationDate", appliedFilters, searchKeyword),
+                  "in-reports-rpt-rmapi",
+                  accountSelected!.CustomerUID,
+                  (await _localService!.getLoggedInUser())!.sub);
+          return manageReportResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1402,22 +1418,37 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageReportDeleteAssetResponse?> getDeleteManageReportAsset(
-      List<String> reqId) async {
+      List<String> reqId, query) async {
     try {
-      if (isVisionLink) {
-        ManageReportDeleteAssetResponse manageReportResponse = await MyApi()
-            .getClientSeven()!
-            .getDeleteManageReportAssetVL(Urls.manageReportData + "/", reqId,
-                accountSelected!.CustomerUID);
-        return manageReportResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+
+        ManageReportDeleteAssetResponse manageDeleteResponse =
+            ManageReportDeleteAssetResponse.fromJson(
+                data.data['deleteReports']);
+        return manageDeleteResponse;
       } else {
-        ManageReportDeleteAssetResponse manageReportDeleteAssetResponse =
-            await MyApi().getClient()!.getDeleteManageReportAsset(
-                Urls.addReportSaveData,
-                reqId,
-                "in-reports-rpt-rmapi",
-                accountSelected!.CustomerUID);
-        return manageReportDeleteAssetResponse;
+        if (isVisionLink) {
+          ManageReportDeleteAssetResponse manageReportResponse = await MyApi()
+              .getClientSeven()!
+              .getDeleteManageReportAssetVL(Urls.manageReportData + "/", reqId,
+                  accountSelected!.CustomerUID);
+          return manageReportResponse;
+        } else {
+          ManageReportDeleteAssetResponse manageReportDeleteAssetResponse =
+              await MyApi().getClient()!.getDeleteManageReportAsset(
+                  Urls.addReportSaveData,
+                  reqId,
+                  "in-reports-rpt-rmapi",
+                  accountSelected!.CustomerUID);
+          return manageReportDeleteAssetResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1448,45 +1479,75 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<SearchContactReportListResponse?> getSearchContactResposeData(
-      String searchValue) async {
+      String searchValue, query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["key"] = searchValue;
-      if (isVisionLink) {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        Logger().w(data.data['emailReport']);
         SearchContactReportListResponse searchContactReportListResponse =
-            await MyApi().getClientSeven()!.getSearchContactReportDataVL(
-                Urls.contactSearchListData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
+            SearchContactReportListResponse.fromJson(data.data!['emailReport']);
+
         return searchContactReportListResponse;
       } else {
-        SearchContactReportListResponse searchContactReportListResponse =
-            await MyApi().getClient()!.getSearchContactReportData(
-                Urls.contactSearchData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                "in-contact-ct-api",
-                accountSelected!.CustomerUID);
-        return searchContactReportListResponse;
+        if (isVisionLink) {
+          SearchContactReportListResponse searchContactReportListResponse =
+              await MyApi().getClientSeven()!.getSearchContactReportDataVL(
+                  Urls.contactSearchListData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return searchContactReportListResponse;
+        } else {
+          SearchContactReportListResponse searchContactReportListResponse =
+              await MyApi().getClient()!.getSearchContactReportData(
+                  Urls.contactSearchData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  "in-contact-ct-api",
+                  accountSelected!.CustomerUID);
+          return searchContactReportListResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
     }
   }
 
-  Future<EditReportResponse?> getEditReportData(String reportId) async {
+  Future<EditReportResponse?> getEditReportData(String reportId, query) async {
     try {
-      if (isVisionLink) {
-        EditReportResponse editReportResponse = await MyApi()
-            .getClientSeven()!
-            .getEditReportDataVL(Urls.manageReportData + "/" + reportId,
-                accountSelected!.CustomerUID);
+      Logger().w(query);
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+
+        EditReportResponse editReportResponse =
+            EditReportResponse.fromJson(data.data['notificationSingleReport']);
         return editReportResponse;
       } else {
-        EditReportResponse editReportResponse = await MyApi()
-            .getClient()!
-            .getEditReportData(Urls.addReportSaveData + "/" + reportId,
-                "in-reports-rpt-rmapi", accountSelected?.CustomerUID);
-        return editReportResponse;
+        if (isVisionLink) {
+          EditReportResponse editReportResponse = await MyApi()
+              .getClientSeven()!
+              .getEditReportDataVL(Urls.manageReportData + "/" + reportId,
+                  accountSelected!.CustomerUID);
+          return editReportResponse;
+        } else {
+          EditReportResponse editReportResponse = await MyApi()
+              .getClient()!
+              .getEditReportData(Urls.addReportSaveData + "/" + reportId,
+                  "in-reports-rpt-rmapi", accountSelected?.CustomerUID);
+          return editReportResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1494,21 +1555,36 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageReportResponse?> getAddReportSaveData(
-      AddReportPayLoad addReportPayLoad) async {
+      AddReportPayLoad addReportPayLoad, query) async {
     try {
-      if (isVisionLink) {
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClientSeven()!
-            .getAddReportSaveDataVL(Urls.manageReportData, addReportPayLoad,
-                accountSelected!.CustomerUID);
+      if (enableGraphQl) {
+        Logger().w(query);
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        ManageReportResponse manageReportResponse =
+            ManageReportResponse.fromJson(
+                data.data['createNotificationReport']);
         return manageReportResponse;
       } else {
-        Logger().w(addReportPayLoad.toJson());
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClient()!
-            .getAddReportSaveData(Urls.addReportSaveData, addReportPayLoad,
-                "in-reports-rpt-rmapi", accountSelected!.CustomerUID);
-        return manageReportResponse;
+        if (isVisionLink) {
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClientSeven()!
+              .getAddReportSaveDataVL(Urls.manageReportData, addReportPayLoad,
+                  accountSelected!.CustomerUID);
+          return manageReportResponse;
+        } else {
+          Logger().w(addReportPayLoad.toJson());
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClient()!
+              .getAddReportSaveData(Urls.addReportSaveData, addReportPayLoad,
+                  "in-reports-rpt-rmapi", accountSelected!.CustomerUID);
+          return manageReportResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1516,23 +1592,38 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageReportResponse?> getEditReportSaveData(
-      String reqId, AddReportPayLoad addReportPayLoad) async {
+      String reqId, AddReportPayLoad addReportPayLoad, query) async {
     try {
-      if (isVisionLink) {
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClientSeven()!
-            .getEditReportSaveDataVL(Urls.manageReportData + "/" + reqId,
-                addReportPayLoad, accountSelected!.CustomerUID);
+      Logger().w(query);
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        ManageReportResponse manageReportResponse =
+            ManageReportResponse.fromJson(
+                data.data['updateNotificationReport']);
         return manageReportResponse;
       } else {
-        ManageReportResponse manageReportResponse = await MyApi()
-            .getClient()!
-            .getEditReportSaveData(
-                Urls.addReportSaveData + "/" + reqId,
-                addReportPayLoad,
-                "in-reports-rpt-rmapi",
-                accountSelected!.CustomerUID);
-        return manageReportResponse;
+        if (isVisionLink) {
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClientSeven()!
+              .getEditReportSaveDataVL(Urls.manageReportData + "/" + reqId,
+                  addReportPayLoad, accountSelected!.CustomerUID);
+          return manageReportResponse;
+        } else {
+          ManageReportResponse manageReportResponse = await MyApi()
+              .getClient()!
+              .getEditReportSaveData(
+                  Urls.addReportSaveData + "/" + reqId,
+                  addReportPayLoad,
+                  "in-reports-rpt-rmapi",
+                  accountSelected!.CustomerUID);
+          return manageReportResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());

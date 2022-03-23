@@ -20,7 +20,7 @@ Map<String, dynamic> _$ReportCountToJson(ReportCount instance) =>
 CountReportData _$CountReportDataFromJson(Map<String, dynamic> json) =>
     CountReportData(
       groupName: json['groupName'] as String?,
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       name: json['name'] as String?,
       count: json['count'] as int?,
     );
