@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/models/maintenance.dart';
@@ -85,8 +84,6 @@ import 'package:insite/core/models/user.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/models/utilization_data.dart';
 import 'package:insite/core/models/utilization_summary.dart';
-import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/utils/urls.dart';
 import 'package:insite/views/adminstration/addgeofense/model/addgeofencemodel.dart';
 import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
