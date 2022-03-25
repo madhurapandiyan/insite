@@ -89,6 +89,7 @@ class Network {
 
       return res;
     } catch (e) {
+      Logger().e(e.toString());
       if (e is DioLinkServerException) {
         var error = e;
         if (error.response.statusCode == 401) {

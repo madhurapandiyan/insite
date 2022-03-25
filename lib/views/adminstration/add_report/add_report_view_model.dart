@@ -263,13 +263,14 @@ class AddReportViewModel extends InsiteViewModel {
 
   getContactSearchReportData() async {
     try {
-      SearchContactReportListResponse? result =
-          await _manageUserService!.getSearchContactResposeData(_searchKeyword);
+      SearchContactReportListResponse? result = await _manageUserService!
+          .getSearchContactResposeData(_searchKeyword,
+              graphqlSchemaService!.getContactSearchData(_searchKeyword));
       if (result != null) {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }
@@ -314,8 +315,12 @@ class AddReportViewModel extends InsiteViewModel {
       //showLoadingDialog();
       await getTemplateReportAssetData();
       reportFleetAssets!.clear();
+      Logger().w(scheduledReportsId!.reportUid!);
       EditReportResponse? resultData = await _manageUserService!
-          .getEditReportData(scheduledReportsId!.reportUid!);
+          .getEditReportData(
+              scheduledReportsId!.reportUid!,
+              graphqlSchemaService!
+                  .getEditReportData(scheduledReportsId!.reportUid!));
       if (result != null) {
         Logger().w(resultData!.scheduledReport!.toJson());
         editQueryUrl = resultData.scheduledReport!.queryUrl;
@@ -329,6 +334,7 @@ class AddReportViewModel extends InsiteViewModel {
         reportFleetAssets?.add(assetsDropDownValue!);
         nameController.text = resultData.scheduledReport!.reportTitle!;
         reportFormat = resultData.scheduledReport?.reportFormat;
+
         // dateTimeController.text = DateFormat("yyyy-MM-dd").format(
         //     DateFormat("yyyy-MM-dd")
         //         .parse(result.scheduledReport!.scheduleEndDate ?? ""));
@@ -345,6 +351,7 @@ class AddReportViewModel extends InsiteViewModel {
             resultData.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
             resultData.scheduledReport!.emailContent ?? "-";
+          
         isLoading = false;
         notifyListeners();
         await getGroupListData();
@@ -361,6 +368,7 @@ class AddReportViewModel extends InsiteViewModel {
                 model: element.model));
           }
         });
+
         Logger().e(svcBody!.length);
 
         hideLoadingDialog();
@@ -462,6 +470,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   addReportSaveData() async {
     List<Reports?> defaultColumn = [];
+    associatedIdentifier!.clear();
     selectedAsset!.forEach((element) {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
@@ -469,7 +478,7 @@ class AddReportViewModel extends InsiteViewModel {
       defaultColumn.add(reports);
     });
     Logger().d(defaultColumn.length);
-    var addReportPayLoad;
+    AddReportPayLoad addReportPayLoad;
     Logger().e(defaultColumn.length);
     List<String> reportColum = [];
 
@@ -535,7 +544,7 @@ class AddReportViewModel extends InsiteViewModel {
                   : reportFormatDropDownValue == ".PDF"
                       ? 3
                       : 0,
-          svcMethod: "POST",
+          svcMethod:  "POST",
           emailSubject: serviceDueController.text,
           reportEndDate: dateTimeController.text,
           reportStartDate: "",
@@ -556,7 +565,13 @@ class AddReportViewModel extends InsiteViewModel {
                       : 0,
           allAssets: false,
           reportColumns: reportColum,
-          svcbody: associatedIdentifier,
+          svcbody:assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
+                       assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
+          assetsDropDownValue=="Multi-Asset-Utilization"?
+            []:
+            assetsDropDownValue=="Utilization Details"||assetsDropDownValue=="Fault Code Asset Details"?
+            null:
+            associatedIdentifier,
           reportTitle: nameController.text,
           reportCategoryID: 0,
           reportPeriod: frequencyDropDownValue == 'Daily'
@@ -575,7 +590,10 @@ class AddReportViewModel extends InsiteViewModel {
                   : reportFormatDropDownValue == ".PDF"
                       ? 3
                       : 0,
-          svcMethod: "POST",
+          svcMethod:assetsDropDownValue=="Utilization Details"?"":
+          assetsDropDownValue=="Fault Code Asset Details"?
+          "GET":
+           "POST",
           emailSubject: serviceDueController.text,
           reportEndDate: dateTimeController.text,
           reportStartDate: "",
@@ -622,13 +640,53 @@ class AddReportViewModel extends InsiteViewModel {
       }
 
       showLoadingDialog();
-      ManageReportResponse? result =
-          await _manageUserService!.getAddReportSaveData(addReportPayLoad);
+      Logger().w(Utils.getReportColumn(assetsDropDownValue!));
+      print(addReportPayLoad.toJson());
+      ManageReportResponse? result = await _manageUserService!.getAddReportSaveData(
+          addReportPayLoad,
+          graphqlSchemaService!.addReportPayLoad(
+              reportCategoryID: 0,
+              reportFormat: reportFormatDropDownValue == ".CSV"
+                  ? 1
+                  : reportFormatDropDownValue == ".XLS"
+                      ? 2
+                      : reportFormatDropDownValue == ".PDF"
+                          ? 3
+                          : 0,
+              reportTitle: nameController.text,
+              reportEndDate: Utils.getLastReportedDateFilterData(DateTime.now()).toString(),
+              reportScheduledDate: dateTimeController.text,
+              emailSubject: serviceDueController.text,
+              emailRecipients: Utils.getStringListData(emailIds!),
+              emailContent: emailContentController.text,
+              svcMethod: "POST",
+              allAssets: false,
+              svcbody: 
+              assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
+                       assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
+          assetsDropDownValue=="Multi-Asset-Utilization"?
+            Utils.getStringListData(associatedIdentifier!):"",
+              queryUrl: assetsDropDownValue == "Fleet Summary"
+                  ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
+                  : assetsDropDownValue == "Multi-Asset Utilization"
+                      ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
+                      : assetsDropDownValue == "Utilization Details"
+                          ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
+                          : assetsDropDownValue == "Asset Operation"
+                              ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
+                              : assetsDropDownValue == "Fault Summary Faults List"
+                                  ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
+                                  : assetsDropDownValue == "Fault Code Asset Details"
+                                      ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
+                                      : "",
+              reportColumns: Utils.getReportColumn(assetsDropDownValue!),
+              reportType: reportType!,
+              reportStartDate: ""));
       Logger().wtf(result!.reqId);
       Logger().d(addReportPayLoad.toJson());
       if (result != null) {
         _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
-        gotoScheduleReportPage();
+        //gotoScheduleReportPage();
       }
       hideLoadingDialog();
       notifyListeners();
@@ -650,7 +708,7 @@ class AddReportViewModel extends InsiteViewModel {
     selectedUser.forEach((element) {
       emailIds?.add(element.email!);
     });
-
+    associatedIdentifier!.clear();
     selectedAsset?.forEach((element) {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
@@ -744,9 +802,19 @@ class AddReportViewModel extends InsiteViewModel {
     try {
       ManageReportResponse? result = await _manageUserService!
           .getEditReportSaveData(
-              scheduledReportsId!.reportUid!, addReportPayLoad);
+              scheduledReportsId!.reportUid!, addReportPayLoad,graphqlSchemaService!.getEditReportsaveData(
+                emailContent: emailContentController.text,
+                emailRecipients: Utils.getStringListData(emailIds!)
+                reportUid: scheduledReportsId!.reportUid,
+                emailSubject: serviceDueController.text,
+                 queryUrl: editQueryUrl,
+                 reportEndDate: dateTimeController.text,
+                 reportTitle: nameController.text,
+                 svcbody: Utils.getStringListData(associatedIdentifier!),
+                
+              ));
       if (result != null) {
-        Logger().d(result.metadata!.toJson());
+        // Logger().d(result.metadata!.toJson());
         _snackBarservice!
             .showSnackbar(message: "Edit Report has been done successfully");
         gotoScheduleReportPage();

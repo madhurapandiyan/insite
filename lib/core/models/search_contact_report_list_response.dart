@@ -4,10 +4,10 @@ part 'search_contact_report_list_response.g.dart';
 
 @JsonSerializable()
 class SearchContactReportListResponse {
-  List<User>? Users;
+  List<User>? users;
   PageInfo? pageInfo;
 
-  SearchContactReportListResponse({this.Users, this.pageInfo});
+  SearchContactReportListResponse({this.users, this.pageInfo});
 
   factory SearchContactReportListResponse.fromJson(Map<String, dynamic> json) =>
       _$SearchContactReportListResponseFromJson(json);

@@ -1337,13 +1337,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   getContactSearchReportData() async {
     try {
-      SearchContactReportListResponse? result =
-          await _manageUserService!.getSearchContactResposeData(_searchKeyword);
+      SearchContactReportListResponse? result = await _manageUserService!
+          .getSearchContactResposeData(_searchKeyword,
+              graphqlSchemaService!.getContactSearchData(_searchKeyword));
       if (result != null) {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/views/adminstration/add_report/add_report_view.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/multi_custom_dropDown_widget.dart';
 import 'package:insite/views/adminstration/template/template_view.dart';
@@ -21,10 +23,14 @@ class ManageReportViewModel extends InsiteViewModel {
   final AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
 
+  final FilterService? _filterService = locator<FilterService>();
+
   var _navigationService = locator<NavigationService>();
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
+
+  List<FilterData?>? selectedFilter;
 
   int pageNumber = 1;
   int limit = 20;
@@ -52,6 +58,9 @@ class ManageReportViewModel extends InsiteViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
+
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
 
   ScrollController? scrollController;
 
@@ -196,7 +205,6 @@ class ManageReportViewModel extends InsiteViewModel {
   ];
 
   List<TemplateDetails> templateDetail = [
-
     // TemplateDetails(
     //     title: "Asset Event Count",
     //     description:
@@ -207,7 +215,6 @@ class ManageReportViewModel extends InsiteViewModel {
         description:
             "The Asset Operation report provides the Asset operated hours detail for the selected Assets corresponding to the selected date range."),
     TemplateDetails(
-
         title: "Asset Location History",
         description:
             "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan."),
@@ -252,7 +259,6 @@ class ManageReportViewModel extends InsiteViewModel {
     } else {
       return;
     }
-
   }
 
   updateSearchDataToEmpty() {
@@ -269,7 +275,16 @@ class ManageReportViewModel extends InsiteViewModel {
     try {
       Logger().i("getManagerUserAssetList");
       ManageReportResponse? result = await _manageUserService!
-          .getManageReportListData(pageNumber, limit, _searchKeyword);
+          .getManageReportListData(
+              pageNumber,
+              limit,
+              _searchKeyword,
+              appliedFilters,
+              await graphqlSchemaService!.getManageReportListData(
+                  page: pageNumber,
+                  limit: limit,
+                  searchtext: _searchKeyword,
+                  appliedFilters: appliedFilters));
       if (result != null) {
         if (result.total != null) {
           _totalCount = result.total;
@@ -334,7 +349,7 @@ class ManageReportViewModel extends InsiteViewModel {
         _loadingMore.toString());
     if (_shouldLoadmore && !_loadingMore) {
       log!.i("load more called");
-      pageNumber++;
+      // pageNumber++;
       _loadingMore = true;
       notifyListeners();
       getManageReportListData();
@@ -439,8 +454,8 @@ class ManageReportViewModel extends InsiteViewModel {
         }
         if (ids != null) {
           showLoadingDialog();
-          var result =
-              await _manageUserService!.getDeleteManageReportAsset(ids);
+          var result = await _manageUserService!.getDeleteManageReportAsset(
+              ids, graphqlSchemaService!.deleteReport(ids));
           if (result != null) {
             await deleteReportFromList(ids);
             snackbarService!.showSnackbar(message: "Deleted successfully");
@@ -494,6 +509,7 @@ class ManageReportViewModel extends InsiteViewModel {
   }
 
   onClickEditReportSelected(ScheduledReports scheduledReports) {
+    Logger().wtf(scheduledReports.reportUid);
     _navigationService.navigateToView(
       AddReportView(
         scheduledReports: scheduledReports,
@@ -521,6 +537,61 @@ class ManageReportViewModel extends InsiteViewModel {
         templateTitleValue: templateTitleValue,
       ),
     );
+  }
+
+  void refresh() async {
+    Logger().i("refresh");
+    await getSelectedFilterData();
+    pageNumber = 1;
+    _refreshing = true;
+    _shouldLoadmore = true;
+    notifyListeners();
+    ManageReportResponse? result = await _manageUserService!
+        .getManageReportListData(
+            pageNumber,
+            limit,
+            _searchKeyword,
+            appliedFilters,
+            await graphqlSchemaService!.getManageReportListData(
+                page: pageNumber,
+                limit: limit,
+                appliedFilters: appliedFilters,
+                searchtext: _searchKeyword));
+    Logger().wtf(appliedFilters!.length);
+    if (result != null) {
+      if (result.total != null) {
+        _totalCount = result.total!;
+      }
+      if (result.scheduledReports!.isNotEmpty) {
+        Logger()
+            .i("list of assets " + result.scheduledReports!.length.toString());
+        _assets.clear();
+        for (var scheduledReport in result.scheduledReports!) {
+          _assets.add(ScheduledReportsRow(
+              scheduledReports: scheduledReport, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _refreshing = false;
+        notifyListeners();
+      } else {
+        for (var scheduledReport in result.scheduledReports!) {
+          _assets.add(ScheduledReportsRow(
+              scheduledReports: scheduledReport, isSelected: false));
+        }
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        _refreshing = false;
+        notifyListeners();
+      }
+    } else {
+      _assets = [];
+      _loading = false;
+      _loadingMore = false;
+      _refreshing = false;
+      notifyListeners();
+    }
   }
 }
 

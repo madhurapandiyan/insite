@@ -452,8 +452,8 @@ class _FilterViewState extends State<FilterView> {
                                     data: viewModel.filterFrequencyType,
                                     isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
-                                      viewModel.onFilterCleared(
-                                          FilterType.FREQUENCYTYPE);
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.FREQUENCYTYPE);
                                     },
                                     onClear: () {
                                       viewModel.onFilterCleared(
@@ -469,8 +469,8 @@ class _FilterViewState extends State<FilterView> {
                                     data: viewModel.filterFormatType,
                                     isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
-                                      viewModel.onFilterCleared(
-                                          FilterType.REPORT_FORMAT);
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.REPORT_FORMAT);
                                     },
                                     onClear: () {
                                       viewModel.onFilterCleared(
@@ -486,8 +486,8 @@ class _FilterViewState extends State<FilterView> {
                                     data: viewModel.filterReportType,
                                     isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
-                                      viewModel.onFilterCleared(
-                                          FilterType.REPORT_TYPE);
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.REPORT_TYPE);
                                     },
                                     onClear: () {
                                       viewModel.onFilterCleared(

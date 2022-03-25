@@ -119,6 +119,7 @@ class FleetViewModel extends InsiteViewModel {
 
   void refresh() async {
     try {
+      Logger().e("fleet filter applied");
       await getSelectedFilterData();
       pageNumber = 1;
       pageSize = 50;

@@ -29,7 +29,7 @@ class FilterUtils {
         value.write(constructQuery("userType", data!.extras!.first, false));
       }
     }
- 
+
     return value.toString();
   }
 
@@ -51,6 +51,7 @@ class FilterUtils {
         if (pageSize != null) {
           if (pageNumber == null) {
             value.write(constructQuery("limit", pageSize.toString(), true));
+            Logger().wtf(value);
           } else {
             value.write(constructQuery("limit", pageSize.toString(), false));
           }
@@ -268,7 +269,8 @@ class FilterUtils {
                 Logger().d("location search extras 1", data.extras![1]);
                 Logger().d("location search extras 2", data.extras![2]);
                 value.write(constructQuery("latitude", data.extras![0], false));
-                value.write(constructQuery("longitude", data.extras![1], false));
+                value
+                    .write(constructQuery("longitude", data.extras![1], false));
                 value.write(constructQuery("radiuskm", data.extras![2], false));
               }
             }
@@ -469,7 +471,8 @@ class FilterUtils {
                 Logger().d("location search extras 1", data.extras![1]);
                 Logger().d("location search extras 2", data.extras![2]);
                 value.write(constructQuery("latitude", data.extras![0], false));
-                value.write(constructQuery("longitude", data.extras![1], false));
+                value
+                    .write(constructQuery("longitude", data.extras![1], false));
                 value.write(constructQuery("radiuskm", data.extras![2], false));
               }
             }
@@ -563,5 +566,57 @@ class FilterUtils {
       });
     }
     return urlString.toString();
+  }
+
+  static String reportConstructQuery(limit, page, sort,
+      List<FilterData?>? appliedFilters, String? searchKeyWord) {
+    StringBuffer value = new StringBuffer();
+    if (page != null) {
+      value.write(constructQuery("page", page.toString(), true));
+    }
+    if (limit != null) {
+      if (limit == null) {
+        value.write(constructQuery("limit", limit.toString(), false));
+        Logger().wtf(value);
+      } else {
+        value.write(constructQuery("limit", limit.toString(), false));
+      }
+    }
+    if (searchKeyWord != null) {
+      value
+          .write(constructQuery("searchText", searchKeyWord.toString(), false));
+    }
+
+    if (appliedFilters!.isNotEmpty) {
+      var reportFormatList = appliedFilters
+          .where((element) => element!.type == FilterType.REPORT_FORMAT)
+          .toList();
+
+      if (reportFormatList.isNotEmpty) {
+        for (FilterData? data in reportFormatList) {
+          value.write(constructQuery("ReportFormat", data!.id, false));
+        }
+      }
+
+      var reportFrequenyType = appliedFilters
+          .where((element) => element!.type == FilterType.FREQUENCYTYPE)
+          .toList();
+
+      if (reportFrequenyType.isNotEmpty) {
+        for (FilterData? data in reportFrequenyType) {
+          value.write(constructQuery("ReportFrequency", data!.id, false));
+        }
+      }
+      var reportTypeIdList = appliedFilters
+          .where((element) => element!.type == FilterType.REPORT_TYPE)
+          .toList();
+      Logger().e(reportTypeIdList.length);
+      if (reportTypeIdList.isNotEmpty) {
+        for (FilterData? data in reportTypeIdList) {
+          value.write(constructQuery("ReportTypeID", data!.id, false));
+        }
+      }
+    }
+    return value.toString();
   }
 }
