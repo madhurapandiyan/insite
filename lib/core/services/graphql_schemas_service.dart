@@ -1499,12 +1499,59 @@ lastLocationUpdateUTC
     return data;
   }
 
+  String manageNotificationList(
+      {int? pageNumber, int? count, String? searchKey}) {
+    String manageNotificationData = """
+     query notificationsData{
+  getConfiguredAlertsData(pageNumber: $pageNumber, count: $count, searchKey:$searchKey, notificationType: null) {
+    configuredAlerts {
+      alertConfigID
+      alertConfigUID
+      notificationTitle
+      allAssetsInd
+      notificationTypeGroupID
+      notificationTypeID
+      createdDate
+      updatedDate
+      notificationType
+      numberOfAssets
+      numberOfAssetGroups
+      numberOfGeofences
+      alertCategoryID
+      alertGroupID
+      operands {
+        operandID
+        operandName
+        operatorID
+        condition
+        value
+        unit
+      }
+      allAssetsInd
+    }
+    links {
+      prev
+      next
+      last
+    }
+    total {
+      items
+      pages
+    }
+    responseStatus
+    
+  }
+}
+""";
+    return manageNotificationData;
+  }
+
   getManageReportListData(
       {int? page,
       String? searchtext,
       int? limit,
       List<FilterData?>? appliedFilters}) async {
-        await clearAllList();
+    await clearAllList();
     await getReportFilterData(appliedFilters);
 
     var reportListData = """{

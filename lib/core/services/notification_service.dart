@@ -9,6 +9,8 @@ import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -20,6 +22,7 @@ import '../../views/adminstration/notifications/add_new_notifications/model/zone
 
 class NotificationService extends BaseService {
   LocalService? _localService = locator<LocalService>();
+  GraphqlSchemaService _graphqlSchemaService = locator<GraphqlSchemaService>();
   Customer? accountSelected;
   Customer? customerSelected;
 
@@ -126,55 +129,98 @@ class NotificationService extends BaseService {
   }
 
   Future<ManageNotificationsData?> getManageNotificationsData(
-      int pageNumber) async {
+      int pageNumber, int count, String? searchText) async {
     try {
+      if (enableGraphQl) {
+        String doubleQuote = "\"";
+        var data = await Network().getGraphqlData(
+          query: await _graphqlSchemaService.manageNotificationList(
+              pageNumber: pageNumber,
+              count: count,
+              searchKey: doubleQuote + "$searchText" + doubleQuote),
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          customerId: accountSelected!.CustomerUID,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        ManageNotificationsData manageNotificationResponse =
+            ManageNotificationsData.fromJson(
+                data.data['getConfiguredAlertsData']);
+        return manageNotificationResponse;
+      } else {
+        if (isVisionLink) {
+          ManageNotificationsData? response = await MyApi()
+              .getClientSeven()!
+              .manageNotificationsDataVL(
+                  Urls.manageNotificationsDataVL, accountSelected!.CustomerUID);
+
+          return response;
+        } else {
+          ManageNotificationsData? response = await MyApi()
+              .getClient()!
+              .manageNotificationsData(
+                  "in-alertmanager-api",
+                  Urls.manageNotificationsData + pageNumber.toString() + "/20",
+                  accountSelected!.CustomerUID);
+
+          return response;
+        }
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<ManageNotificationsData?> getsearchNotificationsData(
+      {String? searchText, int? pageNumber, int? count}) async {
+    if (enableGraphQl) {
+      String doubleQuote = "\"";
+      var data = await Network().getGraphqlData(
+        query: await _graphqlSchemaService.manageNotificationList(
+            pageNumber: pageNumber,
+            count: count,
+            searchKey: doubleQuote + "$searchText" + doubleQuote),
+        userId: (await _localService?.getLoggedInUser())?.sub,
+        customerId: accountSelected!.CustomerUID,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+
+      ManageNotificationsData manageNotificationResponse =
+          ManageNotificationsData.fromJson(
+              data.data['getConfiguredAlertsData']);
+      return manageNotificationResponse;
+    } else {
       if (isVisionLink) {
+        Map<String, String> queryMap = Map();
+
+        queryMap["searchKey"] = searchText!;
         ManageNotificationsData? response = await MyApi()
             .getClientSeven()!
             .manageNotificationsDataVL(
-                Urls.manageNotificationsDataVL, accountSelected!.CustomerUID);
+                Urls.manageNotificationsData +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
 
         return response;
       } else {
+        Map<String, String> queryMap = Map();
+
+        queryMap["searchKey"] = searchText!;
         ManageNotificationsData? response = await MyApi()
             .getClient()!
             .manageNotificationsData(
                 "in-alertmanager-api",
-                Urls.manageNotificationsData + pageNumber.toString() + "/20",
+                Urls.manageNotificationsData +
+                    FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID);
 
         return response;
       }
-    } catch (e) {}
-  }
-
-  Future<ManageNotificationsData?> getsearchNotificationsData(
-      String? searchText) async {
-    if (isVisionLink) {
-      Map<String, String> queryMap = Map();
-
-      queryMap["searchKey"] = searchText!;
-      ManageNotificationsData? response = await MyApi()
-          .getClientSeven()!
-          .manageNotificationsDataVL(
-              Urls.manageNotificationsData +
-                  FilterUtils.constructQueryFromMap(queryMap),
-              accountSelected!.CustomerUID);
-
-      return response;
-    } else {
-      Map<String, String> queryMap = Map();
-
-      queryMap["searchKey"] = searchText!;
-      ManageNotificationsData? response = await MyApi()
-          .getClient()!
-          .manageNotificationsData(
-              "in-alertmanager-api",
-              Urls.manageNotificationsData +
-                  FilterUtils.constructQueryFromMap(queryMap),
-              accountSelected!.CustomerUID);
-
-      return response;
     }
   }
 

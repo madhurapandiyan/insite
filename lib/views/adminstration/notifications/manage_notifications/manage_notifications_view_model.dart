@@ -20,6 +20,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   ScrollController? controller;
   bool? isLoadMore;
   int pageNumber = 1;
+  int pageCount = 20;
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
@@ -109,8 +110,11 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getSearchListData(String? searchValue) async {
     if (searchValue!.length >= 4) {
-      ManageNotificationsData? response =
-          await _notificationService!.getsearchNotificationsData(searchValue);
+      ManageNotificationsData? response = await _notificationService!
+          .getsearchNotificationsData(
+              pageNumber: pageNumber,
+              count: pageCount,
+              searchText: searchValue);
 
       if (response != null) {
         if (response.configuredAlerts != null &&
@@ -163,8 +167,11 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getManageNotificationsData() async {
     _notifications.clear();
-    ManageNotificationsData? response =
-        await _notificationService!.getManageNotificationsData(pageNumber);
+    ManageNotificationsData? response = await _notificationService!
+        .getManageNotificationsData(pageNumber, pageCount, "");
+    Logger().i("eeeeeeeeeeeeeeeeeeeeeeeeee");
+
+    Logger().wtf(response!.toJson());
 
     if (response != null) {
       if (response.configuredAlerts != null &&
